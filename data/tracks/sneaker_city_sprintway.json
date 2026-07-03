@@ -1,0 +1,12 @@
+{
+  "id": "sneaker_city_sprintway",
+  "display_name": "Sneaker City Sprintway",
+  "lap_count": 3,
+  "difficulty": "beginner",
+  "theme": "sneaker_city",
+  "has_shortcut": true,
+  "has_speed_lane": true,
+  "has_slow_terrain": true,
+  "has_jump_section": true,
+  "description": "A colorful closed-loop test track with drift curves, speed lanes, slow grass, bounce pads, item boxes, and one risky shortcut."
+}

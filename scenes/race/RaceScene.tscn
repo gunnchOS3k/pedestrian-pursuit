@@ -1,0 +1,48 @@
+[gd_scene load_steps=11 format=3 uid="uid://racescene001"]
+
+[ext_resource type="Script" path="res://scripts/race/RaceScene.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/race/RaceManager.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/race/LapManager.gd" id="3"]
+[ext_resource type="Script" path="res://scripts/race/PositionTracker.gd" id="4"]
+[ext_resource type="PackedScene" uid="uid://track001" path="res://scenes/tracks/SneakerCitySprintway.tscn" id="5"]
+[ext_resource type="PackedScene" uid="uid://playerracer001" path="res://scenes/player/PlayerRacer.tscn" id="6"]
+[ext_resource type="PackedScene" uid="uid://airacer001" path="res://scenes/ai/AIRacer.tscn" id="7"]
+[ext_resource type="Script" path="res://scripts/player/CameraRig.gd" id="8"]
+[ext_resource type="PackedScene" uid="uid://racehud001" path="res://scenes/ui/RaceHUD.tscn" id="9"]
+[ext_resource type="PackedScene" uid="uid://pausemenu001" path="res://scenes/ui/PauseMenu.tscn" id="10"]
+[ext_resource type="PackedScene" uid="uid://results001" path="res://scenes/ui/ResultsScreen.tscn" id="11"]
+[ext_resource type="PackedScene" uid="uid://debugoverlay001" path="res://scenes/debug/DebugOverlay.tscn" id="12"]
+
+[node name="RaceScene" type="Node3D"]
+script = ExtResource("1")
+
+[node name="RaceManager" type="Node" parent="."]
+script = ExtResource("2")
+
+[node name="LapManager" type="Node" parent="RaceManager"]
+script = ExtResource("3")
+
+[node name="PositionTracker" type="Node" parent="RaceManager"]
+script = ExtResource("4")
+
+[node name="SneakerCitySprintway" parent="." instance=ExtResource("5")]
+
+[node name="PlayerRacer" parent="." instance=ExtResource("6")]
+
+[node name="AIRacer" parent="." instance=ExtResource("7")]
+
+[node name="CameraRig" type="SpringArm3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 4, 0)
+script = ExtResource("8")
+spring_length = 10.0
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig"]
+current = true
+
+[node name="RaceHUD" parent="." instance=ExtResource("9")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("10")]
+
+[node name="ResultsScreen" parent="." instance=ExtResource("11")]
+
+[node name="DebugOverlay" parent="." instance=ExtResource("12")]

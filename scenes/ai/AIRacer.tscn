@@ -1,0 +1,90 @@
+[gd_scene load_steps=9 format=3 uid="uid://airacer001"]
+
+[ext_resource type="Script" path="res://scripts/ai/AIRacerController.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/player/MovementStats.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/player/RacerStateMachine.gd" id="3"]
+[ext_resource type="Script" path="res://scripts/player/DriftSystem.gd" id="4"]
+[ext_resource type="Script" path="res://scripts/player/BoostSystem.gd" id="5"]
+[ext_resource type="Script" path="res://scripts/player/StompSystem.gd" id="6"]
+[ext_resource type="Script" path="res://scripts/player/TrickSystem.gd" id="7"]
+[ext_resource type="Script" path="res://scripts/items/ItemManager.gd" id="8"]
+[ext_resource type="Script" path="res://scripts/ai/AIPathFollower.gd" id="9"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
+radius = 0.45
+height = 1.6
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_1"]
+radius = 0.4
+height = 1.4
+
+[sub_resource type="StandardMaterial3D" id="BodyMat"]
+albedo_color = Color(0.4, 0.75, 1, 1)
+
+[sub_resource type="BoxMesh" id="ShoeMesh"]
+size = Vector3(0.5, 0.2, 0.7)
+
+[sub_resource type="StandardMaterial3D" id="ShoeMat"]
+albedo_color = Color(0.2, 0.5, 1, 1)
+
+[sub_resource type="ParticleProcessMaterial" id="DriftMat"]
+direction = Vector3(0, 0.5, 0)
+spread = 30.0
+initial_velocity_min = 1.0
+initial_velocity_max = 3.0
+gravity = Vector3(0, -2, 0)
+scale_min = 0.1
+scale_max = 0.25
+color = Color(0.3, 0.6, 1, 1)
+
+[node name="AIRacer" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("1")
+is_player = false
+shoe_id = "speed_sneakers"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_1")
+
+[node name="BodyMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+mesh = SubResource("CapsuleMesh_1")
+surface_material_override/0 = SubResource("BodyMat")
+
+[node name="ShoeMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0.25)
+mesh = SubResource("ShoeMesh")
+surface_material_override/0 = SubResource("ShoeMat")
+
+[node name="MovementStats" type="Node" parent="."]
+script = ExtResource("2")
+
+[node name="RacerStateMachine" type="Node" parent="."]
+script = ExtResource("3")
+
+[node name="DriftSystem" type="Node" parent="."]
+script = ExtResource("4")
+
+[node name="BoostSystem" type="Node" parent="."]
+script = ExtResource("5")
+
+[node name="StompSystem" type="Node" parent="."]
+script = ExtResource("6")
+
+[node name="TrickSystem" type="Node" parent="."]
+script = ExtResource("7")
+
+[node name="ItemManager" type="Node" parent="."]
+script = ExtResource("8")
+
+[node name="AIPathFollower" type="Node" parent="."]
+script = ExtResource("9")
+
+[node name="DriftParticles" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0.4)
+emitting = false
+amount = 24
+lifetime = 0.4
+process_material = SubResource("DriftMat")

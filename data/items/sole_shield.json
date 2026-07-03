@@ -1,0 +1,10 @@
+{
+  "id": "sole_shield",
+  "display_name": "Sole Shield",
+  "type": "defensive",
+  "cooldown": 0.0,
+  "duration": 10.0,
+  "effect_strength": 1.0,
+  "targeting_mode": "self",
+  "description": "Blocks one incoming hit or hazard effect."
+}

@@ -1,0 +1,10 @@
+{
+  "id": "turbo_toes",
+  "display_name": "Turbo Toes",
+  "type": "offensive",
+  "cooldown": 0.0,
+  "duration": 2.0,
+  "effect_strength": 1.4,
+  "targeting_mode": "self",
+  "description": "Instant speed boost."
+}

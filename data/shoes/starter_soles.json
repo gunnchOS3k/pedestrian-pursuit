@@ -1,0 +1,12 @@
+{
+  "id": "starter_soles",
+  "display_name": "Starter Soles",
+  "top_speed_modifier": 1.0,
+  "acceleration_modifier": 1.0,
+  "handling_modifier": 1.0,
+  "drift_modifier": 1.0,
+  "jump_modifier": 1.0,
+  "boost_modifier": 1.0,
+  "stomp_modifier": 1.0,
+  "description": "Balanced shoes for learning the basics."
+}

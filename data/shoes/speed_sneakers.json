@@ -1,0 +1,12 @@
+{
+  "id": "speed_sneakers",
+  "display_name": "Speed Sneakers",
+  "top_speed_modifier": 1.15,
+  "acceleration_modifier": 1.05,
+  "handling_modifier": 0.85,
+  "drift_modifier": 0.9,
+  "jump_modifier": 0.95,
+  "boost_modifier": 1.0,
+  "stomp_modifier": 0.9,
+  "description": "Faster top speed with weaker handling."
+}

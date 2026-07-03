@@ -1,0 +1,10 @@
+{
+  "id": "lace_trap",
+  "display_name": "Lace Trap",
+  "type": "offensive",
+  "cooldown": 0.0,
+  "duration": 5.0,
+  "effect_strength": 0.5,
+  "targeting_mode": "behind",
+  "description": "Drops tangled laces that slow racers who touch them."
+}

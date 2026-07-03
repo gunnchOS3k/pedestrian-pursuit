@@ -1,0 +1,16 @@
+{
+  "id": "dash",
+  "display_name": "Dash",
+  "class_type": "balanced",
+  "top_speed": 22.0,
+  "acceleration": 18.0,
+  "handling": 12.0,
+  "drift_control": 10.0,
+  "trick_skill": 8.0,
+  "recovery": 10.0,
+  "strength": 8.0,
+  "boost_efficiency": 1.0,
+  "default_shoe_id": "starter_soles",
+  "special_ability_id": "turbo_step",
+  "description": "A beginner-friendly racer designed for testing every core mechanic."
+}

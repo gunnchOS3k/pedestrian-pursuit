@@ -1,0 +1,12 @@
+{
+  "id": "grip_soles",
+  "display_name": "Grip Soles",
+  "top_speed_modifier": 0.92,
+  "acceleration_modifier": 0.95,
+  "handling_modifier": 1.2,
+  "drift_modifier": 1.25,
+  "jump_modifier": 1.0,
+  "boost_modifier": 1.05,
+  "stomp_modifier": 1.0,
+  "description": "Better drift and control at the cost of raw speed."
+}
