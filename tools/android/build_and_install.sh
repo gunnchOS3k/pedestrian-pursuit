@@ -3,7 +3,7 @@ set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 APK_PATH="$PROJECT_ROOT/build/android/pedestrian-pursuit-debug.apk"
-PACKAGE_ID="com.gunnchos3k.pedestrianpursuit"
+PACKAGE_ID="com.gunnchos.pedestrianpursuit"
 
 if [[ -n "${GODOT_BIN:-}" ]]; then
   GODOT="$GODOT_BIN"
@@ -39,8 +39,9 @@ if [[ "$DEVICE_STATE" != "device" ]]; then
   exit 3
 fi
 
-mkdir -p "$(dirname "$APK_PATH")"
-"$GODOT" --headless --path "$PROJECT_ROOT" --export-debug "Android Device" "$APK_PATH"
+mkdir -p "$(dirname "$APK_PATH")" build/logs
+"$GODOT" --headless --path "$PROJECT_ROOT" --export-debug "Android" "$APK_PATH" --verbose 2>&1 | tee build/logs/android-export.log
+test -f "$APK_PATH" || { echo "APK not produced: $APK_PATH" >&2; exit 1; }
 "${ADB[@]}" install -r "$APK_PATH"
 "${ADB[@]}" shell monkey -p "$PACKAGE_ID" -c android.intent.category.LAUNCHER 1 >/dev/null
 
