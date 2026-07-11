@@ -2,7 +2,7 @@
 
 ## Engine
 
-Godot 4.x with GDScript. Target platforms: PC, macOS, Linux.
+Godot 4.x with GDScript and the OpenGL compatibility renderer. Target platforms include Android, PC, macOS, and Linux. The repository is currently authored in the 4.3 project format; a supported stable engine upgrade is a public-release gate.
 
 ## Autoloads
 
@@ -16,14 +16,15 @@ Godot 4.x with GDScript. Target platforms: PC, macOS, Linux.
 
 ```
 MainMenu.tscn
-  └── Start Race → RaceScene.tscn
-        ├── SneakerCitySprintway (track)
+  └── Start Cup / Practice → RaceScene.tscn
+        ├── CourseTrack (built from validated JSON)
         ├── PlayerRacer
         ├── AIRacer(s)
         ├── RaceManager
         ├── RaceHUD
         ├── PauseMenu
-        └── ResultsScreen
+        ├── ResultsScreen
+        └── MobileControls (Android only)
 ```
 
 ## Core Systems
@@ -60,6 +61,8 @@ MainMenu.tscn
 
 ### Tracks
 
+- `TrackCatalog` — safe JSON loading, schema validation, and cup catalog
+- `CourseTrack` — collision surface, race path, checkpoints, features, and themed scenery
 - `TerrainZone` — base area modifier
 - `SpeedLane`, `BouncePad` — specialized zones
 
@@ -70,9 +73,10 @@ JSON files in `data/` loaded at runtime:
 - `data/racers/dash.json`
 - `data/shoes/*.json`
 - `data/items/*.json`
-- `data/tracks/sneaker_city_sprintway.json`
+- `data/cups/sole_surge_cup.json`
+- `data/tracks/{verdant_cascade_circuit,cloverwind_ranch,prism_apex,emberkeep_gauntlet}.json`
 
-Resource classes (`RacerData`, `ShoeData`, `ItemData`) parse JSON into typed dictionaries.
+Resource classes (`RacerData`, `ShoeData`, `ItemData`) parse player/item JSON; `TrackCatalog` validates cup and course JSON before scene construction.
 
 ## Input Actions
 
@@ -89,7 +93,9 @@ Defined in `project.godot` and queried via `InputManager`:
 
 ## Testing
 
-`tests/unit/` and `tests/integration/` reserved for GUT or custom test runners.
+- `tools/validate_content.py` validates schemas, references, indices, geometry bounds, and feature placement without engine dependencies.
+- `tests/test_content.py` locks cup order and original shipped identity.
+- `tests/TestRunner.gd` loads and constructs all four courses in a headless Godot run.
 
 ## Debug
 

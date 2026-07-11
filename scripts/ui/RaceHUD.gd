@@ -2,6 +2,8 @@ extends CanvasLayer
 
 ## Race HUD — lap, position, boost, item, timer, speed.
 
+var _player: Node = null
+
 @onready var lap_label: Label = $Margin/VBox/LapLabel
 @onready var position_label: Label = $Margin/VBox/PositionLabel
 @onready var timer_label: Label = $Margin/VBox/TimerLabel
@@ -9,11 +11,10 @@ extends CanvasLayer
 @onready var boost_bar: ProgressBar = $Margin/VBox/BoostBar
 @onready var item_label: Label = $Margin/VBox/ItemLabel
 @onready var countdown_label: Label = $CountdownLabel
+@onready var course_label: Label = $CourseLabel
 
-var _player: Node = null
 
-
-func setup(player: Node, race_manager: Node) -> void:
+func setup(player: Node, race_manager: Node, course_data: Dictionary = {}) -> void:
 	_player = player
 	race_manager.countdown_tick.connect(_on_countdown)
 	race_manager.timer_updated.connect(_on_timer)
@@ -27,6 +28,11 @@ func setup(player: Node, race_manager: Node) -> void:
 		player.speed_changed.connect(_on_speed_changed)
 	countdown_label.visible = true
 	item_label.text = "Item: None"
+	var round_prefix := GameManager.get_cup_round_label()
+	var course_name := str(course_data.get("display_name", "Unknown Course"))
+	course_label.text = (
+		"%s  •  %s" % [round_prefix, course_name] if not round_prefix.is_empty() else course_name
+	)
 
 
 func _process(_delta: float) -> void:
@@ -36,7 +42,9 @@ func _process(_delta: float) -> void:
 	if race_mgr and race_mgr.has_node("LapManager"):
 		var lap_mgr := race_mgr.get_node("LapManager")
 		var lap: int = lap_mgr.get_lap(_player)
-		lap_label.text = "Lap: %d / %d" % [min(lap + 1, GameManager.total_laps), GameManager.total_laps]
+		lap_label.text = (
+			"Lap: %d / %d" % [min(lap + 1, GameManager.total_laps), GameManager.total_laps]
+		)
 	if race_mgr and race_mgr.has_node("PositionTracker"):
 		var pos: int = race_mgr.get_node("PositionTracker").get_position_for(_player)
 		position_label.text = "Position: %d" % pos

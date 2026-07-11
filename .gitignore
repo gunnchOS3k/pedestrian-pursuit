@@ -1,7 +1,6 @@
 # Godot 4
 .godot/
 *.translation
-export_presets.cfg
 
 # Imported assets
 *.import
@@ -14,6 +13,8 @@ mono_crash.*.json
 # System
 .DS_Store
 Thumbs.db
+__pycache__/
+*.py[cod]
 *.swp
 *.swo
 *~
@@ -31,6 +32,8 @@ export/
 *.zip
 *.dmg
 *.app
+*.keystore
+*.jks
 
 # Logs
 *.log

@@ -44,7 +44,7 @@ func _use_lace_trap(racer: Node) -> void:
 		return
 	var trap := scene.instantiate()
 	racer.get_tree().current_scene.add_child(trap)
-	var back := -racer.global_transform.basis.z
+	var back: Vector3 = -racer.global_transform.basis.z
 	trap.global_position = racer.global_position + back * 3.0
 
 

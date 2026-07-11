@@ -66,3 +66,13 @@ theme_override_font_sizes/font_size = 72
 text = "3"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="CourseLabel" type="Label" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 18.0
+offset_bottom = 52.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 20
+text = "Course 1 of 4  •  Verdant Cascade Circuit"
+horizontal_alignment = 1

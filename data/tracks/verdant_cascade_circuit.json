@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "id": "verdant_cascade_circuit",
+  "display_name": "Verdant Cascade Circuit",
+  "lap_count": 3,
+  "difficulty": "beginner",
+  "theme": "cascade_garden",
+  "description": "A broad riverside loop with misty cascade columns, shallow runoff, and forgiving boost lines.",
+  "lane_width": 15.0,
+  "guard_rails": true,
+  "track_color": "#5A7461",
+  "accent_color": "#6EE7C2",
+  "sky_color": "#79C7E3",
+  "backdrop_color": "#2F754A",
+  "path_points": [
+    [0, 0, 34], [24, 0, 36], [44, 0, 20], [48, 0, -8], [30, 0, -34],
+    [0, 0, -42], [-28, 0, -31], [-46, 0, -4], [-35, 0, 25]
+  ],
+  "checkpoint_points": [0, 2, 4, 6, 8],
+  "speed_lanes": [
+    {"point_index": 1, "size": [6, 13], "speed_bonus": 1.2}
+  ],
+  "terrain_zones": [
+    {"point_index": 5, "size": [12, 13], "terrain_name": "cascade_runoff", "speed_multiplier": 0.84, "handling_multiplier": 0.92, "color": "#4FC3E0"}
+  ],
+  "bounce_pads": [
+    {"point_index": 7, "size": [6, 6], "bounce_force": 11.5, "forward_boost": 4.5}
+  ],
+  "item_boxes": [1, 4, 7],
+  "boost_pickups": [2, 6]
+}

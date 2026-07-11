@@ -19,6 +19,7 @@ var shield_active: bool = false
 var _slow_timer: float = 0.0
 var _start_boost_multiplier: float = 1.0
 var _start_boost_time: float = 0.0
+var _recovery_transform := Transform3D.IDENTITY
 
 @onready var stats: Node = $MovementStats
 @onready var state_machine: Node = $RacerStateMachine
@@ -43,6 +44,7 @@ func _ready() -> void:
 
 func setup_for_race(start_transform: Transform3D) -> void:
 	global_transform = start_transform
+	_recovery_transform = start_transform
 	horizontal_speed = 0.0
 	movement_enabled = false
 
@@ -57,6 +59,9 @@ func apply_perfect_start(multiplier: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if global_position.y < -12.0:
+		_recover_from_fall()
+		return
 	if not movement_enabled:
 		velocity = Vector3.ZERO
 		move_and_slide()
@@ -68,7 +73,7 @@ func _physics_process(delta: float) -> void:
 	_tick_timers(delta)
 
 	var steer := _get_steer()
-	var gravity := ProjectSettings.get_setting("physics/3d/default_gravity") * stats.gravity_scale
+	var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity") * stats.gravity_scale
 
 	if is_on_floor():
 		if state_machine.current_state == state_machine.State.AIR:
@@ -111,7 +116,7 @@ func _handle_ground_movement(delta: float, steer: float) -> void:
 		stomp_system.execute_ground_stomp(global_position, self)
 
 	var target_speed := _compute_target_speed()
-	var accel := stats.acceleration
+	var accel: float = stats.acceleration
 	if state_machine.current_state == state_machine.State.DRIFT:
 		accel *= 0.65
 	elif state_machine.current_state == state_machine.State.SLIDE:
@@ -124,7 +129,7 @@ func _handle_ground_movement(delta: float, steer: float) -> void:
 	else:
 		horizontal_speed = move_toward(horizontal_speed, 0.0, stats.brake_strength * 0.35 * delta)
 
-	var turn_rate := stats.handling * terrain_handling_multiplier
+	var turn_rate: float = stats.handling * terrain_handling_multiplier
 	if state_machine.current_state == state_machine.State.DRIFT:
 		turn_rate *= 1.35
 	if horizontal_speed > 0.5:
@@ -225,6 +230,18 @@ func apply_lace_trap_slow(duration: float) -> void:
 
 func activate_shield() -> void:
 	shield_active = true
+
+
+func set_recovery_transform(recovery_transform: Transform3D) -> void:
+	_recovery_transform = recovery_transform
+
+
+func _recover_from_fall() -> void:
+	global_transform = _recovery_transform
+	velocity = Vector3.ZERO
+	horizontal_speed = 0.0
+	terrain_speed_multiplier = 1.0
+	terrain_handling_multiplier = 1.0
 
 
 func _on_drift_released(multiplier: float, tier: int) -> void:

@@ -1,42 +1,39 @@
 # Pedestrian Pursuit
 
-**Pedestrian Pursuit** is an action-packed arcade racing game where your feet are the vehicle, your shoes are your engine, and every race is a chaotic sprint full of drifting, tricks, stomps, boosts, shortcuts, and comeback moments.
+**Pedestrian Pursuit** is an original arcade foot racer: sprint, drift, jump, stomp, trick, boost, and use shoe-themed items through obstacle-course tracks without a vehicle.
 
-## Prototype Subtitle
+Version 0.2 adds the complete **Sole Surge Cup**, a four-course championship with round-to-round results and points:
 
-**Pedestrian Pursuit: Sole Rush Prototype**
+| Round | Course | Identity | Signature play |
+|---|---|---|---|
+| 1 | Verdant Cascade Circuit | Misty garden waterways | Broad turns, shallow runoff, forgiving boosts |
+| 2 | Cloverwind Ranch | Windy clover ranch | Timber landmarks, muddy switchback, jump line |
+| 3 | Prism Apex | Luminous orbital ribbon | Narrow sectors, sparse rails, precision boosts |
+| 4 | Emberkeep Gauntlet | Volcanic forge fortress | Basalt turns, ash zones, forge vents |
 
-## Core Idea
+Every shipped course name, route, color system, set piece, and gameplay configuration is original. The project uses broad arcade-racing motifs only; it does not include third-party characters, brands, assets, course names, or copied layouts.
 
-Instead of driving a kart, bike, board, or hovercraft, players race using exaggerated foot-powered movement. Racers sprint, slide, stomp, wall-kick, grind, trick, and boost across colorful obstacle-course tracks.
+## Current gameplay
 
-## MVP Goal
+- Four-round cup and single-course practice selection
+- Three-lap ordered-checkpoint race flow with countdown and results
+- Player sprinting, steering, jumping, sliding/stomping, drifting, tricks, and boosts
+- Turbo Toes, Lace Trap, and Sole Shield items
+- Data-driven courses with collision, guard rails, terrain zones, bounce pads, item boxes, and boost pickups
+- AI path following with per-course closed routes
+- Fall recovery at the last accepted checkpoint
+- Keyboard, controller, and multi-touch Android controls
+- Mobile-friendly OpenGL compatibility renderer
 
-The first playable version focuses on one thing: making movement feel amazing.
+The current 3D presentation is intentionally lightweight procedural geometry. It is a stable content and gameplay foundation, not final character art, animation, audio, accessibility, performance certification, or store-release signoff.
 
-The MVP includes:
+## Run locally
 
-- One playable racer (**Dash**)
-- Three shoe presets (Starter Soles, Speed Sneakers, Grip Soles)
-- One test track (**Sneaker City Sprintway**)
-- 3-lap race loop
-- Sprinting, steering, jumping, sliding/stomping
-- Foot drifting with boost on release
-- Boost meter and pickups
-- Item boxes with three items (Turbo Toes, Lace Trap, Sole Shield)
-- Basic AI racer
-- Race HUD and results screen
+1. Install Godot 4.x. The project is currently authored in the Godot 4.3 format.
+2. Import this repository's `project.godot`.
+3. Press **F5** and choose **Start Four-Course Cup**.
 
-## Setup
-
-1. Install [Godot 4.x](https://godotengine.org/download) (4.2+ recommended).
-2. Clone this repository.
-3. Open Godot and import the project folder (`pedestrian-pursuit`).
-4. Press **F5** or click **Run Project** to launch.
-
-The main scene is `scenes/main/MainMenu.tscn`. From the main menu, choose **Start Race** to enter a 3-lap race on Sneaker City Sprintway.
-
-## Controls
+Desktop controls:
 
 | Action | Keyboard |
 |---|---|
@@ -48,58 +45,52 @@ The main scene is `scenes/main/MainMenu.tscn`. From the main menu, choose **Star
 | Slide/Stomp | Ctrl |
 | Use Item | E |
 | Boost | Q |
-| Special | R |
+| Trick | T |
 | Pause | Esc |
 
-## Development Status
+Android builds display simultaneous multi-touch controls for these actions automatically.
 
-Current phase: **MVP prototype** — Milestones 1–8 implemented.
+## Validate
 
-### Implemented
+Run the dependency-free content tests:
 
-- Repository scaffold and documentation
-- Player movement (sprint, steer, jump, slide, drift, boost, stomp)
-- Third-person camera
-- Sneaker City Sprintway test track with terrain zones
-- 3-lap race with checkpoints and countdown
-- Drift charge and release boost
-- Boost meter with pickups
-- Three MVP items
-- Race HUD (lap, position, boost, item, timer, speed)
-- AI racer path following
-- Results screen
-- Debug overlay (F3)
-
-### Known Issues
-
-- Placeholder art only — capsule character and colored primitives
-- No audio assets yet (hooks in place)
-- AI uses simple path following without item usage
-- Trick system grants boost on landing but no stumble penalty yet
-- Wall-kick and rail grinding not implemented (future)
-- Settings menu is a placeholder
-
-## Project Structure
-
-```
-pedestrian-pursuit/
-├── docs/           # Design and architecture documents
-├── scenes/         # Godot scenes
-├── scripts/        # GDScript source
-├── data/           # JSON data for racers, shoes, items, tracks
-├── assets/         # Art, audio, materials (placeholder)
-└── tests/          # Unit and integration tests (future)
+```bash
+python3 tools/validate_content.py
+python3 -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
-See [docs/TECHNICAL_ARCHITECTURE.md](docs/TECHNICAL_ARCHITECTURE.md) for details.
+With Godot available, parse the project and construct every course headlessly:
 
-## Engine
+```bash
+godot --headless --path . --script res://tests/TestRunner.gd
+```
 
-Godot 4.x (GDScript)
+## Android device build
 
-## Design Rule
+The checked-in `Android Device` export preset targets a signed debug APK for ARM64 devices. Configure Godot's Java 17 and Android SDK paths, connect and authorize the phone with USB debugging, then run:
 
-Pedestrian Pursuit is inspired by the joy, speed, and chaos of beloved arcade racers, but all characters, mechanics, tracks, items, code, and assets must be original.
+```bash
+tools/android/build_and_install.sh
+```
+
+Set `GODOT_BIN` and/or `ANDROID_SERIAL` when the editor is outside the normal application path or more than one device is attached. See [docs/ANDROID_BUILD.md](docs/ANDROID_BUILD.md) for setup, release signing, AAB guidance, and troubleshooting.
+
+## Architecture
+
+- `data/cups/` — cup order and scoring
+- `data/tracks/` — versioned course definitions
+- `scripts/data/TrackCatalog.gd` — safe loading and runtime validation
+- `scripts/tracks/CourseTrack.gd` — reusable course construction
+- `scripts/race/` — countdown, checkpoints, laps, positions, and race orchestration
+- `scripts/player/` — movement and recovery systems
+- `scripts/ui/` — menu, HUD, results, pause, and mobile controls
+- `tests/` — dependency-free data tests and Godot construction smoke test
+
+See [docs/TECHNICAL_ARCHITECTURE.md](docs/TECHNICAL_ARCHITECTURE.md) and [docs/COURSE_CONTENT.md](docs/COURSE_CONTENT.md).
+
+## Release gates
+
+Before a public production release: upgrade and certify on a currently supported Godot stable version, replace placeholder presentation with licensed production assets, profile all four courses on representative low/mid/high Android devices, add audio and accessibility settings, complete full race/cup device QA, and generate a privately stored release keystore for the Play Store AAB.
 
 ## License
 

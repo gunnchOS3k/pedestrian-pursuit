@@ -28,12 +28,12 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -200.0
-offset_top = -160.0
+offset_top = -280.0
 offset_right = 200.0
-offset_bottom = 160.0
+offset_bottom = 280.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 14
 
 [node name="Title" type="Label" parent="VBox"]
 layout_mode = 2
@@ -44,21 +44,45 @@ horizontal_alignment = 1
 [node name="Subtitle" type="Label" parent="VBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
-text = "Sole Rush Prototype"
+text = "Sole Surge Championship"
 horizontal_alignment = 1
 
-[node name="StartButton" type="Button" parent="VBox"]
+[node name="CupLabel" type="Label" parent="VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "SOLE SURGE CUP  •  4 COURSES"
+horizontal_alignment = 1
+
+[node name="StartCupButton" type="Button" parent="VBox"]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+text = "Start Four-Course Cup"
+
+[node name="CoursePicker" type="OptionButton" parent="VBox"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
-text = "Start Race"
+
+[node name="Description" type="Label" parent="VBox"]
+custom_minimum_size = Vector2(0, 76)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Course details"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="SingleRaceButton" type="Button" parent="VBox"]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+text = "Practice Selected Course"
 
 [node name="QuitButton" type="Button" parent="VBox"]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
-text = "Quit"
+text = "Exit Game"
 
 [node name="Hint" type="Label" parent="VBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
-text = "W/Up accelerate · A/D steer · Shift drift · Q boost"
+text = "Keyboard, controller, and on-screen Android controls supported"
 horizontal_alignment = 1

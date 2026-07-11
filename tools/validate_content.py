@@ -1,0 +1,148 @@
+#!/usr/bin/env python3
+"""Validate the production cup/course data without requiring the Godot editor."""
+
+from __future__ import annotations
+
+import json
+import math
+import re
+import sys
+from pathlib import Path
+from typing import Any
+
+SAFE_ID = re.compile(r"^[a-z0-9_]+$")
+HEX_COLOR = re.compile(r"^#[0-9A-Fa-f]{6}$")
+EXPECTED_TRACK_COUNT = 4
+FEATURE_COLLECTIONS = ("speed_lanes", "terrain_zones", "bounce_pads")
+INDEX_COLLECTIONS = ("item_boxes", "boost_pickups")
+
+
+def _read_json(path: Path, errors: list[str]) -> dict[str, Any]:
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        errors.append(f"{path}: {exc}")
+        return {}
+    if not isinstance(value, dict):
+        errors.append(f"{path}: top-level JSON value must be an object")
+        return {}
+    return value
+
+
+def _distance(a: list[float], b: list[float]) -> float:
+    return math.sqrt(sum((float(left) - float(right)) ** 2 for left, right in zip(a, b)))
+
+
+def _orientation(a: list[float], b: list[float], c: list[float]) -> float:
+    return (float(b[0]) - float(a[0])) * (float(c[2]) - float(a[2])) - (
+        float(b[2]) - float(a[2])
+    ) * (float(c[0]) - float(a[0]))
+
+
+def _segments_cross(a: list[float], b: list[float], c: list[float], d: list[float]) -> bool:
+    return _orientation(a, b, c) * _orientation(a, b, d) < 0 and _orientation(c, d, a) * _orientation(c, d, b) < 0
+
+
+def validate_project(root: Path) -> list[str]:
+    errors: list[str] = []
+    cup_path = root / "data/cups/sole_surge_cup.json"
+    cup = _read_json(cup_path, errors)
+    if not cup:
+        return errors
+    track_ids = cup.get("track_ids")
+    if not isinstance(track_ids, list) or len(track_ids) != EXPECTED_TRACK_COUNT:
+        errors.append(f"{cup_path}: track_ids must contain exactly {EXPECTED_TRACK_COUNT} entries")
+        return errors
+    if len(set(track_ids)) != len(track_ids):
+        errors.append(f"{cup_path}: track_ids must be unique")
+    points = cup.get("points_by_position")
+    if not isinstance(points, list) or not points or points != sorted(points, reverse=True):
+        errors.append(f"{cup_path}: points_by_position must be a non-empty descending list")
+
+    for expected_id in track_ids:
+        if not isinstance(expected_id, str) or not SAFE_ID.fullmatch(expected_id):
+            errors.append(f"{cup_path}: invalid track id {expected_id!r}")
+            continue
+        path = root / f"data/tracks/{expected_id}.json"
+        track = _read_json(path, errors)
+        if not track:
+            continue
+        if track.get("id") != expected_id:
+            errors.append(f"{path}: id must match its cup reference")
+        if track.get("schema_version") != 1:
+            errors.append(f"{path}: unsupported schema_version")
+        if not isinstance(track.get("lap_count"), int) or not 1 <= track["lap_count"] <= 9:
+            errors.append(f"{path}: lap_count must be an integer from 1 through 9")
+        lane_width = track.get("lane_width")
+        if not isinstance(lane_width, (int, float)) or not 8 <= lane_width <= 24:
+            errors.append(f"{path}: lane_width must be between 8 and 24")
+        for color_key in ("track_color", "accent_color", "sky_color", "backdrop_color"):
+            if not isinstance(track.get(color_key), str) or not HEX_COLOR.fullmatch(track[color_key]):
+                errors.append(f"{path}: {color_key} must be a #RRGGBB color")
+
+        route = track.get("path_points")
+        if not isinstance(route, list) or len(route) < 6:
+            errors.append(f"{path}: path_points must contain at least six entries")
+            continue
+        if any(not isinstance(point, list) or len(point) != 3 for point in route):
+            errors.append(f"{path}: every path point must contain three coordinates")
+            continue
+        for index, point in enumerate(route):
+            following = route[(index + 1) % len(route)]
+            if _distance(point, following) < float(lane_width):
+                errors.append(f"{path}: route segment {index} is shorter than lane_width")
+        for left_index in range(len(route)):
+            for right_index in range(left_index + 1, len(route)):
+                if right_index == (left_index + 1) % len(route) or left_index == (right_index + 1) % len(route):
+                    continue
+                if _segments_cross(
+                    route[left_index],
+                    route[(left_index + 1) % len(route)],
+                    route[right_index],
+                    route[(right_index + 1) % len(route)],
+                ):
+                    errors.append(f"{path}: route segments {left_index} and {right_index} cross")
+
+        checkpoints = track.get("checkpoint_points")
+        if not isinstance(checkpoints, list) or len(checkpoints) < 4:
+            errors.append(f"{path}: checkpoint_points must have at least four entries")
+        elif checkpoints[0] != 0 or checkpoints != sorted(set(checkpoints)):
+            errors.append(f"{path}: checkpoint_points must start at zero and strictly increase")
+        else:
+            for index in checkpoints:
+                if not isinstance(index, int) or not 0 <= index < len(route):
+                    errors.append(f"{path}: checkpoint index {index!r} is out of range")
+
+        for collection_name in FEATURE_COLLECTIONS:
+            collection = track.get(collection_name, [])
+            if not isinstance(collection, list):
+                errors.append(f"{path}: {collection_name} must be a list")
+                continue
+            for feature in collection:
+                if not isinstance(feature, dict) or not isinstance(feature.get("point_index"), int):
+                    errors.append(f"{path}: malformed {collection_name} entry")
+                elif not 0 <= feature["point_index"] < len(route):
+                    errors.append(f"{path}: {collection_name} index is out of range")
+        for collection_name in INDEX_COLLECTIONS:
+            collection = track.get(collection_name, [])
+            if not isinstance(collection, list) or any(
+                not isinstance(index, int) or not 0 <= index < len(route) for index in collection
+            ):
+                errors.append(f"{path}: {collection_name} must contain valid route indices")
+    return errors
+
+
+def main() -> int:
+    root = Path(__file__).resolve().parents[1]
+    errors = validate_project(root)
+    if errors:
+        print("Content validation failed:", file=sys.stderr)
+        for error in errors:
+            print(f"- {error}", file=sys.stderr)
+        return 1
+    print("Validated Sole Surge Cup: 4 original courses, routes, checkpoints, and features.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "id": "prism_apex",
+  "display_name": "Prism Apex",
+  "lap_count": 3,
+  "difficulty": "advanced",
+  "theme": "prism_void",
+  "description": "A luminous orbital ribbon with alternating color sectors, sparse guard rails, and precision boost gates.",
+  "lane_width": 12.5,
+  "guard_rails": false,
+  "track_color": "#4E5FD0",
+  "accent_color": "#76F7FF",
+  "sky_color": "#080B24",
+  "backdrop_color": "#11163C",
+  "segment_colors": ["#EE5F9B", "#F3A84D", "#E7E866", "#5FE5A2", "#4BC7ED", "#A47AEF"],
+  "path_points": [
+    [0, 0, 40], [29, 0, 45], [54, 0, 24], [46, 0, -8], [57, 0, -34],
+    [23, 0, -48], [-8, 0, -37], [-39, 0, -48], [-57, 0, -18], [-45, 0, 14], [-20, 0, 35]
+  ],
+  "checkpoint_points": [0, 2, 4, 6, 8, 10],
+  "speed_lanes": [
+    {"point_index": 2, "size": [5, 11], "speed_bonus": 1.28},
+    {"point_index": 9, "size": [5, 11], "speed_bonus": 1.28}
+  ],
+  "terrain_zones": [],
+  "bounce_pads": [
+    {"point_index": 5, "size": [5, 5], "bounce_force": 10.0, "forward_boost": 7.0}
+  ],
+  "item_boxes": [1, 4, 7, 10],
+  "boost_pickups": [3, 8]
+}
