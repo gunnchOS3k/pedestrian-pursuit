@@ -14,6 +14,8 @@ var active_cup_id: String = ""
 var cup_track_ids: Array[String] = []
 var cup_round_index: int = 0
 var cup_results: Array[Dictionary] = []
+var cup_standings: Dictionary = {} # racer_label -> points
+var last_field_results: Array = []
 
 var camera_shake_enabled: bool = true
 var auto_accelerate: bool = false
@@ -27,6 +29,7 @@ func reset_race_stats() -> void:
 	last_race_time = 0.0
 	last_race_position = 1
 	last_race_finished = false
+	last_field_results.clear()
 
 
 func start_single_race(track_id: String) -> void:
@@ -46,6 +49,7 @@ func start_cup(cup_id: String, track_ids: Array) -> bool:
 		cup_track_ids.append(str(track_id))
 	cup_round_index = 0
 	cup_results.clear()
+	cup_standings.clear()
 	current_race_mode = RaceMode.CUP
 	selected_track_id = cup_track_ids[0]
 	reset_race_stats()
@@ -111,8 +115,40 @@ func clear_cup() -> void:
 	cup_track_ids.clear()
 	cup_round_index = 0
 	cup_results.clear()
+	cup_standings.clear()
 	if current_race_mode == RaceMode.CUP:
 		current_race_mode = RaceMode.SINGLE
+
+
+func save_cup_progress() -> void:
+	var cfg := ConfigFile.new()
+	cfg.set_value("cup", "active_cup_id", active_cup_id)
+	cfg.set_value("cup", "round_index", cup_round_index)
+	cfg.set_value("cup", "results", cup_results)
+	cfg.set_value("cup", "standings", cup_standings)
+	cfg.set_value("cup", "track_ids", cup_track_ids)
+	cfg.set_value("cup", "completed", is_cup_active() and not has_next_cup_race() and not cup_results.is_empty())
+	cfg.set_value("meta", "saved_at", Time.get_datetime_string_from_system())
+	cfg.save("user://cup_progress.cfg")
+
+
+func load_cup_progress() -> bool:
+	var cfg := ConfigFile.new()
+	if cfg.load("user://cup_progress.cfg") != OK:
+		return false
+	active_cup_id = str(cfg.get_value("cup", "active_cup_id", ""))
+	cup_round_index = int(cfg.get_value("cup", "round_index", 0))
+	cup_results = cfg.get_value("cup", "results", [])
+	cup_standings = cfg.get_value("cup", "standings", {})
+	var tracks = cfg.get_value("cup", "track_ids", [])
+	cup_track_ids.clear()
+	for tid in tracks:
+		cup_track_ids.append(str(tid))
+	if not active_cup_id.is_empty() and not cup_track_ids.is_empty():
+		current_race_mode = RaceMode.CUP
+		selected_track_id = cup_track_ids[mini(cup_round_index, cup_track_ids.size() - 1)]
+		return true
+	return false
 
 
 func get_cup_total_points() -> int:
@@ -133,3 +169,32 @@ func get_cup_round_label() -> String:
 	if not is_cup_active():
 		return ""
 	return "Course %d of %d" % [cup_round_index + 1, cup_track_ids.size()]
+
+
+func record_field_results(finish_results: Array) -> void:
+	last_field_results = finish_results.duplicate()
+	if not is_cup_active():
+		return
+	var cup := TrackCatalog.load_cup(active_cup_id)
+	var points_table: Array = cup.get("points_by_position", [10, 7, 5, 3, 2, 1])
+	# Assign provisional places by finish order in results, then fill non-finishers by live rank later.
+	for i in finish_results.size():
+		var entry: Dictionary = finish_results[i]
+		var racer: Node = entry.get("racer")
+		var label := "You" if bool(entry.get("is_player", false)) else "AI %d" % (i + 1)
+		if racer != null and racer.has_method("get") and str(racer.get("display_name")) != "":
+			pass
+		var points_index := clampi(i, 0, points_table.size() - 1)
+		var pts := int(points_table[points_index])
+		cup_standings[label] = int(cup_standings.get(label, 0)) + pts
+
+
+func get_cup_standings_lines() -> PackedStringArray:
+	var rows: Array = []
+	for key in cup_standings.keys():
+		rows.append({"name": str(key), "points": int(cup_standings[key])})
+	rows.sort_custom(func(a, b): return int(a.points) > int(b.points))
+	var lines: PackedStringArray = []
+	for i in rows.size():
+		lines.append("%d. %s — %d pts" % [i + 1, rows[i].name, rows[i].points])
+	return lines

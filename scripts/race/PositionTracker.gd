@@ -44,3 +44,7 @@ func get_position_for(racer: Node) -> int:
 		if states[i].racer == racer:
 			return i + 1
 	return 1
+
+
+func get_checkpoints() -> Array[Node3D]:
+	return _checkpoints

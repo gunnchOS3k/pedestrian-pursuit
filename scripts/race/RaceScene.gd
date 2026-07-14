@@ -2,6 +2,13 @@ extends Node3D
 
 ## Wires together track, racers, race manager, HUD, and results.
 
+const AI_SCENE := preload("res://scenes/ai/AIRacer.tscn")
+const AI_PALETTE: Array[Color] = [
+	Color(0.4, 0.75, 1.0),
+	Color(0.55, 0.9, 0.45),
+	Color(0.9, 0.45, 0.75),
+]
+
 var track: CourseTrack
 var course_data: Dictionary = {}
 
@@ -23,15 +30,32 @@ func _ready() -> void:
 	race_manager.add_to_group("race_manager")
 	camera_rig.set_target(player)
 	var checkpoints: Array = track.get_checkpoints()
-	var racers: Array = [player, ai_racer]
 	var start_xf: Transform3D = track.get_start_transform()
 	player.global_transform = start_xf
 	player.setup_for_race(start_xf)
-	var ai_start := start_xf.translated_local(Vector3(2.5, 0, 3.0))
-	ai_racer.global_transform = ai_start
-	ai_racer.setup_for_race(ai_start)
-	if ai_racer.has_method("setup_ai_path"):
-		ai_racer.setup_ai_path(track.get_race_path(), -4.0, 2.5)
+
+	var racers: Array = [player]
+	var ai_offsets := [
+		Vector3(2.5, 0, 3.0),
+		Vector3(-2.5, 0, 4.5),
+		Vector3(1.5, 0, 6.0),
+	]
+	for i in 3:
+		var ai: Node = ai_racer if i == 0 else AI_SCENE.instantiate()
+		var visual := ai.get_node_or_null("RacerVisual")
+		if visual != null and "body_color" in visual:
+			visual.body_color = AI_PALETTE[i % AI_PALETTE.size()]
+			visual.accent_color = AI_PALETTE[i % AI_PALETTE.size()].darkened(0.25)
+		if i > 0:
+			add_child(ai)
+		var offset: Vector3 = ai_offsets[i]
+		var ai_start := start_xf.translated_local(offset)
+		ai.global_transform = ai_start
+		ai.setup_for_race(ai_start)
+		if ai.has_method("setup_ai_path"):
+			ai.setup_ai_path(track.get_race_path(), -4.0 - float(i), 2.5 + float(i) * 0.4)
+		racers.append(ai)
+
 	GameManager.total_laps = int(course_data.get("lap_count", 3))
 	race_manager.setup_race(racers, player, checkpoints, GameManager.total_laps)
 	for checkpoint in checkpoints:
@@ -54,9 +78,10 @@ func _on_pause_requested() -> void:
 	pause_menu.toggle_pause()
 
 
-func _on_race_finished(finished_player: Node, _results: Array) -> void:
+func _on_race_finished(finished_player: Node, finish_results: Array) -> void:
 	var pos: int = race_manager.position_tracker.get_position_for(finished_player)
 	GameManager.record_race_result(str(course_data.get("id", "")), race_manager.race_time, pos)
+	GameManager.record_field_results(finish_results)
 	results.show_results(race_manager.race_time, pos, true, course_data)
 
 

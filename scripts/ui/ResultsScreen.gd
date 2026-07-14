@@ -29,13 +29,15 @@ func show_results(time: float, position: int, finished: bool, course_data: Dicti
 	GameManager.last_race_finished = finished
 	if GameManager.is_cup_active():
 		var total_time := GameManager.get_cup_total_time()
+		var standings := "\n".join(GameManager.get_cup_standings_lines())
 		cup_summary_label.text = (
-			"%s  •  %d points  •  %02d:%05.2f total"
+			"%s  •  %d points  •  %02d:%05.2f total\n%s"
 			% [
 				GameManager.get_cup_round_label(),
 				GameManager.get_cup_total_points(),
 				int(total_time) / 60,
 				fmod(total_time, 60.0),
+				standings if not standings.is_empty() else "Standings pending",
 			]
 		)
 		if GameManager.has_next_cup_race():
@@ -43,6 +45,7 @@ func show_results(time: float, position: int, finished: bool, course_data: Dicti
 		else:
 			title_label.text = "Cup Complete!"
 			retry_button.text = "Race Cup Again"
+			GameManager.save_cup_progress()
 	else:
 		cup_summary_label.text = "Single-course race"
 		retry_button.text = "Race Again"
