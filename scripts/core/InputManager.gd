@@ -4,6 +4,8 @@ extends Node
 
 
 func get_steer() -> float:
+	if GameManager.accept_test_mode and absf(GameManager.accept_steer) > 0.01:
+		return GameManager.accept_steer
 	return Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 
 

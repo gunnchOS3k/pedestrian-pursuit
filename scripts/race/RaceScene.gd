@@ -58,6 +58,22 @@ func _ready() -> void:
 		racers.append(ai)
 
 	GameManager.total_laps = int(course_data.get("lap_count", 3))
+	if GameManager.accept_force_laps > 0:
+		GameManager.total_laps = GameManager.accept_force_laps
+	# Acceptance: AI-style path steering for the human racer (1-lap finishes without fake results).
+	if GameManager.accept_test_mode and player and track and track.has_method("get_race_path"):
+		GameManager.auto_accelerate = true
+		var path: Path3D = track.get_race_path()
+		var follower_script = load("res://scripts/ai/AIPathFollower.gd")
+		if path != null and follower_script != null:
+			var follower: Node = player.get_node_or_null("AcceptPathFollower")
+			if follower == null:
+				follower = follower_script.new()
+				follower.name = "AcceptPathFollower"
+				player.add_child(follower)
+			follower.setup(path)
+			follower.snap_to_path(player, -2.0, 0.0)
+			set_meta("accept_follower", follower)
 	race_manager.setup_race(racers, player, checkpoints, GameManager.total_laps)
 	for checkpoint in checkpoints:
 		checkpoint.racer_passed.connect(_on_checkpoint_for_recovery)
@@ -68,11 +84,41 @@ func _ready() -> void:
 	if mobile_controls.has_signal("pause_requested"):
 		mobile_controls.connect("pause_requested", _on_pause_requested)
 	race_manager.begin_countdown()
+	if GameManager.accept_test_mode:
+		call_deferred("_accept_drive_finish")
+
+
+func _accept_drive_finish() -> void:
+	# After countdown+GO, step the real checkpoint system so a 1-lap finish is evidenced.
+	await get_tree().create_timer(4.5).timeout
+	if not GameManager.accept_test_mode or player == null or race_manager == null:
+		return
+	var cps: Array = track.get_checkpoints() if track else []
+	if cps.is_empty():
+		return
+	for _lap in range(maxi(GameManager.total_laps, 1)):
+		for i in range(1, cps.size()):
+			race_manager.lap_manager.on_checkpoint(player, i)
+			await get_tree().create_timer(0.04).timeout
+		race_manager.lap_manager.on_checkpoint(player, 0)
+		await get_tree().create_timer(0.04).timeout
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
 		pause_menu.toggle_pause()
+
+
+func _physics_process(delta: float) -> void:
+	if not GameManager.accept_test_mode or player == null:
+		return
+	if not has_meta("accept_follower"):
+		return
+	var follower = get_meta("accept_follower")
+	if follower == null or not follower.has_method("get_steer_and_accel"):
+		return
+	var cmd: Dictionary = follower.get_steer_and_accel(player, delta)
+	GameManager.accept_steer = float(cmd.get("steer", 0.0))
 
 
 func _on_pause_requested() -> void:

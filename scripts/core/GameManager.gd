@@ -21,6 +21,10 @@ var last_field_results: Array = []
 
 var camera_shake_enabled: bool = true
 var auto_accelerate: bool = false
+## Acceptance-only overrides (default off). accept_force_laps>0 shortens RC races.
+var accept_test_mode: bool = false
+var accept_force_laps: int = 0
+var accept_steer: float = 0.0
 
 var last_race_time: float = 0.0
 var last_race_position: int = 1
