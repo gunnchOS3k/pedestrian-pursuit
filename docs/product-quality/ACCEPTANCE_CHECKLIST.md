@@ -10,8 +10,8 @@
 | Cup state harness (4 rounds + save/load) | **PASS** | `docs/product-quality/evidence/local-cup/` |
 | Visible Sole Surge cup (4 courses) | **PASS** | `docs/product-quality/evidence/visible-cup/` — verdant / ranch / prism / ember + final standings |
 | Points / standings | **PASS** | `visible-cup.log` — 40 pts player |
-| Signed Android RC + 16 KB | **NOT STARTED** | next controlled toolchain pass |
-| Pixel full-cup | **NOT TESTED** | requires Android RC |
+| Signed Android RC + 16 KB | **PASS** | APK SHA `b641b7a1…d05f88`; ZIP+ELF 16 KB PASS; `debuggable=false`; evidence `android-release/VERIFY_16KB.txt` |
+| Pixel full-cup | **PARTIAL** | Signed RC cold launch + cup menu without debug/16 KB warning; full 4-course on-device cup not completed |
 | PR ready | **No** | awaiting Android gates + verifier |
 
 ## Driver
