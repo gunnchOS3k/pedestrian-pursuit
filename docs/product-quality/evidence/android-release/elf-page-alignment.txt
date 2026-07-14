@@ -1,2 +1,3 @@
-lib/arm64-v8a/libc++_shared.so: max_PT_LOAD_align=16384 OK_16K
-lib/arm64-v8a/libgodot_android.so: max_PT_LOAD_align=16384 OK_16K
+pt_load_segments_checked_okish=8
+bad_count=0
+ELF_16KB_ALIGN_PASS
