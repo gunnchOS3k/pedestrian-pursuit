@@ -1,4 +1,5 @@
 extends SceneTree
+const _TrackCatalog = preload("res://scripts/data/TrackCatalog.gd")
 
 ## Headless Sole Surge cup state smoke — 4 rounds + standings accumulation.
 
@@ -11,9 +12,9 @@ func _run() -> void:
 	var failures := PackedStringArray()
 	var gm = preload("res://scripts/core/GameManager.gd").new()
 	get_root().add_child(gm)
-	var cup: Dictionary = TrackCatalog.load_cup("sole_surge_cup")
+	var cup: Dictionary = _TrackCatalog.load_cup("sole_surge_cup")
 	if cup.is_empty():
-		cup = TrackCatalog.load_cup()
+		cup = _TrackCatalog.load_cup()
 	var track_ids: Array = cup.get("track_ids", [])
 	if track_ids.size() != 4:
 		failures.append("expected 4 Sole Surge courses, got %d" % track_ids.size())

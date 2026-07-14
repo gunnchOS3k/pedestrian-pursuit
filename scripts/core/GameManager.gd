@@ -1,5 +1,7 @@
 extends Node
 
+const _TrackCatalog = preload("res://scripts/data/TrackCatalog.gd")
+
 ## Global game state and settings.
 
 enum RaceMode { SINGLE, CUP, TIME_TRIAL, PRACTICE }
@@ -75,7 +77,7 @@ func record_race_result(track_id: String, time: float, position: int) -> void:
 	if track_id != cup_track_ids[cup_round_index]:
 		push_warning("Ignoring cup result for unexpected course '%s'" % track_id)
 		return
-	var cup := TrackCatalog.load_cup(active_cup_id)
+	var cup := _TrackCatalog.load_cup(active_cup_id)
 	var points_table: Array = cup.get("points_by_position", [10, 7, 5, 3, 2, 1])
 	var points_index := clampi(position - 1, 0, points_table.size() - 1)
 	var result := {
@@ -175,7 +177,7 @@ func record_field_results(finish_results: Array) -> void:
 	last_field_results = finish_results.duplicate()
 	if not is_cup_active():
 		return
-	var cup := TrackCatalog.load_cup(active_cup_id)
+	var cup := _TrackCatalog.load_cup(active_cup_id)
 	var points_table: Array = cup.get("points_by_position", [10, 7, 5, 3, 2, 1])
 	# Assign provisional places by finish order in results, then fill non-finishers by live rank later.
 	for i in finish_results.size():

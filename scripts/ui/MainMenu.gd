@@ -1,4 +1,5 @@
 extends Control
+const _TrackCatalog = preload("res://scripts/data/TrackCatalog.gd")
 
 ## Main menu — start the four-course cup or practice a selected course.
 
@@ -18,8 +19,8 @@ func _ready() -> void:
 
 
 func _load_content() -> void:
-	_cup = TrackCatalog.load_cup()
-	_tracks = TrackCatalog.load_tracks_for_cup()
+	_cup = _TrackCatalog.load_cup()
+	_tracks = _TrackCatalog.load_tracks_for_cup()
 	course_picker.clear()
 	for track in _tracks:
 		course_picker.add_item(str(track.get("display_name", "Unknown Course")))

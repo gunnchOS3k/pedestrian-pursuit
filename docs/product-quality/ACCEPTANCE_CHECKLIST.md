@@ -1,21 +1,31 @@
-# Acceptance Checklist — Pedestrian Pursuit / Sole Surge
+# Acceptance Checklist — Pedestrian Pursuit
+
+**Branch:** `cursor/product-quality-mobile-pass`  
+**Date:** 2026-07-13
+
+## Gates
 
 | Gate | Status | Evidence |
 |------|--------|----------|
-| Animated runners (not capsules) | **PARTIAL** | `RacerVisual.gd` procedural humanoid + limb swing on player + 3 AI; capsule meshes hidden |
-| Multiple AI runners | **PARTIAL** | RaceScene spawns 3 AI with path offsets |
-| Wrong-way detection HUD | **PARTIAL** | `RaceHUD` WRONG WAY vs next checkpoint velocity |
-| Cup standings | **PARTIAL** | `GameManager.cup_standings` + ResultsScreen lines |
-| Sole Surge 4-course local cup | **PARTIAL** | Content validates; `CupFlowTest.gd` pass (4 rounds/standings accumulation). Physics playthrough of all four courses still required before APK |
-| Mini-map | **PARTIAL** | `MiniMap.gd` wired into RaceHUD |
-| Release APK / Pixel | **NOT TESTED** | ADB empty |
-| PR | **No** | |
+| Cup state harness (4 rounds + save/load) | **PASS** | `docs/product-quality/evidence/local-cup/` |
+| Visible Sole Surge cup (4 courses) | **PASS** | `docs/product-quality/evidence/visible-cup/` — verdant / ranch / prism / ember + final standings |
+| Points / standings | **PASS** | `visible-cup.log` — 40 pts player |
+| Signed Android RC + 16 KB | **NOT STARTED** | next controlled toolchain pass |
+| Pixel full-cup | **NOT TESTED** | requires Android RC |
+| PR ready | **No** | awaiting Android gates + verifier |
 
-## Courses
+## Driver
 
-1. `verdant_cascade_circuit`
-2. `cloverwind_ranch`
-3. `prism_apex`
-4. `emberkeep_gauntlet`
+```bash
+/Applications/Godot-4.3.app/Contents/MacOS/Godot --path . -s res://tests/accept_visible_cup.gd
+```
 
-`tools/validate_content.py` — PASS (2026-07-13)
+Log reports: `PASS points=40 standings=1. You — 40 pts | …`
+
+
+## Godot 4.5 / 16 KB (2026-07-13)
+
+- Editor 4.5.stable + matching templates: PASS
+- CupFlowTest: PASS
+- Signed internal RC 0.3.0 (4): built; 16 KB ELF align PASS; cert fingerprint recorded
+- Pixel install: blocked on physical USB reconnect

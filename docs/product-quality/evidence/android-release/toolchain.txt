@@ -1,0 +1,8 @@
+godot=4.5.stable.official.876b29033
+templates=4.5.stable
+android_build_tools=36.0.0
+openjdk version "17.0.17" 2025-10-21 LTS
+JAVA_HOME=/Users/gunnchos/Library/Java/JavaVirtualMachines/corretto-17.0.17/Contents/Home
+package=com.gunnchos.pedestrianpursuit
+versionName=0.3.0
+versionCode=4

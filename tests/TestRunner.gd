@@ -1,4 +1,5 @@
 extends SceneTree
+const _TrackCatalog = preload("res://scripts/data/TrackCatalog.gd")
 
 ## Headless Godot smoke test: loads and builds every course in cup order.
 
@@ -10,11 +11,11 @@ func _initialize() -> void:
 func _run() -> void:
 	var failures := PackedStringArray()
 	_test_lap_sequence(failures)
-	var cup := TrackCatalog.load_cup()
+	var cup := _TrackCatalog.load_cup()
 	if cup.is_empty():
 		failures.append("default cup did not load")
 	for track_id in cup.get("track_ids", []):
-		var data := TrackCatalog.load_track(str(track_id))
+		var data := _TrackCatalog.load_track(str(track_id))
 		if data.is_empty():
 			failures.append("course '%s' did not load" % track_id)
 			continue

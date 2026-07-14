@@ -1,4 +1,5 @@
 extends Node3D
+const _TrackCatalog = preload("res://scripts/data/TrackCatalog.gd")
 
 ## Wires together track, racers, race manager, HUD, and results.
 
@@ -86,9 +87,9 @@ func _on_race_finished(finished_player: Node, finish_results: Array) -> void:
 
 
 func _load_course() -> bool:
-	course_data = TrackCatalog.load_track(GameManager.selected_track_id)
+	course_data = _TrackCatalog.load_track(GameManager.selected_track_id)
 	if course_data.is_empty():
-		course_data = TrackCatalog.load_track(TrackCatalog.DEFAULT_TRACK_ID)
+		course_data = _TrackCatalog.load_track(_TrackCatalog.DEFAULT_TRACK_ID)
 	if course_data.is_empty():
 		push_error("No valid course is available")
 		return false

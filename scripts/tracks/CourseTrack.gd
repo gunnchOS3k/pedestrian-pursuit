@@ -1,5 +1,6 @@
 class_name CourseTrack
 extends Node3D
+const _TrackCatalog = preload("res://scripts/data/TrackCatalog.gd")
 
 ## Builds an original, data-defined course with collision, race path, checkpoints,
 ## gameplay zones, and lightweight mobile-friendly scenery.
@@ -32,7 +33,7 @@ func configure(course_data: Dictionary) -> void:
 func build() -> bool:
 	if _built:
 		return true
-	var errors := TrackCatalog.validate_track(_data)
+	var errors := _TrackCatalog.validate_track(_data)
 	if not errors.is_empty():
 		push_error("Course build rejected: %s" % "; ".join(errors))
 		return false

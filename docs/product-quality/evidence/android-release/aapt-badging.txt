@@ -1,0 +1,5 @@
+package: name='com.gunnchos.pedestrianpursuit' versionCode='4' versionName='0.3.0' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'
+install-location:'auto'
+sdkVersion:'24'
+targetSdkVersion:'34'
+application-label:'Pedestrian Pursuit'
