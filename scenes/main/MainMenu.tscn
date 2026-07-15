@@ -27,13 +27,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -280.0
-offset_right = 200.0
-offset_bottom = 280.0
+offset_left = -240.0
+offset_top = -360.0
+offset_right = 240.0
+offset_bottom = 360.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 10
 
 [node name="Title" type="Label" parent="VBox"]
 layout_mode = 2
@@ -49,40 +49,71 @@ horizontal_alignment = 1
 
 [node name="CupLabel" type="Label" parent="VBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 22
 text = "SOLE SURGE CUP  •  4 COURSES"
 horizontal_alignment = 1
 
+[node name="RunnerLabel" type="Label" parent="VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Choose Runner"
+horizontal_alignment = 1
+
+[node name="RunnerPicker" type="OptionButton" parent="VBox"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+
+[node name="RunnerInfo" type="Label" parent="VBox"]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Tagline • archetype • shoes"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="PreviewHost" type="SubViewportContainer" parent="VBox"]
+custom_minimum_size = Vector2(280, 160)
+layout_mode = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="VBox/PreviewHost"]
+own_world_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(280, 160)
+render_target_update_mode = 4
+
 [node name="StartCupButton" type="Button" parent="VBox"]
-custom_minimum_size = Vector2(0, 58)
+custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
 text = "Start Four-Course Cup"
 
 [node name="CoursePicker" type="OptionButton" parent="VBox"]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 
 [node name="Description" type="Label" parent="VBox"]
-custom_minimum_size = Vector2(0, 76)
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 15
 text = "Course details"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="SingleRaceButton" type="Button" parent="VBox"]
-custom_minimum_size = Vector2(0, 52)
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 text = "Practice Selected Course"
 
 [node name="QuitButton" type="Button" parent="VBox"]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 text = "Exit Game"
 
 [node name="Hint" type="Label" parent="VBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 13
 text = "Keyboard, controller, and on-screen Android controls supported"
 horizontal_alignment = 1

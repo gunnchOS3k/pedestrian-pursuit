@@ -2,10 +2,16 @@ extends RefCounted
 class_name RunnerProfile
 
 ## Character-life profile loaded from data/racers/runner_roster.json
+## Motion fields (cadence/stride/bounce/lean/arm/head_bob + pose styles) drive RacerVisual.
 
 var id: String = "dash_reed"
 var display_name: String = "Dash Reed"
 var archetype: String = "all_terrain"
+var pronouns: String = "they/them"
+var personality: PackedStringArray = PackedStringArray(["steady", "focused", "upbeat"])
+var silhouette: String = ""
+var outfit: String = ""
+var shoes: String = "Reedline Circlers"
 var body_color: Color = Color(1.0, 0.82, 0.35)
 var accent_color: Color = Color(1.0, 0.35, 0.2)
 var height_scale: float = 1.0
@@ -30,6 +36,17 @@ static func from_dict(data: Dictionary) -> RunnerProfile:
 	p.id = str(data.get("id", p.id))
 	p.display_name = str(data.get("display_name", p.display_name))
 	p.archetype = str(data.get("archetype", p.archetype))
+	p.pronouns = str(data.get("pronouns", p.pronouns))
+	p.personality = PackedStringArray()
+	var traits = data.get("personality", [])
+	if typeof(traits) == TYPE_ARRAY:
+		for t in traits:
+			p.personality.append(str(t))
+	if p.personality.is_empty():
+		p.personality = PackedStringArray(["steady", "focused", "upbeat"])
+	p.silhouette = str(data.get("silhouette", ""))
+	p.outfit = str(data.get("outfit", ""))
+	p.shoes = str(data.get("shoes", p.shoes))
 	p.body_color = Color.html(str(data.get("body_color", "#FFD159")))
 	p.accent_color = Color.html(str(data.get("accent_color", "#FF5933")))
 	p.height_scale = float(data.get("height_scale", 1.0))
@@ -79,3 +96,7 @@ static func by_id(runner_id: String) -> RunnerProfile:
 			return p
 	var roster := load_roster()
 	return roster[0]
+
+
+func personality_line() -> String:
+	return ", ".join(personality)

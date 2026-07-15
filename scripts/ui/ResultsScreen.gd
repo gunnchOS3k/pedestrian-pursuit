@@ -7,6 +7,7 @@ extends CanvasLayer
 @onready var time_label: Label = $Panel/Margin/VBox/TimeLabel
 @onready var position_label: Label = $Panel/Margin/VBox/PositionLabel
 @onready var course_label: Label = $Panel/Margin/VBox/CourseLabel
+@onready var podium_label: Label = $Panel/Margin/VBox/PodiumLabel
 @onready var cup_summary_label: Label = $Panel/Margin/VBox/CupSummaryLabel
 @onready var menu_button: Button = $Panel/Margin/VBox/MenuButton
 @onready var retry_button: Button = $Panel/Margin/VBox/RetryButton
@@ -35,6 +36,8 @@ func show_results(
 	GameManager.last_race_time = time
 	GameManager.last_race_position = position
 	GameManager.last_race_finished = finished
+	podium_label.text = _build_podium_text(field_lines)
+	podium_label.visible = not podium_label.text.is_empty()
 	var field_block := "\n".join(field_lines) if not field_lines.is_empty() else ""
 	if GameManager.is_cup_active():
 		var total_time := GameManager.get_cup_total_time()
@@ -63,6 +66,22 @@ func show_results(
 			else "Single-course race"
 		)
 		retry_button.text = "Race Again"
+
+
+func _build_podium_text(field_lines: PackedStringArray) -> String:
+	if field_lines.is_empty():
+		return ""
+	var medals := ["🥇", "🥈", "🥉"]
+	var slots: PackedStringArray = []
+	for i in mini(3, field_lines.size()):
+		var name := str(field_lines[i])
+		# Strip leading "1. " style place numbers for a cleaner podium row.
+		var clean := name
+		var dot := name.find(". ")
+		if dot >= 0 and dot < 3:
+			clean = name.substr(dot + 2)
+		slots.append("%s %s" % [medals[i], clean])
+	return "Podium\n" + "\n".join(slots)
 
 
 func hide_results() -> void:

@@ -213,21 +213,20 @@ func _on_race_finished(finished_player: Node, finish_results: Array) -> void:
 	results.show_results(race_manager.race_time, pos, true, course_data, field_lines)
 
 
-func _play_finish_reactions(finish_results: Array, player_pos: int) -> void:
+func _play_finish_reactions(finish_results: Array, _player_pos: int) -> void:
+	var place := 0
 	for entry in finish_results:
 		if typeof(entry) != TYPE_DICTIONARY:
 			continue
+		place += 1
 		var racer: Node = entry.get("racer")
 		if racer == null:
 			continue
 		var visual := racer.get_node_or_null("RacerVisual")
 		if visual == null or not visual.has_method("play_finish"):
 			continue
-		var is_player := bool(entry.get("is_player", false))
-		var won := is_player and player_pos == 1
-		if not is_player:
-			won = race_manager.position_tracker.get_position_for(racer) == 1
-		visual.play_finish(won)
+		# Top-3 keep signature finish poses; everyone else reads as defeat.
+		visual.play_finish(place <= 3)
 
 
 func _build_field_lines(finish_results: Array) -> PackedStringArray:
