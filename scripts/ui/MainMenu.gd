@@ -54,9 +54,9 @@ func _setup_preview_viewport() -> void:
 	var cam := Camera3D.new()
 	# Rear-quarter view so jacket/scarf/backpack/heel flares read clearly.
 	cam.position = Vector3(1.35, 1.35, -2.15)
+	world.add_child(cam)
 	cam.look_at(Vector3(0, 1.0, 0))
 	cam.current = true
-	world.add_child(cam)
 
 	_preview_visual = Node3D.new()
 	_preview_visual.set_script(_RacerVisualScript)
