@@ -16,9 +16,9 @@ Shared fleet may also contain other app keystores; Pedestrian release signing us
 
 ```bash
 export GUNNCHOS_KEYSTORE_DIR="$HOME/.android/gunnchos-internal-keys"
-export PEDESTRIAN_KEYSTORE_PASS='…'
+export PEDESTRIAN_STORE_PASSWORD='…'
+export PEDESTRIAN_KEY_PASSWORD='…'
 export PEDESTRIAN_KEY_ALIAS='pedestrian_internal'
-export PEDESTRIAN_KEY_PASS='…'
 ```
 
 ## Required environment
@@ -29,22 +29,29 @@ export PEDESTRIAN_KEY_PASS='…'
 | `JAVA_HOME` | JDK **17** (Corretto recommended) |
 | `ANDROID_SDK_ROOT` / `ANDROID_HOME` | Android SDK |
 | `GUNNCHOS_KEYSTORE_DIR` | Directory containing `pedestrian-internal-release.jks` |
-| `PEDESTRIAN_KEYSTORE_PASS` | Keystore password |
+| `PEDESTRIAN_STORE_PASSWORD` | Keystore password (legacy `PEDESTRIAN_KEYSTORE_PASS` still accepted) |
 | `PEDESTRIAN_KEY_ALIAS` | Alias (default `pedestrian_internal`) |
-| `PEDESTRIAN_KEY_PASS` | Optional; used if store pass unset |
+| `PEDESTRIAN_KEY_PASSWORD` | Key password (falls back to store password) |
 
 ## Workflow
 
 1. `source ~/.android/gunnchos-internal-keys/passwords.env`
-2. Apply ephemeral signing to `export_presets.cfg`.
-3. Export release APK.
-4. Restore empty path / password (keep alias).
+2. Prefer the wrapper export script (apply signing, clean Godot `.import` sidecars during Gradle merge, restore presets).
+3. Or manually: `apply` → export → `restore`.
 
 ```bash
+# Recommended
+bash tools/android/export-release-apk.sh
+
+# Manual
 bash tools/android/prepare_release_signing.sh apply
 # … export release APK …
 bash tools/android/prepare_release_signing.sh restore
 ```
+
+### Godot `.import` resource merge issue
+
+Godot may write `*.import` sidecars next to launcher PNGs under `android/build/res/mipmap*/`. Android resource merge then fails. `tools/android/export-release-apk.sh` deletes those sidecars during export and can fall back to `./gradlew assembleStandardRelease`.
 
 ## Committed presets
 
@@ -65,9 +72,10 @@ It must **not** store:
 | --- | --- |
 | `GUNNCHOS_KEYSTORE_DIR unset` | Export `GUNNCHOS_KEYSTORE_DIR` |
 | `keystore file missing` | Place `pedestrian-internal-release.jks` in that directory |
-| `PEDESTRIAN_KEYSTORE_PASS unset` | Source `passwords.env` |
+| `PEDESTRIAN_STORE_PASSWORD unset` | Source `passwords.env` |
 | `JAVA_HOME is not JDK 17` | Point `JAVA_HOME` at Corretto 17 |
 | Godot: “Release Keystore, User AND Password…” | Run `apply` before export; do not leave only one of the three fields filled |
+| Gradle `*.png.import` resource merge error | Use `tools/android/export-release-apk.sh` |
 
 ## Package
 
@@ -80,4 +88,4 @@ It must **not** store:
 - `aapt dump badging` → package + version
 - `apksigner verify --print-certs`
 - `debuggable=false`
-- 16 KB ELF alignment check used in prior product-quality pass
+- 16 KB ELF alignment on arm64 shared libraries

@@ -1,0 +1,39 @@
+Pedestrian Pursuit APK inspection — 2026-07-15T04:39:45Z
+Path: /Users/gunnchos/Documents/Codex/2026-07-09/github-plugin-github-openai-curated-remote/work/repos/pedestrian-pursuit/build/android/pedestrian-pursuit-release.apk
+SHA-256: d9d109b97a210d8d371c754bfcf10b35729816954ab8dcf82c4654268fa6796e
+
+package: name='com.gunnchos.pedestrianpursuit' versionCode='5' versionName='0.3.1' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'
+install-location:'auto'
+sdkVersion:'24'
+targetSdkVersion:'34'
+application-label:'Pedestrian Pursuit'
+
+=== apksigner ===
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): false
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+Signer #1 certificate DN: CN=GunnchOS Internal pedestrian, OU=Internal Testing, O=GunnchOS, L=Local, ST=NA, C=US
+Signer #1 certificate SHA-256 digest: 9499a9af54b025f57420a0209039888b269a454e840b8fa46b062b68d9776141
+Signer #1 certificate SHA-1 digest: 566bb032b3f475ace918ffaf59c2c537a00f7efa
+Signer #1 certificate MD5 digest: 71506c52d8cbe5942f7c36e5f6fc5f66
+Signer #1 key algorithm: RSA
+Signer #1 key size (bits): 2048
+Signer #1 public key SHA-256 digest: 64c43f3a500f69e1add36a40b7acd449dbdc7facdfc3ca062edc8b265b322429
+Signer #1 public key SHA-1 digest: 870ebb5d514eb571ef2972c912a84a59252ada7b
+Signer #1 public key MD5 digest: d3c38f1aebc995cca158b4e1e939bf2d
+
+libc++_shared.so LOAD align=16384 ok16k=True
+libc++_shared.so LOAD align=16384 ok16k=True
+libc++_shared.so LOAD align=16384 ok16k=True
+libc++_shared.so LOAD align=16384 ok16k=True
+libgodot_android.so LOAD align=16384 ok16k=True
+libgodot_android.so LOAD align=16384 ok16k=True
+libgodot_android.so LOAD align=16384 ok16k=True
+libgodot_android.so LOAD align=16384 ok16k=True
+16KB_ALIGN_PASS
+debuggable: absent attribute implies false for release

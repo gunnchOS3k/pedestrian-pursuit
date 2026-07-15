@@ -36,10 +36,12 @@ apply_signing() {
   if [[ -z "$key_dir" ]]; then
     fail "GUNNCHOS_KEYSTORE_DIR unset"
   fi
-  local pass="${PEDESTRIAN_KEYSTORE_PASS:-${PEDESTRIAN_KEY_PASS:-}}"
+  local pass="${PEDESTRIAN_STORE_PASSWORD:-${PEDESTRIAN_KEYSTORE_PASS:-${PEDESTRIAN_KEY_PASSWORD:-}}}"
   if [[ -z "$pass" ]]; then
-    fail "PEDESTRIAN_KEYSTORE_PASS unset — source passwords.env"
+    fail "PEDESTRIAN_STORE_PASSWORD unset — source passwords.env"
   fi
+  # Prefer key password when distinct (Godot uses one field for store in presets).
+  local key_pass="${PEDESTRIAN_KEY_PASSWORD:-$pass}"
   local alias="${PEDESTRIAN_KEY_ALIAS:-$DEFAULT_ALIAS}"
   local jks="${key_dir}/${JKS_NAME}"
   if [[ ! -f "$jks" ]]; then
@@ -50,7 +52,7 @@ apply_signing() {
   fi
   set_kv "keystore/release" "$jks"
   set_kv "keystore/release_user" "$alias"
-  set_kv "keystore/release_password" "$pass"
+  set_kv "keystore/release_password" "$key_pass"
   echo "Applied ephemeral signing to ${PRESET}"
   echo "Keystore: ${jks}"
   echo "Alias: ${alias}"
