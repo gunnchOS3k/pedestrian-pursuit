@@ -8,6 +8,7 @@ enum RaceMode { SINGLE, CUP, TIME_TRIAL, PRACTICE }
 
 var current_race_mode: RaceMode = RaceMode.SINGLE
 var selected_racer_id: String = "dash"
+var selected_runner_id: String = "dash_reed"
 var selected_shoe_id: String = "starter_soles"
 var selected_track_id: String = "verdant_cascade_circuit"
 var total_laps: int = 3

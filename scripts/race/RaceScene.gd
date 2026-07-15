@@ -1,17 +1,16 @@
 extends Node3D
 const _TrackCatalog = preload("res://scripts/data/TrackCatalog.gd")
+const _RunnerProfile = preload("res://scripts/data/RunnerProfile.gd")
 
 ## Wires together track, racers, race manager, HUD, and results.
+## Assigns named character-life profiles so every racer reads as a person.
 
 const AI_SCENE := preload("res://scenes/ai/AIRacer.tscn")
-const AI_PALETTE: Array[Color] = [
-	Color(0.4, 0.75, 1.0),
-	Color(0.55, 0.9, 0.45),
-	Color(0.9, 0.45, 0.75),
-]
 
 var track: CourseTrack
 var course_data: Dictionary = {}
+var _roster: Array = []
+var _assigned_profiles: Array = []
 
 @onready var race_manager: Node = $RaceManager
 @onready var player: Node = $PlayerRacer
@@ -28,6 +27,7 @@ func _ready() -> void:
 	if not _load_course():
 		SceneLoader.go_to_main_menu()
 		return
+	_roster = _RunnerProfile.load_roster()
 	race_manager.add_to_group("race_manager")
 	camera_rig.set_target(player)
 	var checkpoints: Array = track.get_checkpoints()
@@ -41,12 +41,13 @@ func _ready() -> void:
 		Vector3(-2.5, 0, 4.5),
 		Vector3(1.5, 0, 6.0),
 	]
+	_assign_profile(player, _pick_player_profile())
+	_assigned_profiles = [_pick_player_profile()]
 	for i in 3:
 		var ai: Node = ai_racer if i == 0 else AI_SCENE.instantiate()
-		var visual := ai.get_node_or_null("RacerVisual")
-		if visual != null and "body_color" in visual:
-			visual.body_color = AI_PALETTE[i % AI_PALETTE.size()]
-			visual.accent_color = AI_PALETTE[i % AI_PALETTE.size()].darkened(0.25)
+		var profile = _pick_ai_profile(i + 1)
+		_assign_profile(ai, profile)
+		_assigned_profiles.append(profile)
 		if i > 0:
 			add_child(ai)
 		var offset: Vector3 = ai_offsets[i]
@@ -80,12 +81,90 @@ func _ready() -> void:
 	hud.setup(player, race_manager, course_data)
 	debug_overlay.setup(player)
 	results.hide_results()
+	race_manager.countdown_tick.connect(_on_countdown_personality)
+	race_manager.race_started.connect(_on_race_started_poses)
 	race_manager.race_finished.connect(_on_race_finished)
 	if mobile_controls.has_signal("pause_requested"):
 		mobile_controls.connect("pause_requested", _on_pause_requested)
+	_play_start_line_personalities(racers)
 	race_manager.begin_countdown()
 	if GameManager.accept_test_mode:
 		call_deferred("_accept_drive_finish")
+
+
+func _pick_player_profile():
+	var preferred := str(GameManager.selected_runner_id)
+	if preferred.is_empty():
+		preferred = "dash_reed"
+	return _RunnerProfile.by_id(preferred)
+
+
+func _pick_ai_profile(slot: int):
+	if _roster.is_empty():
+		return _RunnerProfile.new()
+	var player_id := str(_pick_player_profile().id)
+	var choices: Array = []
+	for p in _roster:
+		if str(p.id) != player_id:
+			choices.append(p)
+	if choices.is_empty():
+		return _roster[0]
+	return choices[(slot - 1) % choices.size()]
+
+
+func _assign_profile(racer: Node, profile) -> void:
+	if racer == null or profile == null:
+		return
+	if "racer_display_name" in racer:
+		racer.set("racer_display_name", profile.display_name)
+	elif racer.has_method("set"):
+		racer.set_meta("runner_display_name", profile.display_name)
+	racer.set_meta("runner_profile_id", profile.id)
+	racer.set_meta("runner_display_name", profile.display_name)
+	var visual := racer.get_node_or_null("RacerVisual")
+	if visual != null and visual.has_method("apply_profile"):
+		visual.apply_profile(profile)
+	_wire_racer_visual_hooks(racer, visual)
+
+
+func _wire_racer_visual_hooks(racer: Node, visual: Node) -> void:
+	if visual == null or racer == null:
+		return
+	var boost := racer.get_node_or_null("BoostSystem")
+	if boost != null and boost.has_signal("boost_activated"):
+		boost.boost_activated.connect(_on_racer_boost.bind(visual))
+
+
+func _on_racer_boost(_multiplier: float, _duration: float, visual: Node) -> void:
+	if visual != null and visual.has_method("set_boosting"):
+		visual.set_boosting(true)
+		get_tree().create_timer(0.35).timeout.connect(func ():
+			if is_instance_valid(visual):
+				visual.set_boosting(false)
+		)
+
+
+func _play_start_line_personalities(racers: Array) -> void:
+	for racer in racers:
+		var visual := racer.get_node_or_null("RacerVisual")
+		if visual != null and visual.has_method("play_start_line"):
+			visual.play_start_line()
+
+
+func _on_countdown_personality(value: String) -> void:
+	# Ready poses intensify as countdown reaches 1
+	if value != "1":
+		return
+	for racer in [player, ai_racer]:
+		if racer == null:
+			continue
+		var visual := racer.get_node_or_null("RacerVisual")
+		if visual != null and visual.has_method("set_pose_state"):
+			visual.set_pose_state("coiled", 0.9)
+
+
+func _on_race_started_poses() -> void:
+	pass
 
 
 func _accept_drive_finish() -> void:
@@ -129,7 +208,42 @@ func _on_race_finished(finished_player: Node, finish_results: Array) -> void:
 	var pos: int = race_manager.position_tracker.get_position_for(finished_player)
 	GameManager.record_race_result(str(course_data.get("id", "")), race_manager.race_time, pos)
 	GameManager.record_field_results(finish_results)
-	results.show_results(race_manager.race_time, pos, true, course_data)
+	_play_finish_reactions(finish_results, pos)
+	var field_lines := _build_field_lines(finish_results)
+	results.show_results(race_manager.race_time, pos, true, course_data, field_lines)
+
+
+func _play_finish_reactions(finish_results: Array, player_pos: int) -> void:
+	for entry in finish_results:
+		if typeof(entry) != TYPE_DICTIONARY:
+			continue
+		var racer: Node = entry.get("racer")
+		if racer == null:
+			continue
+		var visual := racer.get_node_or_null("RacerVisual")
+		if visual == null or not visual.has_method("play_finish"):
+			continue
+		var is_player := bool(entry.get("is_player", false))
+		var won := is_player and player_pos == 1
+		if not is_player:
+			won = race_manager.position_tracker.get_position_for(racer) == 1
+		visual.play_finish(won)
+
+
+func _build_field_lines(finish_results: Array) -> PackedStringArray:
+	var lines: PackedStringArray = []
+	var place := 1
+	for entry in finish_results:
+		if typeof(entry) != TYPE_DICTIONARY:
+			continue
+		var racer: Node = entry.get("racer")
+		var name := "Runner"
+		if racer != null and racer.has_meta("runner_display_name"):
+			name = str(racer.get_meta("runner_display_name"))
+		var tag := " (You)" if bool(entry.get("is_player", false)) else ""
+		lines.append("%d. %s%s" % [place, name, tag])
+		place += 1
+	return lines
 
 
 func _load_course() -> bool:

@@ -237,11 +237,20 @@ func set_recovery_transform(recovery_transform: Transform3D) -> void:
 
 
 func _recover_from_fall() -> void:
+	var visual := get_node_or_null("RacerVisual")
+	if visual != null and visual.has_method("play_stumble"):
+		visual.play_stumble()
 	global_transform = _recovery_transform
 	velocity = Vector3.ZERO
 	horizontal_speed = 0.0
 	terrain_speed_multiplier = 1.0
 	terrain_handling_multiplier = 1.0
+	if visual != null and visual.has_method("play_recovery"):
+		# Brief stumble pose, then athletic recovery without snapping out of character.
+		get_tree().create_timer(0.35).timeout.connect(func ():
+			if is_instance_valid(visual) and visual.has_method("play_recovery"):
+				visual.play_recovery()
+		)
 
 
 func _on_drift_released(multiplier: float, tier: int) -> void:

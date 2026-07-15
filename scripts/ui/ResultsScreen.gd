@@ -18,25 +18,35 @@ func _ready() -> void:
 	retry_button.pressed.connect(_on_retry)
 
 
-func show_results(time: float, position: int, finished: bool, course_data: Dictionary = {}) -> void:
+func show_results(
+	time: float,
+	position: int,
+	finished: bool,
+	course_data: Dictionary = {},
+	field_lines: PackedStringArray = PackedStringArray()
+) -> void:
 	panel.visible = true
 	title_label.text = "Race Complete!" if finished else "Race Over"
+	if position == 1 and finished:
+		title_label.text = "Podium Finish!"
 	time_label.text = "Time: %02d:%05.2f" % [int(time) / 60, fmod(time, 60.0)]
 	position_label.text = "Position: %d" % position
 	course_label.text = str(course_data.get("display_name", "Unknown Course"))
 	GameManager.last_race_time = time
 	GameManager.last_race_position = position
 	GameManager.last_race_finished = finished
+	var field_block := "\n".join(field_lines) if not field_lines.is_empty() else ""
 	if GameManager.is_cup_active():
 		var total_time := GameManager.get_cup_total_time()
 		var standings := "\n".join(GameManager.get_cup_standings_lines())
 		cup_summary_label.text = (
-			"%s  •  %d points  •  %02d:%05.2f total\n%s"
+			"%s  •  %d points  •  %02d:%05.2f total\n%s\n%s"
 			% [
 				GameManager.get_cup_round_label(),
 				GameManager.get_cup_total_points(),
 				int(total_time) / 60,
 				fmod(total_time, 60.0),
+				field_block,
 				standings if not standings.is_empty() else "Standings pending",
 			]
 		)
@@ -47,7 +57,11 @@ func show_results(time: float, position: int, finished: bool, course_data: Dicti
 			retry_button.text = "Race Cup Again"
 			GameManager.save_cup_progress()
 	else:
-		cup_summary_label.text = "Single-course race"
+		cup_summary_label.text = (
+			("Field:\n%s\n\nSingle-course race" % field_block)
+			if not field_block.is_empty()
+			else "Single-course race"
+		)
 		retry_button.text = "Race Again"
 
 
