@@ -87,6 +87,11 @@ func _ready() -> void:
 	if mobile_controls.has_signal("pause_requested"):
 		mobile_controls.connect("pause_requested", _on_pause_requested)
 	_play_start_line_personalities(racers)
+	# Pixel safety: never start a cup with the SceneTree left paused.
+	if get_tree().paused:
+		get_tree().paused = false
+	if pause_menu:
+		pause_menu.visible = false
 	race_manager.begin_countdown()
 	if GameManager.accept_test_mode:
 		call_deferred("_accept_drive_finish")
@@ -121,7 +126,7 @@ func _assign_profile(racer: Node, profile) -> void:
 		racer.set_meta("runner_display_name", profile.display_name)
 	racer.set_meta("runner_profile_id", profile.id)
 	racer.set_meta("runner_display_name", profile.display_name)
-	var visual := racer.get_node_or_null("RacerVisual")
+	var visual = racer.get_node_or_null("RacerVisual")
 	if visual != null and visual.has_method("apply_profile"):
 		visual.apply_profile(profile)
 	_wire_racer_visual_hooks(racer, visual)
@@ -130,7 +135,7 @@ func _assign_profile(racer: Node, profile) -> void:
 func _wire_racer_visual_hooks(racer: Node, visual: Node) -> void:
 	if visual == null or racer == null:
 		return
-	var boost := racer.get_node_or_null("BoostSystem")
+	var boost = racer.get_node_or_null("BoostSystem")
 	if boost != null and boost.has_signal("boost_activated"):
 		boost.boost_activated.connect(_on_racer_boost.bind(visual))
 
@@ -146,7 +151,7 @@ func _on_racer_boost(_multiplier: float, _duration: float, visual: Node) -> void
 
 func _play_start_line_personalities(racers: Array) -> void:
 	for racer in racers:
-		var visual := racer.get_node_or_null("RacerVisual")
+		var visual = racer.get_node_or_null("RacerVisual")
 		if visual != null and visual.has_method("play_start_line"):
 			visual.play_start_line()
 
@@ -158,7 +163,7 @@ func _on_countdown_personality(value: String) -> void:
 	for racer in [player, ai_racer]:
 		if racer == null:
 			continue
-		var visual := racer.get_node_or_null("RacerVisual")
+		var visual = racer.get_node_or_null("RacerVisual")
 		if visual != null and visual.has_method("set_pose_state"):
 			visual.set_pose_state("coiled", 0.9)
 
@@ -222,7 +227,7 @@ func _play_finish_reactions(finish_results: Array, _player_pos: int) -> void:
 		var racer: Node = entry.get("racer")
 		if racer == null:
 			continue
-		var visual := racer.get_node_or_null("RacerVisual")
+		var visual = racer.get_node_or_null("RacerVisual")
 		if visual == null or not visual.has_method("play_finish"):
 			continue
 		# Top-3 keep signature finish poses; everyone else reads as defeat.
