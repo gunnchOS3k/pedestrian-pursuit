@@ -1,0 +1,3 @@
+pt_load_segments_checked_okish=8
+bad_count=0
+ELF_16KB_ALIGN_PASS

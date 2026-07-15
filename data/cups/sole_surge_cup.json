@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "id": "sole_surge_cup",
+  "display_name": "Sole Surge Cup",
+  "description": "Four original foot-racing courses that climb from a lively nature sprint to the Emberkeep championship finale.",
+  "track_ids": [
+    "verdant_cascade_circuit",
+    "cloverwind_ranch",
+    "prism_apex",
+    "emberkeep_gauntlet"
+  ],
+  "points_by_position": [10, 7, 5, 3, 2, 1]
+}

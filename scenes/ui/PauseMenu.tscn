@@ -4,6 +4,7 @@
 
 [node name="PauseMenu" type="CanvasLayer"]
 process_mode = 3
+layer = 40
 script = ExtResource("1")
 
 [node name="Dim" type="ColorRect" parent="."]

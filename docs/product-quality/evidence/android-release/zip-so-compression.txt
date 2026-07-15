@@ -1,0 +1,2 @@
+lib/arm64-v8a/libc++_shared.so: compress_type=0 (STORED) size=1253544 compress_size=1253544
+lib/arm64-v8a/libgodot_android.so: compress_type=0 (STORED) size=70088088 compress_size=70088088

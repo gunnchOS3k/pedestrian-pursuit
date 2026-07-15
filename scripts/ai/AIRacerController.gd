@@ -2,11 +2,11 @@ extends PlayerController
 
 ## AI-controlled racer using path following.
 
-@onready var path_follower: Node = $AIPathFollower
-
 var _ai_steer: float = 0.0
 var _ai_accel: bool = true
 var _ai_drift: bool = false
+
+@onready var path_follower: Node = $AIPathFollower
 
 
 func _ready() -> void:
@@ -14,9 +14,9 @@ func _ready() -> void:
 	is_player = false
 
 
-func setup_ai_path(path: Path3D, start_offset: float) -> void:
+func setup_ai_path(path: Path3D, start_offset: float, lane_offset: float = 0.0) -> void:
 	path_follower.setup(path)
-	path_follower.snap_to_path(self, start_offset)
+	path_follower.snap_to_path(self, start_offset, lane_offset)
 
 
 func _get_steer() -> float:
@@ -29,6 +29,10 @@ func _get_accelerate_input() -> bool:
 
 func _get_drift_input() -> bool:
 	return _ai_drift
+
+
+func _compute_target_speed() -> float:
+	return super._compute_target_speed() * path_follower.speed_multiplier
 
 
 func _physics_process(delta: float) -> void:

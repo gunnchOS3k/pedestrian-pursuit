@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "id": "emberkeep_gauntlet",
+  "display_name": "Emberkeep Gauntlet",
+  "lap_count": 3,
+  "difficulty": "expert",
+  "theme": "ember_fortress",
+  "description": "A volcanic fortress circuit of basalt turns, forge vents, ash patches, and a high-speed final courtyard.",
+  "lane_width": 13.5,
+  "guard_rails": true,
+  "track_color": "#3D414B",
+  "accent_color": "#FF7043",
+  "sky_color": "#25141A",
+  "backdrop_color": "#6A201C",
+  "path_points": [
+    [0, 0, 42], [26, 0, 48], [49, 0, 28], [42, 0, 0], [56, 0, -25], [29, 0, -46],
+    [1, 0, -37], [-27, 0, -51], [-52, 0, -27], [-43, 0, 3], [-53, 0, 31], [-25, 0, 47]
+  ],
+  "checkpoint_points": [0, 2, 4, 6, 8, 10],
+  "speed_lanes": [
+    {"point_index": 11, "size": [5, 12], "speed_bonus": 1.26}
+  ],
+  "terrain_zones": [
+    {"point_index": 7, "size": [10, 12], "terrain_name": "hot_ash", "speed_multiplier": 0.76, "handling_multiplier": 0.83, "color": "#6D514C"}
+  ],
+  "bounce_pads": [
+    {"point_index": 3, "size": [5, 5], "bounce_force": 13.5, "forward_boost": 5.5},
+    {"point_index": 9, "size": [5, 5], "bounce_force": 12.0, "forward_boost": 5.0}
+  ],
+  "item_boxes": [2, 5, 8, 11],
+  "boost_pickups": [1, 6, 10]
+}

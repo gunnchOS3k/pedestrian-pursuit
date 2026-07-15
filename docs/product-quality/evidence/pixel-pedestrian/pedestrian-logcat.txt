@@ -1,0 +1,150 @@
+07-14 18:16:15.850 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Digital Wellbeing sectionName: D
+07-14 18:16:15.850 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Conversations sectionName: C
+07-14 18:16:15.851 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Battery sectionName: B
+07-14 18:16:15.851 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Chrome sectionName: C
+07-14 18:16:15.851 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Users sectionName: U
+07-14 18:16:15.852 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Drive sectionName: D
+07-14 18:16:15.852 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Clock sectionName: C
+07-14 18:16:15.852 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: GitHub sectionName: G
+07-14 18:16:15.852 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Maps sectionName: M
+07-14 18:16:15.852 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Google Play Store sectionName: G
+07-14 18:16:15.852 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: ChatGPT sectionName: C
+07-14 18:16:15.853 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: DuckDuckGo sectionName: D
+07-14 18:16:15.853 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Keep Notes sectionName: K
+07-14 18:16:15.853 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Google sectionName: G
+07-14 18:16:15.853 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Snapchat sectionName: S
+07-14 18:16:15.853 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Apple Music sectionName: A
+07-14 18:16:15.863 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Settings sectionName: S
+07-14 18:16:15.863 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Photos sectionName: P
+07-14 18:16:15.863 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Gemini sectionName: G
+07-14 18:16:15.863 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Gmail sectionName: G
+07-14 18:16:15.864 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Translate sectionName: T
+07-14 18:16:15.864 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Pixel Weather sectionName: P
+07-14 18:16:15.864 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Contacts sectionName: C
+07-14 18:16:15.864 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Calendar sectionName: C
+07-14 18:16:15.864 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: LinkedIn sectionName: L
+07-14 18:16:15.865 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Docs sectionName: D
+07-14 18:16:15.865 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Duolingo sectionName: D
+07-14 18:16:15.865 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Google News sectionName: G
+07-14 18:16:15.865 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: YouTube Music sectionName: Y
+07-14 18:16:15.865 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: YouTube sectionName: Y
+07-14 18:16:15.866 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Android System Intelligence sectionName: A
+07-14 18:16:15.866 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Xfinity Mobile sectionName: X
+07-14 18:16:15.866 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Home sectionName: H
+07-14 18:16:15.866 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Digital Wellbeing sectionName: D
+07-14 18:16:15.866 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Conversations sectionName: C
+07-14 18:16:15.867 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Battery sectionName: B
+07-14 18:16:15.867 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Chrome sectionName: C
+07-14 18:16:15.867 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Users sectionName: U
+07-14 18:16:15.867 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Drive sectionName: D
+07-14 18:16:15.867 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Clock sectionName: C
+07-14 18:16:15.868 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: GitHub sectionName: G
+07-14 18:16:15.868 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Maps sectionName: M
+07-14 18:16:15.868 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Google Play Store sectionName: G
+07-14 18:16:15.868 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: ChatGPT sectionName: C
+07-14 18:16:15.868 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: DuckDuckGo sectionName: D
+07-14 18:16:15.869 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Keep Notes sectionName: K
+07-14 18:16:15.869 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Google sectionName: G
+07-14 18:16:15.869 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Snapchat sectionName: S
+07-14 18:16:15.869 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Apple Music sectionName: A
+07-14 18:16:15.892 V/Godot   (13748): OnStop: GodotFragment{498e3ca} (b557b244-ea1e-4dce-a513-dc97125cd28d id=0x7f070033)
+07-14 18:16:16.466 I/adbd    (17380): adbd service requested 'shell,v2,TERM=dumb,raw:am start -n com.gunnchos.pedestrianpursuit/com.godot.game.GodotApp'
+07-14 18:16:16.521 V/ActivityTaskManager( 1728): TaskLaunchParamsModifier: phase=3 task=Task{e695e42 #195 type=standard A=10328:com.gunnchos.pedestrianpursuit} activity=ActivityRecord{256011405 u0 com.gunnchos.pedestrianpursuit/com.godot.game.GodotApp t-1} display-from-task=0 display-id=0 task-display-area-windowing-mode=1 suggested-display-area=DefaultTaskDisplayArea@173798792 inherit-from-task=fullscreen non-freeform-task-display-area display-area=DefaultTaskDisplayArea@173798792 activity-requested-landscape freeform-size-mismatch=Rect(71, 1005 - 1009, 1463)
+07-14 18:16:16.521 I/ActivityTaskManager( 1728): START u0 {flg=0x10000000 xflg=0x5 cmp=com.gunnchos.pedestrianpursuit/com.godot.game.GodotApp} with LAUNCH_SINGLE_INSTANCE_PER_TASK from uid 2000 (com.android.shell) (BAL_ALLOW_PERMISSION) result code=0
+07-14 18:16:16.521 V/WindowManagerShell( 2443): Transition requested (#445): android.os.BinderProxy@3e2a43b TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=195 effectiveUid=10328 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=com.gunnchos.pedestrianpursuit/com.godot.game.GodotApp } baseActivity=ComponentInfo{com.gunnchos.pedestrianpursuit/com.godot.game.GodotApp} topActivity=ComponentInfo{com.gunnchos.pedestrianpursuit/com.godot.game.GodotApp} origActivity=null realActivity=ComponentInfo{com.gunnchos.pedestrianpursuit/com.godot.game.GodotApp} realActivityIsAppLockEnabled=false numActivities=1 lastActiveTime=280173784 supportsMultiWindow=true resizeMode=2 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.os.BinderProxy@62c1758} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 132 - 0, 0) topActivityInfo=ActivityInfo{5f2f0b1 com.godot.game.GodotApp} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isTopActivityNoDisplay=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false isActivityStackTransparent=false lastNonFullscreenBounds=Rect(71, 1005 - 1009, 1463) leafTaskBoundsFromOptions= false capturedLink=null capturedLinkTimestamp=0 requestedVisibleTypes=503 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false isLeafTask= true eligibleForLetterboxEducation= false isLetterboxEducationEnabled= false isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityAppBounds=Rect(0, 132 - 1080, 2337) isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null topNonResizableActivityAspectRatio=-1.0} topActivityMainWindowFrame=null isAppBubble=false}, pipChange = null, remoteTransitionInfo = null, displayChange = null, requestedLocation = null, userChange = null, windowingLayerChange = null, fullscreenRequestChange = null, flags = 0, debugId = 445 }
+07-14 18:16:16.535 I/ActivityManager( 1728): Start proc 14765:com.gunnchos.pedestrianpursuit/u0a328 for next-top-activity {com.gunnchos.pedestrianpursuit/com.godot.game.GodotApp}
+07-14 18:16:16.539 V/WindowManager( 1728): Sent Transition (#445) createdAt=07-14 18:16:16.515 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=195 effectiveUid=10328 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=com.gunnchos.pedestrianpursuit/com.godot.game.GodotApp } baseActivity=ComponentInfo{com.gunnchos.pedestrianpursuit/com.godot.game.GodotApp} topActivity=ComponentInfo{com.gunnchos.pedestrianpursuit/com.godot.game.GodotApp} origActivity=null realActivity=ComponentInfo{com.gunnchos.pedestrianpursuit/com.godot.game.GodotApp} realActivityIsAppLockEnabled=false numActivities=1 lastActiveTime=280173784 supportsMultiWindow=true resizeMode=2 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{2f492fd Task{e695e42 #195 type=standard A=10328:com.gunnchos.pedestrianpursuit}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 132 - 0, 0) topActivityInfo=ActivityInfo{399dbf2 com.godot.game.GodotApp} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isTopActivityNoDisplay=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false isActivityStackTransparent=false lastNonFullscreenBounds=Rect(71, 1005 - 1009, 1463) leafTaskBoundsFromOptions= false capturedLink=null capturedLinkTimestamp=0 requestedVisibleTypes=503 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false isLeafTask= true eligibleForLetterboxEducation= false isLetterboxEducationEnabled= false isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityAppBounds=Rect(0, 132 - 1080, 2337) isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null topNonResizableActivityAspectRatio=-1.0} topActivityMainWindowFrame=null isAppBubble=false}, pipChange = null, remoteTransitionInfo = null, displayChange = null, requestedLocation = null, userChange = null, windowingLayerChange = null, fullscreenRequestChange = null, flags = 0, debugId = 445 }
+07-14 18:16:16.553 D/CompatChangeReporter(14765): Compat change id reported: 242716250; UID 10328; state: ENABLED
+07-14 18:16:16.577 D/GodotActivity(14765): Starting intent Intent { flg=0x10000000 xflg=0x5 cmp=com.gunnchos.pedestrianpursuit/com.godot.game.GodotApp } with parameters null
+07-14 18:16:16.578 V/GodotActivity(14765): Creating new Godot fragment instance.
+07-14 18:16:16.582 V/Godot   (14765): InitEngine with params: [--xr_mode_regular, --xr-mode, off, --fullscreen, --background_color, #000000]
+07-14 18:16:16.582 V/Godot   (14765): Initializing Godot plugin registry
+07-14 18:16:16.582 I/GodotPluginRegistry(14765): Registering runtime plugin AndroidRuntime
+07-14 18:16:16.582 D/Godot   (14765): background color = -16777216
+07-14 18:16:16.587 D/nativeloader(14765): Load /data/app/~~N2MpIRa3_J9SpvTBG0FJNQ==/com.gunnchos.pedestrianpursuit-zGVuxaNyLhRjTCNbI8Kk5w==/base.apk!/lib/arm64-v8a/libgodot_android.so using class loader ns clns-9 (caller=/data/app/~~N2MpIRa3_J9SpvTBG0FJNQ==/com.gunnchos.pedestrianpursuit-zGVuxaNyLhRjTCNbI8Kk5w==/base.apk): ok
+07-14 18:16:16.588 V/Godot   (14765): Godot native layer initialization completed: true
+07-14 18:16:16.600 V/Godot   (14765): Godot native layer setup completed
+07-14 18:16:16.600 V/Godot   (14765): OnInitRenderView: GodotFragment{498e3ca} (b0a8d84e-d6cf-45bd-bdff-b3439f8b1fe9 id=0x7f070033)
+07-14 18:16:16.606 D/Godot   (14765): Render view should be transparent: false
+07-14 18:16:16.606 D/Godot   (14765): usesVulkan(): false
+07-14 18:16:16.606 D/Godot   (14765): 			renderingDevice: opengl3 (ProjectSettings)
+07-14 18:16:16.606 D/Godot   (14765): 			renderer: gl_compatibility (ProjectSettings)
+07-14 18:16:16.608 V/Godot   (14765): OnStart: GodotFragment{498e3ca} (b0a8d84e-d6cf-45bd-bdff-b3439f8b1fe9 id=0x7f070033)
+07-14 18:16:16.610 V/Godot   (14765): OnResume: GodotFragment{498e3ca} (b0a8d84e-d6cf-45bd-bdff-b3439f8b1fe9 id=0x7f070033)
+07-14 18:16:16.616 D/VRI[GodotApp](14765): WindowInsets changed: 2400x1080 statusBars:[0,74,0,0] navigationBars:[0,0,0,63] mandatorySystemGestures:[0,74,0,84]
+07-14 18:16:16.617 D/CoreBackPreview( 1728): Window{309bb4 u0 com.gunnchos.pedestrianpursuit/com.godot.game.GodotApp}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@d3e50d9, mPriority=0, mIsAnimationCallback=false, mOverrideBehavior=0}
+07-14 18:16:16.620 D/VRI[GodotApp](14765): WindowInsets changed: statusBars:null navigationBars:null
+07-14 18:16:16.628 I/godot   (14765): Godot Engine v4.5.stable.official.876b29033 - https://godotengine.org
+07-14 18:16:16.658 I/godot   (14765): OpenGL API OpenGL ES 3.2 v1.r54p1-12eac0.3979a5abbd708e71c87fdb7af36852c5 - Compatibility - Using Device: ARM - Mali-G78
+07-14 18:16:16.666 I/godot   (14765):
+07-14 18:16:16.686 I/ActivityTaskManager( 1728): Displayed com.gunnchos.pedestrianpursuit/com.godot.game.GodotApp for user 0: +172ms
+07-14 18:16:16.879 V/Godot   (14765): OnGodotSetupCompleted
+07-14 18:16:16.907 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Settings sectionName: S
+07-14 18:16:16.907 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Photos sectionName: P
+07-14 18:16:16.908 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Gemini sectionName: G
+07-14 18:16:16.908 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Gmail sectionName: G
+07-14 18:16:16.908 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Translate sectionName: T
+07-14 18:16:16.908 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Pixel Weather sectionName: P
+07-14 18:16:16.909 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Contacts sectionName: C
+07-14 18:16:16.909 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Calendar sectionName: C
+07-14 18:16:16.909 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: LinkedIn sectionName: L
+07-14 18:16:16.909 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Docs sectionName: D
+07-14 18:16:16.910 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Duolingo sectionName: D
+07-14 18:16:16.910 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Google News sectionName: G
+07-14 18:16:16.910 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: YouTube Music sectionName: Y
+07-14 18:16:16.910 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: YouTube sectionName: Y
+07-14 18:16:16.911 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Android System Intelligence sectionName: A
+07-14 18:16:16.911 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Xfinity Mobile sectionName: X
+07-14 18:16:16.911 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Home sectionName: H
+07-14 18:16:16.912 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Digital Wellbeing sectionName: D
+07-14 18:16:16.912 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Conversations sectionName: C
+07-14 18:16:16.912 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Battery sectionName: B
+07-14 18:16:16.912 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Chrome sectionName: C
+07-14 18:16:16.913 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Users sectionName: U
+07-14 18:16:16.913 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Drive sectionName: D
+07-14 18:16:16.913 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Clock sectionName: C
+07-14 18:16:16.914 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: GitHub sectionName: G
+07-14 18:16:16.914 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Maps sectionName: M
+07-14 18:16:16.914 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Google Play Store sectionName: G
+07-14 18:16:16.914 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: ChatGPT sectionName: C
+07-14 18:16:16.915 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: DuckDuckGo sectionName: D
+07-14 18:16:16.915 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Keep Notes sectionName: K
+07-14 18:16:16.915 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Google sectionName: G
+07-14 18:16:16.916 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Snapchat sectionName: S
+07-14 18:16:16.916 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Apple Music sectionName: A
+07-14 18:16:16.940 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Settings sectionName: S
+07-14 18:16:16.940 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Photos sectionName: P
+07-14 18:16:16.941 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Gemini sectionName: G
+07-14 18:16:16.941 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Gmail sectionName: G
+07-14 18:16:16.941 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Translate sectionName: T
+07-14 18:16:16.941 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Pixel Weather sectionName: P
+07-14 18:16:16.942 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Contacts sectionName: C
+07-14 18:16:16.942 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Calendar sectionName: C
+07-14 18:16:16.942 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: LinkedIn sectionName: L
+07-14 18:16:16.942 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Docs sectionName: D
+07-14 18:16:16.943 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Duolingo sectionName: D
+07-14 18:16:16.943 V/Godot   (14765): OnGodotMainLoopStarted
+07-14 18:16:16.943 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Google News sectionName: G
+07-14 18:16:16.943 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: YouTube Music sectionName: Y
+07-14 18:16:16.944 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: YouTube sectionName: Y
+07-14 18:16:16.944 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Android System Intelligence sectionName: A
+07-14 18:16:16.944 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Xfinity Mobile sectionName: X
+07-14 18:16:16.945 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Home sectionName: H
+07-14 18:16:16.945 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Digital Wellbeing sectionName: D
+07-14 18:16:16.945 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Conversations sectionName: C
+07-14 18:16:16.946 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Battery sectionName: B
+07-14 18:16:16.946 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Chrome sectionName: C
+07-14 18:16:16.946 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Users sectionName: U
+07-14 18:16:16.946 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Drive sectionName: D
+07-14 18:16:16.947 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Clock sectionName: C
+07-14 18:16:16.947 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: GitHub sectionName: G
+07-14 18:16:16.947 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Maps sectionName: M
+07-14 18:16:16.947 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Google Play Store sectionName: G
+07-14 18:16:16.948 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: ChatGPT sectionName: C
+07-14 18:16:16.948 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: DuckDuckGo sectionName: D
+07-14 18:16:16.948 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Keep Notes sectionName: K
+07-14 18:16:16.949 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Google sectionName: G
+07-14 18:16:16.949 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Snapchat sectionName: S
+07-14 18:16:16.949 D/AlphabeticIndexCompat( 2792): computeSectionName: cs: Apple Music sectionName: A
+07-14 18:16:34.034 D/IncompatibleChargerNotification( 2443): dispatchIntent: android.intent.action.BATTERY_CHANGED
+07-14 18:17:02.337 D/IncompatibleChargerNotification( 2443): dispatchIntent: android.intent.action.BATTERY_CHANGED

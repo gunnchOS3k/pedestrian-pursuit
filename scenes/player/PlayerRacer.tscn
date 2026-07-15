@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://playerracer001"]
+[gd_scene load_steps=9 format=3 uid="uid://playerracer001"]
 
 [ext_resource type="Script" path="res://scripts/player/PlayerController.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/player/MovementStats.gd" id="2"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scripts/player/StompSystem.gd" id="6"]
 [ext_resource type="Script" path="res://scripts/player/TrickSystem.gd" id="7"]
 [ext_resource type="Script" path="res://scripts/items/ItemManager.gd" id="8"]
+[ext_resource type="Script" path="res://scripts/player/RacerVisual.gd" id="9"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
 radius = 0.45
@@ -77,6 +78,11 @@ script = ExtResource("7")
 
 [node name="ItemManager" type="Node" parent="."]
 script = ExtResource("8")
+
+[node name="RacerVisual" type="Node3D" parent="."]
+script = ExtResource("9")
+body_color = Color(1, 0.82, 0.35, 1)
+accent_color = Color(1, 0.35, 0.2, 1)
 
 [node name="DriftParticles" type="GPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0.4)

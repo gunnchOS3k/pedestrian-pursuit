@@ -25,7 +25,7 @@ func execute_ground_stomp(origin: Vector3, owner: Node) -> void:
 		return
 	_cooldown = stomp_cooldown
 	stomp_executed.emit(false)
-	var space := owner.get_world_3d().direct_space_state
+	var space: PhysicsDirectSpaceState3D = owner.get_world_3d().direct_space_state
 	var query := PhysicsShapeQueryParameters3D.new()
 	var shape := SphereShape3D.new()
 	shape.radius = ground_pulse_radius

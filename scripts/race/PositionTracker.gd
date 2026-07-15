@@ -21,7 +21,8 @@ func update_positions() -> void:
 		var racer: Node3D = state.racer
 		var cp_index: int = state.next_checkpoint
 		var progress := float(state.lap) * 1000.0
-		progress += float(cp_index) * 100.0
+		var checkpoints_passed := cp_index - 1 if cp_index > 0 else maxi(_checkpoints.size() - 1, 0)
+		progress += float(checkpoints_passed) * 100.0
 		if cp_index < _checkpoints.size() and _checkpoints[cp_index] != null:
 			var cp_pos := _checkpoints[cp_index].global_position
 			var dist := racer.global_position.distance_to(cp_pos)
@@ -43,3 +44,7 @@ func get_position_for(racer: Node) -> int:
 		if states[i].racer == racer:
 			return i + 1
 	return 1
+
+
+func get_checkpoints() -> Array[Node3D]:
+	return _checkpoints

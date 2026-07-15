@@ -1,0 +1,11 @@
+2026-07-14T21:37:59Z
+apk=build/android/pedestrian-pursuit-release.apk
+sha256=b641b7a1b8e6c6169c2c560cf804b6b657f0f5aca1429d1a74867c7668d05f88
+package=com.gunnchos.pedestrianpursuit versionName=0.3.0 versionCode=4
+signer_cert_sha256=9499a9af54b025f57420a0209039888b269a454e840b8fa46b062b68d9776141
+debuggable=false (attr absent; pkgFlags have no DEBUGGABLE)
+zipalign_P16=Verification succesful
+ELF_16KB_ALIGN_PASS pt_load_ok=8 bad=0
+godot_templates=4.5.stable
+jdk=Corretto 17.0.17
+android_build_tools=35.0.0

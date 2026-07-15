@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "id": "cloverwind_ranch",
+  "display_name": "Cloverwind Ranch",
+  "lap_count": 3,
+  "difficulty": "intermediate",
+  "theme": "windy_ranch",
+  "description": "A sunlit ranch route through clover fields, timber gates, hay stacks, and a muddy switchback.",
+  "lane_width": 14.0,
+  "guard_rails": true,
+  "track_color": "#9C744A",
+  "accent_color": "#F3D66F",
+  "sky_color": "#8BC5E8",
+  "backdrop_color": "#6EA044",
+  "path_points": [
+    [0, 0, 38], [31, 0, 34], [51, 0, 12], [46, 0, -18], [20, 0, -36],
+    [-11, 0, -30], [-34, 0, -40], [-50, 0, -13], [-42, 0, 18], [-18, 0, 29]
+  ],
+  "checkpoint_points": [0, 2, 4, 6, 8],
+  "speed_lanes": [
+    {"point_index": 9, "size": [6, 12], "speed_bonus": 1.22}
+  ],
+  "terrain_zones": [
+    {"point_index": 6, "size": [11, 14], "terrain_name": "ranch_mud", "speed_multiplier": 0.7, "handling_multiplier": 0.78, "color": "#62452E"}
+  ],
+  "bounce_pads": [
+    {"point_index": 3, "size": [6, 6], "bounce_force": 12.5, "forward_boost": 5.0}
+  ],
+  "item_boxes": [2, 5, 8],
+  "boost_pickups": [1, 7]
+}

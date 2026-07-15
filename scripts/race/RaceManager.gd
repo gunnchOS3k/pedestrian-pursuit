@@ -2,21 +2,18 @@ extends Node
 
 ## Race flow: countdown, timer, finish detection.
 
-enum RaceState { WAITING, COUNTDOWN, RACING, FINISHED }
-
 signal countdown_tick(value: String)
 signal race_started
 signal race_finished(player: Node, results: Array)
 signal timer_updated(elapsed: float)
+
+enum RaceState { WAITING, COUNTDOWN, RACING, FINISHED }
 
 @export var countdown_seconds: int = 3
 
 var state: RaceState = RaceState.WAITING
 var race_time: float = 0.0
 var player_start_boost_window: bool = false
-
-@onready var lap_manager: Node = $LapManager
-@onready var position_tracker: Node = $PositionTracker
 
 var _racers: Array = []
 var _player: Node = null
@@ -25,6 +22,9 @@ var _go_time: float = 0.0
 var _player_pressed_early: bool = false
 var _results: Array = []
 var _finished_count: int = 0
+
+@onready var lap_manager: Node = $LapManager
+@onready var position_tracker: Node = $PositionTracker
 
 
 func _ready() -> void:
@@ -53,7 +53,7 @@ func begin_countdown() -> void:
 	state = RaceState.COUNTDOWN
 	_countdown_timer = float(countdown_seconds) + 1.0
 	_player_pressed_early = false
-	_go_time = 0.0
+	_go_time = -1.0
 	countdown_tick.emit(str(countdown_seconds))
 
 

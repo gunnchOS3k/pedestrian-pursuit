@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://airacer001"]
+[gd_scene load_steps=10 format=3 uid="uid://airacer001"]
 
 [ext_resource type="Script" path="res://scripts/ai/AIRacerController.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/player/MovementStats.gd" id="2"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://scripts/player/TrickSystem.gd" id="7"]
 [ext_resource type="Script" path="res://scripts/items/ItemManager.gd" id="8"]
 [ext_resource type="Script" path="res://scripts/ai/AIPathFollower.gd" id="9"]
+[ext_resource type="Script" path="res://scripts/player/RacerVisual.gd" id="10"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
 radius = 0.45
@@ -81,6 +82,12 @@ script = ExtResource("8")
 
 [node name="AIPathFollower" type="Node" parent="."]
 script = ExtResource("9")
+
+[node name="RacerVisual" type="Node3D" parent="."]
+script = ExtResource("10")
+body_color = Color(0.4, 0.75, 1, 1)
+accent_color = Color(0.2, 0.5, 1, 1)
+is_ai = true
 
 [node name="DriftParticles" type="GPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0.4)
