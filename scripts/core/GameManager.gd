@@ -26,6 +26,8 @@ var auto_accelerate: bool = false
 var accept_test_mode: bool = false
 var accept_force_laps: int = 0
 var accept_steer: float = 0.0
+## Soft racing-line assist for touch/Android (player still holds accelerate).
+var mobile_assist_steer: float = 0.0
 
 var last_race_time: float = 0.0
 var last_race_position: int = 1

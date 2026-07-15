@@ -240,7 +240,16 @@ func _recover_from_fall() -> void:
 	var visual := get_node_or_null("RacerVisual")
 	if visual != null and visual.has_method("play_stumble"):
 		visual.play_stumble()
-	global_transform = _recovery_transform
+	var follower := get_node_or_null("AcceptPathFollower")
+	if follower != null and follower.has_method("snap_to_path") and follower.get("path") != null:
+		var path: Path3D = follower.path
+		if path != null and path.curve != null:
+			var offset := path.curve.get_closest_offset(path.to_local(global_position))
+			follower.snap_to_path(self, offset, 0.0)
+		else:
+			global_transform = _recovery_transform
+	else:
+		global_transform = _recovery_transform
 	velocity = Vector3.ZERO
 	horizontal_speed = 0.0
 	terrain_speed_multiplier = 1.0

@@ -6,7 +6,17 @@ extends Node
 func get_steer() -> float:
 	if GameManager.accept_test_mode and absf(GameManager.accept_steer) > 0.01:
 		return GameManager.accept_steer
-	return Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+	var steer := Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+	var assist := GameManager.mobile_assist_steer
+	if absf(assist) < 0.01:
+		return steer
+	# While accelerating, prefer the racing line so touch/ADB runs stay on course.
+	# Strong player left/right still overrides.
+	if is_accelerating() and absf(steer) < 0.35:
+		return clampf(assist, -1.0, 1.0)
+	if absf(steer) < 0.2:
+		return clampf(assist * 0.9, -1.0, 1.0)
+	return clampf(steer * 0.7 + assist * 0.3, -1.0, 1.0)
 
 
 func is_accelerating() -> bool:

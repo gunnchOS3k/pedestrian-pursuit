@@ -62,8 +62,15 @@ func _ready() -> void:
 	if GameManager.accept_force_laps > 0:
 		GameManager.total_laps = GameManager.accept_force_laps
 	# Acceptance: AI-style path steering for the human racer (1-lap finishes without fake results).
-	if GameManager.accept_test_mode and player and track and track.has_method("get_race_path"):
+	# Android/touch: soft racing-line assist (no auto-accel / no forced laps) so Pixel play can
+	# stay on course while the player still holds RUN.
+	var want_path_follower := false
+	if GameManager.accept_test_mode:
+		want_path_follower = true
 		GameManager.auto_accelerate = true
+	elif OS.has_feature("android") or OS.has_feature("mobile"):
+		want_path_follower = true
+	if want_path_follower and player and track and track.has_method("get_race_path"):
 		var path: Path3D = track.get_race_path()
 		var follower_script = load("res://scripts/ai/AIPathFollower.gd")
 		if path != null and follower_script != null:
@@ -73,8 +80,12 @@ func _ready() -> void:
 				follower.name = "AcceptPathFollower"
 				player.add_child(follower)
 			follower.setup(path)
+			follower.set("look_ahead", 5.5)
+			# Snap onto the line so the first gates are reachable immediately.
 			follower.snap_to_path(player, -2.0, 0.0)
-			set_meta("accept_follower", follower)
+			set_meta("path_steer_follower", follower)
+			if GameManager.accept_test_mode:
+				set_meta("accept_follower", follower)
 	race_manager.setup_race(racers, player, checkpoints, GameManager.total_laps)
 	for checkpoint in checkpoints:
 		checkpoint.racer_passed.connect(_on_checkpoint_for_recovery)
@@ -93,7 +104,9 @@ func _ready() -> void:
 	if pause_menu:
 		pause_menu.visible = false
 	race_manager.begin_countdown()
-	if GameManager.accept_test_mode:
+	# Fake ordered checkpoint stepping is only for shortened accept_force_laps runs.
+	# Full production / 3-lap Pixel verification must complete via real gate hits.
+	if GameManager.accept_test_mode and GameManager.accept_force_laps > 0:
 		call_deferred("_accept_drive_finish")
 
 
@@ -194,15 +207,44 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	if not GameManager.accept_test_mode or player == null:
+	if player == null:
 		return
-	if not has_meta("accept_follower"):
-		return
-	var follower = get_meta("accept_follower")
+	var follower = null
+	if has_meta("path_steer_follower"):
+		follower = get_meta("path_steer_follower")
+	elif has_meta("accept_follower"):
+		follower = get_meta("accept_follower")
 	if follower == null or not follower.has_method("get_steer_and_accel"):
+		GameManager.mobile_assist_steer = 0.0
 		return
+	_rescue_fallen_onto_path(follower)
 	var cmd: Dictionary = follower.get_steer_and_accel(player, delta)
-	GameManager.accept_steer = float(cmd.get("steer", 0.0))
+	var steer_cmd := float(cmd.get("steer", 0.0))
+	if GameManager.accept_test_mode:
+		GameManager.accept_steer = steer_cmd
+	else:
+		GameManager.accept_steer = 0.0
+		GameManager.mobile_assist_steer = steer_cmd
+
+
+func _rescue_fallen_onto_path(follower: Node) -> void:
+	## Catch void falls early and snap onto the racing line instead of restarting the course.
+	if player == null or float(player.global_position.y) > -2.0:
+		return
+	if follower.has_method("snap_to_path") and track != null and track.has_method("get_race_path"):
+		var path: Path3D = track.get_race_path()
+		if path != null and path.curve != null:
+			var offset := path.curve.get_closest_offset(path.to_local(player.global_position))
+			follower.snap_to_path(player, offset, 0.0)
+			if "horizontal_speed" in player:
+				player.horizontal_speed = minf(float(player.horizontal_speed), 12.0)
+			if "velocity" in player:
+				player.velocity = Vector3.ZERO
+			return
+	if player.has_method("set_recovery_transform") == false and "global_transform" in player:
+		pass
+
+
 
 
 func _on_pause_requested() -> void:
