@@ -1,0 +1,14 @@
+=== pedestrian 0.3.3 2026-07-15T07:35:46Z ===
+19c90164333171f6f6caa5720fe8caa5a7f7a78e8e12e08df957fb69ff027755  /Users/gunnchos/Documents/Codex/2026-07-09/github-plugin-github-openai-curated-remote/work/repos/pedestrian-pursuit/build/android/pedestrian-pursuit-release.apk
+package: name='com.gunnchos.pedestrianpursuit' versionCode='7' versionName='0.3.3' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'
+install-location:'auto'
+sdkVersion:'24'
+targetSdkVersion:'34'
+application-label:'Pedestrian Pursuit'
+Signer #1 certificate DN: CN=GunnchOS Internal pedestrian, OU=Internal Testing, O=GunnchOS, L=Local, ST=NA, C=US
+Signer #1 certificate SHA-256 digest: 9499a9af54b025f57420a0209039888b269a454e840b8fa46b062b68d9776141
+Signer #1 certificate SHA-1 digest: 566bb032b3f475ace918ffaf59c2c537a00f7efa
+Signer #1 certificate MD5 digest: 71506c52d8cbe5942f7c36e5f6fc5f66
+96954432 res/z-.9.png (OK)
+96954700 resources.arsc (OK)
+Verification successful

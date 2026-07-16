@@ -1,0 +1,22 @@
+Pedestrian 0.3.2 inspection 2026-07-15T06:47:39Z
+4e4868ad588843da742d2de6589273a1e411eb20680408356f3d7ebed7e494a9  build/android/pedestrian-pursuit-release.apk
+package: name='com.gunnchos.pedestrianpursuit' versionCode='6' versionName='0.3.2' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'
+install-location:'auto'
+sdkVersion:'24'
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): false
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+Signer #1 certificate DN: CN=GunnchOS Internal pedestrian, OU=Internal Testing, O=GunnchOS, L=Local, ST=NA, C=US
+Signer #1 certificate SHA-256 digest: 9499a9af54b025f57420a0209039888b269a454e840b8fa46b062b68d9776141
+Signer #1 certificate SHA-1 digest: 566bb032b3f475ace918ffaf59c2c537a00f7efa
+Signer #1 certificate MD5 digest: 71506c52d8cbe5942f7c36e5f6fc5f66
+Signer #1 key algorithm: RSA
+Signer #1 key size (bits): 2048
+Signer #1 public key SHA-256 digest: 64c43f3a500f69e1add36a40b7acd449dbdc7facdfc3ca062edc8b265b322429
+Signer #1 public key SHA-1 digest: 870ebb5d514eb571ef2972c912a84a59252ada7b
+Signer #1 public key MD5 digest: d3c38f1aebc995cca158b4e1e939bf2d

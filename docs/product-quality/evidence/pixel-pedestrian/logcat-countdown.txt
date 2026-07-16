@@ -1,0 +1,568 @@
+--------- beginning of system
+07-15 02:43:02.331  4083  4120 V RecentTasksController: Notify recent tasks changed
+07-15 02:43:02.331  4083  4120 V WindowManagerShell: Transition animation finished (aborted=false), notifying core (#66) android.os.BinderProxy@e15c6df@0
+07-15 02:43:02.332  1937  2091 V WindowManager: Finish Transition (#66): created at 07-15 02:43:02.225 collect-started=0.047ms request-sent=0.138ms started=6.735ms ready=16.08ms sent=28.833ms commit=17.065ms finished=107.412ms
+--------- beginning of main
+07-15 02:43:02.332  1937  4716 E libbinder.IPCThreadState: Binder transaction failure. id: 2911605, cmd: BR_DEAD_REPLY (29189), error: -22 (Invalid argument)
+07-15 02:43:02.332  1937  4716 W ActivityManager: pid 1937 system sent binder code 7 with flags 1 and got error -32
+07-15 02:43:02.332  1937  4716 D ActivityManager: Too many transaction errors, throttling transaction error callback.
+07-15 02:43:02.333  1937  4716 W WindowManager: Exception thrown during dispatchAppVisibility Window{11d3c0c u0 com.gunnchos.pedestrianpursuit/com.godot.game.GodotApp EXITING}
+07-15 02:43:02.333  1937  4716 W WindowManager: android.os.DeadObjectException
+07-15 02:43:02.333  1937  4716 W WindowManager: 	at android.os.BinderProxy.transactNative(Native Method)
+07-15 02:43:02.333  1937  4716 W WindowManager: 	at android.os.BinderProxy.transact(BinderProxy.java:626)
+07-15 02:43:02.333  1937  4716 W WindowManager: 	at android.view.IWindow$Stub$Proxy.dispatchAppVisibility(IWindow.java:602)
+07-15 02:43:02.333  1937  4716 W WindowManager: 	at com.android.server.wm.WindowState.sendAppVisibilityToClients(WindowState.java:3388)
+07-15 02:43:02.333  1937  4716 W WindowManager: 	at com.android.server.wm.WindowContainer.sendAppVisibilityToClients(WindowContainer.java:1245)
+07-15 02:43:02.333  1937  4716 W WindowManager: 	at com.android.server.wm.WindowToken.setClientVisible(WindowToken.java:392)
+07-15 02:43:02.333  1937  4716 W WindowManager: 	at com.android.server.wm.ActivityRecord.commitVisibility(ActivityRecord.java:5654)
+07-15 02:43:02.333  1937  4716 W WindowManager: 	at com.android.server.wm.Transition.finishTransition(Transition.java:1629)
+07-15 02:43:02.333  1937  4716 W WindowManager: 	at com.android.server.wm.TransitionController.finishTransition(TransitionController.java:1220)
+07-15 02:43:02.333  1937  4716 W WindowManager: 	at com.android.server.wm.WindowOrganizerController.finishTransition(WindowOrganizerController.java:533)
+07-15 02:43:02.333  1937  4716 W WindowManager: 	at android.window.IWindowOrganizerController$Stub.onTransact(IWindowOrganizerController.java:265)
+07-15 02:43:02.333  1937  4716 W WindowManager: 	at com.android.server.wm.WindowOrganizerController.onTransact(WindowOrganizerController.java:239)
+07-15 02:43:02.333  1937  4716 W WindowManager: 	at android.os.Binder.execTransactInternal(Binder.java:1369)
+07-15 02:43:02.333  1937  4716 W WindowManager: 	at android.os.Binder.execTransact(Binder.java:1323)
+07-15 02:43:02.333  1937  4716 W Process : Unable to open /proc/32624/status
+07-15 02:43:02.333  1694  1740 I adbd    : jdwp connection from 32762
+07-15 02:43:02.336  4083  4120 V WindowManagerShell: Playing animation for (#67) android.os.BinderProxy@aebc6ad@0
+07-15 02:43:02.336  4083  4120 D ShellSplitScreen: startAnimation: transition=67 isSplitActive=false
+07-15 02:43:02.336  4083  4120 V ShellRecents: RecentsTransitionHandler.startAnimation: no controller found
+07-15 02:43:02.336  4083  4120 V WindowManagerShell: Transition doesn't have explicit remote, search filters for match for {id=67 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{m=OPEN f=MOVE_TO_TOP|FLAG_CHANGED_INTERACTIVE leash=Surface(name=Task=215#706)/@0xe2f91bb sb=Rect(0, 0 - 2400, 1080) eb=Rect(0, 0 - 2400, 1080) epz=Point(2400, 1080) d=0 taskParent=-1 winMode=1 userId=0},{m=TO_BACK f=SHOW_WALLPAPER|FLAG_CHANGED_INTERACTIVE leash=Surface(name=Task=1#45)/@0xa4a36d8 sb=Rect(0, 0 - 2400, 1080) eb=Rect(0, 0 - 2400, 1080) epz=Point(2400, 1080) d=0 taskParent=-1 winMode=1 userId=0},{m=TO_BACK f=IS_WALLPAPER leash=Surface(name=Surface(name=WallpaperWindowToken{2147707}#49)/@0x99b4520 - rotation-leash#702)/@0x15f5a31 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 2400, 1080) epz=Point(2400, 1080) d=0 r=0->1:-1}]}
+07-15 02:43:02.336  4083  4120 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0 notFlags=0x0 checks=[{atype=undefined independent=true modes=[CLOSE,TO_BACK] flags=IN_TASK_WITH_EMBEDDED_ACTIVITY mustBeTask=false order=ANY topActivity=null launchCookie=null taskFragmentToken=android.os.BinderProxy@8d68ebd windowingMode=undefined isCrossDisplayMove=false}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@6068cb2, appThread = android.app.IApplicationThread$Stub$Proxy@3545403, debugName = overlayBackTransition, filter = {types=[] flags=0x0 notFlags=0x0 checks=[{atype=undefined independent=true modes=[CLOSE,TO_BACK] flags=IN_TASK_WITH_EMBEDDED_ACTIVITY mustBeTask=false order=ANY topActivity=null launchCookie=null taskFragmentToken=android.os.BinderProxy@8d68ebd windowingMode=undefined isCrossDisplayMove=false}]} }}
+07-15 02:43:02.336  4083  4120 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0 notFlags=0x0 checks=[{atype=dream independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined isCrossDisplayMove=false},{atype=home independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined isCrossDisplayMove=false}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@9d2df80, appThread = android.app.IApplicationThread$Stub$Proxy@be259b9, debugName = LauncherToDream, filter = {types=[] flags=0x0 notFlags=0x0 checks=[{atype=dream independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined isCrossDisplayMove=false},{atype=home independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined isCrossDisplayMove=false}]} }}
+07-15 02:43:02.336  4083  4120 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0 notFlags=0x0 checks=[{atype=standard independent=false modes=[CHANGE] flags=NONE mustBeTask=true order=ANY topActivity=null launchCookie=null windowingMode=undefined isCrossDisplayMove=true}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@4ccc1fe, appThread = android.app.IApplicationThread$Stub$Proxy@6be2d5f, debugName = QuickstepDisplayMove, filter = {types=[] flags=0x0 notFlags=0x0 checks=[{atype=standard independent=false modes=[CHANGE] flags=NONE mustBeTask=true order=ANY topActivity=null launchCookie=null windowingMode=undefined isCrossDisplayMove=true}]} }}
+07-15 02:43:02.336  4083  4120 V WindowManagerShell:  Checking filter Pair{{types=[] flags=0x0 notFlags=0x100 checks=[{atype=home independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=ANY topActivity=ComponentInfo{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity} launchCookie=null windowingMode=undefined isCrossDisplayMove=false},{atype=standard independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined isCrossDisplayMove=false},{NOT atype=undefined independent=true modes=[] flags=NONE mustBeTask=true order=ANY topActivity=null launchCookie=null customAnim=true windowingMode=undefined isCrossDisplayMove=false}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@74673ac, appThread = android.app.IApplicationThread$Stub$Proxy@345d875, debugName = QuickstepLaunchHome, filter = {types=[] flags=0x0 notFlags=0x100 checks=[{atype=home independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=ANY topActivity=ComponentInfo{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity} launchCookie=null windowingMode=undefined isCrossDisplayMove=false},{atype=standard independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined isCrossDisplayMove=false},{NOT atype=undefined independent=true modes=[] flags=NONE mustBeTask=true order=ANY topActivity=null launchCookie=null customAnim=true windowingMode=undefined isCrossDisplayMove=false}]} }}
+07-15 02:43:02.336  4083  4120 V WindowManagerShell:  Delegate animation for (#67) to null
+07-15 02:43:02.336  4083  4120 V WindowManagerShell: start default transition animation, info = {id=67 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{m=OPEN f=MOVE_TO_TOP|FLAG_CHANGED_INTERACTIVE leash=Surface(name=Task=215#706)/@0xe2f91bb sb=Rect(0, 0 - 2400, 1080) eb=Rect(0, 0 - 2400, 1080) epz=Point(2400, 1080) d=0 taskParent=-1 winMode=1 userId=0},{m=TO_BACK f=SHOW_WALLPAPER|FLAG_CHANGED_INTERACTIVE leash=Surface(name=Task=1#45)/@0xa4a36d8 sb=Rect(0, 0 - 2400, 1080) eb=Rect(0, 0 - 2400, 1080) epz=Point(2400, 1080) d=0 taskParent=-1 winMode=1 userId=0},{m=TO_BACK f=IS_WALLPAPER leash=Surface(name=Surface(name=WallpaperWindowToken{2147707}#49)/@0x99b4520 - rotation-leash#702)/@0x15f5a31 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 2400, 1080) epz=Point(2400, 1080) d=0 r=0->1:-1}]}
+07-15 02:43:02.336  4083  4120 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@f97e884 animAttr=0x13 type=OPEN isEntrance=false
+07-15 02:43:02.336  4083  4120 V WindowManagerShell: loadAnimation: anim=android.view.animation.AnimationSet@69e686d animAttr=0x12 type=OPEN isEntrance=true
+07-15 02:43:02.336 32762 32762 D nativeloader: Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+07-15 02:43:02.336  4083  4120 V WindowManagerShell:  animated by com.android.wm.shell.transition.DefaultTransitionHandler@7dcd312
+07-15 02:43:02.336  4083  4120 V ShellTaskOrganizer: Task vanished taskId=214
+07-15 02:43:02.336  4083  4120 V ShellTaskOrganizer: Fullscreen Task Vanished: #214
+07-15 02:43:02.336  4083  4120 D ShellPackageUpdate: PackageUpdateController: Removing handlePackageUpdate for task: 214
+07-15 02:43:02.337  1937  2190 E WindowOrganizerController: Attempting to externally change a non-organized container: Task{b858043 #214 type=standard A=10328:com.gunnchos.pedestrianpursuit}={handlePackageUpdate:false,} playercount=2 taskorg=android.window.ITaskOrganizer$Stub$Proxy@2a8626e
+07-15 02:43:02.337  4083  4120 V RecentTasksController: Notify recent tasks changed
+07-15 02:43:02.337  4083  4120 D ShellDesktopMode: AppToWebRepository: Task 214 is vanishing. Removing task data from repository
+07-15 02:43:02.337  4083  4120 V AppCompat: SingleSurfaceLetterboxController: []
+07-15 02:43:02.337  4083  4120 V AppCompat: MultiSurfaceLetterboxController: []
+07-15 02:43:02.337  4083  4120 V AppCompat: LetterboxInputController: []
+07-15 02:43:02.337  4083  4120 V AppCompat: RoundedCornersLetterboxController: {}
+07-15 02:43:02.337  4411  4411 D SsBaseTemplateCard: Passed-in item info is null
+07-15 02:43:02.337  4411  4411 I SsBaseTemplateCard: setFormattedContentDescription: text=76°F, iconDescription=Clear, contentDescription=Clear, 76°F
+07-15 02:43:02.337  4411  4411 D SsBaseTemplateCard: Passed-in item info is null
+07-15 02:43:02.337  4411  4411 D SsBaseTemplateCard: Passed-in item info is null
+07-15 02:43:02.337  4411  4411 I SsBaseTemplateCard: Secondary card pane is null
+07-15 02:43:02.340  1937  2111 D ActivityManager: sync unfroze 12260 com.google.android.apps.pixel.dcservice for 3
+07-15 02:43:02.341  4411  4411 D RecentTasksList: invalidateLoadedTasks - previous requestLoadId: -1
+07-15 02:43:02.341  4411  4411 D RecentsView: onTaskRemoved: 214, not handling task stack changes
+07-15 02:43:02.341  4411  4411 D RecentsView: onTaskRemoved: 214, not handling task stack changes
+07-15 02:43:02.341  4411  4411 D RecentTasksList: invalidateLoadedTasks - previous requestLoadId: -1
+07-15 02:43:02.341  4411  4411 D BaseActivity: Launcher flags updated: [state_started] -[state_window_focused]
+07-15 02:43:02.345 12260 12260 I ForwardBroadcastListene: Receive forward intent: com.google.android.apps.pixel.dcservice.monitor.ACTION_MONITOR_MEDIA_PLAYBACK_STOPPED
+07-15 02:43:02.346 12260 12260 I PowerSavingModeHandler: onReceive ACTION_MONITOR_MEDIA_PLAYBACK_STOPPED
+07-15 02:43:02.347 32762 32762 D CompatChangeReporter: Compat change id reported: 242716250; UID 10328; state: ENABLED
+07-15 02:43:02.347  1937  2187 E AppOps  : attributionTag  not declared in manifest of com.gunnchos.pedestrianpursuit
+07-15 02:43:02.348  1937  4469 E AppOps  : attributionTag  not declared in manifest of com.gunnchos.pedestrianpursuit
+07-15 02:43:02.354 32762 32762 D nativeloader: Configuring clns-9 for other apk /data/app/~~XzWXMDzkzta_1Rb-HpYiug==/com.gunnchos.pedestrianpursuit-CZFKbb8HEE512_2Nn2ltSA==/base.apk. target_sdk_version=34, uses_libraries=, library_path=/data/app/~~XzWXMDzkzta_1Rb-HpYiug==/com.gunnchos.pedestrianpursuit-CZFKbb8HEE512_2Nn2ltSA==/lib/arm64:/data/app/~~XzWXMDzkzta_1Rb-HpYiug==/com.gunnchos.pedestrianpursuit-CZFKbb8HEE512_2Nn2ltSA==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.gunnchos.pedestrianpursuit
+07-15 02:43:02.354 12260 12284 I PowerSavingModeHandler: shouldSwitchCodecToLowPower, isPowerSaveMode=false
+07-15 02:43:02.354 12260 12284 I PowerSavingModeHandler: maybeSwitchCodecForLeavingLowPower, no configured device
+07-15 02:43:02.354 12260 12284 I PowerSavingModeHandler: maybeSwitchCodec completed
+07-15 02:43:02.364 32762 32762 V GraphicsEnvironment: Currently set values for:
+07-15 02:43:02.364 32762 32762 V GraphicsEnvironment:   angle_gl_driver_selection_pkgs=[com.android.angle]
+07-15 02:43:02.364 32762 32762 V GraphicsEnvironment:   angle_gl_driver_selection_values=[angle]
+07-15 02:43:02.364 32762 32762 V GraphicsEnvironment: com.gunnchos.pedestrianpursuit is not listed in per-application setting
+07-15 02:43:02.364 32762 32762 V GraphicsEnvironment: No special selections for ANGLE, returning default driver choice
+07-15 02:43:02.365 32762 32762 V GraphicsEnvironment: Neither updatable production driver nor prerelease driver is supported.
+07-15 02:43:02.366 32762 32762 D DesktopExperienceFlags: Toggle override initialized to: false
+07-15 02:43:02.370   685   685 E BpTransactionCompletedListener: Failed to transact (-32)
+07-15 02:43:02.370   685   685 E BpTransactionCompletedListener: Failed to transact (-32)
+07-15 02:43:02.370  1937  4315 I ImeTracker: system_server:a98b10b0: onRequestHide at ORIGIN_SERVER reason IME_REQUESTED_CHANGED_LISTENER fromUser false displayId 0
+07-15 02:43:02.370  1937  2094 I ImeTracker: system_server:a98b10b0: onCancelled at PHASE_SERVER_SHOULD_HIDE
+07-15 02:43:02.371  1937  4469 D CorePackageUpdate: Couldn't find a persistent state for task= 215
+07-15 02:43:02.373 32762   338 I DisplayManager: Choreographer implicitly registered for the refresh rate.
+07-15 02:43:02.375 32762   338 D vulkan  : searching for layers in '/data/app/~~XzWXMDzkzta_1Rb-HpYiug==/com.gunnchos.pedestrianpursuit-CZFKbb8HEE512_2Nn2ltSA==/lib/arm64'
+07-15 02:43:02.376 32762   338 D vulkan  : searching for layers in '/data/app/~~XzWXMDzkzta_1Rb-HpYiug==/com.gunnchos.pedestrianpursuit-CZFKbb8HEE512_2Nn2ltSA==/base.apk!/lib/arm64-v8a'
+07-15 02:43:02.377  1937  5710 I PackageManager: getInstalledPackages: callingUid=10114 flags=134217728 updatedFlags=135004160 userId=0
+07-15 02:43:02.386 32762 32762 D GodotActivity: Starting intent Intent { flg=0x10000000 xflg=0x5 cmp=com.gunnchos.pedestrianpursuit/com.godot.game.GodotApp } with parameters null
+07-15 02:43:02.390 32762 32762 V GodotActivity: Creating new Godot fragment instance.
+07-15 02:43:02.395 32762 32762 V Godot   : InitEngine with params: [--xr_mode_regular, --xr-mode, off, --fullscreen, --background_color, #000000]
+07-15 02:43:02.395 32762 32762 V Godot   : Initializing Godot plugin registry
+07-15 02:43:02.395 32762 32762 I GodotPluginRegistry: Registering runtime plugin AndroidRuntime
+07-15 02:43:02.395 32762 32762 D Godot   : background color = -16777216
+07-15 02:43:02.400  1450  1526 I APM_AudioPolicyManager: getNewOutputDevices io 45 recent device override {AUDIO_DEVICE_OUT_SPEAKER, @:}
+07-15 02:43:02.400  1403  1470 W audio_hw_35l41: cs35l41_amp_common_event: ret: 0, event: 15, state: 3, device: 0
+07-15 02:43:02.400  1403  1470 D audio_hw_soundtrigger: updated Stream 3 active in soundtrigger
+07-15 02:43:02.400  1403  1470 D audio_hw_output_stream: update stream 3 active 1 gain 0.000000
+07-15 02:43:02.407  4083  4120 V RecentTasksController: Notify recent tasks changed
+07-15 02:43:02.407  4411  4411 D RecentTasksList: invalidateLoadedTasks - previous requestLoadId: -1
+07-15 02:43:02.408  4083  4120 V RecentTasksController: generateList(getRecentTasks)
+07-15 02:43:02.408  4083  4120 V RecentTasksController: initializeDesksMap - desktop windowing not available
+07-15 02:43:02.408  4083  4120 V RecentTasksController: Added fullscreen task: 215
+07-15 02:43:02.408  4083  4120 V RecentTasksController: Added fullscreen task: 210
+07-15 02:43:02.408  4083  4120 V RecentTasksController: Added fullscreen task: 203
+07-15 02:43:02.408  4083  4120 V RecentTasksController: generateList - complete
+07-15 02:43:02.408  4411  4504 D PreloadThumbnailUseCase: Preloading thumbnails for task ids: [[id=203 windowingMode=1 user=0 lastActiveTime=21246852] null, [id=210 windowingMode=1 user=0 lastActiveTime=23182719] null, [id=215 windowingMode=1 user=0 lastActiveTime=24750645] null]
+07-15 02:43:02.408 32762 32762 D nativeloader: Load /data/app/~~XzWXMDzkzta_1Rb-HpYiug==/com.gunnchos.pedestrianpursuit-CZFKbb8HEE512_2Nn2ltSA==/base.apk!/lib/arm64-v8a/libgodot_android.so using class loader ns clns-9 (caller=/data/app/~~XzWXMDzkzta_1Rb-HpYiug==/com.gunnchos.pedestrianpursuit-CZFKbb8HEE512_2Nn2ltSA==/base.apk): ok
+07-15 02:43:02.410  1937  2187 E AppOps  : attributionTag  not declared in manifest of com.gunnchos.pedestrianpursuit
+07-15 02:43:02.410  1937  2187 E AppOps  : attributionTag  not declared in manifest of com.gunnchos.pedestrianpursuit
+07-15 02:43:02.411 32762 32762 V Godot   : Godot native layer initialization completed: true
+07-15 02:43:02.473 32762 32762 V Godot   : Godot native layer setup completed
+07-15 02:43:02.473 32762 32762 V Godot   : OnInitRenderView: GodotFragment{58e1545} (f65eed9a-a431-42c4-9c17-960aea15523d id=0x7f070033)
+07-15 02:43:02.480 32762 32762 D Godot   : Render view should be transparent: false
+07-15 02:43:02.480 32762 32762 D Godot   : usesVulkan(): false
+07-15 02:43:02.480 32762 32762 D Godot   : 			renderingDevice: opengl3 (ProjectSettings)
+07-15 02:43:02.480 32762 32762 D Godot   : 			renderer: gl_compatibility (ProjectSettings)
+07-15 02:43:02.482 32762 32762 V Godot   : OnStart: GodotFragment{58e1545} (f65eed9a-a431-42c4-9c17-960aea15523d id=0x7f070033)
+07-15 02:43:02.484 32762 32762 V Godot   : OnResume: GodotFragment{58e1545} (f65eed9a-a431-42c4-9c17-960aea15523d id=0x7f070033)
+07-15 02:43:02.488 32762 32762 D InsetsController: Setting requestedVisibleTypes to 496 (was 503)
+07-15 02:43:02.490  1937  2187 W InputChannel-JNI: Channel already disposed.
+07-15 02:43:02.492 32762 32762 D VRI[GodotApp]: WindowInsets changed: 2400x1080 statusBars:[0,74,0,0] navigationBars:[0,0,0,63] mandatorySystemGestures:[0,74,0,84] 
+07-15 02:43:02.492 32762 32762 D WindowOnBackDispatcher: setTopOnBackInvokedCallback (unwrapped): android.view.ViewRootImpl$$ExternalSyntheticLambda14@38685ae
+07-15 02:43:02.493 32762 32762 I HWUI    : Using FreeType backend (prop=Auto)
+07-15 02:43:02.493  1937  2187 D CoreBackPreview: Window{a5cbc35 u0 com.gunnchos.pedestrianpursuit/com.godot.game.GodotApp}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@4ef90ce, mPriority=0, mIsAnimationCallback=false, mOverrideBehavior=0}
+07-15 02:43:02.493  1937  4315 D WindowManager: setClientSurface Surface(name=VRI-com.gunnchos.pedestrianpursuit/com.godot.game.GodotApp#717)/@0x5739bef for a5cbc35 com.gunnchos.pedestrianpursuit/com.godot.game.GodotApp
+07-15 02:43:02.495   685  1061 I libbinder.BpBinder: onLastStrongRef automatically unlinking death recipients for binder (0xb4000075712f3290) with descriptor: '(not cached)'
+07-15 02:43:02.496 32762 32762 I Surface : Creating surface for consumer unnamed-32762-0 with slotExpansion=1 for 64 slots
+07-15 02:43:02.496 32762 32762 I Surface : Creating surface for consumer VRI[GodotApp]#0(BLAST Consumer)0 with slotExpansion=1 for 64 slots
+07-15 02:43:02.496 32762 32762 D VRI[GodotApp]: WindowInsets changed: statusBars:null navigationBars:null 
+07-15 02:43:02.497 32762 32762 I Surface : Creating surface for consumer unnamed-32762-1 with slotExpansion=1 for 64 slots
+07-15 02:43:02.497 32762 32762 I Surface : Creating surface for consumer bff1e29 SurfaceView[com.gunnchos.pedestrianpursuit/com.godot.game.GodotApp]#1(BLAST Consumer)1 with slotExpansion=1 for 64 slots
+07-15 02:43:02.499 32762   364 W RegularContextFactory: creating OpenGL ES 3.0 context :
+07-15 02:43:02.504 32762   364 I godot   : Godot Engine v4.5.stable.official.876b29033 - https://godotengine.org
+07-15 02:43:02.515 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.uprobestats' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.530 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.uwb' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.531 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.bt' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.532 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.widevine.nonupdatable' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.541 32762   364 I godot   : OpenGL API OpenGL ES 3.2 v1.r54p2-01eac0.fb6fbead05afc1c718b19a8978ff5bfe - Compatibility - Using Device: ARM - Mali-G78
+07-15 02:43:02.542 32762   364 D AudioSystem: onNewServiceWithAdapter: media.audio_flinger service obtained 0xb4000071e937c110
+07-15 02:43:02.542  1450  1486 D AudioFlinger: onStateChanged: pid:32762  uid:10328  state:unfrozen - no freeze activity
+07-15 02:43:02.542 32762   364 D AudioSystem: getService: IAudioFlingerService retrieved: 0xb4000072592706c0  IAudioFlinger cached: 0xb4000071e937c110
+07-15 02:43:02.542 32762   364 D destrianpursuit: PlayerBase::PlayerBase()
+07-15 02:43:02.542 32762   364 D destrianpursuit: TrackPlayerBase::TrackPlayerBase()
+07-15 02:43:02.542 32762   364 I libOpenSLES: Emulating old channel mask behavior (ignoring positional mask 0x3, using default mask 0x3 based on channel count of 2)
+07-15 02:43:02.544  1450  7546 D AudioFlinger: AUDIO_OUTPUT_FLAG_FAST denied: sharedBuffer=0x0 frameCount=0 mFrameCount=128 format=0x1 mFormat=0x5 isLinear=1 channelMask=0x3 sampleRate=44100 mSampleRate=48000 hasFastMixer=1 tid=387 fastTrackAvailMask=0xfe
+07-15 02:43:02.544  1450  7546 D AudioFlinger: Client defaulted notificationFrames to 882 for frameCount 3308
+07-15 02:43:02.544  1450  7546 I AF::AfPlaybackCommon: AfPlaybackCommon: creating track with enforcement level 0 reason TARGET_SDK shouldHarden 1
+07-15 02:43:02.547 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.gmssystem' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.547  1450  7546 I UsecaseValidator: verifyAudioAttributes update usage: 1 to AUDIO_USAGE_GAME for output: 45 pid: 32762 package: com.gunnchos.pedestrianpursuit
+07-15 02:43:02.548  1937  4716 E AppOps  : attributionTag  not declared in manifest of com.gunnchos.pedestrianpursuit
+07-15 02:43:02.549  1937  4716 E AppOps  : attributionTag  not declared in manifest of com.gunnchos.pedestrianpursuit
+07-15 02:43:02.549 32762   364 I godot   : 
+07-15 02:43:02.550  4225  4225 I bluetooth: system/btif/avrcp/avrcp_service.cc:533 SendMediaUpdate: track_changed=false :  play_state=true :  queue=false
+07-15 02:43:02.556  1937  2091 I ActivityTaskManager: Displayed com.gunnchos.pedestrianpursuit/com.godot.game.GodotApp for user 0: +278ms
+07-15 02:43:02.560  1403  1476 W audio_hw_35l41: cs35l41_amp_common_event: ret: 0, event: 15, state: 3, device: 0
+07-15 02:43:02.560  1403  1476 D audio_hw_soundtrigger: updated Stream 3 active in soundtrigger
+07-15 02:43:02.560  1403  1476 D audio_hw_output_stream: update stream 3 active 1 gain 0.063096
+07-15 02:43:02.575 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.android.apex.cts.shim' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.584 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.appsearch' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.589 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.art' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.589  1937  2396 I ImeTracker: com.gunnchos.pedestrianpursuit:7b628c75: onRequestHide at ORIGIN_SERVER reason HIDE_UNSPECIFIED_WINDOW fromUser false userId 0 displayId 0
+07-15 02:43:02.589 32762 32762 D InsetsController: hide(ime())
+07-15 02:43:02.589 32762 32762 I ImeTracker: com.gunnchos.pedestrianpursuit:7b628c75: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+07-15 02:43:02.591  1937  5710 W InputChannel-JNI: Channel already disposed.
+07-15 02:43:02.591  9517  9517 I GoogleInputMethodService: GoogleInputMethodService.onFinishInput():2276 
+07-15 02:43:02.591  9517  9517 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1460 onStartInput(EditorInfo{EditorInfo{packageName=com.gunnchos.pedestrianpursuit, inputType=0, inputTypeString=NULL, enableLearning=false, autoCorrection=false, autoComplete=false, imeOptions=0, privateImeOptions=null, actionName=UNSPECIFIED, actionLabel=null, initialSelStart=-1, initialSelEnd=-1, initialCapsMode=0, label=null, fieldId=0, fieldName=null, extras=null, hintText=null, hintLocales=[]}}, false)
+07-15 02:43:02.591  9517 32510 I Module  : DeviceLockedStatusModuleProvider$Module.updateDeviceLockedStatusInternal():129 repeatCheckTimes = 0, locked = false
+07-15 02:43:02.592  9517  9517 W LatinIMEBase: LatinIMEBase.updateInputViewCoverNavigation():322 Null input view, cannot update padding!
+07-15 02:43:02.592  1937  6712 I ImeTracker: system_server:66c7d175: onRequestHide at ORIGIN_SERVER reason IME_REQUESTED_CHANGED_LISTENER fromUser false displayId 0
+07-15 02:43:02.592  9517 32492 I Module  : DeviceLockedStatusModuleProvider$Module.updateDeviceLockedStatusInternal():129 repeatCheckTimes = 1, locked = false
+07-15 02:43:02.592  1937  2094 I ImeTracker: system_server:66c7d175: onCancelled at PHASE_SERVER_SHOULD_HIDE
+07-15 02:43:02.593  1937  5710 W PackageConfigPersister: App-specific configuration not found for packageName: com.gunnchos.pedestrianpursuit and userId: 0
+07-15 02:43:02.600 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.profiling' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.602  4411  4411 D WorkspaceRevealAnim: onAnimationEnd: workspace alpha = 1.0
+07-15 02:43:02.609 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.mediaprovider' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.616 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.pixel.camera.hal' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.616 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.crashrecovery' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.617 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.resolv' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.625 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.configinfrastructure' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.626 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.media' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.635  4411  4411 D VRI[NexusLauncherActivity]: WindowInsets changed: statusBars:null navigationBars:null 
+07-15 02:43:02.648 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.sdkext' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.652  4083  4120 V WindowManagerShell: Transition animation finished (aborted=false), notifying core (#67) android.os.BinderProxy@aebc6ad@0
+07-15 02:43:02.654  1937  2091 V WindowManager: Finish Transition (#67): created at 07-15 02:43:02.280 collect-started=0.07ms request-sent=12.846ms started=17.386ms ready=47.016ms sent=48.052ms commit=27.812ms finished=373.37ms
+07-15 02:43:02.655  4083  4535 D WallpaperService: onVisibilityChanged(false): com.android.systemui.wallpapers.ImageWallpaper$CanvasEngine@e669b84
+07-15 02:43:02.655  4411  4411 D VRI[NexusLauncherActivity]: visibilityChanged oldVisibility=true newVisibility=false
+07-15 02:43:02.657  4083  4120 V WindowManagerShell: Track 0 became idle
+07-15 02:43:02.657  4083  4120 V WindowManagerShell: All active transition animations finished
+07-15 02:43:02.660 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.android.hardware.biometrics.fingerprint.virtual' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.661 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.adservices' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.661 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.tethering' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.669  4411  4411 D SmartspaceInteractor: notifySmartspaceEvent: SmartspaceTargetEvent{mSmartspaceTarget=null, mSmartspaceActionId='null', mEventType=7}
+07-15 02:43:02.673  4411  4411 D BaseActivity: Launcher flags updated: [] -[state_started]
+07-15 02:43:02.673  4411  4411 D BaseDepthController: setSurface:
+07-15 02:43:02.673  4411  4411 D BaseDepthController: 	mWaitingOnSurfaceValidity: false
+07-15 02:43:02.673  4411  4411 D BaseDepthController: 	mBaseSurface: null
+07-15 02:43:02.673  4411  4411 D BaseDepthController: mSurface is null and mCurrentBlur is: 0
+07-15 02:43:02.674  4411  4411 D LauncherStateManager: StateManager.goToState: fromState: Normal, toState: Normal, partial trace:
+07-15 02:43:02.674  4411  4411 D LauncherStateManager: 	at com.android.launcher3.statemanager.StateManager.moveToRestState(go/retraceme 8bcbbc35bb13161dedaa519f339f298517b051dcbf8e2046701ae935fa579434:26)
+07-15 02:43:02.674  4411  4411 D LauncherStateManager: 	at com.android.launcher3.statemanager.StateManager.moveToRestState(go/retraceme 8bcbbc35bb13161dedaa519f339f298517b051dcbf8e2046701ae935fa579434:35)
+07-15 02:43:02.674  4411  4411 D LauncherStateManager: 	at com.android.launcher3.statemanager.StatefulActivity.onStop(go/retraceme 8bcbbc35bb13161dedaa519f339f298517b051dcbf8e2046701ae935fa579434:31)
+07-15 02:43:02.674  4411  4411 D LauncherStateManager: StateManager.onRepeatStateSetAborted: state: Normal
+07-15 02:43:02.674  4411  4411 D KeyboardStateManager: hideKeyboard
+07-15 02:43:02.674  4411  4411 D KeyboardStateManager: isImeShown: false
+07-15 02:43:02.674  4411  4411 D StatsLog: LAUNCHER_ONSTOP
+07-15 02:43:02.674  4411  5916 D GmsPlayProvider: Initiating graceful shutdown of binder channel.
+07-15 02:43:02.674  4411  5916 D GmsPlayProvider: Binder channel was terminated gracefully.
+07-15 02:43:02.674  4411  4411 D StatsLog: LAUNCHER_GOOGLE_SEARCH_RESTORE_LIST_SIZE_AFTER_ACTIVITY_RESTART
+07-15 02:43:02.675  5603  5814 I AiAiEcho: (REDACTED) %s No tracked ambient data found for ID: %s; for event type: %d, skipping event processing.
+07-15 02:43:02.686 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.cellbroadcast' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.688 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.pixel.wifi.ext' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.695 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.rkpd' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.709  2118  2129 I pixel-thermal: neutral_therm:32.529 raw data: neutral_therm:32529 
+07-15 02:43:02.709  2118  2129 I pixel-thermal: VIRTUAL-SKIN:33.2468 raw data: VIRTUAL-SKIN:33246.8 
+07-15 02:43:02.709  2118  2129 I pixel-thermal: VIRTUAL-SKIN-CPU-GPU:33.2468 raw data: VIRTUAL-SKIN:33246.8 VIRTUAL-SKIN-CPU-GPU:33246.8 
+07-15 02:43:02.709  2118  2129 I pixel-thermal: VIRTUAL-SKIN-HINT:33.2468 raw data: VIRTUAL-SKIN:33246.8 VIRTUAL-SKIN-HINT:33246.8 
+07-15 02:43:02.709  2118  2129 I pixel-thermal: VIRTUAL-SKIN-CHARGE:33.2468 raw data: VIRTUAL-SKIN:33246.8 VIRTUAL-SKIN-CHARGE:33246.8 
+07-15 02:43:02.727 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.pixel.euicc.update' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.733 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.compos' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.734 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.tzdata6' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.740 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.permission' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.754 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.wifi' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.763 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.telephonycore' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.768 32762   364 V Godot   : OnGodotSetupCompleted
+07-15 02:43:02.795 32762   364 V Godot   : OnGodotMainLoopStarted
+07-15 02:43:02.817 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.media.swcodec' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.847 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.adbd' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.855 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.android.i18n' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.862 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.conscrypt' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.872 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.neuralnetworks' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.873 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.webapp' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.875 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.runtime' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.876 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.ipsec' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.876 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.android.devicelock' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.881 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.ondevicepersonalization' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.884 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.healthfitness' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.903 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.extservices' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.904 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.virt' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.909 32762 32762 W InteractionJankMonitor: Initializing without READ_DEVICE_CONFIG permission. enabled=false, interval=1, missedFrameThreshold=3, frameTimeThreshold=64, package=com.gunnchos.pedestrianpursuit
+07-15 02:43:02.910  1937  4716 I ImeTracker: system_server:c5fb182b: onRequestHide at ORIGIN_SERVER reason IME_REQUESTED_CHANGED_LISTENER fromUser false displayId 0
+07-15 02:43:02.910  1937  2094 I ImeTracker: system_server:c5fb182b: onCancelled at PHASE_SERVER_SHOULD_HIDE
+07-15 02:43:02.913 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.nfcservices' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.924 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.os.statsd' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.928 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.android.npumanager' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.935 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.google.android.scheduling' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.939 18474 18474 W Finsky  : [2] STU: Failed to get storage stats for package 'com.android.hardware.biometrics.face.virtual' (1601: Error getting stats: android.content.pm.PackageManager.NameNotFoundException)
+07-15 02:43:02.948  4083  4155 D WindowOnBackDispatcher: setTopOnBackInvokedCallback (unwrapped): null
+07-15 02:43:02.949  1937  4716 D CoreBackPreview: Window{b0717b9 u0 Splash Screen com.gunnchos.pedestrianpursuit EXITING}: Setting back callback null
+07-15 02:43:02.955 18474 18474 I Finsky  : [2] App states replicator found 44 unowned apps
+07-15 02:43:03.025  4587  6567 E AuthPII : [RequestTokenManager] getToken() -> BAD_AUTHENTICATION. App: com.android.vending, Service: oauth2:https://www.googleapis.com/auth/googleplay
+07-15 02:43:03.025  4587  6567 E AuthPII : bkli: Long live credential not available.
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at aiip.a(:com.google.android.gms@262561035@26.25.61 (260400-944464144):1347)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at aiiw.b(:com.google.android.gms@262561035@26.25.61 (260400-944464144):26)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at aiiu.a(:com.google.android.gms@262561035@26.25.61 (260400-944464144):661)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at aiit.b(:com.google.android.gms@262561035@26.25.61 (260400-944464144):151)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at abcj.d(:com.google.android.gms@262561035@26.25.61 (260400-944464144):829)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at aicg.getAuthToken(:com.google.android.gms@262561035@26.25.61 (260400-944464144):408)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at android.accounts.AbstractAccountAuthenticator$Transport.getAuthToken(AbstractAccountAuthenticator.java:248)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at android.accounts.IAccountAuthenticator$Stub.onTransact(IAccountAuthenticator.java:249)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at android.os.Binder.transact(Binder.java:1230)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at cszx.onTransact(:com.google.android.gms@262561035@26.25.61 (260400-944464144):12)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at android.os.Binder.transact(Binder.java:1230)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at ceme.onTransact(:com.google.android.gms@262561035@26.25.61 (260400-944464144):169)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at android.os.Binder.execTransactInternal(Binder.java:1369)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at android.os.Binder.execTransact(Binder.java:1323)
+07-15 02:43:03.025  4587  6567 E AuthPII : Message is Long live credential not available.
+07-15 02:43:03.025  4587  6567 E AuthPII : bkli: Long live credential not available.
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at aiip.a(:com.google.android.gms@262561035@26.25.61 (260400-944464144):1347)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at aiiw.b(:com.google.android.gms@262561035@26.25.61 (260400-944464144):26)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at aiiu.a(:com.google.android.gms@262561035@26.25.61 (260400-944464144):661)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at aiit.b(:com.google.android.gms@262561035@26.25.61 (260400-944464144):151)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at abcj.d(:com.google.android.gms@262561035@26.25.61 (260400-944464144):829)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at aicg.getAuthToken(:com.google.android.gms@262561035@26.25.61 (260400-944464144):408)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at android.accounts.AbstractAccountAuthenticator$Transport.getAuthToken(AbstractAccountAuthenticator.java:248)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at android.accounts.IAccountAuthenticator$Stub.onTransact(IAccountAuthenticator.java:249)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at android.os.Binder.transact(Binder.java:1230)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at cszx.onTransact(:com.google.android.gms@262561035@26.25.61 (260400-944464144):12)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at android.os.Binder.transact(Binder.java:1230)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at ceme.onTransact(:com.google.android.gms@262561035@26.25.61 (260400-944464144):169)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at android.os.Binder.execTransactInternal(Binder.java:1369)
+07-15 02:43:03.025  4587  6567 E AuthPII : 	at android.os.Binder.execTransact(Binder.java:1323)
+07-15 02:43:03.035  4587  6567 I Auth    : (REDACTED) [GetToken] GetToken failed for app=%s with userRecoverable status: %s 
+07-15 02:43:03.036  4587  6567 W Auth    : [ChimeraGetToken] exception while trying to fetch auth tokens for app=com.google.android.gsf, scope=oauth2:https://www.googleapis.com/auth/googleplay [CONTEXT service_id=153 ]
+07-15 02:43:03.036  4587  6567 W Auth    : aiio: GetToken failed with status code and recovery intent: BadAuthentication
+07-15 02:43:03.036  4587  6567 W Auth    : 	at aiit.b(:com.google.android.gms@262561035@26.25.61 (260400-944464144):352)
+07-15 02:43:03.036  4587  6567 W Auth    : 	at abcj.d(:com.google.android.gms@262561035@26.25.61 (260400-944464144):829)
+07-15 02:43:03.036  4587  6567 W Auth    : 	at aicg.getAuthToken(:com.google.android.gms@262561035@26.25.61 (260400-944464144):408)
+07-15 02:43:03.036  4587  6567 W Auth    : 	at android.accounts.AbstractAccountAuthenticator$Transport.getAuthToken(AbstractAccountAuthenticator.java:248)
+07-15 02:43:03.036  4587  6567 W Auth    : 	at android.accounts.IAccountAuthenticator$Stub.onTransact(IAccountAuthenticator.java:249)
+07-15 02:43:03.036  4587  6567 W Auth    : 	at android.os.Binder.transact(Binder.java:1230)
+07-15 02:43:03.036  4587  6567 W Auth    : 	at cszx.onTransact(:com.google.android.gms@262561035@26.25.61 (260400-944464144):12)
+07-15 02:43:03.036  4587  6567 W Auth    : 	at android.os.Binder.transact(Binder.java:1230)
+07-15 02:43:03.036  4587  6567 W Auth    : 	at ceme.onTransact(:com.google.android.gms@262561035@26.25.61 (260400-944464144):169)
+07-15 02:43:03.036  4587  6567 W Auth    : 	at android.os.Binder.execTransactInternal(Binder.java:1369)
+07-15 02:43:03.036  4587  6567 W Auth    : 	at android.os.Binder.execTransact(Binder.java:1323)
+07-15 02:43:03.036  4587  6567 W GLSActivity: [GmsAccountAuthenticatorImpl] error status while fetching token:BadAuthentication
+07-15 02:43:03.045 18474 32741 I Finsky  : [533] Completed 1 account content syncs with 0 successful.
+07-15 02:43:03.046 18474 18474 I Finsky  : [2] [ContentSync] Installation state replication failed, parameters=Id: 12-1, CT: 1784101358583, Constraints: [{ L: 20000, D: 86400000, C: CHARGING_NONE, I: IDLE_NONE, N: NET_ANY, B: BATTERY_ANY }].
+07-15 02:43:03.046 18474 18474 I Finsky  : [2] [ContentSync] Scheduling replication attempt 1.
+07-15 02:43:03.047 18474 18474 I Finsky  : [2] SCH: jobFinished: 12-1. TimeElapsed: 719ms.
+07-15 02:43:03.047 18474 18474 I Finsky  : [2] WM::SCH: Logging work end for 12-1
+07-15 02:43:03.053 18474 32430 I Finsky  : [515] SCH: Attempting to reschedule job: Id: 12-1, Constraints: [{ L: 40000, D: 86400000, C: CHARGING_NONE, I: IDLE_NONE, N: NET_ANY, B: BATTERY_ANY }]
+07-15 02:43:03.059 18474 18521 I Finsky  : [71] SCH: Scheduling phonesky job Id: 1-1337, CT: 1784091246654, Constraints: [{ L: 39748815, D: 82948815, C: CHARGING_NONE, I: IDLE_NONE, N: NET_ANY, B: BATTERY_ANY }]
+07-15 02:43:03.059 18474 18521 I Finsky  : [71] SCH: Scheduling phonesky job Id: 34-2227, CT: 1784091248076, Constraints: [{ L: 604800000, D: 2591955451, C: CHARGING_NONE, I: IDLE_NONE, N: NET_ANY, B: BATTERY_ANY }]
+07-15 02:43:03.059 18474 18521 I Finsky  : [71] SCH: Scheduling phonesky job Id: 34-2230, CT: 1784091248077, Constraints: [{ L: 79155144, D: 1375155144, C: CHARGING_NONE, I: IDLE_NONE, N: NET_ANY, B: BATTERY_ANY }]
+07-15 02:43:03.065 18474 18520 I Finsky  : [70] SCH: Scheduling 1 system job(s)
+07-15 02:43:03.066 18474 18520 I Finsky  : [70] SCH: Scheduling system job Id: 9290, L: 29612404, D: 72812404, C: false, I: false, N: 1
+07-15 02:43:03.071 18474 32740 I Finsky  : [532] SCH: job service finished with id 9286.
+07-15 02:43:03.078 18474 18474 I Finsky  : [2] Memory trim requested to level 40
+07-15 02:43:03.078 18474 18474 I Finsky  : [2] Flushing in-memory image cache
+07-15 02:43:03.079 18487 18487 I Finsky:background: [2] Memory trim requested to level 40
+07-15 02:43:03.224  4246  4471 D ImpulseConnection: timeout happen: com.google.android.apps.turbo
+07-15 02:43:03.224  4246  4471 D ImpulseConnection: unbindService for releasing a CONNECTED connection com.google.android.apps.turbo
+07-15 02:43:03.233  4246  4351 D TemperatureStateSource: sequence=2444 actualDelay=10000
+07-15 02:43:03.233  4246  4351 D TemperatureStateSource: Reading temperature: sequence=2445
+07-15 02:43:03.234  2118  2118 I pixel-thermal: VIRTUAL-SKIN:33.2468 raw data: VIRTUAL-SKIN:33246.8 
+07-15 02:43:03.234  4246  4351 D TemperatureStateSource: getDeviceTemperatures: sequence=2445 deviceTemperatureType=3 temperatureSource=0 temperatures=[33.24685]
+07-15 02:43:03.235  4246  4351 D TemperatureStateSource: sequence=2445 waitTime=10000
+07-15 02:43:03.235  4246  4351 D ImpulseStateSource: Notify clients: 2477
+07-15 02:43:03.240 18474 18513 I Finsky  : [68] WM::SCH: Logging work initialize for 12-1
+07-15 02:43:03.245 18474 18523 I Finsky  : [72] SCH: Scheduling phonesky job Id: 12-1, CT: 1784101383054, Constraints: [{ L: 40000, D: 86400000, C: CHARGING_NONE, I: IDLE_NONE, N: NET_ANY, B: BATTERY_ANY }]
+07-15 02:43:03.247 18474 18520 I Finsky  : [70] SCH: Scheduling 1 system job(s)
+07-15 02:43:03.248 18474 18520 I Finsky  : [70] SCH: Scheduling system job Id: 9290, L: 39807, D: 72812222, C: false, I: false, N: 1
+07-15 02:43:04.388  1449  1449 I WifiHAL : Creating message to get link statistics; iface = 47
+07-15 02:43:04.409  2118  2129 I pixel-thermal: cellular-emergency:33.1968 raw data: VIRTUAL-NEUTRAL:33196.8 VIRTUAL-NEUTRAL-SKIN2:33081.2 VIRTUAL-QUIET-NEUTRAL:32117.1 VIRTUAL-SKIN:33196.8 cellular-emergency:33196.8 disp_therm:31594 gnss_tcxo_therm:33642 neutral_therm:32507 quiet_therm:31950 skin_therm1:33842 skin_therm2:34421 
+07-15 02:43:04.409  2118  2129 I pixel-thermal: VIRTUAL-SKIN-CPU:33.1968 raw data: VIRTUAL-SKIN:33196.8 VIRTUAL-SKIN-CPU:33196.8 
+07-15 02:43:04.490  1449  1449 E libbinder.IPCThreadState: binder thread pool (1 threads) starved for 102 ms
+07-15 02:43:04.529  1449  1449 D WifiHAL : Start debug command: mType GET_FEATURE
+07-15 02:43:04.529  1449  1449 I WifiHAL : CreateRequest mType = GET_FEATURE
+07-15 02:43:04.529  1449  1449 D WifiHAL : In DebugCommand::handleResponse, mType:GET_FEATURE
+07-15 02:43:04.529  1449  1449 D WifiHAL : len = 4, expected len = 4
+07-15 02:43:04.828  1579  1600 I WPKTRT  : process_address_event: 2601:243:e186:2200:5c8f:ffff:fee2:91ed added to wlan0
+07-15 02:43:04.829  1579  1600 I WPKTRT  : process_address_event: 2601:243:e186:2200:643d:992:e1cf:4db5 added to wlan0
+07-15 02:43:04.832  4164  4887 D IpClient/wlan0: addressUpdated: 2601:243:e186:2200:5c8f:ffff:fee2:91ed/64 on ifindex 47 flags 0x00000100 scope 0
+07-15 02:43:04.832  4164  4887 D IpClient/wlan0: addressUpdated: 2601:243:e186:2200:643d:992:e1cf:4db5/64 on ifindex 47 flags 0x00000001 scope 0
+07-15 02:43:04.833  4164  4887 W AlarmManager: Unrecognized alarm listener com.android.networkstack.android.net.ip.IpClientLinkObserver$Dhcp6PdPreferredPrefixAlarmListener@1e12344
+07-15 02:43:04.834  4164  4887 D ApfFilter: (wlan0): Ignoring RA RA fe80::eea8:1fff:fe03:27a -> ff02::1 180s 2601:243:e186:2200::/64 3834s/3834s DNS 180s 2001:558:feed::1 2001:558:feed::2 RIO 180s ::/0  which matches RA fe80::eea8:1fff:fe03:27a -> ff02::1 180s 2601:243:e186:2200::/64 3834s/3834s DNS 180s 2001:558:feed::1 2001:558:feed::2 RIO 180s ::/0 
+07-15 02:43:04.925  4083  4083 D DLObserver: onReceive(); android.intent.action.BATTERY_CHANGED
+07-15 02:43:04.925  4083  4083 D DLObserver: plugged=1
+07-15 02:43:04.929  4083  4083 D SystemEventDataSource: onReceive: intentAction
+07-15 02:43:04.935  4083  4239 D GoogleBatteryDataSource: fetchDwellDefendStatus: CONNECTED
+07-15 02:43:04.936  4083  4239 D GoogleBatteryDataSource: fetchTempDefendStatus: t_sum=367441, time_sum=1005 t_avg=365 lst_v=4287812 lst_t=319 lst_u=24753, dt=15759, t=0 e=1
+07-15 02:43:04.937  4083  4083 D KeyguardIndicationGoogle: isChargeLimitEnabled= false, user= 0
+07-15 02:43:04.937  4083  4239 D SystemEventDataSource: updatedEventData: SystemEventData(intentAction=android.intent.action.BATTERY_CHANGED, plugged=EventData(value=1), batteryScale=EventData(value=100), batteryLevel=EventData(value=95), chargingStatus=EventData(value=1), maxChargingCurrent=EventData(value=3000000), maxChargingVoltage=EventData(value=5000000), batteryStatus=EventData(value=4), halEventData=HalEventData(dockDefendStatus=EventData(value=-3), tempDefendEventData=EventData(value=false), dwellDefendEventData=EventData(value=false)), settingsEventData=SettingsEventData(dockDefenderBypass=EventData(value=0), chargingLimitSettings=EventData(value=0), dndState=EventData(value=false), airplaneState=EventData(value=false)), frameworkApiEventData=FrameworkApiEventData(batterySaverState=EventData(value=false), extremeBatterySaverState=EventData(value=false)))
+07-15 02:43:04.937  4083  4239 D ChargingLimitEventModule: validate()=false, chargingStatus=1
+07-15 02:43:04.937  4083  4239 D DwellDefendBatteryModule: validate: false -> false
+07-15 02:43:04.937  4083  4239 D TempDefendBatteryModule: validate: false -> false
+07-15 02:43:04.937  4083  4249 D BatteryEventService: collect BatteryEvents: BatteryEvents(eventTypes=[FAST_CHARGING], batteryLevel=95, pluggedType=1)
+07-15 02:43:04.938  4083  4249 D BatteryEventService: notifyForBatteryEventsUpdate: BatteryEvents(eventTypes=[FAST_CHARGING], batteryLevel=95, pluggedType=1)
+07-15 02:43:04.938  4083  4249 D BatteryEventService: AIDL callback listeners count: 1
+07-15 02:43:04.938  4083  4249 D BatteryEventService: aidlCallback: NOTIFICATION, events: []
+07-15 02:43:04.938  4083  4249 D BatteryEventClient: [PowerNotificationWarningsGoogleImpl] onBatteryEventChanged: [], batteryLevel: 95
+07-15 02:43:04.938  4083  4249 D PowerNotificationWarningsGoogleImpl: [onBatteryEventUpdate] []
+07-15 02:43:04.938  4083  4249 D BatteryDefenderNotification: onNonDefenderEvent: charged: false
+07-15 02:43:04.938  4083  4249 D BatteryEventService: notify AIDL callback to null, cost: 0 ms
+07-15 02:43:04.938  4083  4249 I BatteryEventService: notify all AIDL callbacks, cost: 0 ms
+07-15 02:43:04.938  4083  4249 D BatteryEventService: BatteryEventsListener (broadcast) count: 1
+07-15 02:43:04.938  4083  4249 D BatteryEventService: broadcastIntent(uid:0): Intent { act=com.google.android.battery_event.BATTERY_EVENTS_UPDATE cmp=com.google.android.apps.turbo/.batteryevent.BatteryEventUpdateReceiver (has extras) }, events:[]
+07-15 02:43:04.941  4083  4249 I BatteryEventService: notify all broadcast intent, cost: 3 ms
+07-15 02:43:04.941  4083  4249 D BatteryEventService: AIDL data callback listeners count: 0
+07-15 02:43:04.946  1410  1499 I bthal.activitywatcher: getStateResidency: ActivityStat{0 : totalTimeMs 4605718 totalEntryCount 11405 lastEntryMs 4189500}
+07-15 02:43:04.947  1410  1499 I bthal.activitywatcher: getStateResidency: ActivityStat{1 : totalTimeMs 891004 totalEntryCount 11458 lastEntryMs 4189575}
+07-15 02:43:04.947  1410  1499 I bthal.activitywatcher: getStateResidency: ActivityStat{2 : totalTimeMs 915356 totalEntryCount 26845 lastEntryMs 4189692}
+07-15 02:43:04.947  1410  1499 I bthal.activitywatcher: getStateResidency: ActivityStat{3 : totalTimeMs 188151 totalEntryCount 59266 lastEntryMs 4085460}
+07-15 02:43:04.949  1937  2111 D ActivityManager: sync unfroze 4478 com.android.settings for 3
+07-15 02:43:04.949  4083  4083 D PowerNotificationWarningsGoogleImpl: onReceive: android.intent.action.BATTERY_CHANGED
+07-15 02:43:04.949  4083  4083 D PulsarController: dispatchIntent: android.intent.action.BATTERY_CHANGED
+07-15 02:43:04.950  4083  4083 D IncompatibleChargerNotification: dispatchIntent: android.intent.action.BATTERY_CHANGED
+07-15 02:43:04.950  4083  4083 D BatteryReplacementNotification: battery health: 8, cycle count: 97
+07-15 02:43:04.956 16950 18089 W Turbo.OnDeviceBatteryHistory: addEvents: loaded 0 battery events.
+07-15 02:43:04.956 16950 18089 W Turbo.OnDeviceBatteryHistory: addEvents: loaded battery events completed.
+07-15 02:43:04.958  1410  1499 I bthal.activitywatcher: send_hci_activities_vsc: Sent VSC <[4]{89, 253, 1, 1}>
+07-15 02:43:04.959 16950 16950 W JobInfo : Job 'com.google.android.apps.turbo/.deadline.library.BatteryFlagService#201' has a deadline with no functional constraints. The deadline won't improve job execution latency. Consider removing the deadline.
+07-15 02:43:04.958  4478  4478 D BatteryUsageBroadcastReceiver: onReceive:android.intent.action.BATTERY_LEVEL_CHANGED
+07-15 02:43:04.959  1432  1432 W android.hardware.power.stats-service.pixel: getStateResidency latency for Bluetooth exceeded time allowed: 12507us
+07-15 02:43:04.959  1410  1704 I bthal.activitywatcher: filter_hci_activities_vse: Filtered <[103]{14, 101, 1, 89, 253, 0, 1, 15, 2, 0, 0, 177, 67, 3, 0, 209, 131, 49, 0, 0, 0, 0, 0, 160, 132, 49, 0, 0, 0, 0, 0, 16, 2, 0, 0, 92, 152, 0, 0, 160, 132, 49, 0, 0, 0, 0, 0, 209, 131, 49, 0, 0, 0, 0, 0, 39, 5, 0, 0, 119, 168, 0, 0, 139, 127, 49, 0, 0, 0, 0, 0, 147, 127, 49, 0, 0, 0, 0, 0, 151, 10, 0, 0, 57, 31, 0, 0, 197, 131, 49, 0, 0, 0, 0, 0, 198, 131, 49, 0, 0, 0, 0, 0}>
+07-15 02:43:04.959  1410  1704 I bthal.flowcontrol: HciEventPreProcess: HCI Event 0xe Opcode 0xfd59 Length 103 handled by ControllerActivityWatcher
+07-15 02:43:04.959  1937  2187 W JobInfo : Job 'com.google.android.apps.turbo/.deadline.library.BatteryFlagService#201' has a deadline with no functional constraints. The deadline won't improve job execution latency. Consider removing the deadline.
+07-15 02:43:04.959  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x0d [cntr = 1039]
+07-15 02:43:04.959  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x0d, rc: 0
+07-15 02:43:04.960  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x0e [cntr = 1040]
+07-15 02:43:04.960  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x0e, rc: 0
+07-15 02:43:04.960  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x0f [cntr = 1041]
+07-15 02:43:04.961  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x0f, rc: 0
+07-15 02:43:04.961  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x10 [cntr = 1042]
+07-15 02:43:04.961  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x10, rc: 0
+07-15 02:43:04.962  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x11 [cntr = 1043]
+07-15 02:43:04.962  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x11, rc: 0
+07-15 02:43:04.963  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x12 [cntr = 1044]
+07-15 02:43:04.963  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x12, rc: 0
+07-15 02:43:04.964  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x13 [cntr = 1045]
+07-15 02:43:04.964 16950 18089 W Turbo.RemainingTimeModelLoader: Start to load model for: [battery_remaining_time] model file with new version 20231009
+07-15 02:43:04.964  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x13, rc: 0
+07-15 02:43:04.964  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x14 [cntr = 1046]
+07-15 02:43:04.964  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x14, rc: 0
+07-15 02:43:04.968  1937  2187 W JobInfo : Job 'com.google.android.apps.turbo/.deadline.library.DeadlineUpdateJobService#200' has a deadline with no functional constraints. The deadline won't improve job execution latency. Consider removing the deadline.
+07-15 02:43:04.968  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x15 [cntr = 1047]
+07-15 02:43:04.968  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x15, rc: 0
+07-15 02:43:04.968  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x16 [cntr = 1048]
+07-15 02:43:04.968  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x16, rc: 0
+07-15 02:43:04.968  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x17 [cntr = 1049]
+07-15 02:43:04.968  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x17, rc: 0
+07-15 02:43:04.968  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x18 [cntr = 1050]
+07-15 02:43:04.968  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x18, rc: 0
+07-15 02:43:04.968  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x19 [cntr = 1051]
+07-15 02:43:04.968  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x19, rc: 0
+07-15 02:43:04.968  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x1a [cntr = 1052]
+07-15 02:43:04.968  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x1a, rc: 0
+07-15 02:43:04.969  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x1b [cntr = 1053]
+07-15 02:43:04.969  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x1b, rc: 0
+07-15 02:43:04.969  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x1c [cntr = 1054]
+07-15 02:43:04.969 16950 18089 W Turbo.EstimatedTimeRemainingProvider: queryTimeToDischarge: 324132672
+07-15 02:43:04.971  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x1c, rc: 0
+07-15 02:43:04.971  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x1d [cntr = 1055]
+07-15 02:43:04.971  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x1d, rc: 0
+07-15 02:43:04.974  4083  5191 D PowerUI : can't show warning due to - plugged: true status unknown: false
+07-15 02:43:04.980 16950 16950 W JobInfo : Job 'com.google.android.apps.turbo/.nudges.broadcasts.BatteryHistoryLoggerJobService#2' has a deadline with no functional constraints. The deadline won't improve job execution latency. Consider removing the deadline.
+07-15 02:43:04.982  1937  4334 D ActivityManager: sync unfroze 12813 com.google.android.turboadapter for 6
+07-15 02:43:04.983  1937  2187 W JobInfo : Job 'com.google.android.apps.turbo/.nudges.broadcasts.BatteryHistoryLoggerJobService#2' has a deadline with no functional constraints. The deadline won't improve job execution latency. Consider removing the deadline.
+07-15 02:43:05.010 16950 17703 W Turbo.RemainingTimeModelLoader: Start to load model for: [battery_remaining_time] model file with new version 20231009
+07-15 02:43:05.012 16950 17703 W Turbo.EstimatedTimeRemainingProvider: queryTimeToDischarge: 324132672
+07-15 02:43:05.014 16950 17703 W Turbo.RemainingTimeModelLoader: Start to load model for: [battery_remaining_time] model file with new version 20231009
+07-15 02:43:05.016 16950 17703 W Turbo.OnDeviceBatteryHistory: addEvents: loaded 0 battery events.
+07-15 02:43:05.016 16950 17703 W Turbo.OnDeviceBatteryHistory: addEvents: loaded battery events completed.
+07-15 02:43:05.059  1410  1499 I bthal.activitywatcher: getStateResidency: ActivityStat{0 : totalTimeMs 4819655 totalEntryCount 11932 lastEntryMs 4189500}
+07-15 02:43:05.059  1410  1499 I bthal.activitywatcher: getStateResidency: ActivityStat{1 : totalTimeMs 930008 totalEntryCount 11986 lastEntryMs 4189575}
+07-15 02:43:05.059  1410  1499 I bthal.activitywatcher: getStateResidency: ActivityStat{2 : totalTimeMs 958483 totalEntryCount 28164 lastEntryMs 4189692}
+07-15 02:43:05.059  1410  1499 I bthal.activitywatcher: getStateResidency: ActivityStat{3 : totalTimeMs 196144 totalEntryCount 61977 lastEntryMs 4085460}
+07-15 02:43:05.059  1410  1499 I bthal.activitywatcher: send_hci_activities_vsc: Sent VSC <[4]{89, 253, 1, 1}>
+07-15 02:43:05.060  1410  1704 I bthal.activitywatcher: filter_hci_activities_vse: Filtered <[103]{14, 101, 1, 89, 253, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 209, 131, 49, 0, 0, 0, 0, 0, 160, 132, 49, 0, 0, 0, 0, 0, 1, 0, 0, 0, 46, 0, 0, 0, 160, 132, 49, 0, 0, 0, 0, 0, 209, 131, 49, 0, 0, 0, 0, 0, 5, 0, 0, 0, 46, 0, 0, 0, 246, 132, 49, 0, 0, 0, 0, 0, 10, 133, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 197, 131, 49, 0, 0, 0, 0, 0, 198, 131, 49, 0, 0, 0, 0, 0}>
+07-15 02:43:05.060  1410  1704 I bthal.flowcontrol: HciEventPreProcess: HCI Event 0xe Opcode 0xfd59 Length 103 handled by ControllerActivityWatcher
+07-15 02:43:05.060  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x1e [cntr = 1056]
+07-15 02:43:05.060  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x1e, rc: 0
+07-15 02:43:05.060  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x1f [cntr = 1057]
+07-15 02:43:05.061  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x1f, rc: 0
+07-15 02:43:05.061  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x20 [cntr = 1058]
+07-15 02:43:05.061  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x20, rc: 0
+07-15 02:43:05.061  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x21 [cntr = 1059]
+07-15 02:43:05.062  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x21, rc: 0
+07-15 02:43:05.062  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x22 [cntr = 1060]
+07-15 02:43:05.062  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x22, rc: 0
+07-15 02:43:05.063  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x23 [cntr = 1061]
+07-15 02:43:05.063  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x23, rc: 0
+07-15 02:43:05.063  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x24 [cntr = 1062]
+07-15 02:43:05.063  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x24, rc: 0
+07-15 02:43:05.064  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x25 [cntr = 1063]
+07-15 02:43:05.064  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x25, rc: 0
+07-15 02:43:05.064  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x26 [cntr = 1064]
+07-15 02:43:05.065  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x26, rc: 0
+07-15 02:43:05.065  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x27 [cntr = 1065]
+07-15 02:43:05.065  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x27, rc: 0
+07-15 02:43:05.065  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x28 [cntr = 1066]
+07-15 02:43:05.066  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x28, rc: 0
+07-15 02:43:05.066  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x29 [cntr = 1067]
+07-15 02:43:05.066  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x29, rc: 0
+07-15 02:43:05.067  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x2a [cntr = 1068]
+07-15 02:43:05.067  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x2a, rc: 0
+07-15 02:43:05.067  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x2b [cntr = 1069]
+07-15 02:43:05.067  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x2b, rc: 0
+07-15 02:43:05.068  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x2c [cntr = 1070]
+07-15 02:43:05.068  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x2c, rc: 0
+07-15 02:43:05.068  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x2d [cntr = 1071]
+07-15 02:43:05.068  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x2d, rc: 0
+07-15 02:43:05.069  1671  1671 D AOC     : A3:MSG: controller.cc, 273: CNTRL: cmd ID: 0x000a, tag: 0x2e [cntr = 1072]
+07-15 02:43:05.069  1671  1671 D AOC     : A3:MSG: controller.cc, 811: CNTRL: ipc: control, cmd ID: 0x000a, tag: 0x2e, rc: 0
+07-15 02:43:07.334  1694  1694 I adbd    : adbd service requested 'shell,v2,TERM=dumb,raw:input tap 1200 695'
+07-15 02:43:07.362  1937  3984 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+07-15 02:43:07.364  1937  3984 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+07-15 02:43:07.364  1937  3984 D InetDiagMessage: Destroyed live tcp sockets for uids={10305} in 3ms
+07-15 02:43:07.365  1937  3984 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+07-15 02:43:07.367  1937  3984 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+07-15 02:43:07.367  1937  3984 D InetDiagMessage: Destroyed live tcp sockets for uids={20305} in 2ms
+07-15 02:43:07.457 32762   364 E godot   : SCRIPT ERROR: Parse Error: Cannot infer the type of "visual" variable because the value doesn't have a set type.
+07-15 02:43:07.457 32762   364 E godot   :    at: GDScript::reload (res://scripts/race/RaceScene.gd:154)
+07-15 02:43:07.457 32762   364 E godot   : SCRIPT ERROR: Parse Error: Cannot infer the type of "visual" variable because the value doesn't have a set type.
+07-15 02:43:07.457 32762   364 E godot   :    at: GDScript::reload (res://scripts/race/RaceScene.gd:166)
+07-15 02:43:07.460 32762   364 E godot   : ERROR: Failed to load script "res://scripts/race/RaceScene.gd" with error "Parse error".
+07-15 02:43:07.460 32762   364 E godot   :    at: load (modules/gdscript/gdscript.cpp:3041)
+07-15 02:43:07.500 32762   364 E godot   : ERROR: Condition "!is_inside_tree()" is true. Returning: false
+07-15 02:43:07.500 32762   364 E godot   :    at: can_process (scene/main/node.cpp:889)
+07-15 02:43:07.535  1449  4753 I WifiHAL : Creating message to get link statistics; iface = 47
+07-15 02:43:07.625  1449  4753 D WifiHAL : Start debug command: mType GET_FEATURE
+07-15 02:43:07.625  1449  4753 I WifiHAL : CreateRequest mType = GET_FEATURE
+07-15 02:43:07.626  1449  4753 D WifiHAL : In DebugCommand::handleResponse, mType:GET_FEATURE
+07-15 02:43:07.626  1449  4753 D WifiHAL : len = 4, expected len = 4
+07-15 02:43:08.106  1579  1600 I WPKTRT  : process_address_event: 2601:243:e186:2200:5c8f:ffff:fee2:91ed added to wlan0
+07-15 02:43:08.107  1579  1600 I WPKTRT  : process_address_event: 2601:243:e186:2200:643d:992:e1cf:4db5 added to wlan0
+07-15 02:43:08.110  4164  4887 D IpClient/wlan0: addressUpdated: 2601:243:e186:2200:5c8f:ffff:fee2:91ed/64 on ifindex 47 flags 0x00000100 scope 0
+07-15 02:43:08.112  4164  4887 D IpClient/wlan0: addressUpdated: 2601:243:e186:2200:643d:992:e1cf:4db5/64 on ifindex 47 flags 0x00000001 scope 0
+07-15 02:43:08.112  4164  4887 W AlarmManager: Unrecognized alarm listener com.android.networkstack.android.net.ip.IpClientLinkObserver$Dhcp6PdPreferredPrefixAlarmListener@1e12344
+07-15 02:43:08.114  4164  4887 D ApfFilter: (wlan0): Ignoring RA RA fe80::eea8:1fff:fe03:27a -> ff02::1 180s 2601:243:e186:2200::/64 3834s/3834s DNS 180s 2001:558:feed::1 2001:558:feed::2 RIO 180s ::/0  which matches RA fe80::eea8:1fff:fe03:27a -> ff02::1 180s 2601:243:e186:2200::/64 3834s/3834s DNS 180s 2001:558:feed::1 2001:558:feed::2 RIO 180s ::/0 
+07-15 02:43:08.297 32762   406 D ProfileInstaller: Installing profile for com.gunnchos.pedestrianpursuit
+07-15 02:43:09.720  2118  2129 I pixel-thermal: neutral_therm:32.529 raw data: neutral_therm:32529 
+07-15 02:43:09.721  2118  2129 I pixel-thermal: VIRTUAL-SKIN:33.2758 raw data: VIRTUAL-NEUTRAL:33275.8 VIRTUAL-NEUTRAL-SKIN2:33150 VIRTUAL-QUIET-NEUTRAL:32108.3 VIRTUAL-SKIN:33275.8 disp_therm:31594 gnss_tcxo_therm:33731 neutral_therm:32529 quiet_therm:31928 skin_therm1:33976 skin_therm2:34599 
+07-15 02:43:09.721  2118  2129 I pixel-thermal: VIRTUAL-SKIN-CPU-GPU:33.2758 raw data: VIRTUAL-SKIN:33275.8 VIRTUAL-SKIN-CPU-GPU:33275.8 
+07-15 02:43:09.721  2118  2129 I pixel-thermal: VIRTUAL-SKIN-HINT:33.2758 raw data: VIRTUAL-SKIN:33275.8 VIRTUAL-SKIN-HINT:33275.8 
+07-15 02:43:09.721  2118  2129 I pixel-thermal: VIRTUAL-SKIN-CHARGE:33.2758 raw data: VIRTUAL-SKIN:33275.8 VIRTUAL-SKIN-CHARGE:33275.8 
+07-15 02:43:10.632  1449  1449 I WifiHAL : Creating message to get link statistics; iface = 47
+07-15 02:43:10.721  1449  4753 D WifiHAL : Start debug command: mType GET_FEATURE
+07-15 02:43:10.721  1449  4753 I WifiHAL : CreateRequest mType = GET_FEATURE
+07-15 02:43:10.721  1449  4753 D WifiHAL : In DebugCommand::handleResponse, mType:GET_FEATURE
+07-15 02:43:10.721  1449  4753 D WifiHAL : len = 4, expected len = 4
+07-15 02:43:10.971  1579  1600 I WPKTRT  : process_address_event: 2601:243:e186:2200:5c8f:ffff:fee2:91ed added to wlan0
+07-15 02:43:10.972  1579  1600 I WPKTRT  : process_address_event: 2601:243:e186:2200:643d:992:e1cf:4db5 added to wlan0
+07-15 02:43:10.977  4164  4887 D IpClient/wlan0: addressUpdated: 2601:243:e186:2200:5c8f:ffff:fee2:91ed/64 on ifindex 47 flags 0x00000100 scope 0
+07-15 02:43:10.977  4164  4887 D IpClient/wlan0: addressUpdated: 2601:243:e186:2200:643d:992:e1cf:4db5/64 on ifindex 47 flags 0x00000001 scope 0
+07-15 02:43:10.977  4164  4887 W AlarmManager: Unrecognized alarm listener com.android.networkstack.android.net.ip.IpClientLinkObserver$Dhcp6PdPreferredPrefixAlarmListener@1e12344
+07-15 02:43:10.979  4164  4887 D ApfFilter: (wlan0): Ignoring RA RA fe80::eea8:1fff:fe03:27a -> ff02::1 180s 2601:243:e186:2200::/64 3834s/3834s DNS 180s 2001:558:feed::1 2001:558:feed::2 RIO 180s ::/0  which matches RA fe80::eea8:1fff:fe03:27a -> ff02::1 180s 2601:243:e186:2200::/64 3834s/3834s DNS 180s 2001:558:feed::1 2001:558:feed::2 RIO 180s ::/0 
+07-15 02:43:11.006  4404  4675 D EuiccConnector: handleMessage: E msg.what=3
+07-15 02:43:11.007  4404  4675 D EuiccConnector: processMsg: ConnectedState
+07-15 02:43:11.011  4813  4813 I EuiccGoogle: [2] EuiccServiceImpl.onDestroy: onDestroy: EuiccService on destroy.
+07-15 02:43:11.013  4404  4675 D EuiccConnector: transitionTo: destState=AvailableState
+07-15 02:43:11.013  4404  4675 D EuiccConnector: handleMessage: new destination call exit/enter
+07-15 02:43:11.013  4404  4675 D EuiccConnector: setupTempStateStackWithStatesToEnter: X mTempStateStackCount=2,curStateInfo: null
+07-15 02:43:11.013  4404  4675 D EuiccConnector: invokeExitMethods: ConnectedState
+07-15 02:43:11.013  4404  4675 D EuiccConnector: invokeExitMethods: DisconnectedState
+07-15 02:43:11.013  4404  4675 D EuiccConnector: moveTempStackToStateStack: i=1,j=0
+07-15 02:43:11.013  4404  4675 D EuiccConnector: moveTempStackToStateStack: i=0,j=1
+07-15 02:43:11.013  4404  4675 D EuiccConnector: moveTempStackToStateStack: X mStateStackTop=1,startingIndex=0,Top=AvailableState
+07-15 02:43:11.013  4404  4675 D EuiccConnector: invokeEnterMethods: UnavailableState
+07-15 02:43:11.013  4404  4675 D EuiccConnector: invokeEnterMethods: AvailableState
+07-15 02:43:11.013  4404  4675 D EuiccConnector: handleMessage: X
+07-15 02:43:11.324  1937  6989 I AppSearchIcing: icing-search-engine.cc:2487: Persisting data to disk with mode 3
+07-15 02:43:11.336  1937  6989 I AppSearchIcing: icing-search-engine.cc:2502: PersistToDisk completed.
+07-15 02:43:11.416  2118  2129 I pixel-thermal: cellular-emergency:33.2758 raw data: VIRTUAL-SKIN:33275.8 cellular-emergency:33275.8 
+07-15 02:43:11.416  2118  2129 I pixel-thermal: VIRTUAL-SKIN-CPU:33.2758 raw data: VIRTUAL-SKIN:33275.8 VIRTUAL-SKIN-CPU:33275.8 
+07-15 02:43:11.504  1937  2372 D ActivityManager: freezing 20822 com.android.providers.calendar
+07-15 02:43:11.511  1937  3984 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+07-15 02:43:11.514  1937  3984 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+07-15 02:43:11.514  1937  3984 D InetDiagMessage: Destroyed live tcp sockets for uids={10064} in 6ms
+07-15 02:43:12.359  1937  2372 D ActivityManager: freezing 12260 com.google.android.apps.pixel.dcservice
+07-15 02:43:12.362  1937  3984 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+07-15 02:43:12.363  1937  3984 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+07-15 02:43:12.363  1937  3984 D InetDiagMessage: Destroyed live tcp sockets for uids={10305} in 3ms
+07-15 02:43:13.079  1937  2372 D ActivityManager: freezing 18474 com.android.vending
+07-15 02:43:13.086  1937  2372 D ActivityManager: freezing 18487 com.android.vending:background
+07-15 02:43:13.092  1937  3984 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+07-15 02:43:13.095  1937  3984 D InetDiagMessage: Destroyed 1 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+07-15 02:43:13.095  1937  3984 D InetDiagMessage: Destroyed live tcp sockets for uids={10114} in 6ms
+07-15 02:43:13.236  4246  4351 D TemperatureStateSource: sequence=2445 actualDelay=10001
+07-15 02:43:13.238  4246  4351 D TemperatureStateSource: Reading temperature: sequence=2446
+07-15 02:43:13.242  2118  2118 I pixel-thermal: VIRTUAL-SKIN:33.2758 raw data: VIRTUAL-NEUTRAL:33275.8 VIRTUAL-NEUTRAL-SKIN2:33150 VIRTUAL-QUIET-NEUTRAL:32108.3 VIRTUAL-SKIN:33275.8 disp_therm:31594 gnss_tcxo_therm:33731 neutral_therm:32529 quiet_therm:31928 skin_therm1:33976 skin_therm2:34599 
+07-15 02:43:13.243  4246  4351 D TemperatureStateSource: getDeviceTemperatures: sequence=2446 deviceTemperatureType=3 temperatureSource=0 temperatures=[33.275803]
+07-15 02:43:13.243  4246  4351 D TemperatureStateSource: sequence=2446 waitTime=10000
+07-15 02:43:13.244  4246  4354 D ImpulseStateSource: Notify clients: 2478
+07-15 02:43:13.726  1449  4753 I WifiHAL : Creating message to get link statistics; iface = 47
+07-15 02:43:13.814  1449  4753 D WifiHAL : Start debug command: mType GET_FEATURE
+07-15 02:43:13.815  1449  4753 I WifiHAL : CreateRequest mType = GET_FEATURE
+07-15 02:43:13.815  1449  4753 D WifiHAL : In DebugCommand::handleResponse, mType:GET_FEATURE
+07-15 02:43:13.815  1449  4753 D WifiHAL : len = 4, expected len = 4
+07-15 02:43:13.839  1579  1600 I WPKTRT  : process_address_event: 2601:243:e186:2200:5c8f:ffff:fee2:91ed added to wlan0
+07-15 02:43:13.839  1579  1600 I WPKTRT  : process_address_event: 2601:243:e186:2200:643d:992:e1cf:4db5 added to wlan0
+07-15 02:43:13.843  4164  4887 D IpClient/wlan0: addressUpdated: 2601:243:e186:2200:5c8f:ffff:fee2:91ed/64 on ifindex 47 flags 0x00000100 scope 0
+07-15 02:43:13.843  4164  4887 D IpClient/wlan0: addressUpdated: 2601:243:e186:2200:643d:992:e1cf:4db5/64 on ifindex 47 flags 0x00000001 scope 0
+07-15 02:43:13.843  4164  4887 W AlarmManager: Unrecognized alarm listener com.android.networkstack.android.net.ip.IpClientLinkObserver$Dhcp6PdPreferredPrefixAlarmListener@1e12344
+07-15 02:43:13.845  4164  4887 D ApfFilter: (wlan0): Ignoring RA RA fe80::eea8:1fff:fe03:27a -> ff02::1 180s 2601:243:e186:2200::/64 3834s/3834s DNS 180s 2001:558:feed::1 2001:558:feed::2 RIO 180s ::/0  which matches RA fe80::eea8:1fff:fe03:27a -> ff02::1 180s 2601:243:e186:2200::/64 3834s/3834s DNS 180s 2001:558:feed::1 2001:558:feed::2 RIO 180s ::/0 
+07-15 02:43:14.541  2118  2129 I pixel-thermal: VIRTUAL-USB-UI:0 raw data: USB2-MINUS-CHG:-4140 VIRTUAL-USB-UI:0 charger_skin_therm:36135 usb_pwr_therm2:31995 
+07-15 02:43:14.541  2118  2129 I pixel-thermal: VIRTUAL-USB-THROTTLING:0 raw data: USB2-MINUS-CHG:-4140 VIRTUAL-USB-THROTTLING:0 usb_pwr_therm2:31995 
+07-15 02:43:14.541  2118  2129 I pixel-thermal: Power rails total power: 649.76 mW for 60009 ms
+07-15 02:43:14.541  2118  2129 I pixel-thermal: Power rails [L8S_UFS_VCCQ: 29.70 mW] [S2S_VDD_G3D: 38.12 mW] [S10S_VDD2L: 28.41 mW] [S5S_VDDQ_MEM: 9.42 mW] [S4S_VDD2H_MEM: 44.38 mW] [S9S_VDD_AOC: 23.97 mW] 
+07-15 02:43:14.541  2118  2129 I pixel-thermal: Power rails [S10M_VDD_TPU: 12.31 mW] [L2S_VDD_AOC_RET: 8.49 mW] [L9S_GNSS_CORE: 0.59 mW] [S1M_VDD_MIF: 61.77 mW] [S5M_VDD_INT: 35.72 mW] [S4M_VDD_CPUCL0: 117.04 mW] 
+07-15 02:43:14.541  2118  2129 I pixel-thermal: Power rails [S2M_VDD_CPUCL2: 68.89 mW] [S3M_VDD_CPUCL1: 37.74 mW] [L15M_VDD_SLC_M: 15.71 mW] [VSYS_PWR_DISPLAY: 117.51 mW] 
+07-15 02:43:14.541  2118  2129 I pixel-thermal: CDEV log usbc-port state:0 fcc state:0 thermal-cpufreq-1 state:0 tpu_cooling state:0 thermal-gpufreq-0 state:0 thermal-cpufreq-2 state:0 thermal-cpufreq-0 state:0 
+07-15 02:43:14.980  1937  2372 D ActivityManager: freezing 4478 com.android.settings
+07-15 02:43:15.005  1937  2372 D ActivityManager: freezing 12813 com.google.android.turboadapter
+07-15 02:43:15.011  1937  3984 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+07-15 02:43:15.013  1937  3984 D InetDiagMessage: Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+07-15 02:43:15.014  1937  3984 D InetDiagMessage: Destroyed live tcp sockets for uids={10199} in 6ms
+07-15 02:43:15.434  1694  1694 I adbd    : adbd service requested 'shell,v2,TERM=dumb:export ANDROID_LOG_TAGS=''; exec logcat '-d' '-t' '500''

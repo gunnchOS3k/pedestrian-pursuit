@@ -8,13 +8,22 @@ var _player: Node = null
 var _visible: bool = false
 
 
+func _ready() -> void:
+	visible = false
+	_visible = false
+
+
 func setup(player: Node) -> void:
 	_player = player
 	visible = false
+	_visible = false
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_F3:
+		# Release builds keep this off unless explicitly enabled in editor.
+		if OS.has_feature("release") and not OS.is_debug_build():
+			return
 		_visible = not _visible
 		visible = _visible
 

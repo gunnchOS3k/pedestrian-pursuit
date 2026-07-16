@@ -1,0 +1,5 @@
+=== pedestrian 0.3.6 2026-07-15T08:02:10Z ===
+SHA-256: 4585c9507191f52d1d424c7ee2256375056e1c047cd84522c8bd55019a08f620
+versionName 0.3.6 versionCode 10
+package com.gunnchos.pedestrianpursuit
+fixes: RaceScene typed := parse failure; MobileControls Control Buttons for ADB/tap accelerate; countdown timer sequence; hide Debug overlay

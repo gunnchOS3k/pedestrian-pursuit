@@ -12,10 +12,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -220.0
-offset_top = -205.0
-offset_right = 220.0
-offset_bottom = 205.0
+offset_left = -240.0
+offset_top = -250.0
+offset_right = 240.0
+offset_bottom = 250.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -52,6 +52,12 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
 text = "Position: 1"
+horizontal_alignment = 1
+
+[node name="PodiumLabel" type="Label" parent="Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Podium"
 horizontal_alignment = 1
 
 [node name="CupSummaryLabel" type="Label" parent="Panel/Margin/VBox"]

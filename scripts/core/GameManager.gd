@@ -8,6 +8,7 @@ enum RaceMode { SINGLE, CUP, TIME_TRIAL, PRACTICE }
 
 var current_race_mode: RaceMode = RaceMode.SINGLE
 var selected_racer_id: String = "dash"
+var selected_runner_id: String = "dash_reed"
 var selected_shoe_id: String = "starter_soles"
 var selected_track_id: String = "verdant_cascade_circuit"
 var total_laps: int = 3
@@ -25,6 +26,8 @@ var auto_accelerate: bool = false
 var accept_test_mode: bool = false
 var accept_force_laps: int = 0
 var accept_steer: float = 0.0
+## Soft racing-line assist for touch/Android (player still holds accelerate).
+var mobile_assist_steer: float = 0.0
 
 var last_race_time: float = 0.0
 var last_race_position: int = 1

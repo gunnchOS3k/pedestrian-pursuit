@@ -28,6 +28,8 @@ var _finished_count: int = 0
 
 
 func _ready() -> void:
+	# Keep countdown/race clocks running even if a pause overlay toggles incorrectly.
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	lap_manager.racer_finished.connect(_on_racer_finished)
 
 
@@ -50,11 +52,34 @@ func setup_race(racers: Array, player: Node, checkpoints: Array, laps: int) -> v
 
 
 func begin_countdown() -> void:
+	var tree := get_tree()
+	if tree != null and tree.paused:
+		tree.paused = false
 	state = RaceState.COUNTDOWN
 	_countdown_timer = float(countdown_seconds) + 1.0
 	_player_pressed_early = false
 	_go_time = -1.0
 	countdown_tick.emit(str(countdown_seconds))
+	# Prefer timer-driven countdown — more reliable on Android than delta alone.
+	call_deferred("_countdown_sequence")
+
+
+func _countdown_sequence() -> void:
+	if state != RaceState.COUNTDOWN:
+		return
+	var tree := get_tree()
+	if tree == null:
+		return
+	# Strict 3→2→1→GO. Avoid input checks mid-await (can abort the coroutine on Android).
+	for value in range(countdown_seconds, 0, -1):
+		if state != RaceState.COUNTDOWN:
+			return
+		countdown_tick.emit(str(value))
+		await tree.create_timer(1.0, true, false, true).timeout
+	if state != RaceState.COUNTDOWN:
+		return
+	countdown_tick.emit("GO!")
+	_start_race()
 
 
 func _process(delta: float) -> void:
@@ -70,17 +95,12 @@ func _process(delta: float) -> void:
 
 
 func _process_countdown(delta: float) -> void:
+	# Parallel safety net — if await-timers stall, delta still finishes the start.
 	_countdown_timer -= delta
-	var display_val := ceili(_countdown_timer)
-	if display_val <= countdown_seconds and display_val > 0:
+	var display_val := ceili(_countdown_timer) - 1
+	if display_val <= countdown_seconds and display_val >= 1:
 		countdown_tick.emit(str(display_val))
-	if _countdown_timer <= 1.0 and _countdown_timer > 0.0:
-		player_start_boost_window = true
-		if InputManager.is_accelerating():
-			_go_time = _countdown_timer
-	if InputManager.is_accelerating() and _countdown_timer > 1.05:
-		_player_pressed_early = true
-	if _countdown_timer <= 0.0:
+	if _countdown_timer <= 0.0 and state == RaceState.COUNTDOWN:
 		countdown_tick.emit("GO!")
 		_start_race()
 

@@ -2,12 +2,15 @@ extends CanvasLayer
 
 ## Multi-touch controls for Android. Buttons inject the same InputMap actions used
 ## by keyboard and gamepads, so gameplay code has one input path.
+##
+## Uses Control Buttons (not only TouchScreenButton) so ADB / mouse-emulated taps
+## also hold accelerate correctly on Pixel playtests.
 
 signal pause_requested
 
 @export var show_on_desktop: bool = false
 
-var _button_root: Node2D
+var _button_root: Control
 
 
 func _ready() -> void:
@@ -15,8 +18,10 @@ func _ready() -> void:
 		return
 	layer = 20
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	_button_root = Node2D.new()
+	_button_root = Control.new()
 	_button_root.name = "Buttons"
+	_button_root.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_button_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_button_root)
 	_build_buttons(get_viewport().get_visible_rect().size)
 
@@ -133,43 +138,30 @@ func _add_button(
 	label_text: String,
 	color: Color
 ) -> void:
-	var button := TouchScreenButton.new()
+	var button := Button.new()
 	button.name = button_name
-	button.position = center
-	if not action.is_empty():
-		button.action = action
-	button.visibility_mode = (
-		TouchScreenButton.VISIBILITY_ALWAYS
-		if show_on_desktop
-		else TouchScreenButton.VISIBILITY_TOUCHSCREEN_ONLY
-	)
+	button.text = label_text
+	button.focus_mode = Control.FOCUS_NONE
+	button.position = center - size * 0.5
+	button.size = size
+	button.modulate = Color(1, 1, 1, 0.92)
+	var style := StyleBoxFlat.new()
+	style.bg_color = color
+	style.corner_radius_top_left = 10
+	style.corner_radius_top_right = 10
+	style.corner_radius_bottom_left = 10
+	style.corner_radius_bottom_right = 10
+	button.add_theme_stylebox_override("normal", style)
+	button.add_theme_stylebox_override("pressed", style)
+	button.add_theme_stylebox_override("hover", style)
+	button.add_theme_font_size_override("font_size", 18)
+	button.add_theme_color_override("font_color", Color.WHITE)
 	if button_name == "Pause":
 		button.pressed.connect(func(): pause_requested.emit())
-	var shape := RectangleShape2D.new()
-	shape.size = size
-	button.shape = shape
-
-	var background := Polygon2D.new()
-	var half := size * 0.5
-	background.polygon = PackedVector2Array(
-		[
-			Vector2(-half.x, -half.y),
-			Vector2(half.x, -half.y),
-			Vector2(half.x, half.y),
-			Vector2(-half.x, half.y),
-		]
-	)
-	background.color = color
-	button.add_child(background)
-
-	var label := Label.new()
-	label.position = -half
-	label.size = size
-	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.text = label_text
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.add_theme_font_size_override("font_size", 18)
-	label.add_theme_color_override("font_color", Color.WHITE)
-	button.add_child(label)
+	elif not action.is_empty():
+		button.button_down.connect(func(): Input.action_press(action))
+		button.button_up.connect(func():
+			if Input.is_action_pressed(action):
+				Input.action_release(action)
+		)
 	_button_root.add_child(button)
