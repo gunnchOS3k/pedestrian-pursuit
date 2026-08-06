@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gunnchos.local/gate1/contracts/game_core_loop.schema.json",
+  "title": "Gate1GameCoreLoopEvent",
+  "description": "Machine-readable core-loop event for Gate 1 game completion evidence. App launch alone is not core-loop completion.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "game",
+    "build_id",
+    "commit",
+    "platform",
+    "session_id",
+    "step",
+    "timestamp",
+    "result",
+    "state_checksum",
+    "evidence_type"
+  ],
+  "properties": {
+    "game": {
+      "type": "string",
+      "enum": [
+        "beatlink-party",
+        "archive-of-life-artifact-world",
+        "pedestrian-pursuit",
+        "anime-aggressors"
+      ]
+    },
+    "build_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Build or package identifier for the run under test."
+    },
+    "commit": {
+      "type": "string",
+      "minLength": 7,
+      "description": "Git commit SHA (short or full) of the tree under test."
+    },
+    "platform": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Runtime platform (e.g. node, web, godot-headless, ios, android, macos)."
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Opaque id grouping one continuous core-loop attempt."
+    },
+    "step": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Ordered core-loop step name for the specific game."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "result": {
+      "type": "string",
+      "enum": ["pass", "fail", "skip", "pending"]
+    },
+    "state_checksum": {
+      "type": "string",
+      "minLength": 8,
+      "description": "Deterministic checksum of authoritative game/save state after the step."
+    },
+    "evidence_type": {
+      "type": "string",
+      "enum": [
+        "automated_logic",
+        "runtime_smoke",
+        "manual_device",
+        "screen_recording",
+        "log_collector",
+        "save_checksum",
+        "performance_sample",
+        "accessibility_check"
+      ]
+    },
+    "detail": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Optional step-specific payload (non-authoritative)."
+    }
+  }
+}
