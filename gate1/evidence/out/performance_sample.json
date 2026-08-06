@@ -1,0 +1,8 @@
+{
+  "game": "pedestrian-pursuit",
+  "evidence_type": "performance_sample",
+  "timestamp": "2026-08-06T20:13:10.210269Z",
+  "sample_ms": 1.7479170055594295,
+  "hook": "python_cpu_microbench",
+  "n": 199990
+}

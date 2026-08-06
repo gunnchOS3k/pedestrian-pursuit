@@ -1,0 +1,8 @@
+{
+  "game": "pedestrian-pursuit",
+  "CORE_LOOP_IMPLEMENTED": "CORE_LOOP_IMPLEMENTED",
+  "CORE_LOOP_AUTOMATED_EVIDENCE_PASS": "CORE_LOOP_AUTOMATED_EVIDENCE_PASS",
+  "PHYSICAL_PLAYTEST_PENDING": "PHYSICAL_PLAYTEST_PENDING",
+  "branch": "cursor/gate-1-integrated-development-platform",
+  "updated_at": "2026-08-06T20:13:10.177846Z"
+}

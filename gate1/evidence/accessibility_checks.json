@@ -1,0 +1,11 @@
+{
+  "game": "pedestrian-pursuit",
+  "checks": [
+    {"id": "a11y_focus_order", "description": "Primary flow controls reachable in logical order", "result": "pending_physical"},
+    {"id": "a11y_contrast", "description": "Critical HUD text readable against backgrounds", "result": "pending_physical"},
+    {"id": "a11y_motion", "description": "No seizure-inducing flashing in core loop", "result": "pending_physical"},
+    {"id": "a11y_input_labels", "description": "Roles/actions labeled for active vs audience or equivalent", "result": "pending_physical"},
+    {"id": "a11y_failure_feedback", "description": "Fail/KO/finish states announced visually (and audio if present)", "result": "pending_physical"}
+  ],
+  "status": "PHYSICAL_PLAYTEST_PENDING"
+}

@@ -1,0 +1,21 @@
+{
+  "game": "pedestrian-pursuit",
+  "statuses": {
+    "CORE_LOOP_IMPLEMENTED": true,
+    "CORE_LOOP_AUTOMATED_EVIDENCE_PASS": true,
+    "PHYSICAL_PLAYTEST_PENDING": true
+  },
+  "event_count": 9,
+  "required_steps": [
+    "launch",
+    "select_racer_course",
+    "start",
+    "movement",
+    "drift_boost_mastery",
+    "item_obstacle",
+    "finish",
+    "results",
+    "restart_rematch"
+  ],
+  "written_at": "2026-08-06T20:13:10.177649Z"
+}
