@@ -37,3 +37,9 @@ export/
 
 # Logs
 *.log
+
+# Gate 1 runtime evidence outputs
+gate1/evidence/out/**
+!gate1/evidence/out/**/.gitkeep
+gate1/status/*
+!gate1/status/.gitkeep

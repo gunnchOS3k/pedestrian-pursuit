@@ -1,0 +1,77 @@
+name: Gate 1 post-merge integrity
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gate1-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gate1-core-loop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Fail on master as active base/default
+        run: |
+          set -euo pipefail
+          if grep -RInE --include='*.yml' --include='*.yaml' \
+            -e 'branches:[[:space:]]*\[[^]]*master' \
+            -e 'default[_-]branch:[[:space:]]*master' \
+            -e 'base:[[:space:]]*master' \
+            .github/workflows 2>/dev/null; then
+            echo "MAIN_BRANCH_POLICY_FAIL: active master default/base ref in workflows"
+            exit 1
+          fi
+          echo "MAIN_BRANCH_POLICY_OK"
+
+      - name: Gate1 core-loop determinism
+        run: |
+          python3 tests/test_gate1_core_loop.py
+          python3 - <<'PY'
+          # Determinism: two runs yield identical step sequence + checksums for content-derived state
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, str(Path("gate1/tools").resolve()))
+          from core_loop_runner import run_core_loop, REQUIRED_STEPS
+
+          e1, ok1 = run_core_loop()
+          e2, ok2 = run_core_loop()
+          assert ok1 and ok2
+          steps1 = [(e["step"], e["result"]) for e in e1]
+          steps2 = [(e["step"], e["result"]) for e in e2]
+          assert steps1 == steps2 == [(s, "pass") for s in REQUIRED_STEPS]
+          # Content-derived checksums (select/start/finish) should match across runs
+          content_steps = {"select_racer_course", "start", "finish", "results"}
+          c1 = {e["step"]: e["state_checksum"] for e in e1 if e["step"] in content_steps}
+          c2 = {e["step"]: e["state_checksum"] for e in e2 if e["step"] in content_steps}
+          assert c1 == c2, (c1, c2)
+          print("GATE1_DETERMINISM_OK", len(e1))
+          PY
+
+      - name: Content validation
+        run: python3 -m unittest tests.test_content -v
+
+      - name: Upload synthetic Gate1 summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gate1-pp-core-loop-summary
+          path: |
+            gate1/evidence/out/*summary*.json
+            gate1/status/gate1_core_loop_status.json
+          if-no-files-found: ignore
+          retention-days: 14
