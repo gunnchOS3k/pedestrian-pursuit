@@ -52,7 +52,11 @@ func _test_device_roles(roles: Node, failures: PackedStringArray) -> void:
 		failures.append("handheld_hybrid should default to touch")
 	if not roles.wants_touch_controls():
 		failures.append("handheld_hybrid should want touch controls")
+	if not roles.wants_soft_path_assist():
+		failures.append("handheld_hybrid should enable soft path assist")
 	roles.set_role("student_14_5", false)
+	if roles.wants_soft_path_assist():
+		failures.append("student_14_5 should not force soft path assist")
 
 
 func _test_accessibility(a11y: Node, failures: PackedStringArray) -> void:
@@ -69,6 +73,8 @@ func _test_accessibility(a11y: Node, failures: PackedStringArray) -> void:
 	if a11y.camera_shake_allowed():
 		failures.append("reduce motion should disable camera shake")
 	a11y.set_reduce_motion(false)
+	if not a11y.camera_shake_allowed():
+		failures.append("clearing reduce motion should restore camera shake")
 	a11y.set_larger_ui(false)
 	a11y.set_colorblind_safe_hud(false)
 

@@ -22,8 +22,19 @@ func set_target(target: Node3D) -> void:
 
 
 func add_shake(strength: float) -> void:
-	if GameManager.camera_shake_enabled:
+	var allowed := GameManager.camera_shake_enabled
+	var a11y := _accessibility()
+	if a11y != null and a11y.has_method("camera_shake_allowed"):
+		allowed = a11y.camera_shake_allowed()
+	if allowed:
 		_shake_strength = maxf(_shake_strength, strength)
+
+
+func _accessibility() -> Node:
+	var tree := Engine.get_main_loop() as SceneTree
+	if tree == null or tree.root == null:
+		return null
+	return tree.root.get_node_or_null("AccessibilitySettings")
 
 
 func _physics_process(delta: float) -> void:

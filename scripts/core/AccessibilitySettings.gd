@@ -147,8 +147,8 @@ func _sync_game_manager() -> void:
 	if gm == null:
 		return
 	gm.auto_accelerate = auto_accelerate
-	if reduce_motion:
-		gm.camera_shake_enabled = false
+	# Reduce-motion owns shake while enabled; restoring clears the freeze.
+	gm.camera_shake_enabled = not reduce_motion
 
 
 func _persist_and_notify() -> void:

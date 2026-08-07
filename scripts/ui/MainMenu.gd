@@ -47,6 +47,7 @@ func _ensure_settings_ui() -> void:
 		_a11y_larger = vbox.get_node("A11yLargerUI")
 		_a11y_auto = vbox.get_node("A11yAutoAccel")
 		_a11y_colorblind = vbox.get_node("A11yColorblind")
+		_ensure_resume_cup_button()
 		return
 
 	var insert_at: int = vbox.get_node("Hint").get_index()
@@ -116,6 +117,45 @@ func _ensure_settings_ui() -> void:
 	vbox.add_child(_a11y_colorblind)
 	vbox.move_child(_a11y_colorblind, insert_at)
 	_a11y_colorblind.toggled.connect(func(v): AccessibilitySettings.set_colorblind_safe_hud(v))
+	_ensure_resume_cup_button()
+
+
+func _ensure_resume_cup_button() -> void:
+	var vbox: VBoxContainer = $VBox
+	var existing := vbox.get_node_or_null("ResumeCupButton") as Button
+	if existing != null:
+		if not existing.pressed.is_connected(_on_resume_cup):
+			existing.pressed.connect(_on_resume_cup)
+		_refresh_resume_cup_button()
+		return
+	var resume := Button.new()
+	resume.name = "ResumeCupButton"
+	resume.text = "Resume Saved Cup"
+	resume.custom_minimum_size = Vector2(0, 44)
+	vbox.add_child(resume)
+	var start_idx := vbox.get_node("StartCupButton").get_index()
+	vbox.move_child(resume, start_idx + 1)
+	resume.pressed.connect(_on_resume_cup)
+	_refresh_resume_cup_button()
+
+
+func _refresh_resume_cup_button() -> void:
+	var resume := $VBox.get_node_or_null("ResumeCupButton") as Button
+	if resume == null:
+		return
+	var cfg := ConfigFile.new()
+	var has_save := cfg.load("user://cup_progress.cfg") == OK and str(cfg.get_value("cup", "active_cup_id", "")) != ""
+	resume.visible = has_save
+	if has_save:
+		var round_i := int(cfg.get_value("cup", "round_index", 0)) + 1
+		resume.text = "Resume Saved Cup (course %d)" % round_i
+
+
+func _on_resume_cup() -> void:
+	if GameManager.load_cup_progress():
+		SceneLoader.go_to_race()
+	else:
+		_refresh_resume_cup_button()
 
 
 func _populate_device_picker() -> void:

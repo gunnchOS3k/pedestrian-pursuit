@@ -273,8 +273,12 @@ func _on_trick_landed(success: bool, reward: float) -> void:
 
 
 func _set_drift_vfx(active: bool, color: Color) -> void:
-	if drift_particles:
-		drift_particles.emitting = active
-		var mat := drift_particles.process_material as ParticleProcessMaterial
-		if mat:
-			mat.color = color
+	if drift_particles == null:
+		return
+	var emit := active
+	if emit and AccessibilitySettings != null and AccessibilitySettings.reduce_motion:
+		emit = false
+	drift_particles.emitting = emit
+	var mat := drift_particles.process_material as ParticleProcessMaterial
+	if mat:
+		mat.color = color

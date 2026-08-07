@@ -84,6 +84,12 @@ func get_auto_accelerate_default() -> bool:
 	return bool(active_profile.get("auto_accelerate_default", false))
 
 
+func wants_soft_path_assist() -> bool:
+	if bool(active_profile.get("soft_path_assist", false)):
+		return true
+	return wants_touch_controls()
+
+
 func is_gps_simulated() -> bool:
 	var mode := get_gps_mode().to_upper()
 	return mode == "SIMULATED"

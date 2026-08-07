@@ -17,6 +17,7 @@
       "input_hints": "WASD / arrows to steer · Space jump · Q boost · E item",
       "auto_accelerate_default": false,
       "debug_overlay_default": false,
+      "soft_path_assist": false,
       "ui_scale": 1.0
     },
     "handheld_hybrid": {
@@ -29,6 +30,7 @@
       "input_hints": "On-screen RUN / steer pads · Drift + Boost on the right",
       "auto_accelerate_default": false,
       "debug_overlay_default": false,
+      "soft_path_assist": true,
       "ui_scale": 1.15
     },
     "ds_xl_coder": {
@@ -41,6 +43,7 @@
       "input_hints": "Keyboard race + debug HUD · simulated GPS overlay on",
       "auto_accelerate_default": false,
       "debug_overlay_default": true,
+      "soft_path_assist": false,
       "ui_scale": 1.0
     },
     "edge_io_rings": {
@@ -53,6 +56,7 @@
       "input_hints": "Ring confirm maps to accelerate/item · keyboard fallback active",
       "auto_accelerate_default": true,
       "debug_overlay_default": false,
+      "soft_path_assist": false,
       "ui_scale": 1.1
     }
   },

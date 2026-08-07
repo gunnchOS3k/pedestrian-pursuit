@@ -64,8 +64,10 @@ class DeviceRoleCatalogTests(unittest.TestCase):
         catalog = load_catalog()
         hybrid = resolve_role(catalog, "handheld_hybrid")
         self.assertTrue(hybrid["role"].get("show_touch_controls"))
+        self.assertTrue(hybrid["role"].get("soft_path_assist"))
         student = resolve_role(catalog, "student_14_5")
         self.assertFalse(student["role"].get("show_touch_controls"))
+        self.assertFalse(student["role"].get("soft_path_assist"))
 
 
 class AccessibilityRuntimeTests(unittest.TestCase):
@@ -110,6 +112,22 @@ class TelemetryRuntimeTests(unittest.TestCase):
         journal = TelemetryJournal()
         with self.assertRaises(ValueError):
             journal.record("host_loss", {})
+
+
+    def test_finish_may_include_perf_payload(self) -> None:
+        journal = TelemetryJournal()
+        journal.record(
+            "finish",
+            {
+                "track_id": "verdant_cascade_circuit",
+                "position": 1,
+                "finished": True,
+                "perf": {"fps": 60, "frame_ms": 16.67, "within_budget": True},
+            },
+        )
+        entry = journal.events[0]
+        self.assertIn("perf", entry["payload"])
+        self.assertTrue(entry["payload"]["perf"]["within_budget"])
 
 
 class NoProtectedAssetsTests(unittest.TestCase):

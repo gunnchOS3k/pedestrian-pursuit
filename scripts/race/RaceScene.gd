@@ -62,13 +62,14 @@ func _ready() -> void:
 	if GameManager.accept_force_laps > 0:
 		GameManager.total_laps = GameManager.accept_force_laps
 	# Acceptance: AI-style path steering for the human racer (1-lap finishes without fake results).
-	# Android/touch: soft racing-line assist (no auto-accel / no forced laps) so Pixel play can
-	# stay on course while the player still holds RUN.
+	# Android/touch / handheld_hybrid: soft racing-line assist (no auto-accel / no forced laps).
 	var want_path_follower := false
 	if GameManager.accept_test_mode:
 		want_path_follower = true
 		GameManager.auto_accelerate = true
 	elif OS.has_feature("android") or OS.has_feature("mobile"):
+		want_path_follower = true
+	elif DeviceRoleRuntime != null and DeviceRoleRuntime.wants_soft_path_assist():
 		want_path_follower = true
 	if want_path_follower and player and track and track.has_method("get_race_path"):
 		var path: Path3D = track.get_race_path()
@@ -274,7 +275,13 @@ func _on_race_finished(finished_player: Node, finish_results: Array) -> void:
 	GameManager.record_race_result(str(course_data.get("id", "")), race_manager.race_time, pos)
 	GameManager.record_field_results(finish_results)
 	if TelemetryBus != null:
-		TelemetryBus.finish(str(course_data.get("id", "")), race_manager.race_time, pos, true)
+		TelemetryBus.finish(
+			str(course_data.get("id", "")),
+			race_manager.race_time,
+			pos,
+			true,
+			_race_perf_snapshot()
+		)
 	_play_finish_reactions(finish_results, pos)
 	var field_lines := _build_field_lines(finish_results)
 	results.show_results(race_manager.race_time, pos, true, course_data, field_lines)
@@ -310,6 +317,18 @@ func _build_field_lines(finish_results: Array) -> PackedStringArray:
 		lines.append("%d. %s%s" % [place, name, tag])
 		place += 1
 	return lines
+
+
+func _race_perf_snapshot() -> Dictionary:
+	## Lightweight SOFTWARE frame/pacing sample — not a physical device cert.
+	var fps := Engine.get_frames_per_second()
+	var frame_ms := 1000.0 / maxf(float(fps), 1.0)
+	return {
+		"fps": fps,
+		"frame_ms": snappedf(frame_ms, 0.01),
+		"budget_frame_ms_p50": 16.7,
+		"within_budget": frame_ms <= 33.0,
+	}
 
 
 func _load_course() -> bool:

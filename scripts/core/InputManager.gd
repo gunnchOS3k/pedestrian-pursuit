@@ -71,8 +71,13 @@ func is_accelerating() -> bool:
 		return true
 	if _touch_accelerate:
 		return true
-	if preferred_source == InputSource.RING and _ring_confirm_held:
-		return true
+	if preferred_source == InputSource.RING:
+		# SOFTWARE ring stand-in: accelerate / ui_accept act as ring-confirm hold.
+		if Input.is_action_pressed("accelerate") or Input.is_action_pressed("ui_accept"):
+			last_active_source = InputSource.RING
+			return true
+		if _ring_confirm_held:
+			return true
 	if Input.is_action_pressed("accelerate"):
 		_note_action_source("accelerate")
 		return true

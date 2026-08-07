@@ -86,13 +86,22 @@ func item_use(item_id: String, track_id: String = "") -> void:
 	})
 
 
-func finish(track_id: String, time_sec: float, position: int, finished: bool) -> void:
-	record("finish", {
+func finish(
+	track_id: String,
+	time_sec: float,
+	position: int,
+	finished: bool,
+	perf: Dictionary = {}
+) -> void:
+	var payload := {
 		"track_id": track_id,
 		"time_sec": snappedf(time_sec, 0.01),
 		"position": position,
 		"finished": finished,
-	})
+	}
+	if not perf.is_empty():
+		payload["perf"] = perf
+	record("finish", payload)
 
 
 func restart(track_id: String, reason: String = "rematch") -> void:
