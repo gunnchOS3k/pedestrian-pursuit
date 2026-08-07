@@ -76,7 +76,16 @@ func get_steer_and_accel(body: CharacterBody3D, delta: float = 0.016) -> Diction
 		body.look_at(look, Vector3.UP)
 
 	var drift: bool = absf(steer) > 0.55 and speed > 8.0
-	return {"steer": steer, "accelerate": true, "drift": drift}
+	# Corner hazard awareness: brake-tap on sharp high-speed turns.
+	var accelerate := true
+	if absf(steer) > 0.8 and speed > 14.0:
+		accelerate = false
+	# Mild rubber-band for pack density (trailers keep accelerating).
+	if body.has_meta("race_place_estimate"):
+		var place := int(body.get_meta("race_place_estimate"))
+		if place >= 3 and absf(steer) < 0.7:
+			accelerate = true
+	return {"steer": steer, "accelerate": accelerate, "drift": drift}
 
 
 func snap_to_path(body: Node3D, offset: float, lane_offset: float = 0.0) -> void:

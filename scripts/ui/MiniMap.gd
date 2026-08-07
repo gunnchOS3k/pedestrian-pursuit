@@ -50,7 +50,18 @@ func _draw() -> void:
 		if cp == null:
 			continue
 		var pt: Vector2 = to_map.call(cp.global_position)
-		draw_circle(pt, 3.0, Color(0.55, 0.75, 1.0, 0.9))
+		var cp_color := Color(0.55, 0.75, 1.0, 0.9)
+		if AccessibilitySettings != null:
+			cp_color = AccessibilitySettings.get_marker_color("checkpoint")
+			cp_color.a = 0.9
+		draw_circle(pt, 3.0, cp_color)
 	if _player:
 		var ppt: Vector2 = to_map.call(_player.global_position)
-		draw_circle(ppt, 5.0, Color(1.0, 0.85, 0.25, 1.0))
+		var player_color := Color(1.0, 0.85, 0.25, 1.0)
+		if AccessibilitySettings != null:
+			player_color = AccessibilitySettings.get_marker_color("player")
+		draw_circle(ppt, 5.0, player_color)
+
+
+func apply_marker_colors() -> void:
+	queue_redraw()

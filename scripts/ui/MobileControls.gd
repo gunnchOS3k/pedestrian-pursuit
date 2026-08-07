@@ -14,7 +14,29 @@ var _button_root: Control
 
 
 func _ready() -> void:
-	if not OS.has_feature("mobile") and not show_on_desktop:
+	var show_touch := false
+	if DeviceRoleRuntime != null and DeviceRoleRuntime.wants_touch_controls():
+		show_touch = true
+	elif OS.has_feature("mobile") or show_on_desktop:
+		show_touch = true
+	if show_touch:
+		_ensure_controls()
+
+
+func configure_for_device_role(profile: Dictionary) -> void:
+	var want := bool(profile.get("show_touch_controls", false)) or str(profile.get("input_default", "")) == "touch"
+	if want:
+		show_on_desktop = true
+		_ensure_controls()
+	elif _button_root != null:
+		_button_root.queue_free()
+		_button_root = null
+	_apply_a11y_scale()
+
+
+func _ensure_controls() -> void:
+	if _button_root != null:
+		_apply_a11y_scale()
 		return
 	layer = 20
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -24,6 +46,7 @@ func _ready() -> void:
 	_button_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_button_root)
 	_build_buttons(get_viewport().get_visible_rect().size)
+	_apply_a11y_scale()
 
 
 func _build_buttons(view_size: Vector2) -> void:
@@ -158,6 +181,36 @@ func _add_button(
 	button.add_theme_color_override("font_color", Color.WHITE)
 	if button_name == "Pause":
 		button.pressed.connect(func(): pause_requested.emit())
+	elif action == "move_left":
+		button.button_down.connect(func():
+			Input.action_press(action)
+			InputManager.set_touch_steer(-1.0)
+		)
+		button.button_up.connect(func():
+			if Input.is_action_pressed(action):
+				Input.action_release(action)
+			InputManager.set_touch_steer(0.0)
+		)
+	elif action == "move_right":
+		button.button_down.connect(func():
+			Input.action_press(action)
+			InputManager.set_touch_steer(1.0)
+		)
+		button.button_up.connect(func():
+			if Input.is_action_pressed(action):
+				Input.action_release(action)
+			InputManager.set_touch_steer(0.0)
+		)
+	elif action == "accelerate":
+		button.button_down.connect(func():
+			Input.action_press(action)
+			InputManager.set_touch_accelerate(true)
+		)
+		button.button_up.connect(func():
+			if Input.is_action_pressed(action):
+				Input.action_release(action)
+			InputManager.set_touch_accelerate(false)
+		)
 	elif not action.is_empty():
 		button.button_down.connect(func(): Input.action_press(action))
 		button.button_up.connect(func():
@@ -165,3 +218,14 @@ func _add_button(
 				Input.action_release(action)
 		)
 	_button_root.add_child(button)
+
+
+func _apply_a11y_scale() -> void:
+	if _button_root == null:
+		return
+	var scale := 1.0
+	if AccessibilitySettings != null:
+		scale = AccessibilitySettings.get_ui_scale_multiplier()
+	for child in _button_root.get_children():
+		if child is Control:
+			child.scale = Vector2(scale, scale)

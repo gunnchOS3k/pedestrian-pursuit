@@ -94,9 +94,12 @@ func _ready() -> void:
 	results.hide_results()
 	race_manager.countdown_tick.connect(_on_countdown_personality)
 	race_manager.race_started.connect(_on_race_started_poses)
+	race_manager.race_started.connect(_on_race_started_telemetry)
 	race_manager.race_finished.connect(_on_race_finished)
 	if mobile_controls.has_signal("pause_requested"):
 		mobile_controls.connect("pause_requested", _on_pause_requested)
+	if DeviceRoleRuntime != null:
+		DeviceRoleRuntime.apply_to_race_scene(self)
 	_play_start_line_personalities(racers)
 	# Pixel safety: never start a cup with the SceneTree left paused.
 	if get_tree().paused:
@@ -108,6 +111,21 @@ func _ready() -> void:
 	# Full production / 3-lap Pixel verification must complete via real gate hits.
 	if GameManager.accept_test_mode and GameManager.accept_force_laps > 0:
 		call_deferred("_accept_drive_finish")
+
+
+func _on_race_started_telemetry() -> void:
+	var mode := "single"
+	match GameManager.current_race_mode:
+		GameManager.RaceMode.CUP:
+			mode = "cup"
+		GameManager.RaceMode.TIME_TRIAL:
+			mode = "time_trial"
+		GameManager.RaceMode.PRACTICE:
+			mode = "practice"
+		_:
+			mode = "single"
+	if TelemetryBus != null:
+		TelemetryBus.race_start(str(course_data.get("id", "")), mode, GameManager.total_laps)
 
 
 func _pick_player_profile():
@@ -255,6 +273,8 @@ func _on_race_finished(finished_player: Node, finish_results: Array) -> void:
 	var pos: int = race_manager.position_tracker.get_position_for(finished_player)
 	GameManager.record_race_result(str(course_data.get("id", "")), race_manager.race_time, pos)
 	GameManager.record_field_results(finish_results)
+	if TelemetryBus != null:
+		TelemetryBus.finish(str(course_data.get("id", "")), race_manager.race_time, pos, true)
 	_play_finish_reactions(finish_results, pos)
 	var field_lines := _build_field_lines(finish_results)
 	results.show_results(race_manager.race_time, pos, true, course_data, field_lines)
@@ -311,3 +331,8 @@ func _on_checkpoint_for_recovery(racer: Node, checkpoint_index: int) -> void:
 	var accepted_next := (checkpoint_index + 1) % track.get_checkpoints().size()
 	if expected_next == accepted_next and racer.has_method("set_recovery_transform"):
 		racer.set_recovery_transform(track.get_checkpoint_recovery_transform(checkpoint_index))
+	if racer == player and TelemetryBus != null:
+		var lap := 0
+		if race_manager and race_manager.has_node("LapManager"):
+			lap = race_manager.lap_manager.get_lap(racer)
+		TelemetryBus.checkpoint(str(course_data.get("id", "")), checkpoint_index, lap, true)

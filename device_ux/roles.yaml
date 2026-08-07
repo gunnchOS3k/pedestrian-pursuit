@@ -1,5 +1,8 @@
-game_id: pedestrian-pursuit
 devices: [student_14_5, handheld_hybrid, ds_xl_coder, edge_io_rings]
+game_id: pedestrian-pursuit
 source: field-kit-g2-c6
 evidence_class: SOFTWARE
 physical_status: PHYSICAL_PENDING
+runtime: DeviceRoleRuntime
+catalog: device_ux/profiles/device_roles.json
+gps_policy: simulated_only

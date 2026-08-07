@@ -22,6 +22,7 @@ func grant_random_item() -> void:
 func use_held_item(racer: Node) -> void:
 	if held_item_id.is_empty():
 		return
+	var used_id := held_item_id
 	match held_item_id:
 		"turbo_toes":
 			_use_turbo_toes(racer)
@@ -31,6 +32,11 @@ func use_held_item(racer: Node) -> void:
 			_use_sole_shield(racer)
 	held_item_id = ""
 	item_changed.emit("")
+	if TelemetryBus != null and racer != null and bool(racer.get("is_player")):
+		var track_id := ""
+		if GameManager != null:
+			track_id = GameManager.selected_track_id
+		TelemetryBus.item_use(used_id, track_id)
 
 
 func _use_turbo_toes(racer: Node) -> void:

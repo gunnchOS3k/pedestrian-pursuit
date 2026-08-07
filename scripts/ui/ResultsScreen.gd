@@ -90,13 +90,23 @@ func hide_results() -> void:
 
 func _on_menu() -> void:
 	GameManager.clear_cup()
+	var tree := get_tree()
+	if tree != null and tree.paused:
+		tree.paused = false
 	SceneLoader.go_to_main_menu()
 
 
 func _on_retry() -> void:
+	var tree := get_tree()
+	if tree != null and tree.paused:
+		tree.paused = false
+	hide_results()
 	if GameManager.is_cup_active():
 		if GameManager.has_next_cup_race():
 			GameManager.advance_cup()
+			SceneLoader.restart_race("cup_next")
 		else:
 			GameManager.restart_cup()
-	SceneLoader.go_to_race()
+			SceneLoader.restart_race("cup_restart")
+	else:
+		SceneLoader.restart_race("rematch")
