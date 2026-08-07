@@ -32,7 +32,10 @@ func update_positions() -> void:
 	states.sort_custom(func(a, b): return a.sort_key > b.sort_key)
 	var ranking: Array = []
 	for i in states.size():
-		ranking.append({"racer": states[i].racer, "position": i + 1})
+		var racer_node: Node = states[i].racer
+		if racer_node != null:
+			racer_node.set_meta("race_place_estimate", i + 1)
+		ranking.append({"racer": racer_node, "position": i + 1})
 	positions_updated.emit(ranking)
 
 

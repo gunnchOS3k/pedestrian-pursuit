@@ -1,5 +1,6 @@
 extends SceneTree
 const _TrackCatalog = preload("res://scripts/data/TrackCatalog.gd")
+const _CourseTrack = preload("res://scripts/tracks/CourseTrack.gd")
 
 ## Headless Godot smoke test: loads and builds every course in cup order.
 
@@ -19,7 +20,7 @@ func _run() -> void:
 		if data.is_empty():
 			failures.append("course '%s' did not load" % track_id)
 			continue
-		var course := CourseTrack.new()
+		var course: Node = _CourseTrack.new()
 		course.configure(data)
 		get_root().add_child(course)
 		if not course.build():

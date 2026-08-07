@@ -41,6 +41,26 @@ func reset_race_stats() -> void:
 	last_field_results.clear()
 
 
+func prepare_race_restart(reason: String = "rematch") -> void:
+	## Clean single-player rematch / retry: clear race stats and unpause tree.
+	reset_race_stats()
+	mobile_assist_steer = 0.0
+	accept_steer = 0.0
+	var tree := Engine.get_main_loop() as SceneTree
+	if tree != null and tree.paused:
+		tree.paused = false
+	var bus := _telemetry_bus()
+	if bus != null and bus.has_method("restart"):
+		bus.restart(selected_track_id, reason)
+
+
+func _telemetry_bus() -> Node:
+	var tree := Engine.get_main_loop() as SceneTree
+	if tree == null or tree.root == null:
+		return null
+	return tree.root.get_node_or_null("TelemetryBus")
+
+
 func start_single_race(track_id: String) -> void:
 	clear_cup()
 	current_race_mode = RaceMode.SINGLE

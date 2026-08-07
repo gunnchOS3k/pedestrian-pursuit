@@ -7,8 +7,20 @@ const RACE_SCENE := "res://scenes/race/RaceScene.tscn"
 
 
 func go_to_main_menu() -> void:
-	get_tree().change_scene_to_file(MAIN_MENU)
+	var tree := get_tree()
+	if tree != null and tree.paused:
+		tree.paused = false
+	tree.change_scene_to_file(MAIN_MENU)
 
 
 func go_to_race() -> void:
-	get_tree().change_scene_to_file(RACE_SCENE)
+	var tree := get_tree()
+	if tree != null and tree.paused:
+		tree.paused = false
+	tree.change_scene_to_file(RACE_SCENE)
+
+
+func restart_race(reason: String = "rematch") -> void:
+	GameManager.prepare_race_restart(reason)
+	go_to_race()
+

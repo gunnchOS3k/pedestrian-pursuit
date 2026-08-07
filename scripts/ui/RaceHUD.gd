@@ -14,6 +14,8 @@ var _wrong_way_label: Label
 @onready var countdown_label: Label = $CountdownLabel
 @onready var course_label: Label = $CourseLabel
 var _minimap: Control
+var _role_hint: Label
+var _map_label: Label
 
 
 func setup(player: Node, race_manager: Node, course_data: Dictionary = {}) -> void:
@@ -57,6 +59,91 @@ func setup(player: Node, race_manager: Node, course_data: Dictionary = {}) -> vo
 	course_label.text = (
 		"%s  •  %s" % [round_prefix, course_name] if not round_prefix.is_empty() else course_name
 	)
+	_ensure_role_labels()
+	_apply_ui_scale()
+	_apply_marker_colors()
+
+
+func apply_device_role(profile: Dictionary, map_profile: Dictionary = {}) -> void:
+	_ensure_role_labels()
+	var layout := str(profile.get("hud_layout", ""))
+	var map_id := str(profile.get("map_profile", "sim_campus"))
+	var gps := str(profile.get("gps_mode", "SIMULATED"))
+	if _role_hint:
+		_role_hint.text = str(profile.get("input_hints", ""))
+	if _map_label:
+		var map_name := str(map_profile.get("label", map_id))
+		_map_label.text = "Map: %s  •  GPS: %s" % [map_name, gps]
+		_map_label.visible = map_id != "n/a"
+	if _minimap:
+		_minimap.visible = map_id != "n/a"
+		if layout == "handheld":
+			_minimap.offset_left = -140
+			_minimap.offset_bottom = 140
+		elif layout == "dual_screen_debug":
+			_minimap.offset_left = -200
+			_minimap.offset_bottom = 200
+	_apply_ui_scale()
+	_apply_marker_colors()
+
+
+func _ensure_role_labels() -> void:
+	if _role_hint == null:
+		_role_hint = Label.new()
+		_role_hint.name = "RoleHint"
+		_role_hint.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+		_role_hint.offset_top = -48
+		_role_hint.offset_bottom = -8
+		_role_hint.offset_left = 16
+		_role_hint.offset_right = -16
+		_role_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_role_hint.add_theme_font_size_override("font_size", 13)
+		_role_hint.add_theme_color_override("font_color", Color(0.85, 0.9, 1.0, 0.85))
+		add_child(_role_hint)
+	if _map_label == null:
+		_map_label = Label.new()
+		_map_label.name = "MapProfileLabel"
+		_map_label.set_anchors_preset(Control.PRESET_TOP_LEFT)
+		_map_label.offset_left = 16
+		_map_label.offset_top = 8
+		_map_label.offset_right = 420
+		_map_label.offset_bottom = 36
+		_map_label.add_theme_font_size_override("font_size", 14)
+		add_child(_map_label)
+
+
+func _apply_ui_scale() -> void:
+	var scale := 1.0
+	if AccessibilitySettings != null:
+		scale = AccessibilitySettings.get_ui_scale_multiplier()
+	var font_base := {
+		lap_label: 18,
+		position_label: 18,
+		timer_label: 18,
+		speed_label: 16,
+		item_label: 16,
+		course_label: 16,
+	}
+	for label in font_base.keys():
+		if label != null:
+			label.add_theme_font_size_override("font_size", int(float(font_base[label]) * scale))
+	if boost_bar:
+		boost_bar.custom_minimum_size = Vector2(0, 18.0 * scale)
+
+
+func _apply_marker_colors() -> void:
+	if AccessibilitySettings == null:
+		return
+	var wrong := AccessibilitySettings.get_marker_color("hazard")
+	if _wrong_way_label:
+		_wrong_way_label.add_theme_color_override("font_color", wrong)
+	var finish_col := AccessibilitySettings.get_marker_color("finish")
+	if position_label:
+		position_label.add_theme_color_override("font_color", AccessibilitySettings.get_marker_color("player"))
+	if countdown_label:
+		countdown_label.add_theme_color_override("font_color", finish_col)
+	if _minimap != null and _minimap.has_method("apply_marker_colors"):
+		_minimap.apply_marker_colors()
 
 
 func _process(_delta: float) -> void:

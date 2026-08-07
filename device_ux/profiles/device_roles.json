@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "game_id": "pedestrian-pursuit",
+  "evidence_class": "SOFTWARE",
+  "physical_status": "PHYSICAL_PENDING",
+  "protected_asset_policy": "no_copyrighted_music_or_anime_ip",
+  "vision": "location-safe pursuit loops with simulated routes (no real stalking)",
+  "default_role": "student_14_5",
+  "roles": {
+    "student_14_5": {
+      "display_name": "Student 14.5",
+      "input_default": "keyboard",
+      "show_touch_controls": false,
+      "hud_layout": "landscape_classroom",
+      "map_profile": "sim_campus",
+      "gps_mode": "SIMULATED",
+      "input_hints": "WASD / arrows to steer · Space jump · Q boost · E item",
+      "auto_accelerate_default": false,
+      "debug_overlay_default": false,
+      "soft_path_assist": false,
+      "ui_scale": 1.0
+    },
+    "handheld_hybrid": {
+      "display_name": "Handheld Hybrid",
+      "input_default": "touch",
+      "show_touch_controls": true,
+      "hud_layout": "handheld",
+      "map_profile": "sim_neighborhood",
+      "gps_mode": "SIMULATED",
+      "input_hints": "On-screen RUN / steer pads · Drift + Boost on the right",
+      "auto_accelerate_default": false,
+      "debug_overlay_default": false,
+      "soft_path_assist": true,
+      "ui_scale": 1.15
+    },
+    "ds_xl_coder": {
+      "display_name": "DS-XL Coder",
+      "input_default": "keyboard",
+      "show_touch_controls": false,
+      "hud_layout": "dual_screen_debug",
+      "map_profile": "debug_overlay",
+      "gps_mode": "SIMULATED",
+      "input_hints": "Keyboard race + debug HUD · simulated GPS overlay on",
+      "auto_accelerate_default": false,
+      "debug_overlay_default": true,
+      "soft_path_assist": false,
+      "ui_scale": 1.0
+    },
+    "edge_io_rings": {
+      "display_name": "Edge I/O Rings",
+      "input_default": "ring_confirm",
+      "show_touch_controls": false,
+      "hud_layout": "peripheral_only",
+      "map_profile": "n/a",
+      "gps_mode": "none",
+      "input_hints": "Ring confirm maps to accelerate/item · keyboard fallback active",
+      "auto_accelerate_default": true,
+      "debug_overlay_default": false,
+      "soft_path_assist": false,
+      "ui_scale": 1.1
+    }
+  },
+  "map_profiles": {
+    "sim_campus": {
+      "label": "Simulated Campus",
+      "gps": "SIMULATED",
+      "description": "Synthetic campus loop — no live device GPS"
+    },
+    "sim_neighborhood": {
+      "label": "Simulated Neighborhood",
+      "gps": "SIMULATED",
+      "description": "Synthetic neighborhood chase routes — maps only"
+    },
+    "debug_overlay": {
+      "label": "Debug Overlay Map",
+      "gps": "SIMULATED",
+      "description": "Coder dual-pane debug map with checkpoint markers"
+    },
+    "n/a": {
+      "label": "No Map Surface",
+      "gps": "none",
+      "description": "Peripheral ring role — HUD minimap suppressed"
+    }
+  }
+}

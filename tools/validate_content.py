@@ -129,6 +129,41 @@ def validate_project(root: Path) -> list[str]:
                 not isinstance(index, int) or not 0 <= index < len(route) for index in collection
             ):
                 errors.append(f"{path}: {collection_name} must contain valid route indices")
+
+    errors.extend(_validate_device_roles(root))
+    return errors
+
+
+def _validate_device_roles(root: Path) -> list[str]:
+    errors: list[str] = []
+    catalog_path = root / "device_ux/profiles/device_roles.json"
+    catalog = _read_json(catalog_path, errors)
+    if not catalog:
+        return errors
+    expected_roles = ("student_14_5", "handheld_hybrid", "ds_xl_coder", "edge_io_rings")
+    roles = catalog.get("roles")
+    if not isinstance(roles, dict):
+        errors.append(f"{catalog_path}: roles must be an object")
+        return errors
+    for role_id in expected_roles:
+        if role_id not in roles:
+            errors.append(f"{catalog_path}: missing role {role_id}")
+            continue
+        role = roles[role_id]
+        if not isinstance(role, dict):
+            errors.append(f"{catalog_path}: role {role_id} must be an object")
+            continue
+        gps = str(role.get("gps_mode", "")).upper()
+        if gps not in {"SIMULATED", "NONE"}:
+            errors.append(f"{catalog_path}: role {role_id} gps_mode must be SIMULATED or none")
+        if not isinstance(role.get("input_default"), str) or not role["input_default"]:
+            errors.append(f"{catalog_path}: role {role_id} needs input_default")
+        map_id = role.get("map_profile")
+        maps = catalog.get("map_profiles", {})
+        if not isinstance(maps, dict) or map_id not in maps:
+            errors.append(f"{catalog_path}: role {role_id} map_profile {map_id!r} missing")
+    if catalog.get("game_id") != "pedestrian-pursuit":
+        errors.append(f"{catalog_path}: game_id must be pedestrian-pursuit")
     return errors
 
 
@@ -140,7 +175,10 @@ def main() -> int:
         for error in errors:
             print(f"- {error}", file=sys.stderr)
         return 1
-    print("Validated Sole Surge Cup: 4 original courses, routes, checkpoints, and features.")
+    print(
+        "Validated Sole Surge Cup + G2-C6 device roles: "
+        "4 courses and 4 simulated-GPS device profiles."
+    )
     return 0
 
 

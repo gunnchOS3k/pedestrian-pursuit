@@ -22,6 +22,9 @@ config/icon="res://icon.svg"
 GameManager="*res://scripts/core/GameManager.gd"
 InputManager="*res://scripts/core/InputManager.gd"
 SceneLoader="*res://scripts/core/SceneLoader.gd"
+DeviceRoleRuntime="*res://scripts/core/DeviceRoleRuntime.gd"
+AccessibilitySettings="*res://scripts/core/AccessibilitySettings.gd"
+TelemetryBus="*res://scripts/core/TelemetryBus.gd"
 
 [display]
 
