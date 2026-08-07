@@ -1,0 +1,5 @@
+game_id: pedestrian-pursuit
+devices: [student_14_5, handheld_hybrid, ds_xl_coder, edge_io_rings]
+source: field-kit-g2-c6
+evidence_class: SOFTWARE
+physical_status: PHYSICAL_PENDING
