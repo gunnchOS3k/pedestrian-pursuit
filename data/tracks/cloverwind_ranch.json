@@ -6,6 +6,8 @@
   "difficulty": "intermediate",
   "theme": "windy_ranch",
   "description": "A sunlit ranch route through clover fields, timber gates, hay stacks, and a muddy switchback.",
+  "art_status": "REQUIRES_ART_PRODUCTION",
+  "has_shortcut": true,
   "lane_width": 14.0,
   "guard_rails": true,
   "track_color": "#9C744A",

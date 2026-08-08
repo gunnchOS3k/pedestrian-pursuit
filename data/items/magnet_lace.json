@@ -1,0 +1,12 @@
+{
+  "id": "magnet_lace",
+  "display_name": "Magnet Lace",
+  "type": "offensive",
+  "cooldown": 0.0,
+  "duration": 2.4,
+  "effect_strength": 0.75,
+  "targeting_mode": "leader",
+  "warning_seconds": 1.1,
+  "counterplay": ["sole_shield", "bounce_bubble", "wall_kick"],
+  "description": "Homes toward the race leader after a visible lace shimmer warning."
+}

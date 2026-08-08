@@ -4,14 +4,17 @@ const _TrackCatalog = preload("res://scripts/data/TrackCatalog.gd")
 
 ## Global game state and settings.
 
-enum RaceMode { SINGLE, CUP, TIME_TRIAL, PRACTICE }
+enum RaceMode { SINGLE, CUP, TIME_TRIAL, PRACTICE, LOCAL_MP }
 
 var current_race_mode: RaceMode = RaceMode.SINGLE
 var selected_racer_id: String = "dash"
 var selected_runner_id: String = "dash_reed"
 var selected_shoe_id: String = "starter_soles"
 var selected_track_id: String = "verdant_cascade_circuit"
+var selected_cup_id: String = "sole_surge_cup"
 var total_laps: int = 3
+var local_mp_players: int = 2
+var ai_field_size: int = 3
 
 var active_cup_id: String = ""
 var cup_track_ids: Array[String] = []
@@ -42,7 +45,6 @@ func reset_race_stats() -> void:
 
 
 func prepare_race_restart(reason: String = "rematch") -> void:
-	## Clean single-player rematch / retry: clear race stats and unpause tree.
 	reset_race_stats()
 	mobile_assist_steer = 0.0
 	accept_steer = 0.0
@@ -61,10 +63,46 @@ func _telemetry_bus() -> Node:
 	return tree.root.get_node_or_null("TelemetryBus")
 
 
+func mode_label() -> String:
+	match current_race_mode:
+		RaceMode.CUP:
+			return "Cup"
+		RaceMode.TIME_TRIAL:
+			return "Time Trial"
+		RaceMode.PRACTICE:
+			return "Practice"
+		RaceMode.LOCAL_MP:
+			return "Local Multiplayer"
+		_:
+			return "Quick Race"
+
+
+func start_quick_race(track_id: String) -> void:
+	start_single_race(track_id)
+
+
 func start_single_race(track_id: String) -> void:
 	clear_cup()
 	current_race_mode = RaceMode.SINGLE
 	selected_track_id = track_id
+	ai_field_size = 3
+	reset_race_stats()
+
+
+func start_time_trial(track_id: String) -> void:
+	clear_cup()
+	current_race_mode = RaceMode.TIME_TRIAL
+	selected_track_id = track_id
+	ai_field_size = 0
+	reset_race_stats()
+
+
+func start_local_mp(track_id: String, players: int = 2) -> void:
+	clear_cup()
+	current_race_mode = RaceMode.LOCAL_MP
+	selected_track_id = track_id
+	local_mp_players = clampi(players, 2, 2)
+	ai_field_size = 2
 	reset_race_stats()
 
 
@@ -73,6 +111,7 @@ func start_cup(cup_id: String, track_ids: Array) -> bool:
 		push_error("Cannot start an empty cup")
 		return false
 	active_cup_id = cup_id
+	selected_cup_id = cup_id
 	cup_track_ids.clear()
 	for track_id in track_ids:
 		cup_track_ids.append(str(track_id))
@@ -81,6 +120,7 @@ func start_cup(cup_id: String, track_ids: Array) -> bool:
 	cup_standings.clear()
 	current_race_mode = RaceMode.CUP
 	selected_track_id = cup_track_ids[0]
+	ai_field_size = 3
 	reset_race_stats()
 	return true
 
@@ -91,6 +131,14 @@ func is_cup_active() -> bool:
 		and not active_cup_id.is_empty()
 		and not cup_track_ids.is_empty()
 	)
+
+
+func is_time_trial() -> bool:
+	return current_race_mode == RaceMode.TIME_TRIAL
+
+
+func is_local_mp() -> bool:
+	return current_race_mode == RaceMode.LOCAL_MP
 
 
 func record_race_result(track_id: String, time: float, position: int) -> void:
@@ -175,6 +223,7 @@ func load_cup_progress() -> bool:
 		cup_track_ids.append(str(tid))
 	if not active_cup_id.is_empty() and not cup_track_ids.is_empty():
 		current_race_mode = RaceMode.CUP
+		selected_cup_id = active_cup_id
 		selected_track_id = cup_track_ids[mini(cup_round_index, cup_track_ids.size() - 1)]
 		return true
 	return false
@@ -206,7 +255,6 @@ func record_field_results(finish_results: Array) -> void:
 		return
 	var cup := _TrackCatalog.load_cup(active_cup_id)
 	var points_table: Array = cup.get("points_by_position", [10, 7, 5, 3, 2, 1])
-	# Assign provisional places by finish order in results, then fill non-finishers by live rank later.
 	for i in finish_results.size():
 		var entry: Dictionary = finish_results[i]
 		var racer: Node = entry.get("racer")

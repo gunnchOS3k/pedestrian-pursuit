@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "mirage_mesa",
+  "display_name": "Mirage Mesa",
+  "lap_count": 3,
+  "difficulty": "expert",
+  "theme": "mesa_mirage",
+  "description": "Sun-baked mesa banks, sand traps, a hidden wash shortcut, and long drafting straights.",
+  "art_status": "REQUIRES_ART_PRODUCTION",
+  "lane_width": 15.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#C48A4A",
+  "accent_color": "#FFB347",
+  "sky_color": "#F0C878",
+  "backdrop_color": "#A86830",
+  "path_points": [
+    [0, 0, 50], [32, 0, 46], [56, 0, 22], [48, 0, -12], [58, 0, -38], [24, 0, -52],
+    [-8, 0, -42], [-36, 0, -50], [-58, 0, -20], [-48, 0, 12], [-56, 0, 38], [-24, 0, 48]
+  ],
+  "checkpoint_points": [0, 2, 4, 6, 8, 10],
+  "shortcut_routes": [
+    {
+      "id": "dry_wash",
+      "entry_point_index": 1,
+      "exit_point_index": 4,
+      "risk": "medium",
+      "description": "Cut through the dry wash; sand slows anyone who overshoots."
+    }
+  ],
+  "speed_lanes": [
+    {"point_index": 0, "size": [6, 14], "speed_bonus": 1.26},
+    {"point_index": 9, "size": [6, 12], "speed_bonus": 1.2}
+  ],
+  "terrain_zones": [
+    {"point_index": 5, "size": [13, 14], "terrain_name": "mesa_sand", "speed_multiplier": 0.72, "handling_multiplier": 0.75, "color": "#D2B48C"}
+  ],
+  "bounce_pads": [
+    {"point_index": 7, "size": [6, 6], "bounce_force": 12.5, "forward_boost": 5.0}
+  ],
+  "item_boxes": [2, 5, 8, 11],
+  "boost_pickups": [1, 4, 10],
+  "rail_segments": [2, 3]
+}

@@ -7,6 +7,8 @@ const DEFAULT_CUP_ID := "sole_surge_cup"
 const DEFAULT_TRACK_ID := "verdant_cascade_circuit"
 const CUP_ROOT := "res://data/cups/"
 const TRACK_ROOT := "res://data/tracks/"
+const LAUNCH_TRACK_TARGET := 8
+const CUP_TRACK_COUNT := 4
 
 const REQUIRED_TRACK_FIELDS := [
 	"schema_version",
@@ -24,6 +26,38 @@ const REQUIRED_TRACK_FIELDS := [
 	"path_points",
 	"checkpoint_points"
 ]
+
+const KNOWN_CUP_IDS := ["sole_surge_cup", "stride_circuit_cup"]
+
+
+static func list_cup_ids() -> Array[String]:
+	var ids: Array[String] = []
+	for cup_id in KNOWN_CUP_IDS:
+		ids.append(cup_id)
+	return ids
+
+
+static func list_all_track_ids() -> Array[String]:
+	var seen := {}
+	var ids: Array[String] = []
+	for cup_id in list_cup_ids():
+		var cup := load_cup(cup_id)
+		for track_id in cup.get("track_ids", []):
+			var tid := str(track_id)
+			if seen.has(tid):
+				continue
+			seen[tid] = true
+			ids.append(tid)
+	return ids
+
+
+static func load_all_tracks() -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for track_id in list_all_track_ids():
+		var track := load_track(track_id)
+		if not track.is_empty():
+			result.append(track)
+	return result
 
 
 static func load_cup(cup_id: String = DEFAULT_CUP_ID) -> Dictionary:
@@ -78,7 +112,7 @@ static func validate_cup(cup: Dictionary) -> PackedStringArray:
 	if not _is_safe_identifier(str(cup.get("id", ""))):
 		errors.append("id must use lowercase letters, numbers, and underscores")
 	var track_ids: Array = cup.get("track_ids", [])
-	if track_ids.size() != 4:
+	if track_ids.size() != CUP_TRACK_COUNT:
 		errors.append("a championship cup must contain exactly four tracks")
 	var unique_ids := {}
 	for track_id in track_ids:
@@ -158,10 +192,18 @@ static func validate_track(track: Dictionary) -> PackedStringArray:
 				errors.append(
 					"%s feature index %d is out of range" % [collection_name, feature_index]
 				)
-	for collection_name in ["item_boxes", "boost_pickups"]:
+	for collection_name in ["item_boxes", "boost_pickups", "rail_segments"]:
 		for feature_index in track.get(collection_name, []):
 			if int(feature_index) < 0 or int(feature_index) >= points.size():
 				errors.append("%s index %d is out of range" % [collection_name, int(feature_index)])
+	for shortcut in track.get("shortcut_routes", []):
+		if not (shortcut is Dictionary):
+			errors.append("shortcut_routes entries must be objects")
+			continue
+		for key in ["entry_point_index", "exit_point_index"]:
+			var idx := int(shortcut.get(key, -1))
+			if idx < 0 or idx >= points.size():
+				errors.append("shortcut %s out of range" % key)
 	for segment_color in track.get("segment_colors", []):
 		if not _is_hex_color(str(segment_color)):
 			errors.append("segment_colors values must be #RRGGBB colors")

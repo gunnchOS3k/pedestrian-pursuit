@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "id": "cloudstep_ridge",
+  "display_name": "Cloudstep Ridge",
+  "lap_count": 3,
+  "difficulty": "advanced",
+  "theme": "ridge_cloud",
+  "description": "Ridge shelves with elevation impulses, mist slowdowns, and a cliffside bounce shortcut.",
+  "art_status": "REQUIRES_ART_PRODUCTION",
+  "lane_width": 13.0,
+  "guard_rails": false,
+  "has_shortcut": true,
+  "track_color": "#7A8A92",
+  "accent_color": "#E8F4FF",
+  "sky_color": "#A8C8E8",
+  "backdrop_color": "#5A7080",
+  "path_points": [
+    [0, 0, 44], [26, 0, 50], [48, 0, 32], [42, 0, 2], [54, 0, -22], [32, 0, -44],
+    [2, 0, -36], [-24, 0, -48], [-50, 0, -26], [-42, 0, 2], [-50, 0, 28], [-22, 0, 44]
+  ],
+  "checkpoint_points": [0, 2, 4, 6, 8, 10],
+  "shortcut_routes": [
+    {
+      "id": "cliff_bounce",
+      "entry_point_index": 3,
+      "exit_point_index": 6,
+      "risk": "high",
+      "description": "Chain two bounce pads across the ridge cut; fall recovery is slow."
+    }
+  ],
+  "speed_lanes": [
+    {"point_index": 11, "size": [5, 11], "speed_bonus": 1.22}
+  ],
+  "terrain_zones": [
+    {"point_index": 7, "size": [11, 12], "terrain_name": "ridge_mist", "speed_multiplier": 0.8, "handling_multiplier": 0.88, "color": "#C8D8E8"}
+  ],
+  "bounce_pads": [
+    {"point_index": 3, "size": [5, 5], "bounce_force": 14.0, "forward_boost": 6.0},
+    {"point_index": 5, "size": [5, 5], "bounce_force": 13.0, "forward_boost": 5.5}
+  ],
+  "item_boxes": [1, 4, 8, 10],
+  "boost_pickups": [2, 6, 9],
+  "rail_segments": []
+}

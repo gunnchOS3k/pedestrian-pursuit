@@ -6,6 +6,8 @@
   "difficulty": "advanced",
   "theme": "prism_void",
   "description": "A luminous orbital ribbon with alternating color sectors, sparse guard rails, and precision boost gates.",
+  "art_status": "REQUIRES_ART_PRODUCTION",
+  "has_shortcut": true,
   "lane_width": 12.5,
   "guard_rails": false,
   "track_color": "#4E5FD0",
