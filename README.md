@@ -59,7 +59,14 @@ python3 tools/validate_content.py
 python3 -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
-With Godot available, parse the project and construct every course headlessly:
+With Godot 4.5 available, run the full headless suite (import, startup, courses, G2-C6, cup save, modes/items/AI/ghost/Local MP):
+
+```bash
+GODOT_BIN="$HOME/Applications/Godot/Godot-4.5.app/Contents/MacOS/Godot" \
+  ./tools/run_godot_headless.sh
+```
+
+Or a single course smoke:
 
 ```bash
 godot --headless --path . --script res://tests/TestRunner.gd

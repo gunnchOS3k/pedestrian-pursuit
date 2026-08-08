@@ -97,16 +97,18 @@ func _use_pulse_horn(racer: Node) -> void:
 		return
 	# Delayed hit so victims can shield / slide / break draft.
 	tree.create_timer(warn).timeout.connect(func ():
-		if not is_instance_valid(racer):
+		if not is_instance_valid(racer) or not (racer is Node3D):
 			return
+		var source := racer as Node3D
 		for other in tree.get_nodes_in_group("racers"):
 			if other == racer or not (other is Node3D):
 				continue
-			var to_other: Vector3 = other.global_position - racer.global_position
+			var victim := other as Node3D
+			var to_other: Vector3 = victim.global_position - source.global_position
 			to_other.y = 0.0
 			if to_other.length() > 14.0:
 				continue
-			var forward := -racer.global_transform.basis.z
+			var forward: Vector3 = -source.global_transform.basis.z
 			forward.y = 0.0
 			if forward.length_squared() < 0.001:
 				continue

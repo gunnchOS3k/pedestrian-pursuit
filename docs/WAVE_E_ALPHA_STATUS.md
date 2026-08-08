@@ -34,6 +34,10 @@ Date: 2026-08-08
 python3 tools/validate_content.py
 python3 tools/ai_batch_sim.py
 python3 -m unittest tests/test_content.py
-# optional Godot headless:
-# godot4 --headless -s res://tests/TestRunner.gd
+# Godot headless (Godot 4.5; same binary Anime Aggressors uses by default):
+GODOT_BIN="$HOME/Applications/Godot/Godot-4.5.app/Contents/MacOS/Godot" \
+  ./tools/run_godot_headless.sh
 ```
+
+Post-merge headless evidence: `docs/PEDESTRIAN_MAIN_GODOT_HEADLESS_PASS.md`.  
+Alpha-exit claim status: `docs/ALPHA_EXIT_STATUS.md` (**false**).

@@ -59,7 +59,11 @@ func _physics_process(delta: float) -> void:
 	_ai_accel = cmd.accelerate
 	_ai_drift = cmd.drift
 	_ai_use_item = bool(cmd.get("use_item", false))
-	if _ai_use_item and item_manager and not str(item_manager.held_item_id).is_empty():
+	var held := ""
+	if item_manager != null and item_manager.get("held_item_id") != null:
+		held = str(item_manager.get("held_item_id"))
+	if _ai_use_item and not held.is_empty() and item_manager.has_method("use_held_item"):
 		item_manager.use_held_item(self)
-	set_meta("held_item_ready", item_manager != null and not str(item_manager.held_item_id).is_empty())
+		held = str(item_manager.get("held_item_id")) if item_manager.get("held_item_id") != null else ""
+	set_meta("held_item_ready", not held.is_empty())
 	super._physics_process(delta)

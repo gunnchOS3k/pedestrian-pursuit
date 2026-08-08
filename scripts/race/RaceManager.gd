@@ -141,7 +141,7 @@ func _stamp_place_estimates() -> void:
 	for racer in _racers:
 		if racer == null:
 			continue
-		var place := position_tracker.get_position_for(racer)
+		var place: int = int(position_tracker.get_position_for(racer))
 		racer.set_meta("race_place_estimate", place)
 
 
