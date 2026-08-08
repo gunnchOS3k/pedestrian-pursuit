@@ -35,6 +35,13 @@ func set_ai_tier(tier_name: String) -> void:
 			tier_enum = path_follower.Tier.STANDARD
 	path_follower.set_tier(tier_enum)
 	path_follower.configure_route_plan(tier_name == "ace", 0.0 if tier_name != "ace" else -1.2)
+	if path_follower.has_method("set_shoe_context"):
+		path_follower.set_shoe_context(shoe_id)
+
+
+func notify_shoe_changed() -> void:
+	if path_follower != null and path_follower.has_method("set_shoe_context"):
+		path_follower.set_shoe_context(shoe_id)
 
 
 func _get_steer() -> float:

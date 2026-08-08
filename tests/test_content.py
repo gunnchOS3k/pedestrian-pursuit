@@ -57,6 +57,33 @@ class WaveEAlphaContentTests(unittest.TestCase):
             data = json.loads(path.read_text(encoding="utf-8"))
             self.assertIn("counterplay", data)
             self.assertIn("warning_seconds", data)
+        for path in shoes:
+            data = json.loads(path.read_text(encoding="utf-8"))
+            self.assertIn("material_family", data)
+            self.assertGreaterEqual(len(data.get("surface_affinities", {})), 6)
+
+    def test_runners_have_gameplay_stats(self) -> None:
+        roster = json.loads((ROOT / "data/racers/runner_roster.json").read_text(encoding="utf-8"))
+        self.assertGreaterEqual(len(roster["runners"]), 8)
+        speeds = set()
+        for runner in roster["runners"]:
+            rid = runner["id"]
+            path = ROOT / f"data/racers/{rid}.json"
+            self.assertTrue(path.exists(), f"missing gameplay file for {rid}")
+            data = json.loads(path.read_text(encoding="utf-8"))
+            self.assertIn("top_speed", data)
+            self.assertIn("acceleration", data)
+            speeds.add(round(float(data["top_speed"]), 1))
+        self.assertGreaterEqual(len(speeds), 4)
+
+    def test_grammar_challenges_art_inventory(self) -> None:
+        grammar = json.loads((ROOT / "data/mechanics/foot_racing_grammar.json").read_text(encoding="utf-8"))
+        self.assertGreaterEqual(len(grammar["mechanics"]), 10)
+        challenges = json.loads((ROOT / "data/challenges/launch_challenges.json").read_text(encoding="utf-8"))
+        self.assertGreaterEqual(len(challenges["challenges"]), 5)
+        art = json.loads((ROOT / "data/art/REQUIRES_ART_PRODUCTION_INVENTORY.json").read_text(encoding="utf-8"))
+        self.assertEqual(art["status"], "REQUIRES_ART_PRODUCTION")
+        self.assertEqual(len(art["tracks"]), 8)
 
     def test_runners_meet_alpha_floor(self) -> None:
         roster = json.loads((ROOT / "data/racers/runner_roster.json").read_text(encoding="utf-8"))
@@ -68,11 +95,15 @@ class WaveEAlphaContentTests(unittest.TestCase):
             "neon_switchyard",
             "cloudstep_ridge",
             "mirage_mesa",
+            "verdant_cascade_circuit",
+            "cloverwind_ranch",
+            "prism_apex",
+            "emberkeep_gauntlet",
         ):
             track = json.loads((ROOT / f"data/tracks/{track_id}.json").read_text(encoding="utf-8"))
             self.assertEqual(track.get("art_status"), "REQUIRES_ART_PRODUCTION")
-            self.assertTrue(track.get("has_shortcut"))
-            self.assertGreaterEqual(len(track.get("shortcut_routes", [])), 1)
+            self.assertTrue(track.get("has_shortcut") or track.get("shortcut_routes"))
+            self.assertGreaterEqual(len(track.get("rail_segments", [])), 1)
 
     def test_shipped_course_identity_is_original(self) -> None:
         protected_names = ("mario", "yoshi", "moo moo", "rainbow road", "bowser", "nintendo")

@@ -429,7 +429,7 @@ func _build_ember_scenery(parent: Node3D) -> void:
 
 
 func _build_harbor_scenery(parent: Node3D) -> void:
-	## REQUIRES_ART_PRODUCTION — greybox pier/water blocks only.
+	## Digital launch-quality procedural harbor (final pier art still REQUIRES_ART_PRODUCTION).
 	_add_visual_box(
 		parent,
 		Vector3(0.0, -0.78, 0.0),
@@ -437,43 +437,66 @@ func _build_harbor_scenery(parent: Node3D) -> void:
 		_color("backdrop_color", Color(0.2, 0.35, 0.42))
 	)
 	_add_visual_box(parent, Vector3(0, -0.4, 0), Vector3(90.0, 0.2, 90.0), Color(0.25, 0.55, 0.7), true)
-	for position in [Vector3(-20, 2, 10), Vector3(22, 2, -8), Vector3(8, 2, 24)]:
+	for i in range(8):
+		var a := float(i) * 0.785
+		_add_visual_cylinder(
+			parent,
+			Vector3(cos(a) * 38.0, 1.2, sin(a) * 38.0),
+			0.55,
+			3.2,
+			Color(0.45, 0.38, 0.28)
+		)
+	for position in [Vector3(-20, 2, 10), Vector3(22, 2, -8), Vector3(8, 2, 24), Vector3(-12, 2, -18)]:
 		_add_visual_box(parent, position, Vector3(8.0, 1.2, 2.0), Color(0.55, 0.4, 0.28))
+		_add_visual_box(parent, position + Vector3(0, 1.4, 0), Vector3(1.0, 2.8, 1.0), Color(0.7, 0.72, 0.75))
 
 
 func _build_neon_scenery(parent: Node3D) -> void:
-	## REQUIRES_ART_PRODUCTION — greybox neon yard stubs.
+	## Digital launch-quality neon yard stubs (hero neon kit still REQUIRES_ART_PRODUCTION).
 	_add_visual_box(
 		parent, Vector3(0.0, -0.78, 0.0), Vector3(140.0, 0.18, 140.0), Color(0.08, 0.09, 0.12)
 	)
-	for position in [Vector3(-16, 4, 0), Vector3(16, 4, 0), Vector3(0, 5, -20), Vector3(0, 5, 20)]:
+	for position in [Vector3(-16, 4, 0), Vector3(16, 4, 0), Vector3(0, 5, -20), Vector3(0, 5, 20), Vector3(-22, 3, 16), Vector3(22, 3, -16)]:
 		_add_visual_box(
 			parent, position, Vector3(1.2, 8.0, 1.2), _color("accent_color", Color.MAGENTA), true
+		)
+		_add_visual_box(
+			parent,
+			position + Vector3(0, 4.2, 0),
+			Vector3(6.0, 0.35, 0.35),
+			_color("accent_color", Color.CYAN),
+			true
 		)
 
 
 func _build_ridge_scenery(parent: Node3D) -> void:
-	## REQUIRES_ART_PRODUCTION — greybox ridge shelves.
+	## Digital launch-quality ridge shelves (final cliff kit still REQUIRES_ART_PRODUCTION).
 	_add_visual_box(
 		parent,
 		Vector3(0.0, -0.78, 0.0),
 		Vector3(150.0, 0.18, 150.0),
 		_color("backdrop_color", Color(0.35, 0.42, 0.48))
 	)
-	for position in [Vector3(-24, 3, -10), Vector3(20, 4, 12), Vector3(4, 5, -22)]:
+	for position in [Vector3(-24, 3, -10), Vector3(20, 4, 12), Vector3(4, 5, -22), Vector3(-8, 6, 18), Vector3(28, 3, 6)]:
 		_add_visual_box(parent, position, Vector3(14.0, 2.0, 6.0), Color(0.55, 0.58, 0.62))
+		_add_visual_box(
+			parent, position + Vector3(0, 2.2, 0), Vector3(10.0, 0.35, 4.0), Color(0.7, 0.78, 0.85), true
+		)
 
 
 func _build_mesa_scenery(parent: Node3D) -> void:
-	## REQUIRES_ART_PRODUCTION — greybox mesa/sand blocks.
+	## Digital launch-quality mesa blocks (final rock kit still REQUIRES_ART_PRODUCTION).
 	_add_visual_box(
 		parent,
 		Vector3(0.0, -0.78, 0.0),
 		Vector3(160.0, 0.18, 160.0),
 		_color("backdrop_color", Color(0.65, 0.4, 0.2))
 	)
-	for position in [Vector3(-28, 4, 8), Vector3(26, 5, -14), Vector3(0, 6, 28)]:
+	for position in [Vector3(-28, 4, 8), Vector3(26, 5, -14), Vector3(0, 6, 28), Vector3(-14, 3, -24), Vector3(18, 4, 20)]:
 		_add_visual_box(parent, position, Vector3(10.0, 8.0, 10.0), Color(0.72, 0.48, 0.28))
+		_add_visual_cylinder(
+			parent, position + Vector3(0, 5.0, 0), 3.5, 1.2, Color(0.85, 0.55, 0.3), true
+		)
 
 
 func _build_start_marker() -> void:

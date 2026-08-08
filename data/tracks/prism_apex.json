@@ -14,20 +14,156 @@
   "accent_color": "#76F7FF",
   "sky_color": "#080B24",
   "backdrop_color": "#11163C",
-  "segment_colors": ["#EE5F9B", "#F3A84D", "#E7E866", "#5FE5A2", "#4BC7ED", "#A47AEF"],
+  "segment_colors": [
+    "#EE5F9B",
+    "#F3A84D",
+    "#E7E866",
+    "#5FE5A2",
+    "#4BC7ED",
+    "#A47AEF"
+  ],
   "path_points": [
-    [0, 0, 40], [29, 0, 45], [54, 0, 24], [46, 0, -8], [57, 0, -34],
-    [23, 0, -48], [-8, 0, -37], [-39, 0, -48], [-57, 0, -18], [-45, 0, 14], [-20, 0, 35]
+    [
+      0,
+      0,
+      40
+    ],
+    [
+      29,
+      0,
+      45
+    ],
+    [
+      54,
+      0,
+      24
+    ],
+    [
+      46,
+      0,
+      -8
+    ],
+    [
+      57,
+      0,
+      -34
+    ],
+    [
+      23,
+      0,
+      -48
+    ],
+    [
+      -8,
+      0,
+      -37
+    ],
+    [
+      -39,
+      0,
+      -48
+    ],
+    [
+      -57,
+      0,
+      -18
+    ],
+    [
+      -45,
+      0,
+      14
+    ],
+    [
+      -20,
+      0,
+      35
+    ]
   ],
-  "checkpoint_points": [0, 2, 4, 6, 8, 10],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10
+  ],
   "speed_lanes": [
-    {"point_index": 2, "size": [5, 11], "speed_bonus": 1.28},
-    {"point_index": 9, "size": [5, 11], "speed_bonus": 1.28}
+    {
+      "point_index": 2,
+      "size": [
+        5,
+        11
+      ],
+      "speed_bonus": 1.28
+    },
+    {
+      "point_index": 9,
+      "size": [
+        5,
+        11
+      ],
+      "speed_bonus": 1.28
+    }
   ],
-  "terrain_zones": [],
+  "terrain_zones": [
+    {
+      "point_index": 5,
+      "size": [
+        8,
+        10
+      ],
+      "terrain_name": "neon",
+      "speed_multiplier": 1.05,
+      "handling_multiplier": 0.9,
+      "color": "#A5F3FC"
+    }
+  ],
   "bounce_pads": [
-    {"point_index": 5, "size": [5, 5], "bounce_force": 10.0, "forward_boost": 7.0}
+    {
+      "point_index": 5,
+      "size": [
+        5,
+        5
+      ],
+      "bounce_force": 10.0,
+      "forward_boost": 7.0
+    }
   ],
-  "item_boxes": [1, 4, 7, 10],
-  "boost_pickups": [3, 8]
+  "item_boxes": [
+    1,
+    4,
+    7,
+    10
+  ],
+  "boost_pickups": [
+    3,
+    8
+  ],
+  "shortcut_routes": [
+    {
+      "id": "ribbon_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 6,
+      "risk": "narrow",
+      "ai_preference": 0.55
+    }
+  ],
+  "rail_segments": [
+    1,
+    4,
+    7,
+    9
+  ],
+  "exploit_notes": [
+    "Ribbon cut is Ace-preferred; Rookie stays outer for recovery room."
+  ],
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": false
+  }
 }

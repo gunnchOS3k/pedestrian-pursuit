@@ -1,0 +1,18 @@
+{
+  "id": "bolt_harbor",
+  "display_name": "Bolt Harbor",
+  "class_type": "uphill",
+  "top_speed": 20.0,
+  "acceleration": 19.5,
+  "handling": 11.0,
+  "drift_control": 9.0,
+  "trick_skill": 6.0,
+  "recovery": 13.0,
+  "strength": 14.0,
+  "boost_efficiency": 0.95,
+  "default_shoe_id": "grip_soles",
+  "preferred_surfaces": ["mud", "ash", "incline", "packed_dirt"],
+  "ai_line_bias": "inside_power",
+  "special_ability_id": "shoulder_drive",
+  "description": "Uphill / soft-ground grinder; strength over flash."
+}

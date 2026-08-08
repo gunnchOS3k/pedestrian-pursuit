@@ -1,0 +1,91 @@
+{
+  "schema": "foot_racing_grammar/v1",
+  "title": "Pedestrian Pursuit foot-racing grammar",
+  "mechanics": [
+    {
+      "id": "sprint",
+      "tier": "core",
+      "inputs": ["accelerate", "brake", "steer"],
+      "runtime": "PlayerController._handle_ground_movement",
+      "tutorial_lesson": 1
+    },
+    {
+      "id": "drift_spark_tiers",
+      "tier": "core",
+      "inputs": ["drift", "steer"],
+      "runtime": "DriftSystem",
+      "tutorial_lesson": 2,
+      "notes": "Four spark tiers on release feed BoostSystem."
+    },
+    {
+      "id": "perfect_step",
+      "tier": "advanced",
+      "inputs": ["accelerate timed to GO"],
+      "runtime": "RaceManager._sample_perfect_step_*",
+      "tutorial_lesson": 3
+    },
+    {
+      "id": "jump_air_control",
+      "tier": "core",
+      "inputs": ["jump", "steer"],
+      "runtime": "PlayerController._handle_air_movement",
+      "tutorial_lesson": 4
+    },
+    {
+      "id": "slide_stomp",
+      "tier": "advanced",
+      "inputs": ["slide"],
+      "runtime": "StompSystem",
+      "tutorial_lesson": 5
+    },
+    {
+      "id": "wall_kick_scrape",
+      "tier": "advanced",
+      "inputs": ["jump on wall collision"],
+      "runtime": "PlayerController._handle_collision_recovery",
+      "tutorial_lesson": 6
+    },
+    {
+      "id": "rail_grind",
+      "tier": "advanced",
+      "inputs": ["jump near rail"],
+      "runtime": "RailGrindSystem",
+      "tutorial_lesson": 7
+    },
+    {
+      "id": "drafting",
+      "tier": "advanced",
+      "inputs": ["position behind rival"],
+      "runtime": "DraftingSystem",
+      "tutorial_lesson": 8
+    },
+    {
+      "id": "tricks",
+      "tier": "advanced",
+      "inputs": ["trick in air"],
+      "runtime": "TrickSystem",
+      "tutorial_lesson": 9
+    },
+    {
+      "id": "boost_chain",
+      "tier": "core",
+      "inputs": ["boost"],
+      "runtime": "BoostSystem",
+      "tutorial_lesson": 4
+    },
+    {
+      "id": "items_counterplay",
+      "tier": "advanced",
+      "inputs": ["use_item", "shield/slide/jump counters"],
+      "runtime": "ItemManager",
+      "tutorial_lesson": 10
+    },
+    {
+      "id": "footwear_surfaces",
+      "tier": "advanced",
+      "inputs": ["shoe select + terrain zones"],
+      "runtime": "ShoeData surface_affinities + TerrainZone",
+      "tutorial_lesson": 11
+    }
+  ]
+}

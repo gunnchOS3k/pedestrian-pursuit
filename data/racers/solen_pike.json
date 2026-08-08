@@ -1,0 +1,18 @@
+{
+  "id": "solen_pike",
+  "display_name": "Solen Pike",
+  "class_type": "cornering",
+  "top_speed": 21.8,
+  "acceleration": 17.0,
+  "handling": 15.0,
+  "drift_control": 14.5,
+  "trick_skill": 9.0,
+  "recovery": 10.5,
+  "strength": 8.0,
+  "boost_efficiency": 1.02,
+  "default_shoe_id": "grip_soles",
+  "preferred_surfaces": ["asphalt", "banked", "standard"],
+  "ai_line_bias": "apex_late",
+  "special_ability_id": "rail_fin",
+  "description": "Apex specialist; late apex + spark-tier drift release."
+}

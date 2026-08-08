@@ -8,5 +8,23 @@
   "jump_modifier": 1.0,
   "boost_modifier": 1.05,
   "stomp_modifier": 1.0,
-  "description": "Better drift and control at the cost of raw speed."
+  "material_family": "deep_lug_compound",
+  "surface_affinities": {
+    "standard": 0.98,
+    "asphalt": 0.96,
+    "packed_dirt": 1.1,
+    "grass": 1.08,
+    "mud": 1.2,
+    "ash": 1.15,
+    "wet": 1.12,
+    "sand": 1.05,
+    "metal": 0.9,
+    "neon": 0.92,
+    "cascade_runoff": 1.1,
+    "bounce": 1.0,
+    "rail": 0.95,
+    "speed_lane": 0.94
+  },
+  "ai_notes": "Deep lugs shine on mud/ash/wet; AI holds speed through soft zones and commits to inside lines.",
+  "description": "Deep-lug compound for soft and wet terrain control."
 }

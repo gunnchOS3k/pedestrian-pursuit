@@ -8,5 +8,23 @@
   "jump_modifier": 0.95,
   "boost_modifier": 1.0,
   "stomp_modifier": 0.9,
-  "description": "Faster top speed with weaker handling."
+  "material_family": "hard_carbon_plate",
+  "surface_affinities": {
+    "standard": 1.06,
+    "asphalt": 1.12,
+    "packed_dirt": 0.94,
+    "grass": 0.88,
+    "mud": 0.72,
+    "ash": 0.78,
+    "wet": 0.8,
+    "sand": 0.82,
+    "metal": 1.08,
+    "neon": 1.1,
+    "cascade_runoff": 0.82,
+    "bounce": 0.95,
+    "rail": 0.9,
+    "speed_lane": 1.18
+  },
+  "ai_notes": "Hard plate loves asphalt/neon/speed lanes; AI brakes earlier on mud/wet and avoids soft runoff.",
+  "description": "Carbon plate for top speed; punishes soft and wet surfaces."
 }

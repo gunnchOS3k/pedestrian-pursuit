@@ -1,0 +1,62 @@
+{
+  "schema": "challenges/v1",
+  "challenges": [
+    {
+      "id": "perfect_step_practice",
+      "display_name": "Perfect Step Window",
+      "mode": "tutorial",
+      "track_id": "verdant_cascade_circuit",
+      "goal": "Land a Perfect Step start (accelerate on GO, not early).",
+      "reward_xp": 50,
+      "unlocks": ["lesson_drift"]
+    },
+    {
+      "id": "mud_grip_mastery",
+      "display_name": "Mud Grip Mastery",
+      "mode": "time_trial",
+      "track_id": "cloverwind_ranch",
+      "required_shoe_id": "grip_soles",
+      "goal": "Finish under ghost PB with Grip Soles on ranch mud.",
+      "reward_xp": 80,
+      "unlocks": ["shoe_tip_grip"]
+    },
+    {
+      "id": "rail_runner",
+      "display_name": "Rail Runner",
+      "mode": "quick_race",
+      "track_id": "neon_switchyard",
+      "required_shoe_id": "bounce_boots",
+      "goal": "Attach to at least one rail segment mid-race.",
+      "reward_xp": 90,
+      "unlocks": ["lesson_rail"]
+    },
+    {
+      "id": "apex_discipline",
+      "display_name": "Apex Discipline",
+      "mode": "time_trial",
+      "track_id": "prism_apex",
+      "required_runner_id": "solen_pike",
+      "goal": "Complete a clean ghost lap without fall recovery.",
+      "reward_xp": 100,
+      "unlocks": ["trophy_apex"]
+    },
+    {
+      "id": "cup_contender",
+      "display_name": "Cup Contender",
+      "mode": "cup",
+      "cup_id": "sole_surge_cup",
+      "goal": "Finish Sole Surge Cup with ≥28 points.",
+      "reward_xp": 150,
+      "unlocks": ["cup_badge_sole"]
+    },
+    {
+      "id": "stride_circuit_clear",
+      "display_name": "Stride Circuit Clear",
+      "mode": "cup",
+      "cup_id": "stride_circuit_cup",
+      "goal": "Complete Stride Circuit Cup (all four courses).",
+      "reward_xp": 150,
+      "unlocks": ["cup_badge_stride"]
+    }
+  ]
+}

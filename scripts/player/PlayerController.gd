@@ -258,8 +258,13 @@ func _handle_player_actions() -> void:
 
 func _compute_target_speed() -> float:
 	var mult := terrain_speed_multiplier
+	if stats != null and stats.has_method("affinity_for") and terrain_name != "standard":
+		# Affinity already folded into terrain zone enter; keep mild continuous bias.
+		mult *= clampf(0.92 + 0.08 * float(stats.affinity_for(terrain_name)), 0.75, 1.2)
 	mult *= drift_system.get_speed_multiplier()
 	mult *= boost_system.get_speed_multiplier()
+	if stats != null:
+		mult *= float(stats.boost_efficiency) if boost_system.get_speed_multiplier() > 1.01 else 1.0
 	mult *= _start_boost_multiplier
 	if drafting_system and drafting_system.has_method("get_speed_multiplier"):
 		mult *= drafting_system.get_speed_multiplier()
@@ -315,8 +320,20 @@ func _get_drift_input() -> bool:
 
 func set_terrain_modifiers(name: String, speed_mult: float, handling_mult: float) -> void:
 	terrain_name = name
-	terrain_speed_multiplier = speed_mult
-	terrain_handling_multiplier = handling_mult
+	# Shoe material affinities also apply on "standard" exit resets via affinity_for.
+	var affinity := 1.0
+	if stats != null and stats.has_method("affinity_for"):
+		affinity = float(stats.affinity_for(name))
+	elif not shoe_id.is_empty():
+		affinity = ShoeData.surface_affinity(shoe_id, name)
+	if name == "standard":
+		terrain_speed_multiplier = 1.0
+		terrain_handling_multiplier = 1.0
+	else:
+		terrain_speed_multiplier = speed_mult
+		terrain_handling_multiplier = handling_mult
+	set_meta("shoe_surface_affinity", affinity)
+	set_meta("shoe_material_family", ShoeData.material_family(shoe_id))
 	terrain_changed.emit(name)
 
 

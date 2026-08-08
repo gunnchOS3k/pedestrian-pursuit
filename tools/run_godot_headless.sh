@@ -64,7 +64,12 @@ run_step TestRunner "$GODOT" --headless --path "$ROOT" --script res://tests/Test
 run_step G2C6RuntimeTest "$GODOT" --headless --path "$ROOT" --script res://tests/G2C6RuntimeTest.gd
 run_step CupFlowTest "$GODOT" --headless --path "$ROOT" --script res://tests/CupFlowTest.gd
 run_step AlphaProductStateTest "$GODOT" --headless --path "$ROOT" --script res://tests/AlphaProductStateTest.gd
+run_step BetaProductStateTest "$GODOT" --headless --path "$ROOT" --script res://tests/BetaProductStateTest.gd
+run_step CompetitiveAiEvalSubset \
+  env PP_AI_EVAL_SUBSET=1 PP_AI_EVAL_TIME_SCALE=20 PP_AI_EVAL_MAX_SEC=8 \
+  "$GODOT" --headless --path "$ROOT" --script res://tests/CompetitiveAiEvalRunner.gd
 
 echo
 echo "PEDESTRIAN_MAIN_GODOT_HEADLESS_PASS"
-echo "All headless Godot suites green."
+echo "Beta/Digital-RC headless suites green (AI full matrix is a separate evidence run)."
+echo "Full AI matrix: PP_AI_EVAL_TIME_SCALE=24 $GODOT --headless --path . --script res://tests/CompetitiveAiEvalRunner.gd"
