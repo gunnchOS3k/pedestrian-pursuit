@@ -46,6 +46,7 @@ func _ready() -> void:
 
 	var racers: Array = [player]
 	var ai_count := GameManager.ai_field_size
+	var local_p2: Node = null
 	var ai_offsets := [
 		Vector3(2.5, 0, 3.0),
 		Vector3(-2.5, 0, 4.5),
@@ -58,27 +59,32 @@ func _ready() -> void:
 	_assign_profile(player, player_profile)
 	_assigned_profiles = [player_profile]
 
-	# Local MP: second human on shared screen (Alpha entry — not split polish).
+	# Local MP: second human + vertical split-screen cameras.
 	if GameManager.is_local_mp():
-		var p2: Node = AI_SCENE.instantiate()
-		p2.name = "Player2Racer"
-		add_child(p2)
-		if "is_player" in p2:
-			p2.is_player = true
-		if "local_player_index" in p2:
-			p2.local_player_index = 1
-		if "shoe_id" in p2:
-			p2.shoe_id = "grip_soles"
+		local_p2 = AI_SCENE.instantiate()
+		local_p2.name = "Player2Racer"
+		add_child(local_p2)
+		if "is_player" in local_p2:
+			local_p2.is_player = true
+		if "local_player_index" in local_p2:
+			local_p2.local_player_index = 1
+		if "shoe_id" in local_p2:
+			local_p2.shoe_id = str(GameManager.get_meta("local_mp_p2_shoe_id")) if GameManager.has_meta("local_mp_p2_shoe_id") else "grip_soles"
+		if "racer_id" in local_p2:
+			local_p2.racer_id = str(GameManager.get_meta("local_mp_p2_runner_id")) if GameManager.has_meta("local_mp_p2_runner_id") else "mira_lane"
 		var p2_profile = _pick_ai_profile(1)
-		_assign_profile(p2, p2_profile)
+		if GameManager.has_meta("local_mp_p2_runner_id"):
+			p2_profile = _RunnerProfile.by_id(str(GameManager.get_meta("local_mp_p2_runner_id")))
+		_assign_profile(local_p2, p2_profile)
 		_assigned_profiles.append(p2_profile)
 		var p2_start := start_xf.translated_local(Vector3(-2.5, 0, 2.0))
-		p2.global_transform = p2_start
-		p2.setup_for_race(p2_start)
-		if p2.has_method("setup_rails"):
-			p2.setup_rails(track.get_rail_world_points())
-		racers.append(p2)
+		local_p2.global_transform = p2_start
+		local_p2.setup_for_race(p2_start)
+		if local_p2.has_method("setup_rails"):
+			local_p2.setup_rails(track.get_rail_world_points())
+		racers.append(local_p2)
 		ai_count = mini(ai_count, 2)
+		_setup_local_mp_split(local_p2)
 
 	for i in ai_count:
 		var ai: Node = ai_racer if i == 0 and not GameManager.is_local_mp() else AI_SCENE.instantiate()
@@ -154,6 +160,8 @@ func _ready() -> void:
 	for checkpoint in checkpoints:
 		checkpoint.racer_passed.connect(_on_checkpoint_for_recovery)
 	hud.setup(player, race_manager, course_data)
+	if GameManager.is_local_mp() and local_p2 != null and hud.has_method("setup_local_mp_secondary"):
+		hud.setup_local_mp_secondary(local_p2)
 	debug_overlay.setup(player)
 	results.hide_results()
 	race_manager.countdown_tick.connect(_on_countdown_personality)
@@ -171,6 +179,8 @@ func _ready() -> void:
 		get_tree().paused = false
 	if pause_menu:
 		pause_menu.visible = false
+		if pause_menu.has_method("configure_local_mp"):
+			pause_menu.configure_local_mp(GameManager.is_local_mp())
 	if GameManager.is_tutorial():
 		_attach_tutorial_director()
 	race_manager.begin_countdown()
@@ -396,25 +406,29 @@ func _on_race_finished(finished_player: Node, finish_results: Array) -> void:
 			true,
 			_race_perf_snapshot()
 		)
-	if GameManager.is_time_trial():
-		var prog := get_tree().root.get_node_or_null("ProgressionSave")
-		if prog != null:
-			if prog.has_method("record_time_trial_pb"):
-				prog.record_time_trial_pb(str(course_data.get("id", "")), race_manager.race_time)
-			if prog.has_method("add_xp"):
-				prog.add_xp(25)
-	elif GameManager.is_challenge():
-		var prog2 := get_tree().root.get_node_or_null("ProgressionSave")
-		if prog2 != null and prog2.has_method("complete_challenge"):
-			prog2.complete_challenge(str(GameManager.selected_challenge_id), 80)
-	else:
-		var prog3 := get_tree().root.get_node_or_null("ProgressionSave")
-		if prog3 != null and prog3.has_method("add_xp"):
-			prog3.add_xp(15)
+	# Save ownership: Local MP is couch session — no career XP/PB writes.
+	if not GameManager.is_local_mp():
+		if GameManager.is_time_trial():
+			var prog := get_tree().root.get_node_or_null("ProgressionSave")
+			if prog != null:
+				if prog.has_method("record_time_trial_pb"):
+					prog.record_time_trial_pb(str(course_data.get("id", "")), race_manager.race_time)
+				if prog.has_method("add_xp"):
+					prog.add_xp(25)
+		elif GameManager.is_challenge():
+			var prog2 := get_tree().root.get_node_or_null("ProgressionSave")
+			if prog2 != null and prog2.has_method("complete_challenge"):
+				prog2.complete_challenge(str(GameManager.selected_challenge_id), 80)
+		else:
+			var prog3 := get_tree().root.get_node_or_null("ProgressionSave")
+			if prog3 != null and prog3.has_method("add_xp"):
+				prog3.add_xp(15)
 
 	_play_finish_reactions(finish_results, pos)
 	var field_lines := _build_field_lines(finish_results)
 	results.show_results(race_manager.race_time, pos, true, course_data, field_lines)
+	if GameManager.is_local_mp() and results.has_method("annotate_local_mp"):
+		results.annotate_local_mp(finish_results)
 
 
 func _play_finish_reactions(finish_results: Array, _player_pos: int) -> void:
@@ -433,6 +447,22 @@ func _play_finish_reactions(finish_results: Array, _player_pos: int) -> void:
 		visual.play_finish(place <= 3)
 
 
+func _setup_local_mp_split(player2: Node) -> void:
+	var main_cam: Camera3D = camera_rig.get_node_or_null("Camera3D") as Camera3D
+	var split := CanvasLayer.new()
+	split.name = "LocalMPSplit"
+	split.set_script(load("res://scripts/race/LocalMPSplitDirector.gd"))
+	add_child(split)
+	if split.has_method("setup"):
+		split.setup(self, player, player2, main_cam)
+	if split.has_method("resize_to_window"):
+		split.resize_to_window()
+	# Shared HUD stays on top; hide on-screen touch pads (keyboard/gamepad couch).
+	if mobile_controls:
+		mobile_controls.visible = false
+	set_meta("local_mp_split", split)
+
+
 func _build_field_lines(finish_results: Array) -> PackedStringArray:
 	var lines: PackedStringArray = []
 	var place := 1
@@ -443,7 +473,14 @@ func _build_field_lines(finish_results: Array) -> PackedStringArray:
 		var name := "Runner"
 		if racer != null and racer.has_meta("runner_display_name"):
 			name = str(racer.get_meta("runner_display_name"))
-		var tag := " (You)" if bool(entry.get("is_player", false)) else ""
+		var tag := ""
+		if GameManager.is_local_mp() and bool(entry.get("is_player", false)):
+			var idx := int(entry.get("local_player_index", 0))
+			if racer != null and "local_player_index" in racer:
+				idx = int(racer.local_player_index)
+			tag = " (P1)" if idx == 0 else " (P2)"
+		elif bool(entry.get("is_player", false)):
+			tag = " (You)"
 		lines.append("%d. %s%s" % [place, name, tag])
 		place += 1
 	return lines

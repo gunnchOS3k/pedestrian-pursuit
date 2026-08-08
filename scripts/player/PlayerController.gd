@@ -289,7 +289,11 @@ func _tick_timers(delta: float) -> void:
 func _get_steer() -> float:
 	if is_player:
 		if local_player_index == 1:
-			return Input.get_action_strength("p2_move_right") - Input.get_action_strength("p2_move_left")
+			var steer := Input.get_action_strength("p2_move_right") - Input.get_action_strength("p2_move_left")
+			# Prefer gamepad 1 when present.
+			if Input.get_connected_joypads().size() > 1:
+				steer = Input.get_joy_axis(1, JOY_AXIS_LEFT_X)
+			return clampf(steer, -1.0, 1.0)
 		return InputManager.get_steer()
 	return 0.0
 
@@ -297,7 +301,11 @@ func _get_steer() -> float:
 func _get_accelerate_input() -> bool:
 	if is_player:
 		if local_player_index == 1:
-			return Input.is_action_pressed("p2_accelerate")
+			if Input.is_action_pressed("p2_accelerate"):
+				return true
+			if Input.get_connected_joypads().size() > 1 and Input.get_joy_axis(1, JOY_AXIS_TRIGGER_RIGHT) > 0.3:
+				return true
+			return false
 		return InputManager.is_accelerating()
 	return true
 
@@ -305,7 +313,11 @@ func _get_accelerate_input() -> bool:
 func _get_brake_input() -> bool:
 	if is_player:
 		if local_player_index == 1:
-			return Input.is_action_pressed("p2_brake")
+			if Input.is_action_pressed("p2_brake"):
+				return true
+			if Input.get_connected_joypads().size() > 1 and Input.get_joy_axis(1, JOY_AXIS_TRIGGER_LEFT) > 0.3:
+				return true
+			return false
 		return InputManager.is_braking()
 	return false
 
@@ -313,7 +325,11 @@ func _get_brake_input() -> bool:
 func _get_drift_input() -> bool:
 	if is_player:
 		if local_player_index == 1:
-			return Input.is_action_pressed("p2_drift")
+			if Input.is_action_pressed("p2_drift"):
+				return true
+			if Input.get_connected_joypads().size() > 1 and Input.is_joy_button_pressed(1, JOY_BUTTON_LEFT_SHOULDER):
+				return true
+			return false
 		return InputManager.is_drifting()
 	return false
 

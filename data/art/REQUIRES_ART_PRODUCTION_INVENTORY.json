@@ -1,47 +1,57 @@
 {
   "schema": "art_production_inventory/v1",
-  "token_note": "Human final art blocks visual RC polish; digital route/AI/collision/exploits are complete.",
+  "token_note": "Human final art/audio blocks store visual RC; digital route/AI/collision/exploits/procedural greybox are launch-complete.",
   "status": "REQUIRES_ART_PRODUCTION",
+  "digital_rc_claim": "PARTIAL — keep PEDESTRIAN_DIGITAL_RC_READY PARTIAL until final art/audio + device FPS cert",
+  "greybox_policy": "Procedural scenery densified for digital launch readability; hero meshes/shaders/audio banks still required before clearing REQUIRES_ART_PRODUCTION.",
   "tracks": [
     {
       "id": "verdant_cascade_circuit",
       "needs": ["hero_mesh_riverside", "cascade_vfx", "vegetation_kit", "audio_ambience"],
-      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "terrain_zones", "bounce_pads", "item_boxes", "shortcuts"]
+      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "terrain_zones", "bounce_pads", "item_boxes", "shortcuts", "procedural_scenery"],
+      "greybox_cleared_for_digital_launch": true
     },
     {
       "id": "cloverwind_ranch",
       "needs": ["barn_setdress", "mud_material", "wind_grass", "audio_wind"],
-      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "terrain_zones", "rails", "shortcuts"]
+      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "terrain_zones", "rails", "shortcuts", "procedural_scenery"],
+      "greybox_cleared_for_digital_launch": true
     },
     {
       "id": "prism_apex",
       "needs": ["orbital_ribbon_mesh", "emissive_prism_kit", "skybox", "audio_synth"],
-      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "rails", "boost_pickups", "shortcuts"]
+      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "rails", "boost_pickups", "shortcuts", "procedural_scenery"],
+      "greybox_cleared_for_digital_launch": true
     },
     {
       "id": "emberkeep_gauntlet",
       "needs": ["basalt_fortress", "ash_particles", "forge_vents", "audio_rumble"],
-      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "ash_zones", "shortcuts"]
+      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "ash_zones", "shortcuts", "procedural_scenery"],
+      "greybox_cleared_for_digital_launch": true
     },
     {
       "id": "tideglass_harbor",
       "needs": ["pier_kit", "water_shader", "harbor_props", "audio_waves"],
-      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "shortcuts", "rails"]
+      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "shortcuts", "rails", "procedural_scenery"],
+      "greybox_cleared_for_digital_launch": true
     },
     {
       "id": "neon_switchyard",
       "needs": ["neon_yard_kit", "rail_art", "night_sky", "audio_industrial"],
-      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "rails", "shortcuts"]
+      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "rails", "shortcuts", "procedural_scenery"],
+      "greybox_cleared_for_digital_launch": true
     },
     {
       "id": "cloudstep_ridge",
       "needs": ["ridge_shelves", "fog_volume", "cliff_kit", "audio_altitude"],
-      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "rails", "shortcuts"]
+      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "rails", "shortcuts", "procedural_scenery"],
+      "greybox_cleared_for_digital_launch": true
     },
     {
       "id": "mirage_mesa",
       "needs": ["mesa_rock_kit", "sand_material", "heat_haze", "audio_desert"],
-      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "sand_zones", "shortcuts"]
+      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "sand_zones", "shortcuts", "procedural_scenery"],
+      "greybox_cleared_for_digital_launch": true
     }
   ],
   "racers": {
@@ -50,6 +60,18 @@
   },
   "audio": {
     "needs": ["music_stems", "footstep_banks", "item_sfx", "ui_sfx"],
-    "status": "REQUIRES_ART_PRODUCTION"
+    "digital_complete": ["honest_inventory_only"],
+    "status": "REQUIRES_ART_PRODUCTION",
+    "note": "No placeholder silent loops claimed as finished audio."
+  },
+  "local_mp": {
+    "digital_complete": [
+      "vertical_split_cameras",
+      "p1_wasd_pad0_p2_arrows_pad1",
+      "results_p1_p2_tags",
+      "pause_either_player",
+      "a11y_hud_scale_markers",
+      "career_save_skipped_for_couch_session"
+    ]
   }
 }

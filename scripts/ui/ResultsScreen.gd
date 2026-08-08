@@ -30,6 +30,8 @@ func show_results(
 	title_label.text = "Race Complete!" if finished else "Race Over"
 	if position == 1 and finished:
 		title_label.text = "Podium Finish!"
+	if GameManager.is_local_mp():
+		title_label.text = "Local MP Results"
 	time_label.text = "Time: %02d:%05.2f" % [int(time) / 60, fmod(time, 60.0)]
 	position_label.text = "Position: %d" % position
 	course_label.text = str(course_data.get("display_name", "Unknown Course"))
@@ -59,6 +61,13 @@ func show_results(
 			title_label.text = "Cup Complete!"
 			retry_button.text = "Race Cup Again"
 			GameManager.save_cup_progress()
+	elif GameManager.is_local_mp():
+		cup_summary_label.text = (
+			"Couch session — career XP not written.\nField:\n%s" % field_block
+			if not field_block.is_empty()
+			else "Couch session — career XP not written."
+		)
+		retry_button.text = "Rematch"
 	else:
 		cup_summary_label.text = (
 			("Field:\n%s\n\nSingle-course race" % field_block)
@@ -66,6 +75,32 @@ func show_results(
 			else "Single-course race"
 		)
 		retry_button.text = "Race Again"
+
+
+func annotate_local_mp(finish_results: Array) -> void:
+	## Ensure P1/P2 tags survive even if field_lines were built early.
+	if not GameManager.is_local_mp():
+		return
+	var tagged := PackedStringArray()
+	var place := 1
+	for entry in finish_results:
+		if typeof(entry) != TYPE_DICTIONARY:
+			continue
+		var racer: Node = entry.get("racer")
+		var name := "Runner"
+		if racer != null and racer.has_meta("runner_display_name"):
+			name = str(racer.get_meta("runner_display_name"))
+		var tag := ""
+		if bool(entry.get("is_player", false)):
+			var idx := int(entry.get("local_player_index", 0))
+			if racer != null and "local_player_index" in racer:
+				idx = int(racer.local_player_index)
+			tag = " (P1)" if idx == 0 else " (P2)"
+		tagged.append("%d. %s%s" % [place, name, tag])
+		place += 1
+	podium_label.text = _build_podium_text(tagged)
+	podium_label.visible = not podium_label.text.is_empty()
+	cup_summary_label.text = "Couch session — career XP not written.\nField:\n%s" % "\n".join(tagged)
 
 
 func _build_podium_text(field_lines: PackedStringArray) -> String:

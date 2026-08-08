@@ -50,6 +50,18 @@ func set_ring_confirm(pressed: bool) -> void:
 func get_steer() -> float:
 	if GameManager.accept_test_mode and absf(GameManager.accept_steer) > 0.01:
 		return GameManager.accept_steer
+	if GameManager.is_local_mp():
+		# P1 owns WASD + pad0; arrow keys reserved for P2.
+		var steer_p1 := 0.0
+		if Input.is_physical_key_pressed(KEY_D):
+			steer_p1 += 1.0
+		if Input.is_physical_key_pressed(KEY_A):
+			steer_p1 -= 1.0
+		if Input.get_connected_joypads().size() > 0:
+			steer_p1 += Input.get_joy_axis(0, JOY_AXIS_LEFT_X)
+		steer_p1 = clampf(steer_p1, -1.0, 1.0)
+		_note_digital_source(steer_p1)
+		return steer_p1
 	var steer := Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	if absf(_touch_steer) > absf(steer):
 		steer = _touch_steer
@@ -71,6 +83,14 @@ func is_accelerating() -> bool:
 		return true
 	if _touch_accelerate:
 		return true
+	if GameManager.is_local_mp():
+		if Input.is_physical_key_pressed(KEY_W):
+			last_active_source = InputSource.KEYBOARD
+			return true
+		if Input.get_connected_joypads().size() > 0 and Input.get_joy_axis(0, JOY_AXIS_TRIGGER_RIGHT) > 0.3:
+			last_active_source = InputSource.GAMEPAD
+			return true
+		return false
 	if preferred_source == InputSource.RING:
 		# SOFTWARE ring stand-in: accelerate / ui_accept act as ring-confirm hold.
 		if Input.is_action_pressed("accelerate") or Input.is_action_pressed("ui_accept"):
@@ -85,6 +105,12 @@ func is_accelerating() -> bool:
 
 
 func is_braking() -> bool:
+	if GameManager.is_local_mp():
+		if Input.is_physical_key_pressed(KEY_S):
+			return true
+		if Input.get_connected_joypads().size() > 0 and Input.get_joy_axis(0, JOY_AXIS_TRIGGER_LEFT) > 0.3:
+			return true
+		return false
 	return Input.is_action_pressed("brake")
 
 

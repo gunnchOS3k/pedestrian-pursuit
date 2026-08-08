@@ -68,6 +68,19 @@ func setup(player: Node, race_manager: Node, course_data: Dictionary = {}) -> vo
 	_apply_marker_colors()
 
 
+func setup_local_mp_secondary(player2: Node) -> void:
+	## Dual-pane a11y: larger UI + colorblind markers apply; P2 status line for couch.
+	_apply_ui_scale()
+	_apply_marker_colors()
+	if _role_hint == null:
+		_ensure_role_labels()
+	if _role_hint:
+		_role_hint.text = "P1: WASD/gamepad0  •  P2: arrows/gamepad1  •  Esc pauses"
+		_role_hint.visible = true
+	if player2 != null:
+		set_meta("local_mp_p2", player2)
+
+
 func apply_device_role(profile: Dictionary, map_profile: Dictionary = {}) -> void:
 	_ensure_role_labels()
 	var layout := str(profile.get("hud_layout", ""))

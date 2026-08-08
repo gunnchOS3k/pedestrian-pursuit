@@ -363,6 +363,7 @@ func _build_scenery() -> void:
 
 
 func _build_cascade_scenery(parent: Node3D) -> void:
+	## Digital launch procedural riverside — final vegetation/VFX still REQUIRES_ART_PRODUCTION.
 	_add_visual_box(
 		parent,
 		Vector3(0.0, -0.78, 0.0),
@@ -370,8 +371,12 @@ func _build_cascade_scenery(parent: Node3D) -> void:
 		_color("backdrop_color", Color(0.2, 0.5, 0.3))
 	)
 	_add_visual_cylinder(parent, Vector3(0.0, -0.55, 0.0), 24.0, 0.18, Color(0.2, 0.65, 0.82), true)
-	for position in [Vector3(-13, 6, -2), Vector3(0, 8, -8), Vector3(14, 5, 2)]:
+	for position in [Vector3(-13, 6, -2), Vector3(0, 8, -8), Vector3(14, 5, 2), Vector3(-20, 4, 10), Vector3(18, 7, -14)]:
 		_add_visual_cylinder(parent, position, 3.2, position.y * 2.0, Color(0.35, 0.8, 0.9), true)
+	for position in [Vector3(-8, 1.2, 12), Vector3(10, 1.2, -16), Vector3(-22, 1.2, -6), Vector3(22, 1.2, 8)]:
+		_add_visual_box(parent, position, Vector3(1.4, 2.4, 1.4), Color(0.25, 0.45, 0.22))
+		_add_visual_sphere(parent, position + Vector3(0, 2.0, 0), 2.2, Color(0.3, 0.62, 0.28))
+
 
 
 func _build_ranch_scenery(parent: Node3D) -> void:
