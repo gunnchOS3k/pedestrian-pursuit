@@ -38,12 +38,76 @@ func _ready() -> void:
 	_setup_preview_viewport()
 	_ensure_settings_ui()
 	_ensure_mode_buttons()
+	_ensure_howto_button()
 	_ensure_cup_and_shoe_pickers()
 	_load_content()
 	_populate_device_picker()
 	_sync_a11y_toggles()
 	$VBox/CupLabel.text = "ALPHA  •  8 COURSES  •  2 CUPS"
 	$VBox/Subtitle.text = "Wave E Alpha — greybox depth, not content-complete"
+
+
+func _ensure_howto_button() -> void:
+	var vbox: VBoxContainer = $VBox
+	if vbox.get_node_or_null("HowToPlayButton") != null:
+		var existing := vbox.get_node("HowToPlayButton") as Button
+		if existing and not existing.pressed.is_connected(_on_howto_play):
+			existing.pressed.connect(_on_howto_play)
+		return
+	var btn := Button.new()
+	btn.name = "HowToPlayButton"
+	btn.text = "How to Play"
+	btn.custom_minimum_size = Vector2(0, 40)
+	vbox.add_child(btn)
+	var quit := vbox.get_node_or_null("QuitButton")
+	if quit != null:
+		vbox.move_child(btn, quit.get_index())
+	btn.pressed.connect(_on_howto_play)
+
+
+func _on_howto_play() -> void:
+	var existing := get_node_or_null("HowToPlayOverlay")
+	if existing != null:
+		existing.visible = true
+		return
+	var overlay := ColorRect.new()
+	overlay.name = "HowToPlayOverlay"
+	overlay.color = Color(0.05, 0.07, 0.12, 0.92)
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(overlay)
+	var panel := VBoxContainer.new()
+	panel.set_anchors_preset(Control.PRESET_CENTER)
+	panel.offset_left = -280
+	panel.offset_right = 280
+	panel.offset_top = -220
+	panel.offset_bottom = 220
+	panel.add_theme_constant_override("separation", 10)
+	overlay.add_child(panel)
+	var title := Label.new()
+	title.text = "How to Play"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 28)
+	panel.add_child(title)
+	var body := Label.new()
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	body.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	body.add_theme_font_size_override("font_size", 15)
+	body.text = (
+		"Race on foot across greybox championship courses.\n\n"
+		+ "Steer A/D · Accelerate W · Brake S\n"
+		+ "Jump Space · Drift Shift · Slide Ctrl\n"
+		+ "Boost Q · Use Item E · Pause Esc\n\n"
+		+ "Modes: Quick Race, Cup (save/resume), Time Trial with ghost, Local 2P shared screen.\n"
+		+ "Items warn before hitting — shield, slide, or jump for counterplay.\n"
+		+ "Accessibility toggles live on this menu (reduce motion, larger UI, auto-accel, colorblind HUD)."
+	)
+	panel.add_child(body)
+	var close := Button.new()
+	close.text = "Got it"
+	close.custom_minimum_size = Vector2(0, 44)
+	close.pressed.connect(func (): overlay.visible = false)
+	panel.add_child(close)
 
 
 func _ensure_mode_buttons() -> void:
