@@ -1,0 +1,18 @@
+{
+  "id": "nova_quill",
+  "display_name": "Nova Quill",
+  "class_type": "sprinter",
+  "top_speed": 24.5,
+  "acceleration": 21.0,
+  "handling": 9.5,
+  "drift_control": 8.0,
+  "trick_skill": 7.0,
+  "recovery": 8.0,
+  "strength": 7.0,
+  "boost_efficiency": 1.05,
+  "default_shoe_id": "speed_sneakers",
+  "preferred_surfaces": ["standard", "asphalt", "speed_lane"],
+  "ai_line_bias": "outside_exit",
+  "special_ability_id": "launch_burst",
+  "description": "Sprinter who wins the first thirty meters and holds the draft."
+}

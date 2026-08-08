@@ -57,14 +57,25 @@ Run the dependency-free content tests:
 ```bash
 python3 tools/validate_content.py
 python3 -m unittest discover -s tests -p 'test_*.py' -v
+bash tools/rc_packaging_check.sh
 ```
 
-With Godot 4.5 available, run the full headless suite (import, startup, courses, G2-C6, cup save, modes/items/AI/ghost/Local MP):
+With Godot 4.5 available, run the full headless suite (import, startup, courses, G2-C6, cup save, modes/items/AI/ghost/Local MP, Beta product state, AI eval subset):
 
 ```bash
 GODOT_BIN="$HOME/Applications/Godot/Godot-4.5.app/Contents/MacOS/Godot" \
   ./tools/run_godot_headless.sh
 ```
+
+Full competitive AI matrix (8 racers × 4 shoes × 8 tracks × 3 tiers):
+
+```bash
+GODOT_BIN="$HOME/Applications/Godot/Godot-4.5.app/Contents/MacOS/Godot" \
+  PP_AI_EVAL_TIME_SCALE=24 PP_AI_EVAL_MAX_SEC=12 \
+  "$GODOT_BIN" --headless --path . --script res://tests/CompetitiveAiEvalRunner.gd
+```
+
+Beta / Digital RC status: [docs/PEDESTRIAN_BETA_DIGITAL_RC_STATUS.md](docs/PEDESTRIAN_BETA_DIGITAL_RC_STATUS.md).
 
 Or a single course smoke:
 

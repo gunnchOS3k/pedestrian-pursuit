@@ -176,6 +176,48 @@ def validate_project(root: Path) -> list[str]:
         shoe = _read_json(shoe_path, errors)
         if shoe and shoe.get("id") != shoe_id:
             errors.append(f"{shoe_path}: id mismatch")
+        if shoe:
+            if "material_family" not in shoe:
+                errors.append(f"{shoe_path}: missing material_family")
+            affinities = shoe.get("surface_affinities")
+            if not isinstance(affinities, dict) or len(affinities) < 6:
+                errors.append(f"{shoe_path}: surface_affinities must cover launch surfaces")
+
+    expected_runners = (
+        "dash_reed",
+        "nova_quill",
+        "sierra_flux",
+        "mira_lane",
+        "bolt_harbor",
+        "zig_riven",
+        "solen_pike",
+        "kai_volt",
+    )
+    for runner_id in expected_runners:
+        runner_path = root / f"data/racers/{runner_id}.json"
+        runner = _read_json(runner_path, errors)
+        if not runner:
+            continue
+        if runner.get("id") != runner_id:
+            errors.append(f"{runner_path}: id mismatch")
+        for key in ("top_speed", "acceleration", "handling", "drift_control"):
+            if key not in runner:
+                errors.append(f"{runner_path}: missing gameplay stat {key}")
+
+    art_inv = root / "data/art/REQUIRES_ART_PRODUCTION_INVENTORY.json"
+    art = _read_json(art_inv, errors)
+    if art and art.get("status") != "REQUIRES_ART_PRODUCTION":
+        errors.append(f"{art_inv}: status must remain REQUIRES_ART_PRODUCTION until final art lands")
+
+    grammar = root / "data/mechanics/foot_racing_grammar.json"
+    gram = _read_json(grammar, errors)
+    if gram and len(gram.get("mechanics", [])) < 10:
+        errors.append(f"{grammar}: need full foot-racing grammar (≥10 mechanics)")
+
+    challenges = root / "data/challenges/launch_challenges.json"
+    ch = _read_json(challenges, errors)
+    if ch and len(ch.get("challenges", [])) < 5:
+        errors.append(f"{challenges}: need launch challenge set")
 
     for item_id in EXPECTED_ITEMS:
         item_path = root / f"data/items/{item_id}.json"
@@ -241,8 +283,8 @@ def main() -> int:
             print(f"- {error}", file=sys.stderr)
         return 1
     print(
-        "Validated Wave E Alpha catalog: 2 cups, 8 unique courses, "
-        "4 footwear, 6 items w/ counterplay, 8 runners, 4 device roles."
+        "Validated Beta/Digital-RC catalog: 2 cups, 8 unique courses, "
+        "4 footwear w/ materials, 6 items, 8 runners w/ stats, grammar, challenges, art inventory."
     )
     return 0
 

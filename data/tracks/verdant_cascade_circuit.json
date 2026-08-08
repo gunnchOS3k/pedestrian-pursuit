@@ -15,19 +15,125 @@
   "sky_color": "#79C7E3",
   "backdrop_color": "#2F754A",
   "path_points": [
-    [0, 0, 34], [24, 0, 36], [44, 0, 20], [48, 0, -8], [30, 0, -34],
-    [0, 0, -42], [-28, 0, -31], [-46, 0, -4], [-35, 0, 25]
+    [
+      0,
+      0,
+      34
+    ],
+    [
+      24,
+      0,
+      36
+    ],
+    [
+      44,
+      0,
+      20
+    ],
+    [
+      48,
+      0,
+      -8
+    ],
+    [
+      30,
+      0,
+      -34
+    ],
+    [
+      0,
+      0,
+      -42
+    ],
+    [
+      -28,
+      0,
+      -31
+    ],
+    [
+      -46,
+      0,
+      -4
+    ],
+    [
+      -35,
+      0,
+      25
+    ]
   ],
-  "checkpoint_points": [0, 2, 4, 6, 8],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8
+  ],
   "speed_lanes": [
-    {"point_index": 1, "size": [6, 13], "speed_bonus": 1.2}
+    {
+      "point_index": 1,
+      "size": [
+        6,
+        13
+      ],
+      "speed_bonus": 1.2
+    }
   ],
   "terrain_zones": [
-    {"point_index": 5, "size": [12, 13], "terrain_name": "cascade_runoff", "speed_multiplier": 0.84, "handling_multiplier": 0.92, "color": "#4FC3E0"}
+    {
+      "point_index": 5,
+      "size": [
+        12,
+        13
+      ],
+      "terrain_name": "cascade_runoff",
+      "speed_multiplier": 0.84,
+      "handling_multiplier": 0.92,
+      "color": "#4FC3E0"
+    }
   ],
   "bounce_pads": [
-    {"point_index": 7, "size": [6, 6], "bounce_force": 11.5, "forward_boost": 4.5}
+    {
+      "point_index": 7,
+      "size": [
+        6,
+        6
+      ],
+      "bounce_force": 11.5,
+      "forward_boost": 4.5
+    }
   ],
-  "item_boxes": [1, 4, 7],
-  "boost_pickups": [2, 6]
+  "item_boxes": [
+    1,
+    4,
+    7
+  ],
+  "boost_pickups": [
+    2,
+    6
+  ],
+  "shortcut_routes": [
+    {
+      "id": "cascade_inner_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 5,
+      "risk": "wet_runoff",
+      "ai_preference": 0.35
+    }
+  ],
+  "rail_segments": [
+    3,
+    6
+  ],
+  "exploit_notes": [
+    "Do not clip through cascade columns; guard rails block off-course wall runs."
+  ],
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": false
+  }
 }

@@ -19,6 +19,9 @@ var _path_length: float = 1.0
 var _prefer_shortcut: bool = false
 var _shortcut_bias: float = 0.0
 var _lane_bias: float = 0.0
+var _shoe_id: String = "starter_soles"
+var _soft_surface_score: float = 1.0
+var _prefer_vertical: bool = false
 
 
 func setup(race_path: Path3D) -> void:
@@ -27,6 +30,20 @@ func setup(race_path: Path3D) -> void:
 		_curve = path.curve
 		_path_length = maxf(_curve.get_baked_length(), 1.0)
 	_apply_tier_defaults()
+
+
+func set_shoe_context(shoe_id: String) -> void:
+	_shoe_id = shoe_id
+	_soft_surface_score = ShoeData.soft_surface_penalty(shoe_id)
+	_prefer_vertical = ShoeData.prefers_vertical(shoe_id)
+	# Soft shoes hold speed in mud; hard plates get earlier brake thresholds via curvature.
+	if _soft_surface_score < 0.85:
+		look_ahead = maxf(look_ahead, look_ahead * 1.08)
+	elif _soft_surface_score > 1.05:
+		_lane_bias = clampf(_lane_bias - 0.35, -3.5, 3.5)
+	if _prefer_vertical:
+		_prefer_shortcut = true
+		_shortcut_bias = maxf(_shortcut_bias, 3.5)
 
 
 func set_tier(next_tier: Tier) -> void:
@@ -129,11 +146,16 @@ func get_steer_and_accel(body: CharacterBody3D, delta: float = 0.016) -> Diction
 		body.look_at(look, Vector3.UP)
 
 	var curvature := _estimate_curvature()
+	# Hard-plate footwear brakes earlier when curvature rises (material-aware planning).
+	var soft_factor := clampf(_soft_surface_score, 0.7, 1.25)
 	var drift: bool = absf(steer) > 0.5 and speed > 8.0 and curvature > 0.015
 	var accelerate := true
 	var brake_steer := 0.85 if tier == Tier.ROOKIE else (0.78 if tier == Tier.STANDARD else 0.7)
 	var brake_speed := 12.0 if tier == Tier.ROOKIE else (14.5 if tier == Tier.STANDARD else 16.5)
-	if (absf(steer) > brake_steer or curvature > 0.03) and speed > brake_speed:
+	brake_speed *= lerpf(0.88, 1.06, (soft_factor - 0.7) / 0.55)
+	if soft_factor < 0.9:
+		brake_steer -= 0.06
+	if (absf(steer) > brake_steer or curvature > (0.03 if soft_factor >= 0.95 else 0.022)) and speed > brake_speed:
 		accelerate = false
 
 	# Pack awareness without rubber-band speed cheats: trailers keep accel when safe.
@@ -146,6 +168,12 @@ func get_steer_and_accel(body: CharacterBody3D, delta: float = 0.016) -> Diction
 	if tier == Tier.ACE and body.has_meta("held_item_ready"):
 		use_item = bool(body.get_meta("held_item_ready")) and absf(steer) < 0.4
 
+	# Bounce-family footwear seeks rails when nearby (no teleport — steer bias only).
+	if _prefer_vertical and body.has_meta("nearest_rail_dist"):
+		var rail_d := float(body.get_meta("nearest_rail_dist"))
+		if rail_d < 6.0 and absf(steer) < 0.55:
+			accelerate = true
+
 	return {
 		"steer": steer,
 		"accelerate": accelerate,
@@ -153,6 +181,8 @@ func get_steer_and_accel(body: CharacterBody3D, delta: float = 0.016) -> Diction
 		"use_item": use_item,
 		"curvature": curvature,
 		"off_track": off_track,
+		"shoe_id": _shoe_id,
+		"soft_surface_score": soft_factor,
 	}
 
 

@@ -43,8 +43,8 @@ func _ready() -> void:
 	_load_content()
 	_populate_device_picker()
 	_sync_a11y_toggles()
-	$VBox/CupLabel.text = "ALPHA  •  8 COURSES  •  2 CUPS"
-	$VBox/Subtitle.text = "Wave E Alpha — greybox depth, not content-complete"
+	$VBox/CupLabel.text = "BETA / DIGITAL RC  •  8 COURSES  •  2 CUPS  •  8 RACERS"
+	$VBox/Subtitle.text = "Launch roster + footwear materials — visual finals REQUIRES_ART_PRODUCTION"
 
 
 func _ensure_howto_button() -> void:
@@ -94,11 +94,12 @@ func _on_howto_play() -> void:
 	body.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	body.add_theme_font_size_override("font_size", 15)
 	body.text = (
-		"Race on foot across greybox championship courses.\n\n"
+		"Race on foot across championship courses.\n\n"
 		+ "Steer A/D · Accelerate W · Brake S\n"
 		+ "Jump Space · Drift Shift · Slide Ctrl\n"
 		+ "Boost Q · Use Item E · Pause Esc\n\n"
-		+ "Modes: Quick Race, Cup (save/resume), Time Trial with ghost, Local 2P shared screen.\n"
+		+ "Modes: Quick Race, Cup, Time Trial/Ghost, Local 2P, Tutorial, Challenges, Progression.\n"
+		+ "Footwear materials matter: Grip on mud, Speed on asphalt, Bounce on rails/pads.\n"
 		+ "Items warn before hitting — shield, slide, or jump for counterplay.\n"
 		+ "Accessibility toggles live on this menu (reduce motion, larger UI, auto-accel, colorblind HUD)."
 	)
@@ -112,35 +113,76 @@ func _on_howto_play() -> void:
 
 func _ensure_mode_buttons() -> void:
 	var vbox: VBoxContainer = $VBox
-	if vbox.get_node_or_null("TimeTrialButton") != null:
-		_wire_mode_buttons()
-		return
-	var insert_at := vbox.get_node("SingleRaceButton").get_index() + 1
+	if vbox.get_node_or_null("TimeTrialButton") == null:
+		var insert_at := vbox.get_node("SingleRaceButton").get_index() + 1
 
-	var tt := Button.new()
-	tt.name = "TimeTrialButton"
-	tt.text = "Time Trial / Ghost"
-	tt.custom_minimum_size = Vector2(0, 44)
-	vbox.add_child(tt)
-	vbox.move_child(tt, insert_at)
-	insert_at += 1
+		var tt := Button.new()
+		tt.name = "TimeTrialButton"
+		tt.text = "Time Trial / Ghost"
+		tt.custom_minimum_size = Vector2(0, 44)
+		vbox.add_child(tt)
+		vbox.move_child(tt, insert_at)
+		insert_at += 1
 
-	var lmp := Button.new()
-	lmp.name = "LocalMPButton"
-	lmp.text = "Local Multiplayer (2P)"
-	lmp.custom_minimum_size = Vector2(0, 44)
-	vbox.add_child(lmp)
-	vbox.move_child(lmp, insert_at)
+		var lmp := Button.new()
+		lmp.name = "LocalMPButton"
+		lmp.text = "Local Multiplayer (2P)"
+		lmp.custom_minimum_size = Vector2(0, 44)
+		vbox.add_child(lmp)
+		vbox.move_child(lmp, insert_at)
+
+	_ensure_beta_mode_buttons()
 	_wire_mode_buttons()
+
+
+func _ensure_beta_mode_buttons() -> void:
+	var vbox: VBoxContainer = $VBox
+	var insert_at := vbox.get_node("LocalMPButton").get_index() + 1 if vbox.get_node_or_null("LocalMPButton") else vbox.get_node("SingleRaceButton").get_index() + 1
+	if vbox.get_node_or_null("TutorialButton") == null:
+		var tut := Button.new()
+		tut.name = "TutorialButton"
+		tut.text = "Tutorial (Foot-Racing Grammar)"
+		tut.custom_minimum_size = Vector2(0, 44)
+		vbox.add_child(tut)
+		vbox.move_child(tut, insert_at)
+		insert_at += 1
+	else:
+		insert_at = vbox.get_node("TutorialButton").get_index() + 1
+	if vbox.get_node_or_null("ChallengesButton") == null:
+		var ch := Button.new()
+		ch.name = "ChallengesButton"
+		ch.text = "Challenges"
+		ch.custom_minimum_size = Vector2(0, 44)
+		vbox.add_child(ch)
+		vbox.move_child(ch, insert_at)
+		insert_at += 1
+	else:
+		insert_at = vbox.get_node("ChallengesButton").get_index() + 1
+	if vbox.get_node_or_null("ProgressionButton") == null:
+		var prog := Button.new()
+		prog.name = "ProgressionButton"
+		prog.text = "Progression / Unlocks"
+		prog.custom_minimum_size = Vector2(0, 44)
+		vbox.add_child(prog)
+		vbox.move_child(prog, insert_at)
 
 
 func _wire_mode_buttons() -> void:
 	var tt := $VBox.get_node_or_null("TimeTrialButton") as Button
 	var lmp := $VBox.get_node_or_null("LocalMPButton") as Button
+	var tut := $VBox.get_node_or_null("TutorialButton") as Button
+	var ch := $VBox.get_node_or_null("ChallengesButton") as Button
+	var prog := $VBox.get_node_or_null("ProgressionButton") as Button
 	if tt and not tt.pressed.is_connected(_on_start_time_trial):
 		tt.pressed.connect(_on_start_time_trial)
 	if lmp and not lmp.pressed.is_connected(_on_start_local_mp):
 		lmp.pressed.connect(_on_start_local_mp)
+	if tut and not tut.pressed.is_connected(_on_start_tutorial):
+		tut.pressed.connect(_on_start_tutorial)
+	if ch and not ch.pressed.is_connected(_on_open_challenges):
+		ch.pressed.connect(_on_open_challenges)
+	if prog and not prog.pressed.is_connected(_on_open_progression):
+		prog.pressed.connect(_on_open_progression)
 
 
 func _ensure_cup_and_shoe_pickers() -> void:
@@ -541,6 +583,118 @@ func _on_start_local_mp() -> void:
 		return
 	GameManager.start_local_mp(track_id, 2)
 	SceneLoader.go_to_race()
+
+
+func _on_start_tutorial() -> void:
+	var track_id := _selected_track_id()
+	if track_id.is_empty():
+		track_id = "verdant_cascade_circuit"
+	GameManager.start_tutorial(track_id)
+	SceneLoader.go_to_race()
+
+
+func _on_open_challenges() -> void:
+	var existing := get_node_or_null("ChallengesOverlay")
+	if existing != null:
+		existing.visible = true
+		return
+	var overlay := ColorRect.new()
+	overlay.name = "ChallengesOverlay"
+	overlay.color = Color(0.05, 0.07, 0.12, 0.92)
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	add_child(overlay)
+	var panel := VBoxContainer.new()
+	panel.set_anchors_preset(Control.PRESET_CENTER)
+	panel.offset_left = -300
+	panel.offset_right = 300
+	panel.offset_top = -240
+	panel.offset_bottom = 240
+	panel.add_theme_constant_override("separation", 8)
+	overlay.add_child(panel)
+	var title := Label.new()
+	title.text = "Challenges"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 26)
+	panel.add_child(title)
+	var path := "res://data/challenges/launch_challenges.json"
+	if FileAccess.file_exists(path):
+		var f := FileAccess.open(path, FileAccess.READ)
+		var parsed = JSON.parse_string(f.get_as_text())
+		if typeof(parsed) == TYPE_DICTIONARY:
+			for ch in parsed.get("challenges", []):
+				if typeof(ch) != TYPE_DICTIONARY:
+					continue
+				var btn := Button.new()
+				btn.text = "%s — %s" % [str(ch.get("display_name", "")), str(ch.get("goal", ""))]
+				btn.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+				btn.custom_minimum_size = Vector2(0, 48)
+				var challenge_id := str(ch.get("id", ""))
+				var track_id := str(ch.get("track_id", _selected_track_id()))
+				var shoe_id := str(ch.get("required_shoe_id", ""))
+				var mode := str(ch.get("mode", "quick_race"))
+				btn.pressed.connect(func ():
+					overlay.visible = false
+					_launch_challenge(challenge_id, mode, track_id, shoe_id, str(ch.get("cup_id", "")))
+				)
+				panel.add_child(btn)
+	var close := Button.new()
+	close.text = "Close"
+	close.pressed.connect(func (): overlay.visible = false)
+	panel.add_child(close)
+
+
+func _launch_challenge(challenge_id: String, mode: String, track_id: String, shoe_id: String, cup_id: String) -> void:
+	if mode == "cup" and not cup_id.is_empty():
+		var cup := _TrackCatalog.load_cup(cup_id)
+		GameManager.start_cup(cup_id, cup.get("track_ids", []))
+		SceneLoader.go_to_race()
+		return
+	if mode == "time_trial":
+		if not shoe_id.is_empty():
+			GameManager.selected_shoe_id = shoe_id
+		GameManager.start_time_trial(track_id)
+	elif mode == "tutorial":
+		GameManager.start_tutorial(track_id)
+	else:
+		GameManager.start_challenge(challenge_id, track_id, shoe_id)
+	SceneLoader.go_to_race()
+
+
+func _on_open_progression() -> void:
+	var existing := get_node_or_null("ProgressionOverlay")
+	if existing != null:
+		existing.visible = true
+		return
+	var overlay := ColorRect.new()
+	overlay.name = "ProgressionOverlay"
+	overlay.color = Color(0.05, 0.07, 0.12, 0.92)
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	add_child(overlay)
+	var panel := VBoxContainer.new()
+	panel.set_anchors_preset(Control.PRESET_CENTER)
+	panel.offset_left = -260
+	panel.offset_right = 260
+	panel.offset_top = -160
+	panel.offset_bottom = 160
+	panel.add_theme_constant_override("separation", 10)
+	overlay.add_child(panel)
+	var title := Label.new()
+	title.text = "Progression"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 26)
+	panel.add_child(title)
+	var body := Label.new()
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	var prog := get_tree().root.get_node_or_null("ProgressionSave")
+	if prog != null and prog.has_method("summary_lines"):
+		body.text = "\n".join(prog.summary_lines())
+	else:
+		body.text = "Progression save unavailable."
+	panel.add_child(body)
+	var close := Button.new()
+	close.text = "Close"
+	close.pressed.connect(func (): overlay.visible = false)
+	panel.add_child(close)
 
 
 func _on_course_selected(index: int) -> void:

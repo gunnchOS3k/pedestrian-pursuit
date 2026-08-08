@@ -1,0 +1,18 @@
+{
+  "id": "sierra_flux",
+  "display_name": "Sierra Flux",
+  "class_type": "parkour",
+  "top_speed": 20.5,
+  "acceleration": 17.5,
+  "handling": 13.5,
+  "drift_control": 11.0,
+  "trick_skill": 14.0,
+  "recovery": 12.0,
+  "strength": 8.0,
+  "boost_efficiency": 1.08,
+  "default_shoe_id": "bounce_boots",
+  "preferred_surfaces": ["rail", "bounce", "ledge", "standard"],
+  "ai_line_bias": "shortcut_parkour",
+  "special_ability_id": "wall_read",
+  "description": "Parkour specialist; rails, pads, and wall-kicks are fuel."
+}

@@ -4,17 +4,20 @@ const _TrackCatalog = preload("res://scripts/data/TrackCatalog.gd")
 
 ## Global game state and settings.
 
-enum RaceMode { SINGLE, CUP, TIME_TRIAL, PRACTICE, LOCAL_MP }
+enum RaceMode { SINGLE, CUP, TIME_TRIAL, PRACTICE, LOCAL_MP, TUTORIAL, CHALLENGE }
 
 var current_race_mode: RaceMode = RaceMode.SINGLE
-var selected_racer_id: String = "dash"
+var selected_racer_id: String = "dash_reed"
 var selected_runner_id: String = "dash_reed"
 var selected_shoe_id: String = "starter_soles"
 var selected_track_id: String = "verdant_cascade_circuit"
 var selected_cup_id: String = "sole_surge_cup"
+var selected_challenge_id: String = ""
 var total_laps: int = 3
 var local_mp_players: int = 2
 var ai_field_size: int = 3
+var ai_eval_mode: bool = false
+var ai_eval_tier: String = "standard"
 
 var active_cup_id: String = ""
 var cup_track_ids: Array[String] = []
@@ -73,6 +76,10 @@ func mode_label() -> String:
 			return "Practice"
 		RaceMode.LOCAL_MP:
 			return "Local Multiplayer"
+		RaceMode.TUTORIAL:
+			return "Tutorial"
+		RaceMode.CHALLENGE:
+			return "Challenge"
 		_:
 			return "Quick Race"
 
@@ -104,6 +111,33 @@ func start_local_mp(track_id: String, players: int = 2) -> void:
 	local_mp_players = clampi(players, 2, 2)
 	ai_field_size = 2
 	reset_race_stats()
+
+
+func start_tutorial(track_id: String = "verdant_cascade_circuit") -> void:
+	clear_cup()
+	current_race_mode = RaceMode.TUTORIAL
+	selected_track_id = track_id
+	ai_field_size = 1
+	reset_race_stats()
+
+
+func start_challenge(challenge_id: String, track_id: String, shoe_id: String = "") -> void:
+	clear_cup()
+	current_race_mode = RaceMode.CHALLENGE
+	selected_challenge_id = challenge_id
+	selected_track_id = track_id
+	if not shoe_id.is_empty():
+		selected_shoe_id = shoe_id
+	ai_field_size = 2
+	reset_race_stats()
+
+
+func is_tutorial() -> bool:
+	return current_race_mode == RaceMode.TUTORIAL
+
+
+func is_challenge() -> bool:
+	return current_race_mode == RaceMode.CHALLENGE
 
 
 func start_cup(cup_id: String, track_ids: Array) -> bool:
@@ -206,7 +240,23 @@ func save_cup_progress() -> void:
 	cfg.set_value("cup", "track_ids", cup_track_ids)
 	cfg.set_value("cup", "completed", is_cup_active() and not has_next_cup_race() and not cup_results.is_empty())
 	cfg.set_value("meta", "saved_at", Time.get_datetime_string_from_system())
+	cfg.set_value("meta", "save_version", 2)
 	cfg.save("user://cup_progress.cfg")
+	# Mirror selection into progression save for RC migration continuity.
+	var prog := _progression()
+	if prog != null:
+		prog.first_run_complete = true
+		if prog.has_method("unlock"):
+			prog.unlock("mode:cup")
+		if prog.has_method("save"):
+			prog.save()
+
+
+func _progression() -> Node:
+	var tree := Engine.get_main_loop() as SceneTree
+	if tree == null or tree.root == null:
+		return null
+	return tree.root.get_node_or_null("ProgressionSave")
 
 
 func load_cup_progress() -> bool:

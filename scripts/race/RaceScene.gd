@@ -33,8 +33,13 @@ func _ready() -> void:
 	var checkpoints: Array = track.get_checkpoints()
 	var start_xf: Transform3D = track.get_start_transform()
 	player.global_transform = start_xf
+	var player_profile = _pick_player_profile()
 	if "shoe_id" in player:
 		player.shoe_id = GameManager.selected_shoe_id
+	if "racer_id" in player:
+		player.racer_id = str(player_profile.id)
+	GameManager.selected_runner_id = str(player_profile.id)
+	GameManager.selected_racer_id = str(player_profile.id)
 	player.setup_for_race(start_xf)
 	if player.has_method("setup_rails"):
 		player.setup_rails(track.get_rail_world_points())
@@ -48,8 +53,10 @@ func _ready() -> void:
 		Vector3(-1.5, 0, 7.5),
 	]
 	var ai_tiers := ["rookie", "standard", "ace", "standard"]
-	_assign_profile(player, _pick_player_profile())
-	_assigned_profiles = [_pick_player_profile()]
+	if GameManager.ai_eval_mode and not str(GameManager.ai_eval_tier).is_empty():
+		ai_tiers = [str(GameManager.ai_eval_tier), str(GameManager.ai_eval_tier), str(GameManager.ai_eval_tier), str(GameManager.ai_eval_tier)]
+	_assign_profile(player, player_profile)
+	_assigned_profiles = [player_profile]
 
 	# Local MP: second human on shared screen (Alpha entry — not split polish).
 	if GameManager.is_local_mp():
@@ -83,6 +90,12 @@ func _ready() -> void:
 		var profile = _pick_ai_profile(i + 1)
 		_assign_profile(ai, profile)
 		_assigned_profiles.append(profile)
+		if "racer_id" in ai:
+			ai.racer_id = str(profile.id)
+		if "shoe_id" in ai:
+			# AI field rotates footwear so material affinities show in pack races.
+			var shoe_ids := ShoeData.all_ids()
+			ai.shoe_id = shoe_ids[(i + 1) % shoe_ids.size()]
 		var offset: Vector3 = ai_offsets[mini(i, ai_offsets.size() - 1)]
 		var ai_start := start_xf.translated_local(offset)
 		ai.global_transform = ai_start
@@ -93,6 +106,8 @@ func _ready() -> void:
 			ai.setup_ai_path(track.get_race_path(), -4.0 - float(i), 2.5 + float(i) * 0.4)
 		if ai.has_method("set_ai_tier"):
 			ai.set_ai_tier(ai_tiers[mini(i, ai_tiers.size() - 1)])
+		if ai.has_method("notify_shoe_changed"):
+			ai.notify_shoe_changed()
 		racers.append(ai)
 
 	if GameManager.is_time_trial() and ai_racer != null:
@@ -156,11 +171,26 @@ func _ready() -> void:
 		get_tree().paused = false
 	if pause_menu:
 		pause_menu.visible = false
+	if GameManager.is_tutorial():
+		_attach_tutorial_director()
 	race_manager.begin_countdown()
 	# Fake ordered checkpoint stepping is only for shortened accept_force_laps runs.
 	# Full production / 3-lap Pixel verification must complete via real gate hits.
 	if GameManager.accept_test_mode and GameManager.accept_force_laps > 0:
 		call_deferred("_accept_drive_finish")
+
+
+func _attach_tutorial_director() -> void:
+	var director := CanvasLayer.new()
+	director.name = "TutorialDirector"
+	director.set_script(load("res://scripts/ui/TutorialDirector.gd"))
+	add_child(director)
+	if director.has_method("begin"):
+		# Show advanced lessons after a short beat so race countdown can start.
+		get_tree().create_timer(0.2).timeout.connect(func ():
+			if is_instance_valid(director) and director.has_method("begin"):
+				director.begin(false)
+		)
 
 
 var _ghost_recorder: Node
@@ -366,6 +396,22 @@ func _on_race_finished(finished_player: Node, finish_results: Array) -> void:
 			true,
 			_race_perf_snapshot()
 		)
+	if GameManager.is_time_trial():
+		var prog := get_tree().root.get_node_or_null("ProgressionSave")
+		if prog != null:
+			if prog.has_method("record_time_trial_pb"):
+				prog.record_time_trial_pb(str(course_data.get("id", "")), race_manager.race_time)
+			if prog.has_method("add_xp"):
+				prog.add_xp(25)
+	elif GameManager.is_challenge():
+		var prog2 := get_tree().root.get_node_or_null("ProgressionSave")
+		if prog2 != null and prog2.has_method("complete_challenge"):
+			prog2.complete_challenge(str(GameManager.selected_challenge_id), 80)
+	else:
+		var prog3 := get_tree().root.get_node_or_null("ProgressionSave")
+		if prog3 != null and prog3.has_method("add_xp"):
+			prog3.add_xp(15)
+
 	_play_finish_reactions(finish_results, pos)
 	var field_lines := _build_field_lines(finish_results)
 	results.show_results(race_manager.race_time, pos, true, course_data, field_lines)

@@ -8,5 +8,23 @@
   "jump_modifier": 1.0,
   "boost_modifier": 1.0,
   "stomp_modifier": 1.0,
-  "description": "Balanced shoes for learning the basics."
+  "material_family": "balanced_rubber",
+  "surface_affinities": {
+    "standard": 1.0,
+    "asphalt": 1.02,
+    "packed_dirt": 1.0,
+    "grass": 0.96,
+    "mud": 0.88,
+    "ash": 0.9,
+    "wet": 0.92,
+    "sand": 0.9,
+    "metal": 0.95,
+    "neon": 1.0,
+    "cascade_runoff": 0.94,
+    "bounce": 1.0,
+    "rail": 0.98,
+    "speed_lane": 1.05
+  },
+  "ai_notes": "Neutral footwear — AI treats all surfaces with baseline braking.",
+  "description": "Balanced rubber compound for learning every surface."
 }
