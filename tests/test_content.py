@@ -81,15 +81,21 @@ class WaveEAlphaContentTests(unittest.TestCase):
         self.assertGreaterEqual(len(grammar["mechanics"]), 10)
         challenges = json.loads((ROOT / "data/challenges/launch_challenges.json").read_text(encoding="utf-8"))
         self.assertGreaterEqual(len(challenges["challenges"]), 5)
-        art = json.loads((ROOT / "data/art/REQUIRES_ART_PRODUCTION_INVENTORY.json").read_text(encoding="utf-8"))
-        self.assertEqual(art["status"], "REQUIRES_ART_PRODUCTION")
+        art = json.loads((ROOT / "data/art/LAUNCH_ART_INVENTORY.json").read_text(encoding="utf-8"))
+        self.assertEqual(art["status"], "LAUNCH_PROCEDURAL_FINAL")
         self.assertEqual(len(art["tracks"]), 8)
+        prov = json.loads((ROOT / "data/art/provenance.json").read_text(encoding="utf-8"))
+        self.assertGreaterEqual(int(prov["counts"]["racers"]), 8)
+        audio = json.loads(
+            (ROOT / "gate1/evidence/visual_qa/audio_bank_manifest.json").read_text(encoding="utf-8")
+        )
+        self.assertGreaterEqual(int(audio["count"]), 20)
 
     def test_runners_meet_alpha_floor(self) -> None:
         roster = json.loads((ROOT / "data/racers/runner_roster.json").read_text(encoding="utf-8"))
         self.assertGreaterEqual(len(roster["runners"]), 8)
 
-    def test_greybox_tracks_mark_art_production(self) -> None:
+    def test_launch_tracks_clear_greybox(self) -> None:
         for track_id in (
             "tideglass_harbor",
             "neon_switchyard",
@@ -101,9 +107,11 @@ class WaveEAlphaContentTests(unittest.TestCase):
             "emberkeep_gauntlet",
         ):
             track = json.loads((ROOT / f"data/tracks/{track_id}.json").read_text(encoding="utf-8"))
-            self.assertEqual(track.get("art_status"), "REQUIRES_ART_PRODUCTION")
+            self.assertEqual(track.get("art_status"), "LAUNCH_PROCEDURAL_FINAL")
+            self.assertNotEqual(track.get("art_status"), "REQUIRES_ART_PRODUCTION")
             self.assertTrue(track.get("has_shortcut") or track.get("shortcut_routes"))
             self.assertGreaterEqual(len(track.get("rail_segments", [])), 1)
+            self.assertTrue((ROOT / f"assets/art/tracks/{track_id}.png").exists())
 
     def test_shipped_course_identity_is_original(self) -> None:
         protected_names = ("mario", "yoshi", "moo moo", "rainbow road", "bowser", "nintendo")

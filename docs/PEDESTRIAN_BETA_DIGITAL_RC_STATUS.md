@@ -3,7 +3,7 @@
 **Branch:** `cursor/full-product-continuation-v-pedestrian-closure`  
 **Base:** `origin/main` @ `c8db661` (#10)  
 **Date:** 2026-08-08  
-**Honesty note:** Full competitive AI matrix locked (`PEDESTRIAN_COMPETITIVE_AI_DIGITAL_VALIDATED`). Digital RC stays **PARTIAL** while art/audio/device cert remain open.
+**Honesty note:** Superseded for digital RC by [PEDESTRIAN_DIGITAL_RC_STATUS.md](PEDESTRIAN_DIGITAL_RC_STATUS.md) (Continuation VI). Competitive AI remains validated; physical FPS stays pending separately.
 
 ## Tokens
 

@@ -1,0 +1,16 @@
+{
+  "id": "gamepad_default",
+  "display_name": "Gamepad Default",
+  "input_default": "gamepad",
+  "bindings": {
+    "accelerate": ["RT"],
+    "steer": ["Left Stick X"],
+    "brake": ["LT"],
+    "jump": ["A"],
+    "drift": ["RB"],
+    "item": ["X"],
+    "boost": ["Y"],
+    "pause": ["Start"]
+  },
+  "assist": false
+}

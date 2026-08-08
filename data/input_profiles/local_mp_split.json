@@ -1,0 +1,20 @@
+{
+  "id": "local_mp_split",
+  "display_name": "Local MP Split",
+  "input_default": "keyboard",
+  "bindings": {
+    "p1": {
+      "accelerate": ["W"],
+      "steer": ["A/D"],
+      "pad": "gamepad0"
+    },
+    "p2": {
+      "accelerate": ["Up"],
+      "steer": ["Left/Right"],
+      "pad": "gamepad1"
+    },
+    "pause": ["Esc", "Start"]
+  },
+  "assist": false,
+  "split_cameras": true
+}

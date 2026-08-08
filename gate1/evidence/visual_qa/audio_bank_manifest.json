@@ -1,0 +1,228 @@
+{
+  "schema": "pp_audio_bank_manifest/v1",
+  "status": "PROCEDURAL_FINAL",
+  "license": "ORIGINAL_INTERNAL",
+  "count": 44,
+  "files": [
+    {
+      "id": "music.menu_theme",
+      "path": "assets/audio/music/menu_theme.wav",
+      "sha256": "d2b120a4364cbc16d7151ff067ef190bf01219af5a364a787783568271e54652"
+    },
+    {
+      "id": "music.results_fanfare",
+      "path": "assets/audio/music/results_fanfare.wav",
+      "sha256": "6bf04633bce076c49b407a1b6dcae4b1537103a86696d87e04a8c48e3347af1b"
+    },
+    {
+      "id": "music.cup_theme",
+      "path": "assets/audio/music/cup_theme.wav",
+      "sha256": "5247739038db16915da3bd75aaaded2dce7e27c188b4e7b334302fb2a39097e8"
+    },
+    {
+      "id": "music.race.verdant_cascade_circuit",
+      "path": "assets/audio/music/verdant_cascade_circuit_race.wav",
+      "sha256": "39125dd0a0412305bbf91cf6c93dedd3529c0584ceefcaa1d2af8376d0e58137"
+    },
+    {
+      "id": "ambience.verdant_cascade_circuit",
+      "path": "assets/audio/ambience/verdant_cascade_circuit.wav",
+      "sha256": "c352f8f7e366805dde9539e0366a9b90883fde18ef1cb60b05819beea3d53a98"
+    },
+    {
+      "id": "music.race.cloverwind_ranch",
+      "path": "assets/audio/music/cloverwind_ranch_race.wav",
+      "sha256": "7d7db9f70ff4ab4280b083f44ce02e565eb0c76405a82116a2ad71c66a2a766d"
+    },
+    {
+      "id": "ambience.cloverwind_ranch",
+      "path": "assets/audio/ambience/cloverwind_ranch.wav",
+      "sha256": "599467a9d258e273dd7422f9ad3f9e343f2b9202c03db424b8691feadfb5c9c3"
+    },
+    {
+      "id": "music.race.prism_apex",
+      "path": "assets/audio/music/prism_apex_race.wav",
+      "sha256": "9f56685b522917af297b741aee480b23d1a8e18a93f3c84c04d6acd4b4ff4c3f"
+    },
+    {
+      "id": "ambience.prism_apex",
+      "path": "assets/audio/ambience/prism_apex.wav",
+      "sha256": "658bf48da6c6355917d6252efb5ad365cb191130278841fd0d295f70531d37e4"
+    },
+    {
+      "id": "music.race.emberkeep_gauntlet",
+      "path": "assets/audio/music/emberkeep_gauntlet_race.wav",
+      "sha256": "6699fa246af18c30e7e3fc0160f049576b14f399fc77a7781048d22ea1adb7f0"
+    },
+    {
+      "id": "ambience.emberkeep_gauntlet",
+      "path": "assets/audio/ambience/emberkeep_gauntlet.wav",
+      "sha256": "8dc2f1b9c4e5a8410338b627dce2ff709489502376044f5c0697b24fbb3f46f7"
+    },
+    {
+      "id": "music.race.tideglass_harbor",
+      "path": "assets/audio/music/tideglass_harbor_race.wav",
+      "sha256": "0c37f1b8cfa60ab002445542d59d5f9eab39b43c1849097b6bcf319c9005ae2a"
+    },
+    {
+      "id": "ambience.tideglass_harbor",
+      "path": "assets/audio/ambience/tideglass_harbor.wav",
+      "sha256": "970e34c3c975acf739872516750fa282a542fd78375687fecbaa091c282523d9"
+    },
+    {
+      "id": "music.race.neon_switchyard",
+      "path": "assets/audio/music/neon_switchyard_race.wav",
+      "sha256": "f6d18bb1809396c8253958afa752edb7e1446a60b1992c903a501c015696414d"
+    },
+    {
+      "id": "ambience.neon_switchyard",
+      "path": "assets/audio/ambience/neon_switchyard.wav",
+      "sha256": "70be3fd18e1efa2495ae80ad8681ac4b212402f9260e3c461376a3b4e52f8181"
+    },
+    {
+      "id": "music.race.cloudstep_ridge",
+      "path": "assets/audio/music/cloudstep_ridge_race.wav",
+      "sha256": "41f6178c8331ad78a340965e49e8d33edcd446638463657cd74334a6da46daec"
+    },
+    {
+      "id": "ambience.cloudstep_ridge",
+      "path": "assets/audio/ambience/cloudstep_ridge.wav",
+      "sha256": "d05af857bdc8e8d6f72713b887444f35d3ad6550e8cedacc2d629bee1b813f0a"
+    },
+    {
+      "id": "music.race.mirage_mesa",
+      "path": "assets/audio/music/mirage_mesa_race.wav",
+      "sha256": "632b16e72f31715c80b060c35860faef9f1d8409462f067ba9c98af00cd50181"
+    },
+    {
+      "id": "ambience.mirage_mesa",
+      "path": "assets/audio/ambience/mirage_mesa.wav",
+      "sha256": "f18d1533cdaa30f056d1728d69e234f915c9623e63681155816e2ed083c9ba58"
+    },
+    {
+      "id": "sfx.footstep.asphalt",
+      "path": "assets/audio/sfx/footstep_asphalt.wav",
+      "sha256": "cd0a85bf8d162b15500c8157138d4fce0f9cca343fe45fd805632f6af9ed25e1"
+    },
+    {
+      "id": "sfx.footstep.grass",
+      "path": "assets/audio/sfx/footstep_grass.wav",
+      "sha256": "ae20a2a3e03535b582c3736db8ce9cb19bee2b344e3dd9c88e68307d7d6aa853"
+    },
+    {
+      "id": "sfx.footstep.mud",
+      "path": "assets/audio/sfx/footstep_mud.wav",
+      "sha256": "9efdabc6dbe79da262985782839028fb7659597be6195367eb6d6b67fc995329"
+    },
+    {
+      "id": "sfx.footstep.ash",
+      "path": "assets/audio/sfx/footstep_ash.wav",
+      "sha256": "8825903452ce38a5de8412789a313f15de9a29919ed5f0c7a115a445f58e3c6d"
+    },
+    {
+      "id": "sfx.footstep.sand",
+      "path": "assets/audio/sfx/footstep_sand.wav",
+      "sha256": "8aa8be593786b8b9f076a913362493aa60bdb3f68e9a536e69e3d1f7f50c8e8b"
+    },
+    {
+      "id": "sfx.footstep.metal",
+      "path": "assets/audio/sfx/footstep_metal.wav",
+      "sha256": "081b219dacfe4d5c394b20df100f058bd344189d08ad6dca8f37910b2d8f8bcb"
+    },
+    {
+      "id": "sfx.footstep.wet",
+      "path": "assets/audio/sfx/footstep_wet.wav",
+      "sha256": "af903a0ff8a9748f79a84ef8fe00ac493734206915a404f08814440c1af40e48"
+    },
+    {
+      "id": "sfx.item.turbo_toes",
+      "path": "assets/audio/sfx/item_turbo_toes.wav",
+      "sha256": "565f69648357bfab75be816f48f259b175c45a472a816d9642b05b7058f1c8ce"
+    },
+    {
+      "id": "sfx.item.lace_trap",
+      "path": "assets/audio/sfx/item_lace_trap.wav",
+      "sha256": "7c80bdd56994654c2686e1163d2dcc97a105c27de70dddcc49680b069013a8c7"
+    },
+    {
+      "id": "sfx.item.sole_shield",
+      "path": "assets/audio/sfx/item_sole_shield.wav",
+      "sha256": "1325e8e571f3919cf2da9642c34a45873604ff83be0f452a42fc3943e8df327d"
+    },
+    {
+      "id": "sfx.item.pulse_horn",
+      "path": "assets/audio/sfx/item_pulse_horn.wav",
+      "sha256": "36b1f4a6a42a7b4da23a37f2cd4d9543bda4c0c0bf14f6bf173d51eb930624af"
+    },
+    {
+      "id": "sfx.item.magnet_lace",
+      "path": "assets/audio/sfx/item_magnet_lace.wav",
+      "sha256": "c071558d4566af84ddcf6deeebaf7cffc4c8c840c6a91fa830bcd4600e0f0f81"
+    },
+    {
+      "id": "sfx.item.bounce_bubble",
+      "path": "assets/audio/sfx/item_bounce_bubble.wav",
+      "sha256": "3191c11a8828437499f706c4ab1d06ffd653f9bdacd739ca335695284df4ec40"
+    },
+    {
+      "id": "sfx.boost",
+      "path": "assets/audio/sfx/boost.wav",
+      "sha256": "173c0543d79ca243d3a47167c842485cbdd97ec91a508312797ac2224c94edc0"
+    },
+    {
+      "id": "sfx.drift",
+      "path": "assets/audio/sfx/drift.wav",
+      "sha256": "8e18af8747deb8aa6c0e1d75db55ddeefcf23611ead34c40345b3d6d5657a56a"
+    },
+    {
+      "id": "sfx.jump",
+      "path": "assets/audio/sfx/jump.wav",
+      "sha256": "68d19d8c31b47f90aab3f1209b74ecb0b881b7d6d1f11d9b93a8125627307293"
+    },
+    {
+      "id": "sfx.stomp",
+      "path": "assets/audio/sfx/stomp.wav",
+      "sha256": "b3d52913783006280c72b8a48d085488b7491b7cb94859e2a53b65742f8e8917"
+    },
+    {
+      "id": "sfx.checkpoint",
+      "path": "assets/audio/sfx/checkpoint.wav",
+      "sha256": "3c389ac6b450851deb09d62c7ced3ab174c90b3f0a1246762cbbbc86834d18ab"
+    },
+    {
+      "id": "sfx.item_box",
+      "path": "assets/audio/sfx/item_box.wav",
+      "sha256": "4d93ca2e17e959c418526cf0bce9781252793cb8fc6ae4bddc2381da171136fc"
+    },
+    {
+      "id": "ui.confirm",
+      "path": "assets/audio/ui/confirm.wav",
+      "sha256": "66815bc22d3c57ed1e5371b1757d1fccab09609c66853c5ecfb218cb643fc34f"
+    },
+    {
+      "id": "ui.back",
+      "path": "assets/audio/ui/back.wav",
+      "sha256": "1ff5e1e0e797dbdad24fd5a4726bd1ac867283e35741e9f2e9fb370d562bd4ca"
+    },
+    {
+      "id": "ui.select",
+      "path": "assets/audio/ui/select.wav",
+      "sha256": "b462fbd6fba9959c6d5df3bdf86dceb7288b717364739cf364a8dcc18a8f6fe4"
+    },
+    {
+      "id": "ui.start",
+      "path": "assets/audio/ui/start.wav",
+      "sha256": "b24023c0c7ac13b14b513fc717ae4b0bd9cc4e61a73f8f83371259e4808c1371"
+    },
+    {
+      "id": "ui.finish",
+      "path": "assets/audio/ui/finish.wav",
+      "sha256": "fd3886b251ecf8a13d8a91767aa9f2ed152cb4d7c7f6425cce3009a639b22d25"
+    },
+    {
+      "id": "ui.countdown",
+      "path": "assets/audio/ui/countdown.wav",
+      "sha256": "63180f185a8535e9aee67007398efd658c57fc7068d76bd052ec3e29d40011f1"
+    }
+  ]
+}

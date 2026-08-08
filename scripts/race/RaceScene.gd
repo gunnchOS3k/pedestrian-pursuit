@@ -162,6 +162,13 @@ func _ready() -> void:
 	hud.setup(player, race_manager, course_data)
 	if GameManager.is_local_mp() and local_p2 != null and hud.has_method("setup_local_mp_secondary"):
 		hud.setup_local_mp_secondary(local_p2)
+	CrashWatchdog.note_event("race_scene_ready", str(course_data.get("id", "")))
+	PackageLifecycle.migrate_or_update()
+	var audio := get_node_or_null("/root/AudioDirector")
+	if audio and audio.has_method("play_race_music"):
+		audio.play_race_music(str(course_data.get("id", "")))
+	if audio and audio.has_method("play_ui"):
+		audio.play_ui("countdown")
 	debug_overlay.setup(player)
 	results.hide_results()
 	race_manager.countdown_tick.connect(_on_countdown_personality)
@@ -429,6 +436,10 @@ func _on_race_finished(finished_player: Node, finish_results: Array) -> void:
 	results.show_results(race_manager.race_time, pos, true, course_data, field_lines)
 	if GameManager.is_local_mp() and results.has_method("annotate_local_mp"):
 		results.annotate_local_mp(finish_results)
+	var audio := get_node_or_null("/root/AudioDirector")
+	if audio and audio.has_method("play_results"):
+		audio.play_results()
+	CrashWatchdog.note_event("race_finished", str(course_data.get("id", "")))
 
 
 func _play_finish_reactions(finish_results: Array, _player_pos: int) -> void:

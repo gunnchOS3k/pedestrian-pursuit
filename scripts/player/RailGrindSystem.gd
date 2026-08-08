@@ -1,7 +1,7 @@
 extends Node
 
 ## Lightweight rail grind: jump near a grindable rail segment to ride along it briefly.
-## Alpha depth — greybox rails from track data; art polish is REQUIRES_ART_PRODUCTION.
+## Alpha depth — rail grind attach points from track data; presentation is procedural-final launch art.
 
 signal grind_started
 signal grind_ended

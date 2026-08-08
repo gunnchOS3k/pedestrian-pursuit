@@ -21,7 +21,8 @@ static func as_dict() -> Dictionary:
 		"budgets": BUDGETS,
 		"notes": [
 			"GL Compatibility renderer is required for mobile mid-tier.",
-			"CourseTrack uses material cache + procedural greybox scenery pending art.",
+			"CourseTrack uses material cache + procedural-final launch scenery.",
+			"Device FPS certification is PEDESTRIAN_PHYSICAL_PERFORMANCE_PENDING (separate from digital RC).",
 			"AI eval uses time_scale; production races run at 1.0.",
 		],
 	}

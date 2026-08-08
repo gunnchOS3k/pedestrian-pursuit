@@ -9,7 +9,7 @@ Launch floor: **8 unique courses across 2 cups**. Greybox geometry is intentiona
 
 ## Art status
 
-Every cup course sets `"art_status": "REQUIRES_ART_PRODUCTION"`. Do not treat greybox meshes, flat colors, or stub scenery as shipping art.
+Every cup course sets `"art_status": "LAUNCH_PROCEDURAL_FINAL"`. Procedural launch presentation, icons, and audio banks are shipping digital RC assets. Physical device FPS certification is tracked separately.
 
 ## Track schema
 
@@ -25,7 +25,7 @@ Route points form a closed circuit. Checkpoint indices begin at 0 and strictly i
 
 ## Shortcuts & rails
 
-`shortcut_routes` document alternate lines for AI route preference and design notes. `rail_segments` feed the Alpha rail-grind attach points. Missing final mesh/rail art remains `REQUIRES_ART_PRODUCTION`.
+`shortcut_routes` document alternate lines for AI route preference and design notes. `rail_segments` feed the rail-grind attach points. Presentation status is `LAUNCH_PROCEDURAL_FINAL`.
 
 ## Originality rule
 

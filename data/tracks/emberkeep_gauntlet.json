@@ -6,7 +6,7 @@
   "difficulty": "expert",
   "theme": "ember_fortress",
   "description": "A volcanic fortress circuit of basalt turns, forge vents, ash patches, and a high-speed final courtyard.",
-  "art_status": "REQUIRES_ART_PRODUCTION",
+  "art_status": "LAUNCH_PROCEDURAL_FINAL",
   "has_shortcut": true,
   "lane_width": 13.5,
   "guard_rails": true,

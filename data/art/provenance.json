@@ -1,0 +1,368 @@
+{
+  "schema": "pp_art_provenance/v1",
+  "policy": "Original / procedural launch assets only \u2014 no third-party IP",
+  "digital_rc": "PEDESTRIAN_DIGITAL_RC_READY",
+  "physical_fps": "PEDESTRIAN_PHYSICAL_PERFORMANCE_PENDING",
+  "counts": {
+    "racers": 8,
+    "shoes": 4,
+    "items": 6,
+    "tracks": 8,
+    "ui": 6,
+    "vfx": 6
+  },
+  "entries": [
+    {
+      "id": "art.racers.dash_reed",
+      "path": "assets/art/racers/dash_reed.png",
+      "status": "ORIGINAL_RENDER_FINAL",
+      "sha256": "727500a27dbb865dce33eff4cb660fffb7a3b25de18fae3284762f9a119e454f",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.racers.nova_quill",
+      "path": "assets/art/racers/nova_quill.png",
+      "status": "ORIGINAL_RENDER_FINAL",
+      "sha256": "138ffef845069b8a0d5b223cfd3851f0c6f9780094984bae88e5eceaa4051e9c",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.racers.sierra_flux",
+      "path": "assets/art/racers/sierra_flux.png",
+      "status": "ORIGINAL_RENDER_FINAL",
+      "sha256": "1c7e4ac3b89c376349f418213378d9d64a78625c9682090fcfce20c4ce253733",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.racers.mira_lane",
+      "path": "assets/art/racers/mira_lane.png",
+      "status": "ORIGINAL_RENDER_FINAL",
+      "sha256": "5f795aee20312c81241f58a86e126b55944c59b597dd797c777fcd90fe0024f7",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.racers.bolt_harbor",
+      "path": "assets/art/racers/bolt_harbor.png",
+      "status": "ORIGINAL_RENDER_FINAL",
+      "sha256": "381e0371c73e9a569bef0d3b36d1bb69083af43d0af64ca25dbe21433ab7a612",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.racers.zig_riven",
+      "path": "assets/art/racers/zig_riven.png",
+      "status": "ORIGINAL_RENDER_FINAL",
+      "sha256": "105285bb381a47e25959abd31cac5dee1c70fa2008366792323bba82e03b40e3",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.racers.solen_pike",
+      "path": "assets/art/racers/solen_pike.png",
+      "status": "ORIGINAL_RENDER_FINAL",
+      "sha256": "83536125c8ebe01bbef0940ff6bba1c1c55c69a1321d4b01a9e8a270ce1ccef8",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.racers.kai_volt",
+      "path": "assets/art/racers/kai_volt.png",
+      "status": "ORIGINAL_RENDER_FINAL",
+      "sha256": "ef5d485ceac14a4506695e6e16383095a39a99b6c648165510d3b5b7b0d1ac2f",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.shoes.starter_soles",
+      "path": "assets/art/shoes/starter_soles.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "c4ecac30302ae6d3ee8c58f0b258907a2d8aad2d617c23cf17314db40e6834e6",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.shoes.grip_soles",
+      "path": "assets/art/shoes/grip_soles.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "3518d4c02ea400ab31e3964473fdd8219c47895b266129d926a7f93ff4d71c12",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.shoes.speed_sneakers",
+      "path": "assets/art/shoes/speed_sneakers.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "2a64efa83f024d0b96ea6873aec89356940a35db24795253fc8de56d5b19ceae",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.shoes.bounce_boots",
+      "path": "assets/art/shoes/bounce_boots.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "494c89caa5c70040334f6a2b142bde8c4eade11b89ef254fe7731ee496860aaa",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.items.turbo_toes",
+      "path": "assets/art/items/turbo_toes.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "2e84386a4d02a8e9962615b8d7beadb0dd65bd196e4200780ce1fa950d609d74",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.items.lace_trap",
+      "path": "assets/art/items/lace_trap.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "6f20c00ff8c11e3bef2fbc3b53cfec7470539d4dc59ce1126aedabe811a97675",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.items.sole_shield",
+      "path": "assets/art/items/sole_shield.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "27b2f7fc6df487286a0319895fd4f2a94aef1ebd26cf1d89af41d4931ead0061",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.items.pulse_horn",
+      "path": "assets/art/items/pulse_horn.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "038c10766ccb02c62cdb376163f27329b63fdd8011d7d23cc712bbb6a40e00e3",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.items.magnet_lace",
+      "path": "assets/art/items/magnet_lace.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "06dff57808621e63c3f17070b669c540cb11d700a2cc57479b340c6a1d0b0eec",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.items.bounce_bubble",
+      "path": "assets/art/items/bounce_bubble.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "218cbec7dca53e1c4c79231f10fb68b873191ac15ffeaf3f230e1f267cc7a0a3",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.tracks.verdant_cascade_circuit",
+      "path": "assets/art/tracks/verdant_cascade_circuit.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "eb24b6fd4c91d02c775aa7a9f44b594ec72dc35df7d587b92de5a5d62ad889cc",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.tracks.cloverwind_ranch",
+      "path": "assets/art/tracks/cloverwind_ranch.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "17f8961c138ab57bfaf86d0bd65a0825cb556e3944e8f1ebfce06282d73fc8a9",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.tracks.prism_apex",
+      "path": "assets/art/tracks/prism_apex.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "8d1172c11835381194fc4a02ee89f28b25e3d31cdf0e8c03b0302b7c6f9ecf3a",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.tracks.emberkeep_gauntlet",
+      "path": "assets/art/tracks/emberkeep_gauntlet.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "34bd47d2bfe94f9c1b5afed3e91aa801a24a23be0ccca80709d572d8017c46fa",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.tracks.tideglass_harbor",
+      "path": "assets/art/tracks/tideglass_harbor.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "abddeeb0be6c0f7fe6e7aab7b9f25922470b9ef90efd571840652681d9642af3",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.tracks.neon_switchyard",
+      "path": "assets/art/tracks/neon_switchyard.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "a8f0a7f29008a9ac22e9f76c627bc56eeffb864a294fa81faa4c3fce3620b383",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.tracks.cloudstep_ridge",
+      "path": "assets/art/tracks/cloudstep_ridge.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "c7846384eb8fce912ee85e8a38f2ca33e8598801414fa3b8fef32829d5121a8b",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.tracks.mirage_mesa",
+      "path": "assets/art/tracks/mirage_mesa.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "3158637d71af330ea16963ed4b684274af8d0a5198237b93355e2946d2f3e004",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.ui.menu_panel",
+      "path": "assets/art/ui/menu_panel.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "f787d8906166c8a3916f97d0ca6092187403b2a831f28af0b610873939c596a0",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.ui.hud_chrome",
+      "path": "assets/art/ui/hud_chrome.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "ea4e5a1f80da324417044c8282465cfd72237ba8ce70189ddd2c4f12a8813224",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.ui.cup_banner",
+      "path": "assets/art/ui/cup_banner.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "d6c32cd1512650586561adb603c004d69198a5e3b2becdfb880f731b90b36ea4",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.ui.results_panel",
+      "path": "assets/art/ui/results_panel.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "1be81f7f31245270a0152735772bf8468e16f624acfd56a055a1d8fe93b5f113",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.ui.footwear_stage",
+      "path": "assets/art/ui/footwear_stage.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "818c2878a1f5bfef90d596c0d074ed87c0c4652654a59944d7288e8d5d5a5e0f",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.ui.item_slot",
+      "path": "assets/art/ui/item_slot.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "4f6b22cd10899c7697be3fa40bd1227719a8aadc082d21c4ba3d948a1862ac92",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.vfx.boost_burst",
+      "path": "assets/art/vfx/boost_burst.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "6773ceaa96a68921dd86c963d220d459778eb16372030b7981edee65f21a24b2",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.vfx.shield_ring",
+      "path": "assets/art/vfx/shield_ring.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "2382d72993c9c32153b14e80a92705513b53c317134ec772329dbb68650416a4",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.vfx.trap_spark",
+      "path": "assets/art/vfx/trap_spark.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "dffd446c797a775a1d9d5dd553586e4c7a7ea800a36a5245528815823fd7cb6d",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.vfx.bubble_pop",
+      "path": "assets/art/vfx/bubble_pop.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "7995104b28ba9c2d1b022ff495254ae953ddefbf00da0cdd366a72d2512c9599",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.vfx.draft_wake",
+      "path": "assets/art/vfx/draft_wake.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "bdd28b83741d3bacf306128e35d6995ddfca997bec211d497722d73372d7bd62",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "art.vfx.finish_flare",
+      "path": "assets/art/vfx/finish_flare.png",
+      "status": "PROCEDURAL_FINAL",
+      "sha256": "c7cc934d22ae1f7690895997a7809714f5c2f035c0505eb9cba540824e2dc474",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Pedestrian Pursuit launch presentation asset"
+    },
+    {
+      "id": "qa.items_contact_sheet",
+      "path": "gate1/evidence/visual_qa/items_contact_sheet.png",
+      "status": "VISUAL_QA",
+      "sha256": "dfeacae98cb83bb81927df756b903e0da0abf76b2888eba55a5d2045865a4819",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Digital RC contact sheet"
+    },
+    {
+      "id": "qa.tracks_contact_sheet",
+      "path": "gate1/evidence/visual_qa/tracks_contact_sheet.png",
+      "status": "VISUAL_QA",
+      "sha256": "4076956f6b0fb0e974d8e949ba3596543883179bda9be579caaf283908c6a992",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Digital RC contact sheet"
+    },
+    {
+      "id": "qa.footwear_contact_sheet",
+      "path": "gate1/evidence/visual_qa/footwear_contact_sheet.png",
+      "status": "VISUAL_QA",
+      "sha256": "fe194f0e67efd28bdfae530e252b7ff145d6db40558bddf3637758cab44d4f62",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Digital RC contact sheet"
+    },
+    {
+      "id": "qa.vfx_contact_sheet",
+      "path": "gate1/evidence/visual_qa/vfx_contact_sheet.png",
+      "status": "VISUAL_QA",
+      "sha256": "51f1c3ffc9c612b79ae44a4fd3ba13613eb21843fe48a0af4b55ec4d4b0edce9",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Digital RC contact sheet"
+    },
+    {
+      "id": "qa.ui_contact_sheet",
+      "path": "gate1/evidence/visual_qa/ui_contact_sheet.png",
+      "status": "VISUAL_QA",
+      "sha256": "5fb45976eea435ceb1e277972abd0c189af446cd71cef28bd38eea7c157e3e8c",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Digital RC contact sheet"
+    },
+    {
+      "id": "qa.racers_contact_sheet",
+      "path": "gate1/evidence/visual_qa/racers_contact_sheet.png",
+      "status": "VISUAL_QA",
+      "sha256": "f7e6a2b3fccc645d69e0d728fa8c383274a34f85c3dea4325389ae482375cc27",
+      "license": "ORIGINAL_INTERNAL",
+      "notes": "Digital RC contact sheet"
+    }
+  ]
+}

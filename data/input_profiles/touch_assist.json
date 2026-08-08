@@ -1,0 +1,17 @@
+{
+  "id": "touch_assist",
+  "display_name": "Touch Assist",
+  "input_default": "touch",
+  "bindings": {
+    "accelerate": ["On-screen pedal"],
+    "steer": ["On-screen stick"],
+    "brake": ["On-screen brake"],
+    "jump": ["Jump button"],
+    "drift": ["Drift button"],
+    "item": ["Item button"],
+    "boost": ["Boost button"],
+    "pause": ["Pause"]
+  },
+  "assist": true,
+  "mobile_assist_steer": true
+}

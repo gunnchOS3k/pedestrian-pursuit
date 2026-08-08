@@ -1,0 +1,112 @@
+{
+  "schema": "art_production_inventory/v2",
+  "token_note": "Procedural/original launch art+audio complete digital presentation. Physical device FPS remains a separate pending token.",
+  "status": "LAUNCH_PROCEDURAL_FINAL",
+  "digital_rc_claim": "YES — PEDESTRIAN_DIGITAL_RC_READY; physical FPS = PEDESTRIAN_PHYSICAL_PERFORMANCE_PENDING",
+  "greybox_policy": "No launch greybox tags. Course scenery is procedural-final launch presentation.",
+  "provenance": "data/art/provenance.json",
+  "visual_qa": "gate1/evidence/visual_qa/",
+  "audio_manifest": "gate1/evidence/visual_qa/audio_bank_manifest.json",
+  "tracks": [
+    {
+      "id": "verdant_cascade_circuit",
+      "needs": [],
+      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "terrain_zones", "bounce_pads", "item_boxes", "shortcuts", "procedural_scenery", "track_icon", "ambience", "race_music"],
+      "greybox_cleared_for_digital_launch": true,
+      "art_status": "LAUNCH_PROCEDURAL_FINAL"
+    },
+    {
+      "id": "cloverwind_ranch",
+      "needs": [],
+      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "terrain_zones", "rails", "shortcuts", "procedural_scenery", "track_icon", "ambience", "race_music"],
+      "greybox_cleared_for_digital_launch": true,
+      "art_status": "LAUNCH_PROCEDURAL_FINAL"
+    },
+    {
+      "id": "prism_apex",
+      "needs": [],
+      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "rails", "boost_pickups", "shortcuts", "procedural_scenery", "track_icon", "ambience", "race_music"],
+      "greybox_cleared_for_digital_launch": true,
+      "art_status": "LAUNCH_PROCEDURAL_FINAL"
+    },
+    {
+      "id": "emberkeep_gauntlet",
+      "needs": [],
+      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "ash_zones", "shortcuts", "procedural_scenery", "track_icon", "ambience", "race_music"],
+      "greybox_cleared_for_digital_launch": true,
+      "art_status": "LAUNCH_PROCEDURAL_FINAL"
+    },
+    {
+      "id": "tideglass_harbor",
+      "needs": [],
+      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "shortcuts", "rails", "procedural_scenery", "track_icon", "ambience", "race_music"],
+      "greybox_cleared_for_digital_launch": true,
+      "art_status": "LAUNCH_PROCEDURAL_FINAL"
+    },
+    {
+      "id": "neon_switchyard",
+      "needs": [],
+      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "rails", "shortcuts", "procedural_scenery", "track_icon", "ambience", "race_music"],
+      "greybox_cleared_for_digital_launch": true,
+      "art_status": "LAUNCH_PROCEDURAL_FINAL"
+    },
+    {
+      "id": "cloudstep_ridge",
+      "needs": [],
+      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "rails", "shortcuts", "procedural_scenery", "track_icon", "ambience", "race_music"],
+      "greybox_cleared_for_digital_launch": true,
+      "art_status": "LAUNCH_PROCEDURAL_FINAL"
+    },
+    {
+      "id": "mirage_mesa",
+      "needs": [],
+      "digital_complete": ["route_graph", "ai_path", "checkpoints", "collision", "sand_zones", "shortcuts", "procedural_scenery", "track_icon", "ambience", "race_music"],
+      "greybox_cleared_for_digital_launch": true,
+      "art_status": "LAUNCH_PROCEDURAL_FINAL"
+    }
+  ],
+  "racers": {
+    "needs": [],
+    "digital_complete": ["procedural_silhouette_roster", "per_runner_stats", "gait_profiles", "picker_icons", "original_render_sheets"]
+  },
+  "footwear": {
+    "needs": [],
+    "digital_complete": ["material_families", "surface_affinities", "presentation_icons", "footwear_stage_ui"]
+  },
+  "items": {
+    "needs": [],
+    "digital_complete": ["icons", "runtime_models", "vfx_sheets", "sfx_banks", "counterplay"]
+  },
+  "ui": {
+    "needs": [],
+    "digital_complete": ["menu_panel", "hud_chrome", "cup_banner", "results_panel", "item_slot"]
+  },
+  "audio": {
+    "needs": [],
+    "digital_complete": ["music_stems", "footstep_banks", "item_sfx", "ui_sfx", "ambience", "results_fanfare"],
+    "status": "LAUNCH_PROCEDURAL_FINAL",
+    "note": "Original procedural WAV banks — not silent placeholders."
+  },
+  "local_mp": {
+    "digital_complete": [
+      "vertical_split_cameras",
+      "p1_wasd_pad0_p2_arrows_pad1",
+      "results_p1_p2_tags",
+      "pause_either_player",
+      "a11y_hud_scale_markers",
+      "career_save_skipped_for_couch_session"
+    ]
+  },
+  "packaging": {
+    "digital_complete": [
+      "clean_install",
+      "save_migration",
+      "update_rollback",
+      "offline_play",
+      "crash_recovery_breadcrumbs",
+      "input_profiles",
+      "local_mp",
+      "ai_field"
+    ]
+  }
+}

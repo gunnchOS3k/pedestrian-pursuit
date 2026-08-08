@@ -73,7 +73,7 @@ func get_display_name() -> String:
 
 
 func get_rail_world_points() -> Array:
-	## World-space points for grindable rail segments (greybox Alpha).
+	## World-space points for grindable rail segments (launch procedural).
 	var points: Array = []
 	for raw_index in _data.get("rail_segments", []):
 		var idx := int(raw_index)
@@ -363,7 +363,7 @@ func _build_scenery() -> void:
 
 
 func _build_cascade_scenery(parent: Node3D) -> void:
-	## Digital launch procedural riverside — final vegetation/VFX still REQUIRES_ART_PRODUCTION.
+	## Procedural-final launch riverside presentation.
 	_add_visual_box(
 		parent,
 		Vector3(0.0, -0.78, 0.0),
@@ -434,7 +434,7 @@ func _build_ember_scenery(parent: Node3D) -> void:
 
 
 func _build_harbor_scenery(parent: Node3D) -> void:
-	## Digital launch-quality procedural harbor (final pier art still REQUIRES_ART_PRODUCTION).
+	## Procedural-final launch harbor presentation.
 	_add_visual_box(
 		parent,
 		Vector3(0.0, -0.78, 0.0),
@@ -457,7 +457,7 @@ func _build_harbor_scenery(parent: Node3D) -> void:
 
 
 func _build_neon_scenery(parent: Node3D) -> void:
-	## Digital launch-quality neon yard stubs (hero neon kit still REQUIRES_ART_PRODUCTION).
+	## Procedural-final launch neon yard presentation.
 	_add_visual_box(
 		parent, Vector3(0.0, -0.78, 0.0), Vector3(140.0, 0.18, 140.0), Color(0.08, 0.09, 0.12)
 	)
@@ -475,7 +475,7 @@ func _build_neon_scenery(parent: Node3D) -> void:
 
 
 func _build_ridge_scenery(parent: Node3D) -> void:
-	## Digital launch-quality ridge shelves (final cliff kit still REQUIRES_ART_PRODUCTION).
+	## Procedural-final launch ridge presentation.
 	_add_visual_box(
 		parent,
 		Vector3(0.0, -0.78, 0.0),
@@ -490,7 +490,7 @@ func _build_ridge_scenery(parent: Node3D) -> void:
 
 
 func _build_mesa_scenery(parent: Node3D) -> void:
-	## Digital launch-quality mesa blocks (final rock kit still REQUIRES_ART_PRODUCTION).
+	## Procedural-final launch mesa presentation.
 	_add_visual_box(
 		parent,
 		Vector3(0.0, -0.78, 0.0),

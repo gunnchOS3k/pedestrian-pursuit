@@ -27,6 +27,7 @@ func show_results(
 	field_lines: PackedStringArray = PackedStringArray()
 ) -> void:
 	panel.visible = true
+	_ensure_results_art()
 	title_label.text = "Race Complete!" if finished else "Race Over"
 	if position == 1 and finished:
 		title_label.text = "Podium Finish!"
@@ -121,6 +122,24 @@ func _build_podium_text(field_lines: PackedStringArray) -> String:
 
 func hide_results() -> void:
 	panel.visible = false
+
+
+func _ensure_results_art() -> void:
+	if get_node_or_null("ResultsArt") != null:
+		return
+	var tex := LaunchArtCatalog.ui_texture("results_panel")
+	if tex == null:
+		return
+	var art := TextureRect.new()
+	art.name = "ResultsArt"
+	art.texture = tex
+	art.set_anchors_preset(Control.PRESET_FULL_RECT)
+	art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	art.stretch_mode = TextureRect.STRETCH_SCALE
+	art.modulate = Color(1, 1, 1, 0.45)
+	art.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(art)
+	move_child(art, 0)
 
 
 func _on_menu() -> void:

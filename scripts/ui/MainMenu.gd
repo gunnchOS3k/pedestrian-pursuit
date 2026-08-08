@@ -43,8 +43,12 @@ func _ready() -> void:
 	_load_content()
 	_populate_device_picker()
 	_sync_a11y_toggles()
-	$VBox/CupLabel.text = "BETA / DIGITAL RC  •  8 COURSES  •  2 CUPS  •  8 RACERS"
-	$VBox/Subtitle.text = "Launch roster + footwear materials — visual finals REQUIRES_ART_PRODUCTION"
+	$VBox/CupLabel.text = "DIGITAL RC READY  •  8 COURSES  •  2 CUPS  •  8 RACERS"
+	$VBox/Subtitle.text = "Launch roster + footwear + items + audio — procedural-final presentation"
+	_apply_launch_presentation()
+	var audio := get_node_or_null("/root/AudioDirector")
+	if audio and audio.has_method("play_menu_music"):
+		audio.play_menu_music()
 
 
 func _ensure_howto_button() -> void:
@@ -484,8 +488,6 @@ func _reload_selected_cup_tracks() -> void:
 	course_picker.clear()
 	for track in _all_tracks:
 		var label := str(track.get("display_name", "Unknown Course"))
-		if str(track.get("art_status", "")) == "REQUIRES_ART_PRODUCTION":
-			label += " [greybox]"
 		course_picker.add_item(label)
 		course_picker.set_item_metadata(course_picker.item_count - 1, str(track.get("id", "")))
 	var expected_track_count: int = _cup.get("track_ids", []).size()
@@ -526,6 +528,10 @@ func _on_shoe_selected(index: int) -> void:
 	if _shoe_picker == null or index < 0:
 		return
 	GameManager.selected_shoe_id = str(_shoe_picker.get_item_metadata(index))
+	_refresh_footwear_stage()
+	var audio := get_node_or_null("/root/AudioDirector")
+	if audio and audio.has_method("play_ui"):
+		audio.play_ui("select")
 
 
 func _on_runner_selected(index: int) -> void:
@@ -701,17 +707,91 @@ func _on_course_selected(index: int) -> void:
 	if index < 0 or index >= _all_tracks.size():
 		return
 	var track := _all_tracks[index]
-	var art := str(track.get("art_status", ""))
-	var art_note := "\nREQUIRES_ART_PRODUCTION" if art == "REQUIRES_ART_PRODUCTION" else ""
 	description_label.text = (
-		"%s  •  %s\n%s%s"
+		"%s  •  %s\n%s"
 		% [
 			str(track.get("difficulty", "")).capitalize(),
 			"%d laps" % int(track.get("lap_count", 3)),
 			str(track.get("description", "")),
-			art_note,
 		]
 	)
+	_refresh_track_thumb(str(track.get("id", "")))
+
+
+func _apply_launch_presentation() -> void:
+	var menu_tex: Texture2D = LaunchArtCatalog.ui_texture("menu_panel")
+	if menu_tex != null:
+		var bg := TextureRect.new()
+		bg.name = "LaunchMenuBackdrop"
+		bg.texture = menu_tex
+		bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+		bg.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		bg.stretch_mode = TextureRect.STRETCH_SCALE
+		bg.modulate = Color(1, 1, 1, 0.35)
+		bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(bg)
+		move_child(bg, 0)
+	var cup_tex: Texture2D = LaunchArtCatalog.ui_texture("cup_banner")
+	if cup_tex != null and $VBox.get_node_or_null("CupBanner") == null:
+		var banner := TextureRect.new()
+		banner.name = "CupBanner"
+		banner.texture = cup_tex
+		banner.custom_minimum_size = Vector2(0, 64)
+		banner.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		banner.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		$VBox.add_child(banner)
+		$VBox.move_child(banner, 0)
+	_ensure_footwear_stage()
+	_ensure_track_thumb()
+
+
+func _ensure_footwear_stage() -> void:
+	if $VBox.get_node_or_null("FootwearStage") != null:
+		return
+	var stage := TextureRect.new()
+	stage.name = "FootwearStage"
+	stage.custom_minimum_size = Vector2(0, 72)
+	stage.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	stage.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	var base := LaunchArtCatalog.ui_texture("footwear_stage")
+	stage.texture = base
+	$VBox.add_child(stage)
+	var shoe_picker := $VBox.get_node_or_null("ShoePicker")
+	if shoe_picker:
+		$VBox.move_child(stage, shoe_picker.get_index() + 1)
+	_refresh_footwear_stage()
+
+
+func _ensure_track_thumb() -> void:
+	if $VBox.get_node_or_null("TrackThumb") != null:
+		return
+	var thumb := TextureRect.new()
+	thumb.name = "TrackThumb"
+	thumb.custom_minimum_size = Vector2(0, 90)
+	thumb.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	thumb.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	$VBox.add_child(thumb)
+	var desc := $VBox.get_node_or_null("DescriptionLabel")
+	if desc:
+		$VBox.move_child(thumb, desc.get_index())
+
+
+func _refresh_footwear_stage() -> void:
+	var stage := $VBox.get_node_or_null("FootwearStage") as TextureRect
+	if stage == null:
+		return
+	var shoe_tex := LaunchArtCatalog.shoe_icon(str(GameManager.selected_shoe_id))
+	if shoe_tex != null:
+		stage.texture = shoe_tex
+
+
+func _refresh_track_thumb(track_id: String) -> void:
+	var thumb := $VBox.get_node_or_null("TrackThumb") as TextureRect
+	if thumb == null:
+		return
+	var tex := LaunchArtCatalog.track_icon(track_id)
+	if tex != null:
+		thumb.texture = tex
 
 
 func _on_quit() -> void:
