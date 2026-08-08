@@ -73,10 +73,16 @@ func _use_lace_trap(racer: Node) -> void:
 	var warn := float(def.get("warning_seconds", 0.35))
 	item_warning.emit("lace_trap", warn, null)
 	var scene := load("res://scenes/items/LaceTrap.tscn") as PackedScene
-	if scene == null:
+	if scene == null or racer == null:
+		return
+	var tree := racer.get_tree()
+	if tree == null:
 		return
 	var trap := scene.instantiate()
-	racer.get_tree().current_scene.add_child(trap)
+	var host: Node = tree.current_scene
+	if host == null:
+		host = tree.root
+	host.add_child(trap)
 	var back: Vector3 = racer.global_transform.basis.z
 	trap.global_position = racer.global_position + back * 3.0
 

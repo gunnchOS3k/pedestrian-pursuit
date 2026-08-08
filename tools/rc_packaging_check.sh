@@ -36,10 +36,20 @@ payload = {
   "online_arch_private_only": True,
   "art_status": "REQUIRES_ART_PRODUCTION",
   "token_candidate": "PEDESTRIAN_DIGITAL_RC_READY",
+  "token_earned": False,
+  "token_state": "PARTIAL",
   "gaps": [
     "Final art/audio still REQUIRES_ART_PRODUCTION",
     "Public online deploy out of scope",
     "Human device perf certification still required for store RC"
+  ],
+  "local_mp_polish": [
+    "split_cameras",
+    "dual_controllers",
+    "results_tags",
+    "pause_ownership",
+    "a11y_hud",
+    "career_save_skipped"
   ],
 }
 (Path("$OUT") / "pp_digital_rc_packaging.json").write_text(json.dumps(payload, indent=2) + "\n")

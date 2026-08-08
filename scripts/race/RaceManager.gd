@@ -170,10 +170,29 @@ func _on_checkpoint_passed(racer: Node, index: int) -> void:
 func _on_racer_finished(racer: Node, _finish_time: float) -> void:
 	lap_manager.set_finish_time(racer, race_time)
 	_finished_count += 1
-	var is_player := racer == _player
-	_results.append({"racer": racer, "time": race_time, "is_player": is_player})
-	if is_player:
+	var human := _is_local_human(racer)
+	var local_idx := 0
+	if racer != null and "local_player_index" in racer:
+		local_idx = int(racer.local_player_index)
+	_results.append({
+		"racer": racer,
+		"time": race_time,
+		"is_player": human,
+		"local_player_index": local_idx,
+	})
+	# End when primary player finishes, or (Local MP) when any human finishes.
+	if human and (racer == _player or GameManager.is_local_mp()):
 		_finish_race()
+
+
+func _is_local_human(racer: Node) -> bool:
+	if racer == null:
+		return false
+	if racer == _player:
+		return true
+	if GameManager.is_local_mp() and bool(racer.get("is_player")):
+		return true
+	return false
 
 
 func _finish_race() -> void:

@@ -99,6 +99,10 @@ func _test_modes(gm: Node, failures: PackedStringArray) -> void:
 	gm.start_local_mp("neon_switchyard", 2)
 	if not bool(gm.is_local_mp()):
 		failures.append("Local MP")
+	# Local MP polish smoke: split director script loads.
+	var split_script = load("res://scripts/race/LocalMPSplitDirector.gd")
+	if split_script == null:
+		failures.append("LocalMPSplitDirector missing")
 	gm.start_tutorial("verdant_cascade_circuit")
 	if not bool(gm.is_tutorial()) or str(gm.mode_label()) != "Tutorial":
 		failures.append("Tutorial mode")

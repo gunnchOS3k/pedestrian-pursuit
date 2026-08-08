@@ -71,12 +71,14 @@ Full competitive AI matrix (8 racers × 4 shoes × 8 tracks × 3 tiers):
 
 ```bash
 GODOT_BIN="$HOME/Applications/Godot/Godot-4.5.app/Contents/MacOS/Godot" \
-  PP_AI_EVAL_TIME_SCALE=24 PP_AI_EVAL_MAX_SEC=12 \
+  PP_AI_EVAL_TIME_SCALE=20 PP_AI_EVAL_MAX_SEC=5 \
   "$GODOT_BIN" --headless --path . --script res://tests/CompetitiveAiEvalRunner.gd
 ```
 
+Evidence summary: [docs/PEDESTRIAN_COMPETITIVE_AI_DIGITAL_VALIDATED.md](docs/PEDESTRIAN_COMPETITIVE_AI_DIGITAL_VALIDATED.md).  
 Beta / Digital RC status: [docs/PEDESTRIAN_BETA_DIGITAL_RC_STATUS.md](docs/PEDESTRIAN_BETA_DIGITAL_RC_STATUS.md).
 
+Local MP (couch): P1 WASD + gamepad 0; P2 arrow keys + gamepad 1; vertical split cameras; Esc/Start pauses; career XP not written for the session.
 Or a single course smoke:
 
 ```bash

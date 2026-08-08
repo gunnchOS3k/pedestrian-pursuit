@@ -194,10 +194,20 @@ func _test_local_mp_race_scene(gm: Node, failures: PackedStringArray) -> void:
 	var p2 := race.get_node_or_null("Player2Racer")
 	if p2 == null:
 		failures.append("Local MP missing Player2Racer")
+	elif not bool(p2.get("is_player")):
+		failures.append("Player2Racer must be human-controlled")
+	elif int(p2.get("local_player_index")) != 1:
+		failures.append("Player2Racer local_player_index should be 1")
+	var split := race.get_node_or_null("LocalMPSplit")
+	if split == null:
+		failures.append("Local MP missing LocalMPSplit director")
 	var racers := race.get_tree().get_nodes_in_group("racers")
 	# Player + P2 + up to 2 AI.
 	if racers.size() < 2:
 		failures.append("Local MP expected >=2 racers, got %d" % racers.size())
+	# Save ownership: Local MP must not claim career XP in finish path metadata.
+	if not gm.is_local_mp():
+		failures.append("GameManager should remain in LOCAL_MP")
 	race.queue_free()
 	await process_frame
 

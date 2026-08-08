@@ -2,6 +2,9 @@ extends CanvasLayer
 
 ## Pause menu overlay — resume, restart race, or return to menu.
 
+var _local_mp: bool = false
+var _hint: Label
+
 
 func _ready() -> void:
 	visible = false
@@ -9,6 +12,20 @@ func _ready() -> void:
 	$Panel/Margin/VBox/ResumeButton.pressed.connect(_on_resume)
 	$Panel/Margin/VBox/MenuButton.pressed.connect(_on_menu)
 	_ensure_restart_button()
+
+
+func configure_local_mp(enabled: bool) -> void:
+	_local_mp = enabled
+	var vbox: VBoxContainer = $Panel/Margin/VBox
+	if _hint == null:
+		_hint = Label.new()
+		_hint.name = "LocalMPHint"
+		_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_hint.add_theme_font_size_override("font_size", 14)
+		vbox.add_child(_hint)
+		vbox.move_child(_hint, 0)
+	_hint.visible = enabled
+	_hint.text = "Local MP — either player may pause (Esc / Start). Career save unchanged."
 
 
 func _ensure_restart_button() -> void:
@@ -41,4 +58,6 @@ func _on_restart() -> void:
 
 func _on_menu() -> void:
 	get_tree().paused = false
+	if _local_mp:
+		GameManager.clear_cup()
 	SceneLoader.go_to_main_menu()

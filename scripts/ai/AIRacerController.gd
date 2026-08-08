@@ -45,14 +45,20 @@ func notify_shoe_changed() -> void:
 
 
 func _get_steer() -> float:
+	if is_player:
+		return super._get_steer()
 	return _ai_steer
 
 
 func _get_accelerate_input() -> bool:
+	if is_player:
+		return super._get_accelerate_input()
 	return _ai_accel
 
 
 func _get_drift_input() -> bool:
+	if is_player:
+		return super._get_drift_input()
 	return _ai_drift
 
 
@@ -61,6 +67,10 @@ func _compute_target_speed() -> float:
 
 
 func _physics_process(delta: float) -> void:
+	# Local MP reuses AIRacer.tscn for P2; when marked human, skip AI brain.
+	if is_player:
+		super._physics_process(delta)
+		return
 	var cmd: Dictionary = path_follower.get_steer_and_accel(self, delta)
 	_ai_steer = cmd.steer
 	_ai_accel = cmd.accelerate
