@@ -6,6 +6,8 @@
   "difficulty": "beginner",
   "theme": "cascade_garden",
   "description": "A broad riverside loop with misty cascade columns, shallow runoff, and forgiving boost lines.",
+  "art_status": "REQUIRES_ART_PRODUCTION",
+  "has_shortcut": true,
   "lane_width": 15.0,
   "guard_rails": true,
   "track_color": "#5A7461",

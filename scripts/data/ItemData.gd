@@ -20,4 +20,16 @@ static func load_by_id(item_id: String) -> Dictionary:
 
 
 static func all_mvp_ids() -> Array[String]:
-	return ["turbo_toes", "lace_trap", "sole_shield"]
+	## Alpha item pool (kept name for callers). Includes warning + counterplay set.
+	return [
+		"turbo_toes",
+		"lace_trap",
+		"sole_shield",
+		"pulse_horn",
+		"magnet_lace",
+		"bounce_bubble",
+	]
+
+
+static func all_alpha_ids() -> Array[String]:
+	return all_mvp_ids()

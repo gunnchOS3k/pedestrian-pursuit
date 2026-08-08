@@ -6,5 +6,7 @@
   "duration": 10.0,
   "effect_strength": 1.0,
   "targeting_mode": "self",
-  "description": "Blocks one incoming hit or hazard effect."
+  "warning_seconds": 0.0,
+  "counterplay": [],
+  "description": "Blocks one incoming hit or hazard. Primary counter to Pulse Horn and Magnet Lace."
 }

@@ -6,5 +6,7 @@
   "duration": 2.0,
   "effect_strength": 1.4,
   "targeting_mode": "self",
-  "description": "Instant speed boost."
+  "warning_seconds": 0.0,
+  "counterplay": ["draft_break", "corner_brake"],
+  "description": "Instant speed boost. Burned early into a corner is the counter."
 }

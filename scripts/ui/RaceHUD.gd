@@ -28,6 +28,10 @@ func setup(player: Node, race_manager: Node, course_data: Dictionary = {}) -> vo
 		player.get_node("BoostSystem").boost_changed.connect(_on_boost_changed)
 	if player.has_node("ItemManager"):
 		player.get_node("ItemManager").item_changed.connect(_on_item_changed)
+		if player.get_node("ItemManager").has_signal("item_warning"):
+			player.get_node("ItemManager").item_warning.connect(_on_item_warning)
+	if player.has_signal("item_warning_received"):
+		player.item_warning_received.connect(func(id, secs): _on_item_warning(id, secs, null))
 	if player.has_signal("speed_changed"):
 		player.speed_changed.connect(_on_speed_changed)
 	countdown_label.visible = true
@@ -223,6 +227,21 @@ func _on_item_changed(item_id: String) -> void:
 	else:
 		var data := ItemData.load_by_id(item_id)
 		item_label.text = "Item: %s" % data.get("display_name", item_id)
+
+
+func _on_item_warning(item_id: String, seconds: float, _target: Node) -> void:
+	## Brief HUD flash so counterplay (shield / slide / jump) is readable.
+	if countdown_label == null:
+		return
+	var prior := countdown_label.text
+	var prior_vis := countdown_label.visible
+	countdown_label.visible = true
+	countdown_label.text = "WARN: %s (%.1fs)" % [item_id.replace("_", " ").capitalize(), seconds]
+	get_tree().create_timer(maxf(seconds, 0.35)).timeout.connect(func ():
+		if is_instance_valid(countdown_label):
+			countdown_label.text = prior
+			countdown_label.visible = prior_vis
+	)
 
 
 func _on_speed_changed(speed: float) -> void:

@@ -3,12 +3,15 @@ const _TrackCatalog = preload("res://scripts/data/TrackCatalog.gd")
 const _RunnerProfile = preload("res://scripts/data/RunnerProfile.gd")
 const _RacerVisualScript = preload("res://scripts/player/RacerVisual.gd")
 
-## Main menu — pick a runner, device role, accessibility, start cup or practice.
+## Main menu — Quick Race, Cup, Time Trial, Local MP entry points (Alpha).
 
 var _cup: Dictionary = {}
 var _tracks: Array[Dictionary] = []
+var _all_tracks: Array[Dictionary] = []
 var _roster: Array = []
 var _preview_visual: Node3D
+var _cup_picker: OptionButton
+var _shoe_picker: OptionButton
 
 @onready var course_picker: OptionButton = $VBox/CoursePicker
 @onready var description_label: Label = $VBox/Description
@@ -28,14 +31,87 @@ var _a11y_colorblind: CheckButton
 func _ready() -> void:
 	$VBox/StartCupButton.pressed.connect(_on_start_cup)
 	$VBox/SingleRaceButton.pressed.connect(_on_start_single)
+	$VBox/SingleRaceButton.text = "Quick Race"
 	$VBox/QuitButton.pressed.connect(_on_quit)
 	course_picker.item_selected.connect(_on_course_selected)
 	runner_picker.item_selected.connect(_on_runner_selected)
 	_setup_preview_viewport()
 	_ensure_settings_ui()
+	_ensure_mode_buttons()
+	_ensure_cup_and_shoe_pickers()
 	_load_content()
 	_populate_device_picker()
 	_sync_a11y_toggles()
+	$VBox/CupLabel.text = "ALPHA  •  8 COURSES  •  2 CUPS"
+	$VBox/Subtitle.text = "Wave E Alpha — greybox depth, not content-complete"
+
+
+func _ensure_mode_buttons() -> void:
+	var vbox: VBoxContainer = $VBox
+	if vbox.get_node_or_null("TimeTrialButton") != null:
+		_wire_mode_buttons()
+		return
+	var insert_at := vbox.get_node("SingleRaceButton").get_index() + 1
+
+	var tt := Button.new()
+	tt.name = "TimeTrialButton"
+	tt.text = "Time Trial / Ghost"
+	tt.custom_minimum_size = Vector2(0, 44)
+	vbox.add_child(tt)
+	vbox.move_child(tt, insert_at)
+	insert_at += 1
+
+	var lmp := Button.new()
+	lmp.name = "LocalMPButton"
+	lmp.text = "Local Multiplayer (2P)"
+	lmp.custom_minimum_size = Vector2(0, 44)
+	vbox.add_child(lmp)
+	vbox.move_child(lmp, insert_at)
+	_wire_mode_buttons()
+
+
+func _wire_mode_buttons() -> void:
+	var tt := $VBox.get_node_or_null("TimeTrialButton") as Button
+	var lmp := $VBox.get_node_or_null("LocalMPButton") as Button
+	if tt and not tt.pressed.is_connected(_on_start_time_trial):
+		tt.pressed.connect(_on_start_time_trial)
+	if lmp and not lmp.pressed.is_connected(_on_start_local_mp):
+		lmp.pressed.connect(_on_start_local_mp)
+
+
+func _ensure_cup_and_shoe_pickers() -> void:
+	var vbox: VBoxContainer = $VBox
+	if vbox.get_node_or_null("CupPicker") == null:
+		var cup_label := Label.new()
+		cup_label.name = "CupPickerLabel"
+		cup_label.text = "Championship Cup"
+		cup_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		vbox.add_child(cup_label)
+		vbox.move_child(cup_label, vbox.get_node("StartCupButton").get_index())
+		_cup_picker = OptionButton.new()
+		_cup_picker.name = "CupPicker"
+		_cup_picker.custom_minimum_size = Vector2(0, 40)
+		vbox.add_child(_cup_picker)
+		vbox.move_child(_cup_picker, cup_label.get_index() + 1)
+		_cup_picker.item_selected.connect(_on_cup_selected)
+	else:
+		_cup_picker = vbox.get_node("CupPicker")
+
+	if vbox.get_node_or_null("ShoePicker") == null:
+		var shoe_label := Label.new()
+		shoe_label.name = "ShoePickerLabel"
+		shoe_label.text = "Footwear"
+		shoe_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		vbox.add_child(shoe_label)
+		vbox.move_child(shoe_label, vbox.get_node("RunnerInfo").get_index() + 1)
+		_shoe_picker = OptionButton.new()
+		_shoe_picker.name = "ShoePicker"
+		_shoe_picker.custom_minimum_size = Vector2(0, 40)
+		vbox.add_child(_shoe_picker)
+		vbox.move_child(_shoe_picker, shoe_label.get_index() + 1)
+		_shoe_picker.item_selected.connect(_on_shoe_selected)
+	else:
+		_shoe_picker = vbox.get_node("ShoePicker")
 
 
 func _ensure_settings_ui() -> void:
@@ -245,23 +321,73 @@ func _setup_preview_viewport() -> void:
 
 func _load_content() -> void:
 	_roster = _RunnerProfile.load_roster()
-	_cup = _TrackCatalog.load_cup()
-	_tracks = _TrackCatalog.load_tracks_for_cup()
+	_all_tracks = _TrackCatalog.load_all_tracks()
+	_populate_cup_picker()
+	_populate_shoe_picker()
 	_populate_runner_picker()
-	course_picker.clear()
-	for track in _tracks:
-		course_picker.add_item(str(track.get("display_name", "Unknown Course")))
-		course_picker.set_item_metadata(course_picker.item_count - 1, str(track.get("id", "")))
-	var expected_track_count: int = _cup.get("track_ids", []).size()
-	if _cup.is_empty() or _tracks.size() != expected_track_count:
-		$VBox/StartCupButton.disabled = true
-	if _tracks.is_empty():
+	_reload_selected_cup_tracks()
+	if _all_tracks.is_empty():
 		$VBox/StartCupButton.disabled = true
 		$VBox/SingleRaceButton.disabled = true
 		description_label.text = "Course content could not be loaded. Check the project log."
+
+
+func _populate_cup_picker() -> void:
+	if _cup_picker == null:
 		return
-	course_picker.select(0)
-	_on_course_selected(0)
+	_cup_picker.clear()
+	var preferred := str(GameManager.selected_cup_id)
+	var select_index := 0
+	for i in _TrackCatalog.list_cup_ids().size():
+		var cup_id := str(_TrackCatalog.list_cup_ids()[i])
+		var cup := _TrackCatalog.load_cup(cup_id)
+		_cup_picker.add_item(str(cup.get("display_name", cup_id)))
+		_cup_picker.set_item_metadata(i, cup_id)
+		if cup_id == preferred:
+			select_index = i
+	if _cup_picker.item_count > 0:
+		_cup_picker.select(select_index)
+		_on_cup_selected(select_index)
+
+
+func _populate_shoe_picker() -> void:
+	if _shoe_picker == null:
+		return
+	_shoe_picker.clear()
+	var preferred := str(GameManager.selected_shoe_id)
+	var select_index := 0
+	for i in ShoeData.all_ids().size():
+		var shoe_id := str(ShoeData.all_ids()[i])
+		var shoe := ShoeData.load_by_id(shoe_id)
+		_shoe_picker.add_item(str(shoe.get("display_name", shoe_id)))
+		_shoe_picker.set_item_metadata(i, shoe_id)
+		if shoe_id == preferred:
+			select_index = i
+	if _shoe_picker.item_count > 0:
+		_shoe_picker.select(select_index)
+		_on_shoe_selected(select_index)
+
+
+func _reload_selected_cup_tracks() -> void:
+	var cup_id := str(GameManager.selected_cup_id)
+	if cup_id.is_empty():
+		cup_id = _TrackCatalog.DEFAULT_CUP_ID
+	_cup = _TrackCatalog.load_cup(cup_id)
+	_tracks = _TrackCatalog.load_tracks_for_cup(cup_id)
+	# Quick Race / TT / Local MP use the full 8-course catalog.
+	course_picker.clear()
+	for track in _all_tracks:
+		var label := str(track.get("display_name", "Unknown Course"))
+		if str(track.get("art_status", "")) == "REQUIRES_ART_PRODUCTION":
+			label += " [greybox]"
+		course_picker.add_item(label)
+		course_picker.set_item_metadata(course_picker.item_count - 1, str(track.get("id", "")))
+	var expected_track_count: int = _cup.get("track_ids", []).size()
+	$VBox/StartCupButton.disabled = _cup.is_empty() or _tracks.size() != expected_track_count
+	$VBox/StartCupButton.text = "Start Cup: %s" % str(_cup.get("display_name", "Cup"))
+	if course_picker.item_count > 0:
+		course_picker.select(0)
+		_on_course_selected(0)
 
 
 func _populate_runner_picker() -> void:
@@ -281,6 +407,19 @@ func _populate_runner_picker() -> void:
 		return
 	runner_picker.select(select_index)
 	_on_runner_selected(select_index)
+
+
+func _on_cup_selected(index: int) -> void:
+	if _cup_picker == null or index < 0:
+		return
+	GameManager.selected_cup_id = str(_cup_picker.get_item_metadata(index))
+	_reload_selected_cup_tracks()
+
+
+func _on_shoe_selected(index: int) -> void:
+	if _shoe_picker == null or index < 0:
+		return
+	GameManager.selected_shoe_id = str(_shoe_picker.get_item_metadata(index))
 
 
 func _on_runner_selected(index: int) -> void:
@@ -303,6 +442,12 @@ func _on_runner_selected(index: int) -> void:
 			_preview_visual.set_menu_preview(true)
 
 
+func _selected_track_id() -> String:
+	if course_picker.item_count == 0:
+		return ""
+	return str(course_picker.get_item_metadata(course_picker.selected))
+
+
 func _on_start_cup() -> void:
 	if _cup.is_empty():
 		return
@@ -311,23 +456,42 @@ func _on_start_cup() -> void:
 
 
 func _on_start_single() -> void:
-	if course_picker.item_count == 0:
+	var track_id := _selected_track_id()
+	if track_id.is_empty():
 		return
-	var track_id := str(course_picker.get_item_metadata(course_picker.selected))
-	GameManager.start_single_race(track_id)
+	GameManager.start_quick_race(track_id)
+	SceneLoader.go_to_race()
+
+
+func _on_start_time_trial() -> void:
+	var track_id := _selected_track_id()
+	if track_id.is_empty():
+		return
+	GameManager.start_time_trial(track_id)
+	SceneLoader.go_to_race()
+
+
+func _on_start_local_mp() -> void:
+	var track_id := _selected_track_id()
+	if track_id.is_empty():
+		return
+	GameManager.start_local_mp(track_id, 2)
 	SceneLoader.go_to_race()
 
 
 func _on_course_selected(index: int) -> void:
-	if index < 0 or index >= _tracks.size():
+	if index < 0 or index >= _all_tracks.size():
 		return
-	var track := _tracks[index]
+	var track := _all_tracks[index]
+	var art := str(track.get("art_status", ""))
+	var art_note := "\nREQUIRES_ART_PRODUCTION" if art == "REQUIRES_ART_PRODUCTION" else ""
 	description_label.text = (
-		"%s  •  %s\n%s"
+		"%s  •  %s\n%s%s"
 		% [
 			str(track.get("difficulty", "")).capitalize(),
 			"%d laps" % int(track.get("lap_count", 3)),
 			str(track.get("description", "")),
+			art_note,
 		]
 	)
 

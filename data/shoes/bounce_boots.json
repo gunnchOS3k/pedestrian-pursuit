@@ -1,0 +1,12 @@
+{
+  "id": "bounce_boots",
+  "display_name": "Bounce Boots",
+  "top_speed_modifier": 0.95,
+  "acceleration_modifier": 1.0,
+  "handling_modifier": 0.95,
+  "drift_modifier": 0.9,
+  "jump_modifier": 1.3,
+  "boost_modifier": 1.1,
+  "stomp_modifier": 1.15,
+  "description": "Extra jump and stomp punch with a softer top-speed trade."
+}

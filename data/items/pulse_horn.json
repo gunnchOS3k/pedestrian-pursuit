@@ -1,0 +1,12 @@
+{
+  "id": "pulse_horn",
+  "display_name": "Pulse Horn",
+  "type": "offensive",
+  "cooldown": 0.0,
+  "duration": 1.2,
+  "effect_strength": 0.65,
+  "targeting_mode": "ahead",
+  "warning_seconds": 0.85,
+  "counterplay": ["sole_shield", "slide", "draft_break"],
+  "description": "Fires a forward pulse that stumbles racers ahead after a brief warning beep."
+}

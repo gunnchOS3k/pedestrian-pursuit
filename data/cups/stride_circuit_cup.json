@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "id": "stride_circuit_cup",
+  "display_name": "Stride Circuit Cup",
+  "description": "Four greybox Alpha courses that push harbor lines, neon corridors, ridge jumps, and mesa drafting.",
+  "track_ids": [
+    "tideglass_harbor",
+    "neon_switchyard",
+    "cloudstep_ridge",
+    "mirage_mesa"
+  ],
+  "points_by_position": [10, 7, 5, 3, 2, 1]
+}

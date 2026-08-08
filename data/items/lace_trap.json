@@ -6,5 +6,7 @@
   "duration": 5.0,
   "effect_strength": 0.5,
   "targeting_mode": "behind",
-  "description": "Drops tangled laces that slow racers who touch them."
+  "warning_seconds": 0.35,
+  "counterplay": ["sole_shield", "bounce_bubble", "jump", "slide"],
+  "description": "Drops tangled laces. Jump, slide, or shield through the brief lace flash."
 }

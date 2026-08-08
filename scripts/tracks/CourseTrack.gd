@@ -72,6 +72,21 @@ func get_display_name() -> String:
 	return str(_data.get("display_name", "Unknown Course"))
 
 
+func get_rail_world_points() -> Array:
+	## World-space points for grindable rail segments (greybox Alpha).
+	var points: Array = []
+	for raw_index in _data.get("rail_segments", []):
+		var idx := int(raw_index)
+		if idx < 0 or idx >= _course_points.size():
+			continue
+		points.append(_course_points[idx] + Vector3(0.0, 1.15, 0.0))
+	return points
+
+
+func get_shortcut_routes() -> Array:
+	return _data.get("shortcut_routes", [])
+
+
 func get_checkpoint_recovery_transform(checkpoint_index: int) -> Transform3D:
 	if checkpoint_index < 0 or checkpoint_index >= _checkpoint_point_indices.size():
 		return _start_transform
@@ -330,6 +345,14 @@ func _build_scenery() -> void:
 			_build_prism_scenery(scenery)
 		"ember_fortress":
 			_build_ember_scenery(scenery)
+		"harbor_glass":
+			_build_harbor_scenery(scenery)
+		"neon_yard":
+			_build_neon_scenery(scenery)
+		"ridge_cloud":
+			_build_ridge_scenery(scenery)
+		"mesa_mirage":
+			_build_mesa_scenery(scenery)
 		_:
 			_add_visual_box(
 				scenery,
@@ -403,6 +426,54 @@ func _build_ember_scenery(parent: Node3D) -> void:
 			_color("accent_color", Color.ORANGE),
 			true
 		)
+
+
+func _build_harbor_scenery(parent: Node3D) -> void:
+	## REQUIRES_ART_PRODUCTION — greybox pier/water blocks only.
+	_add_visual_box(
+		parent,
+		Vector3(0.0, -0.78, 0.0),
+		Vector3(150.0, 0.18, 150.0),
+		_color("backdrop_color", Color(0.2, 0.35, 0.42))
+	)
+	_add_visual_box(parent, Vector3(0, -0.4, 0), Vector3(90.0, 0.2, 90.0), Color(0.25, 0.55, 0.7), true)
+	for position in [Vector3(-20, 2, 10), Vector3(22, 2, -8), Vector3(8, 2, 24)]:
+		_add_visual_box(parent, position, Vector3(8.0, 1.2, 2.0), Color(0.55, 0.4, 0.28))
+
+
+func _build_neon_scenery(parent: Node3D) -> void:
+	## REQUIRES_ART_PRODUCTION — greybox neon yard stubs.
+	_add_visual_box(
+		parent, Vector3(0.0, -0.78, 0.0), Vector3(140.0, 0.18, 140.0), Color(0.08, 0.09, 0.12)
+	)
+	for position in [Vector3(-16, 4, 0), Vector3(16, 4, 0), Vector3(0, 5, -20), Vector3(0, 5, 20)]:
+		_add_visual_box(
+			parent, position, Vector3(1.2, 8.0, 1.2), _color("accent_color", Color.MAGENTA), true
+		)
+
+
+func _build_ridge_scenery(parent: Node3D) -> void:
+	## REQUIRES_ART_PRODUCTION — greybox ridge shelves.
+	_add_visual_box(
+		parent,
+		Vector3(0.0, -0.78, 0.0),
+		Vector3(150.0, 0.18, 150.0),
+		_color("backdrop_color", Color(0.35, 0.42, 0.48))
+	)
+	for position in [Vector3(-24, 3, -10), Vector3(20, 4, 12), Vector3(4, 5, -22)]:
+		_add_visual_box(parent, position, Vector3(14.0, 2.0, 6.0), Color(0.55, 0.58, 0.62))
+
+
+func _build_mesa_scenery(parent: Node3D) -> void:
+	## REQUIRES_ART_PRODUCTION — greybox mesa/sand blocks.
+	_add_visual_box(
+		parent,
+		Vector3(0.0, -0.78, 0.0),
+		Vector3(160.0, 0.18, 160.0),
+		_color("backdrop_color", Color(0.65, 0.4, 0.2))
+	)
+	for position in [Vector3(-28, 4, 8), Vector3(26, 5, -14), Vector3(0, 6, 28)]:
+		_add_visual_box(parent, position, Vector3(10.0, 8.0, 10.0), Color(0.72, 0.48, 0.28))
 
 
 func _build_start_marker() -> void:

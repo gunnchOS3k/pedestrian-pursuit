@@ -33,30 +33,78 @@ func _ready() -> void:
 	var checkpoints: Array = track.get_checkpoints()
 	var start_xf: Transform3D = track.get_start_transform()
 	player.global_transform = start_xf
+	if "shoe_id" in player:
+		player.shoe_id = GameManager.selected_shoe_id
 	player.setup_for_race(start_xf)
+	if player.has_method("setup_rails"):
+		player.setup_rails(track.get_rail_world_points())
 
 	var racers: Array = [player]
+	var ai_count := GameManager.ai_field_size
 	var ai_offsets := [
 		Vector3(2.5, 0, 3.0),
 		Vector3(-2.5, 0, 4.5),
 		Vector3(1.5, 0, 6.0),
+		Vector3(-1.5, 0, 7.5),
 	]
+	var ai_tiers := ["rookie", "standard", "ace", "standard"]
 	_assign_profile(player, _pick_player_profile())
 	_assigned_profiles = [_pick_player_profile()]
-	for i in 3:
-		var ai: Node = ai_racer if i == 0 else AI_SCENE.instantiate()
+
+	# Local MP: second human on shared screen (Alpha entry — not split polish).
+	if GameManager.is_local_mp():
+		var p2: Node = AI_SCENE.instantiate()
+		p2.name = "Player2Racer"
+		add_child(p2)
+		if "is_player" in p2:
+			p2.is_player = true
+		if "local_player_index" in p2:
+			p2.local_player_index = 1
+		if "shoe_id" in p2:
+			p2.shoe_id = "grip_soles"
+		var p2_profile = _pick_ai_profile(1)
+		_assign_profile(p2, p2_profile)
+		_assigned_profiles.append(p2_profile)
+		var p2_start := start_xf.translated_local(Vector3(-2.5, 0, 2.0))
+		p2.global_transform = p2_start
+		p2.setup_for_race(p2_start)
+		if p2.has_method("setup_rails"):
+			p2.setup_rails(track.get_rail_world_points())
+		racers.append(p2)
+		ai_count = mini(ai_count, 2)
+
+	for i in ai_count:
+		var ai: Node = ai_racer if i == 0 and not GameManager.is_local_mp() else AI_SCENE.instantiate()
+		if i > 0 or GameManager.is_local_mp():
+			if ai.get_parent() == null:
+				add_child(ai)
+		elif i == 0 and ai_racer.get_parent() == null:
+			pass
 		var profile = _pick_ai_profile(i + 1)
 		_assign_profile(ai, profile)
 		_assigned_profiles.append(profile)
-		if i > 0:
-			add_child(ai)
-		var offset: Vector3 = ai_offsets[i]
+		var offset: Vector3 = ai_offsets[mini(i, ai_offsets.size() - 1)]
 		var ai_start := start_xf.translated_local(offset)
 		ai.global_transform = ai_start
 		ai.setup_for_race(ai_start)
+		if ai.has_method("setup_rails"):
+			ai.setup_rails(track.get_rail_world_points())
 		if ai.has_method("setup_ai_path"):
 			ai.setup_ai_path(track.get_race_path(), -4.0 - float(i), 2.5 + float(i) * 0.4)
+		if ai.has_method("set_ai_tier"):
+			ai.set_ai_tier(ai_tiers[mini(i, ai_tiers.size() - 1)])
 		racers.append(ai)
+
+	if GameManager.is_time_trial() and ai_racer != null:
+		ai_racer.visible = false
+		ai_racer.movement_enabled = false
+		if ai_racer in racers:
+			racers.erase(ai_racer)
+	elif GameManager.is_local_mp() and ai_racer != null and not (ai_racer in racers):
+		ai_racer.visible = false
+		ai_racer.movement_enabled = false
+
+	_setup_time_trial_ghost()
 
 	GameManager.total_laps = int(course_data.get("lap_count", 3))
 	if GameManager.accept_force_laps > 0:
@@ -96,6 +144,7 @@ func _ready() -> void:
 	race_manager.countdown_tick.connect(_on_countdown_personality)
 	race_manager.race_started.connect(_on_race_started_poses)
 	race_manager.race_started.connect(_on_race_started_telemetry)
+	race_manager.race_started.connect(_on_race_started_ghost)
 	race_manager.race_finished.connect(_on_race_finished)
 	if mobile_controls.has_signal("pause_requested"):
 		mobile_controls.connect("pause_requested", _on_pause_requested)
@@ -114,6 +163,37 @@ func _ready() -> void:
 		call_deferred("_accept_drive_finish")
 
 
+var _ghost_recorder: Node
+var _ghost_player: Node3D
+
+
+func _setup_time_trial_ghost() -> void:
+	if not GameManager.is_time_trial():
+		return
+	_ghost_recorder = Node.new()
+	_ghost_recorder.name = "GhostRecorder"
+	_ghost_recorder.set_script(load("res://scripts/race/GhostRecorder.gd"))
+	add_child(_ghost_recorder)
+	_ghost_player = Node3D.new()
+	_ghost_player.name = "GhostPlayer"
+	_ghost_player.set_script(load("res://scripts/race/GhostPlayer.gd"))
+	add_child(_ghost_player)
+	var samples: Array = _ghost_recorder.load_samples(GameManager.selected_track_id)
+	if _ghost_player.has_method("start") and not samples.is_empty():
+		_ghost_player.start(samples)
+
+
+func _on_race_started_ghost() -> void:
+	if _ghost_recorder != null and _ghost_recorder.has_method("begin"):
+		_ghost_recorder.begin(GameManager.selected_track_id)
+
+
+func _process(delta: float) -> void:
+	if _ghost_recorder != null and _ghost_recorder.get("recording") and player != null:
+		if _ghost_recorder.has_method("tick"):
+			_ghost_recorder.tick(delta, player)
+
+
 func _on_race_started_telemetry() -> void:
 	var mode := "single"
 	match GameManager.current_race_mode:
@@ -123,8 +203,10 @@ func _on_race_started_telemetry() -> void:
 			mode = "time_trial"
 		GameManager.RaceMode.PRACTICE:
 			mode = "practice"
+		GameManager.RaceMode.LOCAL_MP:
+			mode = "local_mp"
 		_:
-			mode = "single"
+			mode = "quick_race"
 	if TelemetryBus != null:
 		TelemetryBus.race_start(str(course_data.get("id", "")), mode, GameManager.total_laps)
 
@@ -274,6 +356,8 @@ func _on_race_finished(finished_player: Node, finish_results: Array) -> void:
 	var pos: int = race_manager.position_tracker.get_position_for(finished_player)
 	GameManager.record_race_result(str(course_data.get("id", "")), race_manager.race_time, pos)
 	GameManager.record_field_results(finish_results)
+	if _ghost_recorder != null and _ghost_recorder.has_method("finish_and_save"):
+		_ghost_recorder.finish_and_save(race_manager.race_time)
 	if TelemetryBus != null:
 		TelemetryBus.finish(
 			str(course_data.get("id", "")),

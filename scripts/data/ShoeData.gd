@@ -17,3 +17,7 @@ static func load_from_file(path: String) -> Dictionary:
 
 static func load_by_id(shoe_id: String) -> Dictionary:
 	return load_from_file("res://data/shoes/%s.json" % shoe_id)
+
+
+static func all_ids() -> Array[String]:
+	return ["starter_soles", "speed_sneakers", "grip_soles", "bounce_boots"]

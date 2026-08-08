@@ -1,0 +1,12 @@
+{
+  "id": "bounce_bubble",
+  "display_name": "Bounce Bubble",
+  "type": "defensive",
+  "cooldown": 0.0,
+  "duration": 4.0,
+  "effect_strength": 1.0,
+  "targeting_mode": "self",
+  "warning_seconds": 0.0,
+  "counterplay": [],
+  "description": "Inflates a bounce shell that reflects one hazard and grants a short hop."
+}

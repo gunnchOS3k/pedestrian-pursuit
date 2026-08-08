@@ -20,6 +20,8 @@ var _player: Node = null
 var _countdown_timer: float = 0.0
 var _go_time: float = 0.0
 var _player_pressed_early: bool = false
+var _perfect_window: float = 0.0
+var _perfect_latched: bool = false
 var _results: Array = []
 var _finished_count: int = 0
 
@@ -59,8 +61,9 @@ func begin_countdown() -> void:
 	_countdown_timer = float(countdown_seconds) + 1.0
 	_player_pressed_early = false
 	_go_time = -1.0
+	_perfect_window = 0.0
+	_perfect_latched = false
 	countdown_tick.emit(str(countdown_seconds))
-	# Prefer timer-driven countdown — more reliable on Android than delta alone.
 	call_deferred("_countdown_sequence")
 
 
@@ -70,7 +73,6 @@ func _countdown_sequence() -> void:
 	var tree := get_tree()
 	if tree == null:
 		return
-	# Strict 3→2→1→GO. Avoid input checks mid-await (can abort the coroutine on Android).
 	for value in range(countdown_seconds, 0, -1):
 		if state != RaceState.COUNTDOWN:
 			return
@@ -86,16 +88,18 @@ func _process(delta: float) -> void:
 	match state:
 		RaceState.COUNTDOWN:
 			_process_countdown(delta)
+			_sample_perfect_step_countdown()
 		RaceState.RACING:
 			race_time += delta
 			timer_updated.emit(race_time)
 			position_tracker.update_positions()
+			_stamp_place_estimates()
+			_sample_perfect_step_racing(delta)
 		_:
 			pass
 
 
 func _process_countdown(delta: float) -> void:
-	# Parallel safety net — if await-timers stall, delta still finishes the start.
 	_countdown_timer -= delta
 	var display_val := ceili(_countdown_timer) - 1
 	if display_val <= countdown_seconds and display_val >= 1:
@@ -105,20 +109,56 @@ func _process_countdown(delta: float) -> void:
 		_start_race()
 
 
+func _is_accel_pressed() -> bool:
+	if InputManager != null and InputManager.has_method("is_accelerating"):
+		if GameManager != null and GameManager.auto_accelerate and not GameManager.accept_test_mode:
+			return Input.is_action_pressed("accelerate")
+		return InputManager.is_accelerating()
+	return Input.is_action_pressed("accelerate")
+
+
+func _sample_perfect_step_countdown() -> void:
+	if state != RaceState.COUNTDOWN:
+		return
+	if _countdown_timer > 0.2 and _is_accel_pressed():
+		_player_pressed_early = true
+
+
+func _sample_perfect_step_racing(delta: float) -> void:
+	if _perfect_window <= 0.0 or _perfect_latched:
+		return
+	_perfect_window = maxf(0.0, _perfect_window - delta)
+	_go_time = maxf(0.0, _go_time) + delta
+	if _is_accel_pressed() and not _player_pressed_early:
+		_perfect_latched = true
+		if _player != null and _player.has_method("apply_perfect_start"):
+			_player.apply_perfect_start(1.28)
+
+
+func _stamp_place_estimates() -> void:
+	if position_tracker == null:
+		return
+	for racer in _racers:
+		if racer == null:
+			continue
+		var place := position_tracker.get_position_for(racer)
+		racer.set_meta("race_place_estimate", place)
+
+
 func _start_race() -> void:
 	if state != RaceState.COUNTDOWN:
 		return
 	state = RaceState.RACING
-	player_start_boost_window = false
+	player_start_boost_window = true
+	_go_time = 0.0
+	_perfect_window = 0.4
 	race_started.emit()
 	for racer in _racers:
 		if racer.has_method("enable_movement"):
 			racer.enable_movement()
 	if _player != null and _player.has_method("apply_perfect_start"):
 		var mult := 1.0
-		if not _player_pressed_early and _go_time >= 0.0 and _go_time <= 1.05:
-			mult = 1.25
-		elif _player_pressed_early:
+		if _player_pressed_early:
 			mult = 0.85
 		_player.apply_perfect_start(mult)
 
