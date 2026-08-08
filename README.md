@@ -25,7 +25,7 @@ Every shipped course name, route, color system, set piece, and gameplay configur
 - Keyboard, controller, and multi-touch Android controls
 - Mobile-friendly OpenGL compatibility renderer
 
-The current 3D presentation is intentionally lightweight procedural geometry. It is a stable content and gameplay foundation, not final character art, animation, audio, accessibility, performance certification, or store-release signoff.
+The current 3D presentation uses **procedural-final launch assets** (original racers/tracks/footwear/items/UI/VFX + synthesized audio). Digital RC packaging is complete; human device FPS certification remains a separate pending token.
 
 ## Run locally
 
@@ -76,7 +76,7 @@ GODOT_BIN="$HOME/Applications/Godot/Godot-4.5.app/Contents/MacOS/Godot" \
 ```
 
 Evidence summary: [docs/PEDESTRIAN_COMPETITIVE_AI_DIGITAL_VALIDATED.md](docs/PEDESTRIAN_COMPETITIVE_AI_DIGITAL_VALIDATED.md).  
-Beta / Digital RC status: [docs/PEDESTRIAN_BETA_DIGITAL_RC_STATUS.md](docs/PEDESTRIAN_BETA_DIGITAL_RC_STATUS.md).
+Digital RC status: [docs/PEDESTRIAN_DIGITAL_RC_STATUS.md](docs/PEDESTRIAN_DIGITAL_RC_STATUS.md).
 
 Local MP (couch): P1 WASD + gamepad 0; P2 arrow keys + gamepad 1; vertical split cameras; Esc/Start pauses; career XP not written for the session.
 Or a single course smoke:

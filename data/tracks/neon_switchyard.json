@@ -6,7 +6,7 @@
   "difficulty": "intermediate",
   "theme": "neon_yard",
   "description": "Tight freight-switch corridors, neon speed lanes, and a risky rail-grind cut past the yard tower.",
-  "art_status": "REQUIRES_ART_PRODUCTION",
+  "art_status": "LAUNCH_PROCEDURAL_FINAL",
   "lane_width": 12.0,
   "guard_rails": true,
   "has_shortcut": true,

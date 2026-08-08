@@ -6,7 +6,7 @@
   "difficulty": "advanced",
   "theme": "ridge_cloud",
   "description": "Ridge shelves with elevation impulses, mist slowdowns, and a cliffside bounce shortcut.",
-  "art_status": "REQUIRES_ART_PRODUCTION",
+  "art_status": "LAUNCH_PROCEDURAL_FINAL",
   "lane_width": 13.0,
   "guard_rails": false,
   "has_shortcut": true,

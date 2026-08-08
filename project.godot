@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Pedestrian Pursuit"
 config/description="Original arcade foot racing across the four-course Sole Surge Cup"
-config/version="0.3.0-beta-rc"
+config/version="0.4.0-digital-rc"
 run/main_scene="res://scenes/main/MainMenu.tscn"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
@@ -26,6 +26,7 @@ SceneLoader="*res://scripts/core/SceneLoader.gd"
 DeviceRoleRuntime="*res://scripts/core/DeviceRoleRuntime.gd"
 AccessibilitySettings="*res://scripts/core/AccessibilitySettings.gd"
 TelemetryBus="*res://scripts/core/TelemetryBus.gd"
+AudioDirector="*res://scripts/audio/AudioDirector.gd"
 
 [display]
 

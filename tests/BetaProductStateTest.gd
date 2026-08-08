@@ -85,8 +85,12 @@ func _test_grammar_and_challenges(failures: PackedStringArray) -> void:
 			failures.append("grammar incomplete")
 	if not FileAccess.file_exists("res://data/challenges/launch_challenges.json"):
 		failures.append("missing launch_challenges.json")
-	if not FileAccess.file_exists("res://data/art/REQUIRES_ART_PRODUCTION_INVENTORY.json"):
-		failures.append("missing art production inventory")
+	if not FileAccess.file_exists("res://data/art/LAUNCH_ART_INVENTORY.json"):
+		failures.append("missing launch art inventory")
+	if not FileAccess.file_exists("res://data/art/provenance.json"):
+		failures.append("missing art provenance")
+	if not FileAccess.file_exists("res://gate1/evidence/visual_qa/audio_bank_manifest.json"):
+		failures.append("missing audio bank manifest")
 
 
 func _test_modes(gm: Node, failures: PackedStringArray) -> void:
@@ -157,8 +161,10 @@ func _test_tracks_digital(failures: PackedStringArray) -> void:
 		if data.is_empty():
 			failures.append("track load %s" % track_id)
 			continue
-		if str(data.get("art_status", "")) != "REQUIRES_ART_PRODUCTION":
-			failures.append("track %s must keep art_status until final art" % track_id)
+		if str(data.get("art_status", "")) != "LAUNCH_PROCEDURAL_FINAL":
+			failures.append("track %s must be LAUNCH_PROCEDURAL_FINAL" % track_id)
+		if str(data.get("art_status", "")) == "REQUIRES_ART_PRODUCTION":
+			failures.append("track %s still marked REQUIRES_ART_PRODUCTION / greybox" % track_id)
 		if data.get("shortcut_routes", []).is_empty() and not bool(data.get("has_shortcut", false)):
 			failures.append("track %s missing shortcut metadata" % track_id)
 		var course: Node = _CourseTrack.new()

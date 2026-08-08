@@ -204,10 +204,51 @@ def validate_project(root: Path) -> list[str]:
             if key not in runner:
                 errors.append(f"{runner_path}: missing gameplay stat {key}")
 
-    art_inv = root / "data/art/REQUIRES_ART_PRODUCTION_INVENTORY.json"
+    art_inv = root / "data/art/LAUNCH_ART_INVENTORY.json"
     art = _read_json(art_inv, errors)
-    if art and art.get("status") != "REQUIRES_ART_PRODUCTION":
-        errors.append(f"{art_inv}: status must remain REQUIRES_ART_PRODUCTION until final art lands")
+    if art and art.get("status") != "LAUNCH_PROCEDURAL_FINAL":
+        errors.append(f"{art_inv}: status must be LAUNCH_PROCEDURAL_FINAL for digital RC")
+    if art and len(art.get("tracks", [])) != 8:
+        errors.append(f"{art_inv}: need 8 launch tracks")
+    provenance = root / "data/art/provenance.json"
+    prov = _read_json(provenance, errors)
+    if prov and int(prov.get("counts", {}).get("racers", 0)) < 8:
+        errors.append(f"{provenance}: racer art count < 8")
+    audio_manifest = root / "gate1/evidence/visual_qa/audio_bank_manifest.json"
+    audio = _read_json(audio_manifest, errors)
+    if audio and int(audio.get("count", 0)) < 20:
+        errors.append(f"{audio_manifest}: procedural audio bank incomplete")
+    for sheet in (
+        "racers_contact_sheet.png",
+        "footwear_contact_sheet.png",
+        "items_contact_sheet.png",
+        "tracks_contact_sheet.png",
+        "ui_contact_sheet.png",
+        "vfx_contact_sheet.png",
+    ):
+        if not (root / "gate1/evidence/visual_qa" / sheet).exists():
+            errors.append(f"missing visual QA contact sheet: {sheet}")
+    for profile_id in ("keyboard_default", "gamepad_default", "touch_assist", "local_mp_split"):
+        if not (root / f"data/input_profiles/{profile_id}.json").exists():
+            errors.append(f"missing input profile {profile_id}")
+    # No launch greybox tags on the eight cup courses.
+    launch_tracks = (
+        "verdant_cascade_circuit",
+        "cloverwind_ranch",
+        "prism_apex",
+        "emberkeep_gauntlet",
+        "tideglass_harbor",
+        "neon_switchyard",
+        "cloudstep_ridge",
+        "mirage_mesa",
+    )
+    for track_id in launch_tracks:
+        track_path = root / f"data/tracks/{track_id}.json"
+        track = _read_json(track_path, errors)
+        if track and track.get("art_status") == "REQUIRES_ART_PRODUCTION":
+            errors.append(f"{track_path}: launch art_status must not remain REQUIRES_ART_PRODUCTION")
+        if track and track.get("art_status") != "LAUNCH_PROCEDURAL_FINAL":
+            errors.append(f"{track_path}: expected LAUNCH_PROCEDURAL_FINAL")
 
     grammar = root / "data/mechanics/foot_racing_grammar.json"
     gram = _read_json(grammar, errors)

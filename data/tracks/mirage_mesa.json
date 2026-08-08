@@ -6,7 +6,7 @@
   "difficulty": "expert",
   "theme": "mesa_mirage",
   "description": "Sun-baked mesa banks, sand traps, a hidden wash shortcut, and long drafting straights.",
-  "art_status": "REQUIRES_ART_PRODUCTION",
+  "art_status": "LAUNCH_PROCEDURAL_FINAL",
   "lane_width": 15.0,
   "guard_rails": true,
   "has_shortcut": true,

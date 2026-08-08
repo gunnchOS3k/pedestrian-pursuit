@@ -1,0 +1,16 @@
+{
+  "id": "keyboard_default",
+  "display_name": "Keyboard Default",
+  "input_default": "keyboard",
+  "bindings": {
+    "accelerate": ["W", "Up"],
+    "steer": ["A/D", "Left/Right"],
+    "brake": ["S", "Down"],
+    "jump": ["Space"],
+    "drift": ["Shift"],
+    "item": ["E"],
+    "boost": ["Q"],
+    "pause": ["Esc"]
+  },
+  "assist": false
+}

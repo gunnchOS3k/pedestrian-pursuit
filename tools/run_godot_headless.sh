@@ -65,6 +65,7 @@ run_step G2C6RuntimeTest "$GODOT" --headless --path "$ROOT" --script res://tests
 run_step CupFlowTest "$GODOT" --headless --path "$ROOT" --script res://tests/CupFlowTest.gd
 run_step AlphaProductStateTest "$GODOT" --headless --path "$ROOT" --script res://tests/AlphaProductStateTest.gd
 run_step BetaProductStateTest "$GODOT" --headless --path "$ROOT" --script res://tests/BetaProductStateTest.gd
+run_step DigitalRcProductStateTest "$GODOT" --headless --path "$ROOT" --script res://tests/DigitalRcProductStateTest.gd
 run_step CompetitiveAiEvalSubset \
   env PP_AI_EVAL_SUBSET=1 PP_AI_EVAL_TIME_SCALE=20 PP_AI_EVAL_MAX_SEC=8 \
   "$GODOT" --headless --path "$ROOT" --script res://tests/CompetitiveAiEvalRunner.gd

@@ -45,6 +45,9 @@ func use_held_item(racer: Node) -> void:
 			_use_bounce_bubble(racer)
 	held_item_id = ""
 	item_changed.emit("")
+	var audio := get_tree().root.get_node_or_null("AudioDirector")
+	if audio and audio.has_method("play_item"):
+		audio.play_item(used_id)
 	if TelemetryBus != null and racer != null and bool(racer.get("is_player")):
 		var track_id := ""
 		if GameManager != null:
