@@ -75,3 +75,34 @@ jobs:
             gate1/status/gate1_core_loop_status.json
           if-no-files-found: ignore
           retention-days: 14
+
+  wp014-actual-production-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Godot 4.7.1 headless
+        run: |
+          set -euo pipefail
+          curl -fsSL -o godot.zip \
+            https://github.com/godotengine/godot/releases/download/4.7.1-stable/Godot_v4.7.1-stable_linux.x86_64.zip
+          unzip -q godot.zip
+          chmod +x Godot_v4.7.1-stable_linux.x86_64
+          sudo mv Godot_v4.7.1-stable_linux.x86_64 /usr/local/bin/godot
+
+      - name: WP-014 ACTUAL_PRODUCTION_RUNTIME gate (real engine boot, real input, real save)
+        run: |
+          set -euo pipefail
+          xvfb-run -a godot --headless --path . --rendering-driver opengl3 -- --production-gate
+        env:
+          DISPLAY: ":99"
+
+      - name: Upload ACTUAL_PRODUCTION_RUNTIME evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wp014-actual-production-runtime
+          path: gate1/evidence/out/actual_production_runtime.json
+          if-no-files-found: warn
+          retention-days: 30

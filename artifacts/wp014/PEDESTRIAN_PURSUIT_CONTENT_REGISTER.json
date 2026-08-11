@@ -1,0 +1,43 @@
+{
+  "schema": "wp014_content_register/v1",
+  "game": "pedestrian-pursuit",
+  "generated_at": "2026-08-11T19:20:00Z",
+  "source_commit": "a2c6da5b4d4635af1281dbb12b8564ba70f994c6",
+  "counts": {
+    "racers": 10,
+    "tracks": 9,
+    "cups": 2,
+    "items": 6,
+    "footwear_shoes": 4,
+    "challenges": 1
+  },
+  "modes": [
+    "quick_race (single)",
+    "cup",
+    "time_trial",
+    "local_mp (2p split-screen)",
+    "tutorial",
+    "challenge"
+  ],
+  "systems_verified_this_cycle": [
+    "real InputMap-driven movement/steering/accel/brake",
+    "checkpoint + lap progression (Checkpoint -> RaceManager -> LapManager)",
+    "pause/resume (keyboard/gamepad/touch parity fix)",
+    "career save/load (ProgressionSave -> user://pp_progression.cfg)",
+    "cup progress suspend/resume (GameManager.save_cup_progress/load_cup_progress)",
+    "accessibility settings persistence (colorblind HUD, larger UI, reduce motion)",
+    "audio hook wiring (AudioDirector menu/race/ui cues)",
+    "crash/recovery breadcrumb (CrashWatchdog -> user://pp_crash_recovery.cfg)",
+    "telemetry logging (TelemetryBus -> user://telemetry/race_events.jsonl)",
+    "perf frame-time sampling during a real drive+pause sequence"
+  ],
+  "not_claimed": [
+    "No Smash-level or commercial market-parity claim.",
+    "No physical hardware / on-device performance claim this cycle (DEVICE_LAB_PASS is partial, pending WP-011R guest device run).",
+    "Local MP / Time Trial full-scene AI-eval smokes (tests/AlphaProductStateTest.gd) still run under Godot's --script mode, which cannot see autoloads; those two scenarios are not covered by this cycle's ACTUAL_PRODUCTION_RUNTIME harness beyond the single-race path exercised."
+  ],
+  "provenance": {
+    "art": "data/art/ + assets/art/ procedural/placeholder inventory carried over from prior Digital RC cycle (unchanged this WP)",
+    "audio": "assets/audio/ wav set carried over from prior Digital RC cycle (unchanged this WP)"
+  }
+}

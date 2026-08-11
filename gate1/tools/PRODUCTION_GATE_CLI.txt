@@ -1,0 +1,11 @@
+WP-014 ACTUAL_PRODUCTION_RUNTIME ops note (not a README/profile — CLI usage only)
+
+Run the real engine, real-input, real-save/load headless gate:
+
+  godot --headless --path . -- --production-gate
+
+Evidence written to: gate1/evidence/out/actual_production_runtime.json
+Exit code 0 = every step passed. Non-zero = at least one step failed; see the
+JSON "steps" array and stderr PRODUCTION_GATE_FAIL[<step>] lines for detail.
+
+CI: .github/workflows/gate1-ci.yml job `wp014-actual-production-runtime`.

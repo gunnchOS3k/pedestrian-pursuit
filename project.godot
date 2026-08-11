@@ -27,6 +27,7 @@ DeviceRoleRuntime="*res://scripts/core/DeviceRoleRuntime.gd"
 AccessibilitySettings="*res://scripts/core/AccessibilitySettings.gd"
 TelemetryBus="*res://scripts/core/TelemetryBus.gd"
 AudioDirector="*res://scripts/audio/AudioDirector.gd"
+ProductionGateHarness="*res://scripts/rc/ProductionGateHarness.gd"
 
 [display]
 

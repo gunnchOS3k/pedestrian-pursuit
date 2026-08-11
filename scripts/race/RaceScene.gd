@@ -350,8 +350,14 @@ func _accept_drive_finish() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	# set_input_as_handled() stops this same event from also reaching
+	# PauseMenu's own ALWAYS-mode "pause" listener (PauseMenu.gd). Without
+	# it, Godot still delivers one input event to every listening node in
+	# the same flush regardless of a pause mutation mid-flush, so a single
+	# key tap could open AND immediately close the pause menu (net no-op).
 	if event.is_action_pressed("pause"):
 		pause_menu.toggle_pause()
+		get_viewport().set_input_as_handled()
 
 
 func _physics_process(delta: float) -> void:

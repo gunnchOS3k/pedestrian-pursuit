@@ -14,6 +14,18 @@ func _ready() -> void:
 	_ensure_restart_button()
 
 
+func _unhandled_input(event: InputEvent) -> void:
+	# RaceScene owns the pause-key listener that opens this menu (only fires
+	# while unpaused, since RaceScene inherits pausable process mode). Once
+	# paused, RaceScene freezes and can no longer hear the same key, so this
+	# ALWAYS-mode node is the only thing that can hear a second press and
+	# close the menu again — keyboard/gamepad/touch users would otherwise be
+	# stuck needing a mouse click on Resume to ever leave the pause screen.
+	if get_tree().paused and event.is_action_pressed("pause"):
+		toggle_pause()
+		get_viewport().set_input_as_handled()
+
+
 func configure_local_mp(enabled: bool) -> void:
 	_local_mp = enabled
 	var vbox: VBoxContainer = $Panel/Margin/VBox
