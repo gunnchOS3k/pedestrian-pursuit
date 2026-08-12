@@ -61,5 +61,7 @@
     "content_completeness": 0.72,
     "ship_readiness": 0.48
   },
-  "verdict": "ALPHA \u2014 deep digital systems packet; not polished beta/RC without human polish + physical FPS."
+  "verdict": "ALPHA \u2014 deep digital systems packet; not polished beta/RC without human polish + physical FPS.",
+  "tip_sha": "bd28e0ddc1b1e1aae63ea559bca15de5a2615f61",
+  "tip_short": "bd28e0d"
 }

@@ -62,5 +62,7 @@
       "pointer": "artifacts/experience_review/pedestrian-pursuit/GAME_CRITIC_REVIEW.json"
     }
   },
-  "summary": "Pedestrian Pursuit full-product digital depth packet: specials/sense-of-speed/dock/tutorial gaps closed digitally. Critic class ALPHA. HUMAN_POLISH pending. VISUAL_MODEL_REVIEW unavailable."
+  "summary": "Pedestrian Pursuit full-product digital depth packet: specials/sense-of-speed/dock/tutorial gaps closed digitally. Critic class ALPHA. HUMAN_POLISH pending. VISUAL_MODEL_REVIEW unavailable.",
+  "tip_sha": "bd28e0ddc1b1e1aae63ea559bca15de5a2615f61",
+  "tip_short": "bd28e0d"
 }

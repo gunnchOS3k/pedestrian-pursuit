@@ -213,5 +213,8 @@
   "defects": {
     "S0_open": 0,
     "S1_open": 0
-  }
+  },
+  "tip_sha": "bd28e0ddc1b1e1aae63ea559bca15de5a2615f61",
+  "tip_short": "bd28e0d",
+  "source_commit_tip": "bd28e0ddc1b1e1aae63ea559bca15de5a2615f61"
 }
