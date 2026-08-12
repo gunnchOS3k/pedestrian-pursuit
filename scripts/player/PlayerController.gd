@@ -1,9 +1,10 @@
 class_name PlayerController
-const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
 extends CharacterBody3D
 
 ## Foot-powered racer movement: sprint, steer, drift, boost, jump, slide, stomp,
 ## drafting, rail grind, and collision recovery.
+
+const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
 
 signal speed_changed(speed: float)
 signal terrain_changed(terrain_name: String)
