@@ -2,6 +2,8 @@ extends Control
 const _TrackCatalog = preload("res://scripts/data/TrackCatalog.gd")
 const _RunnerProfile = preload("res://scripts/data/RunnerProfile.gd")
 const _RacerVisualScript = preload("res://scripts/player/RacerVisual.gd")
+const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
+const LaunchArtCatalogScript = preload("res://scripts/ui/LaunchArtCatalog.gd")
 
 ## Main menu — Quick Race, Cup, Time Trial, Local MP entry points (Alpha).
 
@@ -466,9 +468,9 @@ func _populate_shoe_picker() -> void:
 	_shoe_picker.clear()
 	var preferred := str(GameManager.selected_shoe_id)
 	var select_index := 0
-	for i in ShoeData.all_ids().size():
-		var shoe_id := str(ShoeData.all_ids()[i])
-		var shoe := ShoeData.load_by_id(shoe_id)
+	for i in ShoeDataScript.all_ids().size():
+		var shoe_id := str(ShoeDataScript.all_ids()[i])
+		var shoe := ShoeDataScript.load_by_id(shoe_id)
 		_shoe_picker.add_item(str(shoe.get("display_name", shoe_id)))
 		_shoe_picker.set_item_metadata(i, shoe_id)
 		if shoe_id == preferred:
@@ -719,7 +721,7 @@ func _on_course_selected(index: int) -> void:
 
 
 func _apply_launch_presentation() -> void:
-	var menu_tex: Texture2D = LaunchArtCatalog.ui_texture("menu_panel")
+	var menu_tex: Texture2D = LaunchArtCatalogScript.ui_texture("menu_panel")
 	if menu_tex != null:
 		var bg := TextureRect.new()
 		bg.name = "LaunchMenuBackdrop"
@@ -731,7 +733,7 @@ func _apply_launch_presentation() -> void:
 		bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		add_child(bg)
 		move_child(bg, 0)
-	var cup_tex: Texture2D = LaunchArtCatalog.ui_texture("cup_banner")
+	var cup_tex: Texture2D = LaunchArtCatalogScript.ui_texture("cup_banner")
 	if cup_tex != null and $VBox.get_node_or_null("CupBanner") == null:
 		var banner := TextureRect.new()
 		banner.name = "CupBanner"
@@ -753,7 +755,7 @@ func _ensure_footwear_stage() -> void:
 	stage.custom_minimum_size = Vector2(0, 72)
 	stage.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	stage.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	var base := LaunchArtCatalog.ui_texture("footwear_stage")
+	var base := LaunchArtCatalogScript.ui_texture("footwear_stage")
 	stage.texture = base
 	$VBox.add_child(stage)
 	var shoe_picker := $VBox.get_node_or_null("ShoePicker")
@@ -780,7 +782,7 @@ func _refresh_footwear_stage() -> void:
 	var stage := $VBox.get_node_or_null("FootwearStage") as TextureRect
 	if stage == null:
 		return
-	var shoe_tex := LaunchArtCatalog.shoe_icon(str(GameManager.selected_shoe_id))
+	var shoe_tex := LaunchArtCatalogScript.shoe_icon(str(GameManager.selected_shoe_id))
 	if shoe_tex != null:
 		stage.texture = shoe_tex
 
@@ -789,7 +791,7 @@ func _refresh_track_thumb(track_id: String) -> void:
 	var thumb := $VBox.get_node_or_null("TrackThumb") as TextureRect
 	if thumb == null:
 		return
-	var tex := LaunchArtCatalog.track_icon(track_id)
+	var tex := LaunchArtCatalogScript.track_icon(track_id)
 	if tex != null:
 		thumb.texture = tex
 

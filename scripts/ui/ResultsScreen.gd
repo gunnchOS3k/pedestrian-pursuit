@@ -1,4 +1,5 @@
 extends CanvasLayer
+const LaunchArtCatalogScript = preload("res://scripts/ui/LaunchArtCatalog.gd")
 
 ## Results screen shown after race finish.
 
@@ -127,7 +128,7 @@ func hide_results() -> void:
 func _ensure_results_art() -> void:
 	if get_node_or_null("ResultsArt") != null:
 		return
-	var tex := LaunchArtCatalog.ui_texture("results_panel")
+	var tex := LaunchArtCatalogScript.ui_texture("results_panel")
 	if tex == null:
 		return
 	var art := TextureRect.new()

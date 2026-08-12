@@ -19,6 +19,7 @@ extends Node
 
 const OUT_PATH := "res://gate1/evidence/out/actual_production_runtime.json"
 const RACE_TRACK_ID := "verdant_cascade_circuit"
+const CrashWatchdogScript := preload("res://scripts/rc/CrashWatchdog.gd")
 
 var _steps: Array = []
 var _t_start_msec: int = 0
@@ -294,8 +295,8 @@ func _step_suspend_resume_and_crash_recovery() -> void:
 	await get_tree().create_timer(0.3, true, false, true).timeout
 	get_tree().paused = false
 	var loaded_ok := gm.load_cup_progress() if gm.has_method("load_cup_progress") else false
-	CrashWatchdog.note_event("production_gate_suspend_resume", "verdant_cascade_circuit")
-	var last := CrashWatchdog.last_event()
+	CrashWatchdogScript.note_event("production_gate_suspend_resume", "verdant_cascade_circuit")
+	var last: Dictionary = CrashWatchdogScript.last_event()
 	var crash_ok := str(last.get("kind", "")) == "production_gate_suspend_resume"
 	_emit("suspend_resume_checkpoint", loaded_ok and crash_ok, {
 		"cup_reload_ok": loaded_ok,

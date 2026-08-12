@@ -6,7 +6,7 @@
   "branch": "operating-cycle-3b/wp-014-pedestrian-pursuit",
   "base": "origin/main",
   "base_commit": "a2c6da5b4d4635af1281dbb12b8564ba70f994c6",
-  "generated_at": "2026-08-11T21:39:06Z",
+  "generated_at": "2026-08-12T17:05:41Z",
   "evidence_file": "gate1/evidence/out/actual_production_runtime.json",
   "priority_blocker_addressed": {
     "claim": "Godot production runtime needs real input + save/state lifecycle",
@@ -69,11 +69,13 @@
   "market_parity_claim": "None. This gate certifies digital automated-evidence production-runtime correctness for the listed systems only; no claim of Smash-level or commercial market parity is made.",
   "device_lab": {
     "DEVICE_LAB_PASS": "PASS",
-    "runtime_class": "GUEST_CHROMIUM_WAYLAND",
+    "runtime_class": "GUEST_GODOT4",
     "guest_game_id": "foot-racing",
-    "evidence": "gunnchos-device-os@264b9c9 artifacts/wp011r/games/four_games_in_guest.json \u2014 GUEST_CHROMIUM_WAYLAND for Device Lab web package; HOST_PLAYWRIGHT_REJECTED; http.server alone rejected",
+    "evidence": "gunnchos-device-os@071f9b2 artifacts/wp011r/games/four_games_in_guest.json (independent-accepted FOUR_GAME on tip 9d8ce2d / commit 071f9b2) \u2014 HOST_PLAYWRIGHT_REJECTED; http.server alone rejected",
     "HOST_PLAYWRIGHT_REJECTED": true,
-    "note": "Earned via WP-011R Interactive Guest in-guest Chromium proof of the corresponding Device Lab web package. Not a claim of Godot-in-guest for the full product binary; physical playtest still PENDING.",
+    "independent_accepted_tip": "9d8ce2d3b60d21f4d4d851bad9f4b17e8ac43fff",
+    "independent_pass_commit": "071f9b28b2cccd0549885e5f8427af4db3c162c5",
+    "note": "Aligned to WP-011R independent-accepted FOUR_GAME guest evidence (#103@071f9b2). Pedestrian DEVICE_LAB_PASS is GUEST_GODOT4 in-guest; web titles are GUEST_CHROMIUM_WAYLAND. Physical playtest still PENDING. Not a shipping claim.",
     "wp011r_pr": "https://github.com/gunnchOS3k/gunnchos-device-os/pull/103"
   }
 }

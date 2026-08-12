@@ -1,6 +1,8 @@
 extends Node3D
 const _TrackCatalog = preload("res://scripts/data/TrackCatalog.gd")
 const _RunnerProfile = preload("res://scripts/data/RunnerProfile.gd")
+const CrashWatchdogScript = preload("res://scripts/rc/CrashWatchdog.gd")
+const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
 
 ## Wires together track, racers, race manager, HUD, and results.
 ## Assigns named character-life profiles so every racer reads as a person.
@@ -100,7 +102,7 @@ func _ready() -> void:
 			ai.racer_id = str(profile.id)
 		if "shoe_id" in ai:
 			# AI field rotates footwear so material affinities show in pack races.
-			var shoe_ids := ShoeData.all_ids()
+			var shoe_ids := ShoeDataScript.all_ids()
 			ai.shoe_id = shoe_ids[(i + 1) % shoe_ids.size()]
 		var offset: Vector3 = ai_offsets[mini(i, ai_offsets.size() - 1)]
 		var ai_start := start_xf.translated_local(offset)
@@ -162,7 +164,7 @@ func _ready() -> void:
 	hud.setup(player, race_manager, course_data)
 	if GameManager.is_local_mp() and local_p2 != null and hud.has_method("setup_local_mp_secondary"):
 		hud.setup_local_mp_secondary(local_p2)
-	CrashWatchdog.note_event("race_scene_ready", str(course_data.get("id", "")))
+	CrashWatchdogScript.note_event("race_scene_ready", str(course_data.get("id", "")))
 	PackageLifecycle.migrate_or_update()
 	var audio := get_node_or_null("/root/AudioDirector")
 	if audio and audio.has_method("play_race_music"):
@@ -445,7 +447,7 @@ func _on_race_finished(finished_player: Node, finish_results: Array) -> void:
 	var audio := get_node_or_null("/root/AudioDirector")
 	if audio and audio.has_method("play_results"):
 		audio.play_results()
-	CrashWatchdog.note_event("race_finished", str(course_data.get("id", "")))
+	CrashWatchdogScript.note_event("race_finished", str(course_data.get("id", "")))
 
 
 func _play_finish_reactions(finish_results: Array, _player_pos: int) -> void:

@@ -1,4 +1,5 @@
 class_name PlayerController
+const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
 extends CharacterBody3D
 
 ## Foot-powered racer movement: sprint, steer, drift, boost, jump, slide, stomp,
@@ -45,7 +46,7 @@ func _ready() -> void:
 	add_to_group("racers")
 	_ensure_aux_systems()
 	var racer_data := RacerData.load_by_id(racer_id)
-	var shoe_data := ShoeData.load_by_id(shoe_id)
+	var shoe_data := ShoeDataScript.load_by_id(shoe_id)
 	stats.apply_racer_and_shoe(racer_data, shoe_data)
 	drift_system.drift_released.connect(_on_drift_released)
 	trick_system.trick_landed.connect(_on_trick_landed)
@@ -79,7 +80,7 @@ func setup_for_race(start_transform: Transform3D) -> void:
 	_collision_stun = 0.0
 	if stats != null:
 		var racer_data := RacerData.load_by_id(racer_id)
-		var shoe_data := ShoeData.load_by_id(shoe_id)
+		var shoe_data := ShoeDataScript.load_by_id(shoe_id)
 		stats.apply_racer_and_shoe(racer_data, shoe_data)
 	if drafting_system and drafting_system.has_method("setup"):
 		drafting_system.setup(self)
@@ -341,7 +342,7 @@ func set_terrain_modifiers(name: String, speed_mult: float, handling_mult: float
 	if stats != null and stats.has_method("affinity_for"):
 		affinity = float(stats.affinity_for(name))
 	elif not shoe_id.is_empty():
-		affinity = ShoeData.surface_affinity(shoe_id, name)
+		affinity = ShoeDataScript.surface_affinity(shoe_id, name)
 	if name == "standard":
 		terrain_speed_multiplier = 1.0
 		terrain_handling_multiplier = 1.0
@@ -349,7 +350,7 @@ func set_terrain_modifiers(name: String, speed_mult: float, handling_mult: float
 		terrain_speed_multiplier = speed_mult
 		terrain_handling_multiplier = handling_mult
 	set_meta("shoe_surface_affinity", affinity)
-	set_meta("shoe_material_family", ShoeData.material_family(shoe_id))
+	set_meta("shoe_material_family", ShoeDataScript.material_family(shoe_id))
 	terrain_changed.emit(name)
 
 
