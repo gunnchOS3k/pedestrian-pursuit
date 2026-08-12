@@ -11,6 +11,7 @@ const ALLOWED_EVENTS := [
 	"race_start",
 	"checkpoint",
 	"item_use",
+	"special_ability",
 	"finish",
 	"restart",
 ]
@@ -83,6 +84,13 @@ func item_use(item_id: String, track_id: String = "") -> void:
 	record("item_use", {
 		"item_id": item_id,
 		"track_id": track_id,
+	})
+
+
+func special_ability(ability_id: String, racer_id: String = "") -> void:
+	record("special_ability", {
+		"ability_id": ability_id,
+		"racer_id": racer_id,
 	})
 
 

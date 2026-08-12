@@ -1,0 +1,90 @@
+{
+  "schema": "special_abilities/v1",
+  "notes": "Ability ids are accepted from data/racers/*.json special_ability_id. Effects reuse existing Boost/Drift/handling systems — no new vehicle mechanics.",
+  "abilities": {
+    "clean_lines": {
+      "racer": "dash_reed",
+      "kind": "active",
+      "cooldown_sec": 10.0,
+      "duration_sec": 2.2,
+      "effect": "handling_hold",
+      "handling_mult": 1.28,
+      "speed_hold_mult": 1.06,
+      "copy": "Hold a clean racing line — brief handling + speed hold."
+    },
+    "launch_burst": {
+      "racer": "nova_quill",
+      "kind": "active",
+      "cooldown_sec": 12.0,
+      "duration_sec": 1.1,
+      "effect": "external_boost",
+      "boost_mult": 1.28,
+      "copy": "Explosive first-meters burst."
+    },
+    "wall_read": {
+      "racer": "sierra_flux",
+      "kind": "active",
+      "cooldown_sec": 9.0,
+      "duration_sec": 2.0,
+      "effect": "parkour_read",
+      "handling_mult": 1.22,
+      "wall_kick_ready": true,
+      "copy": "Read walls and rails — handling + wall-kick ready."
+    },
+    "tempo_hold": {
+      "racer": "mira_lane",
+      "kind": "active",
+      "cooldown_sec": 11.0,
+      "duration_sec": 2.8,
+      "effect": "tempo_hold",
+      "speed_decay_resist": 0.55,
+      "copy": "Rhythm over panic — resist speed decay."
+    },
+    "shoulder_drive": {
+      "racer": "bolt_harbor",
+      "kind": "active",
+      "cooldown_sec": 10.0,
+      "duration_sec": 2.0,
+      "effect": "shoulder_drive",
+      "slow_resist": 0.7,
+      "strength_speed_mult": 1.08,
+      "copy": "Shoulder drive through resistance."
+    },
+    "style_fuel": {
+      "racer": "zig_riven",
+      "kind": "active",
+      "cooldown_sec": 8.0,
+      "duration_sec": 0.0,
+      "effect": "style_to_boost",
+      "boost_from_trick_skill": 18.0,
+      "copy": "Convert style into boost meter."
+    },
+    "rail_fin": {
+      "racer": "solen_pike",
+      "kind": "active",
+      "cooldown_sec": 9.0,
+      "duration_sec": 2.5,
+      "effect": "apex_drift",
+      "drift_charge_mult": 1.55,
+      "copy": "Apex discipline — faster drift spark charge."
+    },
+    "kinetic_flare": {
+      "racer": "kai_volt",
+      "kind": "active",
+      "cooldown_sec": 11.0,
+      "duration_sec": 1.4,
+      "effect": "external_boost",
+      "boost_mult": 1.32,
+      "copy": "Kinetic flare boost chain window."
+    },
+    "turbo_step": {
+      "racer": "dash",
+      "kind": "active",
+      "cooldown_sec": 10.0,
+      "duration_sec": 1.0,
+      "effect": "external_boost",
+      "boost_mult": 1.2,
+      "copy": "Legacy turbo step burst."
+    }
+  }
+}

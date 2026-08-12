@@ -31,12 +31,16 @@ func stop_drift(steer_amount: float) -> void:
 	spark_tier = 0
 
 
-func update_drift(delta: float, steer_amount: float, drift_control: float) -> void:
+func update_drift(delta: float, steer_amount: float, drift_control: float, charge_mult: float = 1.0) -> void:
 	if not is_drifting:
 		return
 	if absf(steer_amount) < min_turn_for_charge:
 		return
-	drift_charge = clampf(drift_charge + charge_rate * delta * drift_control * 0.1, 0.0, 1.0)
+	drift_charge = clampf(
+		drift_charge + charge_rate * delta * drift_control * 0.1 * maxf(charge_mult, 0.01),
+		0.0,
+		1.0
+	)
 	spark_tier = _tier_from_charge(drift_charge)
 
 

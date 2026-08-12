@@ -83,6 +83,7 @@ class AccessibilityRuntimeTests(unittest.TestCase):
     def test_autoload_scripts_exist(self) -> None:
         for rel in (
             "scripts/core/DeviceRoleRuntime.gd",
+            "scripts/core/DockDisplayHook.gd",
             "scripts/core/AccessibilitySettings.gd",
             "scripts/core/TelemetryBus.gd",
         ):
@@ -91,6 +92,7 @@ class AccessibilityRuntimeTests(unittest.TestCase):
     def test_project_registers_autoloads(self) -> None:
         text = (ROOT / "project.godot").read_text(encoding="utf-8")
         self.assertIn('DeviceRoleRuntime="*res://scripts/core/DeviceRoleRuntime.gd"', text)
+        self.assertIn('DockDisplayHook="*res://scripts/core/DockDisplayHook.gd"', text)
         self.assertIn('AccessibilitySettings="*res://scripts/core/AccessibilitySettings.gd"', text)
         self.assertIn('TelemetryBus="*res://scripts/core/TelemetryBus.gd"', text)
 
@@ -101,10 +103,11 @@ class TelemetryRuntimeTests(unittest.TestCase):
         journal.record("race_start", {"track_id": "verdant_cascade_circuit", "laps": 3})
         journal.record("checkpoint", {"checkpoint_index": 1, "lap": 0})
         journal.record("item_use", {"item_id": "turbo_toes"})
+        journal.record("special_ability", {"ability_id": "clean_lines"})
         journal.record("finish", {"position": 2, "finished": True})
         journal.record("restart", {"reason": "rematch"})
         lines = [ln for ln in journal.to_jsonl().splitlines() if ln]
-        self.assertEqual(len(lines), 5)
+        self.assertEqual(len(lines), 6)
         names = [json.loads(ln)["event"] for ln in lines]
         self.assertEqual(names, list(ALLOWED_TELEMETRY))
 

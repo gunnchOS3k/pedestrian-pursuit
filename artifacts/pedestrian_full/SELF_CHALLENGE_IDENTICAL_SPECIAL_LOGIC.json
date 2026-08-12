@@ -1,0 +1,28 @@
+{
+  "schema": "pedestrian_full_self_challenge/v1",
+  "generated_at": "2026-08-12T22:16:31Z",
+  "identical_special_logic": "PASS",
+  "launch_racers": [
+    "dash_reed",
+    "nova_quill",
+    "sierra_flux",
+    "mira_lane",
+    "bolt_harbor",
+    "zig_riven",
+    "solen_pike",
+    "kai_volt"
+  ],
+  "special_ability_ids": [
+    "clean_lines",
+    "launch_burst",
+    "wall_read",
+    "tempo_hold",
+    "shoulder_drive",
+    "style_fuel",
+    "rail_fin",
+    "kinetic_flare"
+  ],
+  "unique_special_count": 8,
+  "catalog_ability_count": 9,
+  "failures": []
+}

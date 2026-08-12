@@ -13,7 +13,7 @@ CATALOG_PATH = ROOT / "device_ux" / "profiles" / "device_roles.json"
 ROLE_IDS = ("student_14_5", "handheld_hybrid", "ds_xl_coder", "edge_io_rings")
 ALLOWED_INPUTS = {"keyboard", "touch", "gamepad", "ring_confirm"}
 ALLOWED_GPS = {"SIMULATED", "none"}
-ALLOWED_TELEMETRY = ("race_start", "checkpoint", "item_use", "finish", "restart")
+ALLOWED_TELEMETRY = ("race_start", "checkpoint", "item_use", "special_ability", "finish", "restart")
 SAFE_ID = re.compile(r"^[a-z0-9_]+$")
 
 

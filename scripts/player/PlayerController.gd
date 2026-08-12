@@ -9,6 +9,7 @@ const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
 signal speed_changed(speed: float)
 signal terrain_changed(terrain_name: String)
 signal item_warning_received(item_id: String, seconds: float)
+signal special_ability_activated(ability_id: String)
 
 @export var is_player: bool = true
 @export var racer_id: String = "dash"
@@ -41,6 +42,7 @@ var _wall_kick_cooldown: float = 0.0
 
 var drafting_system: Node
 var rail_grind_system: Node
+var special_ability: Node
 
 
 func _ready() -> void:
@@ -49,6 +51,7 @@ func _ready() -> void:
 	var racer_data := RacerData.load_by_id(racer_id)
 	var shoe_data := ShoeDataScript.load_by_id(shoe_id)
 	stats.apply_racer_and_shoe(racer_data, shoe_data)
+	_setup_special_ability(racer_data)
 	drift_system.drift_released.connect(_on_drift_released)
 	trick_system.trick_landed.connect(_on_trick_landed)
 	if item_manager and item_manager.has_signal("item_warning"):
@@ -72,6 +75,23 @@ func _ensure_aux_systems() -> void:
 		rail_grind_system.set_script(load("res://scripts/player/RailGrindSystem.gd"))
 		add_child(rail_grind_system)
 
+	special_ability = get_node_or_null("SpecialAbilitySystem")
+	if special_ability == null:
+		special_ability = Node.new()
+		special_ability.name = "SpecialAbilitySystem"
+		special_ability.set_script(load("res://scripts/player/SpecialAbilitySystem.gd"))
+		add_child(special_ability)
+
+
+func _setup_special_ability(racer_data: Dictionary) -> void:
+	if special_ability == null:
+		return
+	var sid := str(racer_data.get("special_ability_id", "clean_lines"))
+	if special_ability.has_method("setup"):
+		special_ability.setup(self, sid)
+	if special_ability.has_signal("ability_activated") and not special_ability.ability_activated.is_connected(_on_special_activated):
+		special_ability.ability_activated.connect(_on_special_activated)
+
 
 func setup_for_race(start_transform: Transform3D) -> void:
 	global_transform = start_transform
@@ -83,6 +103,7 @@ func setup_for_race(start_transform: Transform3D) -> void:
 		var racer_data := RacerData.load_by_id(racer_id)
 		var shoe_data := ShoeDataScript.load_by_id(shoe_id)
 		stats.apply_racer_and_shoe(racer_data, shoe_data)
+		_setup_special_ability(racer_data)
 	if drafting_system and drafting_system.has_method("setup"):
 		drafting_system.setup(self)
 
@@ -115,6 +136,8 @@ func _physics_process(delta: float) -> void:
 	boost_system.tick(delta)
 	if drafting_system and drafting_system.has_method("tick"):
 		drafting_system.tick(delta)
+	if special_ability and special_ability.has_method("tick"):
+		special_ability.tick(delta)
 	_tick_timers(delta)
 
 	if rail_grind_system and rail_grind_system.get("is_grinding"):
@@ -146,11 +169,14 @@ func _physics_process(delta: float) -> void:
 
 func _handle_ground_movement(delta: float, steer: float) -> void:
 	var drifting := _get_drift_input() and absf(steer) > 0.1 and horizontal_speed > 2.0
+	var drift_charge_mult := 1.0
+	if special_ability and special_ability.has_method("get_drift_charge_multiplier"):
+		drift_charge_mult = special_ability.get_drift_charge_multiplier()
 	if drifting:
 		if not drift_system.is_drifting:
 			drift_system.start_drift()
 		state_machine.set_state(state_machine.State.DRIFT)
-		drift_system.update_drift(delta, steer, stats.drift_control)
+		drift_system.update_drift(delta, steer, stats.drift_control, drift_charge_mult)
 		_set_drift_vfx(true, drift_system.get_spark_color())
 	else:
 		if drift_system.is_drifting:
@@ -187,9 +213,14 @@ func _handle_ground_movement(delta: float, steer: float) -> void:
 	elif _get_brake_input():
 		horizontal_speed = move_toward(horizontal_speed, 0.0, stats.brake_strength * delta)
 	else:
-		horizontal_speed = move_toward(horizontal_speed, 0.0, stats.brake_strength * 0.35 * delta)
+		var coast: float = float(stats.brake_strength) * 0.35
+		if special_ability and special_ability.has_method("get_speed_decay_resist"):
+			coast *= maxf(0.0, 1.0 - float(special_ability.get_speed_decay_resist()))
+		horizontal_speed = move_toward(horizontal_speed, 0.0, coast * delta)
 
 	var turn_rate: float = stats.handling * terrain_handling_multiplier
+	if special_ability and special_ability.has_method("get_handling_multiplier"):
+		turn_rate *= special_ability.get_handling_multiplier()
 	if state_machine.current_state == state_machine.State.DRIFT:
 		turn_rate *= 1.35
 	if horizontal_speed > 0.5:
@@ -251,11 +282,15 @@ func _handle_player_actions() -> void:
 			boost_system.try_consume_boost()
 		if InputManager.is_using_item():
 			item_manager.use_held_item(self)
+		if InputManager.is_special() and special_ability and special_ability.has_method("try_activate"):
+			special_ability.try_activate()
 	elif local_player_index == 1:
 		if Input.is_action_just_pressed("p2_boost") or Input.is_action_just_pressed("boost"):
 			boost_system.try_consume_boost()
 		if Input.is_action_just_pressed("p2_use_item") or Input.is_action_just_pressed("use_item"):
 			item_manager.use_held_item(self)
+		if Input.is_action_just_pressed("special") and special_ability and special_ability.has_method("try_activate"):
+			special_ability.try_activate()
 
 
 func _compute_target_speed() -> float:
@@ -270,8 +305,13 @@ func _compute_target_speed() -> float:
 	mult *= _start_boost_multiplier
 	if drafting_system and drafting_system.has_method("get_speed_multiplier"):
 		mult *= drafting_system.get_speed_multiplier()
+	if special_ability and special_ability.has_method("get_speed_multiplier"):
+		mult *= special_ability.get_speed_multiplier()
 	if _slow_timer > 0.0:
-		mult *= 0.55
+		var slow_mult := 0.55
+		if special_ability and special_ability.has_method("get_slow_resist"):
+			slow_mult = lerpf(0.55, 1.0, special_ability.get_slow_resist())
+		mult *= slow_mult
 	return stats.top_speed * mult
 
 
@@ -405,6 +445,25 @@ func _recover_from_fall() -> void:
 			if is_instance_valid(visual) and visual.has_method("play_recovery"):
 				visual.play_recovery()
 		)
+
+
+func _on_special_activated(ability_id: String) -> void:
+	special_ability_activated.emit(ability_id)
+	var bus := get_tree().root.get_node_or_null("TelemetryBus") if get_tree() else null
+	if bus != null and bus.has_method("special_ability"):
+		bus.special_ability(ability_id, racer_id)
+
+
+func get_speed_state() -> String:
+	if boost_system != null and boost_system.get_speed_multiplier() > 1.05:
+		return "BOOST"
+	if drift_system != null and drift_system.is_drifting:
+		return "DRIFT"
+	if horizontal_speed < 4.0:
+		return "WALK"
+	if horizontal_speed < 14.0:
+		return "JOG"
+	return "SPRINT"
 
 
 func _on_drift_released(multiplier: float, tier: int) -> void:

@@ -187,6 +187,7 @@ jobs:
             run_step G2C6RuntimeTest "$GODOT" --headless --path "$ROOT" --script res://tests/G2C6RuntimeTest.gd
             run_step CupFlowTest "$GODOT" --headless --path "$ROOT" --script res://tests/CupFlowTest.gd
             run_step BetaProductStateTest "$GODOT" --headless --path "$ROOT" --script res://tests/BetaProductStateTest.gd
+            run_step FullProductDepthTest "$GODOT" --headless --path "$ROOT" --script res://tests/FullProductDepthTest.gd
             # Retired smokes must hard-fail (exit != 0) if invoked
             set +e
             "$GODOT" --headless --path "$ROOT" --script res://tests/AlphaProductStateTest.gd > tmp/godot-AlphaRetired.log 2>&1
