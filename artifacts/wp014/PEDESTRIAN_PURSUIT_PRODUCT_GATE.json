@@ -1,12 +1,12 @@
 {
   "schema": "wp014_product_gate/v1",
   "cycle": "operating-cycle-3b",
-  "work_package": "WP-014",
+  "work_package": "WP-014R",
   "game": "pedestrian-pursuit",
   "branch": "operating-cycle-3b/wp-014-pedestrian-pursuit",
   "base": "origin/main",
   "base_commit": "a2c6da5b4d4635af1281dbb12b8564ba70f994c6",
-  "generated_at": "2026-08-12T17:05:41Z",
+  "generated_at": "2026-08-12T18:09:28Z",
   "evidence_file": "gate1/evidence/out/actual_production_runtime.json",
   "priority_blocker_addressed": {
     "claim": "Godot production runtime needs real input + save/state lifecycle",
@@ -31,7 +31,7 @@
     "LOGGING_PASS": "PASS",
     "PERF_TELEMETRY_PASS": "PASS",
     "CLEAN_EXIT_PASS": "PASS",
-    "DEVICE_LAB_PASS": "PASS",
+    "DEVICE_LAB_PASS": "PENDING_ACCEPTED_MAIN_WP011R",
     "PHYSICAL_HARDWARE_PLAYTEST": "PENDING (PEDESTRIAN_PHYSICAL_PERFORMANCE_PENDING carried over honestly from prior digital-RC status; no physical device pass was performed in this cycle)"
   },
   "gate_evidence_detail": {
@@ -52,13 +52,14 @@
     "clean_exit": "get_tree().quit(0) reached with all steps pass; no crash, no leaked-object failure blocking exit (benign ObjectDB leak warnings only, pre-existing in this codebase's own test harnesses too)"
   },
   "regression_check": {
-    "existing_python_suite": "tests/test_gate1_core_loop.py PASS; python3 -m unittest tests.test_content PASS (10/10)",
-    "existing_godot_script_smokes": "TestRunner.gd, CupFlowTest.gd, G2C6RuntimeTest.gd, AlphaProductStateTest.gd, BetaProductStateTest.gd, DigitalRcProductStateTest.gd all still exit 0 after this change (no regressions introduced)"
+    "false_green_rejection": "tools/run_godot_headless.sh + CI godot-headless-no-false-green fail on SCRIPT ERROR patterns even when exit=0",
+    "retired_shims_hard_fail": "tests/AlphaProductStateTest.gd and tests/DigitalRcProductStateTest.gd quit(1)",
+    "authoritative_runtime": "scripts/rc/ProductionGateHarness.gd --production-gate"
   },
   "known_gap_not_fixed_this_cycle": {
-    "issue": "tests/AlphaProductStateTest.gd and tests/DigitalRcProductStateTest.gd run via `godot --script`, which never loads autoloads, so scripts referencing them (ItemManager.gd, InputProfileCatalog.gd, CrashWatchdog.gd) fail to compile inside those two smokes specifically, yet both smokes print PASS/exit 0 regardless because GDScript runtime errors do not raise catchable exceptions and neither harness treats stderr output as a failure signal.",
-    "why_not_blocking": "ProductionGateHarness.gd (this cycle's addition) boots the real main scene with autoloads live and is the authoritative ACTUAL_PRODUCTION_RUNTIME evidence; it does not share this blind spot.",
-    "recommendation": "A future pass should either delete the two affected `--script` smokes (superseded by the production harness) or teach them to manually instantiate autoload-dependent nodes the way tests/G2C6RuntimeTest.gd already does."
+    "issue": "RETIRED: AlphaProductStateTest/DigitalRcProductStateTest were false-green under godot --script (SCRIPT ERROR + exit 0). Replaced with hard-fail shims; run_godot_headless.sh and CI now fail on SCRIPT ERROR/Parse Error/Compilation failed; ProductionGateHarness remains authoritative.",
+    "FALSE_GREEN_GODOT_TESTS": 0,
+    "recommendation": "Do not reintroduce --script smokes that ignore Godot SCRIPT ERROR output."
   },
   "defects": {
     "S0_open": 0,
@@ -68,14 +69,17 @@
   },
   "market_parity_claim": "None. This gate certifies digital automated-evidence production-runtime correctness for the listed systems only; no claim of Smash-level or commercial market parity is made.",
   "device_lab": {
-    "DEVICE_LAB_PASS": "PASS",
+    "DEVICE_LAB_PASS": "PENDING_ACCEPTED_MAIN_WP011R",
     "runtime_class": "GUEST_GODOT4",
     "guest_game_id": "foot-racing",
     "evidence": "gunnchos-device-os@071f9b2 artifacts/wp011r/games/four_games_in_guest.json (independent-accepted FOUR_GAME on tip 9d8ce2d / commit 071f9b2) \u2014 HOST_PLAYWRIGHT_REJECTED; http.server alone rejected",
     "HOST_PLAYWRIGHT_REJECTED": true,
     "independent_accepted_tip": "9d8ce2d3b60d21f4d4d851bad9f4b17e8ac43fff",
     "independent_pass_commit": "071f9b28b2cccd0549885e5f8427af4db3c162c5",
-    "note": "Aligned to WP-011R independent-accepted FOUR_GAME guest evidence (#103@071f9b2). Pedestrian DEVICE_LAB_PASS is GUEST_GODOT4 in-guest; web titles are GUEST_CHROMIUM_WAYLAND. Physical playtest still PENDING. Not a shipping claim.",
-    "wp011r_pr": "https://github.com/gunnchOS3k/gunnchos-device-os/pull/103"
+    "note": "DEVICE_LAB_STATUS=PENDING_ACCEPTED_MAIN_WP011R while device-os #103 remains unmerged. Independent FOUR_GAME branch evidence retained as INDEPENDENT_BRANCH_EVIDENCE_OBSERVED only \u2014 not accepted-main proof. No circular DRAFT-branch acceptance.",
+    "wp011r_pr": "https://github.com/gunnchOS3k/gunnchos-device-os/pull/103",
+    "DEVICE_LAB_STATUS": "PENDING_ACCEPTED_MAIN_WP011R",
+    "INDEPENDENT_BRANCH_EVIDENCE_OBSERVED": true,
+    "circular_accepted_main_claim": false
   }
 }
