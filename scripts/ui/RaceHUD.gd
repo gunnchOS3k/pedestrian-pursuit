@@ -1,4 +1,5 @@
 extends CanvasLayer
+const LaunchArtCatalogScript = preload("res://scripts/ui/LaunchArtCatalog.gd")
 
 ## Race HUD — lap, position, boost, item, timer, speed, wrong-way.
 
@@ -241,7 +242,7 @@ func _on_item_changed(item_id: String) -> void:
 		return
 	var data := ItemData.load_by_id(item_id)
 	item_label.text = "Item: %s" % data.get("display_name", item_id)
-	_set_item_icon(LaunchArtCatalog.item_icon(item_id))
+	_set_item_icon(LaunchArtCatalogScript.item_icon(item_id))
 
 
 func _set_item_icon(tex: Texture2D) -> void:
@@ -257,7 +258,7 @@ func _set_item_icon(tex: Texture2D) -> void:
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		add_child(icon)
-	var slot := LaunchArtCatalog.ui_texture("item_slot")
+	var slot := LaunchArtCatalogScript.ui_texture("item_slot")
 	if tex == null:
 		icon.texture = slot
 		icon.visible = slot != null

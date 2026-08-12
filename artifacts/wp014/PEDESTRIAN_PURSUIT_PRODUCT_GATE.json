@@ -1,0 +1,85 @@
+{
+  "schema": "wp014_product_gate/v1",
+  "cycle": "operating-cycle-3b",
+  "work_package": "WP-014R",
+  "game": "pedestrian-pursuit",
+  "branch": "operating-cycle-3b/wp-014-pedestrian-pursuit",
+  "base": "origin/main",
+  "base_commit": "a2c6da5b4d4635af1281dbb12b8564ba70f994c6",
+  "generated_at": "2026-08-12T18:09:28Z",
+  "evidence_file": "gate1/evidence/out/actual_production_runtime.json",
+  "priority_blocker_addressed": {
+    "claim": "Godot production runtime needs real input + save/state lifecycle",
+    "finding": "Prior 'ACTUAL_PRODUCTION_RUNTIME' evidence (gate1/tools/core_loop_runner.py) was a Python mirror of GameManager, never the Godot engine. Existing tests/*.gd smokes run via `godot --script`, which does not load project autoloads at all, so any gameplay script that touches an autoload (ItemManager, InputProfileCatalog, CrashWatchdog, ...) fails to compile under them while the smoke still prints PASS (confirmed reproduced: DigitalRcProductStateTest.gd and AlphaProductStateTest.gd both swallow real SCRIPT ERROR / Compilation failed output and exit 0).",
+    "fix": "Added scripts/rc/ProductionGateHarness.gd, a new autoload that only activates behind `-- --production-gate`, boots the real MainMenu.tscn main scene with every autoload live (identical to a shipped build), and drives it with the real Input singleton (Input.action_press/parse_input_event on actual InputMap actions) rather than GameManager.accept_test_mode autopilot.",
+    "real_defect_found_and_fixed": "The harness caught a genuine input bug on its first run: RaceScene._unhandled_input and PauseMenu._unhandled_input both listen for the 'pause' action, and Godot still delivers one input event to every listening node in the same flush regardless of a paused-state mutation mid-flush. A second real pause-key tap while already paused double-toggled (menu closed then immediately reopened), so keyboard/gamepad/touch players had no way to resume other than a mouse click on the Resume button. Fixed with get_viewport().set_input_as_handled() in both listeners so only one toggles per physical tap. Verified via the harness before/after."
+  },
+  "gates": {
+    "ACTUAL_PRODUCTION_RUNTIME": "PASS",
+    "TITLE_MENU_PASS": "PASS",
+    "NEW_GAME_SESSION_PASS": "PASS",
+    "INPUT_PASS": "PASS",
+    "CORE_GAME_LOOP_PASS": "PASS",
+    "PAUSE_PASS": "PASS",
+    "SAVE_PASS": "PASS",
+    "LOAD_PASS": "PASS",
+    "SUSPEND_RESUME_OR_CHECKPOINT_PASS": "PASS",
+    "SETTINGS_PASS": "PASS",
+    "AUDIO_HOOK_PASS": "PASS",
+    "A11Y_BASELINE_PASS": "PASS",
+    "CRASH_RECOVERY_PASS": "PASS",
+    "LOGGING_PASS": "PASS",
+    "PERF_TELEMETRY_PASS": "PASS",
+    "CLEAN_EXIT_PASS": "PASS",
+    "DEVICE_LAB_PASS": "PENDING_ACCEPTED_MAIN_WP011R",
+    "PHYSICAL_HARDWARE_PLAYTEST": "PENDING (PEDESTRIAN_PHYSICAL_PERFORMANCE_PENDING carried over honestly from prior digital-RC status; no physical device pass was performed in this cycle)"
+  },
+  "gate_evidence_detail": {
+    "title_menu": "current_scene.scene_file_path == res://scenes/main/MainMenu.tscn on a real headless boot",
+    "new_game_session": "GameManager.start_single_race + SceneLoader.go_to_race real scene transition to RaceScene.tscn",
+    "input": "Real Input.action_press('accelerate'/'move_right') drove PlayerRacer 3.66m via the actual PlayerController/InputManager code path (not accept_test_mode); InputManager.is_accelerating() independently confirmed true mid-drive",
+    "core_game_loop": "Real Checkpoint.racer_passed signal -> RaceManager -> LapManager advanced the tracked next-checkpoint index for the live player racer",
+    "pause": "Real InputEventAction pause tap paused get_tree(), froze player position (delta < 0.01 while held), and a second real tap resumed it (defect found + fixed, see above)",
+    "save": "ProgressionSave.add_xp(37) persisted xp=87/level=1 to user://pp_progression.cfg on disk (verified by reading the ConfigFile back independently of the live autoload)",
+    "load": "A brand-new ProgressionSave.gd instance (simulating a fresh process) loaded xp/level from disk matching the live autoload exactly",
+    "suspend_resume_or_checkpoint": "get_tree().paused toggled to simulate OS backgrounding; GameManager.save_cup_progress()/load_cup_progress() round-tripped cup standings across the freeze",
+    "settings": "AccessibilitySettings colorblind/larger-UI/reduce-motion toggles changed live HUD marker colors + camera-shake gating and persisted to user://accessibility.cfg",
+    "audio_hook": "AudioDirector autoload reachable at /root/AudioDirector with play_ui/play_menu_music/play_race_music hooks; play_ui('confirm') executed without error in headless audio-null mode",
+    "a11y_baseline": "Colorblind-safe marker palette differs from default; larger-UI scale multiplier >= 1.2x; reduce-motion disables camera shake",
+    "crash_recovery": "CrashWatchdog.note_event/last_event round-tripped a recovery breadcrumb through user://pp_crash_recovery.cfg",
+    "logging": "TelemetryBus recorded race_start/checkpoint/finish events and appended to user://telemetry/race_events.jsonl",
+    "perf_telemetry": "723 real frame deltas sampled during the drive+pause sequence; avg_fps ~136.9 in headless CPU-only mode (not representative of device fps, useful only as a telemetry-pipeline proof)",
+    "clean_exit": "get_tree().quit(0) reached with all steps pass; no crash, no leaked-object failure blocking exit (benign ObjectDB leak warnings only, pre-existing in this codebase's own test harnesses too)"
+  },
+  "regression_check": {
+    "false_green_rejection": "tools/run_godot_headless.sh + CI godot-headless-no-false-green fail on SCRIPT ERROR patterns even when exit=0",
+    "retired_shims_hard_fail": "tests/AlphaProductStateTest.gd and tests/DigitalRcProductStateTest.gd quit(1)",
+    "authoritative_runtime": "scripts/rc/ProductionGateHarness.gd --production-gate"
+  },
+  "known_gap_not_fixed_this_cycle": {
+    "issue": "RETIRED: AlphaProductStateTest/DigitalRcProductStateTest were false-green under godot --script (SCRIPT ERROR + exit 0). Replaced with hard-fail shims; run_godot_headless.sh and CI now fail on SCRIPT ERROR/Parse Error/Compilation failed; ProductionGateHarness remains authoritative.",
+    "FALSE_GREEN_GODOT_TESTS": 0,
+    "recommendation": "Do not reintroduce --script smokes that ignore Godot SCRIPT ERROR output."
+  },
+  "defects": {
+    "S0_open": 0,
+    "S1_open": 0,
+    "S1_found_and_fixed_this_cycle": 1,
+    "S1_fixed_detail": "Pause/resume double-toggle deadlock for keyboard/gamepad/touch input (see priority_blocker_addressed.real_defect_found_and_fixed)"
+  },
+  "market_parity_claim": "None. This gate certifies digital automated-evidence production-runtime correctness for the listed systems only; no claim of Smash-level or commercial market parity is made.",
+  "device_lab": {
+    "DEVICE_LAB_PASS": "PENDING_ACCEPTED_MAIN_WP011R",
+    "runtime_class": "GUEST_GODOT4",
+    "guest_game_id": "foot-racing",
+    "evidence": "gunnchos-device-os@071f9b2 artifacts/wp011r/games/four_games_in_guest.json (independent-accepted FOUR_GAME on tip 9d8ce2d / commit 071f9b2) \u2014 HOST_PLAYWRIGHT_REJECTED; http.server alone rejected",
+    "HOST_PLAYWRIGHT_REJECTED": true,
+    "independent_accepted_tip": "9d8ce2d3b60d21f4d4d851bad9f4b17e8ac43fff",
+    "independent_pass_commit": "071f9b28b2cccd0549885e5f8427af4db3c162c5",
+    "note": "DEVICE_LAB_STATUS=PENDING_ACCEPTED_MAIN_WP011R while device-os #103 remains unmerged. Independent FOUR_GAME branch evidence retained as INDEPENDENT_BRANCH_EVIDENCE_OBSERVED only \u2014 not accepted-main proof. No circular DRAFT-branch acceptance.",
+    "wp011r_pr": "https://github.com/gunnchOS3k/gunnchos-device-os/pull/103",
+    "DEVICE_LAB_STATUS": "PENDING_ACCEPTED_MAIN_WP011R",
+    "INDEPENDENT_BRANCH_EVIDENCE_OBSERVED": true,
+    "circular_accepted_main_claim": false
+  }
+}

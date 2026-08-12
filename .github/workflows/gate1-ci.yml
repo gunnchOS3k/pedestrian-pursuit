@@ -75,3 +75,130 @@ jobs:
             gate1/status/gate1_core_loop_status.json
           if-no-files-found: ignore
           retention-days: 14
+
+  wp014-actual-production-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Godot 4.7.1 headless
+        run: |
+          set -euo pipefail
+          url="https://github.com/godotengine/godot/releases/download/4.7.1-stable/Godot_v4.7.1-stable_linux.x86_64.zip"
+          for attempt in 1 2 3 4 5; do
+            if curl -fsSL --retry 3 --retry-all-errors --retry-delay 2 -o godot.zip "$url"; then
+              break
+            fi
+            echo "Godot download attempt ${attempt} failed; sleeping..."
+            sleep $((attempt * 5))
+            if [[ "$attempt" -eq 5 ]]; then
+              echo "Godot download failed after retries"
+              exit 1
+            fi
+          done
+          unzip -q godot.zip
+          chmod +x Godot_v4.7.1-stable_linux.x86_64
+          sudo mv Godot_v4.7.1-stable_linux.x86_64 /usr/local/bin/godot
+          godot --version
+
+      - name: WP-014 ACTUAL_PRODUCTION_RUNTIME gate (real engine boot, real input, real save)
+        run: |
+          set -euo pipefail
+          # Fresh checkout has no .godot/ cache; import once so class_name globals
+          # (CrashWatchdog, ShoeData, LaunchArtCatalog) register before the gate.
+          xvfb-run -a godot --headless --path . --import || \
+            xvfb-run -a godot --headless --editor --path . --quit-after 2 || true
+          timeout 240 xvfb-run -a godot --headless --path . --rendering-driver opengl3 -- --production-gate
+        env:
+          DISPLAY: ":99"
+
+      - name: Upload ACTUAL_PRODUCTION_RUNTIME evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wp014-actual-production-runtime
+          path: gate1/evidence/out/actual_production_runtime.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  godot-headless-no-false-green:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Godot 4.7.1 headless
+        run: |
+          set -euo pipefail
+          url="https://github.com/godotengine/godot/releases/download/4.7.1-stable/Godot_v4.7.1-stable_linux.x86_64.zip"
+          for attempt in 1 2 3 4 5; do
+            if curl -fsSL --retry 3 --retry-all-errors --retry-delay 2 -o godot.zip "$url"; then
+              break
+            fi
+            echo "Godot download attempt ${attempt} failed; sleeping..."
+            sleep $((attempt * 5))
+            if [[ "$attempt" -eq 5 ]]; then
+              echo "Godot download failed after retries"
+              exit 1
+            fi
+          done
+          unzip -q godot.zip
+          chmod +x Godot_v4.7.1-stable_linux.x86_64
+          sudo mv Godot_v4.7.1-stable_linux.x86_64 /usr/local/bin/godot
+          godot --version
+
+      - name: Import project cache
+        run: |
+          set -euo pipefail
+          xvfb-run -a godot --headless --path . --import || \
+            xvfb-run -a godot --headless --editor --path . --quit-after 2 || true
+
+      - name: Headless suite rejects SCRIPT ERROR false-green
+        run: |
+          set -euo pipefail
+          export GODOT_BIN="$(command -v godot)"
+          # Skip CompetitiveAiEvalSubset in CI (long); ProductionGate covered here + dedicated job.
+          bash -c '
+            set -euo pipefail
+            ROOT="$(pwd)"
+            GODOT="${GODOT_BIN}"
+            mkdir -p tmp
+            GODOT_FATAL_PATTERNS="SCRIPT ERROR|Parse Error|Compilation failed|Failed to load script|autoload dependency|FATAL ERROR"
+            run_step() {
+              local name="$1"; shift
+              local log="tmp/godot-${name}.log"
+              echo "=== ${name} ==="
+              set +e
+              "$@" >"${log}" 2>&1
+              local code=$?
+              set -e
+              if [[ $code -ne 0 ]]; then
+                echo "FAIL ${name} (exit ${code})"; tail -80 "${log}" || true; return $code
+              fi
+              if grep -Eiq "${GODOT_FATAL_PATTERNS}" "${log}"; then
+                echo "FAIL ${name} (false-green SCRIPT/Parse/Compilation)"; rg -n -i "${GODOT_FATAL_PATTERNS}" "${log}" | head -40 || true
+                return 1
+              fi
+              echo "PASS ${name}"
+            }
+            run_step startup "$GODOT" --headless --path "$ROOT" --quit-after 2
+            run_step TestRunner "$GODOT" --headless --path "$ROOT" --script res://tests/TestRunner.gd
+            run_step G2C6RuntimeTest "$GODOT" --headless --path "$ROOT" --script res://tests/G2C6RuntimeTest.gd
+            run_step CupFlowTest "$GODOT" --headless --path "$ROOT" --script res://tests/CupFlowTest.gd
+            run_step BetaProductStateTest "$GODOT" --headless --path "$ROOT" --script res://tests/BetaProductStateTest.gd
+            # Retired smokes must hard-fail (exit != 0) if invoked
+            set +e
+            "$GODOT" --headless --path "$ROOT" --script res://tests/AlphaProductStateTest.gd > tmp/godot-AlphaRetired.log 2>&1
+            a=$?
+            "$GODOT" --headless --path "$ROOT" --script res://tests/DigitalRcProductStateTest.gd > tmp/godot-DigitalRetired.log 2>&1
+            d=$?
+            set -e
+            if [[ $a -eq 0 || $d -eq 0 ]]; then
+              echo "FAIL retired smokes must not exit 0"; exit 1
+            fi
+            echo "PASS retired_false_green_shims_hard_fail"
+            echo "FALSE_GREEN_GODOT_TESTS=0"
+          '
+        env:
+          DISPLAY: ":99"
