@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gunnchos.local/game-rc/achievements.schema.json",
+  "title": "GameRCAchievementsCatalog",
+  "description": "Digitally executable achievement catalog. Unlock conditions must be real gameplay flags/events/stats — no test-only unlock types.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "game",
+    "catalog_version",
+    "save_version",
+    "offline",
+    "duplicate_prevention",
+    "achievements"
+  ],
+  "properties": {
+    "schema": { "const": "gunnchos.game_rc.achievements/v1" },
+    "game": {
+      "type": "string",
+      "enum": [
+        "anime-aggressors",
+        "pedestrian-pursuit",
+        "archive-of-life-artifact-world",
+        "beatlink-party"
+      ]
+    },
+    "catalog_version": { "type": "integer", "minimum": 1 },
+    "save_version": { "type": "integer", "minimum": 1 },
+    "offline": { "const": true },
+    "duplicate_prevention": { "const": true },
+    "notes": { "type": "string" },
+    "achievements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "description",
+          "hidden",
+          "unlock"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(\\.[a-z0-9_-]+)+$",
+            "minLength": 3
+          },
+          "title": { "type": "string", "minLength": 1 },
+          "description": { "type": "string", "minLength": 1 },
+          "hidden": { "type": "boolean" },
+          "unlock": { "$ref": "#/$defs/condition" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "condition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["event_count", "flag", "stat_at_least", "all", "any"]
+        },
+        "event": { "type": "string", "minLength": 1 },
+        "count": { "type": "integer", "minimum": 1 },
+        "flag": { "type": "string", "minLength": 1 },
+        "stat": { "type": "string", "minLength": 1 },
+        "threshold": { "type": "number" },
+        "conditions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/condition" }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "event_count" } } },
+          "then": { "required": ["event", "count"] }
+        },
+        {
+          "if": { "properties": { "type": { "const": "flag" } } },
+          "then": { "required": ["flag"] }
+        },
+        {
+          "if": { "properties": { "type": { "const": "stat_at_least" } } },
+          "then": { "required": ["stat", "threshold"] }
+        },
+        {
+          "if": { "properties": { "type": { "enum": ["all", "any"] } } },
+          "then": { "required": ["conditions"] }
+        }
+      ]
+    }
+  }
+}

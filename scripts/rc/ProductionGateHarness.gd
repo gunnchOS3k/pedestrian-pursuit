@@ -56,6 +56,7 @@ func _run() -> void:
 	await _step_new_session_and_input()
 	await _step_checkpoint_core_loop()
 	await _step_pause_resume()
+	_step_playthrough_achievements()
 	_step_settings_a11y()
 	_step_audio_hook()
 	_step_save_load_lifecycle()
@@ -207,6 +208,40 @@ func _send_pause_key_tap() -> void:
 	up.action = "pause"
 	up.pressed = false
 	Input.parse_input_event(up)
+
+
+func _step_playthrough_achievements() -> void:
+	var ach := get_node_or_null("/root/AchievementRuntime")
+	var prog := get_node_or_null("/root/ProgressionSave")
+	if ach == null or prog == null:
+		_emit("playthrough_achievements", false, {"reason": "AchievementRuntime or ProgressionSave missing"})
+		return
+	prog.mark_tutorial_done()
+	var tutorial_ok: bool = bool(ach.is_unlocked("pp.first_stride"))
+	var stamp := str(ach.unlocked_at("pp.first_stride"))
+	prog.mark_tutorial_done()
+	var dup_ok: bool = str(ach.unlocked_at("pp.first_stride")) == stamp
+	ach.report_event("race_finished", 1)
+	ach.report_event("podium_finish", 1)
+	prog.complete_challenge("rail_runner", 80)
+	ach.set_flag("cup_complete", true)
+	ach.set_flag("cup:stride_circuit_cup", true)
+	var pause_ok: bool = bool(ach.is_unlocked("pp.pause_and_breathe"))
+	var finish_ok: bool = bool(ach.is_unlocked("pp.finish_line"))
+	var rail_ok: bool = bool(ach.is_unlocked("pp.rail_runner"))
+	var cup_ok: bool = bool(ach.is_unlocked("pp.cup_complete"))
+	var browser_ok: bool = ach.browser_entries().size() == int(ach.catalog_count())
+	var save_ok: bool = FileAccess.file_exists("user://achievements_v1.json")
+	_emit("playthrough_achievements", tutorial_ok and dup_ok and finish_ok and rail_ok and cup_ok and pause_ok and browser_ok and save_ok, {
+		"tutorial": tutorial_ok,
+		"duplicate_prevention": dup_ok,
+		"finish_line": finish_ok,
+		"rail_runner": rail_ok,
+		"cup_complete": cup_ok,
+		"pause_resume_unlock": pause_ok,
+		"completion_percent": float(ach.completion_percent()),
+		"offline_save": save_ok,
+	})
 
 
 func _step_settings_a11y() -> void:

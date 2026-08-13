@@ -1,0 +1,34 @@
+{
+  "schema": "gunnchos.game_rc.playthrough_contract/v1",
+  "game": "pedestrian-pursuit",
+  "contract_version": 1,
+  "playthrough_id": "pp.tutorial_to_cup_results.v1",
+  "digitally_executable": true,
+  "human_playtest_validated": false,
+  "notes": "Main menu first-run tutorial prompt → on-course TutorialDirector → race → pause/resume → ResultsScreen. Cup Complete is the campaign ending.",
+  "pause_resume": {
+    "required": true,
+    "status": "CLOSED",
+    "evidence": "PauseMenu.toggle_pause freezes SceneTree; ProductionGateHarness pause_resume step; AchievementRuntime event pause_resume."
+  },
+  "ending": {
+    "id": "race_results_or_cup_complete",
+    "status": "CLOSED",
+    "description": "ResultsScreen shows race complete / podium / Cup Complete after the last cup course. Retry becomes Next Course or Race Cup Again."
+  },
+  "steps": [
+    { "id": "main_menu", "scene": "res://scenes/main/MainMenu.tscn", "required": true, "status": "CLOSED" },
+    { "id": "first_run_tutorial_prompt", "scene": "res://scenes/main/MainMenu.tscn", "required": true, "status": "CLOSED", "notes": "MainMenu._prompt_first_run_tutorial if tutorial_completed is false." },
+    { "id": "tutorial_race", "scene": "res://scenes/race/RaceScene.tscn", "required": true, "status": "CLOSED", "notes": "TutorialDirector lessons then ProgressionSave.mark_tutorial_done." },
+    { "id": "quick_race_or_cup", "scene": "res://scenes/race/RaceScene.tscn", "required": true, "status": "CLOSED" },
+    { "id": "pause_resume", "scene": "res://scenes/race/RaceScene.tscn", "required": true, "status": "CLOSED" },
+    { "id": "results", "scene": "res://scenes/ui/ResultsScreen.tscn", "required": true, "status": "CLOSED" },
+    { "id": "cup_complete_ending", "scene": "res://scenes/ui/ResultsScreen.tscn", "required": true, "status": "CLOSED" },
+    { "id": "achievements_browser", "scene": "res://scenes/main/MainMenu.tscn", "required": true, "status": "CLOSED", "notes": "Achievements overlay on main menu + completion percent." }
+  ],
+  "open_placeholders": [
+    { "id": "HUMAN_PLAYTEST_VALIDATED", "severity": "S2", "summary": "No human playtest this packet." },
+    { "id": "PHYSICAL_FPS", "severity": "n/a", "summary": "PEDESTRIAN_PHYSICAL_PERFORMANCE_PENDING carried honestly." },
+    { "id": "PUBLIC_ONLINE", "severity": "S2", "summary": "Online remains private/dev architecture." }
+  ]
+}

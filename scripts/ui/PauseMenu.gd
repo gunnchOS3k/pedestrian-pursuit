@@ -56,6 +56,10 @@ func _ensure_restart_button() -> void:
 func toggle_pause() -> void:
 	visible = not visible
 	get_tree().paused = visible
+	if not visible:
+		var ach := get_node_or_null("/root/AchievementRuntime")
+		if ach != null and ach.has_method("report_event"):
+			ach.report_event("pause_resume")
 
 
 func _on_resume() -> void:

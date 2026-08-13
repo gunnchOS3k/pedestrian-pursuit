@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gunnchos.local/game-rc/content_manifest.schema.json",
+  "title": "GameRCContentManifest",
+  "description": "Launch content inventory. Every placeholder is CLOSED or listed OPEN.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "game",
+    "manifest_version",
+    "counts",
+    "modes",
+    "items",
+    "open_placeholders"
+  ],
+  "properties": {
+    "schema": { "const": "gunnchos.game_rc.content_manifest/v1" },
+    "game": {
+      "type": "string",
+      "enum": [
+        "anime-aggressors",
+        "pedestrian-pursuit",
+        "archive-of-life-artifact-world",
+        "beatlink-party"
+      ]
+    },
+    "manifest_version": { "type": "integer", "minimum": 1 },
+    "generated_at": { "type": "string" },
+    "counts": {
+      "type": "object",
+      "additionalProperties": { "type": "integer", "minimum": 0 }
+    },
+    "modes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "status"],
+        "properties": {
+          "id": { "type": "string" },
+          "status": { "type": "string", "enum": ["CLOSED", "OPEN"] },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "status"],
+        "properties": {
+          "id": { "type": "string" },
+          "kind": { "type": "string" },
+          "status": { "type": "string", "enum": ["CLOSED", "OPEN"] },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "open_placeholders": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "summary"],
+        "properties": {
+          "id": { "type": "string" },
+          "summary": { "type": "string" }
+        }
+      }
+    },
+    "not_claimed": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gunnchos.local/game-rc/rc_gate.schema.json",
+  "title": "GameRCRCGate",
+  "description": "Evidence-based RC gate. POLISHED_RELEASE_CANDIDATE and FEATURE_COMPLETE_RC require S1=0, S2 experience=0, and a running playthrough.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "game",
+    "packet",
+    "generated_at",
+    "claims",
+    "critic_class",
+    "defects",
+    "visual",
+    "playthrough",
+    "achievements"
+  ],
+  "properties": {
+    "schema": { "const": "gunnchos.game_rc.rc_gate/v1" },
+    "game": {
+      "type": "string",
+      "enum": [
+        "anime-aggressors",
+        "pedestrian-pursuit",
+        "archive-of-life-artifact-world",
+        "beatlink-party"
+      ]
+    },
+    "packet": { "type": "string" },
+    "generated_at": { "type": "string" },
+    "claims": {
+      "type": "object",
+      "required": [
+        "POLISHED_RELEASE_CANDIDATE",
+        "FEATURE_COMPLETE_RC",
+        "HUMAN_PLAYTEST_VALIDATED",
+        "DIGITAL_PLAYTHROUGH_EXECUTABLE",
+        "ACHIEVEMENT_SUBSYSTEM"
+      ],
+      "properties": {
+        "POLISHED_RELEASE_CANDIDATE": { "type": "boolean" },
+        "FEATURE_COMPLETE_RC": { "type": "boolean" },
+        "HUMAN_PLAYTEST_VALIDATED": { "type": "boolean" },
+        "DIGITAL_PLAYTHROUGH_EXECUTABLE": { "type": "boolean" },
+        "ACHIEVEMENT_SUBSYSTEM": { "type": "boolean" }
+      }
+    },
+    "critic_class": {
+      "type": "string",
+      "enum": ["PRE_ALPHA", "ALPHA", "BETA", "DIGITAL_RC", "RC"]
+    },
+    "critic_class_rationale": { "type": "string" },
+    "defects": {
+      "type": "object",
+      "required": ["S0_open", "S1_open", "S2_open"],
+      "properties": {
+        "S0_open": { "type": "integer", "minimum": 0 },
+        "S1_open": { "type": "integer", "minimum": 0 },
+        "S2_open": { "type": "integer", "minimum": 0 },
+        "S2_items": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "visual": {
+      "type": "object",
+      "required": ["VISUAL_MODEL_REVIEW"],
+      "properties": {
+        "VISUAL_MODEL_REVIEW": {
+          "type": "string",
+          "enum": ["PASS", "FAIL", "UNAVAILABLE", "HISTORICAL_CAPTURES_ONLY"]
+        },
+        "reason": { "type": "string" }
+      }
+    },
+    "playthrough": {
+      "type": "object",
+      "required": ["status", "contract"],
+      "properties": {
+        "status": { "type": "string" },
+        "contract": { "type": "string" }
+      }
+    },
+    "achievements": {
+      "type": "object",
+      "required": ["catalog", "count", "tested_count"],
+      "properties": {
+        "catalog": { "type": "string" },
+        "count": { "type": "integer", "minimum": 0 },
+        "tested_count": { "type": "integer", "minimum": 0 },
+        "notes": { "type": "string" }
+      }
+    },
+    "next_packets": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "notes": { "type": "string" }
+  }
+}
