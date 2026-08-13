@@ -120,6 +120,75 @@ class WaveEAlphaContentTests(unittest.TestCase):
             for protected_name in protected_names:
                 self.assertNotIn(protected_name, content, f"{protected_name!r} found in {path}")
 
+    def test_special_abilities_unique_and_cataloged(self) -> None:
+        catalog = json.loads(
+            (ROOT / "data/mechanics/special_abilities.json").read_text(encoding="utf-8")
+        )
+        abilities = catalog["abilities"]
+        self.assertGreaterEqual(len(abilities), 8)
+        effects = set()
+        fingerprints = set()
+        for aid, defn in abilities.items():
+            effects.add(defn["effect"])
+            fingerprints.add(
+                (
+                    defn["effect"],
+                    defn.get("cooldown_sec"),
+                    defn.get("duration_sec"),
+                    defn.get("boost_mult", defn.get("handling_mult", defn.get("drift_charge_mult"))),
+                )
+            )
+        self.assertGreaterEqual(len(effects), 4)
+        self.assertEqual(len(fingerprints), len(abilities))
+        specials = []
+        for path in (ROOT / "data/racers").glob("*.json"):
+            if path.name == "runner_roster.json":
+                continue
+            data = json.loads(path.read_text(encoding="utf-8"))
+            sid = data.get("special_ability_id")
+            self.assertTrue(sid, f"{path.name} missing special_ability_id")
+            if path.stem in {
+                "dash_reed",
+                "nova_quill",
+                "sierra_flux",
+                "mira_lane",
+                "bolt_harbor",
+                "zig_riven",
+                "solen_pike",
+                "kai_volt",
+            }:
+                specials.append(sid)
+                self.assertIn(sid, abilities)
+        self.assertEqual(len(specials), len(set(specials)))
+
+    def test_feature_register_artifact_shape(self) -> None:
+        reg_path = ROOT / "artifacts/pedestrian_full/PEDESTRIAN_FULL_PRODUCT_REGISTER.json"
+        self.assertTrue(reg_path.exists(), "missing pedestrian_full feature register")
+        reg = json.loads(reg_path.read_text(encoding="utf-8"))
+        self.assertEqual(reg["schema"], "pedestrian_full_product_register/v1")
+        required = [
+            "sense_of_speed",
+            "movement",
+            "items_abilities",
+            "cpu",
+            "tracks_hazards",
+            "laps",
+            "cups_progression",
+            "controls",
+            "dock_display",
+            "a11y",
+            "audio",
+            "save",
+            "telemetry",
+            "performance",
+            "tutorial",
+        ]
+        for key in required:
+            self.assertIn(key, reg["features"], f"missing feature key {key}")
+            self.assertIn("status", reg["features"][key])
+        self.assertEqual(reg["HUMAN_POLISH"], "HUMAN_PENDING")
+        self.assertIn(reg["self_challenge"]["identical_special_logic"], ("PASS", "FAIL"))
+
     def test_ai_batch_sim_harness(self) -> None:
         proc = subprocess.run(
             [sys.executable, str(ROOT / "tools/ai_batch_sim.py")],

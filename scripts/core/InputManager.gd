@@ -137,6 +137,13 @@ func is_using_item() -> bool:
 	return Input.is_action_just_pressed("use_item")
 
 
+func is_special() -> bool:
+	## Character special ability (R / Y). Ring role keeps special→item remap above.
+	if preferred_source == InputSource.RING:
+		return false
+	return Input.is_action_just_pressed("special")
+
+
 func is_tricking() -> bool:
 	return Input.is_action_just_pressed("trick")
 

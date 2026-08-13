@@ -88,7 +88,13 @@ func apply_device_role(profile: Dictionary, map_profile: Dictionary = {}) -> voi
 	var map_id := str(profile.get("map_profile", "sim_campus"))
 	var gps := str(profile.get("gps_mode", "SIMULATED"))
 	if _role_hint:
-		_role_hint.text = str(profile.get("input_hints", ""))
+		var hint := str(profile.get("input_hints", ""))
+		if bool(profile.get("dock_display_hook", false)):
+			hint += "  ·  Dock: %s (screens=%d)" % [
+				"ON" if bool(profile.get("docked", false)) else "OFF",
+				int(profile.get("screen_count", 1)),
+			]
+		_role_hint.text = hint
 	if _map_label:
 		var map_name := str(map_profile.get("label", map_id))
 		_map_label.text = "Map: %s  •  GPS: %s" % [map_name, gps]
@@ -101,6 +107,9 @@ func apply_device_role(profile: Dictionary, map_profile: Dictionary = {}) -> voi
 		elif layout == "dual_screen_debug":
 			_minimap.offset_left = -200
 			_minimap.offset_bottom = 200
+		elif layout == "landscape_classroom":
+			_minimap.offset_left = -180
+			_minimap.offset_bottom = 160
 	_apply_ui_scale()
 	_apply_marker_colors()
 
@@ -283,4 +292,16 @@ func _on_item_warning(item_id: String, seconds: float, _target: Node) -> void:
 
 
 func _on_speed_changed(speed: float) -> void:
-	speed_label.text = "Speed: %.0f" % speed
+	var state := "SPRINT"
+	if _player != null and _player.has_method("get_speed_state"):
+		state = str(_player.get_speed_state())
+	speed_label.text = "Speed: %.0f  [%s]" % [speed, state]
+	var scene := get_parent()
+	if scene != null:
+		var cam = scene.get_node_or_null("CameraRig")
+		if cam != null and cam.has_method("set_boosting") and _player != null:
+			var boosting := false
+			var boost = _player.get_node_or_null("BoostSystem")
+			if boost != null and boost.has_method("get_speed_multiplier"):
+				boosting = boost.get_speed_multiplier() > 1.05
+			cam.set_boosting(boosting)

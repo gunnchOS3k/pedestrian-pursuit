@@ -51,6 +51,59 @@ func _ready() -> void:
 	var audio := get_node_or_null("/root/AudioDirector")
 	if audio and audio.has_method("play_menu_music"):
 		audio.play_menu_music()
+	call_deferred("_prompt_first_run_tutorial")
+
+
+func _prompt_first_run_tutorial() -> void:
+	var prog := get_node_or_null("/root/ProgressionSave")
+	if prog == null:
+		return
+	if bool(prog.get("tutorial_completed")):
+		return
+	if get_node_or_null("FirstRunTutorialPrompt") != null:
+		return
+	var overlay := ColorRect.new()
+	overlay.name = "FirstRunTutorialPrompt"
+	overlay.color = Color(0.04, 0.06, 0.1, 0.9)
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(overlay)
+	var panel := VBoxContainer.new()
+	panel.set_anchors_preset(Control.PRESET_CENTER)
+	panel.offset_left = -260
+	panel.offset_right = 260
+	panel.offset_top = -160
+	panel.offset_bottom = 160
+	panel.add_theme_constant_override("separation", 12)
+	overlay.add_child(panel)
+	var title := Label.new()
+	title.text = "First run — Foot-Racing Tutorial"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 24)
+	panel.add_child(title)
+	var body := Label.new()
+	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	body.text = (
+		"Learn sprint, drift sparks, Perfect Step, jumps, items, and footwear surfaces "
+		+ "on a real course before your first cup."
+	)
+	panel.add_child(body)
+	var start := Button.new()
+	start.text = "Start Tutorial"
+	start.custom_minimum_size = Vector2(0, 44)
+	start.pressed.connect(func ():
+		overlay.queue_free()
+		_on_start_tutorial()
+	)
+	panel.add_child(start)
+	var skip := Button.new()
+	skip.text = "Skip for now"
+	skip.custom_minimum_size = Vector2(0, 40)
+	skip.pressed.connect(func (): overlay.queue_free())
+	panel.add_child(skip)
+	var tut_btn := $VBox.get_node_or_null("TutorialButton") as Button
+	if tut_btn != null:
+		tut_btn.text = "Tutorial (recommended — first run)"
 
 
 func _ensure_howto_button() -> void:
@@ -103,7 +156,7 @@ func _on_howto_play() -> void:
 		"Race on foot across championship courses.\n\n"
 		+ "Steer A/D · Accelerate W · Brake S\n"
 		+ "Jump Space · Drift Shift · Slide Ctrl\n"
-		+ "Boost Q · Use Item E · Pause Esc\n\n"
+		+ "Boost Q · Use Item E · Special Ability R · Pause Esc\n\n"
 		+ "Modes: Quick Race, Cup, Time Trial/Ghost, Local 2P, Tutorial, Challenges, Progression.\n"
 		+ "Footwear materials matter: Grip on mud, Speed on asphalt, Bounce on rails/pads.\n"
 		+ "Items warn before hitting — shield, slide, or jump for counterplay.\n"

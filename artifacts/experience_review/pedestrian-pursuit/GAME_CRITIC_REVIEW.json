@@ -1,0 +1,67 @@
+{
+  "schema": "experience_review_game_critic/v1",
+  "subject": "pedestrian-pursuit",
+  "work_item": "GAME-successor-pedestrian-full",
+  "generated_at": "2026-08-12T22:16:31Z",
+  "VISUAL_MODEL_REVIEW": "UNAVAILABLE",
+  "live_framebuffer": "UNAVAILABLE",
+  "classification": "ALPHA",
+  "classification_rationale": [
+    "Systems depth exists (movement/items/CPU/cups/tutorial/a11y/telemetry) with digital evidence",
+    "Presentation remains procedural-final launch art \u2014 not finished visual polish",
+    "VISUAL_MODEL_REVIEW unavailable (no live pixel inspect this packet)",
+    "HUMAN_POLISH and fun remain HUMAN_PENDING",
+    "Physical FPS still PEDESTRIAN_PHYSICAL_PERFORMANCE_PENDING"
+  ],
+  "not_rc": true,
+  "likely_not_beta_polished": true,
+  "evidence_based": true,
+  "no_invented_visual_critique": true,
+  "findings": [
+    {
+      "severity": "S0",
+      "id": "none",
+      "summary": "No S0 crash/blocker newly evidenced in this digital pass."
+    },
+    {
+      "severity": "S1",
+      "id": "none_open",
+      "summary": "No open S1 digital blocker evidenced; special-ability input wiring gap closed this packet."
+    },
+    {
+      "severity": "S2",
+      "id": "CRIT-S2-SPECIALS-WERE-DATA-ONLY",
+      "status": "REMEDIATED_DIGITAL",
+      "summary": "special_ability_id existed in racer JSON and CONTROLS mapped R/Y, but runtime did not activate abilities; SpecialAbilitySystem now wires accepted ids.",
+      "evidence": "scripts/player/SpecialAbilitySystem.gd"
+    },
+    {
+      "severity": "S2",
+      "id": "CRIT-S2-SENSE-OF-SPEED-STATIC-CAMERA",
+      "status": "REMEDIATED_DIGITAL",
+      "summary": "Chase camera lacked speed-scaled FOV/look-ahead; CameraRig now responds digitally.",
+      "evidence": "scripts/player/CameraRig.gd"
+    },
+    {
+      "severity": "S2",
+      "id": "CRIT-S2-ART-ALPHA",
+      "summary": "Visual identity remains procedural-final ALPHA proxies; no pixel invent.",
+      "evidence": "VISUAL_MODEL_REVIEW=UNAVAILABLE"
+    },
+    {
+      "severity": "S3",
+      "id": "CRIT-S3-HUMAN-POLISH",
+      "status": "OPEN",
+      "summary": "HUMAN_POLISH pending \u2014 AI cannot earn human fun/polish."
+    }
+  ],
+  "scores_heuristic": {
+    "systems_depth": 0.78,
+    "presentation": 0.34,
+    "content_completeness": 0.72,
+    "ship_readiness": 0.48
+  },
+  "verdict": "ALPHA \u2014 deep digital systems packet; not polished beta/RC without human polish + physical FPS.",
+  "tip_sha": "bd28e0ddc1b1e1aae63ea559bca15de5a2615f61",
+  "tip_short": "bd28e0d"
+}

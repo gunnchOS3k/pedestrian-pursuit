@@ -72,6 +72,7 @@ run_step TestRunner "$GODOT" --headless --path "$ROOT" --script res://tests/Test
 run_step G2C6RuntimeTest "$GODOT" --headless --path "$ROOT" --script res://tests/G2C6RuntimeTest.gd
 run_step CupFlowTest "$GODOT" --headless --path "$ROOT" --script res://tests/CupFlowTest.gd
 run_step BetaProductStateTest "$GODOT" --headless --path "$ROOT" --script res://tests/BetaProductStateTest.gd
+run_step FullProductDepthTest "$GODOT" --headless --path "$ROOT" --script res://tests/FullProductDepthTest.gd
 # AlphaProductStateTest / DigitalRcProductStateTest retired from --script runner:
 # they printed PASS while SCRIPT ERROR / Compilation failed (autoload-blind).
 # Authoritative product evidence: ProductionGateHarness --production-gate below.

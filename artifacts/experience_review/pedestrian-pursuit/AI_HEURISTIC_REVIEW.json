@@ -1,0 +1,68 @@
+{
+  "schema": "gunnchos.experience_review.v1",
+  "product": "pedestrian-pursuit",
+  "generated_utc": "2026-08-12T22:16:31Z",
+  "EXPERIENCE_REVIEW_COUNCIL": "ACTIVE",
+  "AI_HEURISTIC_REVIEW_ONLY": true,
+  "HUMAN_E6_NOT_EARNED_BY_AI_REVIEW": true,
+  "HUMAN_POLISH": "HUMAN_PENDING",
+  "VISUAL_MODEL_REVIEW": "UNAVAILABLE",
+  "visual_inspect": {
+    "status": "UNAVAILABLE",
+    "reason": "No live framebuffer / pixel inspect in this finite GAME successor packet; contact-sheet provenance exists but does not authorize invented visual critique."
+  },
+  "roles": {
+    "ER1_senior_product_ux": {
+      "mode": "AI_HEURISTIC",
+      "visual_status": "UNAVAILABLE",
+      "findings": [
+        {
+          "id": "PP-ER1-01",
+          "severity": "S2",
+          "status": "REMEDIATED_DIGITAL",
+          "finding": "First-run tutorial prompt surfaces when tutorial_completed is false."
+        },
+        {
+          "id": "PP-ER1-02",
+          "severity": "S2",
+          "status": "REMEDIATED_DIGITAL",
+          "finding": "HUD speed state + dock status hints improve digital readability."
+        },
+        {
+          "id": "PP-ER1-03",
+          "severity": "S3",
+          "status": "OPEN",
+          "finding": "Human polish of menu hierarchy / reward cadence not claimed."
+        }
+      ]
+    },
+    "ER2_student_engagement": {
+      "mode": "AI_HEURISTIC",
+      "applicable": true,
+      "findings": [
+        {
+          "id": "PP-ER2-01",
+          "severity": "S2",
+          "status": "REMEDIATED_DIGITAL",
+          "finding": "Tutorial grammar lessons remain available; first-run gate prompts practice."
+        },
+        {
+          "id": "PP-ER2-02",
+          "severity": "S3",
+          "status": "OPEN",
+          "finding": "Student fun validation HUMAN_PENDING."
+        }
+      ]
+    },
+    "ER3_game_critic": {
+      "mode": "AI_HEURISTIC",
+      "applicable": true,
+      "classification": "ALPHA",
+      "VISUAL_MODEL_REVIEW": "UNAVAILABLE",
+      "pointer": "artifacts/experience_review/pedestrian-pursuit/GAME_CRITIC_REVIEW.json"
+    }
+  },
+  "summary": "Pedestrian Pursuit full-product digital depth packet: specials/sense-of-speed/dock/tutorial gaps closed digitally. Critic class ALPHA. HUMAN_POLISH pending. VISUAL_MODEL_REVIEW unavailable.",
+  "tip_sha": "bd28e0ddc1b1e1aae63ea559bca15de5a2615f61",
+  "tip_short": "bd28e0d"
+}

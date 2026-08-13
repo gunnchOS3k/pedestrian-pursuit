@@ -1,0 +1,220 @@
+{
+  "schema": "pedestrian_full_product_register/v1",
+  "work_item": "GAME-successor-pedestrian-full",
+  "game": "pedestrian-pursuit",
+  "finite_packet": true,
+  "not_all_four_games": true,
+  "accepted_main_base": "3f4dafd0e455a0cf22523bab48a094a542d3141d",
+  "accepted_main_verified_live": true,
+  "generated_at": "2026-08-12T22:16:31Z",
+  "source_commit_base": "3f4dafd0e455a0cf22523bab48a094a542d3141d",
+  "FULL_GAME_CONTENT_COMPLETE": false,
+  "claim": "PEDESTRIAN_FULL_PRODUCT_DEPTH_PARTIAL \u2014 digitally executable gaps closed (sense-of-speed, special abilities, dock hooks, first-run tutorial prompt); HUMAN_POLISH pending",
+  "HUMAN_POLISH": "HUMAN_PENDING",
+  "fun": "HUMAN_PENDING",
+  "VISUAL_MODEL_REVIEW": "UNAVAILABLE",
+  "counts": {
+    "racers": 8,
+    "tracks": 9,
+    "cups": 2,
+    "items": 6,
+    "shoes": 4,
+    "special_abilities": 9
+  },
+  "self_challenge": {
+    "identical_special_logic": "PASS",
+    "failures": [],
+    "checked": [
+      "unique_special_ability_id_per_launch_racer",
+      "special_effect_fingerprints_differ",
+      "runner_stat_fingerprints_differ"
+    ],
+    "unique_special_ids": [
+      "clean_lines",
+      "launch_burst",
+      "wall_read",
+      "tempo_hold",
+      "shoulder_drive",
+      "style_fuel",
+      "rail_fin",
+      "kinetic_flare"
+    ]
+  },
+  "features": {
+    "sense_of_speed": {
+      "status": "PASS_DIGITAL",
+      "evidence": [
+        "scripts/player/CameraRig.gd FOV/look_ahead/spring_length speed response",
+        "scripts/ui/RaceHUD.gd speed state WALK/JOG/SPRINT/DRIFT/BOOST"
+      ],
+      "note": "Digital camera/HUD hooks only; human feel judgment HUMAN_PENDING"
+    },
+    "movement": {
+      "status": "PASS_DATA_RUNTIME",
+      "accepted": [
+        "accel",
+        "steer",
+        "brake",
+        "jump",
+        "drift_spark_tiers",
+        "slide_stomp",
+        "boost",
+        "tricks",
+        "rail_grind",
+        "drafting",
+        "wall_kick"
+      ],
+      "evidence": "scripts/player/* + data/mechanics/foot_racing_grammar.json"
+    },
+    "items_abilities": {
+      "status": "PASS_DIGITAL",
+      "items": [
+        "bounce_bubble",
+        "lace_trap",
+        "magnet_lace",
+        "pulse_horn",
+        "sole_shield",
+        "turbo_toes"
+      ],
+      "special_abilities_wired": true,
+      "special_catalog": "data/mechanics/special_abilities.json",
+      "input": "InputMap special (R / Y) via InputManager.is_special",
+      "evidence": "scripts/player/SpecialAbilitySystem.gd + scripts/items/ItemManager.gd"
+    },
+    "cpu": {
+      "status": "PASS_DATA_RUNTIME",
+      "tiers": [
+        "rookie",
+        "standard",
+        "ace"
+      ],
+      "evidence": "scripts/ai/AIPathFollower.gd + CompetitiveAiEvalRunner + PEDESTRIAN_COMPETITIVE_AI_DIGITAL_VALIDATED"
+    },
+    "tracks_hazards": {
+      "status": "PASS_DATA",
+      "tracks": [
+        "cloudstep_ridge",
+        "cloverwind_ranch",
+        "emberkeep_gauntlet",
+        "mirage_mesa",
+        "neon_switchyard",
+        "prism_apex",
+        "sneaker_city_sprintway",
+        "tideglass_harbor",
+        "verdant_cascade_circuit"
+      ],
+      "hazards_features": [
+        "terrain_zones",
+        "bounce_pads",
+        "speed_lanes",
+        "item_boxes",
+        "rails",
+        "shortcuts"
+      ],
+      "evidence": "data/tracks/*.json + CourseTrack.gd"
+    },
+    "laps": {
+      "status": "PASS_RUNTIME",
+      "default_laps": 3,
+      "evidence": "scripts/race/LapManager.gd + Checkpoint.gd"
+    },
+    "cups_progression": {
+      "status": "PASS_RUNTIME",
+      "cups": [
+        "sole_surge_cup",
+        "stride_circuit_cup"
+      ],
+      "save": "ProgressionSave + GameManager cup progress",
+      "evidence": "data/cups/*.json + scripts/core/ProgressionSave.gd"
+    },
+    "controls": {
+      "status": "PASS_RUNTIME",
+      "keyboard": true,
+      "controller": true,
+      "touch": true,
+      "profiles": [
+        "gamepad_default",
+        "touch_assist",
+        "local_mp_split",
+        "keyboard_default"
+      ],
+      "evidence": "docs/CONTROLS.md + InputManager + MobileControls + InputProfileCatalog"
+    },
+    "dock_display": {
+      "status": "PASS_DIGITAL_HOOKS",
+      "present_in_accepted_design": true,
+      "basis": "device_ux dual_screen_debug (ds_xl_coder) + handheld dock heuristic",
+      "evidence": "scripts/core/DockDisplayHook.gd + DeviceRoleRuntime.apply_to_race_scene",
+      "not_claimed": "No physical HDMI/dock hardware certification"
+    },
+    "a11y": {
+      "status": "PASS_RUNTIME",
+      "features": [
+        "reduce_motion",
+        "larger_ui",
+        "auto_accelerate",
+        "colorblind_hud"
+      ],
+      "evidence": "scripts/core/AccessibilitySettings.gd"
+    },
+    "audio": {
+      "status": "PASS_HOOKS",
+      "evidence": "scripts/audio/AudioDirector.gd + procedural launch bank",
+      "note": "Procedural-final audio; human mix polish HUMAN_PENDING"
+    },
+    "save": {
+      "status": "PASS_RUNTIME",
+      "paths": [
+        "user://pp_progression.cfg",
+        "user://accessibility.cfg",
+        "user://device_role.cfg",
+        "user://dock_display.cfg"
+      ],
+      "evidence": "ProgressionSave + WP-014 production gate SAVE/LOAD"
+    },
+    "telemetry": {
+      "status": "PASS_RUNTIME",
+      "events": [
+        "race_start",
+        "checkpoint",
+        "item_use",
+        "special_ability",
+        "finish",
+        "restart"
+      ],
+      "evidence": "scripts/core/TelemetryBus.gd"
+    },
+    "performance": {
+      "status": "PASS_TELEMETRY_PIPELINE",
+      "evidence": "PerfBudget + ProductionGateHarness perf sampling",
+      "physical_fps": "PEDESTRIAN_PHYSICAL_PERFORMANCE_PENDING"
+    },
+    "tutorial": {
+      "status": "PASS_DIGITAL",
+      "first_run_prompt": true,
+      "grammar_lessons": true,
+      "evidence": "MainMenu._prompt_first_run_tutorial + TutorialDirector + foot_racing_grammar.json",
+      "note": "Practice-lane coach polish still HUMAN_PENDING / not Alpha-exit claim"
+    }
+  },
+  "gaps_closed_this_packet": [
+    "sense_of_speed_camera_fov_look_ahead",
+    "special_ability_runtime_wiring",
+    "dock_display_software_hooks",
+    "first_run_tutorial_prompt",
+    "special_ability_telemetry"
+  ],
+  "explicit_non_claims": [
+    "No Smash-level or commercial market parity",
+    "No physical device FPS / HUMAN_POLISH",
+    "No invented mechanics beyond accepted design docs + racer special_ability_id data",
+    "Cursor never merges"
+  ],
+  "defects": {
+    "S0_open": 0,
+    "S1_open": 0
+  },
+  "tip_sha": "bd28e0ddc1b1e1aae63ea559bca15de5a2615f61",
+  "tip_short": "bd28e0d",
+  "source_commit_tip": "bd28e0ddc1b1e1aae63ea559bca15de5a2615f61"
+}

@@ -121,19 +121,30 @@ func set_role(role_id: String, persist: bool = true) -> bool:
 func apply_to_race_scene(race_scene: Node) -> void:
 	if race_scene == null:
 		return
+	var profile := active_profile
+	var map_profile := active_map_profile
+	var dock := _dock_hook()
+	if dock != null and dock.has_method("apply_to_device_role"):
+		profile = dock.apply_to_device_role(active_profile)
 	race_scene.set_meta("device_role_id", active_role_id)
 	race_scene.set_meta("map_profile_id", get_map_profile_id())
 	race_scene.set_meta("gps_mode", get_gps_mode())
-	race_scene.set_meta("hud_layout", get_hud_layout())
+	race_scene.set_meta("hud_layout", str(profile.get("hud_layout", get_hud_layout())))
+	race_scene.set_meta("docked", bool(profile.get("docked", false)))
+	race_scene.set_meta("screen_count", int(profile.get("screen_count", 1)))
 	var mobile = race_scene.get_node_or_null("MobileControls")
 	if mobile != null and mobile.has_method("configure_for_device_role"):
-		mobile.configure_for_device_role(active_profile)
+		mobile.configure_for_device_role(profile)
 	var hud = race_scene.get_node_or_null("RaceHUD")
 	if hud != null and hud.has_method("apply_device_role"):
-		hud.apply_device_role(active_profile, active_map_profile)
+		hud.apply_device_role(profile, map_profile)
 	var debug = race_scene.get_node_or_null("DebugOverlay")
 	if debug != null:
-		debug.visible = wants_debug_overlay()
+		debug.visible = bool(profile.get("debug_overlay_default", wants_debug_overlay()))
+
+
+func _dock_hook() -> Node:
+	return _root_node("DockDisplayHook")
 
 
 func _apply_to_game_systems() -> void:
@@ -146,6 +157,9 @@ func _apply_to_game_systems() -> void:
 	var inputs := _input_manager()
 	if inputs != null and inputs.has_method("apply_device_role"):
 		inputs.apply_device_role(active_profile)
+	var dock := _dock_hook()
+	if dock != null and dock.has_method("refresh"):
+		dock.refresh()
 
 
 func _game_manager() -> Node:

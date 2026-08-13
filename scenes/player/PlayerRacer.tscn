@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://playerracer001"]
+[gd_scene load_steps=11 format=3 uid="uid://playerracer001"]
 
 [ext_resource type="Script" path="res://scripts/player/PlayerController.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/player/MovementStats.gd" id="2"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://scripts/player/TrickSystem.gd" id="7"]
 [ext_resource type="Script" path="res://scripts/items/ItemManager.gd" id="8"]
 [ext_resource type="Script" path="res://scripts/player/RacerVisual.gd" id="9"]
+[ext_resource type="Script" path="res://scripts/player/SpecialAbilitySystem.gd" id="10"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
 radius = 0.45
@@ -78,6 +79,9 @@ script = ExtResource("7")
 
 [node name="ItemManager" type="Node" parent="."]
 script = ExtResource("8")
+
+[node name="SpecialAbilitySystem" type="Node" parent="."]
+script = ExtResource("10")
 
 [node name="RacerVisual" type="Node3D" parent="."]
 script = ExtResource("9")
