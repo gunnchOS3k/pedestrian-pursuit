@@ -65,6 +65,9 @@ jobs:
       - name: Content validation
         run: python3 -m unittest tests.test_content -v
 
+      - name: GAME-RC-001 contract validation
+        run: python3 tools/validate_game_rc_contracts.py
+
       - name: Upload synthetic Gate1 summary
         if: always()
         uses: actions/upload-artifact@v4
@@ -188,6 +191,7 @@ jobs:
             run_step CupFlowTest "$GODOT" --headless --path "$ROOT" --script res://tests/CupFlowTest.gd
             run_step BetaProductStateTest "$GODOT" --headless --path "$ROOT" --script res://tests/BetaProductStateTest.gd
             run_step FullProductDepthTest "$GODOT" --headless --path "$ROOT" --script res://tests/FullProductDepthTest.gd
+            run_step AchievementRuntimeTest "$GODOT" --headless --path "$ROOT" --script res://tests/AchievementRuntimeTest.gd
             # Retired smokes must hard-fail (exit != 0) if invoked
             set +e
             "$GODOT" --headless --path "$ROOT" --script res://tests/AlphaProductStateTest.gd > tmp/godot-AlphaRetired.log 2>&1

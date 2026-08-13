@@ -1,0 +1,131 @@
+{
+  "all_steps_pass": true,
+  "commit": "1a66b2b36b69dc12000dd4be62c180174f1ae828",
+  "duration_msec": 5482,
+  "engine": "godot",
+  "engine_version": "4.7.1-stable (official)",
+  "game": "pedestrian-pursuit",
+  "headless": true,
+  "run_mode": "main_scene_boot_with_autoloads",
+  "schema": "pp_actual_production_runtime/v1",
+  "started_at": "2026-08-13T19:08:29",
+  "verifier": "independent",
+  "steps": [
+    {
+      "detail": {
+        "scene_file_path": "res://scenes/main/MainMenu.tscn"
+      },
+      "result": "pass",
+      "step": "title_menu",
+      "timestamp": "2026-08-13T19:08:23"
+    },
+    {
+      "detail": {
+        "scene_file_path": "res://scenes/race/RaceScene.tscn"
+      },
+      "result": "pass",
+      "step": "new_game_session",
+      "timestamp": "2026-08-13T19:08:23"
+    },
+    {
+      "detail": {
+        "distance_traveled": 3.66617512702942,
+        "end": [3.25509262084961, -0.0991686955094337, 35.6867752075195],
+        "engine_reported_accelerating_during_drive": true,
+        "input_source": "keyboard",
+        "start": [0.0, -0.099894642829895, 34.0]
+      },
+      "result": "pass",
+      "step": "real_input_drive",
+      "timestamp": "2026-08-13T19:08:28"
+    },
+    {
+      "detail": {
+        "checkpoint_before": 1,
+        "lap": 0
+      },
+      "result": "pass",
+      "step": "checkpoint_core_loop",
+      "timestamp": "2026-08-13T19:08:28"
+    },
+    {
+      "detail": {
+        "frame_frozen_while_paused": true,
+        "paused_after_pause_action": true,
+        "resumed_after_second_pause_action": true
+      },
+      "result": "pass",
+      "step": "pause_resume",
+      "timestamp": "2026-08-13T19:08:28"
+    },
+    {
+      "detail": {
+        "completion_percent": 58.3333333333333,
+        "cup_complete": true,
+        "duplicate_prevention": true,
+        "finish_line": true,
+        "offline_save": true,
+        "pause_resume_unlock": true,
+        "rail_runner": true,
+        "tutorial": true
+      },
+      "result": "pass",
+      "step": "playthrough_achievements",
+      "timestamp": "2026-08-13T19:08:28"
+    },
+    {
+      "detail": {
+        "colorblind_markers_differ": true,
+        "larger_ui_scale": 1.25,
+        "persisted_to_disk": true,
+        "reduce_motion_disables_shake": true
+      },
+      "result": "pass",
+      "step": "settings_a11y_baseline",
+      "timestamp": "2026-08-13T19:08:28"
+    },
+    {
+      "detail": {
+        "hooks_present": true
+      },
+      "result": "pass",
+      "step": "audio_hook",
+      "timestamp": "2026-08-13T19:08:28"
+    },
+    {
+      "detail": {
+        "disk_level": 2,
+        "disk_xp": 97,
+        "fresh_instance_reload_matches_live": true,
+        "level_before": 2,
+        "time_trial_pb_recorded": true,
+        "xp_after_add_xp": 97,
+        "xp_before": 60
+      },
+      "result": "pass",
+      "step": "save_load_lifecycle",
+      "timestamp": "2026-08-13T19:08:28"
+    },
+    {
+      "detail": {
+        "crash_watchdog_last_kind": "production_gate_suspend_resume",
+        "cup_reload_ok": true
+      },
+      "result": "pass",
+      "step": "suspend_resume_checkpoint",
+      "timestamp": "2026-08-13T19:08:29"
+    },
+    {
+      "detail": {
+        "avg_fps": 137.47572679035,
+        "events_recorded_this_run": 3,
+        "frame_samples": 767,
+        "jsonl_present": true,
+        "min_fps": 6.66666640175715
+      },
+      "result": "pass",
+      "step": "logging_perf_telemetry",
+      "timestamp": "2026-08-13T19:08:29"
+    }
+  ]
+}

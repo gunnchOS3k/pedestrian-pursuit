@@ -1,0 +1,95 @@
+{
+  "schema": "gunnchos.game_rc.achievements/v1",
+  "game": "pedestrian-pursuit",
+  "catalog_version": 1,
+  "save_version": 1,
+  "offline": true,
+  "duplicate_prevention": true,
+  "notes": "Unlocks fire from real tutorial / race finish / cup / challenge / pause paths. No test-only unlock type exists.",
+  "achievements": [
+    {
+      "id": "pp.first_stride",
+      "title": "First Stride",
+      "description": "Finish the on-course foot-racing tutorial.",
+      "hidden": false,
+      "unlock": { "type": "flag", "flag": "tutorial_completed" }
+    },
+    {
+      "id": "pp.finish_line",
+      "title": "Finish Line",
+      "description": "Finish a race.",
+      "hidden": false,
+      "unlock": { "type": "event_count", "event": "race_finished", "count": 1 }
+    },
+    {
+      "id": "pp.podium",
+      "title": "Podium",
+      "description": "Finish a race in first place.",
+      "hidden": false,
+      "unlock": { "type": "event_count", "event": "podium_finish", "count": 1 }
+    },
+    {
+      "id": "pp.pause_and_breathe",
+      "title": "Pause and Breathe",
+      "description": "Pause a live race and resume it.",
+      "hidden": false,
+      "unlock": { "type": "event_count", "event": "pause_resume", "count": 1 }
+    },
+    {
+      "id": "pp.cup_complete",
+      "title": "Cup Complete",
+      "description": "Finish every course in a championship cup.",
+      "hidden": false,
+      "unlock": { "type": "flag", "flag": "cup_complete" }
+    },
+    {
+      "id": "pp.time_trialist",
+      "title": "Time Trialist",
+      "description": "Record a time-trial personal best.",
+      "hidden": false,
+      "unlock": { "type": "event_count", "event": "time_trial_pb", "count": 1 }
+    },
+    {
+      "id": "pp.rail_runner",
+      "title": "Rail Runner",
+      "description": "Complete the Rail Runner challenge.",
+      "hidden": false,
+      "unlock": { "type": "flag", "flag": "challenge:rail_runner" }
+    },
+    {
+      "id": "pp.mud_grip",
+      "title": "Mud Grip",
+      "description": "Complete the Mud Grip Mastery challenge.",
+      "hidden": false,
+      "unlock": { "type": "flag", "flag": "challenge:mud_grip_mastery" }
+    },
+    {
+      "id": "pp.mileage",
+      "title": "Mileage",
+      "description": "Finish five races.",
+      "hidden": false,
+      "unlock": { "type": "event_count", "event": "race_finished", "count": 5 }
+    },
+    {
+      "id": "pp.stride_circuit",
+      "title": "Stride Circuit",
+      "description": "Complete Stride Circuit Cup.",
+      "hidden": false,
+      "unlock": { "type": "flag", "flag": "cup:stride_circuit_cup" }
+    },
+    {
+      "id": "pp.hidden_hat_trick",
+      "title": "Hat Trick",
+      "description": "Take first place three times.",
+      "hidden": true,
+      "unlock": { "type": "event_count", "event": "podium_finish", "count": 3 }
+    },
+    {
+      "id": "pp.challenge_set",
+      "title": "Challenge Set",
+      "description": "Complete any three challenges.",
+      "hidden": false,
+      "unlock": { "type": "event_count", "event": "challenge_complete", "count": 3 }
+    }
+  ]
+}

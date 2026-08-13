@@ -1,0 +1,60 @@
+{
+  "schema": "gunnchos.game_rc.content_manifest/v1",
+  "game": "pedestrian-pursuit",
+  "manifest_version": 1,
+  "generated_at": "2026-08-13T18:40:00Z",
+  "counts": {
+    "racers": 8,
+    "tracks": 8,
+    "cups": 2,
+    "shoes": 4,
+    "items": 6,
+    "challenges": 6,
+    "achievements": 12
+  },
+  "modes": [
+    { "id": "quick_race", "status": "CLOSED" },
+    { "id": "cup", "status": "CLOSED" },
+    { "id": "time_trial", "status": "CLOSED" },
+    { "id": "local_mp", "status": "CLOSED" },
+    { "id": "tutorial", "status": "CLOSED" },
+    { "id": "challenge", "status": "CLOSED" },
+    { "id": "achievements_browser", "status": "CLOSED" },
+    { "id": "public_online", "status": "OPEN", "notes": "OnlineArchitecture is private/dev scoped." }
+  ],
+  "items": [
+    { "id": "dash_reed", "kind": "racer", "status": "CLOSED" },
+    { "id": "mira_lane", "kind": "racer", "status": "CLOSED" },
+    { "id": "kai_volt", "kind": "racer", "status": "CLOSED" },
+    { "id": "bolt_harbor", "kind": "racer", "status": "CLOSED" },
+    { "id": "nova_quill", "kind": "racer", "status": "CLOSED" },
+    { "id": "sierra_flux", "kind": "racer", "status": "CLOSED" },
+    { "id": "solen_pike", "kind": "racer", "status": "CLOSED" },
+    { "id": "zig_riven", "kind": "racer", "status": "CLOSED" },
+    { "id": "verdant_cascade_circuit", "kind": "track", "status": "CLOSED" },
+    { "id": "tideglass_harbor", "kind": "track", "status": "CLOSED" },
+    { "id": "prism_apex", "kind": "track", "status": "CLOSED" },
+    { "id": "neon_switchyard", "kind": "track", "status": "CLOSED" },
+    { "id": "mirage_mesa", "kind": "track", "status": "CLOSED" },
+    { "id": "emberkeep_gauntlet", "kind": "track", "status": "CLOSED" },
+    { "id": "cloverwind_ranch", "kind": "track", "status": "CLOSED" },
+    { "id": "cloudstep_ridge", "kind": "track", "status": "CLOSED" },
+    { "id": "sneaker_city_sprintway", "kind": "track", "status": "OPEN", "notes": "Present on disk; not in the 8-course launch cup set. Honest leftover, not claimed as launch content." },
+    { "id": "sole_surge_cup", "kind": "cup", "status": "CLOSED" },
+    { "id": "stride_circuit_cup", "kind": "cup", "status": "CLOSED" },
+    { "id": "human_painted_hero_meshes", "kind": "art", "status": "OPEN", "notes": "Launch art is procedural-final." }
+  ],
+  "open_placeholders": [
+    { "id": "challenge_mechanic_instrumentation", "summary": "Challenge races award on finish; rail-attach / perfect-step windows are not separately instrumented." },
+    { "id": "sneaker_city_sprintway", "summary": "Extra track file not in launch cup; listed OPEN rather than silently counted as launch." },
+    { "id": "human_painted_hero_meshes", "summary": "No human-painted hero mesh claim." },
+    { "id": "public_online", "summary": "Public matchmaking not shipped." },
+    { "id": "physical_fps", "summary": "Device FPS certification pending." }
+  ],
+  "not_claimed": [
+    "Commercial market parity",
+    "Physical hardware FPS",
+    "POLISHED_RELEASE_CANDIDATE",
+    "FEATURE_COMPLETE_RC"
+  ]
+}

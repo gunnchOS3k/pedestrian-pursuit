@@ -224,6 +224,16 @@ func _ensure_beta_mode_buttons() -> void:
 		prog.custom_minimum_size = Vector2(0, 44)
 		vbox.add_child(prog)
 		vbox.move_child(prog, insert_at)
+		insert_at += 1
+	else:
+		insert_at = vbox.get_node("ProgressionButton").get_index() + 1
+	if vbox.get_node_or_null("AchievementsButton") == null:
+		var ach_btn := Button.new()
+		ach_btn.name = "AchievementsButton"
+		ach_btn.text = "Achievements"
+		ach_btn.custom_minimum_size = Vector2(0, 44)
+		vbox.add_child(ach_btn)
+		vbox.move_child(ach_btn, insert_at)
 
 
 func _wire_mode_buttons() -> void:
@@ -232,6 +242,7 @@ func _wire_mode_buttons() -> void:
 	var tut := $VBox.get_node_or_null("TutorialButton") as Button
 	var ch := $VBox.get_node_or_null("ChallengesButton") as Button
 	var prog := $VBox.get_node_or_null("ProgressionButton") as Button
+	var achb := $VBox.get_node_or_null("AchievementsButton") as Button
 	if tt and not tt.pressed.is_connected(_on_start_time_trial):
 		tt.pressed.connect(_on_start_time_trial)
 	if lmp and not lmp.pressed.is_connected(_on_start_local_mp):
@@ -242,6 +253,8 @@ func _wire_mode_buttons() -> void:
 		ch.pressed.connect(_on_open_challenges)
 	if prog and not prog.pressed.is_connected(_on_open_progression):
 		prog.pressed.connect(_on_open_progression)
+	if achb and not achb.pressed.is_connected(_on_open_achievements):
+		achb.pressed.connect(_on_open_achievements)
 
 
 func _ensure_cup_and_shoe_pickers() -> void:
@@ -719,6 +732,73 @@ func _launch_challenge(challenge_id: String, mode: String, track_id: String, sho
 	else:
 		GameManager.start_challenge(challenge_id, track_id, shoe_id)
 	SceneLoader.go_to_race()
+
+
+func _on_open_achievements() -> void:
+	var existing := get_node_or_null("AchievementsOverlay")
+	if existing != null:
+		existing.visible = true
+		_refresh_achievements_overlay(existing)
+		return
+	var overlay := ColorRect.new()
+	overlay.name = "AchievementsOverlay"
+	overlay.color = Color(0.05, 0.07, 0.12, 0.92)
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	add_child(overlay)
+	var panel := VBoxContainer.new()
+	panel.name = "Panel"
+	panel.set_anchors_preset(Control.PRESET_CENTER)
+	panel.offset_left = -320
+	panel.offset_right = 320
+	panel.offset_top = -260
+	panel.offset_bottom = 260
+	panel.add_theme_constant_override("separation", 8)
+	overlay.add_child(panel)
+	_refresh_achievements_overlay(overlay)
+	var close := Button.new()
+	close.text = "Close"
+	close.pressed.connect(func (): overlay.visible = false)
+	panel.add_child(close)
+
+
+func _refresh_achievements_overlay(overlay: Node) -> void:
+	var panel := overlay.get_node_or_null("Panel") as VBoxContainer
+	if panel == null:
+		return
+	for child in panel.get_children():
+		if child is Button and str(child.text) == "Close":
+			continue
+		child.queue_free()
+	var runtime := get_node_or_null("/root/AchievementRuntime")
+	var title := Label.new()
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 26)
+	if runtime == null:
+		title.text = "Achievements unavailable"
+		panel.add_child(title)
+		panel.move_child(title, 0)
+		return
+	title.text = "Achievements  •  %.0f%%" % float(runtime.completion_percent())
+	panel.add_child(title)
+	panel.move_child(title, 0)
+	var scroll := ScrollContainer.new()
+	scroll.custom_minimum_size = Vector2(600, 320)
+	var list := VBoxContainer.new()
+	list.add_theme_constant_override("separation", 6)
+	scroll.add_child(list)
+	for entry in runtime.browser_entries():
+		var row := Label.new()
+		row.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		var mark := "[x]" if bool(entry.get("unlocked", false)) else "[ ]"
+		row.text = "%s %s  (%.0f%%)\n%s" % [
+			mark,
+			str(entry.get("title", "")),
+			float(entry.get("percent", 0.0)),
+			str(entry.get("description", "")),
+		]
+		list.add_child(row)
+	panel.add_child(scroll)
+	panel.move_child(scroll, 1)
 
 
 func _on_open_progression() -> void:

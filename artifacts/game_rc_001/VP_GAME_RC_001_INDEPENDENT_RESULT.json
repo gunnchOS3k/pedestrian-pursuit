@@ -1,0 +1,173 @@
+{
+  "schema": "gunnchos.game_rc_001.independent_verifier_result.v1",
+  "work_item": "GAME-RC-001",
+  "game": "pedestrian-pursuit",
+  "verifier_role": "INDEPENDENT_VERIFIER_AGENT",
+  "did_not_implement": true,
+  "did_not_merge": true,
+  "did_not_claim_HUMAN_PLAYTEST": true,
+  "did_not_claim_POLISHED_RC": true,
+  "did_not_claim_FEATURE_COMPLETE_RC": true,
+  "generated_at_utc": "2026-08-13T19:09:12Z",
+  "pr": {
+    "number": 16,
+    "url": "https://github.com/gunnchOS3k/pedestrian-pursuit/pull/16",
+    "draft": true,
+    "branch": "cursor/game-rc-001-playthrough-achievements",
+    "title": "GAME-RC-001: playthrough contracts + real achievement runtime",
+    "mergeable_observed_at_start": "MERGEABLE",
+    "mergeStateStatus_observed_at_start": "UNSTABLE_ci_in_progress"
+  },
+  "claimed_tip": "1a66b2b36b69dc12000dd4be62c180174f1ae828",
+  "claimed_tip_live_confirmed": true,
+  "verified_tip": "1a66b2b36b69dc12000dd4be62c180174f1ae828",
+  "verified_tip_short": "1a66b2b",
+  "verified_tip_subject": "feat(GAME-RC-001): playthrough contracts and real achievement runtime",
+  "base_main_parent": "e934681a5f0032a59dea7652082c0a7de2f7e505",
+  "godot_version_local": "4.7.1.stable.official.a13da4feb",
+  "godot_version_ci": "4.7.1.stable.official.a13da4feb",
+  "worktree": "/tmp/vp-game-rc-001-pp",
+  "VP_GAME_RC_001_INDEPENDENT_RESULT": "PASS",
+  "PEDESTRIAN_16_READY_FOR_EDMUND_MERGE": true,
+  "READY_FOR_EDMUND_MERGE": true,
+  "critic_class": "ALPHA",
+  "S0": 0,
+  "S1": 0,
+  "S1_scope": "packet_digital_GAME-RC-001",
+  "S2": 4,
+  "VISUAL_MODEL_REVIEW": "UNAVAILABLE",
+  "playthrough_reproduced": true,
+  "achievements_runtime_tested": "12/12",
+  "challenges": {
+    "live_pr_tip_vs_claimed": {
+      "verdict": "PASS",
+      "live_head": "1a66b2b36b69dc12000dd4be62c180174f1ae828",
+      "single_content_commit": true
+    },
+    "ci_status": {
+      "verdict": "PASS",
+      "head_sha": "1a66b2b36b69dc12000dd4be62c180174f1ae828",
+      "godot": "4.7.1",
+      "checks": [
+        {"name": "gate1-core-loop", "conclusion": "success", "url": "https://github.com/gunnchOS3k/pedestrian-pursuit/actions/runs/31733925353/job/94560850545"},
+        {"name": "godot-headless-no-false-green", "conclusion": "success", "url": "https://github.com/gunnchOS3k/pedestrian-pursuit/actions/runs/31733925353/job/94560850444"},
+        {"name": "wp014-actual-production-runtime", "conclusion": "success", "url": "https://github.com/gunnchOS3k/pedestrian-pursuit/actions/runs/31733925353/job/94560850493"}
+      ],
+      "ci_tokens": [
+        "PASS AchievementRuntimeTest",
+        "PRODUCTION_GATE_PASS",
+        "[PASS] playthrough_achievements"
+      ]
+    },
+    "contracts_not_hand_edited_pass": {
+      "verdict": "PASS",
+      "files": [
+        "release/PLAYTHROUGH_CONTRACT.json",
+        "release/CONTENT_MANIFEST.json",
+        "release/ACHIEVEMENTS.json",
+        "release/RC_GATE.json"
+      ],
+      "validator": "python3 tools/validate_game_rc_contracts.py → GAME_RC_CONTRACTS_OK",
+      "FEATURE_COMPLETE_RC": false,
+      "POLISHED_RELEASE_CANDIDATE": false,
+      "HUMAN_PLAYTEST_VALIDATED": false,
+      "critic_class": "ALPHA",
+      "S2_open": 4
+    },
+    "achievement_subsystem_real": {
+      "verdict": "PASS",
+      "shared_runtime_sha256": "5348af79f2d1427a008cab44ddf4a393d2a36c11fe8682675d5d8008cc10388f",
+      "identical_to_anime_aggressors_runtime": true,
+      "catalog_count": 12,
+      "local_test": "godot --headless --path . --script res://tests/AchievementRuntimeTest.gd → PASS — 12/12 real-condition unlocks",
+      "no_cheat_unlock_api": true,
+      "no_test_only_unlock_type": true,
+      "features": {
+        "id_title_desc_hidden": true,
+        "unlock_conditions_flags_events_stats": true,
+        "progress_percent": true,
+        "timestamp": true,
+        "persist_user_achievements_v1": true,
+        "offline": true,
+        "duplicate_prevention": true,
+        "catalog_version_save_version": true,
+        "ui_toast_autoload": "AchievementToast",
+        "browser": "MainMenu Achievements overlay + completion percent",
+        "completion_percent": true
+      },
+      "gameplay_hooks": [
+        "ProgressionSave.mark_tutorial_done → tutorial_completed",
+        "RaceScene._on_race_finished → race_finished / podium_finish / cup_complete",
+        "ProgressionSave.record_time_trial_pb → time_trial_pb",
+        "ProgressionSave.complete_challenge → challenge:*",
+        "PauseMenu.toggle_pause resume → pause_resume"
+      ],
+      "gate_residual": "ProductionGateHarness.playthrough_achievements calls AchievementRuntime.set_flag for cup_complete (same production API RaceScene uses) rather than finishing a cup through RaceScene. Not an unlock(id) cheat. Catalog tests and RaceScene path remain real."
+    },
+    "production_gate_local_reproduce": {
+      "verdict": "PASS",
+      "command": "godot --headless --path . -- --production-gate",
+      "exit_code": 0,
+      "token": "PRODUCTION_GATE_PASS",
+      "playthrough_achievements": "pass",
+      "quit_after_before_playthrough": false,
+      "zombie_process": false,
+      "fixture_save": false,
+      "not_http_server": true,
+      "python_core_loop_runner_still_exists_but_not_claimed_as_the_game": true,
+      "evidence": "artifacts/game_rc_001/actual_production_runtime_independent.json"
+    },
+    "content_manifest_placeholders": {
+      "verdict": "PASS",
+      "racers_on_disk_claimed": 8,
+      "tracks_on_disk": 9,
+      "sneaker_city_sprintway_listed_OPEN_not_counted_as_launch": true,
+      "open_not_claimed_complete": [
+        "challenge_mechanic_instrumentation",
+        "sneaker_city_sprintway",
+        "human_painted_hero_meshes",
+        "public_online",
+        "physical_fps"
+      ]
+    },
+    "playthrough_in_game_code": {
+      "verdict": "PASS",
+      "not_json_narrative_only": true,
+      "tutorial": "MainMenu._prompt_first_run_tutorial + TutorialDirector / ProgressionSave.mark_tutorial_done",
+      "pause_resume": "PauseMenu.toggle_pause freezes SceneTree",
+      "ending": "ResultsScreen 'Cup Complete!' when GameManager.has_next_cup_race() is false"
+    },
+    "critic_alpha_honest": {
+      "verdict": "PASS",
+      "S2_not_zero": true,
+      "S1_zero_packet_scope_ok": true,
+      "full_rc_gaps_vs_packet_scope": [
+        "public_online OPEN",
+        "sneaker_city_sprintway OPEN leftover track",
+        "challenge rail-attach / Perfect Step windows not separately instrumented (OPEN)",
+        "PEDESTRIAN_PHYSICAL_PERFORMANCE_PENDING",
+        "HUMAN_PLAYTEST_VALIDATED=false"
+      ]
+    },
+    "profile_readme_freeze": {
+      "verdict": "PASS",
+      "readme_or_profile_in_pr_diff": false
+    }
+  },
+  "remaining_OPEN": [
+    "HUMAN_PLAYTEST_VALIDATED=false (S2)",
+    "PEDESTRIAN_PHYSICAL_PERFORMANCE_PENDING (S2)",
+    "Public online not shipped (S2)",
+    "Experience/juice not human-validated (S2)",
+    "sneaker_city_sprintway leftover track OPEN",
+    "Challenge mechanical goals not separately instrumented OPEN",
+    "Production gate synthesizes cup flags via set_flag rather than finishing a cup",
+    "gate1-core-loop Python runner still exists (not claimed as the game)",
+    "Archive of Life / Beat Link Party deferred to GAME-RC-002"
+  ],
+  "notes": [
+    "Independent verifier used clean git worktree at tip; not implementer dirty tree.",
+    "Cursor does not merge. Do not claim POLISHED_RC / FEATURE_COMPLETE_RC / HUMAN_PLAYTEST.",
+    "Shared AchievementRuntime.gd byte-identical with anime-aggressors; catalogs are per-game."
+  ]
+}

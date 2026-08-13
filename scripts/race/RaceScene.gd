@@ -423,6 +423,15 @@ func _on_race_finished(finished_player: Node, finish_results: Array) -> void:
 		)
 	# Save ownership: Local MP is couch session — no career XP/PB writes.
 	if not GameManager.is_local_mp():
+		var ach := get_tree().root.get_node_or_null("AchievementRuntime")
+		if ach != null and ach.has_method("report_event"):
+			ach.report_event("race_finished")
+			if pos == 1:
+				ach.report_event("podium_finish")
+			if GameManager.is_cup_active() and not GameManager.has_next_cup_race():
+				if ach.has_method("set_flag"):
+					ach.set_flag("cup_complete", true)
+					ach.set_flag("cup:%s" % GameManager.active_cup_id, true)
 		if GameManager.is_time_trial():
 			var prog := get_tree().root.get_node_or_null("ProgressionSave")
 			if prog != null:

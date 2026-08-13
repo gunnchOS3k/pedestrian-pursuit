@@ -106,6 +106,7 @@ func record_time_trial_pb(track_id: String, time_sec: float) -> bool:
 	if prev <= 0.0 or time_sec < prev:
 		time_trial_pbs[track_id] = time_sec
 		save()
+		_ach_event("time_trial_pb")
 		return true
 	return false
 
@@ -117,6 +118,8 @@ func complete_challenge(challenge_id: String, reward_xp: int = 50) -> void:
 	}
 	add_xp(reward_xp)
 	unlock("challenge:%s" % challenge_id)
+	_ach_set_flag("challenge:%s" % challenge_id, true)
+	_ach_event("challenge_complete")
 
 
 func mark_tutorial_done() -> void:
@@ -125,6 +128,7 @@ func mark_tutorial_done() -> void:
 	unlock("mode:challenges")
 	add_xp(40)
 	save()
+	_ach_set_flag("tutorial_completed", true)
 
 
 func summary_lines() -> PackedStringArray:
@@ -133,4 +137,30 @@ func summary_lines() -> PackedStringArray:
 	lines.append("Unlocks: %d" % unlocked.size())
 	lines.append("Challenges cleared: %d" % challenge_progress.size())
 	lines.append("TT personal bests: %d" % time_trial_pbs.size())
+	var ach := _achievements()
+	if ach != null and ach.has_method("completion_percent"):
+		lines.append("Achievements: %.0f%%  (%d/%d)" % [
+			float(ach.completion_percent()),
+			int(ach.unlocked_count()),
+			int(ach.catalog_count()),
+		])
 	return lines
+
+
+func _achievements() -> Node:
+	var tree := Engine.get_main_loop() as SceneTree
+	if tree == null or tree.root == null:
+		return null
+	return tree.root.get_node_or_null("AchievementRuntime")
+
+
+func _ach_event(event_id: String, amount: int = 1) -> void:
+	var ach := _achievements()
+	if ach != null and ach.has_method("report_event"):
+		ach.report_event(event_id, amount)
+
+
+func _ach_set_flag(flag: String, value: bool = true) -> void:
+	var ach := _achievements()
+	if ach != null and ach.has_method("set_flag"):
+		ach.set_flag(flag, value)

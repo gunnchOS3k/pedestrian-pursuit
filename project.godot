@@ -20,6 +20,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 ProgressionSave="*res://scripts/core/ProgressionSave.gd"
+AchievementRuntime="*res://scripts/core/AchievementRuntime.gd"
+AchievementToast="*res://scripts/ui/AchievementToast.gd"
 GameManager="*res://scripts/core/GameManager.gd"
 InputManager="*res://scripts/core/InputManager.gd"
 SceneLoader="*res://scripts/core/SceneLoader.gd"

@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gunnchos.local/game-rc/playthrough_contract.schema.json",
+  "title": "GameRCPlaythroughContract",
+  "description": "Tutorial-through-ending playthrough contract. Placeholders must be CLOSED or honestly listed OPEN.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "game",
+    "contract_version",
+    "playthrough_id",
+    "digitally_executable",
+    "human_playtest_validated",
+    "pause_resume",
+    "ending",
+    "steps",
+    "open_placeholders"
+  ],
+  "properties": {
+    "schema": { "const": "gunnchos.game_rc.playthrough_contract/v1" },
+    "game": {
+      "type": "string",
+      "enum": [
+        "anime-aggressors",
+        "pedestrian-pursuit",
+        "archive-of-life-artifact-world",
+        "beatlink-party"
+      ]
+    },
+    "contract_version": { "type": "integer", "minimum": 1 },
+    "playthrough_id": { "type": "string", "minLength": 3 },
+    "digitally_executable": { "type": "boolean" },
+    "human_playtest_validated": { "type": "boolean" },
+    "pause_resume": {
+      "type": "object",
+      "required": ["required", "status", "evidence"],
+      "properties": {
+        "required": { "const": true },
+        "status": { "type": "string", "enum": ["CLOSED", "OPEN"] },
+        "evidence": { "type": "string", "minLength": 1 }
+      }
+    },
+    "ending": {
+      "type": "object",
+      "required": ["id", "status", "description"],
+      "properties": {
+        "id": { "type": "string" },
+        "status": { "type": "string", "enum": ["CLOSED", "OPEN"] },
+        "description": { "type": "string" }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "required", "status"],
+        "properties": {
+          "id": { "type": "string" },
+          "scene": { "type": "string" },
+          "required": { "type": "boolean" },
+          "status": { "type": "string", "enum": ["CLOSED", "OPEN"] },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "open_placeholders": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "severity", "summary"],
+        "properties": {
+          "id": { "type": "string" },
+          "severity": { "type": "string", "enum": ["S0", "S1", "S2", "S3", "n/a"] },
+          "summary": { "type": "string" }
+        }
+      }
+    },
+    "notes": { "type": "string" }
+  }
+}
