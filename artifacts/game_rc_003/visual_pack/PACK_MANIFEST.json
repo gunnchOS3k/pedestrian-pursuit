@@ -1,0 +1,29 @@
+{
+  "schema": "gunnchos.game_rc.visual_pack/v1",
+  "game": "pedestrian-pursuit",
+  "packet": "GAME-RC-003",
+  "generated_at": "2026-08-14T21:20:13Z",
+  "base_main_sha": "cc965fc5d4d6f3a8cb02c1e6d8dfbbd99d173fe3",
+  "resolution": "1280x720",
+  "platform": "macos",
+  "engine": "Godot 4.7.1.stable.official.a13da4feb",
+  "input": "keyboard/gamepad simulated",
+  "VISUAL_MODEL_REVIEW": "UNAVAILABLE",
+  "visual_model_review_reason": "Agent cannot inspect pixels of displayed frames in this run. Pack slots listed for later ChatGPT/human review.",
+  "harness": "tests/rc003_visual_capture.gd",
+  "shots": [
+    { "id": "first_launch", "file": "01_first_launch.png", "status": "HARNESS_DEFINED" },
+    { "id": "title", "file": "02_title.png", "status": "HARNESS_DEFINED" },
+    { "id": "tutorial", "file": "03_tutorial.png", "status": "HARNESS_DEFINED" },
+    { "id": "main_gameplay", "file": "04_main_gameplay.png", "status": "HARNESS_DEFINED" },
+    { "id": "high_action", "file": "05_high_action.png", "status": "HARNESS_DEFINED" },
+    { "id": "pause", "file": "06_pause.png", "status": "HARNESS_DEFINED" },
+    { "id": "settings", "file": "07_settings.png", "status": "HARNESS_DEFINED" },
+    { "id": "a11y", "file": "08_a11y.png", "status": "HARNESS_DEFINED" },
+    { "id": "failure", "file": "09_failure.png", "status": "HARNESS_DEFINED" },
+    { "id": "victory", "file": "10_victory.png", "status": "HARNESS_DEFINED" },
+    { "id": "achievement", "file": "11_achievement.png", "status": "HARNESS_DEFINED" },
+    { "id": "completion_results", "file": "12_completion_results.png", "status": "HARNESS_DEFINED" }
+  ],
+  "notes": "Run without --headless for real PNGs. Do not invent pixel critique."
+}

@@ -35,6 +35,10 @@ func setup(player: Node, race_manager: Node, course_data: Dictionary = {}) -> vo
 		player.item_warning_received.connect(func(id, secs): _on_item_warning(id, secs, null))
 	if player.has_signal("speed_changed"):
 		player.speed_changed.connect(_on_speed_changed)
+	if race_manager.has_node("PositionTracker"):
+		var tracker := race_manager.get_node("PositionTracker")
+		if tracker.has_signal("place_changed") and not tracker.place_changed.is_connected(_on_place_changed):
+			tracker.place_changed.connect(_on_place_changed)
 	countdown_label.visible = true
 	item_label.text = "Item: None"
 	if _wrong_way_label == null:
@@ -305,3 +309,20 @@ func _on_speed_changed(speed: float) -> void:
 			if boost != null and boost.has_method("get_speed_multiplier"):
 				boosting = boost.get_speed_multiplier() > 1.05
 			cam.set_boosting(boosting)
+
+
+## GAME-RC-003 — overtake / being-overtaken HUD pulse + optional SFX.
+func _on_place_changed(racer: Node, old_place: int, new_place: int) -> void:
+	if racer != _player or position_label == null:
+		return
+	var gained := new_place < old_place
+	position_label.text = "Position: %d" % new_place
+	position_label.modulate = Color(0.45, 1.0, 0.55) if gained else Color(1.0, 0.55, 0.45)
+	var tw := create_tween()
+	tw.tween_property(position_label, "scale", Vector2(1.18, 1.18), 0.1)
+	tw.tween_property(position_label, "scale", Vector2.ONE, 0.15)
+	tw.tween_property(position_label, "modulate", Color.WHITE, 0.35)
+	var audio := get_tree().root.get_node_or_null("AudioDirector")
+	if audio != null and gained and audio.has_method("play_ui"):
+		audio.play_ui("confirm")
+

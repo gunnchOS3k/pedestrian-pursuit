@@ -1,17 +1,22 @@
 {
   "schema": "gunnchos.game_rc.rc_gate/v1",
   "game": "pedestrian-pursuit",
-  "packet": "GAME-RC-001",
-  "generated_at": "2026-08-13T18:40:00Z",
+  "packet": "GAME-RC-003",
+  "generated_at": "2026-08-14T21:35:00Z",
   "claims": {
     "POLISHED_RELEASE_CANDIDATE": false,
     "FEATURE_COMPLETE_RC": false,
     "HUMAN_PLAYTEST_VALIDATED": false,
     "DIGITAL_PLAYTHROUGH_EXECUTABLE": true,
-    "ACHIEVEMENT_SUBSYSTEM": true
+    "ACHIEVEMENT_SUBSYSTEM": true,
+    "PEDESTRIAN_CONTENT_FEATURE_COMPLETE_DIGITAL": true,
+    "PEDESTRIAN_AI_HEURISTIC_POLISH_PASS": true,
+    "PEDESTRIAN_MULTI_PLATFORM_BUILD_FOUNDATION": true,
+    "PLATFORM_PUBLISHED": false,
+    "CONSOLE_CERTIFIED": false
   },
-  "critic_class": "ALPHA",
-  "critic_class_rationale": "Digital tutorial→race→results/cup-complete playthrough and achievement runtime are executable. S0/S1 for this packet's digital scope are 0. S2 experience and physical FPS remain OPEN, VISUAL is UNAVAILABLE, so critic stays ALPHA. POLISHED_RELEASE_CANDIDATE and FEATURE_COMPLETE_RC are not claimed.",
+  "critic_class": "BETA",
+  "critic_class_rationale": "Launch content checklist CLOSED with ADR exclusions. Digital polish systems heuristically PASS (headless only). Physical FPS pending. VISUAL_MODEL_REVIEW=UNAVAILABLE. S2 experience remains OPEN — not POLISHED_RELEASE_CANDIDATE. FEATURE_COMPLETE_RC remains false. Critic BETA (digital), not RC.",
   "defects": {
     "S0_open": 0,
     "S1_open": 0,
@@ -19,13 +24,13 @@
     "S2_items": [
       "HUMAN_PLAYTEST_VALIDATED=false",
       "PEDESTRIAN_PHYSICAL_PERFORMANCE_PENDING",
-      "Public online not shipped",
-      "Experience/juice not human-validated"
+      "Public online excluded from launch (ADR-GAME-PP-001)",
+      "Experience/juice not human-validated — POLISHED_RELEASE_CANDIDATE=false"
     ]
   },
   "visual": {
     "VISUAL_MODEL_REVIEW": "UNAVAILABLE",
-    "reason": "This packet ran headless Godot / contract validation. No pixel inspection of a displayed frame was performed."
+    "reason": "Capture harness + pack metadata produced; no pixel inspection of displayed frames in this agent run."
   },
   "playthrough": {
     "status": "DIGITAL_EXECUTABLE",
@@ -35,11 +40,11 @@
     "catalog": "release/ACHIEVEMENTS.json",
     "count": 12,
     "tested_count": 12,
-    "notes": "Isolated AchievementRuntime tests fire real catalog conditions (flags/events/stats). No cheat unlock API."
+    "notes": "Isolated AchievementRuntime tests fire real catalog conditions (flags/events/stats). No cheat unlock API. GAME-RC-003 restores count after RC_GATE rewrite."
   },
   "next_packets": {
-    "archive-of-life-artifact-world": "GAME-RC-002 — contracts + achievement runtime (not in this 2-PR packet)",
-    "beatlink-party": "GAME-RC-002 — contracts + achievement runtime (not in this 2-PR packet)"
+    "archive-of-life-artifact-world": "GAME-RC-004 — Archive polish (not this PR)",
+    "beatlink-party": "GAME-RC-004 — Beat Link polish (not this PR)"
   },
-  "notes": "Cursor does not merge. sneaker_city_sprintway is listed OPEN in CONTENT_MANIFEST (not a launch-cup course)."
+  "notes": "Cursor does not merge. sneaker_city_sprintway remains OPEN (not launch-cup). MULTI_PLATFORM_BUILD_FOUNDATION true only with honest PLATFORM_MATRIX (Android BUILDABLE; Web/desktop NOT_STARTED without presets; Steam EXTERNAL_ACCOUNT_PENDING; consoles EXTERNAL_PENDING)."
 }

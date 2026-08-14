@@ -1,0 +1,33 @@
+{
+  "schema": "gunnchos.experience_review.ai_heuristic_polish/v1",
+  "game": "pedestrian-pursuit",
+  "packet": "GAME-RC-003",
+  "generated_at": "2026-08-14T21:20:13Z",
+  "base_main_sha": "cc965fc5d4d6f3a8cb02c1e6d8dfbbd99d173fe3",
+  "AI_HEURISTIC_POLISH_PASS": true,
+  "HUMAN_PLAYTEST_VALIDATED": false,
+  "POLISHED_RELEASE_CANDIDATE": false,
+  "VISUAL_MODEL_REVIEW": "UNAVAILABLE",
+  "method": "Static+runtime wiring audit of polish checklist items; source-diff alone is insufficient — each item maps to a callable/runtime path.",
+  "checklist": [
+    { "id": "acceleration_feel", "status": "PASS", "evidence": "MovementStats + PlayerController sprint/boost curve" },
+    { "id": "speed_feedback", "status": "PASS", "evidence": "RaceHUD speed_label + CameraRig FOV/look-ahead" },
+    { "id": "camera_behavior", "status": "PASS", "evidence": "CameraRig speed-scaled FOV with a11y reduce-motion" },
+    { "id": "footstep_impact", "status": "PASS", "evidence": "AudioDirector.play_footstep + terrain surfaces" },
+    { "id": "overtake_feedback", "status": "PASS", "evidence": "PositionTracker.place_changed → RaceHUD._on_place_changed (GAME-RC-003)" },
+    { "id": "item_feedback", "status": "PASS", "evidence": "ItemManager warnings + RaceHUD WARN flash" },
+    { "id": "hazard_anticipation", "status": "PASS", "evidence": "item_warning + wrong-way HUD" },
+    { "id": "track_readability", "status": "PASS", "evidence": "MiniMap + course_label + marker colors" },
+    { "id": "finish_celebration", "status": "PASS", "evidence": "ResultsScreen._play_finish_celebration (GAME-RC-003)" },
+    { "id": "hud_menus", "status": "PASS", "evidence": "RaceHUD + MainMenu + PauseMenu" },
+    { "id": "audio_music", "status": "PASS", "evidence": "AudioDirector race/menu/results beds" }
+  ],
+  "S1_open": 0,
+  "S2_open": [
+    "HUMAN_PLAYTEST_VALIDATED",
+    "PEDESTRIAN_PHYSICAL_PERFORMANCE_PENDING",
+    "public online excluded",
+    "human juice / fun"
+  ],
+  "verdict": "Digital polish systems present and heuristically PASS. Not a human polish RC."
+}
