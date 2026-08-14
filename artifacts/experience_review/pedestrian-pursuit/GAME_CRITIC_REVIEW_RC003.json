@@ -1,0 +1,33 @@
+{
+  "schema": "experience_review_game_critic/v1",
+  "subject": "pedestrian-pursuit",
+  "work_item": "GAME-RC-003",
+  "generated_at": "2026-08-14T21:20:13Z",
+  "VISUAL_MODEL_REVIEW": "UNAVAILABLE",
+  "live_framebuffer": "UNAVAILABLE",
+  "classification": "BETA_DIGITAL",
+  "classification_rationale": [
+    "Launch content checklist CLOSED with explicit ADR exclusions",
+    "Digital polish systems heuristically PASS (camera speed feel, overtake HUD, finish celebration, item warnings)",
+    "VISUAL_MODEL_REVIEW unavailable — no pixel invent",
+    "Physical FPS still PEDESTRIAN_PHYSICAL_PERFORMANCE_PENDING",
+    "HUMAN_PLAYTEST_VALIDATED remains false — not POLISHED_RELEASE_CANDIDATE"
+  ],
+  "not_rc": true,
+  "likely_not_beta_polished": true,
+  "evidence_based": true,
+  "no_invented_visual_critique": true,
+  "findings": [
+    { "severity": "S0", "id": "none", "summary": "No S0 crash/blocker newly evidenced." },
+    { "severity": "S1", "id": "none_open", "summary": "S1_open=0 for GAME-RC-003 digital polish/content scope." },
+    { "severity": "S2", "id": "CRIT-S2-HUMAN-POLISH", "status": "OPEN", "summary": "Human fun/polish pending." },
+    { "severity": "S2", "id": "CRIT-S2-PHYSICAL-FPS", "status": "OPEN", "summary": "PEDESTRIAN_PHYSICAL_PERFORMANCE_PENDING." }
+  ],
+  "scores_heuristic": {
+    "systems_depth": 0.84,
+    "presentation": 0.44,
+    "content_completeness": 0.9,
+    "ship_readiness": 0.58
+  },
+  "verdict": "BETA_DIGITAL — content + digital polish foundation; not human-polished RC."
+}

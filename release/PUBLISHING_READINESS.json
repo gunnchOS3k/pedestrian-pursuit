@@ -1,0 +1,43 @@
+{
+  "schema": "gunnchos.game_rc.publishing_readiness/v1",
+  "game": "pedestrian-pursuit",
+  "packet": "GAME-RC-003",
+  "generated_at": "2026-08-14T21:20:13Z",
+  "base_main_sha": "cc965fc5d4d6f3a8cb02c1e6d8dfbbd99d173fe3",
+  "PEDESTRIAN_MULTI_PLATFORM_BUILD_FOUNDATION": true,
+  "PLATFORM_PUBLISHED": false,
+  "CONSOLE_CERTIFIED": false,
+  "steam": {
+    "foundation_packaging": true,
+    "app_depot_layout": true,
+    "version_metadata": true,
+    "save_path_policy": true,
+    "controller_support": true,
+    "launch_options": true,
+    "crash_log_collection": true,
+    "store_asset_checklist": true,
+    "privacy_online_disclosures": true,
+    "achievement_bridge_interface": true,
+    "account_deposit_review": "EXTERNAL_PENDING",
+    "fees_paid": false
+  },
+  "console": {
+    "abstractions": true,
+    "sdk_access": false,
+    "certification": false,
+    "state": "EXTERNAL_PENDING"
+  },
+  "android": {
+    "target_sdk": 36,
+    "api_level": 36,
+    "deadline": "2026-08-31",
+    "play_console_upload": false
+  },
+  "apple": {
+    "required_sdk": "iOS/iPadOS 26",
+    "required_xcode": "26+",
+    "enforced_since": "2026-04-28",
+    "app_store_upload": false,
+    "local_toolchain_present": "UNKNOWN"
+  }
+}

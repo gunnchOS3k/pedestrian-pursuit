@@ -77,6 +77,22 @@ func show_results(
 			else "Single-course race"
 		)
 		retry_button.text = "Race Again"
+	_play_finish_celebration(finished, position)
+
+
+func _play_finish_celebration(finished: bool, position: int) -> void:
+	## GAME-RC-003 digital finish celebration. Human juice remains HUMAN_PENDING.
+	if title_label == null:
+		return
+	title_label.pivot_offset = title_label.size * 0.5
+	title_label.scale = Vector2(0.88, 0.88)
+	var peak := Vector2(1.12, 1.12) if finished and position == 1 else Vector2(1.05, 1.05)
+	var tw := create_tween()
+	tw.tween_property(title_label, "scale", peak, 0.2).set_trans(Tween.TRANS_BACK)
+	tw.tween_property(title_label, "scale", Vector2.ONE, 0.14)
+	var audio := get_tree().root.get_node_or_null("AudioDirector")
+	if audio != null and finished and audio.has_method("play_results"):
+		audio.play_results()
 
 
 func annotate_local_mp(finish_results: Array) -> void:

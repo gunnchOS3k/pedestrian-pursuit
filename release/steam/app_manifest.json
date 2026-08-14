@@ -1,0 +1,40 @@
+{
+  "schema": "gunnchos.steam_foundation/v1",
+  "AppId": 0,
+  "AppIdStatus": "EXTERNAL_PENDING",
+  "game": "Pedestrian Pursuit",
+  "depot_layout": {
+    "content_root": "depot/content",
+    "linux": "depot/linux",
+    "windows": "depot/windows",
+    "macos": "depot/macos"
+  },
+  "version_metadata": {
+    "build_sha_pin": true,
+    "semantic_version_file": "release/steam/version.txt"
+  },
+  "save_path_policy": "user:// (OS user data); no roaming secrets",
+  "controller_support": {
+    "generic_gamepad": true,
+    "steam_input": "FOUNDATION_INTERFACE_ONLY"
+  },
+  "launch_options": ["--fullscreen", "--windowed", "--no-audio"],
+  "crash_log_collection": { "path": "user://logs/", "upload": false },
+  "store_asset_checklist": [
+    "capsule_main",
+    "capsule_small",
+    "header",
+    "library_hero",
+    "library_logo",
+    "screenshots_5plus",
+    "trailer_optional"
+  ],
+  "privacy_online_disclosures": {
+    "online_ranked": false,
+    "telemetry_default": "local_opt_in",
+    "third_party_account": false
+  },
+  "achievement_bridge_interface": "PlatformServices.bridge_achievement",
+  "fees_paid": false,
+  "notes": "Foundation only. No Steamworks account deposit or store review."
+}

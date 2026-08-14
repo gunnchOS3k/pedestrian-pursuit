@@ -3,14 +3,17 @@ extends Node
 ## Sorts racers by lap, checkpoint, and distance to next checkpoint.
 
 signal positions_updated(ranking: Array)
+signal place_changed(racer: Node, old_place: int, new_place: int)
 
 var _checkpoints: Array[Node3D] = []
 var _lap_manager: Node
+var _last_places: Dictionary = {}
 
 
 func setup(lap_manager: Node, checkpoints: Array[Node3D]) -> void:
 	_lap_manager = lap_manager
 	_checkpoints = checkpoints
+	_last_places.clear()
 
 
 func update_positions() -> void:
@@ -33,9 +36,15 @@ func update_positions() -> void:
 	var ranking: Array = []
 	for i in states.size():
 		var racer_node: Node = states[i].racer
+		var place := i + 1
 		if racer_node != null:
-			racer_node.set_meta("race_place_estimate", i + 1)
-		ranking.append({"racer": racer_node, "position": i + 1})
+			racer_node.set_meta("race_place_estimate", place)
+			var rid := str(racer_node.get_instance_id())
+			var prev := int(_last_places.get(rid, place))
+			if prev != place:
+				place_changed.emit(racer_node, prev, place)
+			_last_places[rid] = place
+		ranking.append({"racer": racer_node, "position": place})
 	positions_updated.emit(ranking)
 
 
