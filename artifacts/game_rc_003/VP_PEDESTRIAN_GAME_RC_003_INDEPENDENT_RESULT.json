@@ -1,0 +1,143 @@
+{
+  "schema": "gunnchos.game_rc_003.independent_verifier_result.v1",
+  "work_item": "GAME-RC-003",
+  "game": "pedestrian-pursuit",
+  "draft": 17,
+  "verifier_role": "INDEPENDENT_VERIFIER_AGENT",
+  "did_not_implement": true,
+  "did_not_merge": true,
+  "did_not_start_GAME_RC_004": true,
+  "generated_at_utc": "2026-08-14T21:30:24Z",
+  "pr": {
+    "number": 17,
+    "url": "https://github.com/gunnchOS3k/pedestrian-pursuit/pull/17",
+    "draft": true,
+    "branch": "cursor/game-rc-003-content-polish-platform",
+    "title": "GAME-RC-003: content complete digital + polish + multi-platform foundation",
+    "mergeable": "MERGEABLE",
+    "mergeStateStatus": "UNSTABLE"
+  },
+  "claimed_tip": "cef6d64dc7822eeb441118eb74f82d85c261d900",
+  "claimed_tip_live_confirmed": true,
+  "verified_tip": "cef6d64dc7822eeb441118eb74f82d85c261d900",
+  "verified_tip_short": "cef6d64",
+  "base_main": "cc965fc5d4d6f3a8cb02c1e6d8dfbbd99d173fe3",
+  "base_main_confirmed": true,
+  "base_main_short": "cc965fc",
+  "godot_version_local": "4.7.1.stable.official.a13da4feb",
+  "VP_GAME_RC_003_INDEPENDENT_RESULT": "FAIL",
+  "PEDESTRIAN_17_READY_FOR_EDMUND_MERGE": false,
+  "READY_FOR_EDMUND_MERGE": false,
+  "tokens_verified": {
+    "PEDESTRIAN_CONTENT_FEATURE_COMPLETE_DIGITAL": {
+      "claimed": true,
+      "verifier": "PASS_WITH_ADR",
+      "notes": "8 racers + 8 launch cup tracks + 2 cups on disk; sneaker_city_sprintway / painted heroes / public online / physical FPS / challenge window PARTIAL explicitly OPEN via ADR-GAME-PP-001."
+    },
+    "PEDESTRIAN_AI_HEURISTIC_POLISH_PASS": {
+      "claimed": true,
+      "verifier": "PASS_DIGITAL_HEURISTIC_ONLY",
+      "notes": "Overtake HUD, finish celebration, footstep/item warnings wired. Headless PRODUCTION_GATE_PASS. Not human polish; POLISHED_RELEASE_CANDIDATE correctly false."
+    },
+    "PEDESTRIAN_MULTI_PLATFORM_BUILD_FOUNDATION": {
+      "claimed": true,
+      "verifier": "FAIL_OVERCLAIM",
+      "notes": "Foundation files exist and Android target_sdk=36 preset is real, but PLATFORM_MATRIX marks Web BUILDABLE with note 'preset may be added' while export_presets.cfg only contains Android. Linux/Windows/macOS also BUILDABLE without presets."
+    },
+    "FEATURE_COMPLETE_RC": { "claimed": false, "verifier": "PASS_STAYS_FALSE" },
+    "POLISHED_RELEASE_CANDIDATE": { "claimed": false, "verifier": "PASS_STAYS_FALSE" },
+    "HUMAN_PLAYTEST_VALIDATED": { "claimed": false, "verifier": "PASS_STAYS_FALSE" },
+    "PLATFORM_PUBLISHED": { "claimed": false, "verifier": "PASS_STAYS_FALSE" },
+    "CONSOLE_CERTIFIED": { "claimed": false, "verifier": "PASS_STAYS_FALSE" }
+  },
+  "critic": {
+    "claimed": "BETA_DIGITAL",
+    "S0_open": 0,
+    "S1_open_claimed": 0,
+    "S2_open": 4,
+    "S2_hidden": false,
+    "VISUAL_MODEL_REVIEW": "UNAVAILABLE",
+    "verifier_on_critic": "PASS_GIVEN_S2_AND_NO_POLISHED_CLAIM",
+    "notes": "BETA_DIGITAL acceptable with S2=4 and no POLISHED claim. Physical FPS correctly remains OPEN."
+  },
+  "challenges": {
+    "live_tips_ci": {
+      "verdict": "FAIL",
+      "tip_match": true,
+      "checks": [
+        { "name": "gate1-core-loop", "conclusion": "failure", "detail": "RC_GATE achievement count mismatch (release/RC_GATE.json missing achievements.count; catalog has 12)" },
+        { "name": "wp014-actual-production-runtime", "conclusion": "success" },
+        { "name": "godot-headless-no-false-green", "conclusion": "success" }
+      ],
+      "local_validator": "python3 tools/validate_game_rc_contracts.py → FAIL RC_GATE achievement count mismatch"
+    },
+    "content_manifests_vs_assets": {
+      "verdict": "PASS_WITH_ADR",
+      "racers_on_disk": 8,
+      "launch_cup_tracks": 8,
+      "cups": ["sole_surge_cup", "stride_circuit_cup"],
+      "adr": "docs/decisions/ADR-GAME-PP-001-launch-scope-exclusions.md",
+      "open_placeholders_not_silent": true,
+      "challenge_instrumentation": "PARTIAL explicitly ADR'd — not silently CLOSED"
+    },
+    "production_playthrough_polish_gates": {
+      "verdict": "PASS_HEADLESS_ONLY",
+      "local_reproduce": "PRODUCTION_GATE_PASS (Godot 4.7.1)",
+      "steps_pass": [
+        "title_menu",
+        "new_game_session",
+        "real_input_drive",
+        "checkpoint_core_loop",
+        "pause_resume",
+        "playthrough_achievements",
+        "settings_a11y_baseline",
+        "audio_hook",
+        "save_load_lifecycle",
+        "suspend_resume_checkpoint",
+        "logging_perf_telemetry"
+      ],
+      "polished_rc_not_earned_from_headless": true
+    },
+    "achievements_no_cheat_api": {
+      "verdict": "PASS",
+      "catalog_count": 12,
+      "hidden_count": 1,
+      "hidden_ids": ["pp.hidden_hat_trick"],
+      "unlock_types": ["flag", "event_count"],
+      "public_cheat_unlock_api": false,
+      "private__unlock_only_via_conditions": true
+    },
+    "platform_matrix_publishing_honesty": {
+      "verdict": "FAIL",
+      "android_target_sdk_36": true,
+      "apple_sdk_26_notes_present": true,
+      "ios_NOT_STARTED": true,
+      "consoles_EXTERNAL_PENDING_no_fake_sdk": true,
+      "web_preset_present": false,
+      "desktop_presets_present": false,
+      "export_presets_platforms": ["Android"],
+      "overclaims": [
+        "Web BUILDABLE while notes admit 'preset may be added'",
+        "Linux/Windows/macOS BUILDABLE without export presets",
+        "Steam BUILDABLE is foundation metadata only"
+      ]
+    },
+    "visual_pack": {
+      "verdict": "PASS_HONEST_UNAVAILABLE",
+      "pack_path": "artifacts/game_rc_003/visual_pack/PACK_MANIFEST.json",
+      "png_files_present": false,
+      "shot_statuses": "HARNESS_DEFINED only",
+      "VISUAL_MODEL_REVIEW": "UNAVAILABLE"
+    }
+  },
+  "remaining_OPEN": [
+    "Restore release/RC_GATE.json achievements.count=12 so gate1-core-loop is green",
+    "Demote Web/desktop/Steam BUILDABLE claims to match export_presets.cfg reality (Android-only preset today)",
+    "S2 human polish / physical FPS / public online remain OPEN",
+    "Challenge rail-attach / perfect-step window instrumentation remains PARTIAL",
+    "Capture real visual PNGs before any VISUAL_MODEL_REVIEW claim",
+    "Do not claim POLISHED_RC / FEATURE_COMPLETE_RC / HUMAN_PLAYTEST / published / console cert",
+    "Do not start GAME-RC-004"
+  ],
+  "verdict_summary": "PR #17 tip cef6d64 confirmed DRAFT; production gate reproduces PRODUCTION_GATE_PASS; FEATURE_COMPLETE_RC/POLISHED/HUMAN stay false; content digital largely earned with ADR clarity; FAIL merge-ready because gate1 contract validation fails and PLATFORM_MATRIX overclaims Web/desktop BUILDABLE."
+}

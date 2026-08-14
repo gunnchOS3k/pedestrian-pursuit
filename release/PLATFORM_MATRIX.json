@@ -2,10 +2,11 @@
   "schema": "gunnchos.game_rc.platform_matrix/v1",
   "game": "pedestrian-pursuit",
   "packet": "GAME-RC-003",
-  "generated_at": "2026-08-14T21:20:13Z",
+  "generated_at": "2026-08-14T21:35:00Z",
   "base_main_sha": "cc965fc5d4d6f3a8cb02c1e6d8dfbbd99d173fe3",
   "engine": { "name": "Godot", "version": "4.7.1.stable.official.a13da4feb" },
-  "official_requirements_refreshed_at": "2026-08-14T21:20:13Z",
+  "official_requirements_refreshed_at": "2026-08-14T21:35:00Z",
+  "export_presets_observed": ["Android"],
   "mobile_store_requirements": {
     "android": {
       "target_api": 36,
@@ -13,24 +14,24 @@
       "deadline": "2026-08-31",
       "source": "https://support.google.com/googleplay/android-developer/answer/11926878",
       "export_preset_target_sdk": 36,
-      "notes": "Phone/tablet/foldable new apps and updates must target API 36 by 2026-08-31."
+      "notes": "Phone/tablet/foldable new apps and updates must target API 36 by 2026-08-31. Not Play-uploaded."
     },
     "apple": {
       "ios_ipados_sdk": "26",
       "xcode": "26+",
       "enforced_since": "2026-04-28",
       "source": "https://developer.apple.com/news/upcoming-requirements/",
-      "notes": "App Store uploads require iOS/iPadOS 26 SDK (Xcode 26+). Deployment target may remain lower."
+      "notes": "App Store uploads require iOS/iPadOS 26 SDK (Xcode 26+). Local iOS export not started."
     }
   },
   "platforms": {
-    "Web": { "state": "BUILDABLE", "notes": "Godot Web export feasible; preset may be added. Not store-published." },
-    "Linux": { "state": "BUILDABLE", "notes": "Desktop export path; Steam foundation packaging present." },
-    "Windows": { "state": "BUILDABLE", "notes": "Desktop export path; Steam foundation packaging present." },
-    "macOS": { "state": "BUILDABLE", "notes": "Desktop export path; Steam foundation packaging present." },
+    "Web": { "state": "NOT_STARTED", "notes": "No Web export preset in export_presets.cfg (Android-only today). Must not claim BUILDABLE." },
+    "Linux": { "state": "NOT_STARTED", "notes": "No Linux export preset." },
+    "Windows": { "state": "NOT_STARTED", "notes": "No Windows export preset." },
+    "macOS": { "state": "NOT_STARTED", "notes": "No macOS export preset." },
     "Android": { "state": "BUILDABLE", "notes": "Gradle export preset target_sdk=36. No Play Console upload claimed." },
     "iOS": { "state": "NOT_STARTED", "notes": "Requires Xcode 26 / iOS 26 SDK on build host. No App Store upload claimed." },
-    "Steam": { "state": "BUILDABLE", "notes": "Foundation depot layout + metadata only. Account/deposit/review EXTERNAL_PENDING. No fees paid." },
+    "Steam": { "state": "EXTERNAL_ACCOUNT_PENDING", "notes": "Foundation depot layout + metadata only (release/steam/). No AppId; no fees; not BUILDABLE without desktop presets + Steamworks account." },
     "Xbox": { "state": "EXTERNAL_PENDING", "notes": "Abstraction only. No SDK/devkit/cert claim." },
     "PlayStation": { "state": "EXTERNAL_PENDING", "notes": "Abstraction only. No SDK/devkit/cert claim." },
     "Nintendo": { "state": "EXTERNAL_PENDING", "notes": "Abstraction only. No SDK/devkit/cert claim." }
@@ -39,6 +40,8 @@
     "PLATFORM_PUBLISHED",
     "CONSOLE_CERTIFIED",
     "STORE_ASSET_READY",
+    "Web BUILDABLE without preset",
+    "Desktop BUILDABLE without presets",
     "App Store / Play / Steam review approval"
   ]
 }

@@ -17,7 +17,7 @@ Finite packet: content completeness + digital polish engineering + multi-platfor
 | `PLATFORM_PUBLISHED` / `CONSOLE_CERTIFIED` | **NO** |
 
 ## Critic
-**BETA_DIGITAL** (not polished RC). `VISUAL_MODEL_REVIEW=UNAVAILABLE`. Physical FPS remains pending.
+**BETA** (not polished RC). `VISUAL_MODEL_REVIEW=UNAVAILABLE`. Physical FPS remains pending.
 
 ## Evidence
 - `release/CONTENT_MANIFEST.json`

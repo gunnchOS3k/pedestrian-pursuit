@@ -2,13 +2,7 @@
   "schema": "gunnchos.game_rc.rc_gate/v1",
   "game": "pedestrian-pursuit",
   "packet": "GAME-RC-003",
-  "generated_at": "2026-08-14T21:20:13Z",
-  "base_main_sha": "cc965fc5d4d6f3a8cb02c1e6d8dfbbd99d173fe3",
-  "predecessor": {
-    "packet": "GAME-RC-001",
-    "merged_pr": 16,
-    "merge_sha": "cc965fc5d4d6f3a8cb02c1e6d8dfbbd99d173fe3"
-  },
+  "generated_at": "2026-08-14T21:35:00Z",
   "claims": {
     "POLISHED_RELEASE_CANDIDATE": false,
     "FEATURE_COMPLETE_RC": false,
@@ -21,8 +15,8 @@
     "PLATFORM_PUBLISHED": false,
     "CONSOLE_CERTIFIED": false
   },
-  "critic_class": "BETA_DIGITAL",
-  "critic_class_rationale": "Launch content checklist CLOSED with explicit ADR exclusions. Digital polish systems (accel/speed camera feel, footstep/impact path, overtake HUD, item warnings, finish celebration, HUD/menus/audio) are wired and heuristically verified — not human-validated. Physical FPS remains pending. VISUAL_MODEL_REVIEW=UNAVAILABLE. Critic advances to BETA_DIGITAL (not POLISHED_RELEASE_CANDIDATE).",
+  "critic_class": "BETA",
+  "critic_class_rationale": "Launch content checklist CLOSED with ADR exclusions. Digital polish systems heuristically PASS (headless only). Physical FPS pending. VISUAL_MODEL_REVIEW=UNAVAILABLE. S2 experience remains OPEN — not POLISHED_RELEASE_CANDIDATE. FEATURE_COMPLETE_RC remains false. Critic BETA (digital), not RC.",
   "defects": {
     "S0_open": 0,
     "S1_open": 0,
@@ -36,17 +30,21 @@
   },
   "visual": {
     "VISUAL_MODEL_REVIEW": "UNAVAILABLE",
-    "reason": "Capture harness + pack metadata produced; no pixel inspection of displayed frames in this agent run.",
-    "pack": "artifacts/game_rc_003/visual_pack/PACK_MANIFEST.json"
+    "reason": "Capture harness + pack metadata produced; no pixel inspection of displayed frames in this agent run."
   },
-  "polish": {
-    "AI_HEURISTIC_POLISH_PASS": true,
-    "evidence": "artifacts/experience_review/pedestrian-pursuit/GAME_RC_003_AI_HEURISTIC_POLISH.json",
-    "note": "Pass is digital-system heuristic only; not a human polish token."
+  "playthrough": {
+    "status": "DIGITAL_EXECUTABLE",
+    "contract": "release/PLAYTHROUGH_CONTRACT.json"
   },
-  "platform": {
-    "matrix": "release/PLATFORM_MATRIX.json",
-    "publishing": "release/PUBLISHING_READINESS.json"
+  "achievements": {
+    "catalog": "release/ACHIEVEMENTS.json",
+    "count": 12,
+    "tested_count": 12,
+    "notes": "Isolated AchievementRuntime tests fire real catalog conditions (flags/events/stats). No cheat unlock API. GAME-RC-003 restores count after RC_GATE rewrite."
   },
-  "notes": "Cursor does not merge. Archive/Beat Link polish is GAME-RC-004. sneaker_city_sprintway remains OPEN (not launch-cup)."
+  "next_packets": {
+    "archive-of-life-artifact-world": "GAME-RC-004 — Archive polish (not this PR)",
+    "beatlink-party": "GAME-RC-004 — Beat Link polish (not this PR)"
+  },
+  "notes": "Cursor does not merge. sneaker_city_sprintway remains OPEN (not launch-cup). MULTI_PLATFORM_BUILD_FOUNDATION true only with honest PLATFORM_MATRIX (Android BUILDABLE; Web/desktop NOT_STARTED without presets; Steam EXTERNAL_ACCOUNT_PENDING; consoles EXTERNAL_PENDING)."
 }

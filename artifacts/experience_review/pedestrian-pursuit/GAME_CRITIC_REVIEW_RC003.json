@@ -5,7 +5,7 @@
   "generated_at": "2026-08-14T21:20:13Z",
   "VISUAL_MODEL_REVIEW": "UNAVAILABLE",
   "live_framebuffer": "UNAVAILABLE",
-  "classification": "BETA_DIGITAL",
+  "classification": "BETA",
   "classification_rationale": [
     "Launch content checklist CLOSED with explicit ADR exclusions",
     "Digital polish systems heuristically PASS (camera speed feel, overtake HUD, finish celebration, item warnings)",
@@ -29,5 +29,5 @@
     "content_completeness": 0.9,
     "ship_readiness": 0.58
   },
-  "verdict": "BETA_DIGITAL — content + digital polish foundation; not human-polished RC."
+  "verdict": "BETA — content + digital polish foundation; not human-polished RC."
 }
