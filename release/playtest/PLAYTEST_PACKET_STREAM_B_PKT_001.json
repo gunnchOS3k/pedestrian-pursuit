@@ -1,0 +1,45 @@
+{
+  "schema": "gunnchos.game_rc.playtest_packet.v1",
+  "game": "pedestrian-pursuit",
+  "packet": "STREAM-B-PKT-001",
+  "base_main_sha": "80ca8ee7e96da0e86184fe24b10831265588c1a3",
+  "HUMAN_PLAYTEST_VALIDATED": false,
+  "FEATURE_COMPLETE_RC": false,
+  "POLISHED_RELEASE_CANDIDATE": false,
+  "scaffolding_only": true,
+  "sessions": [
+    {
+      "id": "PT-PP-001",
+      "mode": "tutorial",
+      "goal": "Complete tutorial without wrong-way soft-lock",
+      "status": "OPEN",
+      "human_required": true
+    },
+    {
+      "id": "PT-PP-002",
+      "mode": "cup",
+      "goal": "Finish launch cup round 1; note achievement toast readability",
+      "status": "OPEN",
+      "human_required": true
+    },
+    {
+      "id": "PT-PP-003",
+      "mode": "local_mp",
+      "goal": "2P split pause/resume; confirm HUD secondary pane",
+      "status": "OPEN",
+      "human_required": true
+    },
+    {
+      "id": "PT-PP-004",
+      "mode": "accessibility",
+      "goal": "Colorblind markers + captions path smoke",
+      "status": "OPEN",
+      "human_required": true
+    }
+  ],
+  "digital_polish_this_packet": [
+    "AchievementToast fade/slide juice (heuristic polish only)",
+    "Playtest session scaffolding (tokens stay false)"
+  ],
+  "claim_boundary": "Playtest packets are scaffolding only. HUMAN_PLAYTEST_VALIDATED remains false until a human runs sessions. Not POLISHED_RELEASE_CANDIDATE."
+}
