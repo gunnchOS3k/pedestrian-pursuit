@@ -1,7 +1,9 @@
-# Pixel 6a session — 2026-08-18T21:15Z
+# Pixel 6a — pedestrian-pursuit
 
-**PIXEL_6A_READY = BLOCKED**
+PIXEL_6A_READY = PASS
 
-USB-C connected. `adb devices -l`: `27211JEGR06194 unauthorized`. Not a device. Install/launch not run.
-
-Unlock, accept USB debugging, re-check `adb devices -l` for `device`, then `docs/PIXEL_6A_ACCEPTANCE.md`.
+- serial 27211JEGR06194 (Pixel 6a Android 17)
+- package `com.gunnchos.pedestrianpursuit`
+- install PREEXISTING_ON_DEVICE
+- launch PASS
+- HUMAN_QA_PENDING for fun/usability
