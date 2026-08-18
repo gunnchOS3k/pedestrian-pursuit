@@ -1,0 +1,15 @@
+  bash arg: -p
+  bash arg: com.gunnchos.pedestrianpursuit
+  bash arg: -c
+  bash arg: android.intent.category.LAUNCHER
+  bash arg: 1
+Events injected: 1
+## Network stats: elapsed time=21ms (0ms mobile, 0ms wifi, 21ms not connected)
+args: [-p, com.gunnchos.pedestrianpursuit, -c, android.intent.category.LAUNCHER, 1]
+ arg: "-p"
+ arg: "com.gunnchos.pedestrianpursuit"
+ arg: "-c"
+ arg: "android.intent.category.LAUNCHER"
+ arg: "1"
+data="com.gunnchos.pedestrianpursuit"
+data="android.intent.category.LAUNCHER"
