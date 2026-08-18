@@ -33,6 +33,11 @@ func _process(_delta: float) -> void:
 		return
 	var lines: PackedStringArray = []
 	lines.append("=== Pedestrian Pursuit Debug ===")
+	lines.append("FPS: %.1f (budget desktop %d / android-mid %d)" % [
+		Engine.get_frames_per_second(),
+		int(PerfBudget.BUDGETS.get("target_fps_desktop", 60)),
+		int(PerfBudget.BUDGETS.get("target_fps_android_mid", 30)),
+	])
 	lines.append("Speed: %.1f" % _player.horizontal_speed)
 	lines.append("Terrain: %s" % _player.terrain_name)
 	if _player.has_node("RacerStateMachine"):

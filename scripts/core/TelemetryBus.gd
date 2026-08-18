@@ -14,6 +14,7 @@ const ALLOWED_EVENTS := [
 	"special_ability",
 	"finish",
 	"restart",
+	"perf_sample",
 ]
 
 var _session_id: String = ""
@@ -117,6 +118,17 @@ func restart(track_id: String, reason: String = "rematch") -> void:
 		"track_id": track_id,
 		"reason": reason,
 	})
+
+
+func perf_sample(track_id: String, fps: float, extra: Dictionary = {}) -> void:
+	var payload := {
+		"track_id": track_id,
+		"fps": snappedf(fps, 0.1),
+		"renderer": str(PerfBudget.BUDGETS.get("renderer", "gl_compatibility")),
+	}
+	for key in extra.keys():
+		payload[str(key)] = extra[key]
+	record("perf_sample", payload)
 
 
 func _safe_role() -> String:
