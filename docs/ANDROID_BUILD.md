@@ -39,7 +39,7 @@ The script:
 1. verifies Godot, ADB, and an authorized device;
 2. exports `build/android/pedestrian-pursuit-debug.apk`;
 3. installs with `adb install -r`;
-4. launches `com.gunnchos3k.pedestrianpursuit`.
+4. launches `com.gunnchos.pedestrianpursuit`.
 
 If several devices are connected, set `ANDROID_SERIAL` to the desired serial from `adb devices -l`.
 
