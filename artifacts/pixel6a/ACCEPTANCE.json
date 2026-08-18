@@ -1,0 +1,11 @@
+{
+  "serial": "27211JEGR06194",
+  "adb_state": "unauthorized",
+  "usb": "connected",
+  "pixel_6a_ready": "BLOCKED",
+  "blocker": "adb devices -l lists serial as unauthorized",
+  "install": "NOT_RUN",
+  "launch": "NOT_RUN",
+  "human_qa": "HUMAN_QA_PENDING",
+  "timestamp_utc": "2026-08-18T21:15:00Z"
+}
