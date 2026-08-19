@@ -116,6 +116,27 @@ jobs:
         env:
           DISPLAY: ":99"
 
+      - name: Wave001 cross-device contract (runtime adapter export)
+        run: |
+          set -euo pipefail
+          pip install 'jsonschema>=4.20'
+          mkdir -p gate1/evidence/out
+          echo "${GITHUB_SHA}" > gate1/evidence/out/commit_sha.txt
+          xvfb-run -a godot --headless --path . --rendering-driver opengl3 -- --cross-device-contract
+          test -f gate1/evidence/out/cross_device_contract.json
+          python3 - <<'PY'
+          import json
+          from jsonschema import Draft202012Validator
+          from pathlib import Path
+          doc = json.loads(Path("gate1/evidence/out/cross_device_contract.json").read_text())
+          schema = json.loads(Path("gate1/contracts/cross_device_game_contract.v1.schema.json").read_text())
+          Draft202012Validator(schema).validate(doc)
+          assert doc["game_id"] == "pedestrian-pursuit"
+          print("WAVE001_CROSS_DEVICE_CONTRACT_OK")
+          PY
+        env:
+          DISPLAY: ":99"
+
       - name: Upload ACTUAL_PRODUCTION_RUNTIME evidence
         if: always()
         uses: actions/upload-artifact@v4
