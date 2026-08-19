@@ -1,0 +1,218 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gunnchos.cross_device_game_contract.v1",
+  "title": "CrossDeviceGameContract",
+  "description": "Wave 001 cross-device game contract snapshot from a live runtime adapter (not a disconnected manifest).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version",
+    "game_id",
+    "schema_versions",
+    "generated_at_utc",
+    "runtime",
+    "device_profile",
+    "input_profile",
+    "accessibility_profile",
+    "presentation_profile",
+    "quality_profile",
+    "capability_model",
+    "rules_surface",
+    "probes"
+  ],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "game_id": {
+      "type": "string",
+      "enum": [
+        "anime-aggressors",
+        "pedestrian-pursuit",
+        "archive-of-life-artifact-world",
+        "beatlink-party"
+      ]
+    },
+    "schema_versions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rules",
+        "save",
+        "scoring",
+        "input",
+        "accessibility",
+        "presentation",
+        "quality"
+      ],
+      "properties": {
+        "rules": { "type": "string", "minLength": 1 },
+        "save": { "type": "string", "minLength": 1 },
+        "scoring": { "type": "string", "minLength": 1 },
+        "input": { "type": "string", "minLength": 1 },
+        "accessibility": { "type": "string", "minLength": 1 },
+        "presentation": { "type": "string", "minLength": 1 },
+        "quality": { "type": "string", "minLength": 1 }
+      }
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["platform", "engine", "commit"],
+      "properties": {
+        "platform": { "type": "string", "minLength": 1 },
+        "engine": { "type": "string", "minLength": 1 },
+        "commit": { "type": "string", "minLength": 7 },
+        "build_id": { "type": "string" }
+      }
+    },
+    "device_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role_id", "presentation_tier"],
+      "properties": {
+        "role_id": { "type": "string", "minLength": 1 },
+        "presentation_tier": {
+          "type": "string",
+          "enum": ["phone", "tablet", "web", "desktop", "console_abstract", "peripheral"]
+        }
+      }
+    },
+    "input_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "layout_id", "remapping_persisted", "normalized_actions"],
+      "properties": {
+        "schema": { "type": "string", "const": "gunnchos.normalized_actions.v1" },
+        "layout_id": { "type": "string", "minLength": 1 },
+        "remapping_persisted": { "type": "boolean" },
+        "normalized_actions": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "accessibility_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["vocabulary", "settings_persisted", "active"],
+      "properties": {
+        "vocabulary": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "settings_persisted": { "type": "boolean" },
+        "active": {
+          "type": "object",
+          "additionalProperties": { "type": ["boolean", "number", "string"] }
+        }
+      }
+    },
+    "presentation_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["orientation", "hud_scale", "profiles_supported"],
+      "properties": {
+        "orientation": { "type": "string", "enum": ["portrait", "landscape", "any"] },
+        "hud_scale": { "type": "number", "minimum": 0.5, "maximum": 3.0 },
+        "profiles_supported": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "quality_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tier", "gameplay_timing_locked", "tiers_supported"],
+      "properties": {
+        "tier": { "type": "string", "enum": ["low", "medium", "high", "debug"] },
+        "gameplay_timing_locked": { "type": "boolean" },
+        "tiers_supported": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "enum": ["low", "medium", "high", "debug"] }
+        }
+      }
+    },
+    "capability_model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required_features", "adapted_features", "blocked_features"],
+      "properties": {
+        "required_features": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "adapted_features": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "blocked_features": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "rules_surface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rules_version", "ruleset_id", "canonical_hash"],
+      "properties": {
+        "rules_version": { "type": "string", "minLength": 1 },
+        "ruleset_id": { "type": "string", "minLength": 1 },
+        "canonical_hash": { "type": "string", "minLength": 8 }
+      }
+    },
+    "probes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "core_loop",
+        "save_roundtrip",
+        "score",
+        "input",
+        "accessibility",
+        "presentation",
+        "quality",
+        "multiplayer",
+        "deterministic_replay"
+      ],
+      "properties": {
+        "core_loop": { "$ref": "#/$defs/probe_result" },
+        "save_roundtrip": { "$ref": "#/$defs/probe_result" },
+        "score": { "$ref": "#/$defs/probe_result" },
+        "input": { "$ref": "#/$defs/probe_result" },
+        "accessibility": { "$ref": "#/$defs/probe_result" },
+        "presentation": { "$ref": "#/$defs/probe_result" },
+        "quality": { "$ref": "#/$defs/probe_result" },
+        "multiplayer": { "$ref": "#/$defs/probe_result" },
+        "deterministic_replay": { "$ref": "#/$defs/probe_result" }
+      }
+    }
+  },
+  "$defs": {
+    "probe_status": {
+      "type": "string",
+      "enum": ["pass", "fail", "blocked_external", "blocked_environment", "not_applicable"]
+    },
+    "probe_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": { "$ref": "#/$defs/probe_status" },
+        "detail": { "type": "object", "additionalProperties": true },
+        "evidence_ref": { "type": "string" }
+      }
+    }
+  }
+}
