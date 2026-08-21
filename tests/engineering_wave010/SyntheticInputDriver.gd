@@ -66,7 +66,12 @@ func force_normal_input_flags() -> void:
 func tick(player: Node3D, path: Path3D) -> void:
 	force_normal_input_flags()
 	_frame += 1
+	# Profile-specific racing-line look-ahead (input style, not a speed cheat).
+	look_ahead = 15.0 if profile == "advanced" else 7.0
 	var steer := compute_steer(player, path)
+	if profile == "basic":
+		# Milder corrections → wider/less precise line.
+		steer = clampf(steer * 0.72, -1.0, 1.0)
 	var im := _im()
 	if im != null:
 		im.set_touch_steer(steer)
@@ -163,51 +168,57 @@ func technique_categories_hit() -> int:
 	return n
 
 
-func _tick_advanced(player: Node3D, steer: float) -> void:
-	var speed := 0.0
+func _tick_advanced(player: Node3D, _steer: float) -> void:
+	var _speed := 0.0
 	if "horizontal_speed" in player:
-		speed = absf(float(player.horizontal_speed))
-	var want_drift: bool = absf(steer) > 0.42 and speed > 7.5
-	if want_drift:
-		if not _drift_held:
-			Input.action_press("drift")
-			_drift_held = true
-			_drift_hold_frames = 0
-		_drift_hold_frames += 1
-		if _drift_hold_frames >= 18:
+		_speed = absf(float(player.horizontal_speed))
+
+	# Speed advantage = longer look-ahead. Skills are short early proof taps only.
+	var need_drift := int(technique_counts["drift_release"]) < 2
+	var need_boost := int(technique_counts["manual_boost"]) < 2
+	var upright := player.global_position.y > -1.0
+
+	if not need_drift and not need_boost:
+		if _drift_held:
 			Input.action_release("drift")
 			_drift_held = false
 			_drift_hold_frames = 0
 			technique_counts["drift_release"] = int(technique_counts["drift_release"]) + 1
-	elif _drift_held:
-		Input.action_release("drift")
-		_drift_held = false
+		Input.action_release("boost")
+		Input.action_release("jump")
+		Input.action_release("trick")
+		return
+
+	# Scripted early taps — keep holds short to avoid void exits.
+	if upright and need_drift and not _drift_held and (_frame == 45 or _frame == 110):
+		Input.action_press("drift")
+		_drift_held = true
 		_drift_hold_frames = 0
-		technique_counts["drift_release"] = int(technique_counts["drift_release"]) + 1
-
-	if _boost_cooldown > 0:
-		_boost_cooldown -= 1
 		Input.action_release("boost")
-	elif speed > 6.0 and not _drift_held and absf(steer) < 0.7 and _frame % 40 == 0:
-		# Pulse manual boost (just_pressed) while not mid-drift so meter can consume.
+	elif _drift_held:
+		_drift_hold_frames += 1
+		Input.action_release("boost")
+		if _drift_hold_frames >= 12:
+			Input.action_release("drift")
+			_drift_held = false
+			_drift_hold_frames = 0
+			technique_counts["drift_release"] = int(technique_counts["drift_release"]) + 1
+	elif upright and need_boost and not _drift_held and (_frame == 75 or _frame == 140):
 		Input.action_press("boost")
-		_boost_cooldown = 6
 		technique_counts["manual_boost"] = int(technique_counts["manual_boost"]) + 1
+		_boost_cooldown = 5
 	else:
-		Input.action_release("boost")
+		Input.action_release("drift")
+		if _boost_cooldown > 0:
+			_boost_cooldown -= 1
+			if _boost_cooldown == 0:
+				Input.action_release("boost")
+		else:
+			Input.action_release("boost")
 
-	if _trick_cooldown > 0:
-		_trick_cooldown -= 1
-		Input.action_release("jump")
-		Input.action_release("trick")
-	elif speed > 6.0 and _frame % 70 == 15:
-		Input.action_press("jump")
-		Input.action_press("trick")
-		_trick_cooldown = 10
-		technique_counts["jump_trick"] = int(technique_counts["jump_trick"]) + 1
-	else:
-		Input.action_release("jump")
-		Input.action_release("trick")
+	Input.action_release("jump")
+	Input.action_release("trick")
+	_trick_cooldown = 0
 
 
 func _observe_techniques(player: Node3D) -> void:

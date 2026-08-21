@@ -16,9 +16,9 @@
     "slower_did_not_replace": true
   },
   "median_advantage_ok": true,
-  "median_advantage_sec": 123.407,
-  "median_basic_sec": 676.878,
-  "min_advantage_sec": 3.384,
+  "median_advantage_sec": 43.611,
+  "median_basic_sec": 302.702,
+  "min_advantage_sec": 1.514,
   "mode": "TIME_TRIAL",
   "observed": true,
   "paired_trials": 3,
@@ -29,37 +29,18 @@
       "advanced_ok": true,
       "advanced_technique_categories": 2,
       "advanced_techniques": {
-        "drift_release": 194,
-        "jump_trick": 30,
-        "manual_boost": 0,
+        "drift_release": 4,
+        "jump_trick": 0,
+        "manual_boost": 1,
         "rail": 0,
         "shortcut": 0
       },
-      "advanced_time": 565.013,
+      "advanced_time": 241.729,
       "basic_failures": [],
       "basic_ok": true,
-      "basic_time": 688.42,
-      "delta_sec": 123.407,
+      "basic_time": 302.635,
+      "delta_sec": 60.906,
       "trial": 0
-    },
-    {
-      "advanced_failures": [],
-      "advanced_faster": true,
-      "advanced_ok": true,
-      "advanced_technique_categories": 2,
-      "advanced_techniques": {
-        "drift_release": 114,
-        "jump_trick": 22,
-        "manual_boost": 0,
-        "rail": 0,
-        "shortcut": 0
-      },
-      "advanced_time": 459.071,
-      "basic_failures": [],
-      "basic_ok": true,
-      "basic_time": 676.878,
-      "delta_sec": 217.807,
-      "trial": 1
     },
     {
       "advanced_failures": [],
@@ -67,17 +48,36 @@
       "advanced_ok": true,
       "advanced_technique_categories": 2,
       "advanced_techniques": {
-        "drift_release": 114,
-        "jump_trick": 22,
-        "manual_boost": 0,
+        "drift_release": 2,
+        "jump_trick": 0,
+        "manual_boost": 2,
         "rail": 0,
         "shortcut": 0
       },
-      "advanced_time": 459.084,
+      "advanced_time": 487.089,
       "basic_failures": [],
       "basic_ok": true,
-      "basic_time": 254.191,
-      "delta_sec": -204.893,
+      "basic_time": 311.835,
+      "delta_sec": -175.254,
+      "trial": 1
+    },
+    {
+      "advanced_failures": [],
+      "advanced_faster": true,
+      "advanced_ok": true,
+      "advanced_technique_categories": 2,
+      "advanced_techniques": {
+        "drift_release": 4,
+        "jump_trick": 0,
+        "manual_boost": 2,
+        "rail": 0,
+        "shortcut": 0
+      },
+      "advanced_time": 259.091,
+      "basic_failures": [],
+      "basic_ok": true,
+      "basic_time": 302.702,
+      "delta_sec": 43.611,
       "trial": 2
     }
   ],
