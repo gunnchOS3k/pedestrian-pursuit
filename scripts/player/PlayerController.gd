@@ -568,9 +568,8 @@ func _on_trick_landed(success: bool, reward: float, trick_id: String = "", combo
 	if success:
 		boost_system.add_boost(reward, "trick")
 	elif reward < 0.0:
-		boost_system.add_boost(reward, "trick_fail")  # add_boost clamps; use direct if needed
-		boost_system.current_boost = clampf(boost_system.current_boost + reward, 0.0, boost_system.max_boost)
-		boost_system.boost_changed.emit(boost_system.current_boost, boost_system.max_boost)
+		# Single penalty path — add_boost already clamps; do not also mutate current_boost.
+		boost_system.add_boost(reward, "trick_fail")
 	if TelemetryBus != null:
 		TelemetryBus.record("trick", {
 			"success": success,

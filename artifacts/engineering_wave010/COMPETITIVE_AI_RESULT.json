@@ -1,8 +1,18 @@
 {
   "schema": "gunnchos.engineering_wave010.competitive_ai.v1",
   "subset_runner": "tests/CompetitiveAiEvalRunner.gd",
+  "runner_output_present": true,
+  "ok_count": 54,
+  "error_count": 0,
+  "physics_cheats": 0,
+  "token_earned": false,
   "tiers_distinct_checked": true,
+  "tier_speeds": {
+    "ace": 0.96,
+    "rookie": 0.78,
+    "standard": 0.88
+  },
   "hidden_rubber_banding": false,
   "forced_finish_order": false,
-  "note": "Subset eval exercised; full matrix remains separate evidence run."
+  "source": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/wave010-pedestrian-pursuit-depth/gate1/evidence/out/pp_competitive_ai_eval.json"
 }

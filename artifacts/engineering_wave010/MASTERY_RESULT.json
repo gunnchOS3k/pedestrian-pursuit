@@ -1,5 +1,13 @@
 {
-  "advanced_faster": true,
-  "advanced_time": 26.04,
-  "basic_time": 30.28
+  "advanced_faster": null,
+  "lap_events": [
+    {
+      "lap": 1,
+      "sim_time": 12.873328
+    }
+  ],
+  "observed": false,
+  "reason": "RaceScene E2E records lap/checkpoint timing only; dual-route mastery timing not established in this run.",
+  "reliable": false,
+  "sim_time": 12.87
 }

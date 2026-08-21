@@ -1,5 +1,6 @@
 {
   "schema": "gunnchos.engineering_wave010.requirements.v1",
+  "BLANKET": false,
   "results": {
     "GAME-PP-001": "IMPLEMENTED",
     "GAME-PP-002": "IMPLEMENTED",
@@ -15,6 +16,6 @@
     "GAME-PP-012": "IMPLEMENTED",
     "GAME-PP-013": "IMPLEMENTED",
     "GAME-PP-014": "IMPLEMENTED",
-    "GAME-PP-015": "IMPLEMENTED"
+    "GAME-PP-015": "PARTIAL"
   }
 }

@@ -1,12 +1,24 @@
 {
   "schema": "gunnchos.engineering_wave010.result.v1",
-  "generated_at_utc": "2026-08-21T20:27:15Z",
-  "ENGINEERING_WAVE_010": "PASS",
+  "generated_at_utc": "2026-08-21T21:06:17Z",
+  "ENGINEERING_WAVE_010": "PARTIAL",
   "FIELD_KIT_115_MERGED": true,
   "PEDESTRIAN_START_SHA": "3f8fdb5f0f2f6459e42cd38cf0e067084a7a0791",
-  "PEDESTRIAN_HEAD_SHA": "7a69cbeda2ea42cc25410015c9314d2854d115d1",
+  "PEDESTRIAN_HEAD_SHA": "2063fed85ab199604aabc10d6ff5196e0f1be70e",
+  "evidence_provenance": {
+    "schema": "gunnchos.engineering_wave010.ci_provenance.v1",
+    "committed_evidence_class": "LOCAL_OR_PRECOMMIT_SNAPSHOT",
+    "authoritative_for_final_pr_head": false,
+    "TESTED_HEAD_SHA": "2063fed85ab199604aabc10d6ff5196e0f1be70e",
+    "TESTED_TREE": "61cb1d3cf1ba13e61a5a5740a7844653657b7cc2",
+    "GITHUB_RUN_ID": null,
+    "CI": false,
+    "AUTHORITATIVE_EVIDENCE_TESTED_HEAD_EQUALS_PR_HEAD": false,
+    "note": "Committed artifacts are snapshots; CI artifact binds TESTED_HEAD_SHA=$GITHUB_SHA."
+  },
   "FIELD_KIT_ACCEPTED_MAIN_SHA": "07ec12ad281dbb093c51195c2acd46c616887126",
   "TARGET_REQUIREMENTS": 15,
+  "IMPLEMENTED_COUNT": 14,
   "requirement_results": {
     "GAME-PP-001": "IMPLEMENTED",
     "GAME-PP-002": "IMPLEMENTED",
@@ -22,14 +34,21 @@
     "GAME-PP-012": "IMPLEMENTED",
     "GAME-PP-013": "IMPLEMENTED",
     "GAME-PP-014": "IMPLEMENTED",
-    "GAME-PP-015": "IMPLEMENTED"
+    "GAME-PP-015": "PARTIAL"
   },
   "CANONICAL_RACE_SCENE_EXECUTED": true,
+  "REAL_CHECKPOINT_SIGNAL_PATH": true,
+  "REAL_LAP_INCREMENT_OBSERVED": true,
   "REAL_CHECKPOINT_LAP_PROGRESS": true,
+  "COMPONENT_RUNTIME_PASS": true,
   "ACCEPT_FORCE_LAPS_USED_AS_PROOF": false,
   "FAKE_CHECKPOINT_STEPPING_USED_AS_PROOF": false,
+  "PRODUCTION_GATE_HARNESS_USED_AS_PROOF": false,
+  "DIRECT_LAPMANAGER_ON_CHECKPOINT_AS_E2E": false,
   "WAVE010_MUTATIONS_ATTEMPTED": 8,
   "WAVE010_MUTATIONS_KILLED": 8,
+  "WAVE010_BEHAVIORAL_KILLED": 8,
+  "WAVE010_INVALID_MUTATIONS": 0,
   "MUTATED_FILES_COMMITTED": false,
   "PRODUCTION_INDEPENDENCE": "PASS",
   "PRODUCTION_IMPORTS_TESTS": 0,
@@ -38,6 +57,16 @@
   "WAVE_DUPLICATE_CANONICAL_IMPLEMENTATIONS": 0,
   "NEW_S0": 0,
   "NEW_S1": 0,
+  "runtime_defect_regression": {
+    "schema": "gunnchos.engineering_wave010.runtime_defect_regression.v1",
+    "BOOST_SIGNAL_ARITY_REGRESSION_PASS": true,
+    "BOOST_RUNTIME_SIGNAL_ERRORS": 0,
+    "TRICK_FAIL_SINGLE_PENALTY_PASS": true,
+    "TRICK_FAIL_DOUBLE_PENALTY": false,
+    "BLANKET_GAME_PP_ASSIGNMENT": false,
+    "HARDCODED_RACE_SCENE_EXECUTED": false,
+    "SCENARIO_DICTS_WITHOUT_OBSERVATION_PROVENANCE": false
+  },
   "claim_boundaries": {
     "schema": "gunnchos.engineering_wave010.claim_boundaries.v1",
     "HUMAN_PLAYTEST_COMPLETE": false,
@@ -52,5 +81,5 @@
     "PRODUCTION_GATE_HARNESS_USED_AS_GAMEPLAY_PROOF": false
   },
   "CURSOR_MERGED_NOTHING": true,
-  "token": "ENGINEERING_WAVE_010_PEDESTRIAN_PURSUIT_PASS"
+  "token": null
 }

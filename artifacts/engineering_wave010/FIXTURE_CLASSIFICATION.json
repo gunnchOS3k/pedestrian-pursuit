@@ -12,7 +12,14 @@
     "scripts/race/FairComebackPolicy.gd#evaluate_distribution"
   ],
   "RECORDED_RUNTIME_TRACE": [
-    "artifacts/engineering_wave010/CANONICAL_RUNTIME_RESULT.json"
+    "artifacts/engineering_wave010/CANONICAL_RUNTIME_RESULT.json",
+    "artifacts/engineering_wave010/RACESCENE_E2E_RESULT.json"
+  ],
+  "COMPONENT_RUNTIME": [
+    "tests/engineering_wave010/Wave010RuntimeTest.gd"
+  ],
+  "RACE_SCENE_E2E": [
+    "tests/engineering_wave010/Wave010RaceSceneE2E.gd"
   ],
   "NOT_CLAIMED_LIVE_HUMAN_PHYSICAL": true
 }

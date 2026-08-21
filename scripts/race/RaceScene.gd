@@ -307,7 +307,8 @@ func _wire_racer_visual_hooks(racer: Node, visual: Node) -> void:
 		boost.boost_activated.connect(_on_racer_boost.bind(visual))
 
 
-func _on_racer_boost(_multiplier: float, _duration: float, visual: Node) -> void:
+func _on_racer_boost(_multiplier: float, _duration: float, _source: String, visual: Node) -> void:
+	## Signal arity: boost_activated(multiplier, duration, source) + bind(visual).
 	if visual != null and visual.has_method("set_boosting"):
 		visual.set_boosting(true)
 		get_tree().create_timer(0.35).timeout.connect(func ():

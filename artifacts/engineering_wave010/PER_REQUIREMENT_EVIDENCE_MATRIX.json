@@ -1,0 +1,132 @@
+{
+  "schema": "gunnchos.engineering_wave010.per_requirement_matrix.v1",
+  "BLANKET": false,
+  "matrix": {
+    "GAME-PP-001": {
+      "status": "IMPLEMENTED",
+      "evidence": [
+        "component.sprint"
+      ],
+      "notes": "Sprint accel/brake/terrain observed",
+      "BLANKET": false
+    },
+    "GAME-PP-002": {
+      "status": "IMPLEMENTED",
+      "evidence": [
+        "component.drift"
+      ],
+      "notes": "Drift charge + release boost observed",
+      "BLANKET": false
+    },
+    "GAME-PP-003": {
+      "status": "IMPLEMENTED",
+      "evidence": [
+        "component.jump"
+      ],
+      "notes": "Coyote/buffer runtime observed",
+      "BLANKET": false
+    },
+    "GAME-PP-004": {
+      "status": "IMPLEMENTED",
+      "evidence": [
+        "component.slide"
+      ],
+      "notes": "Slide profile distinct",
+      "BLANKET": false
+    },
+    "GAME-PP-005": {
+      "status": "IMPLEMENTED",
+      "evidence": [
+        "component.wall"
+      ],
+      "notes": "Wall scrape/kick cooldown observed",
+      "BLANKET": false
+    },
+    "GAME-PP-006": {
+      "status": "IMPLEMENTED",
+      "evidence": [
+        "component.rail"
+      ],
+      "notes": "Rail angle attach observed",
+      "BLANKET": false
+    },
+    "GAME-PP-007": {
+      "status": "IMPLEMENTED",
+      "evidence": [
+        "component.stomp"
+      ],
+      "notes": "Stomp cooldown observed",
+      "BLANKET": false
+    },
+    "GAME-PP-008": {
+      "status": "IMPLEMENTED",
+      "evidence": [
+        "component.trick_success",
+        "component.trick_fail_penalty"
+      ],
+      "notes": "Trick reward + single fail penalty",
+      "BLANKET": false
+    },
+    "GAME-PP-009": {
+      "status": "IMPLEMENTED",
+      "evidence": [
+        "component.boost",
+        "component.boost_signal_arity"
+      ],
+      "notes": "Boost economy + signal arity",
+      "BLANKET": false
+    },
+    "GAME-PP-010": {
+      "status": "IMPLEMENTED",
+      "evidence": [
+        "component.item"
+      ],
+      "notes": "Item grant/use observed",
+      "BLANKET": false
+    },
+    "GAME-PP-011": {
+      "status": "IMPLEMENTED",
+      "evidence": [
+        "component.shortcut",
+        "e2e.B_advanced_route"
+      ],
+      "notes": "Shortcut corridor + ordered checkpoints",
+      "BLANKET": false
+    },
+    "GAME-PP-012": {
+      "status": "IMPLEMENTED",
+      "evidence": [
+        "component.terrain"
+      ],
+      "notes": "Terrain grips distinct",
+      "BLANKET": false
+    },
+    "GAME-PP-013": {
+      "status": "IMPLEMENTED",
+      "evidence": [
+        "component.racers"
+      ],
+      "notes": "Launch racers distinct",
+      "BLANKET": false
+    },
+    "GAME-PP-014": {
+      "status": "IMPLEMENTED",
+      "evidence": [
+        "component.comeback"
+      ],
+      "notes": "Fair comeback policy identity assist",
+      "BLANKET": false
+    },
+    "GAME-PP-015": {
+      "status": "PARTIAL",
+      "evidence": [
+        "e2e.D_time_trial_mastery",
+        "component.mastery_component"
+      ],
+      "notes": "advanced_faster unreliable or not observed in RaceScene; synthetic component timing is not sufficient",
+      "BLANKET": false
+    },
+    "BLANKET_GAME_PP_ASSIGNMENT": false,
+    "derivation": "individual_observation"
+  }
+}

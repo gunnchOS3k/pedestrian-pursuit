@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Wave010 mutation campaign — disposable dirs only. Never commits mutants."""
+"""Wave010 mutation campaign — disposable dirs only. Never commits mutants.
+
+Kill only if: clean parse+test PASS, mutation applied, mutated parse PASS,
+mutated test FAIL with behavioral assertions. Else INVALID_MUTATION.
+"""
 from __future__ import annotations
 
 import json
@@ -88,7 +92,6 @@ def copy_tree(dst: Path) -> None:
             shutil.copytree(src, target, ignore=shutil.ignore_patterns("*.uid"))
         else:
             shutil.copy2(src, target)
-    # Copy global class cache so class_name resolves without full editor import.
     godot_cache = ROOT / ".godot"
     if godot_cache.exists():
         shutil.copytree(
@@ -99,19 +102,7 @@ def copy_tree(dst: Path) -> None:
     (dst / "artifacts/engineering_wave010").mkdir(parents=True, exist_ok=True)
 
 
-def run_one(godot: str, work: Path, mid: str, rel: str, old: str, new: str) -> dict:
-    target = work / rel
-    text = target.read_text()
-    if old not in text:
-        return {"id": mid, "killed": False, "reason": "pattern_not_found"}
-    target.write_text(text.replace(old, new, 1))
-    subprocess.run(
-        [godot, "--headless", "--path", str(work), "--import"],
-        cwd=work,
-        capture_output=True,
-        text=True,
-        timeout=120,
-    )
+def run_component(godot: str, work: Path) -> tuple[int, str]:
     proc = subprocess.run(
         [
             godot,
@@ -124,27 +115,99 @@ def run_one(godot: str, work: Path, mid: str, rel: str, old: str, new: str) -> d
         cwd=work,
         capture_output=True,
         text=True,
-        timeout=180,
+        timeout=240,
     )
     log = (proc.stdout or "") + (proc.stderr or "")
-    script_boom = any(
-        x in log
-        for x in (
-            "SCRIPT ERROR",
-            "Parse Error",
-            "Compilation failed",
-            "Wave010RuntimeTest FAIL",
-            "FAIL:",
-        )
+    return proc.returncode, log
+
+
+def parse_ok(log: str) -> bool:
+    bad = ("Parse Error", "Compilation failed", "SCRIPT ERROR: Parse Error")
+    return not any(b in log for b in bad)
+
+
+def behavioral_fail(log: str, code: int) -> bool:
+    """Mutated test must FAIL with behavioral assertions — not merely crash/parse."""
+    if not parse_ok(log):
+        return False
+    if "Wave010RuntimeTest FAIL" in log or "FAIL:" in log:
+        return True
+    # Exit non-zero with PASS token absent also counts if assertions printed failures.
+    if code != 0 and "Wave010RuntimeTest PASS" not in log and "WAVE010_COMPONENT_RUNTIME_PASS" not in log:
+        # Prefer explicit FAIL markers; without them treat as invalid.
+        return "FAIL:" in log
+    return False
+
+
+def run_one(godot: str, work: Path, mid: str, rel: str, old: str, new: str, clean_ok: bool) -> dict:
+    if not clean_ok:
+        return {
+            "id": mid,
+            "killed": False,
+            "invalid": True,
+            "reason": "INVALID_MUTATION:clean_baseline_not_pass",
+        }
+    target = work / rel
+    text = target.read_text()
+    if old not in text:
+        return {
+            "id": mid,
+            "killed": False,
+            "invalid": True,
+            "reason": "INVALID_MUTATION:pattern_not_found",
+        }
+    target.write_text(text.replace(old, new, 1))
+    if old in target.read_text() and new not in target.read_text():
+        return {
+            "id": mid,
+            "killed": False,
+            "invalid": True,
+            "reason": "INVALID_MUTATION:mutation_not_applied",
+        }
+    # Mutated parse probe via import + component run.
+    subprocess.run(
+        [godot, "--headless", "--path", str(work), "--import"],
+        cwd=work,
+        capture_output=True,
+        text=True,
+        timeout=120,
     )
-    # Healthy run must print PASS token.
-    passed_clean = "Wave010RuntimeTest PASS" in log and not script_boom
-    killed = (not passed_clean) or proc.returncode != 0
+    code, log = run_component(godot, work)
+    if not parse_ok(log):
+        return {
+            "id": mid,
+            "killed": False,
+            "invalid": True,
+            "reason": "INVALID_MUTATION:mutated_parse_failed",
+            "exit": code,
+            "log_tail": "\n".join(log.splitlines()[-40:]),
+        }
+    if "Wave010RuntimeTest PASS" in log and "WAVE010_COMPONENT_RUNTIME_PASS" in log and code == 0:
+        return {
+            "id": mid,
+            "killed": False,
+            "invalid": False,
+            "reason": "survived",
+            "exit": code,
+            "log_tail": "\n".join(log.splitlines()[-30:]),
+        }
+    if behavioral_fail(log, code):
+        return {
+            "id": mid,
+            "killed": True,
+            "invalid": False,
+            "behavioral": True,
+            "reason": "behavioral_kill",
+            "exit": code,
+            "log_tail": "\n".join(log.splitlines()[-30:]),
+        }
     return {
         "id": mid,
-        "killed": bool(killed),
-        "exit": proc.returncode,
-        "log_tail": "\n".join(log.splitlines()[-30:]),
+        "killed": False,
+        "invalid": True,
+        "reason": "INVALID_MUTATION:no_behavioral_assertion_failure",
+        "exit": code,
+        "log_tail": "\n".join(log.splitlines()[-40:]),
     }
 
 
@@ -153,22 +216,50 @@ def main() -> int:
     if not godot:
         print("Godot not found", file=sys.stderr)
         return 2
-    results = []
+
     with tempfile.TemporaryDirectory(prefix="pp-wave010-mut-") as tmp:
+        clean = Path(tmp) / "clean"
+        clean.mkdir()
+        copy_tree(clean)
+        subprocess.run(
+            [godot, "--headless", "--path", str(clean), "--import"],
+            cwd=clean,
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
+        clean_code, clean_log = run_component(godot, clean)
+        clean_ok = (
+            parse_ok(clean_log)
+            and clean_code == 0
+            and "Wave010RuntimeTest PASS" in clean_log
+        )
+        results = []
         for mid, rel, old, new in MUTATIONS:
             work = Path(tmp) / mid
             work.mkdir()
             copy_tree(work)
-            results.append(run_one(godot, work, mid, rel, old, new))
+            results.append(run_one(godot, work, mid, rel, old, new, clean_ok))
+
     attempted = len(results)
+    invalid = sum(1 for r in results if r.get("invalid"))
+    behavioral_killed = sum(1 for r in results if r.get("killed") and r.get("behavioral"))
     killed = sum(1 for r in results if r.get("killed"))
     payload = {
         "schema": "gunnchos.engineering_wave010.mutation.v1",
+        "clean_baseline_pass": clean_ok,
         "WAVE010_MUTATIONS_ATTEMPTED": attempted,
         "WAVE010_MUTATIONS_KILLED": killed,
+        "WAVE010_BEHAVIORAL_KILLED": behavioral_killed,
+        "WAVE010_INVALID_MUTATIONS": invalid,
         "MUTATED_FILES_COMMITTED": False,
         "results": results,
-        "pass": killed >= 8 and killed == attempted,
+        "pass": (
+            clean_ok
+            and invalid == 0
+            and behavioral_killed >= 8
+            and behavioral_killed == attempted
+        ),
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(payload, indent=2) + "\n")

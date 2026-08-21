@@ -25,6 +25,10 @@ jobs:
       - name: Run Engineering Wave010
         env:
           GODOT_BIN: ${{ env.GODOT_BIN }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_ACTIONS: "true"
+          WAVE010_REQUIRE_PASS: "1"
         run: make engineering-wave010
 
       - name: Upload Wave010 artifacts
@@ -34,13 +38,46 @@ jobs:
           name: engineering-wave010-evidence
           path: artifacts/engineering_wave010/
 
-      - name: Require PASS token file
+      - name: CI final gate — PASS only
         run: |
           python3 - <<'PY'
-          import json
+          import json, os
           d=json.load(open("artifacts/engineering_wave010/WAVE010_RESULT.json"))
-          assert d.get("ENGINEERING_WAVE_010") in ("PASS","PARTIAL"), d
+          e2e=json.load(open("artifacts/engineering_wave010/RACESCENE_E2E_RESULT.json"))
+          mut=json.load(open("artifacts/engineering_wave010/MUTATION_RESULT.json"))
+          integ=json.load(open("artifacts/engineering_wave010/CODE_INTEGRITY_RESULT.json"))
+          prov=json.load(open("artifacts/engineering_wave010/CI_PROVENANCE_SCHEMA.json"))
+          reg=json.load(open("artifacts/engineering_wave010/RUNTIME_DEFECT_REGRESSION_RESULT.json"))
+          matrix=json.load(open("artifacts/engineering_wave010/PER_REQUIREMENT_EVIDENCE_MATRIX.json"))
+
+          assert d.get("ENGINEERING_WAVE_010") == "PASS", d.get("ENGINEERING_WAVE_010")
+          reqs=d.get("requirement_results", {})
+          assert sum(1 for v in reqs.values() if v == "IMPLEMENTED") == 15, reqs
+          assert d.get("CANONICAL_RACE_SCENE_EXECUTED") is True
+          assert d.get("REAL_CHECKPOINT_SIGNAL_PATH") is True
+          assert d.get("REAL_LAP_INCREMENT_OBSERVED") is True
+          assert d.get("REAL_CHECKPOINT_LAP_PROGRESS") is True
           assert d.get("ACCEPT_FORCE_LAPS_USED_AS_PROOF") is False
+          assert d.get("FAKE_CHECKPOINT_STEPPING_USED_AS_PROOF") is False
+          assert d.get("PRODUCTION_GATE_HARNESS_USED_AS_PROOF") is False
+          assert d.get("DIRECT_LAPMANAGER_ON_CHECKPOINT_AS_E2E") is False
+          assert e2e.get("accept_force_laps_used_as_proof") is False
+          assert e2e.get("fake_checkpoint_stepping_used_as_proof") is False
+          assert e2e.get("production_gate_harness_used_as_proof") is False
+          assert e2e.get("direct_lapmanager_on_checkpoint_as_e2e") is False
+          assert int(mut.get("WAVE010_INVALID_MUTATIONS", 1)) == 0
+          assert int(mut.get("WAVE010_BEHAVIORAL_KILLED", 0)) >= 8
+          assert int(integ.get("NEW_S0", 1)) == 0
+          assert int(integ.get("NEW_S1", 1)) == 0
+          assert int(integ.get("PRODUCTION_IMPORTS_EVALUATORS", 1)) == 0
+          assert int(integ.get("WAVE_DUPLICATE_CANONICAL_IMPLEMENTATIONS", 1)) == 0
+          assert matrix.get("BLANKET") is False
+          assert reg.get("BOOST_SIGNAL_ARITY_REGRESSION_PASS") is True
+          assert reg.get("TRICK_FAIL_SINGLE_PENALTY_PASS") is True
+          assert reg.get("TRICK_FAIL_DOUBLE_PENALTY") is False
+          assert prov.get("TESTED_HEAD_SHA") == os.environ.get("GITHUB_SHA")
+          assert prov.get("AUTHORITATIVE_EVIDENCE_TESTED_HEAD_EQUALS_PR_HEAD") is True
           assert d.get("MUTATED_FILES_COMMITTED") is False
-          print("wave010 artifact ok", d.get("ENGINEERING_WAVE_010"))
+          assert d.get("CURSOR_MERGED_NOTHING") is True
+          print("CI final gate PASS", d.get("token"), "tested", prov.get("TESTED_HEAD_SHA"))
           PY

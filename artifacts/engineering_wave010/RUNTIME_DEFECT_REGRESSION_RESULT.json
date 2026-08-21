@@ -1,0 +1,10 @@
+{
+  "schema": "gunnchos.engineering_wave010.runtime_defect_regression.v1",
+  "BOOST_SIGNAL_ARITY_REGRESSION_PASS": true,
+  "BOOST_RUNTIME_SIGNAL_ERRORS": 0,
+  "TRICK_FAIL_SINGLE_PENALTY_PASS": true,
+  "TRICK_FAIL_DOUBLE_PENALTY": false,
+  "BLANKET_GAME_PP_ASSIGNMENT": false,
+  "HARDCODED_RACE_SCENE_EXECUTED": false,
+  "SCENARIO_DICTS_WITHOUT_OBSERVATION_PROVENANCE": false
+}

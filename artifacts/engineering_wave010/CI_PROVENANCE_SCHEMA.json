@@ -1,0 +1,11 @@
+{
+  "schema": "gunnchos.engineering_wave010.ci_provenance.v1",
+  "committed_evidence_class": "LOCAL_OR_PRECOMMIT_SNAPSHOT",
+  "authoritative_for_final_pr_head": false,
+  "TESTED_HEAD_SHA": "2063fed85ab199604aabc10d6ff5196e0f1be70e",
+  "TESTED_TREE": "61cb1d3cf1ba13e61a5a5740a7844653657b7cc2",
+  "GITHUB_RUN_ID": null,
+  "CI": false,
+  "AUTHORITATIVE_EVIDENCE_TESTED_HEAD_EQUALS_PR_HEAD": false,
+  "note": "Committed artifacts are snapshots; CI artifact binds TESTED_HEAD_SHA=$GITHUB_SHA."
+}
