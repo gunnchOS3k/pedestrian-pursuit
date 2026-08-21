@@ -1,0 +1,57 @@
+{
+  "schema": "gunnchos.engineering_wave010.mutation.v1",
+  "WAVE010_MUTATIONS_ATTEMPTED": 8,
+  "WAVE010_MUTATIONS_KILLED": 8,
+  "MUTATED_FILES_COMMITTED": false,
+  "results": [
+    {
+      "id": "accel_disabled",
+      "killed": true,
+      "exit": 1,
+      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN\nFAIL: sprint accel did not approach top speed band\nFAIL: sprint acceleration disabled\nWave010RuntimeTest FAIL count=2\nERROR: sprint accel did not approach top speed band\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:56)\nERROR: sprint acceleration disabled\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:56)"
+    },
+    {
+      "id": "drift_stationary_farm",
+      "killed": true,
+      "exit": 1,
+      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN\nFAIL: drift started while stationary/slow\nFAIL: drift min_speed_to_drift too low (stationary farm)\nWave010RuntimeTest FAIL count=2\nERROR: drift started while stationary/slow\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:56)\nERROR: drift min_speed_to_drift too low (stationary farm)\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:56)"
+    },
+    {
+      "id": "boost_cap_removed",
+      "killed": true,
+      "exit": 1,
+      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN\nFAIL: boost cap removed\nWave010RuntimeTest FAIL count=1\nERROR: boost cap removed\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:56)"
+    },
+    {
+      "id": "item_weight_extreme",
+      "killed": true,
+      "exit": 1,
+      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN\nFAIL: comeback fair bounds failed digital eval\nFAIL: item offense weight extreme\nWave010RuntimeTest FAIL count=2\nERROR: comeback fair bounds failed digital eval\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:56)\nERROR: item offense weight extreme\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:56)"
+    },
+    {
+      "id": "checkpoint_bypass",
+      "killed": true,
+      "exit": 1,
+      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN\nFAIL: checkpoint skip advanced lap illegally\nWave010RuntimeTest FAIL count=1\nERROR: checkpoint skip advanced lap illegally\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:56)"
+    },
+    {
+      "id": "racer_stats_flat",
+      "killed": true,
+      "exit": 1,
+      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN\nFAIL: racer stat differences erased\nFAIL: expected solen handling advantage after apply\nWave010RuntimeTest FAIL count=2\nERROR: racer stat differences erased\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:56)\nERROR: expected solen handling advantage after apply\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:56)"
+    },
+    {
+      "id": "hidden_comeback_speed",
+      "killed": true,
+      "exit": 1,
+      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN\nFAIL: competitive speed assist not identity\nFAIL: hidden comeback speed assist active\nWave010RuntimeTest FAIL count=2\nERROR: competitive speed assist not identity\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:56)\nERROR: hidden comeback speed assist active\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:56)"
+    },
+    {
+      "id": "mastery_boost_flat",
+      "killed": true,
+      "exit": 1,
+      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN\nFAIL: drift release did not apply boost\nFAIL: boost mastery multiplier flattened\nWave010RuntimeTest FAIL count=2\nERROR: drift release did not apply boost\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:56)\nERROR: boost mastery multiplier flattened\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:56)"
+    }
+  ],
+  "pass": true
+}

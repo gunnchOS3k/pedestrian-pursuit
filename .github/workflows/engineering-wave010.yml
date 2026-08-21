@@ -1,0 +1,46 @@
+name: Engineering Wave010 Pedestrian Pursuit
+
+on:
+  push:
+    branches: [main, "eng/wave010-pedestrian-pursuit-depth", "eng/**"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  wave010:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Godot 4.3
+        run: |
+          set -euo pipefail
+          curl -L -o godot.zip https://github.com/godotengine/godot-builds/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip
+          unzip -o godot.zip
+          chmod +x Godot_v4.3-stable_linux.x86_64
+          echo "GODOT_BIN=$PWD/Godot_v4.3-stable_linux.x86_64" >> "$GITHUB_ENV"
+          mkdir -p "$HOME/.local/share/godot/export_templates"
+
+      - name: Run Engineering Wave010
+        env:
+          GODOT_BIN: ${{ env.GODOT_BIN }}
+        run: make engineering-wave010
+
+      - name: Upload Wave010 artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: engineering-wave010-evidence
+          path: artifacts/engineering_wave010/
+
+      - name: Require PASS token file
+        run: |
+          python3 - <<'PY'
+          import json
+          d=json.load(open("artifacts/engineering_wave010/WAVE010_RESULT.json"))
+          assert d.get("ENGINEERING_WAVE_010") in ("PASS","PARTIAL"), d
+          assert d.get("ACCEPT_FORCE_LAPS_USED_AS_PROOF") is False
+          assert d.get("MUTATED_FILES_COMMITTED") is False
+          print("wave010 artifact ok", d.get("ENGINEERING_WAVE_010"))
+          PY

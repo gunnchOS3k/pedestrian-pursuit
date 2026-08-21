@@ -1,0 +1,8 @@
+{
+  "schema": "gunnchos.engineering_wave010.competitive_ai.v1",
+  "subset_runner": "tests/CompetitiveAiEvalRunner.gd",
+  "tiers_distinct_checked": true,
+  "hidden_rubber_banding": false,
+  "forced_finish_order": false,
+  "note": "Subset eval exercised; full matrix remains separate evidence run."
+}

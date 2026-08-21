@@ -26,6 +26,8 @@ var _assigned_profiles: Array = []
 
 
 func _ready() -> void:
+	if GameManager != null and GameManager.has_method("sync_race_mode_string"):
+		GameManager.sync_race_mode_string()
 	if not _load_course():
 		SceneLoader.go_to_main_menu()
 		return
@@ -114,6 +116,8 @@ func _ready() -> void:
 			ai.setup_ai_path(track.get_race_path(), -4.0 - float(i), 2.5 + float(i) * 0.4)
 		if ai.has_method("set_ai_tier"):
 			ai.set_ai_tier(ai_tiers[mini(i, ai_tiers.size() - 1)])
+		if ai.has_method("configure_shortcuts") and track.has_method("get_shortcut_routes"):
+			ai.configure_shortcuts(track.get_shortcut_routes())
 		if ai.has_method("notify_shoe_changed"):
 			ai.notify_shoe_changed()
 		racers.append(ai)

@@ -11,10 +11,20 @@ const ALLOWED_EVENTS := [
 	"race_start",
 	"checkpoint",
 	"item_use",
+	"item_acquired",
 	"special_ability",
 	"finish",
 	"restart",
 	"perf_sample",
+	"movement_sample",
+	"drift_release",
+	"trick",
+	"jump",
+	"wall_kick",
+	"stomp",
+	"rail_used",
+	"shortcut_entered",
+	"shortcut_completed",
 ]
 
 var _session_id: String = ""

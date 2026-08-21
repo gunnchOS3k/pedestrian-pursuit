@@ -39,6 +39,11 @@ func set_ai_tier(tier_name: String) -> void:
 		path_follower.set_shoe_context(shoe_id)
 
 
+func configure_shortcuts(routes: Array) -> void:
+	if path_follower != null and path_follower.has_method("configure_shortcut_from_course"):
+		path_follower.configure_shortcut_from_course(routes, ai_tier_name)
+
+
 func notify_shoe_changed() -> void:
 	if path_follower != null and path_follower.has_method("set_shoe_context"):
 		path_follower.set_shoe_context(shoe_id)

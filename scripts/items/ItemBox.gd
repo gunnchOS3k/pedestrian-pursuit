@@ -18,7 +18,16 @@ func _on_body_entered(body: Node3D) -> void:
 	if not _active:
 		return
 	if body.is_in_group("racers") and body.has_node("ItemManager"):
-		body.get_node("ItemManager").grant_random_item()
+		var mgr = body.get_node("ItemManager")
+		var place := int(body.get_meta("race_place_estimate", 4))
+		var field := 4
+		var tree := body.get_tree()
+		if tree != null:
+			field = maxi(tree.get_nodes_in_group("racers").size(), 2)
+		if mgr.has_method("grant_position_weighted_item"):
+			mgr.grant_position_weighted_item(place, field)
+		else:
+			mgr.grant_random_item()
 		_deactivate()
 
 

@@ -44,6 +44,17 @@ var drafting_system: Node
 var rail_grind_system: Node
 var special_ability: Node
 
+## Sprint cadence / coyote / slide timing (feet grammar depth).
+var _cadence_phase: float = 0.0
+var _coyote_timer: float = 0.0
+var _jump_buffer: float = 0.0
+var _slide_timer: float = 0.0
+var _momentum_line_bonus: float = 1.0
+var _last_wall_kick: bool = false
+const COYOTE_SEC := 0.12
+const JUMP_BUFFER_SEC := 0.12
+const MAX_SLIDE_SEC := 1.35
+
 
 func _ready() -> void:
 	add_to_group("racers")
@@ -51,6 +62,8 @@ func _ready() -> void:
 	var racer_data := RacerData.load_by_id(racer_id)
 	var shoe_data := ShoeDataScript.load_by_id(shoe_id)
 	stats.apply_racer_and_shoe(racer_data, shoe_data)
+	if boost_system != null and boost_system.has_method("set_efficiency"):
+		boost_system.set_efficiency(float(stats.boost_efficiency))
 	_setup_special_ability(racer_data)
 	drift_system.drift_released.connect(_on_drift_released)
 	trick_system.trick_landed.connect(_on_trick_landed)
@@ -139,13 +152,20 @@ func _physics_process(delta: float) -> void:
 	if special_ability and special_ability.has_method("tick"):
 		special_ability.tick(delta)
 	_tick_timers(delta)
+	_update_jump_windows(delta)
 
 	if rail_grind_system and rail_grind_system.get("is_grinding"):
+		if is_player and InputManager.is_jumping() and rail_grind_system.has_method("request_jump_exit"):
+			if rail_grind_system.request_jump_exit():
+				velocity.y = stats.jump_force * 0.85
+				state_machine.set_state(state_machine.State.AIR)
+				return
 		var grind: Dictionary = rail_grind_system.tick(delta)
 		if grind.get("active", false):
 			velocity = grind.get("velocity", Vector3.ZERO)
 			move_and_slide()
 			speed_changed.emit(horizontal_speed)
+			_emit_movement_telemetry("RAIL")
 			return
 
 	var steer := _get_steer()
@@ -153,8 +173,13 @@ func _physics_process(delta: float) -> void:
 
 	if is_on_floor():
 		if state_machine.current_state == state_machine.State.AIR:
+			if stomp_system != null and stomp_system.get("last_was_airborne"):
+				stomp_system.on_air_stomp_landed(global_position, self)
+				var pen := float(stomp_system.consume_recovery_penalty())
+				horizontal_speed *= maxf(0.0, 1.0 - pen)
 			trick_system.on_landed()
 			state_machine.set_state(state_machine.State.GROUNDED)
+		_coyote_timer = COYOTE_SEC
 		_handle_ground_movement(delta, steer)
 	else:
 		state_machine.set_state(state_machine.State.AIR)
@@ -165,6 +190,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	_handle_collision_recovery(delta)
 	speed_changed.emit(horizontal_speed)
+	_emit_movement_telemetry(get_speed_state())
 
 
 func _handle_ground_movement(delta: float, steer: float) -> void:
@@ -172,57 +198,82 @@ func _handle_ground_movement(delta: float, steer: float) -> void:
 	var drift_charge_mult := 1.0
 	if special_ability and special_ability.has_method("get_drift_charge_multiplier"):
 		drift_charge_mult = special_ability.get_drift_charge_multiplier()
-	if drifting:
+	var drift_ctrl := float(stats.drift_control)
+	if stats.has_method("drift_grip_for_terrain"):
+		drift_ctrl = float(stats.drift_grip_for_terrain(terrain_name))
+	if drifting and drift_system.can_start_at_speed(horizontal_speed):
 		if not drift_system.is_drifting:
-			drift_system.start_drift()
-		state_machine.set_state(state_machine.State.DRIFT)
-		drift_system.update_drift(delta, steer, stats.drift_control, drift_charge_mult)
-		_set_drift_vfx(true, drift_system.get_spark_color())
+			if not drift_system.start_drift(horizontal_speed, steer):
+				drifting = false
+		if drifting and drift_system.is_drifting:
+			state_machine.set_state(state_machine.State.DRIFT)
+			drift_system.update_drift(delta, steer, drift_ctrl, drift_charge_mult, horizontal_speed)
+			_set_drift_vfx(true, drift_system.get_spark_color())
 	else:
 		if drift_system.is_drifting:
-			drift_system.stop_drift(steer)
+			drift_system.stop_drift(steer, horizontal_speed)
 		_set_drift_vfx(false, Color.WHITE)
 		if is_player and InputManager.is_sliding():
 			state_machine.set_state(state_machine.State.SLIDE)
+			_slide_timer = minf(_slide_timer + delta, MAX_SLIDE_SEC)
 		else:
+			_slide_timer = 0.0
 			state_machine.set_state(state_machine.State.GROUNDED)
 
-	if is_player and InputManager.is_jumping():
+	if _wants_jump():
 		if rail_grind_system and rail_grind_system.has_method("try_start_from_jump"):
 			if rail_grind_system.try_start_from_jump():
+				_jump_buffer = 0.0
 				return
-		velocity.y = stats.jump_force
-		state_machine.set_state(state_machine.State.AIR)
+		_do_jump()
 		return
 
-	if is_player and InputManager.is_sliding() and stomp_system.can_stomp():
+	if is_player and InputManager.is_sliding() and stomp_system.can_stomp() and _slide_timer > 0.12:
 		stomp_system.execute_ground_stomp(global_position, self)
 
 	var target_speed := _compute_target_speed()
 	var accel: float = stats.acceleration
+	if stats.has_method("accel_for_terrain"):
+		accel = float(stats.accel_for_terrain(terrain_name, terrain_speed_multiplier))
+	# Cadence timing window: brief accel crest near stride apex.
+	_cadence_phase = fposmod(_cadence_phase + delta / maxf(stats.cadence_period, 0.2), 1.0)
+	var cadence_crest := 1.0 + 0.04 * sin(_cadence_phase * TAU)
+	accel *= cadence_crest * _momentum_line_bonus
 	if state_machine.current_state == state_machine.State.DRIFT:
 		accel *= 0.65
 	elif state_machine.current_state == state_machine.State.SLIDE:
 		target_speed *= stats.slide_speed_multiplier
+		# Long slide decays — no permanent low-profile exploit.
+		if _slide_timer > 0.9:
+			target_speed *= 0.92
 	if _collision_stun > 0.0:
 		accel *= 0.35
 		target_speed *= 0.55
 
 	if _get_accelerate_input():
 		horizontal_speed = move_toward(horizontal_speed, target_speed, accel * delta)
+		# Good line: low steer at speed preserves momentum briefly.
+		if absf(steer) < 0.18 and horizontal_speed > stats.top_speed * 0.7:
+			_momentum_line_bonus = move_toward(_momentum_line_bonus, 1.06, delta * 0.35)
+		else:
+			_momentum_line_bonus = move_toward(_momentum_line_bonus, 1.0, delta * 0.8)
 	elif _get_brake_input():
 		horizontal_speed = move_toward(horizontal_speed, 0.0, stats.brake_strength * delta)
+		_momentum_line_bonus = 1.0
 	else:
 		var coast: float = float(stats.brake_strength) * 0.35
 		if special_ability and special_ability.has_method("get_speed_decay_resist"):
 			coast *= maxf(0.0, 1.0 - float(special_ability.get_speed_decay_resist()))
 		horizontal_speed = move_toward(horizontal_speed, 0.0, coast * delta)
+		_momentum_line_bonus = move_toward(_momentum_line_bonus, 1.0, delta)
 
 	var turn_rate: float = stats.handling * terrain_handling_multiplier
 	if special_ability and special_ability.has_method("get_handling_multiplier"):
 		turn_rate *= special_ability.get_handling_multiplier()
 	if state_machine.current_state == state_machine.State.DRIFT:
 		turn_rate *= 1.35
+	elif state_machine.current_state == state_machine.State.SLIDE:
+		turn_rate *= float(stats.slide_handling_multiplier)
 	if horizontal_speed > 0.5:
 		rotate_y(-steer * turn_rate * delta * 0.08)
 
@@ -243,14 +294,27 @@ func _handle_air_movement(delta: float, steer: float, _gravity: float) -> void:
 	if is_player and InputManager.is_jumping() and rail_grind_system:
 		if rail_grind_system.has_method("try_start_from_jump"):
 			rail_grind_system.try_start_from_jump()
+	# Coyote / buffered jump only when recently grounded — no infinite air chain.
+	if _wants_jump() and _coyote_timer > 0.0 and velocity.y <= 0.5:
+		_do_jump()
+		return
 
 	var forward := -global_transform.basis.z
-	velocity.x += forward.x * steer * stats.air_control * delta
-	velocity.z += forward.z * steer * stats.air_control * delta
-	rotate_y(-steer * stats.air_control * 0.05 * delta)
+	var air_cap: float = float(stats.air_control)
+	velocity.x += forward.x * steer * air_cap * delta
+	velocity.z += forward.z * steer * air_cap * delta
+	# Bound air lateral so air control cannot exceed grounded turn authority.
+	var horiz := Vector3(velocity.x, 0.0, velocity.z)
+	var max_air: float = maxf(horizontal_speed, stats.top_speed * 0.85) + air_cap * 0.5
+	if horiz.length() > max_air:
+		horiz = horiz.normalized() * max_air
+		velocity.x = horiz.x
+		velocity.z = horiz.z
+	rotate_y(-steer * air_cap * 0.05 * delta)
 
 
 func _handle_collision_recovery(delta: float) -> void:
+	_last_wall_kick = false
 	if get_slide_collision_count() == 0:
 		return
 	for i in get_slide_collision_count():
@@ -272,6 +336,9 @@ func _handle_collision_recovery(delta: float) -> void:
 			velocity.y = maxf(velocity.y, stats.jump_force * 0.65)
 			horizontal_speed = maxf(horizontal_speed, stats.top_speed * 0.55)
 			_wall_kick_cooldown = 0.8
+			_last_wall_kick = true
+			if TelemetryBus != null:
+				TelemetryBus.record("wall_kick", {"racer_id": racer_id})
 		break
 	_collision_stun = maxf(0.0, _collision_stun - delta)
 
@@ -296,7 +363,6 @@ func _handle_player_actions() -> void:
 func _compute_target_speed() -> float:
 	var mult := terrain_speed_multiplier
 	if stats != null and stats.has_method("affinity_for") and terrain_name != "standard":
-		# Affinity already folded into terrain zone enter; keep mild continuous bias.
 		mult *= clampf(0.92 + 0.08 * float(stats.affinity_for(terrain_name)), 0.75, 1.2)
 	mult *= drift_system.get_speed_multiplier()
 	mult *= boost_system.get_speed_multiplier()
@@ -312,6 +378,7 @@ func _compute_target_speed() -> float:
 		if special_ability and special_ability.has_method("get_slow_resist"):
 			slow_mult = lerpf(0.55, 1.0, special_ability.get_slow_resist())
 		mult *= slow_mult
+	# Doctrine: never apply place-based competitive speed assist.
 	return stats.top_speed * mult
 
 
@@ -326,6 +393,30 @@ func _tick_timers(delta: float) -> void:
 		_wall_kick_cooldown = maxf(0.0, _wall_kick_cooldown - delta)
 	if _collision_stun > 0.0:
 		_collision_stun = maxf(0.0, _collision_stun - delta)
+
+
+func _update_jump_windows(delta: float) -> void:
+	if is_player and InputManager.is_jumping():
+		_jump_buffer = JUMP_BUFFER_SEC
+	else:
+		_jump_buffer = maxf(0.0, _jump_buffer - delta)
+	if not is_on_floor():
+		_coyote_timer = maxf(0.0, _coyote_timer - delta)
+
+
+func _wants_jump() -> bool:
+	if not is_player:
+		return false
+	return _jump_buffer > 0.0 or InputManager.is_jumping()
+
+
+func _do_jump() -> void:
+	velocity.y = stats.jump_force
+	state_machine.set_state(state_machine.State.AIR)
+	_jump_buffer = 0.0
+	_coyote_timer = 0.0
+	if TelemetryBus != null:
+		TelemetryBus.record("jump", {"racer_id": racer_id})
 
 
 func _get_steer() -> float:
@@ -396,7 +487,7 @@ func set_terrain_modifiers(name: String, speed_mult: float, handling_mult: float
 
 
 func collect_boost_pickup() -> void:
-	boost_system.add_boost(boost_system.pickup_amount)
+	boost_system.add_boost(boost_system.pickup_amount, "pickup")
 
 
 func apply_stomp_slow(duration: float) -> void:
@@ -467,13 +558,49 @@ func get_speed_state() -> String:
 
 
 func _on_drift_released(multiplier: float, tier: int) -> void:
-	boost_system.add_boost(8.0 + tier * 6.0)
-	boost_system.apply_external_boost(multiplier, drift_system.boost_durations[clampi(tier, 0, 3)])
+	boost_system.add_boost(8.0 + tier * 6.0, "drift_release")
+	boost_system.apply_external_boost(multiplier, drift_system.boost_durations[clampi(tier, 0, 3)], "drift_release")
+	if TelemetryBus != null:
+		TelemetryBus.record("drift_release", {"tier": tier, "racer_id": racer_id})
 
 
-func _on_trick_landed(success: bool, reward: float) -> void:
+func _on_trick_landed(success: bool, reward: float, trick_id: String = "", combo: int = 0) -> void:
 	if success:
-		boost_system.add_boost(reward)
+		boost_system.add_boost(reward, "trick")
+	elif reward < 0.0:
+		boost_system.add_boost(reward, "trick_fail")  # add_boost clamps; use direct if needed
+		boost_system.current_boost = clampf(boost_system.current_boost + reward, 0.0, boost_system.max_boost)
+		boost_system.boost_changed.emit(boost_system.current_boost, boost_system.max_boost)
+	if TelemetryBus != null:
+		TelemetryBus.record("trick", {
+			"success": success,
+			"trick_id": trick_id,
+			"combo": combo,
+			"racer_id": racer_id,
+		})
+
+
+func _emit_movement_telemetry(movement_state: String) -> void:
+	if TelemetryBus == null or not is_player:
+		return
+	if Engine.get_physics_frames() % 15 != 0:
+		return
+	TelemetryBus.record("movement_sample", {
+		"racer_id": racer_id,
+		"shoe_id": shoe_id,
+		"speed": snappedf(horizontal_speed, 0.01),
+		"movement_state": movement_state,
+		"terrain": terrain_name,
+		"drift_tier": int(drift_system.spark_tier) if drift_system else 0,
+		"boost_source": str(boost_system.get_active_source()) if boost_system.has_method("get_active_source") else "none",
+		"boost_duration": snappedf(float(boost_system.get_active_duration_left()) if boost_system.has_method("get_active_duration_left") else 0.0, 0.01),
+		"position": int(get_meta("race_place_estimate", 0)),
+		"assist_flags": {
+			"auto_accelerate": GameManager != null and GameManager.auto_accelerate,
+			"mobile_assist": GameManager != null and absf(float(GameManager.mobile_assist_steer)) > 0.01,
+			"competitive_mode": GameManager != null and GameManager.competitive_mode,
+		},
+	})
 
 
 func _on_item_warning(item_id: String, seconds: float, _target: Node) -> void:

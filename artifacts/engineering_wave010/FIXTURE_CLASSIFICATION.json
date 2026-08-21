@@ -1,0 +1,18 @@
+{
+  "SYNTHETIC_TEST_FIXTURE": [
+    "tests/engineering_wave010/Wave010RuntimeTest.gd"
+  ],
+  "GAME_AUTHORED_TEST_TRACK": [
+    "data/tracks/verdant_cascade_circuit.json"
+  ],
+  "GAME_AUTHORED_RACER": [
+    "data/racers/dash_reed.json"
+  ],
+  "DETERMINISTIC_SEEDED_SIMULATION": [
+    "scripts/race/FairComebackPolicy.gd#evaluate_distribution"
+  ],
+  "RECORDED_RUNTIME_TRACE": [
+    "artifacts/engineering_wave010/CANONICAL_RUNTIME_RESULT.json"
+  ],
+  "NOT_CLAIMED_LIVE_HUMAN_PHYSICAL": true
+}
