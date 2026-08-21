@@ -35,7 +35,7 @@ run() {
     echo "PASS ${name}"
     return 0
   fi
-  if [[ $code -ne 0 ]] || grep -Eiq 'SCRIPT ERROR|Parse Error|Compilation failed|Wave010RuntimeTest FAIL|Wave010RaceSceneE2E FAIL' "$log"; then
+  if [[ $code -ne 0 ]] || grep -Eiq 'SCRIPT ERROR|Parse Error|Compilation failed|Wave010RuntimeTest FAIL|Wave010RaceSceneE2E FAIL|Wave010TimeTrialMasteryE2E FAIL' "$log"; then
     echo "FAIL ${name}"
     tail -80 "$log" || true
     return 1
@@ -60,6 +60,7 @@ printf '%s\n' "{\"ANDROID_EXPORT\":\"$ANDROID_EXPORT\",\"PHYSICAL_ANDROID_VALIDA
 run import "$GODOT" --headless --path "$ROOT" --import
 run wave010_component_runtime "$GODOT" --headless --path "$ROOT" --script res://tests/engineering_wave010/Wave010RuntimeTest.gd
 run wave010_racescene_e2e "$GODOT" --headless --path "$ROOT" --script res://tests/engineering_wave010/Wave010RaceSceneE2E.gd
+run wave010_time_trial_mastery "$GODOT" --headless --path "$ROOT" --script res://tests/engineering_wave010/Wave010TimeTrialMasteryE2E.gd
 run code_integrity bash tools/engineering_wave010/run_code_integrity.sh
 run mutation python3 tools/engineering_wave010/run_mutation_campaign.py
 

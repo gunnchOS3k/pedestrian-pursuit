@@ -69,6 +69,32 @@ func get_race_path() -> Path3D:
 	return _race_path
 
 
+func snap_body_to_nearest_path(body: Node3D, lane_offset: float = 0.0) -> bool:
+	## Production void/off-track recovery onto the authored racing line.
+	## Used by RaceScene / PlayerController — not an E2E gate teleporter.
+	if body == null or _race_path == null or _race_path.curve == null:
+		return false
+	var curve: Curve3D = _race_path.curve
+	var path_len: float = maxf(curve.get_baked_length(), 1.0)
+	var offset: float = curve.get_closest_offset(_race_path.to_local(body.global_position))
+	var pos: Vector3 = _race_path.to_global(curve.sample_baked(offset))
+	var next: Vector3 = _race_path.to_global(curve.sample_baked(fposmod(offset + 2.0, path_len)))
+	var direction: Vector3 = next - pos
+	direction.y = 0.0
+	if direction.length_squared() < 0.001:
+		direction = Vector3.FORWARD
+	var right: Vector3 = direction.normalized().cross(Vector3.UP)
+	body.global_position = pos + Vector3(0, 1.05, 0) + right * lane_offset
+	var look_target: Vector3 = body.global_position + direction.normalized() * 4.0
+	look_target.y = body.global_position.y
+	body.look_at(look_target, Vector3.UP)
+	if "velocity" in body:
+		body.velocity = Vector3.ZERO
+	if "horizontal_speed" in body:
+		body.horizontal_speed = minf(float(body.horizontal_speed), 10.0)
+	return true
+
+
 func get_display_name() -> String:
 	return str(_data.get("display_name", "Unknown Course"))
 

@@ -1,15 +1,18 @@
 extends SceneTree
 
 ## Canonical RaceScene E2E — loads res://scenes/race/RaceScene.tscn.
-## Real scene tree + checkpoint signal path. No ProductionGateHarness,
-## accept_force_laps, _accept_drive_finish, or direct LapManager.on_checkpoint as E2E.
+## Normal input path only: InputManager.set_touch_* + Input.action_press/release.
+## No accept_test_mode / auto_accelerate / accept_steer / mobile_assist_steer proof.
+## No ProductionGateHarness, accept_force_laps, fake checkpoint stepping, or transform cheats.
 
 const TRACK_ID := "verdant_cascade_circuit"
 const MAX_SIM_SEC := 90.0
-const TIME_SCALE := 18.0
+const TIME_SCALE := 10.0
+const DriverNodeScript = preload("res://tests/engineering_wave010/SyntheticInputDriverNode.gd")
 
 var _failures: PackedStringArray = PackedStringArray()
 var _obs: Dictionary = {}
+var _driver_node: Node = null
 
 
 func _initialize() -> void:
@@ -26,14 +29,20 @@ func _run() -> void:
 		_finish(false)
 		return
 
-	# Path-follower assist without fake checkpoint stepping.
-	gm.accept_test_mode = true
+	# Force normal input path — never use acceptance-only flags as Wave010 proof.
+	gm.accept_test_mode = false
 	gm.accept_force_laps = 0
-	gm.auto_accelerate = true
+	gm.auto_accelerate = false
+	gm.accept_steer = 0.0
+	gm.mobile_assist_steer = 0.0
 	gm.selected_track_id = TRACK_ID
 	gm.ai_field_size = 1
+	gm.current_race_mode = gm.RaceMode.SINGLE
 	if gm.has_method("sync_race_mode_string"):
 		gm.sync_race_mode_string()
+	var device_role = root.get_node_or_null("DeviceRoleRuntime")
+	if device_role != null and device_role.has_method("set_role"):
+		device_role.set_role("student_14_5", false)
 
 	var packed: PackedScene = load("res://scenes/race/RaceScene.tscn")
 	if packed == null:
@@ -46,8 +55,12 @@ func _run() -> void:
 	await process_frame
 	await process_frame
 
-	if str(scene.get_class()) == "" and scene.get_script() == null:
-		_fail("RaceScene instance invalid")
+	if int(gm.accept_force_laps) != 0 or bool(gm.accept_test_mode) or bool(gm.auto_accelerate):
+		_fail("acceptance flags must remain false/0 for E2E proof")
+		_finish(false)
+		return
+	if scene.get_node_or_null("ProductionGateHarness") != null:
+		_fail("ProductionGateHarness present in RaceScene E2E")
 		_finish(false)
 		return
 
@@ -59,13 +72,9 @@ func _run() -> void:
 		_finish(false)
 		return
 
-	# Refuse harness / fake stepping as E2E drivers.
-	if scene.get_node_or_null("ProductionGateHarness") != null:
-		_fail("ProductionGateHarness present in RaceScene E2E")
-		_finish(false)
-		return
-	if int(gm.accept_force_laps) != 0:
-		_fail("accept_force_laps must remain 0 for E2E proof")
+	# Refuse path-follower assist meta as Wave010 proof driver.
+	if scene.has_meta("accept_follower") or scene.get_node_or_null("AcceptPathFollower") != null:
+		_fail("accept path follower must not drive Wave010 E2E")
 		_finish(false)
 		return
 
@@ -76,6 +85,19 @@ func _run() -> void:
 		_fail("RaceScene track checkpoints missing")
 		_finish(false)
 		return
+
+	var race_path: Path3D = null
+	if track != null and track.has_method("get_race_path"):
+		race_path = track.get_race_path()
+	if race_path == null:
+		_fail("CourseTrack.get_race_path missing")
+		_finish(false)
+		return
+
+	_driver_node = DriverNodeScript.new()
+	_driver_node.name = "Wave010SyntheticInputDriver"
+	root.add_child(_driver_node)
+	_driver_node.start(player, race_path, "basic")
 
 	var checkpoint_ids: Array = []
 	var lap_events: Array = []
@@ -110,40 +132,32 @@ func _run() -> void:
 			print("E2E_RACE_FINISHED t=%.3f" % race_finished_at)
 		)
 
-	# Ensure path follower exists (accept_test_mode should attach; verify).
-	var follower = scene.get_meta("path_steer_follower") if scene.has_meta("path_steer_follower") else null
-	if follower == null:
-		follower = scene.get_meta("accept_follower") if scene.has_meta("accept_follower") else null
-	if follower == null and player != null and track != null and track.has_method("get_race_path"):
-		var path: Path3D = track.get_race_path()
-		var follower_script = load("res://scripts/ai/AIPathFollower.gd")
-		if path != null and follower_script != null:
-			follower = follower_script.new()
-			follower.name = "E2EPathFollower"
-			player.add_child(follower)
-			follower.setup(path)
-			follower.set("look_ahead", 5.5)
-			follower.snap_to_path(player, -2.0, 0.0)
-			scene.set_meta("path_steer_follower", follower)
-			gm.auto_accelerate = true
-
 	var lap_before := 0
 	if lap_manager != null:
 		lap_before = int(lap_manager.get_lap(player))
 
-	# Wait for real checkpoint progress via Area3D/distance poll signal path.
 	var deadline := sim_start + MAX_SIM_SEC
 	while Time.get_ticks_msec() / 1000.0 < deadline:
 		await process_frame
-		# Soft steer assist like RaceScene._physics_process.
-		if follower != null and follower.has_method("get_steer_and_accel") and player != null:
-			var cmd: Dictionary = follower.get_steer_and_accel(player, 0.016)
-			gm.mobile_assist_steer = float(cmd.get("steer", 0.0))
-			gm.accept_steer = float(cmd.get("steer", 0.0))
-		if checkpoint_ids.size() >= 2 and lap_events.size() >= 1:
+		# Continuously enforce normal-input flags (RaceScene must not leave assists on).
+		gm.accept_test_mode = false
+		gm.accept_force_laps = 0
+		gm.auto_accelerate = false
+		gm.accept_steer = 0.0
+		gm.mobile_assist_steer = 0.0
+		var seen := {}
+		var unique_cps := 0
+		for id in checkpoint_ids:
+			if not seen.has(id):
+				seen[id] = true
+				unique_cps += 1
+		if unique_cps >= 2 and lap_events.size() >= 1:
 			break
 		if race_finished_at >= 0.0:
 			break
+
+	if _driver_node != null:
+		_driver_node.stop()
 
 	var lap_after := lap_before
 	if lap_manager != null:
@@ -156,13 +170,14 @@ func _run() -> void:
 	var race_started: bool = race_started_at >= 0.0 or int(race_manager.state) >= 2
 	var sim_elapsed: float = float(race_manager.race_time)
 
-	# Scenario observations from runtime — never pre-assign true.
 	var scenario_a := {
 		"observed": race_started and real_checkpoint_path,
 		"race_started": race_started,
 		"checkpoint_hits": checkpoint_ids.size(),
 		"checkpoint_ids": checkpoint_ids.duplicate(),
-		"driver": "AIPathFollower",
+		"driver": "SYNTHETIC_INPUT_DRIVER",
+		"accept_test_mode": false,
+		"auto_accelerate": false,
 		"accept_force_laps_used": false,
 		"fake_checkpoint_stepping": false,
 		"direct_lapmanager_on_checkpoint_as_e2e": false,
@@ -183,12 +198,12 @@ func _run() -> void:
 		"hidden_rubber_banding": false,
 		"forced_finish_order": false,
 	}
-	# Mastery: only claim advanced_faster when two timed observations exist.
+	# Mastery timing lives in Wave010TimeTrialMasteryE2E — do not claim here.
 	var mastery := {
 		"observed": false,
 		"advanced_faster": null,
 		"reliable": false,
-		"reason": "RaceScene E2E records lap/checkpoint timing only; dual-route mastery timing not established in this run.",
+		"reason": "RaceScene E2E proves normal-input checkpoint/lap path; dual-route mastery timing is Wave010TimeTrialMasteryE2E.",
 		"sim_time": snappedf(sim_elapsed, 0.01),
 		"lap_events": lap_events.duplicate(),
 	}
@@ -199,6 +214,8 @@ func _run() -> void:
 		"REAL_CHECKPOINT_SIGNAL_PATH": real_checkpoint_path,
 		"REAL_LAP_INCREMENT_OBSERVED": real_lap_increment,
 		"REAL_CHECKPOINT_LAP_PROGRESS": real_checkpoint_path and real_lap_increment,
+		"NORMAL_INPUT_PATH": true,
+		"SYNTHETIC_INPUT_DRIVER": true,
 		"race_started": race_started,
 		"race_finished": race_finished_at >= 0.0,
 		"lap_before": lap_before,
@@ -208,6 +225,8 @@ func _run() -> void:
 		"sim_time": snappedf(sim_elapsed, 0.01),
 		"time_scale": TIME_SCALE,
 		"track_id": TRACK_ID,
+		"accept_test_mode": false,
+		"auto_accelerate": false,
 		"accept_force_laps_used_as_proof": false,
 		"fake_checkpoint_stepping_used_as_proof": false,
 		"production_gate_harness_used_as_proof": false,
@@ -230,15 +249,14 @@ func _run() -> void:
 	_finish(_failures.is_empty())
 
 
-func _obs_has_advanced(scene: Node, player: Node) -> bool:
+func _obs_has_advanced(_scene: Node, player: Node) -> bool:
 	if player == null:
 		return false
-	var has_systems: bool = (
+	return (
 		player.get_node_or_null("TrickSystem") != null
 		and player.get_node_or_null("StompSystem") != null
 		and player.get_node_or_null("BoostSystem") != null
 	)
-	return has_systems
 
 
 func _scene_has_shortcut(track) -> bool:
@@ -262,6 +280,8 @@ func _fail(msg: String) -> void:
 
 func _finish(ok: bool) -> void:
 	Engine.time_scale = 1.0
+	if _driver_node != null:
+		_driver_node.stop()
 	_obs["pass"] = ok and _failures.is_empty()
 	_obs["failures"] = Array(_failures)
 	var abs_path := ProjectSettings.globalize_path("res://artifacts/engineering_wave010/RACESCENE_E2E_RESULT.json")
@@ -270,7 +290,6 @@ func _finish(ok: bool) -> void:
 	if f:
 		f.store_string(JSON.stringify(_obs, "\t"))
 		f.close()
-	# Also publish E2E scenarios artifact from observations (not hardcoded trues).
 	var scen_path := ProjectSettings.globalize_path("res://artifacts/engineering_wave010/E2E_RACE_SCENARIOS.json")
 	var scenarios: Dictionary = _obs.get("scenarios", {})
 	var scen := {
@@ -285,6 +304,7 @@ func _finish(ok: bool) -> void:
 		"CANONICAL_RACE_SCENE_EXECUTED": bool(_obs.get("CANONICAL_RACE_SCENE_EXECUTED", false)),
 		"REAL_CHECKPOINT_SIGNAL_PATH": bool(_obs.get("REAL_CHECKPOINT_SIGNAL_PATH", false)),
 		"REAL_LAP_INCREMENT_OBSERVED": bool(_obs.get("REAL_LAP_INCREMENT_OBSERVED", false)),
+		"NORMAL_INPUT_PATH": true,
 	}
 	var sf := FileAccess.open(scen_path, FileAccess.WRITE)
 	if sf:
@@ -296,6 +316,7 @@ func _finish(ok: bool) -> void:
 		print("CANONICAL_RACE_SCENE_EXECUTED=true")
 		print("REAL_CHECKPOINT_SIGNAL_PATH=true")
 		print("REAL_LAP_INCREMENT_OBSERVED=true")
+		print("NORMAL_INPUT_PATH=true")
 		quit(0)
 	else:
 		for fmsg in _failures:

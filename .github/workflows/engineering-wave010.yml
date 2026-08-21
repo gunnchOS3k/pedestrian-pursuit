@@ -28,6 +28,9 @@ jobs:
           GITHUB_SHA: ${{ github.sha }}
           GITHUB_RUN_ID: ${{ github.run_id }}
           GITHUB_ACTIONS: "true"
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          WAVE010_PR_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          WAVE010_PR_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
           WAVE010_REQUIRE_PASS: "1"
         run: make engineering-wave010
 
@@ -49,14 +52,20 @@ jobs:
           prov=json.load(open("artifacts/engineering_wave010/CI_PROVENANCE_SCHEMA.json"))
           reg=json.load(open("artifacts/engineering_wave010/RUNTIME_DEFECT_REGRESSION_RESULT.json"))
           matrix=json.load(open("artifacts/engineering_wave010/PER_REQUIREMENT_EVIDENCE_MATRIX.json"))
+          mastery=json.load(open("artifacts/engineering_wave010/MASTERY_RESULT.json"))
 
           assert d.get("ENGINEERING_WAVE_010") == "PASS", d.get("ENGINEERING_WAVE_010")
+          assert int(d.get("IMPLEMENTED_COUNT", 0)) == 15
           reqs=d.get("requirement_results", {})
           assert sum(1 for v in reqs.values() if v == "IMPLEMENTED") == 15, reqs
+          assert reqs.get("GAME-PP-015") == "IMPLEMENTED"
           assert d.get("CANONICAL_RACE_SCENE_EXECUTED") is True
           assert d.get("REAL_CHECKPOINT_SIGNAL_PATH") is True
           assert d.get("REAL_LAP_INCREMENT_OBSERVED") is True
           assert d.get("REAL_CHECKPOINT_LAP_PROGRESS") is True
+          assert e2e.get("NORMAL_INPUT_PATH") is True
+          assert e2e.get("accept_test_mode") is False
+          assert e2e.get("auto_accelerate") is False
           assert d.get("ACCEPT_FORCE_LAPS_USED_AS_PROOF") is False
           assert d.get("FAKE_CHECKPOINT_STEPPING_USED_AS_PROOF") is False
           assert d.get("PRODUCTION_GATE_HARNESS_USED_AS_PROOF") is False
@@ -65,8 +74,15 @@ jobs:
           assert e2e.get("fake_checkpoint_stepping_used_as_proof") is False
           assert e2e.get("production_gate_harness_used_as_proof") is False
           assert e2e.get("direct_lapmanager_on_checkpoint_as_e2e") is False
+          assert mastery.get("reliable") is True
+          assert mastery.get("advanced_faster") is True
+          assert int(mastery.get("pairwise_advanced_faster", 0)) >= 2
+          assert mastery.get("median_advantage_ok") is True
+          assert (mastery.get("ghost") or {}).get("ok") is True
           assert int(mut.get("WAVE010_INVALID_MUTATIONS", 1)) == 0
-          assert int(mut.get("WAVE010_BEHAVIORAL_KILLED", 0)) >= 8
+          assert int(mut.get("WAVE010_BEHAVIORAL_KILLED", 0)) >= 11
+          assert int(mut.get("WAVE010_MUTATIONS_ATTEMPTED", 0)) >= 11
+          assert int(mut.get("WAVE010_BEHAVIORAL_KILLED", 0)) == int(mut.get("WAVE010_MUTATIONS_ATTEMPTED", -1))
           assert int(integ.get("NEW_S0", 1)) == 0
           assert int(integ.get("NEW_S1", 1)) == 0
           assert int(integ.get("PRODUCTION_IMPORTS_EVALUATORS", 1)) == 0
@@ -75,9 +91,12 @@ jobs:
           assert reg.get("BOOST_SIGNAL_ARITY_REGRESSION_PASS") is True
           assert reg.get("TRICK_FAIL_SINGLE_PENALTY_PASS") is True
           assert reg.get("TRICK_FAIL_DOUBLE_PENALTY") is False
-          assert prov.get("TESTED_HEAD_SHA") == os.environ.get("GITHUB_SHA")
-          assert prov.get("AUTHORITATIVE_EVIDENCE_TESTED_HEAD_EQUALS_PR_HEAD") is True
+          assert prov.get("TESTED_CHECKOUT_SHA") == os.environ.get("GITHUB_SHA")
+          assert prov.get("AUTHORITATIVE_EVIDENCE_BOUND_TO_PR_HEAD") is True
+          assert prov.get("committed_evidence_class") == "LOCAL_OR_PRECOMMIT_SNAPSHOT"
+          assert "PR_HEAD_SHA" in prov and "PR_BASE_SHA" in prov
+          assert "TESTED_CHECKOUT_KIND" in prov
           assert d.get("MUTATED_FILES_COMMITTED") is False
           assert d.get("CURSOR_MERGED_NOTHING") is True
-          print("CI final gate PASS", d.get("token"), "tested", prov.get("TESTED_HEAD_SHA"))
+          print("CI final gate PASS", d.get("token"), "tested", prov.get("TESTED_CHECKOUT_SHA"), "pr_head", prov.get("PR_HEAD_SHA"))
           PY

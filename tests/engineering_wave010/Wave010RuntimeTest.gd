@@ -387,6 +387,8 @@ func _test_boost_economy() -> void:
 	boost._chain_cooldown = 0.0
 	if not boost.try_consume_boost():
 		_fail("manual boost consume failed")
+	if float(boost.get_speed_multiplier()) <= 1.01:
+		_fail("manual boost multiplier disabled")
 	if boost.try_consume_boost():
 		_fail("boost chain window failed to block immediate re-consume")
 	boost._active_time = 0.0
@@ -692,11 +694,36 @@ func _test_mutation_sensitive_invariants() -> void:
 	var drift := _attach(host, "DriftSystem", "res://scripts/player/DriftSystem.gd")
 	if float(drift.min_speed_to_drift) < 2.5:
 		_fail("drift min_speed_to_drift too low (stationary farm)")
+	if float(drift.boost_multipliers[0]) <= 1.001:
+		_fail("drift release benefit flattened")
 	var boost := _attach(host, "BoostSystem", "res://scripts/player/BoostSystem.gd")
 	if float(boost.max_boost) > 150.0:
 		_fail("boost cap removed")
 	if float(boost.max_active_multiplier) < 1.2:
 		_fail("boost mastery multiplier flattened")
+	if float(boost.boost_speed_multiplier) <= 1.01:
+		_fail("manual boost speed multiplier disabled")
+	# Ghost save/load round-trip (mutation-sensitive).
+	var ghost := Node.new()
+	ghost.set_script(load("res://scripts/race/GhostRecorder.gd"))
+	root.add_child(ghost)
+	var ghost_track := "wave010_mut_ghost"
+	if ghost.has_method("clear_saved"):
+		ghost.clear_saved(ghost_track)
+	var body := Node3D.new()
+	root.add_child(body)
+	body.global_position = Vector3(2, 1, 0)
+	ghost.begin(ghost_track)
+	for i in 6:
+		body.global_position = Vector3(float(i), 1.0, 0.5)
+		ghost.tick(0.05, body)
+	if not bool(ghost.finish_and_save(12.0)):
+		_fail("ghost finish_and_save failed")
+	var samples: Array = ghost.load_samples(ghost_track)
+	if samples.size() < 3:
+		_fail("ghost load_samples broken")
+	body.queue_free()
+	ghost.queue_free()
 	if float(FairComebackPolicyScript.COMPETITIVE_MAX_OFFENSE_WEIGHT) > 2.0:
 		_fail("item offense weight extreme")
 	if FairComebackPolicyScript.competitive_speed_assist(4, 4) > 1.001:

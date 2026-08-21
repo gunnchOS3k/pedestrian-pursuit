@@ -12,6 +12,16 @@ var _interval: float = 0.05
 var _accum: float = 0.0
 
 
+func clear_saved(track_id: String) -> bool:
+	## Removes persisted ghost for a track (test + rematch hygiene).
+	var path := GHOST_PATH % track_id
+	if not FileAccess.file_exists(path):
+		return true
+	var abs_path := ProjectSettings.globalize_path(path)
+	var err := DirAccess.remove_absolute(abs_path)
+	return err == OK
+
+
 func begin(track_id: String) -> void:
 	_track_id = track_id
 	_samples.clear()

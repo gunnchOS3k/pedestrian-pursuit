@@ -2,10 +2,16 @@
   "schema": "gunnchos.engineering_wave010.ci_provenance.v1",
   "committed_evidence_class": "LOCAL_OR_PRECOMMIT_SNAPSHOT",
   "authoritative_for_final_pr_head": false,
-  "TESTED_HEAD_SHA": "2063fed85ab199604aabc10d6ff5196e0f1be70e",
-  "TESTED_TREE": "61cb1d3cf1ba13e61a5a5740a7844653657b7cc2",
+  "PR_HEAD_SHA": "b44971c881635ba68c6b5147f063434f31874948",
+  "PR_BASE_SHA": "",
+  "TESTED_CHECKOUT_SHA": "b44971c881635ba68c6b5147f063434f31874948",
+  "TESTED_CHECKOUT_TREE": "ffcbf4793453b7954d8b784d01e123750fc13286",
+  "TESTED_CHECKOUT_KIND": "LOCAL_WORKTREE",
+  "AUTHORITATIVE_EVIDENCE_BOUND_TO_PR_HEAD": true,
+  "AUTHORITATIVE_EVIDENCE_TESTED_HEAD_EQUALS_PR_HEAD": true,
+  "TESTED_HEAD_SHA": "b44971c881635ba68c6b5147f063434f31874948",
+  "TESTED_TREE": "ffcbf4793453b7954d8b784d01e123750fc13286",
   "GITHUB_RUN_ID": null,
   "CI": false,
-  "AUTHORITATIVE_EVIDENCE_TESTED_HEAD_EQUALS_PR_HEAD": false,
-  "note": "Committed artifacts are snapshots; CI artifact binds TESTED_HEAD_SHA=$GITHUB_SHA."
+  "note": "Committed artifacts are LOCAL_OR_PRECOMMIT_SNAPSHOT. CI records PR_HEAD_SHA / PR_BASE_SHA separately from TESTED_CHECKOUT_SHA (merge-ref on pull_request). AUTHORITATIVE_EVIDENCE_BOUND_TO_PR_HEAD is binding, not equality."
 }

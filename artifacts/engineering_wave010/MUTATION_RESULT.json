@@ -1,9 +1,9 @@
 {
   "schema": "gunnchos.engineering_wave010.mutation.v1",
   "clean_baseline_pass": true,
-  "WAVE010_MUTATIONS_ATTEMPTED": 8,
-  "WAVE010_MUTATIONS_KILLED": 8,
-  "WAVE010_BEHAVIORAL_KILLED": 8,
+  "WAVE010_MUTATIONS_ATTEMPTED": 11,
+  "WAVE010_MUTATIONS_KILLED": 11,
+  "WAVE010_BEHAVIORAL_KILLED": 11,
   "WAVE010_INVALID_MUTATIONS": 0,
   "MUTATED_FILES_COMMITTED": false,
   "results": [
@@ -14,7 +14,7 @@
       "behavioral": true,
       "reason": "behavioral_kill",
       "exit": 1,
-      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN COMPONENT_RUNTIME\nTRICK_FAIL_SINGLE_PENALTY_PASS=true\nTRICK_FAIL_DOUBLE_PENALTY=false\nBOOST_SIGNAL_ARITY_REGRESSION_PASS=true\nBOOST_RUNTIME_SIGNAL_ERRORS=0\nFAIL: sprint accel did not approach top speed band\nFAIL: sprint acceleration disabled\nWave010RuntimeTest FAIL count=2\nERROR: sprint accel did not approach top speed band\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:473)\nERROR: sprint acceleration disabled\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:473)"
+      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN COMPONENT_RUNTIME\nTRICK_FAIL_SINGLE_PENALTY_PASS=true\nTRICK_FAIL_DOUBLE_PENALTY=false\nBOOST_SIGNAL_ARITY_REGRESSION_PASS=true\nBOOST_RUNTIME_SIGNAL_ERRORS=0\nFAIL: sprint accel did not approach top speed band\nFAIL: sprint acceleration disabled\nWave010RuntimeTest FAIL count=2\nERROR: sprint accel did not approach top speed band\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:475)\nERROR: sprint acceleration disabled\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:475)"
     },
     {
       "id": "drift_stationary_farm",
@@ -23,7 +23,7 @@
       "behavioral": true,
       "reason": "behavioral_kill",
       "exit": 1,
-      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN COMPONENT_RUNTIME\nTRICK_FAIL_SINGLE_PENALTY_PASS=true\nTRICK_FAIL_DOUBLE_PENALTY=false\nBOOST_SIGNAL_ARITY_REGRESSION_PASS=true\nBOOST_RUNTIME_SIGNAL_ERRORS=0\nFAIL: drift started while stationary/slow\nFAIL: drift min_speed_to_drift too low (stationary farm)\nWave010RuntimeTest FAIL count=2\nERROR: drift started while stationary/slow\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:473)\nERROR: drift min_speed_to_drift too low (stationary farm)\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:473)"
+      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN COMPONENT_RUNTIME\nTRICK_FAIL_SINGLE_PENALTY_PASS=true\nTRICK_FAIL_DOUBLE_PENALTY=false\nBOOST_SIGNAL_ARITY_REGRESSION_PASS=true\nBOOST_RUNTIME_SIGNAL_ERRORS=0\nFAIL: drift started while stationary/slow\nFAIL: drift min_speed_to_drift too low (stationary farm)\nWave010RuntimeTest FAIL count=2\nERROR: drift started while stationary/slow\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:475)\nERROR: drift min_speed_to_drift too low (stationary farm)\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:475)"
     },
     {
       "id": "boost_cap_removed",
@@ -32,7 +32,7 @@
       "behavioral": true,
       "reason": "behavioral_kill",
       "exit": 1,
-      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN COMPONENT_RUNTIME\nTRICK_FAIL_SINGLE_PENALTY_PASS=true\nTRICK_FAIL_DOUBLE_PENALTY=false\nBOOST_SIGNAL_ARITY_REGRESSION_PASS=true\nBOOST_RUNTIME_SIGNAL_ERRORS=0\nFAIL: boost cap removed\nWave010RuntimeTest FAIL count=1\nERROR: boost cap removed\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:473)"
+      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN COMPONENT_RUNTIME\nTRICK_FAIL_SINGLE_PENALTY_PASS=true\nTRICK_FAIL_DOUBLE_PENALTY=false\nBOOST_SIGNAL_ARITY_REGRESSION_PASS=true\nBOOST_RUNTIME_SIGNAL_ERRORS=0\nFAIL: boost cap removed\nWave010RuntimeTest FAIL count=1\nERROR: boost cap removed\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:475)"
     },
     {
       "id": "item_weight_extreme",
@@ -41,7 +41,7 @@
       "behavioral": true,
       "reason": "behavioral_kill",
       "exit": 1,
-      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN COMPONENT_RUNTIME\nTRICK_FAIL_SINGLE_PENALTY_PASS=true\nTRICK_FAIL_DOUBLE_PENALTY=false\nBOOST_SIGNAL_ARITY_REGRESSION_PASS=true\nBOOST_RUNTIME_SIGNAL_ERRORS=0\nFAIL: comeback fair bounds failed digital eval\nFAIL: item offense weight extreme\nWave010RuntimeTest FAIL count=2\nERROR: comeback fair bounds failed digital eval\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:473)\nERROR: item offense weight extreme\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:473)"
+      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN COMPONENT_RUNTIME\nTRICK_FAIL_SINGLE_PENALTY_PASS=true\nTRICK_FAIL_DOUBLE_PENALTY=false\nBOOST_SIGNAL_ARITY_REGRESSION_PASS=true\nBOOST_RUNTIME_SIGNAL_ERRORS=0\nFAIL: comeback fair bounds failed digital eval\nFAIL: item offense weight extreme\nWave010RuntimeTest FAIL count=2\nERROR: comeback fair bounds failed digital eval\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:475)\nERROR: item offense weight extreme\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:475)"
     },
     {
       "id": "checkpoint_bypass",
@@ -50,7 +50,7 @@
       "behavioral": true,
       "reason": "behavioral_kill",
       "exit": 1,
-      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN COMPONENT_RUNTIME\nTRICK_FAIL_SINGLE_PENALTY_PASS=true\nTRICK_FAIL_DOUBLE_PENALTY=false\nBOOST_SIGNAL_ARITY_REGRESSION_PASS=true\nBOOST_RUNTIME_SIGNAL_ERRORS=0\nFAIL: checkpoint skip advanced lap illegally\nFAIL: checkpoint bypass mutation not guarded\nWave010RuntimeTest FAIL count=2\nERROR: checkpoint skip advanced lap illegally\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:473)\nERROR: checkpoint bypass mutation not guarded\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:473)"
+      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN COMPONENT_RUNTIME\nTRICK_FAIL_SINGLE_PENALTY_PASS=true\nTRICK_FAIL_DOUBLE_PENALTY=false\nBOOST_SIGNAL_ARITY_REGRESSION_PASS=true\nBOOST_RUNTIME_SIGNAL_ERRORS=0\nFAIL: checkpoint skip advanced lap illegally\nFAIL: checkpoint bypass mutation not guarded\nWave010RuntimeTest FAIL count=2\nERROR: checkpoint skip advanced lap illegally\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:475)\nERROR: checkpoint bypass mutation not guarded\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:475)"
     },
     {
       "id": "racer_stats_flat",
@@ -59,7 +59,7 @@
       "behavioral": true,
       "reason": "behavioral_kill",
       "exit": 1,
-      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN COMPONENT_RUNTIME\nTRICK_FAIL_SINGLE_PENALTY_PASS=true\nTRICK_FAIL_DOUBLE_PENALTY=false\nBOOST_SIGNAL_ARITY_REGRESSION_PASS=true\nBOOST_RUNTIME_SIGNAL_ERRORS=0\nFAIL: racer stat differences erased\nFAIL: expected solen handling advantage after apply\nWave010RuntimeTest FAIL count=2\nERROR: racer stat differences erased\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:473)\nERROR: expected solen handling advantage after apply\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:473)"
+      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN COMPONENT_RUNTIME\nTRICK_FAIL_SINGLE_PENALTY_PASS=true\nTRICK_FAIL_DOUBLE_PENALTY=false\nBOOST_SIGNAL_ARITY_REGRESSION_PASS=true\nBOOST_RUNTIME_SIGNAL_ERRORS=0\nFAIL: racer stat differences erased\nFAIL: expected solen handling advantage after apply\nWave010RuntimeTest FAIL count=2\nERROR: racer stat differences erased\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:475)\nERROR: expected solen handling advantage after apply\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:475)"
     },
     {
       "id": "hidden_comeback_speed",
@@ -68,7 +68,7 @@
       "behavioral": true,
       "reason": "behavioral_kill",
       "exit": 1,
-      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN COMPONENT_RUNTIME\nTRICK_FAIL_SINGLE_PENALTY_PASS=true\nTRICK_FAIL_DOUBLE_PENALTY=false\nBOOST_SIGNAL_ARITY_REGRESSION_PASS=true\nBOOST_RUNTIME_SIGNAL_ERRORS=0\nFAIL: competitive speed assist not identity\nFAIL: hidden comeback speed assist active\nWave010RuntimeTest FAIL count=2\nERROR: competitive speed assist not identity\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:473)\nERROR: hidden comeback speed assist active\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:473)"
+      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN COMPONENT_RUNTIME\nTRICK_FAIL_SINGLE_PENALTY_PASS=true\nTRICK_FAIL_DOUBLE_PENALTY=false\nBOOST_SIGNAL_ARITY_REGRESSION_PASS=true\nBOOST_RUNTIME_SIGNAL_ERRORS=0\nFAIL: competitive speed assist not identity\nFAIL: hidden comeback speed assist active\nWave010RuntimeTest FAIL count=2\nERROR: competitive speed assist not identity\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:475)\nERROR: hidden comeback speed assist active\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:475)"
     },
     {
       "id": "mastery_boost_flat",
@@ -77,7 +77,34 @@
       "behavioral": true,
       "reason": "behavioral_kill",
       "exit": 1,
-      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN COMPONENT_RUNTIME\nTRICK_FAIL_SINGLE_PENALTY_PASS=true\nTRICK_FAIL_DOUBLE_PENALTY=false\nBOOST_SIGNAL_ARITY_REGRESSION_PASS=true\nBOOST_RUNTIME_SIGNAL_ERRORS=0\nFAIL: drift release did not apply boost\nFAIL: boost mastery multiplier flattened\nWave010RuntimeTest FAIL count=2\nERROR: drift release did not apply boost\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:473)\nERROR: boost mastery multiplier flattened\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:473)"
+      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN COMPONENT_RUNTIME\nTRICK_FAIL_SINGLE_PENALTY_PASS=true\nTRICK_FAIL_DOUBLE_PENALTY=false\nBOOST_SIGNAL_ARITY_REGRESSION_PASS=true\nBOOST_RUNTIME_SIGNAL_ERRORS=0\nFAIL: drift release did not apply boost\nFAIL: manual boost multiplier disabled\nFAIL: boost mastery multiplier flattened\nWave010RuntimeTest FAIL count=3\nERROR: drift release did not apply boost\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:475)\nERROR: manual boost multiplier disabled\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:475)\nERROR: boost mastery multiplier flattened\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:475)"
+    },
+    {
+      "id": "drift_release_flat",
+      "killed": true,
+      "invalid": false,
+      "behavioral": true,
+      "reason": "behavioral_kill",
+      "exit": 1,
+      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN COMPONENT_RUNTIME\nTRICK_FAIL_SINGLE_PENALTY_PASS=true\nTRICK_FAIL_DOUBLE_PENALTY=false\nBOOST_SIGNAL_ARITY_REGRESSION_PASS=true\nBOOST_RUNTIME_SIGNAL_ERRORS=0\nFAIL: drift release did not apply boost\nFAIL: drift release benefit flattened\nWave010RuntimeTest FAIL count=2\nERROR: drift release did not apply boost\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:475)\nERROR: drift release benefit flattened\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:475)"
+    },
+    {
+      "id": "manual_boost_mult_disabled",
+      "killed": true,
+      "invalid": false,
+      "behavioral": true,
+      "reason": "behavioral_kill",
+      "exit": 1,
+      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN COMPONENT_RUNTIME\nTRICK_FAIL_SINGLE_PENALTY_PASS=true\nTRICK_FAIL_DOUBLE_PENALTY=false\nBOOST_SIGNAL_ARITY_REGRESSION_PASS=true\nBOOST_RUNTIME_SIGNAL_ERRORS=0\nFAIL: manual boost multiplier disabled\nFAIL: manual boost speed multiplier disabled\nWave010RuntimeTest FAIL count=2\nERROR: manual boost multiplier disabled\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:475)\nERROR: manual boost speed multiplier disabled\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:475)"
+    },
+    {
+      "id": "ghost_update_load_broken",
+      "killed": true,
+      "invalid": false,
+      "behavioral": true,
+      "reason": "behavioral_kill",
+      "exit": 1,
+      "log_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nWave010RuntimeTest BEGIN COMPONENT_RUNTIME\nTRICK_FAIL_SINGLE_PENALTY_PASS=true\nTRICK_FAIL_DOUBLE_PENALTY=false\nBOOST_SIGNAL_ARITY_REGRESSION_PASS=true\nBOOST_RUNTIME_SIGNAL_ERRORS=0\nFAIL: ghost load_samples broken\nWave010RuntimeTest FAIL count=1\nERROR: ghost load_samples broken\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] _run (res://tests/engineering_wave010/Wave010RuntimeTest.gd:54)\n       [1] _test_boost_signal_arity_runtime (res://tests/engineering_wave010/Wave010RuntimeTest.gd:475)"
     }
   ],
   "pass": true

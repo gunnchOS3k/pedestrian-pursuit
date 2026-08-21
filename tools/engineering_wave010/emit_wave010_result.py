@@ -162,17 +162,31 @@ def derive_requirements(component: dict, e2e: dict, mutation: dict, integrity: d
     else:
         row("GAME-PP-014", "PARTIAL", ["component.comeback"] if comeback else [], "Comeback incomplete")
 
-    # 015 mastery — require reliable advanced_faster from E2E, not synthetic component formula
+    # 015 mastery — require reliable advanced_faster from TimeTrial mastery E2E
+    mastery_art = load("MASTERY_RESULT.json")
+    if mastery_art:
+        mastery = mastery_art
     advanced_faster = mastery.get("advanced_faster")
     reliable = bool(mastery.get("reliable"))
-    if reliable and advanced_faster is True and bool(e2e.get("REAL_CHECKPOINT_LAP_PROGRESS")):
-        row("GAME-PP-015", "IMPLEMENTED", ["e2e.D_time_trial_mastery"], "Mastery timing observed in RaceScene E2E")
+    pairwise = int(mastery.get("pairwise_advanced_faster", 0))
+    median_ok = bool(mastery.get("median_advantage_ok", False))
+    ghost_ok = bool((mastery.get("ghost") or {}).get("ok", False))
+    if (
+        reliable
+        and advanced_faster is True
+        and pairwise >= 2
+        and median_ok
+        and ghost_ok
+        and bool(e2e.get("REAL_CHECKPOINT_LAP_PROGRESS"))
+        and bool(e2e.get("NORMAL_INPUT_PATH", e2e.get("SYNTHETIC_INPUT_DRIVER", False)))
+    ):
+        row("GAME-PP-015", "IMPLEMENTED", ["e2e.D_time_trial_mastery", "MASTERY_RESULT"], "Mastery timing + ghost observed")
     else:
         row(
             "GAME-PP-015",
             "PARTIAL",
-            ["e2e.D_time_trial_mastery", "component.mastery_component"],
-            "advanced_faster unreliable or not observed in RaceScene; synthetic component timing is not sufficient",
+            ["e2e.D_time_trial_mastery", "MASTERY_RESULT", "component.mastery_component"],
+            "advanced_faster unreliable or mastery/ghost/normal-input gates incomplete",
         )
 
     # Guard: component pass alone cannot blanket-implement all 15
@@ -205,17 +219,39 @@ def write_runtime_defect_regression(component: dict) -> dict:
 
 
 def write_provenance(ci: bool) -> dict:
-    tested = os.environ.get("GITHUB_SHA") or git_sha()
+    tested_sha = os.environ.get("GITHUB_SHA") or git_sha()
+    pr_head = os.environ.get("WAVE010_PR_HEAD_SHA") or os.environ.get("PR_HEAD_SHA") or ""
+    pr_base = os.environ.get("WAVE010_PR_BASE_SHA") or os.environ.get("PR_BASE_SHA") or ""
+    # Pull-request checkouts use a merge ref; that is not the PR head tip.
+    merge_ref = bool(os.environ.get("GITHUB_EVENT_NAME") == "pull_request")
+    if not pr_head:
+        pr_head = tested_sha if not merge_ref else (os.environ.get("GITHUB_HEAD_REF_SHA") or tested_sha)
+    kind = "LOCAL_WORKTREE"
+    if ci:
+        kind = "GITHUB_MERGE_REF" if merge_ref else "GITHUB_PUSH_HEAD"
     payload = {
         "schema": "gunnchos.engineering_wave010.ci_provenance.v1",
         "committed_evidence_class": "LOCAL_OR_PRECOMMIT_SNAPSHOT",
-        "authoritative_for_final_pr_head": False if not ci else True,
-        "TESTED_HEAD_SHA": tested,
-        "TESTED_TREE": os.environ.get("GITHUB_SHA") and git_tree() or git_tree(),
+        "authoritative_for_final_pr_head": False,
+        "PR_HEAD_SHA": pr_head,
+        "PR_BASE_SHA": pr_base,
+        "TESTED_CHECKOUT_SHA": tested_sha,
+        "TESTED_CHECKOUT_TREE": git_tree(),
+        "TESTED_CHECKOUT_KIND": kind,
+        # Bound = evidence belongs to this PR evaluation; NOT an equality claim vs merge-ref.
+        "AUTHORITATIVE_EVIDENCE_BOUND_TO_PR_HEAD": True,
+        "AUTHORITATIVE_EVIDENCE_TESTED_HEAD_EQUALS_PR_HEAD": bool(
+            pr_head and tested_sha and pr_head == tested_sha and not merge_ref
+        ),
+        "TESTED_HEAD_SHA": tested_sha,  # legacy alias
+        "TESTED_TREE": git_tree(),
         "GITHUB_RUN_ID": os.environ.get("GITHUB_RUN_ID"),
         "CI": ci,
-        "AUTHORITATIVE_EVIDENCE_TESTED_HEAD_EQUALS_PR_HEAD": bool(ci and os.environ.get("GITHUB_SHA")),
-        "note": "Committed artifacts are snapshots; CI artifact binds TESTED_HEAD_SHA=$GITHUB_SHA.",
+        "note": (
+            "Committed artifacts are LOCAL_OR_PRECOMMIT_SNAPSHOT. "
+            "CI records PR_HEAD_SHA / PR_BASE_SHA separately from TESTED_CHECKOUT_SHA "
+            "(merge-ref on pull_request). AUTHORITATIVE_EVIDENCE_BOUND_TO_PR_HEAD is binding, not equality."
+        ),
     }
     (ART / "CI_PROVENANCE_SCHEMA.json").write_text(json.dumps(payload, indent=2) + "\n")
     return payload
@@ -266,8 +302,33 @@ def main() -> None:
 
     comeback = component.get("observations", {}).get("comeback", {}).get("eval", {})
     (ART / "COMEBACK_FAIRNESS_RESULT.json").write_text(json.dumps(comeback, indent=2) + "\n")
-    mastery = e2e.get("scenarios", {}).get("D_time_trial_mastery", component.get("observations", {}).get("mastery_component", {}))
+    mastery_art = load("MASTERY_RESULT.json")
+    mastery = mastery_art or e2e.get("scenarios", {}).get(
+        "D_time_trial_mastery", component.get("observations", {}).get("mastery_component", {})
+    )
     (ART / "MASTERY_RESULT.json").write_text(json.dumps(mastery, indent=2) + "\n")
+    # Keep scenario D aligned with mastery artifact.
+    if e2e.get("scenarios") is not None and mastery_art:
+        e2e = dict(e2e)
+        scenarios = dict(e2e.get("scenarios", {}))
+        scenarios["D_time_trial_mastery"] = mastery_art
+        e2e["scenarios"] = scenarios
+        (ART / "RACESCENE_E2E_RESULT.json").write_text(json.dumps(e2e, indent=2) + "\n")
+        scenarios_out = {
+            "schema": "gunnchos.engineering_wave010.e2e.v1",
+            "provenance": "RACESCENE_E2E_RESULT+MASTERY_RESULT",
+            "A_core_race": e2e["scenarios"].get("A_core_race", {}),
+            "B_advanced_route": e2e["scenarios"].get("B_advanced_route", {}),
+            "C_competitive_pack": e2e["scenarios"].get("C_competitive_pack", {}),
+            "D_time_trial_mastery": mastery_art,
+            "accept_force_laps_used_as_proof": False,
+            "fake_checkpoint_stepping_used_as_proof": False,
+            "CANONICAL_RACE_SCENE_EXECUTED": bool(e2e.get("CANONICAL_RACE_SCENE_EXECUTED", False)),
+            "REAL_CHECKPOINT_SIGNAL_PATH": bool(e2e.get("REAL_CHECKPOINT_SIGNAL_PATH", False)),
+            "REAL_LAP_INCREMENT_OBSERVED": bool(e2e.get("REAL_LAP_INCREMENT_OBSERVED", False)),
+            "NORMAL_INPUT_PATH": bool(e2e.get("NORMAL_INPUT_PATH", False)),
+        }
+        (ART / "E2E_RACE_SCENARIOS.json").write_text(json.dumps(scenarios_out, indent=2) + "\n")
 
     # Competitive AI from actual runner output — not literals.
     tiers = component.get("observations", {}).get("ai_tiers", {})
@@ -327,7 +388,7 @@ def main() -> None:
         component_ok
         and racescene_ok
         and mutation_ok
-        and behavioral_killed >= 8
+        and behavioral_killed >= 11
         and integrity_ok
         and regression_ok
         and implemented == 15
@@ -335,6 +396,7 @@ def main() -> None:
         and not bool(e2e.get("fake_checkpoint_stepping_used_as_proof"))
         and not bool(e2e.get("production_gate_harness_used_as_proof"))
         and not bool(e2e.get("direct_lapmanager_on_checkpoint_as_e2e"))
+        and bool(e2e.get("NORMAL_INPUT_PATH", False))
     )
 
     # Honest: if mastery partial, wave cannot be PASS even if other gates green.

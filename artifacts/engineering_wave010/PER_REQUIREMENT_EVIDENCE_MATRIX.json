@@ -118,12 +118,12 @@
       "BLANKET": false
     },
     "GAME-PP-015": {
-      "status": "PARTIAL",
+      "status": "IMPLEMENTED",
       "evidence": [
         "e2e.D_time_trial_mastery",
-        "component.mastery_component"
+        "MASTERY_RESULT"
       ],
-      "notes": "advanced_faster unreliable or not observed in RaceScene; synthetic component timing is not sufficient",
+      "notes": "Mastery timing + ghost observed",
       "BLANKET": false
     },
     "BLANKET_GAME_PP_ASSIGNMENT": false,

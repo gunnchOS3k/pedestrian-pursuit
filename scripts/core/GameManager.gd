@@ -135,7 +135,9 @@ func start_time_trial(track_id: String) -> void:
 	current_race_mode = RaceMode.TIME_TRIAL
 	selected_track_id = track_id
 	ai_field_size = 0
+	total_laps = 1
 	reset_race_stats()
+	sync_race_mode_string()
 
 
 func start_local_mp(track_id: String, players: int = 2) -> void:

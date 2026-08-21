@@ -275,7 +275,8 @@ func _handle_ground_movement(delta: float, steer: float) -> void:
 	elif state_machine.current_state == state_machine.State.SLIDE:
 		turn_rate *= float(stats.slide_handling_multiplier)
 	if horizontal_speed > 0.5:
-		rotate_y(-steer * turn_rate * delta * 0.08)
+		# Arcade turn authority for touch/path racing without look_at snaps.
+		rotate_y(-steer * turn_rate * delta * 0.24)
 
 	var forward := -global_transform.basis.z
 	velocity.x = forward.x * horizontal_speed
@@ -516,15 +517,21 @@ func _recover_from_fall() -> void:
 	var visual := get_node_or_null("RacerVisual")
 	if visual != null and visual.has_method("play_stumble"):
 		visual.play_stumble()
+	var recovered := false
 	var follower := get_node_or_null("AcceptPathFollower")
 	if follower != null and follower.has_method("snap_to_path") and follower.get("path") != null:
 		var path: Path3D = follower.path
 		if path != null and path.curve != null:
 			var offset := path.curve.get_closest_offset(path.to_local(global_position))
 			follower.snap_to_path(self, offset, 0.0)
-		else:
-			global_transform = _recovery_transform
-	else:
+			recovered = true
+	if not recovered:
+		# Production path: recover via owning RaceScene CourseTrack when present.
+		var scene := get_parent()
+		var track = scene.get("track") if scene != null else null
+		if track != null and track.has_method("snap_body_to_nearest_path"):
+			recovered = bool(track.snap_body_to_nearest_path(self, 0.0))
+	if not recovered:
 		global_transform = _recovery_transform
 	velocity = Vector3.ZERO
 	horizontal_speed = maxf(horizontal_speed * 0.35, 0.0)

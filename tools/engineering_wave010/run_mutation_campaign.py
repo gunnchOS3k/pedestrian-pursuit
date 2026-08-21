@@ -60,11 +60,29 @@ MUTATIONS = [
         "static func competitive_speed_assist(_place: int, _field_size: int) -> float:\n\t## Forbidden: always 1.0 (no place-based speed).\n\treturn 1.0",
         "static func competitive_speed_assist(_place: int, _field_size: int) -> float:\n\treturn 1.0 + float(max(0, _place - 1)) * 0.12",
     ),
-    (
+	(
         "mastery_boost_flat",
         "scripts/player/BoostSystem.gd",
         "max_active_multiplier: float = 1.55",
         "max_active_multiplier: float = 1.0",
+    ),
+    (
+        "drift_release_flat",
+        "scripts/player/DriftSystem.gd",
+        "boost_multipliers: Array[float] = [1.07, 1.14, 1.21, 1.30]",
+        "boost_multipliers: Array[float] = [1.0, 1.0, 1.0, 1.0]",
+    ),
+    (
+        "manual_boost_mult_disabled",
+        "scripts/player/BoostSystem.gd",
+        "boost_speed_multiplier: float = 1.35",
+        "boost_speed_multiplier: float = 1.0",
+    ),
+    (
+        "ghost_update_load_broken",
+        "scripts/race/GhostRecorder.gd",
+        'func load_samples(track_id: String) -> Array:\n\tvar path := GHOST_PATH % track_id\n\tif not FileAccess.file_exists(path):\n\t\treturn []',
+        'func load_samples(track_id: String) -> Array:\n\treturn []\n\tvar path := GHOST_PATH % track_id\n\tif not FileAccess.file_exists(path):\n\t\treturn []',
     ),
 ]
 
@@ -257,7 +275,7 @@ def main() -> int:
         "pass": (
             clean_ok
             and invalid == 0
-            and behavioral_killed >= 8
+            and behavioral_killed >= 11
             and behavioral_killed == attempted
         ),
     }

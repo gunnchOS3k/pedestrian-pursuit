@@ -133,7 +133,11 @@ func _ready() -> void:
 
 	_setup_time_trial_ghost()
 
-	GameManager.total_laps = int(course_data.get("lap_count", 3))
+	# Time Trial is a single-lap mastery/ghost run by design (not accept_force_laps).
+	if GameManager.is_time_trial():
+		GameManager.total_laps = 1
+	else:
+		GameManager.total_laps = int(course_data.get("lap_count", 3))
 	if GameManager.accept_force_laps > 0:
 		GameManager.total_laps = GameManager.accept_force_laps
 	# Acceptance: AI-style path steering for the human racer (1-lap finishes without fake results).
@@ -370,6 +374,9 @@ func _unhandled_input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	if player == null:
 		return
+	# Production void recovery: always available when a CourseTrack path exists.
+	if float(player.global_position.y) < -2.0 and track != null and track.has_method("snap_body_to_nearest_path"):
+		track.snap_body_to_nearest_path(player, 0.0)
 	var follower = null
 	if has_meta("path_steer_follower"):
 		follower = get_meta("path_steer_follower")
