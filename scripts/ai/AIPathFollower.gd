@@ -57,6 +57,28 @@ func configure_route_plan(prefer_shortcut: bool, lane_bias: float = 0.0) -> void
 	_shortcut_bias = 4.0 if prefer_shortcut else 0.0
 
 
+func configure_shortcut_from_course(routes: Array, tier_name: String) -> void:
+	## Ace prefers authored shortcuts; rookies rarely take risky cuts. No teleport.
+	if routes.is_empty():
+		return
+	var best_pref := 0.0
+	for route in routes:
+		if typeof(route) != TYPE_DICTIONARY:
+			continue
+		best_pref = maxf(best_pref, float(route.get("ai_preference", 0.25)))
+	match tier_name:
+		"ace":
+			_prefer_shortcut = best_pref >= 0.2
+			_shortcut_bias = 5.5 * clampf(best_pref + 0.4, 0.4, 1.0)
+			_lane_bias = clampf(_lane_bias - 1.1, -3.5, 3.5)
+		"standard":
+			_prefer_shortcut = best_pref >= 0.4
+			_shortcut_bias = 2.5 if _prefer_shortcut else 0.0
+		_:
+			_prefer_shortcut = false
+			_shortcut_bias = 0.0
+
+
 func _apply_tier_defaults() -> void:
 	match tier:
 		Tier.ROOKIE:

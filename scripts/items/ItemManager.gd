@@ -1,16 +1,23 @@
 extends Node
 
 ## Holds and uses the racer's current item. Offensive tools emit warnings for counterplay.
+## Position-aware grant uses FairComebackPolicy — never decides races via extreme RNG.
 
 signal item_changed(item_id: String)
 signal item_warning(item_id: String, seconds: float, target: Node)
+signal item_countered(item_id: String, by: String)
+
+const FairComebackPolicyScript = preload("res://scripts/race/FairComebackPolicy.gd")
 
 var held_item_id: String = ""
 var _item_defs: Dictionary = {}
 var _bubble_timer: float = 0.0
+var _rng := RandomNumberGenerator.new()
+var _grant_seed_offset: int = 0
 
 
 func _ready() -> void:
+	_rng.randomize()
 	for id in ItemData.all_alpha_ids():
 		_item_defs[id] = ItemData.load_by_id(id)
 
@@ -20,10 +27,36 @@ func _process(delta: float) -> void:
 		_bubble_timer = maxf(0.0, _bubble_timer - delta)
 
 
+func set_deterministic_seed(seed: int) -> void:
+	_rng.seed = seed
+	_grant_seed_offset = 0
+
+
 func grant_random_item() -> void:
-	var ids := ItemData.all_alpha_ids()
-	held_item_id = ids[randi() % ids.size()]
+	grant_position_weighted_item(-1, 4)
+
+
+func grant_position_weighted_item(place: int = -1, field_size: int = 4) -> void:
+	if not held_item_id.is_empty():
+		return
+	var resolved_place := place
+	var parent := get_parent()
+	if resolved_place < 1 and parent != null and parent.has_meta("race_place_estimate"):
+		resolved_place = int(parent.get_meta("race_place_estimate"))
+	if resolved_place < 1:
+		resolved_place = field_size
+	var competitive := FairComebackPolicyScript.is_competitive(GameManager)
+	_grant_seed_offset += 1
+	held_item_id = FairComebackPolicyScript.weighted_item_id(
+		resolved_place, maxi(field_size, 2), _rng, competitive
+	)
 	item_changed.emit(held_item_id)
+	if TelemetryBus != null:
+		TelemetryBus.record("item_acquired", {
+			"item_id": held_item_id,
+			"place": resolved_place,
+			"competitive": competitive,
+		})
 
 
 func use_held_item(racer: Node) -> void:
@@ -48,7 +81,7 @@ func use_held_item(racer: Node) -> void:
 	var audio := get_tree().root.get_node_or_null("AudioDirector")
 	if audio and audio.has_method("play_item"):
 		audio.play_item(used_id)
-	if TelemetryBus != null and racer != null and bool(racer.get("is_player")):
+	if TelemetryBus != null and racer != null and racer.get("is_player") == true:
 		var track_id := ""
 		if GameManager != null:
 			track_id = GameManager.selected_track_id
@@ -63,12 +96,17 @@ func consume_bounce_bubble() -> bool:
 	if _bubble_timer <= 0.0:
 		return false
 	_bubble_timer = 0.0
+	item_countered.emit("incoming", "bounce_bubble")
 	return true
 
 
 func _use_turbo_toes(racer: Node) -> void:
 	if racer.has_node("BoostSystem"):
-		racer.get_node("BoostSystem").apply_external_boost(1.45, 2.0)
+		var boost = racer.get_node("BoostSystem")
+		if boost.has_method("apply_external_boost"):
+			boost.apply_external_boost(1.45, 2.0, "item_turbo_toes")
+		if boost.has_method("add_boost"):
+			boost.add_boost(10.0, "item_turbo_toes")
 
 
 func _use_lace_trap(racer: Node) -> void:
@@ -104,7 +142,6 @@ func _use_pulse_horn(racer: Node) -> void:
 	var tree := racer.get_tree()
 	if tree == null:
 		return
-	# Delayed hit so victims can shield / slide / break draft.
 	tree.create_timer(warn).timeout.connect(func ():
 		if not is_instance_valid(racer) or not (racer is Node3D):
 			return
@@ -123,7 +160,7 @@ func _use_pulse_horn(racer: Node) -> void:
 				continue
 			if forward.normalized().dot(to_other.normalized()) < 0.55:
 				continue
-			_apply_hazard(other, duration * strength)
+			_apply_hazard(other, duration * strength, "pulse_horn")
 	)
 
 
@@ -138,7 +175,7 @@ func _use_magnet_lace(racer: Node) -> void:
 		return
 	tree.create_timer(warn).timeout.connect(func ():
 		if is_instance_valid(target):
-			_apply_hazard(target, duration * 0.45)
+			_apply_hazard(target, duration * 0.45, "magnet_lace")
 	)
 
 
@@ -150,17 +187,25 @@ func _use_bounce_bubble(racer: Node) -> void:
 		(racer as CharacterBody3D).velocity.y = maxf((racer as CharacterBody3D).velocity.y, 8.5)
 
 
-func _apply_hazard(target: Node, slow_duration: float) -> void:
+func _apply_hazard(target: Node, slow_duration: float, item_id: String = "") -> void:
 	if target == null:
 		return
 	var items := target.get_node_or_null("ItemManager")
 	if items != null and items.has_method("consume_bounce_bubble") and items.consume_bounce_bubble():
-		# Reflect: short hop, no slow.
 		if target is CharacterBody3D:
 			(target as CharacterBody3D).velocity.y = maxf((target as CharacterBody3D).velocity.y, 7.0)
+		item_countered.emit(item_id, "bounce_bubble")
 		return
+	# Slide / shield counters.
+	var sm := target.get_node_or_null("RacerStateMachine")
+	if sm != null and sm.get("current_state") != null:
+		var slide_state = sm.State.SLIDE if "State" in sm else null
+		if slide_state != null and sm.current_state == slide_state:
+			item_countered.emit(item_id, "slide")
+			return
 	if target.get("shield_active") == true:
 		target.set("shield_active", false)
+		item_countered.emit(item_id, "shield")
 		return
 	if target.has_method("apply_lace_trap_slow"):
 		target.apply_lace_trap_slow(slow_duration)

@@ -1,0 +1,32 @@
+{
+  "by_place": {
+    "1": {
+      "defense_recovery": 66,
+      "disruption": 132,
+      "total": 240
+    },
+    "2": {
+      "defense_recovery": 80,
+      "disruption": 114,
+      "total": 240
+    },
+    "3": {
+      "defense_recovery": 96,
+      "disruption": 97,
+      "total": 240
+    },
+    "4": {
+      "defense_recovery": 104,
+      "disruption": 79,
+      "total": 240
+    }
+  },
+  "fair_bounds_ok": true,
+  "field_size": 4,
+  "forced_finish_order": false,
+  "hidden_rubber_banding": false,
+  "leader_disruption_rate": 0.55,
+  "races": 240,
+  "seed": 77,
+  "trailer_recovery_rate": 0.433
+}

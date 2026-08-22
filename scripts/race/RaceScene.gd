@@ -26,6 +26,8 @@ var _assigned_profiles: Array = []
 
 
 func _ready() -> void:
+	if GameManager != null and GameManager.has_method("sync_race_mode_string"):
+		GameManager.sync_race_mode_string()
 	if not _load_course():
 		SceneLoader.go_to_main_menu()
 		return
@@ -114,6 +116,8 @@ func _ready() -> void:
 			ai.setup_ai_path(track.get_race_path(), -4.0 - float(i), 2.5 + float(i) * 0.4)
 		if ai.has_method("set_ai_tier"):
 			ai.set_ai_tier(ai_tiers[mini(i, ai_tiers.size() - 1)])
+		if ai.has_method("configure_shortcuts") and track.has_method("get_shortcut_routes"):
+			ai.configure_shortcuts(track.get_shortcut_routes())
 		if ai.has_method("notify_shoe_changed"):
 			ai.notify_shoe_changed()
 		racers.append(ai)
@@ -129,7 +133,12 @@ func _ready() -> void:
 
 	_setup_time_trial_ghost()
 
-	GameManager.total_laps = int(course_data.get("lap_count", 3))
+	# Time Trial product design: single-lap mastery/ghost run (not accept_force_laps).
+	# Documented in docs/engineering_wave010/CANONICAL_GAMEPLAY_MAP.md (TIME_TRIAL_LAP_COUNT=1).
+	if GameManager.is_time_trial():
+		GameManager.total_laps = 1
+	else:
+		GameManager.total_laps = int(course_data.get("lap_count", 3))
 	if GameManager.accept_force_laps > 0:
 		GameManager.total_laps = GameManager.accept_force_laps
 	# Acceptance: AI-style path steering for the human racer (1-lap finishes without fake results).
@@ -303,7 +312,8 @@ func _wire_racer_visual_hooks(racer: Node, visual: Node) -> void:
 		boost.boost_activated.connect(_on_racer_boost.bind(visual))
 
 
-func _on_racer_boost(_multiplier: float, _duration: float, visual: Node) -> void:
+func _on_racer_boost(_multiplier: float, _duration: float, _source: String, visual: Node) -> void:
+	## Signal arity: boost_activated(multiplier, duration, source) + bind(visual).
 	if visual != null and visual.has_method("set_boosting"):
 		visual.set_boosting(true)
 		get_tree().create_timer(0.35).timeout.connect(func ():
@@ -365,6 +375,9 @@ func _unhandled_input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	if player == null:
 		return
+	# Production void recovery: always available when a CourseTrack path exists.
+	if float(player.global_position.y) < -2.0 and track != null and track.has_method("snap_body_to_nearest_path"):
+		track.snap_body_to_nearest_path(player, 0.0)
 	var follower = null
 	if has_meta("path_steer_follower"):
 		follower = get_meta("path_steer_follower")

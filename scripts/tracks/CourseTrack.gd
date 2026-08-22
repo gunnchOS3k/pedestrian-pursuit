@@ -10,6 +10,7 @@ const SPEED_LANE_SCRIPT := preload("res://scripts/tracks/SpeedLane.gd")
 const TERRAIN_ZONE_SCRIPT := preload("res://scripts/tracks/TerrainZone.gd")
 const BOUNCE_PAD_SCRIPT := preload("res://scripts/tracks/BouncePad.gd")
 const BOOST_PICKUP_SCRIPT := preload("res://scripts/tracks/BoostPickup.gd")
+const SHORTCUT_SCRIPT := preload("res://scripts/tracks/ShortcutCorridor.gd")
 const ITEM_BOX_SCENE := preload("res://scenes/items/ItemBox.tscn")
 
 var _data: Dictionary = {}
@@ -66,6 +67,32 @@ func get_start_transform() -> Transform3D:
 
 func get_race_path() -> Path3D:
 	return _race_path
+
+
+func snap_body_to_nearest_path(body: Node3D, lane_offset: float = 0.0) -> bool:
+	## Production void/off-track recovery onto the authored racing line.
+	## Used by RaceScene / PlayerController — not an E2E gate teleporter.
+	if body == null or _race_path == null or _race_path.curve == null:
+		return false
+	var curve: Curve3D = _race_path.curve
+	var path_len: float = maxf(curve.get_baked_length(), 1.0)
+	var offset: float = curve.get_closest_offset(_race_path.to_local(body.global_position))
+	var pos: Vector3 = _race_path.to_global(curve.sample_baked(offset))
+	var next: Vector3 = _race_path.to_global(curve.sample_baked(fposmod(offset + 2.0, path_len)))
+	var direction: Vector3 = next - pos
+	direction.y = 0.0
+	if direction.length_squared() < 0.001:
+		direction = Vector3.FORWARD
+	var right: Vector3 = direction.normalized().cross(Vector3.UP)
+	body.global_position = pos + Vector3(0, 1.05, 0) + right * lane_offset
+	var look_target: Vector3 = body.global_position + direction.normalized() * 4.0
+	look_target.y = body.global_position.y
+	body.look_at(look_target, Vector3.UP)
+	if "velocity" in body:
+		body.velocity = Vector3.ZERO
+	if "horizontal_speed" in body:
+		body.horizontal_speed = minf(float(body.horizontal_speed), 10.0)
+	return true
 
 
 func get_display_name() -> String:
@@ -253,6 +280,9 @@ func _build_features() -> void:
 			feature_root.add_child(item_box)
 	for point_index in _data.get("boost_pickups", []):
 		_add_boost_pickup(feature_root, int(point_index))
+	for route in _data.get("shortcut_routes", []):
+		if typeof(route) == TYPE_DICTIONARY:
+			_add_shortcut_corridor(feature_root, route)
 
 
 func _add_speed_lane(parent: Node3D, definition: Dictionary) -> void:
@@ -316,6 +346,40 @@ func _add_boost_pickup(parent: Node3D, point_index: int) -> void:
 	visual.material_override = _make_material(_color("accent_color", Color.YELLOW), true)
 	pickup.add_child(visual)
 	parent.add_child(pickup)
+
+
+func _add_shortcut_corridor(parent: Node3D, route: Dictionary) -> void:
+	## Physical corridor between entry/exit path points. Does not alter checkpoint sequence.
+	var entry_i := int(route.get("entry_point_index", 0))
+	var exit_i := int(route.get("exit_point_index", entry_i))
+	if entry_i < 0 or exit_i < 0 or entry_i >= _course_points.size() or exit_i >= _course_points.size():
+		return
+	var entry := _course_points[entry_i]
+	var exitp := _course_points[exit_i]
+	var mid := entry.lerp(exitp, 0.5)
+	var corridor := Area3D.new()
+	corridor.name = "Shortcut_%s" % str(route.get("id", "cut"))
+	corridor.set_script(SHORTCUT_SCRIPT)
+	corridor.set("shortcut_id", str(route.get("id", "shortcut")))
+	var risk := str(route.get("risk", ""))
+	if not risk.is_empty():
+		corridor.set("risk_terrain", risk)
+		corridor.set("risk_speed_mult", 0.86)
+		corridor.set("risk_handling_mult", 0.9)
+	var xf := Transform3D()
+	xf.origin = mid + Vector3(0, 0.2, 0)
+	var dir := exitp - entry
+	dir.y = 0.0
+	if dir.length_squared() > 0.01:
+		xf = xf.looking_at(mid + dir.normalized(), Vector3.UP)
+	corridor.transform = xf
+	var length := maxf(entry.distance_to(exitp) * 0.55, 6.0)
+	_add_box_trigger_visual(corridor, Vector2(_lane_width * 0.55, length), Color(0.95, 0.75, 0.2), true)
+	parent.add_child(corridor)
+	# AI preference metadata for path follower (no teleport).
+	corridor.set_meta("ai_preference", float(route.get("ai_preference", 0.3)))
+	corridor.set_meta("entry_point_index", entry_i)
+	corridor.set_meta("exit_point_index", exit_i)
 
 
 func _add_box_trigger_visual(area: Area3D, size_2d: Vector2, color: Color, emissive: bool) -> void:

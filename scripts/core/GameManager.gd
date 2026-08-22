@@ -29,11 +29,15 @@ var last_field_results: Array = []
 var camera_shake_enabled: bool = true
 var auto_accelerate: bool = false
 ## Acceptance-only overrides (default off). accept_force_laps>0 shortens RC races.
+## Wave010 gameplay proof MUST NOT rely on accept_force_laps / accept_test_mode.
 var accept_test_mode: bool = false
 var accept_force_laps: int = 0
 var accept_steer: float = 0.0
-## Soft racing-line assist for touch/Android (player still holds accelerate).
+## Soft racing-line assist for touch/Android (player still holds accelerate). Explicit + disableable.
 var mobile_assist_steer: float = 0.0
+## Competitive / time-trial: no hidden rubber-band, no place-based speed, assists off.
+var competitive_mode: bool = false
+var race_mode: String = "single"
 
 var last_race_time: float = 0.0
 var last_race_position: int = 1
@@ -64,6 +68,36 @@ func _telemetry_bus() -> Node:
 	if tree == null or tree.root == null:
 		return null
 	return tree.root.get_node_or_null("TelemetryBus")
+
+
+func set_competitive_mode(enabled: bool) -> void:
+	competitive_mode = enabled
+	if enabled:
+		mobile_assist_steer = 0.0
+		auto_accelerate = false
+		accept_steer = 0.0
+
+
+func sync_race_mode_string() -> void:
+	match current_race_mode:
+		RaceMode.TIME_TRIAL:
+			race_mode = "time_trial"
+			set_competitive_mode(true)
+		RaceMode.CHALLENGE:
+			race_mode = "competitive"
+			set_competitive_mode(true)
+		RaceMode.PRACTICE, RaceMode.TUTORIAL:
+			race_mode = "practice"
+			competitive_mode = false
+		RaceMode.LOCAL_MP:
+			race_mode = "local_mp"
+			competitive_mode = false
+		RaceMode.CUP:
+			race_mode = "cup"
+			competitive_mode = false
+		_:
+			race_mode = "single"
+			competitive_mode = false
 
 
 func mode_label() -> String:
@@ -101,7 +135,9 @@ func start_time_trial(track_id: String) -> void:
 	current_race_mode = RaceMode.TIME_TRIAL
 	selected_track_id = track_id
 	ai_field_size = 0
+	total_laps = 1
 	reset_race_stats()
+	sync_race_mode_string()
 
 
 func start_local_mp(track_id: String, players: int = 2) -> void:

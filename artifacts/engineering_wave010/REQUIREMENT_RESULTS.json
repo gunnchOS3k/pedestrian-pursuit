@@ -1,0 +1,21 @@
+{
+  "schema": "gunnchos.engineering_wave010.requirements.v1",
+  "BLANKET": false,
+  "results": {
+    "GAME-PP-001": "IMPLEMENTED",
+    "GAME-PP-002": "IMPLEMENTED",
+    "GAME-PP-003": "IMPLEMENTED",
+    "GAME-PP-004": "IMPLEMENTED",
+    "GAME-PP-005": "IMPLEMENTED",
+    "GAME-PP-006": "IMPLEMENTED",
+    "GAME-PP-007": "IMPLEMENTED",
+    "GAME-PP-008": "IMPLEMENTED",
+    "GAME-PP-009": "IMPLEMENTED",
+    "GAME-PP-010": "IMPLEMENTED",
+    "GAME-PP-011": "IMPLEMENTED",
+    "GAME-PP-012": "IMPLEMENTED",
+    "GAME-PP-013": "IMPLEMENTED",
+    "GAME-PP-014": "IMPLEMENTED",
+    "GAME-PP-015": "IMPLEMENTED"
+  }
+}

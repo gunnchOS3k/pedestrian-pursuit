@@ -1,0 +1,22 @@
+{
+	"ACTUAL_ADVANCED_GHOST_REPLACED_BASIC": true,
+	"ACTUAL_BASIC_GHOST_SAVED": true,
+	"ACTUAL_RACESCENE_GHOST_REPLAY_LOAD_PASS": true,
+	"ADVANCED_GHOST_TIME_MATCHES_ACTUAL_RACE": true,
+	"BASIC_GHOST_TIME_MATCHES_ACTUAL_RACE": true,
+	"GHOST_SELF_IMPROVEMENT_PASS": true,
+	"advanced_attempts": 1,
+	"advanced_ghost": {
+		"attempt": 1,
+		"sample_count": 1680,
+		"time": 231.833120000002,
+		"track_id": "verdant_cascade_circuit"
+	},
+	"basic_ghost": {
+		"sample_count": 1699,
+		"time": 234.441260211645,
+		"track_id": "verdant_cascade_circuit"
+	},
+	"ok": true,
+	"synthetic_probe_used_as_closure": false
+}

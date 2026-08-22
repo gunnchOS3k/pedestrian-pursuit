@@ -1,0 +1,182 @@
+{
+	"BOOST_RUNTIME_SIGNAL_ERRORS": 0,
+	"BOOST_SIGNAL_ARITY_REGRESSION_PASS": true,
+	"TRICK_FAIL_DOUBLE_PENALTY": false,
+	"TRICK_FAIL_SINGLE_PENALTY_PASS": true,
+	"accept_force_laps_used_as_proof": false,
+	"failures": [],
+	"fake_checkpoint_stepping_used_as_proof": false,
+	"observations": {
+		"ai_tiers": {
+			"ascending": true,
+			"observed": true,
+			"speeds": {
+				"ace": 0.96,
+				"rookie": 0.78,
+				"standard": 0.88
+			}
+		},
+		"boost": {
+			"cap_ok": true,
+			"chain_blocked": true,
+			"observed": true
+		},
+		"boost_signal_arity": {
+			"BOOST_RUNTIME_SIGNAL_ERRORS": 0,
+			"BOOST_SIGNAL_ARITY_REGRESSION_PASS": true,
+			"before_boosting": false,
+			"callback_count": 1,
+			"observed": true,
+			"source": "manual",
+			"visual_toggled": true
+		},
+		"classification": {
+			"BLANKET_GAME_PP_ASSIGNMENT": false,
+			"racescene_e2e": false,
+			"test_class": "COMPONENT_RUNTIME"
+		},
+		"comeback": {
+			"assist": 1.0,
+			"eval": {
+				"by_place": {
+					"1": {
+						"defense_recovery": 66,
+						"disruption": 132,
+						"total": 240
+					},
+					"2": {
+						"defense_recovery": 80,
+						"disruption": 114,
+						"total": 240
+					},
+					"3": {
+						"defense_recovery": 96,
+						"disruption": 97,
+						"total": 240
+					},
+					"4": {
+						"defense_recovery": 104,
+						"disruption": 79,
+						"total": 240
+					}
+				},
+				"fair_bounds_ok": true,
+				"field_size": 4,
+				"forced_finish_order": false,
+				"hidden_rubber_banding": false,
+				"leader_disruption_rate": 0.55,
+				"races": 240,
+				"seed": 77,
+				"trailer_recovery_rate": 0.433
+			},
+			"forced_finish_order": false,
+			"hidden_rubber_banding": false,
+			"observed": true
+		},
+		"drift": {
+			"boost_applied": true,
+			"observed": true,
+			"spark_tier": 3,
+			"stationary_farm_blocked": true
+		},
+		"item": {
+			"cleared": true,
+			"granted": true,
+			"observed": true
+		},
+		"jump": {
+			"coyote_cleared_after_jump": true,
+			"coyote_window_jump": true,
+			"jump_impulse_positive": true,
+			"no_infinite_air_chain": true,
+			"observed": true,
+			"on_floor_sampled": true
+		},
+		"mastery_component": {
+			"advanced_faster": true,
+			"advanced_time": 26.04,
+			"basic_time": 30.28,
+			"not_racescene_proof": true,
+			"observed": true,
+			"reliable_for_GAME_PP_015": false,
+			"synthetic_only": true
+		},
+		"production_independence": {
+			"bad": 0,
+			"observed": true
+		},
+		"racers": {
+			"count": 8,
+			"observed": true,
+			"solen_handling_edge": true
+		},
+		"rail": {
+			"bad_rejected": true,
+			"good_accepted": true,
+			"observed": true,
+			"tick_active": true
+		},
+		"shortcut": {
+			"built": true,
+			"checkpoints": 5,
+			"corridor_runtime": true,
+			"lap_after": 1,
+			"lap_before": 0,
+			"observed": true,
+			"routes": 1,
+			"skip_blocked": true
+		},
+		"slide": {
+			"long_slide_decay_factor": 0.92,
+			"long_slide_target": 0.754,
+			"lower_than_run": true,
+			"observed": true,
+			"slide_handling_multiplier": 0.72,
+			"slide_speed_multiplier": 0.82
+		},
+		"sprint": {
+			"mud_accel_lower": true,
+			"observed": true,
+			"speed_band": 22.0
+		},
+		"stomp": {
+			"first_ok": true,
+			"observed": true,
+			"spam_blocked": true
+		},
+		"terrain": {
+			"distinct": true,
+			"grips": [
+				10.2,
+				7.92,
+				7.5
+			],
+			"observed": true
+		},
+		"trick_fail_penalty": {
+			"TRICK_FAIL_DOUBLE_PENALTY": false,
+			"TRICK_FAIL_SINGLE_PENALTY_PASS": true,
+			"after_fail": 44.0,
+			"clamped_zero": true,
+			"observed": true,
+			"success_positive": true
+		},
+		"trick_success": {
+			"observed": true,
+			"reward": 12.0
+		},
+		"wall": {
+			"cooldown_clears": true,
+			"cooldown_ticks": true,
+			"kick_cooldown_armed": true,
+			"observed": true,
+			"scrape_speed_bleed": true
+		}
+	},
+	"pass": true,
+	"production_gate_harness_used_as_proof": false,
+	"racescene_e2e": false,
+	"scenarios_note": "Scenario A-D live in Wave010RaceSceneE2E observations, not assigned here.",
+	"schema": "gunnchos.engineering_wave010.component_runtime.v1",
+	"test_class": "COMPONENT_RUNTIME"
+}
