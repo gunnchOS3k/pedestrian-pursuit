@@ -1,92 +1,92 @@
 {
-  "accept_force_laps": 0,
-  "accept_test_mode": false,
-  "advanced_faster": true,
-  "auto_accelerate": false,
-  "competitive_mode": true,
-  "driver": "SYNTHETIC_INPUT_DRIVER",
-  "failures": [],
-  "ghost": {
-    "advanced_replaced_if_faster": true,
-    "basic_loaded": true,
-    "basic_saved": true,
-    "cleared": true,
-    "ok": true,
-    "replay_load": true,
-    "slower_did_not_replace": true
-  },
-  "median_advantage_ok": true,
-  "median_advantage_sec": 43.611,
-  "median_basic_sec": 302.702,
-  "min_advantage_sec": 1.514,
-  "mode": "TIME_TRIAL",
-  "observed": true,
-  "paired_trials": 3,
-  "pairs": [
-    {
-      "advanced_failures": [],
-      "advanced_faster": true,
-      "advanced_ok": true,
-      "advanced_technique_categories": 2,
-      "advanced_techniques": {
-        "drift_release": 4,
-        "jump_trick": 0,
-        "manual_boost": 1,
-        "rail": 0,
-        "shortcut": 0
-      },
-      "advanced_time": 241.729,
-      "basic_failures": [],
-      "basic_ok": true,
-      "basic_time": 302.635,
-      "delta_sec": 60.906,
-      "trial": 0
-    },
-    {
-      "advanced_failures": [],
-      "advanced_faster": false,
-      "advanced_ok": true,
-      "advanced_technique_categories": 2,
-      "advanced_techniques": {
-        "drift_release": 2,
-        "jump_trick": 0,
-        "manual_boost": 2,
-        "rail": 0,
-        "shortcut": 0
-      },
-      "advanced_time": 487.089,
-      "basic_failures": [],
-      "basic_ok": true,
-      "basic_time": 311.835,
-      "delta_sec": -175.254,
-      "trial": 1
-    },
-    {
-      "advanced_failures": [],
-      "advanced_faster": true,
-      "advanced_ok": true,
-      "advanced_technique_categories": 2,
-      "advanced_techniques": {
-        "drift_release": 4,
-        "jump_trick": 0,
-        "manual_boost": 2,
-        "rail": 0,
-        "shortcut": 0
-      },
-      "advanced_time": 259.091,
-      "basic_failures": [],
-      "basic_ok": true,
-      "basic_time": 302.702,
-      "delta_sec": 43.611,
-      "trial": 2
-    }
-  ],
-  "pairwise_advanced_faster": 2,
-  "pairwise_required": 2,
-  "racer_id": "dash_reed",
-  "reason": "advanced faster with pairwise\u22652/3 and median advantage gate",
-  "reliable": true,
-  "schema": "gunnchos.engineering_wave010.mastery.v1",
-  "shoe_id": "starter_soles",
-  "track_id": "verdant_cascade_circuit"
+	"accept_force_laps": 0,
+	"accept_test_mode": false,
+	"advanced_faster": true,
+	"auto_accelerate": false,
+	"competitive_mode": true,
+	"driver": "SYNTHETIC_INPUT_DRIVER",
+	"failures": [],
+	"ghost": {
+		"advanced_replaced_if_faster": true,
+		"basic_loaded": true,
+		"basic_saved": true,
+		"cleared": true,
+		"ok": true,
+		"replay_load": true,
+		"slower_did_not_replace": true
+	},
+	"median_advantage_ok": true,
+	"median_advantage_sec": 83.123,
+	"median_basic_sec": 332.75,
+	"min_advantage_sec": 1.664,
+	"mode": "TIME_TRIAL",
+	"observed": true,
+	"paired_trials": 3,
+	"pairs": [
+		{
+			"advanced_failures": [],
+			"advanced_faster": true,
+			"advanced_ok": true,
+			"advanced_technique_categories": 2,
+			"advanced_techniques": {
+				"drift_release": 2,
+				"jump_trick": 0,
+				"manual_boost": 1,
+				"rail": 0,
+				"shortcut": 0
+			},
+			"advanced_time": 243.844,
+			"basic_failures": [],
+			"basic_ok": true,
+			"basic_time": 332.042,
+			"delta_sec": 88.199,
+			"trial": 0
+		},
+		{
+			"advanced_failures": [],
+			"advanced_faster": false,
+			"advanced_ok": true,
+			"advanced_technique_categories": 2,
+			"advanced_techniques": {
+				"drift_release": 1,
+				"jump_trick": 0,
+				"manual_boost": 1,
+				"rail": 0,
+				"shortcut": 0
+			},
+			"advanced_time": 477.857,
+			"basic_failures": [],
+			"basic_ok": true,
+			"basic_time": 332.798,
+			"delta_sec": -145.059,
+			"trial": 1
+		},
+		{
+			"advanced_failures": [],
+			"advanced_faster": true,
+			"advanced_ok": true,
+			"advanced_technique_categories": 2,
+			"advanced_techniques": {
+				"drift_release": 1,
+				"jump_trick": 0,
+				"manual_boost": 1,
+				"rail": 0,
+				"shortcut": 0
+			},
+			"advanced_time": 249.627,
+			"basic_failures": [],
+			"basic_ok": true,
+			"basic_time": 332.75,
+			"delta_sec": 83.123,
+			"trial": 2
+		}
+	],
+	"pairwise_advanced_faster": 2,
+	"pairwise_required": 2,
+	"racer_id": "dash_reed",
+	"reason": "advanced faster with pairwise≥2/3 and median advantage gate",
+	"reliable": true,
+	"schema": "gunnchos.engineering_wave010.mastery.v1",
+	"shoe_id": "starter_soles",
+	"track_id": "verdant_cascade_circuit"
 }

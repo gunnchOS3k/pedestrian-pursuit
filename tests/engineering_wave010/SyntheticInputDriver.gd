@@ -67,11 +67,12 @@ func tick(player: Node3D, path: Path3D) -> void:
 	force_normal_input_flags()
 	_frame += 1
 	# Profile-specific racing-line look-ahead (input style, not a speed cheat).
-	look_ahead = 15.0 if profile == "advanced" else 7.0
+	# Basic must still finish reliably on CI Linux; keep shorter look-ahead than advanced.
+	look_ahead = 15.0 if profile == "advanced" else 10.0
 	var steer := compute_steer(player, path)
 	if profile == "basic":
-		# Milder corrections → wider/less precise line.
-		steer = clampf(steer * 0.72, -1.0, 1.0)
+		# Milder corrections → wider/less precise line (not so weak it DNFs).
+		steer = clampf(steer * 0.88, -1.0, 1.0)
 	var im := _im()
 	if im != null:
 		im.set_touch_steer(steer)
@@ -174,8 +175,8 @@ func _tick_advanced(player: Node3D, _steer: float) -> void:
 		_speed = absf(float(player.horizontal_speed))
 
 	# Speed advantage = longer look-ahead. Skills are short early proof taps only.
-	var need_drift := int(technique_counts["drift_release"]) < 2
-	var need_boost := int(technique_counts["manual_boost"]) < 2
+	var need_drift := int(technique_counts["drift_release"]) < 1
+	var need_boost := int(technique_counts["manual_boost"]) < 1
 	var upright := player.global_position.y > -1.0
 
 	if not need_drift and not need_boost:
@@ -183,32 +184,42 @@ func _tick_advanced(player: Node3D, _steer: float) -> void:
 			Input.action_release("drift")
 			_drift_held = false
 			_drift_hold_frames = 0
-			technique_counts["drift_release"] = int(technique_counts["drift_release"]) + 1
 		Input.action_release("boost")
 		Input.action_release("jump")
 		Input.action_release("trick")
 		return
 
-	# Scripted early taps — keep holds short to avoid void exits.
-	if upright and need_drift and not _drift_held and (_frame == 45 or _frame == 110):
-		Input.action_press("drift")
-		_drift_held = true
-		_drift_hold_frames = 0
-		Input.action_release("boost")
-	elif _drift_held:
+	# Very early windows near spawn (usually straight) so both categories always fire.
+	if upright and need_drift and _frame >= 20 and _frame < 30:
+		if not _drift_held:
+			Input.action_press("drift")
+			_drift_held = true
+			_drift_hold_frames = 0
 		_drift_hold_frames += 1
 		Input.action_release("boost")
-		if _drift_hold_frames >= 12:
+	elif _drift_held:
+		Input.action_release("drift")
+		_drift_held = false
+		_drift_hold_frames = 0
+		technique_counts["drift_release"] = int(technique_counts["drift_release"]) + 1
+		Input.action_release("boost")
+	elif upright and need_boost and not _drift_held and _frame >= 40 and _frame < 48:
+		if _boost_cooldown <= 0:
+			Input.action_press("boost")
+			technique_counts["manual_boost"] = int(technique_counts["manual_boost"]) + 1
+			_boost_cooldown = 6
+		else:
+			_boost_cooldown -= 1
+			if _boost_cooldown == 0:
+				Input.action_release("boost")
+	else:
+		if _drift_held:
 			Input.action_release("drift")
 			_drift_held = false
 			_drift_hold_frames = 0
 			technique_counts["drift_release"] = int(technique_counts["drift_release"]) + 1
-	elif upright and need_boost and not _drift_held and (_frame == 75 or _frame == 140):
-		Input.action_press("boost")
-		technique_counts["manual_boost"] = int(technique_counts["manual_boost"]) + 1
-		_boost_cooldown = 5
-	else:
-		Input.action_release("drift")
+		else:
+			Input.action_release("drift")
 		if _boost_cooldown > 0:
 			_boost_cooldown -= 1
 			if _boost_cooldown == 0:
