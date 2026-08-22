@@ -54,10 +54,11 @@ func get_logic():
 	return logic
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if not active or logic == null or player == null or path == null:
 		return
-	logic.tick(player, path)
+	# Pass physics delta so skill timing is simulation-seconds (time-scale invariant).
+	logic.tick(player, path, delta)
 	var tree := get_tree()
 	if tree == null or tree.root == null:
 		return

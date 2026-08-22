@@ -7,11 +7,14 @@ extends SceneTree
 const TRACK_ID := "verdant_cascade_circuit"
 const RACER_ID := "dash_reed"
 const SHOE_ID := "starter_soles"
-const PAIRED_TRIALS := 3
+const PAIRED_TRIALS := 5
+const PAIRWISE_REQUIRED := 4
 const MAX_SIM_SEC := 90.0
 const TIME_SCALE := 20.0
+const WIPEOUT_SLOWER_THAN_BASIC_SEC := 1.5
 const GHOST_PATH_FMT := "user://time_trial_ghost_%s.json"
 const DriverNodeScript = preload("res://tests/engineering_wave010/SyntheticInputDriverNode.gd")
+const DriverLogicScript = preload("res://tests/engineering_wave010/SyntheticInputDriver.gd")
 
 var _failures: PackedStringArray = PackedStringArray()
 var _driver_node: Node = null
@@ -48,6 +51,10 @@ func _run() -> void:
 	if bool(equiv.get("BASIC_HANDICAP_PRESENT")):
 		_failures.append("BASIC_HANDICAP_PRESENT true")
 
+	var time_scale_inv := _skill_policy_time_scale_invariance_check()
+	if not bool(time_scale_inv.get("SKILL_POLICY_TIME_SCALE_INVARIANCE_PASS")):
+		_failures.append("SKILL_POLICY_TIME_SCALE_INVARIANCE_PASS false: %s" % str(time_scale_inv))
+
 	# Clear only for paired timing hygiene; dedicated ghost loop clears again later.
 	_clear_track_ghost(TRACK_ID)
 
@@ -57,9 +64,13 @@ func _run() -> void:
 	var all_advanced_finished := true
 	var prod_drift_total := 0
 	var prod_manual_boost_total := 0
+	var overcommit_total := 0
+	var wipeout_runs := 0
+	var slow_run_diags: Array = []
+	var all_10_finish := true
 
 	for trial in range(PAIRED_TRIALS):
-		# Alternate order: B→A, A→B, B→A
+		# Alternate order: B→A, A→B, B→A, A→B, B→A
 		var advanced_first: bool = (trial % 2) == 1
 		var first_profile := "advanced" if advanced_first else "basic"
 		var second_profile := "basic" if advanced_first else "advanced"
@@ -77,24 +88,46 @@ func _run() -> void:
 		var a_fin := bool(advanced.get("race_finished_signal"))
 		if not b_fin:
 			all_basic_finished = false
+			all_10_finish = false
 		if not a_fin:
 			all_advanced_finished = false
+			all_10_finish = false
 		var ok_pair: bool = b_fin and a_fin and b_time > 0.0 and a_time > 0.0 and a_time < b_time
+		var is_wipeout: bool = (
+			b_fin and a_fin and b_time > 0.0 and a_time > 0.0 and a_time >= b_time + WIPEOUT_SLOWER_THAN_BASIC_SEC
+		)
+		if is_wipeout:
+			wipeout_runs += 1
 		var adv_cats: int = int(advanced.get("technique_categories", 0))
 		var adv_tech = advanced.get("production_techniques", {})
 		if typeof(adv_tech) != TYPE_DICTIONARY:
 			adv_tech = {}
 		prod_drift_total += int(adv_tech.get("drift_release", 0))
 		prod_manual_boost_total += int(adv_tech.get("manual_boost", 0))
+		var adv_diag = advanced.get("run_diagnostics", {})
+		if typeof(adv_diag) != TYPE_DICTIONARY:
+			adv_diag = {}
+		overcommit_total += int(adv_diag.get("ADVANCED_OVERCOMMIT_RELEASES", 0))
+		if is_wipeout or (a_time > 0.0 and b_time > 0.0 and a_time > b_time):
+			slow_run_diags.append({
+				"trial": trial,
+				"advanced_time": snappedf(a_time, 0.001),
+				"basic_time": snappedf(b_time, 0.001),
+				"delta_sec": snappedf(b_time - a_time, 0.001),
+				"wipeout": is_wipeout,
+				"diagnostics": adv_diag,
+			})
 		pairs.append({
 			"trial": trial,
 			"order": trial_order[-1],
 			"basic_time": snappedf(b_time, 0.001),
 			"advanced_time": snappedf(a_time, 0.001),
 			"advanced_faster": ok_pair,
+			"wipeout": is_wipeout,
 			"delta_sec": snappedf(b_time - a_time, 0.001) if b_time > 0.0 and a_time > 0.0 else null,
 			"advanced_technique_categories": adv_cats,
 			"advanced_techniques": adv_tech,
+			"advanced_run_diagnostics": adv_diag,
 			"TECHNIQUE_COUNT_SOURCE": "PRODUCTION_SIGNAL_OR_TELEMETRY",
 			"DRIVER_INTENT_COUNTED_AS_SUCCESS": false,
 			"basic_race_finished_signal": b_fin,
@@ -140,10 +173,25 @@ func _run() -> void:
 	if advanced_times.size() > 0:
 		median_advanced = float(advanced_times[advanced_times.size() / 2])
 	var min_advantage: float = maxf(0.20, median_basic * 0.005)
-	var pairwise_ok: bool = faster_count >= 2
+	var pairwise_ok: bool = faster_count >= PAIRWISE_REQUIRED
 	var median_ok: bool = median_advanced > 0.0 and median_basic > 0.0 and median_delta >= min_advantage and median_advanced < median_basic
-	var advanced_faster: bool = pairwise_ok and median_ok and all_basic_finished and all_advanced_finished
+	var no_wipeouts: bool = wipeout_runs == 0
+	var no_overcommit: bool = overcommit_total == 0
+	var advanced_faster: bool = (
+		pairwise_ok
+		and median_ok
+		and all_basic_finished
+		and all_advanced_finished
+		and all_10_finish
+		and no_wipeouts
+		and no_overcommit
+	)
 	var ghost_ok: bool = bool(ghost_result.get("GHOST_SELF_IMPROVEMENT_PASS"))
+	var frame_count_timing := false
+	var src_driver := FileAccess.get_file_as_string("res://tests/engineering_wave010/SyntheticInputDriver.gd")
+	if "FRAME_COUNT_SKILL_TIMING: bool = true" in src_driver or "FRAME_COUNT_SKILL_TIMING = true" in src_driver:
+		frame_count_timing = true
+		_failures.append("FRAME_COUNT_SKILL_TIMING returned to true")
 	var causal_ok: bool = (
 		bool(equiv.get("DRIVER_PARAMETERS_MATCH"))
 		and bool(equiv.get("ONLY_SKILL_INPUTS_DIFFER"))
@@ -151,8 +199,15 @@ func _run() -> void:
 		and advanced_faster
 		and ghost_ok
 		and not _lap_event_used_as_finish_fallback
+		and not frame_count_timing
+		and bool(time_scale_inv.get("SKILL_POLICY_TIME_SCALE_INVARIANCE_PASS"))
 		and _failures.is_empty()
 	)
+
+	var slow_root := _build_advanced_slow_run_root_cause(
+		slow_run_diags, wipeout_runs, overcommit_total, advanced_times, basic_times
+	)
+	_write_json("artifacts/engineering_wave010/ADVANCED_SLOW_RUN_ROOT_CAUSE.json", slow_root)
 
 	var mastery := {
 		"schema": "gunnchos.engineering_wave010.mastery.v1",
@@ -160,8 +215,14 @@ func _run() -> void:
 		"reliable": causal_ok,
 		"advanced_faster": advanced_faster,
 		"pairwise_advanced_faster": faster_count,
-		"pairwise_required": 2,
+		"pairwise_required": PAIRWISE_REQUIRED,
 		"paired_trials": PAIRED_TRIALS,
+		"ALL_10_FINISH": all_10_finish,
+		"ADVANCED_WIPEOUT_RUNS": wipeout_runs,
+		"ADVANCED_OVERCOMMIT_RELEASES": overcommit_total,
+		"FRAME_COUNT_SKILL_TIMING": frame_count_timing,
+		"SKILL_POLICY_TIME_SCALE_INVARIANCE_PASS": bool(time_scale_inv.get("SKILL_POLICY_TIME_SCALE_INVARIANCE_PASS")),
+		"skill_policy_time_scale_invariance": time_scale_inv,
 		"median_advantage_sec": snappedf(median_delta, 0.001),
 		"median_basic_sec": snappedf(median_basic, 0.001),
 		"median_advanced_sec": snappedf(median_advanced, 0.001),
@@ -198,6 +259,7 @@ func _run() -> void:
 		"pairs": pairs,
 		"ghost": ghost_result,
 		"driver_equivalence": equiv,
+		"ADVANCED_SLOW_RUN_ROOT_CAUSE": slow_root,
 		"failures": Array(_failures),
 		"reason": (
 			"causal mastery: same steering + skills-only advantage + real ghost loop"
@@ -518,8 +580,24 @@ func _run_time_trial(gm: Node, profile: String) -> Dictionary:
 	# Production technique observation only — never driver intent.
 	var production := {"drift_release": 0, "manual_boost": 0, "drift_release_boost": 0}
 	var hits := {"n": 0}
+	var run_diag := {
+		"fall_events": 0,
+		"offtrack_samples": 0,
+		"heading_loss_samples": 0,
+		"lowspeed_samples": 0,
+		"collision_samples": 0,
+		"overcommit_releases": 0,
+		"ADVANCED_OVERCOMMIT_RELEASES": 0,
+		"max_lateral": 0.0,
+		"min_speed": 9999.0,
+		"split_times": [],
+		"skill_events": [],
+		"FRAME_COUNT_SKILL_TIMING": false,
+		"DRIVER_INTENT_COUNTED_AS_SUCCESS": false,
+	}
 	var boost = player.get_node_or_null("BoostSystem")
 	var drift = player.get_node_or_null("DriftSystem")
+	var logic = _driver_node.get_logic()
 	if drift != null and drift.has_signal("drift_released"):
 		drift.drift_released.connect(func(_m, _t):
 			production["drift_release"] += 1
@@ -528,6 +606,8 @@ func _run_time_trial(gm: Node, profile: String) -> Dictionary:
 		boost.boost_activated.connect(func(_m, _d, source: String):
 			if str(source) == "manual":
 				production["manual_boost"] += 1
+				if logic != null and logic.has_method("note_manual_boost_confirmed"):
+					logic.note_manual_boost_confirmed()
 			elif str(source) == "drift_release":
 				production["drift_release_boost"] += 1
 		)
@@ -538,6 +618,8 @@ func _run_time_trial(gm: Node, profile: String) -> Dictionary:
 				production["drift_release"] += 1
 			elif str(event_name) == "boost" and str(payload.get("source", "")) == "manual":
 				production["manual_boost"] += 1
+			elif str(event_name) == "fall" or str(event_name) == "recover_from_fall":
+				run_diag["fall_events"] = int(run_diag["fall_events"]) + 1
 		)
 
 	var finish_state := {"time": -1.0, "signal": false, "results": false}
@@ -554,10 +636,13 @@ func _run_time_trial(gm: Node, profile: String) -> Dictionary:
 			cp.racer_passed.connect(func(racer: Node, _i: int):
 				if racer == player:
 					hits.n += 1
+					if race_manager != null and "race_time" in race_manager:
+						(run_diag["split_times"] as Array).append(snappedf(float(race_manager.race_time), 0.001))
 			)
 
 	var sim_start := Time.get_ticks_msec() / 1000.0
 	var deadline := sim_start + MAX_SIM_SEC
+	var sample_accum := 0.0
 	while Time.get_ticks_msec() / 1000.0 < deadline:
 		await process_frame
 		gm.accept_test_mode = false
@@ -565,15 +650,33 @@ func _run_time_trial(gm: Node, profile: String) -> Dictionary:
 		gm.auto_accelerate = false
 		gm.accept_steer = 0.0
 		gm.mobile_assist_steer = 0.0
+		sample_accum += 1.0
+		# Sparse diagnostics (~every ~12 frames wall); read-only production state.
+		if profile == "advanced" and int(sample_accum) % 12 == 0:
+			_sample_run_diagnostics(player, race_path, run_diag)
 		if bool(finish_state["signal"]) and float(finish_state["time"]) >= 0.0:
 			break
 
 	_driver_node.stop()
+	if logic != null:
+		var dflags = logic.diagnostics if "diagnostics" in logic else {}
+		if typeof(dflags) == TYPE_DICTIONARY:
+			run_diag["ADVANCED_OVERCOMMIT_RELEASES"] = int(dflags.get("ADVANCED_OVERCOMMIT_RELEASES", 0))
+			run_diag["overcommit_releases"] = int(dflags.get("ADVANCED_OVERCOMMIT_RELEASES", 0))
+			run_diag["skill_policy"] = dflags.duplicate(true)
+		if "skill_event_log" in logic:
+			run_diag["skill_events"] = (logic.skill_event_log as Array).duplicate()
+		if logic.has_method("get_skill_policy_flags"):
+			var flags: Dictionary = logic.get_skill_policy_flags()
+			run_diag["FRAME_COUNT_SKILL_TIMING"] = bool(flags.get("FRAME_COUNT_SKILL_TIMING", false))
+			run_diag["DRIVER_INTENT_COUNTED_AS_SUCCESS"] = bool(flags.get("DRIVER_INTENT_COUNTED_AS_SUCCESS", false))
+
 	var finished_at := float(finish_state["time"])
 	var race_finished_signal := bool(finish_state["signal"])
 	var finish_results_seen := bool(finish_state["results"])
-	print("MASTERY_RUN profile=%s finished=%s time=%.3f cps=%d tech=%s" % [
-		profile, str(race_finished_signal), finished_at, int(hits.n), str(production)
+	print("MASTERY_RUN profile=%s finished=%s time=%.3f cps=%d tech=%s overcommit=%d" % [
+		profile, str(race_finished_signal), finished_at, int(hits.n), str(production),
+		int(run_diag.get("ADVANCED_OVERCOMMIT_RELEASES", 0))
 	])
 
 	# Categories from distinct production observation kinds (prompt §3).
@@ -618,6 +721,7 @@ func _run_time_trial(gm: Node, profile: String) -> Dictionary:
 		"technique_categories": cats,
 		"TECHNIQUE_COUNT_SOURCE": "PRODUCTION_SIGNAL_OR_TELEMETRY",
 		"DRIVER_INTENT_COUNTED_AS_SUCCESS": false,
+		"run_diagnostics": run_diag,
 		"ghost_saved_after_race": ghost_saved,
 		"ghost_meta_after_race": ghost_meta,
 		"profile": profile,
@@ -626,6 +730,151 @@ func _run_time_trial(gm: Node, profile: String) -> Dictionary:
 
 func finished_time_ok(t: float) -> bool:
 	return t > 0.0
+
+
+func _sample_run_diagnostics(player: Node3D, path: Path3D, run_diag: Dictionary) -> void:
+	if player == null:
+		return
+	var speed := 0.0
+	if "horizontal_speed" in player:
+		speed = absf(float(player.horizontal_speed))
+	run_diag["min_speed"] = minf(float(run_diag.get("min_speed", 9999.0)), speed)
+	if speed < 2.0:
+		run_diag["lowspeed_samples"] = int(run_diag["lowspeed_samples"]) + 1
+	if player.global_position.y < -5.0:
+		run_diag["fall_events"] = int(run_diag["fall_events"]) + 1
+	if "_collision_stun" in player and float(player._collision_stun) > 0.05:
+		run_diag["collision_samples"] = int(run_diag["collision_samples"]) + 1
+	if path == null or path.curve == null:
+		return
+	var curve: Curve3D = path.curve
+	var path_len: float = maxf(curve.get_baked_length(), 1.0)
+	var local: Vector3 = path.to_local(player.global_position)
+	var closest: float = curve.get_closest_offset(local)
+	var on_path: Vector3 = path.to_global(curve.sample_baked(closest))
+	var lateral: Vector3 = player.global_position - on_path
+	lateral.y = 0.0
+	var lat_len := lateral.length()
+	run_diag["max_lateral"] = maxf(float(run_diag.get("max_lateral", 0.0)), lat_len)
+	if lat_len > 6.0:
+		run_diag["offtrack_samples"] = int(run_diag["offtrack_samples"]) + 1
+	var ahead: Vector3 = path.to_global(curve.sample_baked(fposmod(closest + 3.0, path_len)))
+	var tangent: Vector3 = ahead - on_path
+	tangent.y = 0.0
+	if tangent.length_squared() > 0.01:
+		tangent = tangent.normalized()
+		var forward: Vector3 = -player.global_transform.basis.z
+		forward.y = 0.0
+		if forward.length_squared() > 0.001:
+			forward = forward.normalized()
+			if forward.dot(tangent) < 0.15:
+				run_diag["heading_loss_samples"] = int(run_diag["heading_loss_samples"]) + 1
+
+
+func _skill_policy_time_scale_invariance_check() -> Dictionary:
+	## Micro-check: drift release threshold is sim-seconds, identical under two physics deltas.
+	var logic = DriverLogicScript.new()
+	logic.reset("advanced")
+	var max_hold: float = float(logic.DRIFT_MAX_HOLD_SEC)
+	var dt_a := 1.0 / 60.0
+	var dt_b := (1.0 / 60.0) * 20.0  # physics delta under Engine.time_scale=20
+	var hold_a := 0.0
+	var ticks_a := 0
+	while hold_a < max_hold:
+		hold_a += dt_a
+		ticks_a += 1
+		if ticks_a > 100000:
+			break
+	var hold_b := 0.0
+	var ticks_b := 0
+	while hold_b < max_hold:
+		hold_b += dt_b
+		ticks_b += 1
+		if ticks_b > 100000:
+			break
+	# First tick that crosses max_hold must land in [max_hold, max_hold + dt].
+	var in_window_a: bool = hold_a >= max_hold and hold_a <= max_hold + dt_a + 1e-6
+	var in_window_b: bool = hold_b >= max_hold and hold_b <= max_hold + dt_b + 1e-6
+	var src := FileAccess.get_file_as_string("res://tests/engineering_wave010/SyntheticInputDriver.gd")
+	var frame_count_off := "FRAME_COUNT_SKILL_TIMING: bool = false" in src
+	var no_frame_hold := "_drift_hold_frames" not in src
+	var uses_delta_tick := "func tick(player: Node3D, path: Path3D, delta: float" in src
+	var pass_ok: bool = in_window_a and in_window_b and frame_count_off and no_frame_hold and uses_delta_tick
+	return {
+		"SKILL_POLICY_TIME_SCALE_INVARIANCE_PASS": pass_ok,
+		"sim_hold_sec_scale_1": snappedf(hold_a, 0.0001),
+		"sim_hold_sec_scale_20": snappedf(hold_b, 0.0001),
+		"ticks_scale_1": ticks_a,
+		"ticks_scale_20": ticks_b,
+		"threshold_sec": max_hold,
+		"FRAME_COUNT_SKILL_TIMING": not frame_count_off,
+		"delta_tick_signature": uses_delta_tick,
+		"scales": [1.0, 20.0],
+	}
+
+
+func _build_advanced_slow_run_root_cause(
+	slow_runs: Array, wipeouts: int, overcommits: int, advanced_times: Array, basic_times: Array
+) -> Dictionary:
+	var primary := "NONE_STABLE"
+	var evidence: Array = []
+	if wipeouts > 0 or overcommits > 0 or slow_runs.size() > 0:
+		# Prefer concrete counters from this campaign; fall back to prior causal class.
+		var fall_n := 0
+		var off_n := 0
+		var head_n := 0
+		var low_n := 0
+		var col_n := 0
+		var oc_n := overcommits
+		for row in slow_runs:
+			var d = row.get("diagnostics", {})
+			if typeof(d) != TYPE_DICTIONARY:
+				continue
+			fall_n += int(d.get("fall_events", 0))
+			off_n += int(d.get("offtrack_samples", 0))
+			head_n += int(d.get("heading_loss_samples", 0))
+			low_n += int(d.get("lowspeed_samples", 0))
+			col_n += int(d.get("collision_samples", 0))
+			oc_n += int(d.get("ADVANCED_OVERCOMMIT_RELEASES", 0))
+		var scores := {
+			"overcommit": oc_n * 10 + (50 if overcommits > 0 else 0),
+			"fall": fall_n * 8,
+			"offtrack": off_n,
+			"heading": head_n,
+			"lowspeed": low_n,
+			"collision": col_n * 3,
+		}
+		var best_k := "overcommit"
+		var best_v := -1
+		for k in scores.keys():
+			if int(scores[k]) > best_v:
+				best_v = int(scores[k])
+				best_k = str(k)
+		if best_v <= 0 and wipeouts > 0:
+			primary = "UNATTRIBUTED_WIPEOUT_CLASS"
+		elif best_v <= 0:
+			primary = "NONE_STABLE"
+		else:
+			primary = best_k.to_upper()
+		evidence = slow_runs.duplicate()
+	# Prior causal CI class (failing head evidence): Advanced [233, 243, 243] with pairwise 1/3.
+	var prior_class := {
+		"basic_sec_class": 234.0,
+		"advanced_sec_class": [233.0, 243.0, 243.0],
+		"pairwise_then": "1/3",
+		"note": "Pre-repair frame-counted skill timing under Engine.time_scale overcommitted DriftSystem (>2.4s).",
+	}
+	return {
+		"schema": "gunnchos.engineering_wave010.advanced_slow_run_root_cause.v1",
+		"ADVANCED_SLOW_RUN_ROOT_CAUSE": primary,
+		"ADVANCED_WIPEOUT_RUNS": wipeouts,
+		"ADVANCED_OVERCOMMIT_RELEASES": overcommits,
+		"ADVANCED_TIMES": advanced_times,
+		"BASIC_TIMES": basic_times,
+		"slow_runs": evidence,
+		"prior_causal_ci_class": prior_class,
+		"EXTERNAL_RERUN_AS_STABILITY_EVIDENCE": false,
+	}
 
 
 func _write_json(rel: String, data: Dictionary) -> void:

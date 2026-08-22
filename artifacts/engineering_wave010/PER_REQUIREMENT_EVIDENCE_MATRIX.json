@@ -124,7 +124,8 @@
         "MASTERY_RESULT",
         "CAUSAL_MASTERY_RESULT",
         "ACTUAL_TIME_TRIAL_GHOST_RESULT",
-        "MASTERY_DRIVER_EQUIVALENCE"
+        "MASTERY_DRIVER_EQUIVALENCE",
+        "ADVANCED_SLOW_RUN_ROOT_CAUSE"
       ],
       "notes": "Causal same-driver mastery + real ghost self-improvement",
       "BLANKET": false

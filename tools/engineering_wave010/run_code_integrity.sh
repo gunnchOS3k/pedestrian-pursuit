@@ -54,12 +54,20 @@ if driver.exists():
     findings.append({"severity": "S0", "id": "BASIC_STEERING_HANDICAP", "path": str(driver.relative_to(root))})
   if "technique_counts" in dt and "drift_release" in dt and re.search(r'technique_counts\["drift_release"\].*\+\s*1', dt):
     findings.append({"severity": "S0", "id": "DRIVER_INTENT_AS_TECHNIQUE_SUCCESS", "path": str(driver.relative_to(root))})
+  if re.search(r"FRAME_COUNT_SKILL_TIMING\s*[:=].*true", dt) or "_drift_hold_frames" in dt:
+    findings.append({"severity": "S0", "id": "FRAME_COUNT_SKILL_TIMING_RETURN", "path": str(driver.relative_to(root))})
+  if "DRIVER_INTENT_COUNTED_AS_SUCCESS: bool = true" in dt:
+    findings.append({"severity": "S0", "id": "DRIVER_INTENT_AS_SUCCESS_FLAG", "path": str(driver.relative_to(root))})
+  if "func tick(player: Node3D, path: Path3D, delta: float" not in dt:
+    findings.append({"severity": "S0", "id": "SKILL_TIMING_MISSING_DELTA", "path": str(driver.relative_to(root))})
 if mastery_e2e.exists():
   mt = mastery_e2e.read_text(errors="ignore")
   if "lap_changed" in mt and re.search(r"finished_at\s*=.*lap_events", mt):
     findings.append({"severity": "S0", "id": "LAP_EVENT_FINISH_FALLBACK", "path": str(mastery_e2e.relative_to(root))})
   if re.search(r"finish_and_save\(\s*30\.0\s*\)", mt) and re.search(r"finish_and_save\(\s*25\.0\s*\)", mt):
     findings.append({"severity": "S0", "id": "SYNTHETIC_GHOST_PROBE_AS_CLOSURE", "path": str(mastery_e2e.relative_to(root))})
+  if "EXTERNAL_RERUN_AS_STABILITY_EVIDENCE\": true" in mt or "EXTERNAL_RERUN_AS_STABILITY_EVIDENCE = true" in mt:
+    findings.append({"severity": "S0", "id": "EXTERNAL_RERUN_AS_STABILITY", "path": str(mastery_e2e.relative_to(root))})
 
 # Artifact-level causal checks when present
 mastery_art = root/"artifacts/engineering_wave010/MASTERY_RESULT.json"
@@ -77,8 +85,36 @@ if mastery_art.exists():
       findings.append({"severity": "S0", "id": "SYNTHETIC_GHOST_CLOSURE_ARTIFACT", "path": str(mastery_art.relative_to(root))})
     if mj.get("DRIVER_INTENT_COUNTED_AS_SUCCESS") is True:
       findings.append({"severity": "S0", "id": "INTENT_COUNTED_AS_SUCCESS_ARTIFACT", "path": str(mastery_art.relative_to(root))})
+    if mj.get("FRAME_COUNT_SKILL_TIMING") is True:
+      findings.append({"severity": "S0", "id": "FRAME_COUNT_SKILL_TIMING_ARTIFACT", "path": str(mastery_art.relative_to(root))})
+    if int(mj.get("ADVANCED_OVERCOMMIT_RELEASES", 0) or 0) > 0 and mj.get("reliable") is True:
+      findings.append({"severity": "S0", "id": "OVERCOMMIT_WITH_RELIABLE", "path": str(mastery_art.relative_to(root))})
+    if mj.get("SKILL_POLICY_TIME_SCALE_INVARIANCE_PASS") is False and mj.get("reliable") is True:
+      findings.append({"severity": "S0", "id": "TIME_SCALE_INVARIANCE_FAIL_RELIABLE", "path": str(mastery_art.relative_to(root))})
+    if mj.get("reliable") is True and "ADVANCED_SLOW_RUN_ROOT_CAUSE" not in mj:
+      findings.append({"severity": "S0", "id": "MISSING_SLOW_RUN_DIAGNOSTICS", "path": str(mastery_art.relative_to(root))})
+    bp = mj.get("BASIC_DRIVER_PARAMETERS") or (mj.get("driver_equivalence") or {}).get("BASIC_DRIVER_PARAMETERS") or {}
+    ap = mj.get("ADVANCED_DRIVER_PARAMETERS") or (mj.get("driver_equivalence") or {}).get("ADVANCED_DRIVER_PARAMETERS") or {}
+    if bp and ap and bp != ap and mj.get("reliable") is True:
+      findings.append({"severity": "S0", "id": "STEERING_DIVERGE_RELIABLE", "path": str(mastery_art.relative_to(root))})
   except Exception as e:
     findings.append({"severity": "S1", "id": "MASTERY_ARTIFACT_UNREADABLE", "path": str(mastery_art.relative_to(root)), "error": str(e)})
+
+slow_art = root/"artifacts/engineering_wave010/ADVANCED_SLOW_RUN_ROOT_CAUSE.json"
+if mastery_art.exists() and not slow_art.exists():
+  try:
+    mj = json.loads(mastery_art.read_text())
+    if mj.get("reliable") is True:
+      findings.append({"severity": "S0", "id": "MISSING_SLOW_RUN_ROOT_CAUSE_ARTIFACT", "path": "artifacts/engineering_wave010/ADVANCED_SLOW_RUN_ROOT_CAUSE.json"})
+  except Exception:
+    pass
+if slow_art.exists():
+  try:
+    sj = json.loads(slow_art.read_text())
+    if sj.get("EXTERNAL_RERUN_AS_STABILITY_EVIDENCE") is True:
+      findings.append({"severity": "S0", "id": "EXTERNAL_RERUN_AS_STABILITY_ARTIFACT", "path": str(slow_art.relative_to(root))})
+  except Exception as e:
+    findings.append({"severity": "S1", "id": "SLOW_RUN_ARTIFACT_UNREADABLE", "path": str(slow_art.relative_to(root)), "error": str(e)})
 
 new_s0 = sum(1 for f in findings if f["severity"] == "S0")
 new_s1 = sum(1 for f in findings if f["severity"] == "S1")

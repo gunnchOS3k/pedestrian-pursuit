@@ -77,8 +77,15 @@ jobs:
           assert e2e.get("direct_lapmanager_on_checkpoint_as_e2e") is False
           assert mastery.get("reliable") is True
           assert mastery.get("advanced_faster") is True
-          assert int(mastery.get("pairwise_advanced_faster", 0)) >= 2
+          assert int(mastery.get("paired_trials", 0)) >= 5
+          assert int(mastery.get("pairwise_required", 0)) >= 4
+          assert int(mastery.get("pairwise_advanced_faster", 0)) >= int(mastery.get("pairwise_required", 4))
           assert mastery.get("median_advantage_ok") is True
+          assert mastery.get("ALL_10_FINISH") is True
+          assert int(mastery.get("ADVANCED_WIPEOUT_RUNS", 1)) == 0
+          assert int(mastery.get("ADVANCED_OVERCOMMIT_RELEASES", 1)) == 0
+          assert mastery.get("FRAME_COUNT_SKILL_TIMING") is False
+          assert mastery.get("SKILL_POLICY_TIME_SCALE_INVARIANCE_PASS") is True
           assert mastery.get("DRIVER_PARAMETERS_MATCH") is True
           assert mastery.get("ONLY_SKILL_INPUTS_DIFFER") is True
           assert mastery.get("BASIC_HANDICAP_PRESENT") is False
@@ -86,6 +93,9 @@ jobs:
           assert mastery.get("ALL_ADVANCED_RACE_FINISHED_SIGNALS") is True
           assert mastery.get("LAP_EVENT_USED_AS_FINISH_FALLBACK") is False
           assert mastery.get("DRIVER_INTENT_COUNTED_AS_SUCCESS") is False
+          slow=json.load(open("artifacts/engineering_wave010/ADVANCED_SLOW_RUN_ROOT_CAUSE.json"))
+          assert slow.get("EXTERNAL_RERUN_AS_STABILITY_EVIDENCE") is False
+          assert "ADVANCED_SLOW_RUN_ROOT_CAUSE" in slow
           ghost=mastery.get("ghost") or {}
           assert ghost.get("GHOST_SELF_IMPROVEMENT_PASS") is True
           assert ghost.get("ACTUAL_BASIC_GHOST_SAVED") is True

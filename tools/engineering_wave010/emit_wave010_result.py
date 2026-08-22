@@ -173,6 +173,7 @@ def derive_requirements(component: dict, e2e: dict, mutation: dict, integrity: d
     advanced_faster = mastery.get("advanced_faster")
     reliable = bool(mastery.get("reliable"))
     pairwise = int(mastery.get("pairwise_advanced_faster", 0))
+    pairwise_required = int(mastery.get("pairwise_required", 4))
     median_ok = bool(mastery.get("median_advantage_ok", False))
     ghost_ok = bool(ghost.get("GHOST_SELF_IMPROVEMENT_PASS", ghost.get("ok", False)))
     driver_match = bool(mastery.get("DRIVER_PARAMETERS_MATCH", equiv_art.get("DRIVER_PARAMETERS_MATCH", False)))
@@ -183,12 +184,20 @@ def derive_requirements(component: dict, e2e: dict, mutation: dict, integrity: d
     no_lap_fallback = mastery.get("LAP_EVENT_USED_AS_FINISH_FALLBACK", True) is False
     no_intent = mastery.get("DRIVER_INTENT_COUNTED_AS_SUCCESS", True) is False
     no_synthetic_ghost = ghost.get("synthetic_probe_used_as_closure", False) is not True
+    no_frame_count = mastery.get("FRAME_COUNT_SKILL_TIMING", True) is False
+    wipeouts = mastery.get("ADVANCED_WIPEOUT_RUNS", 99)
+    overcommits = mastery.get("ADVANCED_OVERCOMMIT_RELEASES", 99)
+    no_wipeouts = isinstance(wipeouts, (int, float)) and int(wipeouts) == 0
+    no_overcommit = isinstance(overcommits, (int, float)) and int(overcommits) == 0
+    time_scale_ok = mastery.get("SKILL_POLICY_TIME_SCALE_INVARIANCE_PASS", False) is True
+    all_10 = mastery.get("ALL_10_FINISH", False) is True
     pairs = mastery.get("pairs") or []
     techniques_ok = all(int(p.get("advanced_technique_categories", 0)) >= 2 for p in pairs) if pairs else False
     if (
         reliable
         and advanced_faster is True
-        and pairwise >= 2
+        and pairwise >= pairwise_required
+        and pairwise_required >= 4
         and median_ok
         and ghost_ok
         and driver_match
@@ -196,9 +205,14 @@ def derive_requirements(component: dict, e2e: dict, mutation: dict, integrity: d
         and no_handicap
         and all_basic_fin
         and all_adv_fin
+        and all_10
         and no_lap_fallback
         and no_intent
         and no_synthetic_ghost
+        and no_frame_count
+        and no_wipeouts
+        and no_overcommit
+        and time_scale_ok
         and techniques_ok
         and bool(e2e.get("REAL_CHECKPOINT_LAP_PROGRESS"))
         and bool(e2e.get("NORMAL_INPUT_PATH", e2e.get("SYNTHETIC_INPUT_DRIVER", False)))
@@ -213,6 +227,7 @@ def derive_requirements(component: dict, e2e: dict, mutation: dict, integrity: d
                 "CAUSAL_MASTERY_RESULT",
                 "ACTUAL_TIME_TRIAL_GHOST_RESULT",
                 "MASTERY_DRIVER_EQUIVALENCE",
+                "ADVANCED_SLOW_RUN_ROOT_CAUSE",
             ],
             "Causal same-driver mastery + real ghost self-improvement",
         )
