@@ -63,19 +63,19 @@ MUTATIONS = [
 	(
         "mastery_boost_flat",
         "scripts/player/BoostSystem.gd",
-        "max_active_multiplier: float = 1.55",
+        "max_active_multiplier: float = 1.65",
         "max_active_multiplier: float = 1.0",
     ),
     (
         "drift_release_flat",
         "scripts/player/DriftSystem.gd",
-        "boost_multipliers: Array[float] = [1.07, 1.14, 1.21, 1.30]",
+        "boost_multipliers: Array[float] = [1.16, 1.24, 1.34, 1.45]",
         "boost_multipliers: Array[float] = [1.0, 1.0, 1.0, 1.0]",
     ),
     (
         "manual_boost_mult_disabled",
         "scripts/player/BoostSystem.gd",
-        "boost_speed_multiplier: float = 1.35",
+        "boost_speed_multiplier: float = 1.48",
         "boost_speed_multiplier: float = 1.0",
     ),
     (

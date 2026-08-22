@@ -78,7 +78,24 @@ jobs:
           assert mastery.get("advanced_faster") is True
           assert int(mastery.get("pairwise_advanced_faster", 0)) >= 2
           assert mastery.get("median_advantage_ok") is True
-          assert (mastery.get("ghost") or {}).get("ok") is True
+          assert mastery.get("DRIVER_PARAMETERS_MATCH") is True
+          assert mastery.get("ONLY_SKILL_INPUTS_DIFFER") is True
+          assert mastery.get("BASIC_HANDICAP_PRESENT") is False
+          assert mastery.get("ALL_BASIC_RACE_FINISHED_SIGNALS") is True
+          assert mastery.get("ALL_ADVANCED_RACE_FINISHED_SIGNALS") is True
+          assert mastery.get("LAP_EVENT_USED_AS_FINISH_FALLBACK") is False
+          assert mastery.get("DRIVER_INTENT_COUNTED_AS_SUCCESS") is False
+          ghost=mastery.get("ghost") or {}
+          assert ghost.get("GHOST_SELF_IMPROVEMENT_PASS") is True
+          assert ghost.get("ACTUAL_BASIC_GHOST_SAVED") is True
+          assert ghost.get("ACTUAL_ADVANCED_GHOST_REPLACED_BASIC") is True
+          assert ghost.get("ACTUAL_RACESCENE_GHOST_REPLAY_LOAD_PASS") is True
+          assert ghost.get("synthetic_probe_used_as_closure") is False
+          causal=json.load(open("artifacts/engineering_wave010/CAUSAL_MASTERY_RESULT.json"))
+          assert causal.get("DRIVER_PARAMETERS_MATCH") is True
+          equiv=json.load(open("artifacts/engineering_wave010/MASTERY_DRIVER_EQUIVALENCE.json"))
+          assert equiv.get("DRIVER_PARAMETERS_MATCH") is True
+          assert equiv.get("BASIC_PARAMETER_HASH") == equiv.get("ADVANCED_PARAMETER_HASH")
           assert int(mut.get("WAVE010_INVALID_MUTATIONS", 1)) == 0
           assert int(mut.get("WAVE010_BEHAVIORAL_KILLED", 0)) >= 11
           assert int(mut.get("WAVE010_MUTATIONS_ATTEMPTED", 0)) >= 11

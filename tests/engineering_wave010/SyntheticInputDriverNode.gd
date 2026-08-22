@@ -21,13 +21,15 @@ func start(p_player: Node3D, p_path: Path3D, profile: String = "basic") -> void:
 	path = p_path
 	logic.reset(profile)
 	active = true
+	# Run before PlayerController so action_press is visible to just_pressed / pressed queries.
+	process_priority = -1000
 	set_physics_process(true)
 
 
 func stop() -> void:
 	active = false
 	set_physics_process(false)
-	# Do not reset technique_counts here — callers snapshot after stop.
+	# Do not reset driver state here — callers snapshot production signals after stop.
 	Input.action_release("drift")
 	Input.action_release("boost")
 	Input.action_release("jump")

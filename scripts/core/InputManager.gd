@@ -10,10 +10,18 @@ var last_active_source: InputSource = InputSource.KEYBOARD
 var _touch_steer: float = 0.0
 var _touch_accelerate: bool = false
 var _ring_confirm_held: bool = false
+var _boost_held_prev: bool = false
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+
+
+func _physics_process(_delta: float) -> void:
+	# Keep boost edge detector aligned even if no consumer queries this frame.
+	var held := Input.is_action_pressed("boost")
+	if not held:
+		_boost_held_prev = false
 
 
 func apply_device_role(profile: Dictionary) -> void:
@@ -127,7 +135,12 @@ func is_sliding() -> bool:
 
 
 func is_boosting() -> bool:
-	return Input.is_action_just_pressed("boost")
+	# Rising-edge detect so Input.action_press (tests/touch bridges) and
+	# InputMap just_pressed both register a single boost request.
+	var held := Input.is_action_pressed("boost")
+	var edge := held and not _boost_held_prev
+	_boost_held_prev = held
+	return edge or Input.is_action_just_pressed("boost")
 
 
 func is_using_item() -> bool:

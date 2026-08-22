@@ -162,31 +162,67 @@ def derive_requirements(component: dict, e2e: dict, mutation: dict, integrity: d
     else:
         row("GAME-PP-014", "PARTIAL", ["component.comeback"] if comeback else [], "Comeback incomplete")
 
-    # 015 mastery — require reliable advanced_faster from TimeTrial mastery E2E
+    # 015 mastery — causal same-driver skills + real RaceScene ghost loop
     mastery_art = load("MASTERY_RESULT.json")
+    causal_art = load("CAUSAL_MASTERY_RESULT.json")
+    ghost_art = load("ACTUAL_TIME_TRIAL_GHOST_RESULT.json")
+    equiv_art = load("MASTERY_DRIVER_EQUIVALENCE.json")
     if mastery_art:
         mastery = mastery_art
+    ghost = mastery.get("ghost") or ghost_art or {}
     advanced_faster = mastery.get("advanced_faster")
     reliable = bool(mastery.get("reliable"))
     pairwise = int(mastery.get("pairwise_advanced_faster", 0))
     median_ok = bool(mastery.get("median_advantage_ok", False))
-    ghost_ok = bool((mastery.get("ghost") or {}).get("ok", False))
+    ghost_ok = bool(ghost.get("GHOST_SELF_IMPROVEMENT_PASS", ghost.get("ok", False)))
+    driver_match = bool(mastery.get("DRIVER_PARAMETERS_MATCH", equiv_art.get("DRIVER_PARAMETERS_MATCH", False)))
+    skills_only = bool(mastery.get("ONLY_SKILL_INPUTS_DIFFER", equiv_art.get("ONLY_SKILL_INPUTS_DIFFER", False)))
+    no_handicap = mastery.get("BASIC_HANDICAP_PRESENT", equiv_art.get("BASIC_HANDICAP_PRESENT", True)) is False
+    all_basic_fin = bool(mastery.get("ALL_BASIC_RACE_FINISHED_SIGNALS", False))
+    all_adv_fin = bool(mastery.get("ALL_ADVANCED_RACE_FINISHED_SIGNALS", False))
+    no_lap_fallback = mastery.get("LAP_EVENT_USED_AS_FINISH_FALLBACK", True) is False
+    no_intent = mastery.get("DRIVER_INTENT_COUNTED_AS_SUCCESS", True) is False
+    no_synthetic_ghost = ghost.get("synthetic_probe_used_as_closure", False) is not True
+    pairs = mastery.get("pairs") or []
+    techniques_ok = all(int(p.get("advanced_technique_categories", 0)) >= 2 for p in pairs) if pairs else False
     if (
         reliable
         and advanced_faster is True
         and pairwise >= 2
         and median_ok
         and ghost_ok
+        and driver_match
+        and skills_only
+        and no_handicap
+        and all_basic_fin
+        and all_adv_fin
+        and no_lap_fallback
+        and no_intent
+        and no_synthetic_ghost
+        and techniques_ok
         and bool(e2e.get("REAL_CHECKPOINT_LAP_PROGRESS"))
         and bool(e2e.get("NORMAL_INPUT_PATH", e2e.get("SYNTHETIC_INPUT_DRIVER", False)))
+        and not bool((mastery.get("claim_boundaries") or {}).get("HIDDEN_RUBBER_BANDING", False))
     ):
-        row("GAME-PP-015", "IMPLEMENTED", ["e2e.D_time_trial_mastery", "MASTERY_RESULT"], "Mastery timing + ghost observed")
+        row(
+            "GAME-PP-015",
+            "IMPLEMENTED",
+            [
+                "e2e.D_time_trial_mastery",
+                "MASTERY_RESULT",
+                "CAUSAL_MASTERY_RESULT",
+                "ACTUAL_TIME_TRIAL_GHOST_RESULT",
+                "MASTERY_DRIVER_EQUIVALENCE",
+            ],
+            "Causal same-driver mastery + real ghost self-improvement",
+        )
     else:
+        _ = causal_art
         row(
             "GAME-PP-015",
             "PARTIAL",
-            ["e2e.D_time_trial_mastery", "MASTERY_RESULT", "component.mastery_component"],
-            "advanced_faster unreliable or mastery/ghost/normal-input gates incomplete",
+            ["e2e.D_time_trial_mastery", "MASTERY_RESULT", "CAUSAL_MASTERY_RESULT", "component.mastery_component"],
+            "causal mastery/driver-equivalence/ghost/race_finished gates incomplete",
         )
 
     # Guard: component pass alone cannot blanket-implement all 15

@@ -28,6 +28,7 @@ Doctrine: deepen accepted systems only. No Wave-specific PlayerController / Item
 | RacerData / RunnerProfile | `scripts/data/*` | Distinct racers |
 | TelemetryBus | `scripts/core/TelemetryBus.gd` | Observability |
 | GhostRecorder / GhostPlayer | `scripts/race/*` | Time-trial mastery |
+| Time Trial lap count | `GameManager.start_time_trial` + `RaceScene` | **Product design: `TIME_TRIAL_LAP_COUNT=1`** (single-lap ghost/mastery). CI uses `Engine.time_scale`, not lap truncation. |
 | MobileControls / InputManager | ui + core | Input integrity |
 | CompetitiveAiEvalRunner | `tests/CompetitiveAiEvalRunner.gd` | Seeded AI matrix |
 

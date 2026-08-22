@@ -121,9 +121,12 @@
       "status": "IMPLEMENTED",
       "evidence": [
         "e2e.D_time_trial_mastery",
-        "MASTERY_RESULT"
+        "MASTERY_RESULT",
+        "CAUSAL_MASTERY_RESULT",
+        "ACTUAL_TIME_TRIAL_GHOST_RESULT",
+        "MASTERY_DRIVER_EQUIVALENCE"
       ],
-      "notes": "Mastery timing + ghost observed",
+      "notes": "Causal same-driver mastery + real ghost self-improvement",
       "BLANKET": false
     },
     "BLANKET_GAME_PP_ASSIGNMENT": false,

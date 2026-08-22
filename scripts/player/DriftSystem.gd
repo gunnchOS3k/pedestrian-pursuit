@@ -6,11 +6,11 @@ extends Node
 signal drift_released(boost_strength: float, spark_tier: int)
 signal drift_quality_changed(tier: int, charge: float)
 
-@export var charge_rate: float = 0.42
+@export var charge_rate: float = 0.55
 @export var min_turn_for_charge: float = 0.22
 @export var min_speed_to_drift: float = 3.5
-@export var boost_durations: Array[float] = [0.55, 0.95, 1.35, 1.75]
-@export var boost_multipliers: Array[float] = [1.07, 1.14, 1.21, 1.30]
+@export var boost_durations: Array[float] = [0.75, 1.15, 1.55, 2.05]
+@export var boost_multipliers: Array[float] = [1.16, 1.24, 1.34, 1.45]
 @export var overcommit_speed_penalty: float = 0.12
 
 var is_drifting: bool = false
@@ -73,8 +73,9 @@ func update_drift(delta: float, steer_amount: float, drift_control: float, charg
 		return
 	var quality := clampf(absf(steer_amount), 0.0, 1.0)
 	var speed_factor := clampf((current_speed - min_speed_to_drift) / 12.0, 0.35, 1.25)
+	# Charge scales with steer quality and speed — arcade-readable spark tiers in a corner.
 	drift_charge = clampf(
-		drift_charge + charge_rate * delta * drift_control * 0.1 * maxf(charge_mult, 0.01) * quality * speed_factor,
+		drift_charge + charge_rate * delta * drift_control * maxf(charge_mult, 0.01) * quality * speed_factor,
 		0.0,
 		1.0
 	)

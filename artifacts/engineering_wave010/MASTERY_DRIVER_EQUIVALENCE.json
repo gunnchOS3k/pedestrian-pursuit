@@ -1,0 +1,37 @@
+{
+	"ADVANCED_DRIVER_PARAMETERS": {
+		"brake_coast": "none",
+		"lateral_blend": 0.35,
+		"lateral_threshold": 3.0,
+		"look_ahead": 12.0,
+		"progress_ahead_factor": 0.05,
+		"progress_min_speed": 4.0,
+		"recovery_policy": "progress_pull_no_body_teleport",
+		"speed_look_ahead_cap": 8.0,
+		"speed_look_ahead_factor": 0.25,
+		"steering_gain": 4.2,
+		"steering_multiplier": 1.0,
+		"tangent_sample": 3.0
+	},
+	"ADVANCED_PARAMETER_HASH": "b3ae1243462e68deaec7e1d23696ec8703f5bebfa40d0fd61928d8895c7ac7aa",
+	"BASIC_DRIVER_PARAMETERS": {
+		"brake_coast": "none",
+		"lateral_blend": 0.35,
+		"lateral_threshold": 3.0,
+		"look_ahead": 12.0,
+		"progress_ahead_factor": 0.05,
+		"progress_min_speed": 4.0,
+		"recovery_policy": "progress_pull_no_body_teleport",
+		"speed_look_ahead_cap": 8.0,
+		"speed_look_ahead_factor": 0.25,
+		"steering_gain": 4.2,
+		"steering_multiplier": 1.0,
+		"tangent_sample": 3.0
+	},
+	"BASIC_HANDICAP_PRESENT": false,
+	"BASIC_PARAMETER_HASH": "b3ae1243462e68deaec7e1d23696ec8703f5bebfa40d0fd61928d8895c7ac7aa",
+	"DRIVER_PARAMETERS_MATCH": true,
+	"ONLY_SKILL_INPUTS_DIFFER": true,
+	"schema": "gunnchos.engineering_wave010.mastery_driver_equivalence.v1",
+	"skills_flag_excluded_from_hash": true
+}

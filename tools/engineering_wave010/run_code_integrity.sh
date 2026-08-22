@@ -43,6 +43,43 @@ if emit.exists():
   if 'for k in list(req):\n        req[k] = "PARTIAL"' in et and '"GAME-PP-001": "IMPLEMENTED"' in et and "derive_requirements" not in et:
     findings.append({"severity": "S1", "id": "BLANKET_REQUIREMENT_ASSIGNMENT", "path": str(emit.relative_to(root))})
 
+# Causal mastery authenticity gates (GAME-PP-015) — static S0 if present.
+driver = root/"tests/engineering_wave010/SyntheticInputDriver.gd"
+mastery_e2e = root/"tests/engineering_wave010/Wave010TimeTrialMasteryE2E.gd"
+if driver.exists():
+  dt = driver.read_text(errors="ignore")
+  if re.search(r"look_ahead\s*=\s*15\.0\s*if", dt) or re.search(r"look_ahead\s*=\s*10\.0\s*if", dt):
+    findings.append({"severity": "S0", "id": "MASTERY_STEERING_MISMATCH", "path": str(driver.relative_to(root))})
+  if re.search(r"steer\s*\*=\s*0\.88|steer\s*\*\s*0\.88", dt):
+    findings.append({"severity": "S0", "id": "BASIC_STEERING_HANDICAP", "path": str(driver.relative_to(root))})
+  if "technique_counts" in dt and "drift_release" in dt and re.search(r'technique_counts\["drift_release"\].*\+\s*1', dt):
+    findings.append({"severity": "S0", "id": "DRIVER_INTENT_AS_TECHNIQUE_SUCCESS", "path": str(driver.relative_to(root))})
+if mastery_e2e.exists():
+  mt = mastery_e2e.read_text(errors="ignore")
+  if "lap_changed" in mt and re.search(r"finished_at\s*=.*lap_events", mt):
+    findings.append({"severity": "S0", "id": "LAP_EVENT_FINISH_FALLBACK", "path": str(mastery_e2e.relative_to(root))})
+  if re.search(r"finish_and_save\(\s*30\.0\s*\)", mt) and re.search(r"finish_and_save\(\s*25\.0\s*\)", mt):
+    findings.append({"severity": "S0", "id": "SYNTHETIC_GHOST_PROBE_AS_CLOSURE", "path": str(mastery_e2e.relative_to(root))})
+
+# Artifact-level causal checks when present
+mastery_art = root/"artifacts/engineering_wave010/MASTERY_RESULT.json"
+if mastery_art.exists():
+  try:
+    mj = json.loads(mastery_art.read_text())
+    if mj.get("BASIC_HANDICAP_PRESENT") is True:
+      findings.append({"severity": "S0", "id": "BASIC_HANDICAP_PRESENT_ARTIFACT", "path": str(mastery_art.relative_to(root))})
+    if mj.get("DRIVER_PARAMETERS_MATCH") is False and mj.get("reliable") is True:
+      findings.append({"severity": "S0", "id": "RELIABLE_WITH_DRIVER_MISMATCH", "path": str(mastery_art.relative_to(root))})
+    if mj.get("LAP_EVENT_USED_AS_FINISH_FALLBACK") is True:
+      findings.append({"severity": "S0", "id": "LAP_EVENT_FINISH_FALLBACK_ARTIFACT", "path": str(mastery_art.relative_to(root))})
+    ghost = mj.get("ghost") or {}
+    if ghost.get("synthetic_probe_used_as_closure") is True and mj.get("reliable") is True:
+      findings.append({"severity": "S0", "id": "SYNTHETIC_GHOST_CLOSURE_ARTIFACT", "path": str(mastery_art.relative_to(root))})
+    if mj.get("DRIVER_INTENT_COUNTED_AS_SUCCESS") is True:
+      findings.append({"severity": "S0", "id": "INTENT_COUNTED_AS_SUCCESS_ARTIFACT", "path": str(mastery_art.relative_to(root))})
+  except Exception as e:
+    findings.append({"severity": "S1", "id": "MASTERY_ARTIFACT_UNREADABLE", "path": str(mastery_art.relative_to(root)), "error": str(e)})
+
 new_s0 = sum(1 for f in findings if f["severity"] == "S0")
 new_s1 = sum(1 for f in findings if f["severity"] == "S1")
 

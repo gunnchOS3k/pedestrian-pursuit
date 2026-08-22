@@ -133,7 +133,8 @@ func _ready() -> void:
 
 	_setup_time_trial_ghost()
 
-	# Time Trial is a single-lap mastery/ghost run by design (not accept_force_laps).
+	# Time Trial product design: single-lap mastery/ghost run (not accept_force_laps).
+	# Documented in docs/engineering_wave010/CANONICAL_GAMEPLAY_MAP.md (TIME_TRIAL_LAP_COUNT=1).
 	if GameManager.is_time_trial():
 		GameManager.total_laps = 1
 	else:

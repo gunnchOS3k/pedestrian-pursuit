@@ -8,12 +8,12 @@ signal boost_activated(multiplier: float, duration: float, source: String)
 signal boost_source_recorded(source: String, amount: float)
 
 @export var max_boost: float = 100.0
-@export var boost_cost: float = 35.0
-@export var boost_speed_multiplier: float = 1.35
-@export var boost_duration: float = 1.2
+@export var boost_cost: float = 28.0
+@export var boost_speed_multiplier: float = 1.48
+@export var boost_duration: float = 1.55
 @export var pickup_amount: float = 25.0
-@export var max_active_multiplier: float = 1.55
-@export var chain_window_sec: float = 0.35
+@export var max_active_multiplier: float = 1.65
+@export var chain_window_sec: float = 0.25
 
 var current_boost: float = 50.0
 var last_source: String = "none"
@@ -43,18 +43,23 @@ func add_boost(amount: float, source: String = "generic") -> void:
 
 
 func try_consume_boost() -> bool:
-	if current_boost < boost_cost or _active_time > 0.0:
+	if current_boost < boost_cost:
 		return false
 	if _chain_cooldown > 0.0:
 		return false
 	current_boost -= boost_cost
-	_active_time = boost_duration
-	_active_multiplier = minf(boost_speed_multiplier * _efficiency, max_active_multiplier)
+	# Arcade chain: reinforce or start dash; never multiply forever (capped below).
+	if _active_time > 0.0:
+		_active_multiplier = minf(maxf(_active_multiplier, boost_speed_multiplier * _efficiency), max_active_multiplier)
+		_active_time = minf(_active_time + boost_duration * 0.45, boost_duration * 2.2)
+	else:
+		_active_time = boost_duration
+		_active_multiplier = minf(boost_speed_multiplier * _efficiency, max_active_multiplier)
 	_active_source = "manual"
 	last_source = "manual"
 	_chain_cooldown = chain_window_sec
 	boost_changed.emit(current_boost, max_boost)
-	boost_activated.emit(_active_multiplier, boost_duration, _active_source)
+	boost_activated.emit(_active_multiplier, _active_time, _active_source)
 	return true
 
 

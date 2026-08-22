@@ -1,41 +1,77 @@
 extends RefCounted
-## Wave010 SYNTHETIC_INPUT_DRIVER — steer from CourseTrack path only.
-## Drives via InputManager.set_touch_* and Input.action_press/release.
+## Wave010 SYNTHETIC_INPUT_DRIVER — identical steering for BASIC and ADVANCED.
+## BASIC: skills off. ADVANCED: same baseline + skill inputs only.
 ## Never mutates player transform, velocity, checkpoints, or laps.
+## Technique success is NOT counted here (production signals only).
 
-var look_ahead: float = 12.0
+const LOOK_AHEAD: float = 12.0
+const STEERING_GAIN: float = 4.2
+const STEERING_MULTIPLIER: float = 1.0
+const LATERAL_BLEND: float = 0.35
+const LATERAL_THRESHOLD: float = 3.0
+const TANGENT_SAMPLE: float = 3.0
+const SPEED_LOOK_AHEAD_FACTOR: float = 0.25
+const SPEED_LOOK_AHEAD_CAP: float = 8.0
+const PROGRESS_AHEAD_FACTOR: float = 0.05
+const PROGRESS_MIN_SPEED: float = 4.0
+
+var look_ahead: float = LOOK_AHEAD
 var profile: String = "basic"
+var skills_enabled: bool = false
 var _drift_held: bool = false
 var _drift_hold_frames: int = 0
+var _boost_pulse_frames: int = 0
 var _boost_cooldown: int = 0
-var _trick_cooldown: int = 0
+var _skill_cooldown: int = 0
 var _frame: int = 0
 var _progress: float = -1.0
-var technique_counts: Dictionary = {
-	"drift_release": 0,
-	"manual_boost": 0,
-	"jump_trick": 0,
-	"rail": 0,
-	"shortcut": 0,
+## Intent mirrors only — NEVER used as mastery technique success.
+var intent_counts: Dictionary = {
+	"drift_press": 0,
+	"boost_press": 0,
 }
 
 
 func reset(profile_name: String) -> void:
 	profile = profile_name
+	skills_enabled = profile_name == "advanced"
+	look_ahead = LOOK_AHEAD
 	_drift_held = false
 	_drift_hold_frames = 0
+	_boost_pulse_frames = 0
 	_boost_cooldown = 0
-	_trick_cooldown = 0
+	_skill_cooldown = 45
 	_frame = 0
 	_progress = -1.0
-	technique_counts = {
-		"drift_release": 0,
-		"manual_boost": 0,
-		"jump_trick": 0,
-		"rail": 0,
-		"shortcut": 0,
-	}
+	intent_counts = {"drift_press": 0, "boost_press": 0}
 	_release_all_actions()
+
+
+func driver_parameters() -> Dictionary:
+	return {
+		"look_ahead": LOOK_AHEAD,
+		"steering_gain": STEERING_GAIN,
+		"steering_multiplier": STEERING_MULTIPLIER,
+		"lateral_blend": LATERAL_BLEND,
+		"lateral_threshold": LATERAL_THRESHOLD,
+		"tangent_sample": TANGENT_SAMPLE,
+		"speed_look_ahead_factor": SPEED_LOOK_AHEAD_FACTOR,
+		"speed_look_ahead_cap": SPEED_LOOK_AHEAD_CAP,
+		"progress_ahead_factor": PROGRESS_AHEAD_FACTOR,
+		"progress_min_speed": PROGRESS_MIN_SPEED,
+		"brake_coast": "none",
+		"recovery_policy": "progress_pull_no_body_teleport",
+	}
+
+
+func parameter_hash() -> String:
+	var params := driver_parameters()
+	var keys: Array = params.keys()
+	keys.sort()
+	var parts: PackedStringArray = PackedStringArray()
+	for k in keys:
+		parts.append("%s=%s" % [str(k), str(params[k])])
+	return "|".join(parts).sha256_text()
 
 
 func _gm() -> Node:
@@ -66,29 +102,22 @@ func force_normal_input_flags() -> void:
 func tick(player: Node3D, path: Path3D) -> void:
 	force_normal_input_flags()
 	_frame += 1
-	# Profile-specific racing-line look-ahead (input style, not a speed cheat).
-	# Basic must still finish reliably on CI Linux; keep shorter look-ahead than advanced.
-	look_ahead = 15.0 if profile == "advanced" else 10.0
+	look_ahead = LOOK_AHEAD
 	var steer := compute_steer(player, path)
-	if profile == "basic":
-		# Milder corrections → wider/less precise line (not so weak it DNFs).
-		steer = clampf(steer * 0.88, -1.0, 1.0)
+	steer = clampf(steer * STEERING_MULTIPLIER, -1.0, 1.0)
 	var im := _im()
 	if im != null:
 		im.set_touch_steer(steer)
 		im.set_touch_accelerate(true)
-	# Dual-path accel: sticky touch + action map (headless-safe).
 	Input.action_press("accelerate")
 	Input.action_release("brake")
-	if profile == "advanced":
+	if skills_enabled:
 		_tick_advanced(player, steer)
 	else:
 		_release_skill_actions()
-	_observe_techniques(player)
 
 
 func compute_steer(player: Node3D, path: Path3D) -> float:
-	## Pure geometry — no body mutation (unlike AIPathFollower magnet/snap/look_at).
 	if player == null or path == null or path.curve == null:
 		return 0.0
 	var curve: Curve3D = path.curve
@@ -97,13 +126,11 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 	var closest: float = curve.get_closest_offset(local)
 	if _progress < 0.0:
 		_progress = closest
-	# Keep look-target progressing along the authored line even when the body lags.
 	var ahead_bias := 0.0
 	var speed := 0.0
 	if "horizontal_speed" in player:
 		speed = absf(float(player.horizontal_speed))
-	ahead_bias = maxf(speed, 4.0) * 0.05
-	# Unwrap closest relative to progress to avoid backward snaps at loop seam.
+	ahead_bias = maxf(speed, PROGRESS_MIN_SPEED) * PROGRESS_AHEAD_FACTOR
 	var delta_along := closest - _progress
 	if delta_along < -path_len * 0.5:
 		delta_along += path_len
@@ -112,13 +139,12 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 	if delta_along > -2.0:
 		_progress = fposmod(_progress + maxf(delta_along, 0.0) + ahead_bias, path_len)
 	else:
-		# Far behind: gently pull progress toward closest without teleporting the body.
 		_progress = fposmod(_progress + ahead_bias * 0.5, path_len)
 
-	var sample_ahead: float = look_ahead + clampf(speed * 0.25, 0.0, 8.0)
+	var sample_ahead: float = look_ahead + clampf(speed * SPEED_LOOK_AHEAD_FACTOR, 0.0, SPEED_LOOK_AHEAD_CAP)
 	var on_path: Vector3 = path.to_global(curve.sample_baked(_progress))
 	var tangent_pos: Vector3 = path.to_global(
-		curve.sample_baked(fposmod(_progress + 3.0, path_len))
+		curve.sample_baked(fposmod(_progress + TANGENT_SAMPLE, path_len))
 	)
 	var target: Vector3 = path.to_global(
 		curve.sample_baked(fposmod(_progress + sample_ahead, path_len))
@@ -130,11 +156,10 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 	else:
 		tangent = Vector3.FORWARD
 
-	# Blend toward path center when laterally off — still input-only.
 	var lateral: Vector3 = player.global_position - on_path
 	lateral.y = 0.0
-	if lateral.length() > 3.0:
-		target = target.lerp(on_path, 0.35)
+	if lateral.length() > LATERAL_THRESHOLD:
+		target = target.lerp(on_path, LATERAL_BLEND)
 
 	var forward: Vector3 = -player.global_transform.basis.z
 	forward.y = 0.0
@@ -143,7 +168,6 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 	else:
 		forward = forward.normalized()
 
-	# If facing opposite the race direction, hard-steer to reverse course (no look_at).
 	var along := forward.dot(tangent)
 	if along < 0.15:
 		var turn_sign := signf(forward.cross(tangent).y)
@@ -157,91 +181,69 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 		return 0.0
 	var dir: Vector3 = to_target.normalized()
 	var cross_y: float = forward.cross(dir).y
-	var gain := 4.2
-	return clampf(cross_y * gain, -1.0, 1.0)
+	return clampf(cross_y * STEERING_GAIN, -1.0, 1.0)
 
 
-func technique_categories_hit() -> int:
-	var n := 0
-	for k in technique_counts.keys():
-		if int(technique_counts[k]) > 0:
-			n += 1
-	return n
-
-
-func _tick_advanced(player: Node3D, _steer: float) -> void:
-	var _speed := 0.0
+func _tick_advanced(player: Node3D, steer: float) -> void:
+	## Discrete skill bursts — not continuous drift (which only bleeds accel).
+	var speed := 0.0
 	if "horizontal_speed" in player:
-		_speed = absf(float(player.horizontal_speed))
-
-	# Speed advantage = longer look-ahead. Skills are short early proof taps only.
-	var need_drift := int(technique_counts["drift_release"]) < 1
-	var need_boost := int(technique_counts["manual_boost"]) < 1
+		speed = absf(float(player.horizontal_speed))
 	var upright := player.global_position.y > -1.0
+	var turning := absf(steer) >= 0.30
+	var fast_enough := speed >= 5.0
 
-	if not need_drift and not need_boost:
-		if _drift_held:
-			Input.action_release("drift")
-			_drift_held = false
-			_drift_hold_frames = 0
-		Input.action_release("boost")
-		Input.action_release("jump")
-		Input.action_release("trick")
-		return
+	if _skill_cooldown > 0:
+		_skill_cooldown -= 1
+	if _boost_cooldown > 0:
+		_boost_cooldown -= 1
 
-	# Very early windows near spawn (usually straight) so both categories always fire.
-	if upright and need_drift and _frame >= 20 and _frame < 30:
-		if not _drift_held:
-			Input.action_press("drift")
-			_drift_held = true
-			_drift_hold_frames = 0
-		_drift_hold_frames += 1
-		Input.action_release("boost")
-	elif _drift_held:
-		Input.action_release("drift")
-		_drift_held = false
-		_drift_hold_frames = 0
-		technique_counts["drift_release"] = int(technique_counts["drift_release"]) + 1
-		Input.action_release("boost")
-	elif upright and need_boost and not _drift_held and _frame >= 40 and _frame < 48:
-		if _boost_cooldown <= 0:
-			Input.action_press("boost")
-			technique_counts["manual_boost"] = int(technique_counts["manual_boost"]) + 1
-			_boost_cooldown = 6
-		else:
-			_boost_cooldown -= 1
-			if _boost_cooldown == 0:
-				Input.action_release("boost")
-	else:
-		if _drift_held:
-			Input.action_release("drift")
-			_drift_held = false
-			_drift_hold_frames = 0
-			technique_counts["drift_release"] = int(technique_counts["drift_release"]) + 1
-		else:
-			Input.action_release("drift")
-		if _boost_cooldown > 0:
-			_boost_cooldown -= 1
-			if _boost_cooldown == 0:
-				Input.action_release("boost")
-		else:
+	# End single-frame boost pulse so just_pressed can fire again later.
+	if _boost_pulse_frames > 0:
+		_boost_pulse_frames -= 1
+		if _boost_pulse_frames == 0:
 			Input.action_release("boost")
+
+	# Drift burst: hold briefly while turning, release while still steering.
+	if _drift_held:
+		_drift_hold_frames += 1
+		Input.action_press("drift")
+		if _drift_hold_frames >= 28 or not turning:
+			Input.action_release("drift")
+			_drift_held = false
+			_drift_hold_frames = 0
+			_skill_cooldown = 55
+	elif (
+		upright
+		and fast_enough
+		and turning
+		and _skill_cooldown <= 0
+		and _boost_pulse_frames == 0
+	):
+		Input.action_press("drift")
+		_drift_held = true
+		_drift_hold_frames = 0
+		intent_counts["drift_press"] = int(intent_counts["drift_press"]) + 1
+	else:
+		Input.action_release("drift")
+
+	# Manual boost pulse — prefer straights; allow after drifts refill meter.
+	if (
+		upright
+		and not _drift_held
+		and fast_enough
+		and _boost_cooldown <= 0
+		and _boost_pulse_frames == 0
+		and _frame > 40
+		and (not turning or _frame % 95 == 0)
+	):
+		Input.action_press("boost")
+		intent_counts["boost_press"] = int(intent_counts["boost_press"]) + 1
+		_boost_pulse_frames = 3
+		_boost_cooldown = 70
 
 	Input.action_release("jump")
 	Input.action_release("trick")
-	_trick_cooldown = 0
-
-
-func _observe_techniques(player: Node3D) -> void:
-	if player == null:
-		return
-	var rail = player.get_node_or_null("RailGrindSystem")
-	if rail != null and bool(rail.get("is_grinding")):
-		technique_counts["rail"] = int(technique_counts["rail"]) + 1
-	if player.has_meta("on_shortcut") and bool(player.get_meta("on_shortcut")):
-		technique_counts["shortcut"] = int(technique_counts["shortcut"]) + 1
-	elif str(player.get("terrain_name")) == "shortcut":
-		technique_counts["shortcut"] = int(technique_counts["shortcut"]) + 1
 
 
 func _release_skill_actions() -> void:
@@ -250,6 +252,8 @@ func _release_skill_actions() -> void:
 	Input.action_release("jump")
 	Input.action_release("trick")
 	_drift_held = false
+	_drift_hold_frames = 0
+	_boost_pulse_frames = 0
 
 
 func _release_all_actions() -> void:

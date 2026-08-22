@@ -76,7 +76,7 @@
 		"drift": {
 			"boost_applied": true,
 			"observed": true,
-			"spark_tier": 1,
+			"spark_tier": 3,
 			"stationary_farm_blocked": true
 		},
 		"item": {

@@ -1,0 +1,259 @@
+{
+	"ADVANCED_DRIVER_PARAMETERS": {
+		"brake_coast": "none",
+		"lateral_blend": 0.35,
+		"lateral_threshold": 3.0,
+		"look_ahead": 12.0,
+		"progress_ahead_factor": 0.05,
+		"progress_min_speed": 4.0,
+		"recovery_policy": "progress_pull_no_body_teleport",
+		"speed_look_ahead_cap": 8.0,
+		"speed_look_ahead_factor": 0.25,
+		"steering_gain": 4.2,
+		"steering_multiplier": 1.0,
+		"tangent_sample": 3.0
+	},
+	"ADVANCED_PARAMETER_HASH": "b3ae1243462e68deaec7e1d23696ec8703f5bebfa40d0fd61928d8895c7ac7aa",
+	"ADVANCED_TIMES": [
+		231.55,
+		232.407,
+		232.512
+	],
+	"BASIC_DRIVER_PARAMETERS": {
+		"brake_coast": "none",
+		"lateral_blend": 0.35,
+		"lateral_threshold": 3.0,
+		"look_ahead": 12.0,
+		"progress_ahead_factor": 0.05,
+		"progress_min_speed": 4.0,
+		"recovery_policy": "progress_pull_no_body_teleport",
+		"speed_look_ahead_cap": 8.0,
+		"speed_look_ahead_factor": 0.25,
+		"steering_gain": 4.2,
+		"steering_multiplier": 1.0,
+		"tangent_sample": 3.0
+	},
+	"BASIC_HANDICAP_PRESENT": false,
+	"BASIC_PARAMETER_HASH": "b3ae1243462e68deaec7e1d23696ec8703f5bebfa40d0fd61928d8895c7ac7aa",
+	"BASIC_TIMES": [
+		234.447,
+		234.459,
+		234.486
+	],
+	"DRIVER_PARAMETERS_MATCH": true,
+	"ONLY_SKILL_INPUTS_DIFFER": true,
+	"TRIAL_ORDER": [
+		"BASIC→ADVANCED",
+		"ADVANCED→BASIC",
+		"BASIC→ADVANCED"
+	],
+	"ghost": {
+		"ACTUAL_ADVANCED_GHOST_REPLACED_BASIC": true,
+		"ACTUAL_BASIC_GHOST_SAVED": true,
+		"ACTUAL_RACESCENE_GHOST_REPLAY_LOAD_PASS": true,
+		"ADVANCED_GHOST_TIME_MATCHES_ACTUAL_RACE": true,
+		"BASIC_GHOST_TIME_MATCHES_ACTUAL_RACE": true,
+		"GHOST_SELF_IMPROVEMENT_PASS": true,
+		"advanced_ghost": {
+			"sample_count": 1685,
+			"time": 232.407071851856,
+			"track_id": "verdant_cascade_circuit"
+		},
+		"basic_ghost": {
+			"sample_count": 1700,
+			"time": 234.447296190478,
+			"track_id": "verdant_cascade_circuit"
+		},
+		"ok": true,
+		"synthetic_probe_used_as_closure": false
+	},
+	"mastery": {
+		"ADVANCED_TIMES": [
+			231.55,
+			232.407,
+			232.512
+		],
+		"ALL_ADVANCED_RACE_FINISHED_SIGNALS": true,
+		"ALL_BASIC_RACE_FINISHED_SIGNALS": true,
+		"BASIC_HANDICAP_PRESENT": false,
+		"BASIC_TIMES": [
+			234.447,
+			234.459,
+			234.486
+		],
+		"DRIVER_INTENT_COUNTED_AS_SUCCESS": false,
+		"DRIVER_PARAMETERS_MATCH": true,
+		"LAP_EVENT_USED_AS_FINISH_FALLBACK": false,
+		"ONLY_SKILL_INPUTS_DIFFER": true,
+		"PRODUCTION_DRIFT_RELEASE_EVENTS": 48,
+		"PRODUCTION_MANUAL_BOOST_EVENTS": 23,
+		"TECHNIQUE_COUNT_SOURCE": "PRODUCTION_SIGNAL_OR_TELEMETRY",
+		"TIME_TRIAL_LAP_COUNT": 1,
+		"TIME_TRIAL_LAP_COUNT_PRODUCT_JUSTIFICATION": "Product design: Time Trial is a single-lap mastery/ghost run (GameManager.start_time_trial + RaceScene TT arm). CI uses Engine.time_scale, not lap truncation.",
+		"TRIAL_ORDER": [
+			"BASIC→ADVANCED",
+			"ADVANCED→BASIC",
+			"BASIC→ADVANCED"
+		],
+		"accept_force_laps": 0,
+		"accept_test_mode": false,
+		"advanced_faster": true,
+		"auto_accelerate": false,
+		"competitive_mode": true,
+		"driver": "SYNTHETIC_INPUT_DRIVER",
+		"driver_equivalence": {
+			"ADVANCED_DRIVER_PARAMETERS": {
+				"brake_coast": "none",
+				"lateral_blend": 0.35,
+				"lateral_threshold": 3.0,
+				"look_ahead": 12.0,
+				"progress_ahead_factor": 0.05,
+				"progress_min_speed": 4.0,
+				"recovery_policy": "progress_pull_no_body_teleport",
+				"speed_look_ahead_cap": 8.0,
+				"speed_look_ahead_factor": 0.25,
+				"steering_gain": 4.2,
+				"steering_multiplier": 1.0,
+				"tangent_sample": 3.0
+			},
+			"ADVANCED_PARAMETER_HASH": "b3ae1243462e68deaec7e1d23696ec8703f5bebfa40d0fd61928d8895c7ac7aa",
+			"BASIC_DRIVER_PARAMETERS": {
+				"brake_coast": "none",
+				"lateral_blend": 0.35,
+				"lateral_threshold": 3.0,
+				"look_ahead": 12.0,
+				"progress_ahead_factor": 0.05,
+				"progress_min_speed": 4.0,
+				"recovery_policy": "progress_pull_no_body_teleport",
+				"speed_look_ahead_cap": 8.0,
+				"speed_look_ahead_factor": 0.25,
+				"steering_gain": 4.2,
+				"steering_multiplier": 1.0,
+				"tangent_sample": 3.0
+			},
+			"BASIC_HANDICAP_PRESENT": false,
+			"BASIC_PARAMETER_HASH": "b3ae1243462e68deaec7e1d23696ec8703f5bebfa40d0fd61928d8895c7ac7aa",
+			"DRIVER_PARAMETERS_MATCH": true,
+			"ONLY_SKILL_INPUTS_DIFFER": true,
+			"schema": "gunnchos.engineering_wave010.mastery_driver_equivalence.v1",
+			"skills_flag_excluded_from_hash": true
+		},
+		"failures": [],
+		"ghost": {
+			"ACTUAL_ADVANCED_GHOST_REPLACED_BASIC": true,
+			"ACTUAL_BASIC_GHOST_SAVED": true,
+			"ACTUAL_RACESCENE_GHOST_REPLAY_LOAD_PASS": true,
+			"ADVANCED_GHOST_TIME_MATCHES_ACTUAL_RACE": true,
+			"BASIC_GHOST_TIME_MATCHES_ACTUAL_RACE": true,
+			"GHOST_SELF_IMPROVEMENT_PASS": true,
+			"advanced_ghost": {
+				"sample_count": 1685,
+				"time": 232.407071851856,
+				"track_id": "verdant_cascade_circuit"
+			},
+			"basic_ghost": {
+				"sample_count": 1700,
+				"time": 234.447296190478,
+				"track_id": "verdant_cascade_circuit"
+			},
+			"ok": true,
+			"synthetic_probe_used_as_closure": false
+		},
+		"median_advanced_sec": 232.407,
+		"median_advantage_ok": true,
+		"median_advantage_pct": 0.87,
+		"median_advantage_sec": 2.04,
+		"median_basic_sec": 234.459,
+		"min_advantage_sec": 1.172,
+		"mode": "TIME_TRIAL",
+		"observed": true,
+		"paired_trials": 3,
+		"pairs": [
+			{
+				"DRIVER_INTENT_COUNTED_AS_SUCCESS": false,
+				"TECHNIQUE_COUNT_SOURCE": "PRODUCTION_SIGNAL_OR_TELEMETRY",
+				"advanced_failures": [],
+				"advanced_faster": true,
+				"advanced_ok": true,
+				"advanced_race_finished_signal": true,
+				"advanced_technique_categories": 3,
+				"advanced_techniques": {
+					"drift_release": 16,
+					"drift_release_boost": 8,
+					"manual_boost": 8
+				},
+				"advanced_time": 232.407,
+				"basic_failures": [],
+				"basic_ok": true,
+				"basic_race_finished_signal": true,
+				"basic_time": 234.447,
+				"delta_sec": 2.04,
+				"order": "BASIC→ADVANCED",
+				"trial": 0
+			},
+			{
+				"DRIVER_INTENT_COUNTED_AS_SUCCESS": false,
+				"TECHNIQUE_COUNT_SOURCE": "PRODUCTION_SIGNAL_OR_TELEMETRY",
+				"advanced_failures": [],
+				"advanced_faster": true,
+				"advanced_ok": true,
+				"advanced_race_finished_signal": true,
+				"advanced_technique_categories": 3,
+				"advanced_techniques": {
+					"drift_release": 16,
+					"drift_release_boost": 8,
+					"manual_boost": 7
+				},
+				"advanced_time": 231.55,
+				"basic_failures": [],
+				"basic_ok": true,
+				"basic_race_finished_signal": true,
+				"basic_time": 234.459,
+				"delta_sec": 2.909,
+				"order": "ADVANCED→BASIC",
+				"trial": 1
+			},
+			{
+				"DRIVER_INTENT_COUNTED_AS_SUCCESS": false,
+				"TECHNIQUE_COUNT_SOURCE": "PRODUCTION_SIGNAL_OR_TELEMETRY",
+				"advanced_failures": [],
+				"advanced_faster": true,
+				"advanced_ok": true,
+				"advanced_race_finished_signal": true,
+				"advanced_technique_categories": 3,
+				"advanced_techniques": {
+					"drift_release": 16,
+					"drift_release_boost": 8,
+					"manual_boost": 8
+				},
+				"advanced_time": 232.512,
+				"basic_failures": [],
+				"basic_ok": true,
+				"basic_race_finished_signal": true,
+				"basic_time": 234.486,
+				"delta_sec": 1.974,
+				"order": "BASIC→ADVANCED",
+				"trial": 2
+			}
+		],
+		"pairwise_advanced_faster": 3,
+		"pairwise_required": 2,
+		"racer_id": "dash_reed",
+		"reason": "causal mastery: same steering + skills-only advantage + real ghost loop",
+		"reliable": true,
+		"schema": "gunnchos.engineering_wave010.mastery.v1",
+		"shoe_id": "starter_soles",
+		"track_id": "verdant_cascade_circuit"
+	},
+	"production_technique_events": {
+		"drift_release": 48,
+		"manual_boost": 23,
+		"source": "PRODUCTION_SIGNAL_OR_TELEMETRY"
+	},
+	"race_finished": {
+		"ALL_ADVANCED_RACE_FINISHED_SIGNALS": true,
+		"ALL_BASIC_RACE_FINISHED_SIGNALS": true,
+		"LAP_EVENT_USED_AS_FINISH_FALLBACK": false
+	},
+	"schema": "gunnchos.engineering_wave010.causal_mastery.v1"
+}
