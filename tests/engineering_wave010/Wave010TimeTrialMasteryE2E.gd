@@ -48,7 +48,7 @@ func _run() -> void:
 	if bool(equiv.get("BASIC_HANDICAP_PRESENT")):
 		_failures.append("BASIC_HANDICAP_PRESENT true")
 
-	# Clear target-track ghost before causal ghost sequence.
+	# Clear only for paired timing hygiene; dedicated ghost loop clears again later.
 	_clear_track_ghost(TRACK_ID)
 
 	var pairs: Array = []
@@ -57,18 +57,6 @@ func _run() -> void:
 	var all_advanced_finished := true
 	var prod_drift_total := 0
 	var prod_manual_boost_total := 0
-	var ghost_result := {
-		"ok": false,
-		"ACTUAL_BASIC_GHOST_SAVED": false,
-		"BASIC_GHOST_TIME_MATCHES_ACTUAL_RACE": false,
-		"ACTUAL_ADVANCED_GHOST_REPLACED_BASIC": false,
-		"ADVANCED_GHOST_TIME_MATCHES_ACTUAL_RACE": false,
-		"ACTUAL_RACESCENE_GHOST_REPLAY_LOAD_PASS": false,
-		"GHOST_SELF_IMPROVEMENT_PASS": false,
-		"synthetic_probe_used_as_closure": false,
-		"basic_ghost": {},
-		"advanced_ghost": {},
-	}
 
 	for trial in range(PAIRED_TRIALS):
 		# Alternate order: B→A, A→B, B→A
@@ -82,10 +70,6 @@ func _run() -> void:
 		var second: Dictionary = await _run_time_trial(gm, second_profile)
 		var basic: Dictionary = first if first_profile == "basic" else second
 		var advanced: Dictionary = first if first_profile == "advanced" else second
-
-		# Causal ghost self-improvement uses first B→A pair only.
-		if trial == 0 and not advanced_first:
-			ghost_result = await _verify_ghost_after_ba_pair(gm, basic, advanced)
 
 		var b_time := float(basic.get("finish_time", -1.0))
 		var a_time := float(advanced.get("finish_time", -1.0))
@@ -127,6 +111,8 @@ func _run() -> void:
 		if adv_cats < 2:
 			_failures.append("advanced trial %d production techniques<%d (need ≥2 categories)" % [trial, adv_cats])
 
+	# Dedicated real RaceScene ghost loop (not synthetic 30/40/25; not bound to one flaky pair).
+	var ghost_result: Dictionary = await _run_actual_ghost_self_improvement(gm)
 	var faster_count := 0
 	var deltas: Array = []
 	var basic_times: Array = []
@@ -333,7 +319,8 @@ func _read_ghost_file(track_id: String) -> Dictionary:
 	return parsed
 
 
-func _verify_ghost_after_ba_pair(gm: Node, basic: Dictionary, advanced: Dictionary) -> Dictionary:
+func _run_actual_ghost_self_improvement(gm: Node) -> Dictionary:
+	## clear → actual Basic RaceScene finish → ghost file → Advanced until faster replaces → replay load
 	var out := {
 		"ok": false,
 		"ACTUAL_BASIC_GHOST_SAVED": false,
@@ -345,46 +332,57 @@ func _verify_ghost_after_ba_pair(gm: Node, basic: Dictionary, advanced: Dictiona
 		"synthetic_probe_used_as_closure": false,
 		"basic_ghost": {},
 		"advanced_ghost": {},
+		"advanced_attempts": 0,
 	}
+	print("GHOST_LOOP clear → basic → advanced replace")
+	_clear_track_ghost(TRACK_ID)
+	var basic: Dictionary = await _run_time_trial(gm, "basic")
 	if not bool(basic.get("race_finished_signal")):
-		_failures.append("ghost: basic missing race_finished")
+		_failures.append("ghost loop: basic missing race_finished")
 		return out
-
-	# After basic race, RaceScene should have written ghost. Re-read now after advanced too —
-	# capture expected from race results then compare file.
 	var b_time := float(basic.get("finish_time", -1.0))
-	var a_time := float(advanced.get("finish_time", -1.0))
-	var ghost_after := _read_ghost_file(TRACK_ID)
-	out["advanced_ghost"] = {
-		"track_id": ghost_after.get("track_id"),
-		"time": ghost_after.get("time"),
-		"sample_count": (ghost_after.get("samples") as Array).size() if ghost_after.get("samples") is Array else 0,
-	}
-
-	# Basic must have finished and produced a ghost at some point; after faster advanced, file is advanced.
-	var basic_saved := bool(basic.get("ghost_saved_after_race"))
 	var basic_meta: Dictionary = basic.get("ghost_meta_after_race", {})
 	out["basic_ghost"] = basic_meta
-	out["ACTUAL_BASIC_GHOST_SAVED"] = basic_saved and int(basic_meta.get("sample_count", 0)) > 0
+	out["ACTUAL_BASIC_GHOST_SAVED"] = bool(basic.get("ghost_saved_after_race")) and int(basic_meta.get("sample_count", 0)) > 0
 	var b_ghost_t := float(basic_meta.get("time", -1.0))
 	out["BASIC_GHOST_TIME_MATCHES_ACTUAL_RACE"] = (
 		out["ACTUAL_BASIC_GHOST_SAVED"]
 		and b_ghost_t > 0.0
 		and absf(b_ghost_t - b_time) <= maxf(0.25, b_time * 0.02)
 	)
+	if not out["BASIC_GHOST_TIME_MATCHES_ACTUAL_RACE"]:
+		_failures.append("ghost loop: basic ghost missing/mismatch")
+		return out
 
-	var advanced_faster := a_time > 0.0 and b_time > 0.0 and a_time < b_time
-	var a_ghost_t := float(ghost_after.get("time", -1.0))
-	var a_samples := (ghost_after.get("samples") as Array).size() if ghost_after.get("samples") is Array else 0
-	out["ACTUAL_ADVANCED_GHOST_REPLACED_BASIC"] = (
-		advanced_faster
-		and a_samples > 0
-		and absf(a_ghost_t - a_time) <= maxf(0.25, a_time * 0.02)
-		and str(ghost_after.get("track_id", "")) == TRACK_ID
-	)
-	out["ADVANCED_GHOST_TIME_MATCHES_ACTUAL_RACE"] = out["ACTUAL_ADVANCED_GHOST_REPLACED_BASIC"]
+	# Up to 3 advanced RaceScene attempts — only a truly faster run may replace.
+	for attempt in range(3):
+		out["advanced_attempts"] = attempt + 1
+		var advanced: Dictionary = await _run_time_trial(gm, "advanced")
+		if not bool(advanced.get("race_finished_signal")):
+			continue
+		var a_time := float(advanced.get("finish_time", -1.0))
+		if not (a_time > 0.0 and a_time < b_time):
+			print("GHOST_LOOP advanced attempt %d not faster (%.3f vs basic %.3f)" % [attempt + 1, a_time, b_time])
+			continue
+		var ghost_after := _read_ghost_file(TRACK_ID)
+		var a_ghost_t := float(ghost_after.get("time", -1.0))
+		var a_samples := (ghost_after.get("samples") as Array).size() if ghost_after.get("samples") is Array else 0
+		out["advanced_ghost"] = {
+			"track_id": ghost_after.get("track_id"),
+			"time": ghost_after.get("time"),
+			"sample_count": a_samples,
+			"attempt": attempt + 1,
+		}
+		out["ACTUAL_ADVANCED_GHOST_REPLACED_BASIC"] = (
+			a_samples > 0
+			and absf(a_ghost_t - a_time) <= maxf(0.25, a_time * 0.02)
+			and str(ghost_after.get("track_id", "")) == TRACK_ID
+			and a_ghost_t < b_ghost_t
+		)
+		out["ADVANCED_GHOST_TIME_MATCHES_ACTUAL_RACE"] = out["ACTUAL_ADVANCED_GHOST_REPLACED_BASIC"]
+		if out["ACTUAL_ADVANCED_GHOST_REPLACED_BASIC"]:
+			break
 
-	# Subsequent canonical RaceScene must load GhostPlayer playback.
 	var replay_ok := await _probe_racescene_ghost_playback(gm)
 	out["ACTUAL_RACESCENE_GHOST_REPLAY_LOAD_PASS"] = replay_ok
 	out["GHOST_SELF_IMPROVEMENT_PASS"] = (

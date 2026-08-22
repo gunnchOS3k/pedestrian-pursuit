@@ -5,14 +5,16 @@
 	"ADVANCED_GHOST_TIME_MATCHES_ACTUAL_RACE": true,
 	"BASIC_GHOST_TIME_MATCHES_ACTUAL_RACE": true,
 	"GHOST_SELF_IMPROVEMENT_PASS": true,
+	"advanced_attempts": 1,
 	"advanced_ghost": {
-		"sample_count": 1685,
-		"time": 232.407071851856,
+		"attempt": 1,
+		"sample_count": 1687,
+		"time": 232.504373333337,
 		"track_id": "verdant_cascade_circuit"
 	},
 	"basic_ghost": {
-		"sample_count": 1700,
-		"time": 234.447296190478,
+		"sample_count": 1702,
+		"time": 234.741286666669,
 		"track_id": "verdant_cascade_circuit"
 	},
 	"ok": true,
