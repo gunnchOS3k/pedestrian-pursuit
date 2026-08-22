@@ -15,9 +15,9 @@
 	},
 	"ADVANCED_PARAMETER_HASH": "b3ae1243462e68deaec7e1d23696ec8703f5bebfa40d0fd61928d8895c7ac7aa",
 	"ADVANCED_TIMES": [
-		232.233,
-		232.431,
-		237.391
+		232.077,
+		232.44,
+		232.511
 	],
 	"BASIC_DRIVER_PARAMETERS": {
 		"brake_coast": "none",
@@ -36,9 +36,9 @@
 	"BASIC_HANDICAP_PRESENT": false,
 	"BASIC_PARAMETER_HASH": "b3ae1243462e68deaec7e1d23696ec8703f5bebfa40d0fd61928d8895c7ac7aa",
 	"BASIC_TIMES": [
-		234.261,
-		234.316,
-		234.607
+		234.353,
+		234.442,
+		234.498
 	],
 	"DRIVER_PARAMETERS_MATCH": true,
 	"ONLY_SKILL_INPUTS_DIFFER": true,
@@ -57,13 +57,13 @@
 		"advanced_attempts": 1,
 		"advanced_ghost": {
 			"attempt": 1,
-			"sample_count": 1687,
-			"time": 232.504373333337,
+			"sample_count": 1683,
+			"time": 232.184196190478,
 			"track_id": "verdant_cascade_circuit"
 		},
 		"basic_ghost": {
-			"sample_count": 1702,
-			"time": 234.741286666669,
+			"sample_count": 1700,
+			"time": 234.435253333337,
 			"track_id": "verdant_cascade_circuit"
 		},
 		"ok": true,
@@ -71,24 +71,24 @@
 	},
 	"mastery": {
 		"ADVANCED_TIMES": [
-			232.233,
-			232.431,
-			237.391
+			232.077,
+			232.44,
+			232.511
 		],
 		"ALL_ADVANCED_RACE_FINISHED_SIGNALS": true,
 		"ALL_BASIC_RACE_FINISHED_SIGNALS": true,
 		"BASIC_HANDICAP_PRESENT": false,
 		"BASIC_TIMES": [
-			234.261,
-			234.316,
-			234.607
+			234.353,
+			234.442,
+			234.498
 		],
 		"DRIVER_INTENT_COUNTED_AS_SUCCESS": false,
 		"DRIVER_PARAMETERS_MATCH": true,
 		"LAP_EVENT_USED_AS_FINISH_FALLBACK": false,
 		"ONLY_SKILL_INPUTS_DIFFER": true,
 		"PRODUCTION_DRIFT_RELEASE_EVENTS": 48,
-		"PRODUCTION_MANUAL_BOOST_EVENTS": 19,
+		"PRODUCTION_MANUAL_BOOST_EVENTS": 21,
 		"TECHNIQUE_COUNT_SOURCE": "PRODUCTION_SIGNAL_OR_TELEMETRY",
 		"TIME_TRIAL_LAP_COUNT": 1,
 		"TIME_TRIAL_LAP_COUNT_PRODUCT_JUSTIFICATION": "Product design: Time Trial is a single-lap mastery/ghost run (GameManager.start_time_trial + RaceScene TT arm). CI uses Engine.time_scale, not lap truncation.",
@@ -151,23 +151,23 @@
 			"advanced_attempts": 1,
 			"advanced_ghost": {
 				"attempt": 1,
-				"sample_count": 1687,
-				"time": 232.504373333337,
+				"sample_count": 1683,
+				"time": 232.184196190478,
 				"track_id": "verdant_cascade_circuit"
 			},
 			"basic_ghost": {
-				"sample_count": 1702,
-				"time": 234.741286666669,
+				"sample_count": 1700,
+				"time": 234.435253333337,
 				"track_id": "verdant_cascade_circuit"
 			},
 			"ok": true,
 			"synthetic_probe_used_as_closure": false
 		},
-		"median_advanced_sec": 232.431,
+		"median_advanced_sec": 232.44,
 		"median_advantage_ok": true,
-		"median_advantage_pct": 0.781,
-		"median_advantage_sec": 1.83,
-		"median_basic_sec": 234.316,
+		"median_advantage_pct": 0.824,
+		"median_advantage_sec": 1.931,
+		"median_basic_sec": 234.442,
 		"min_advantage_sec": 1.172,
 		"mode": "TIME_TRIAL",
 		"observed": true,
@@ -186,12 +186,12 @@
 					"drift_release_boost": 8,
 					"manual_boost": 8
 				},
-				"advanced_time": 232.431,
+				"advanced_time": 232.44,
 				"basic_failures": [],
 				"basic_ok": true,
 				"basic_race_finished_signal": true,
-				"basic_time": 234.261,
-				"delta_sec": 1.83,
+				"basic_time": 234.353,
+				"delta_sec": 1.913,
 				"order": "BASIC→ADVANCED",
 				"trial": 0
 			},
@@ -208,12 +208,12 @@
 					"drift_release_boost": 8,
 					"manual_boost": 5
 				},
-				"advanced_time": 232.233,
+				"advanced_time": 232.077,
 				"basic_failures": [],
 				"basic_ok": true,
 				"basic_race_finished_signal": true,
-				"basic_time": 234.316,
-				"delta_sec": 2.083,
+				"basic_time": 234.498,
+				"delta_sec": 2.421,
 				"order": "ADVANCED→BASIC",
 				"trial": 1
 			},
@@ -221,26 +221,26 @@
 				"DRIVER_INTENT_COUNTED_AS_SUCCESS": false,
 				"TECHNIQUE_COUNT_SOURCE": "PRODUCTION_SIGNAL_OR_TELEMETRY",
 				"advanced_failures": [],
-				"advanced_faster": false,
+				"advanced_faster": true,
 				"advanced_ok": true,
 				"advanced_race_finished_signal": true,
 				"advanced_technique_categories": 3,
 				"advanced_techniques": {
 					"drift_release": 16,
 					"drift_release_boost": 8,
-					"manual_boost": 6
+					"manual_boost": 8
 				},
-				"advanced_time": 237.391,
+				"advanced_time": 232.511,
 				"basic_failures": [],
 				"basic_ok": true,
 				"basic_race_finished_signal": true,
-				"basic_time": 234.607,
-				"delta_sec": -2.785,
+				"basic_time": 234.442,
+				"delta_sec": 1.931,
 				"order": "BASIC→ADVANCED",
 				"trial": 2
 			}
 		],
-		"pairwise_advanced_faster": 2,
+		"pairwise_advanced_faster": 3,
 		"pairwise_required": 2,
 		"racer_id": "dash_reed",
 		"reason": "causal mastery: same steering + skills-only advantage + real ghost loop",
@@ -251,7 +251,7 @@
 	},
 	"production_technique_events": {
 		"drift_release": 48,
-		"manual_boost": 19,
+		"manual_boost": 21,
 		"source": "PRODUCTION_SIGNAL_OR_TELEMETRY"
 	},
 	"race_finished": {

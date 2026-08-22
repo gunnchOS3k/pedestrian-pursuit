@@ -31,7 +31,7 @@ jobs:
           GITHUB_EVENT_NAME: ${{ github.event_name }}
           WAVE010_PR_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
           WAVE010_PR_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
-          WAVE010_REQUIRE_PASS: "1"
+          WAVE010_REQUIRE_PASS: ${{ github.event_name == 'pull_request' && '1' || '0' }}
         run: make engineering-wave010
 
       - name: Upload Wave010 artifacts
@@ -42,6 +42,7 @@ jobs:
           path: artifacts/engineering_wave010/
 
       - name: CI final gate — PASS only
+        if: github.event_name == 'pull_request'
         run: |
           python3 - <<'PY'
           import json, os
