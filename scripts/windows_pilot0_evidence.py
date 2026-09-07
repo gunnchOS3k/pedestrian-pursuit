@@ -62,24 +62,40 @@ def main() -> int:
         "detail": "Windows Pilot 0 does not promote Pedestrian full-VP",
     }
 
-    godot = os.environ.get("GODOT_BIN", "godot")
-    export = subprocess.run(
-        [
-            godot,
-            "--headless",
-            "--path",
-            str(ROOT),
-            "--export-release",
-            "Windows Desktop",
-            str(OUT),
-        ],
-        text=True,
-        capture_output=True,
+    godot = (
+        os.environ.get("GODOT")
+        or os.environ.get("GODOT4")
+        or os.environ.get("GODOT_BIN")
+        or "godot"
     )
+    try:
+        export = subprocess.run(
+            [
+                godot,
+                "--headless",
+                "--path",
+                str(ROOT),
+                "--export-release",
+                "Windows Desktop",
+                str(OUT),
+            ],
+            text=True,
+            capture_output=True,
+        )
+        export_err = None
+    except FileNotFoundError as exc:
+        export = None
+        export_err = str(exc)
     checks["compile_package"] = {
         "status": "PASS" if OUT.is_file() else "FAIL",
-        "exit": export.returncode,
-        "tail": ((export.stdout or "") + (export.stderr or ""))[-1500:],
+        "godot_bin": godot,
+        "exit": None if export is None else export.returncode,
+        "error": export_err,
+        "tail": (
+            ""
+            if export is None
+            else ((export.stdout or "") + (export.stderr or ""))[-1500:]
+        ),
         "path": str(OUT) if OUT.is_file() else None,
         "sha256": sha256(OUT) if OUT.is_file() else None,
         "signing": "UNSIGNED_PILOT_ARTIFACT_NOT_FOR_PRODUCTION",

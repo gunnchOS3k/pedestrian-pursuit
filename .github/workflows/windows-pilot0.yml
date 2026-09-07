@@ -36,8 +36,11 @@ jobs:
         shell: pwsh
         env:
           WINDOWS_PILOT0_SOAK_SECONDS: ${{ github.event.inputs.soak_seconds || '1800' }}
-          GODOT_BIN: godot
-        run: python scripts/windows_pilot0_evidence.py
+        run: |
+          if ($env:GODOT) { $env:GODOT_BIN = $env:GODOT }
+          elseif ($env:GODOT4) { $env:GODOT_BIN = $env:GODOT4 }
+          Write-Host "Using GODOT_BIN=$env:GODOT_BIN"
+          python scripts/windows_pilot0_evidence.py
       - name: Short SHA
         id: meta
         shell: bash
