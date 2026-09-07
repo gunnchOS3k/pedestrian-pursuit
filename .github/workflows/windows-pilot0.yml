@@ -1,0 +1,52 @@
+name: Windows Pilot 0
+
+# Authentic Windows Desktop Godot export evidence for Pedestrian Pursuit.
+# Does not promote full-VP.
+
+on:
+  pull_request:
+  push:
+    branches: [main, "cursor/windows-pilot0-authentic-evidence*"]
+  workflow_dispatch:
+    inputs:
+      soak_seconds:
+        description: "Soak seconds (>=1800 for PASS)"
+        required: false
+        default: "1800"
+
+jobs:
+  windows-pilot0-windows-2025:
+    name: windows-pilot0-windows-2025
+    runs-on: windows-2025
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Godot 4.3
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.3.0
+          include-templates: true
+      - name: Record runner metadata
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path reports/windows_pilot0 | Out-Null
+          @{ ImageOS = $env:ImageOS; ImageVersion = $env:ImageVersion; GITHUB_SHA = $env:GITHUB_SHA } |
+            ConvertTo-Json | Set-Content reports/windows_pilot0/RUNNER_META.json
+      - name: Windows Pilot 0 evidence
+        shell: pwsh
+        env:
+          WINDOWS_PILOT0_SOAK_SECONDS: ${{ github.event.inputs.soak_seconds || '1800' }}
+          GODOT_BIN: godot
+        run: python scripts/windows_pilot0_evidence.py
+      - name: Short SHA
+        id: meta
+        shell: bash
+        run: echo "short_sha=${GITHUB_SHA:0:12}" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pedestrian-windows-pilot0-${{ steps.meta.outputs.short_sha }}
+          path: |
+            builds/windows/**
+            reports/windows_pilot0/**
+          retention-days: 14
+          if-no-files-found: error
