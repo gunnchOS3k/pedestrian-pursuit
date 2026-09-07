@@ -2,6 +2,8 @@
 """Windows Pilot 0 evidence for Pedestrian Pursuit (Godot Windows Desktop).
 
 Does NOT smuggle full-VP promotion. Digital Windows packaging/runtime only.
+Timeout / incomplete proof => PARTIAL or BLOCKED (never silent PASS).
+CI exits non-zero unless claim is WINDOWS_PILOT0_PASS.
 """
 from __future__ import annotations
 
@@ -89,6 +91,7 @@ def main() -> int:
         export = None
         export_err = f"godot export timed out after 900s: {exc}"
         print(f"::error title=WINDOWS_PILOT0::{export_err}")
+        blockers.append("WINDOWS_EXPORT_TIMEOUT")
     except FileNotFoundError as exc:
         export = None
         export_err = str(exc)
@@ -214,14 +217,21 @@ def main() -> int:
             "Does not promote full-VP",
             "Does not claim human polish",
             "UNSIGNED_PILOT_ARTIFACT_NOT_FOR_PRODUCTION",
+            "PARTIAL/BLOCKED never count as gate PASS",
         ],
     }
     (REPORTS / "WINDOWS_PILOT0_EVIDENCE.json").write_text(json.dumps(evidence, indent=2) + "\n")
     (REPORTS / "WINDOWS_PILOT0_EVIDENCE.md").write_text(
         f"# Windows Pilot 0 — Pedestrian Pursuit\n\n- claim: `{claim}`\n- blockers: {blockers}\n"
     )
+    for b in blockers:
+        print(f"::error title=WINDOWS_PILOT0::{b}")
+    for k in hard_failed:
+        print(f"::error title=WINDOWS_PILOT0_CHECK_FAIL::{k}")
+    print(f"::notice title=WINDOWS_PILOT0_CLAIM::{claim} head={sha[:12]}")
     print(json.dumps({"claim": claim, "sha12": sha[:12], "blockers": blockers}, indent=2))
-    return 0 if claim in {"WINDOWS_PILOT0_PASS", "WINDOWS_PILOT0_PARTIAL"} else 1
+    # Fail-closed: only authentic PASS greens CI.
+    return 0 if claim == "WINDOWS_PILOT0_PASS" else 1
 
 
 if __name__ == "__main__":

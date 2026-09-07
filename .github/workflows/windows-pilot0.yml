@@ -43,13 +43,15 @@ jobs:
           python scripts/windows_pilot0_evidence.py
       - name: Short SHA
         id: meta
+        if: always()
         shell: bash
         run: echo "short_sha=${GITHUB_SHA:0:12}" >> "$GITHUB_OUTPUT"
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: pedestrian-windows-pilot0-${{ steps.meta.outputs.short_sha }}
           path: |
             builds/windows/**
             reports/windows_pilot0/**
           retention-days: 14
-          if-no-files-found: error
+          if-no-files-found: warn
