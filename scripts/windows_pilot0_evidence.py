@@ -68,6 +68,7 @@ def main() -> int:
         or os.environ.get("GODOT_BIN")
         or "godot"
     )
+    print(f"::notice::Using GODOT bin={godot}")
     try:
         export = subprocess.run(
             [
@@ -81,11 +82,17 @@ def main() -> int:
             ],
             text=True,
             capture_output=True,
+            timeout=900,
         )
         export_err = None
+    except subprocess.TimeoutExpired as exc:
+        export = None
+        export_err = f"godot export timed out after 900s: {exc}"
+        print(f"::error title=WINDOWS_PILOT0::{export_err}")
     except FileNotFoundError as exc:
         export = None
         export_err = str(exc)
+        print(f"::error title=WINDOWS_PILOT0::godot missing: {export_err}")
     checks["compile_package"] = {
         "status": "PASS" if OUT.is_file() else "FAIL",
         "godot_bin": godot,
@@ -104,7 +111,7 @@ def main() -> int:
     if not OUT.is_file():
         blockers.append("WINDOWS_EXPORT_FAILED")
         skipped_required += 1
-
+        print("::error title=WINDOWS_PILOT0::WINDOWS_EXPORT_FAILED")
     checks["install"] = {
         "status": "PASS" if OUT.is_file() else "FAIL",
         "detail": "portable Godot Windows exe (no MSI); treated as installable pilot artifact",
