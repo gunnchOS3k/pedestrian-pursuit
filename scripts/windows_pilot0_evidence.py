@@ -41,6 +41,43 @@ def head_sha() -> str:
     return subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
 
 
+
+def run_godot_export(cmd: list[str], timeout: int = 900) -> tuple[subprocess.CompletedProcess | None, str | None]:
+    """Run Godot export with a hard wall timeout; kill the whole process tree on Windows."""
+    creationflags = 0
+    if platform.system() == "Windows":
+        creationflags = getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0x00000200)
+    try:
+        proc = subprocess.Popen(
+            cmd,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            creationflags=creationflags,
+        )
+    except FileNotFoundError as exc:
+        return None, str(exc)
+    try:
+        out, err = proc.communicate(timeout=timeout)
+        return subprocess.CompletedProcess(cmd, proc.returncode, out, err), None
+    except subprocess.TimeoutExpired as exc:
+        try:
+            proc.kill()
+        except OSError:
+            pass
+        if platform.system() == "Windows":
+            subprocess.run(
+                ["taskkill", "/F", "/T", "/PID", str(proc.pid)],
+                capture_output=True,
+                text=True,
+            )
+        try:
+            proc.communicate(timeout=30)
+        except Exception:
+            pass
+        return None, f"godot export timed out after {timeout}s: {exc}"
+
+
 def main() -> int:
     if platform.system() != "Windows":
         print("REFUSE: must run on Windows", file=sys.stderr)
@@ -71,30 +108,22 @@ def main() -> int:
         or "godot"
     )
     print(f"::notice::Using GODOT bin={godot}")
-    try:
-        export = subprocess.run(
-            [
-                godot,
-                "--headless",
-                "--path",
-                str(ROOT),
-                "--export-release",
-                "Windows Desktop",
-                str(OUT),
-            ],
-            text=True,
-            capture_output=True,
-            timeout=900,
-        )
-        export_err = None
-    except subprocess.TimeoutExpired as exc:
-        export = None
-        export_err = f"godot export timed out after 900s: {exc}"
+    export, export_err = run_godot_export(
+        [
+            godot,
+            "--headless",
+            "--path",
+            str(ROOT),
+            "--export-release",
+            "Windows Desktop",
+            str(OUT),
+        ],
+        timeout=900,
+    )
+    if export_err and "timed out" in export_err:
         print(f"::error title=WINDOWS_PILOT0::{export_err}")
         blockers.append("WINDOWS_EXPORT_TIMEOUT")
-    except FileNotFoundError as exc:
-        export = None
-        export_err = str(exc)
+    elif export is None and export_err:
         print(f"::error title=WINDOWS_PILOT0::godot missing: {export_err}")
     checks["compile_package"] = {
         "status": "PASS" if OUT.is_file() else "FAIL",
