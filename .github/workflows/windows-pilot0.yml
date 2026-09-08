@@ -28,33 +28,56 @@ jobs:
           version: 4.5.0
           use-dotnet: false
           include-templates: true
+      - name: Resolve real Godot .exe
+        shell: pwsh
+        run: |
+          # chickensoft bin\godot is a symlink/shim; Windows cmd cannot always launch it.
+          # Prefer the console binary for headless export.
+          $root = Join-Path $env:USERPROFILE "godot"
+          $console = Get-ChildItem -Path $root -Filter "*_console.exe" -Recurse -ErrorAction SilentlyContinue |
+            Select-Object -First 1 -ExpandProperty FullName
+          $editor = Get-ChildItem -Path $root -Filter "Godot_v*_win64.exe" -Recurse -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -notmatch "console" } |
+            Select-Object -First 1 -ExpandProperty FullName
+          $exe = if ($console) { $console } else { $editor }
+          if (-not $exe -or -not (Test-Path $exe)) {
+            throw "Could not resolve Godot exe under $root"
+          }
+          "GODOT=$exe" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "GODOT4=$exe" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "GODOT_BIN=$exe" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          Write-Host "Resolved GODOT_BIN=$exe"
+          & $exe --version
       - name: Record runner metadata
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path reports/windows_pilot0 | Out-Null
-          $godot = if ($env:GODOT) { $env:GODOT } elseif ($env:GODOT4) { $env:GODOT4 } else { "godot" }
-          # Godot shim under bin\godot is not a native exe; avoid PowerShell pipeline call.
-          $ver = cmd.exe /c "`"$godot`" --version"
+          $godot = $env:GODOT_BIN
+          $ver = (& $godot --version | Out-String).Trim()
+          $tpl = Join-Path $env:APPDATA "Godot\export_templates\4.5.stable"
+          $winTpl = @(
+            (Join-Path $tpl "windows_desktop_release_x86_64.exe"),
+            (Join-Path $tpl "windows_release_x86_64.exe")
+          ) | Where-Object { Test-Path $_ } | Select-Object -First 1
           @{
             ImageOS = $env:ImageOS
             ImageVersion = $env:ImageVersion
             GITHUB_SHA = $env:GITHUB_SHA
             GODOT_BIN = $godot
-            GODOT_VERSION = ("$ver").Trim()
-            template_dir = "$env:APPDATA\Godot\export_templates\4.5.stable"
-            windows_template = (Test-Path "$env:APPDATA\Godot\export_templates\4.5.stable\windows_desktop_release_x86_64.exe")
+            GODOT_VERSION = $ver
+            template_dir = $tpl
+            windows_template = [bool]$winTpl
+            windows_template_path = $winTpl
+            template_entries = @(Get-ChildItem $tpl -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Name)
           } | ConvertTo-Json | Set-Content reports/windows_pilot0/RUNNER_META.json
-          Get-ChildItem "$env:APPDATA\Godot\export_templates" -ErrorAction SilentlyContinue | Format-Table Name
+          Get-ChildItem (Join-Path $env:APPDATA "Godot\export_templates") -ErrorAction SilentlyContinue | Format-Table Name
       - name: Windows Pilot 0 evidence
         shell: pwsh
         env:
           WINDOWS_PILOT0_SOAK_SECONDS: ${{ github.event.inputs.soak_seconds || '1800' }}
           WINDOWS_PILOT0_EXPORT_TIMEOUT: "1800"
         run: |
-          if ($env:GODOT) { $env:GODOT_BIN = $env:GODOT }
-          elseif ($env:GODOT4) { $env:GODOT_BIN = $env:GODOT4 }
           Write-Host "Using GODOT_BIN=$env:GODOT_BIN"
-          cmd.exe /c "`"$env:GODOT_BIN`" --version"
           python scripts/windows_pilot0_evidence.py
       - name: Short SHA
         id: meta
