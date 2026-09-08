@@ -2,6 +2,7 @@ name: Windows Pilot 0
 
 # Authentic Windows Desktop Godot export evidence for Pedestrian Pursuit.
 # Does not promote full-VP.
+# Project requires Godot 4.5 (see project.godot config/features).
 
 on:
   pull_request:
@@ -21,25 +22,38 @@ jobs:
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Godot 4.3
+      - name: Setup Godot 4.5 (standard, with templates)
         uses: chickensoft-games/setup-godot@v2
         with:
-          version: 4.3.0
+          version: 4.5.0
+          use-dotnet: false
           include-templates: true
       - name: Record runner metadata
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path reports/windows_pilot0 | Out-Null
-          @{ ImageOS = $env:ImageOS; ImageVersion = $env:ImageVersion; GITHUB_SHA = $env:GITHUB_SHA } |
-            ConvertTo-Json | Set-Content reports/windows_pilot0/RUNNER_META.json
+          $godot = if ($env:GODOT) { $env:GODOT } elseif ($env:GODOT4) { $env:GODOT4 } else { "godot" }
+          $ver = & $godot --version 2>&1 | Out-String
+          @{
+            ImageOS = $env:ImageOS
+            ImageVersion = $env:ImageVersion
+            GITHUB_SHA = $env:GITHUB_SHA
+            GODOT_BIN = $godot
+            GODOT_VERSION = $ver.Trim()
+            template_dir = "$env:APPDATA\Godot\export_templates\4.5.stable"
+            windows_template = (Test-Path "$env:APPDATA\Godot\export_templates\4.5.stable\windows_desktop_release_x86_64.exe")
+          } | ConvertTo-Json | Set-Content reports/windows_pilot0/RUNNER_META.json
+          Get-ChildItem "$env:APPDATA\Godot\export_templates" -ErrorAction SilentlyContinue | Format-Table Name
       - name: Windows Pilot 0 evidence
         shell: pwsh
         env:
           WINDOWS_PILOT0_SOAK_SECONDS: ${{ github.event.inputs.soak_seconds || '1800' }}
+          WINDOWS_PILOT0_EXPORT_TIMEOUT: "1800"
         run: |
           if ($env:GODOT) { $env:GODOT_BIN = $env:GODOT }
           elseif ($env:GODOT4) { $env:GODOT_BIN = $env:GODOT4 }
           Write-Host "Using GODOT_BIN=$env:GODOT_BIN"
+          & $env:GODOT_BIN --version
           python scripts/windows_pilot0_evidence.py
       - name: Short SHA
         id: meta
