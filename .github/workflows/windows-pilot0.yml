@@ -1,0 +1,95 @@
+name: Windows Pilot 0
+
+# Authentic Windows Desktop Godot export evidence for Pedestrian Pursuit.
+# Does not promote full-VP.
+# Project requires Godot 4.5 (see project.godot config/features).
+
+on:
+  pull_request:
+  push:
+    branches: [main, "cursor/windows-pilot0-authentic-evidence*"]
+  workflow_dispatch:
+    inputs:
+      soak_seconds:
+        description: "Soak seconds (>=1800 for PASS)"
+        required: false
+        default: "1800"
+
+jobs:
+  windows-pilot0-windows-2025:
+    name: windows-pilot0-windows-2025
+    runs-on: windows-2025
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Godot 4.5 (standard, with templates)
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.5.0
+          use-dotnet: false
+          include-templates: true
+      - name: Resolve real Godot .exe
+        shell: pwsh
+        run: |
+          # chickensoft bin\godot is a symlink/shim; Windows cmd cannot always launch it.
+          # Prefer the console binary for headless export.
+          $root = Join-Path $env:USERPROFILE "godot"
+          $console = Get-ChildItem -Path $root -Filter "*_console.exe" -Recurse -ErrorAction SilentlyContinue |
+            Select-Object -First 1 -ExpandProperty FullName
+          $editor = Get-ChildItem -Path $root -Filter "Godot_v*_win64.exe" -Recurse -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -notmatch "console" } |
+            Select-Object -First 1 -ExpandProperty FullName
+          $exe = if ($console) { $console } else { $editor }
+          if (-not $exe -or -not (Test-Path $exe)) {
+            throw "Could not resolve Godot exe under $root"
+          }
+          "GODOT=$exe" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "GODOT4=$exe" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "GODOT_BIN=$exe" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          Write-Host "Resolved GODOT_BIN=$exe"
+          & $exe --version
+      - name: Record runner metadata
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path reports/windows_pilot0 | Out-Null
+          $godot = $env:GODOT_BIN
+          $ver = (& $godot --version | Out-String).Trim()
+          $tpl = Join-Path $env:APPDATA "Godot\export_templates\4.5.stable"
+          $winTpl = @(
+            (Join-Path $tpl "windows_desktop_release_x86_64.exe"),
+            (Join-Path $tpl "windows_release_x86_64.exe")
+          ) | Where-Object { Test-Path $_ } | Select-Object -First 1
+          @{
+            ImageOS = $env:ImageOS
+            ImageVersion = $env:ImageVersion
+            GITHUB_SHA = $env:GITHUB_SHA
+            GODOT_BIN = $godot
+            GODOT_VERSION = $ver
+            template_dir = $tpl
+            windows_template = [bool]$winTpl
+            windows_template_path = $winTpl
+            template_entries = @(Get-ChildItem $tpl -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Name)
+          } | ConvertTo-Json | Set-Content reports/windows_pilot0/RUNNER_META.json
+          Get-ChildItem (Join-Path $env:APPDATA "Godot\export_templates") -ErrorAction SilentlyContinue | Format-Table Name
+      - name: Windows Pilot 0 evidence
+        shell: pwsh
+        env:
+          WINDOWS_PILOT0_SOAK_SECONDS: ${{ github.event.inputs.soak_seconds || '1800' }}
+          WINDOWS_PILOT0_EXPORT_TIMEOUT: "1800"
+        run: |
+          Write-Host "Using GODOT_BIN=$env:GODOT_BIN"
+          python scripts/windows_pilot0_evidence.py
+      - name: Short SHA
+        id: meta
+        if: always()
+        shell: bash
+        run: echo "short_sha=${GITHUB_SHA:0:12}" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pedestrian-windows-pilot0-${{ steps.meta.outputs.short_sha }}
+          path: |
+            builds/windows/**
+            reports/windows_pilot0/**
+          retention-days: 14
+          if-no-files-found: warn
