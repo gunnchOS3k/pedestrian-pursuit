@@ -33,13 +33,14 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force -Path reports/windows_pilot0 | Out-Null
           $godot = if ($env:GODOT) { $env:GODOT } elseif ($env:GODOT4) { $env:GODOT4 } else { "godot" }
-          $ver = & $godot --version 2>&1 | Out-String
+          # Godot shim under bin\godot is not a native exe; avoid PowerShell pipeline call.
+          $ver = cmd.exe /c "`"$godot`" --version"
           @{
             ImageOS = $env:ImageOS
             ImageVersion = $env:ImageVersion
             GITHUB_SHA = $env:GITHUB_SHA
             GODOT_BIN = $godot
-            GODOT_VERSION = $ver.Trim()
+            GODOT_VERSION = ("$ver").Trim()
             template_dir = "$env:APPDATA\Godot\export_templates\4.5.stable"
             windows_template = (Test-Path "$env:APPDATA\Godot\export_templates\4.5.stable\windows_desktop_release_x86_64.exe")
           } | ConvertTo-Json | Set-Content reports/windows_pilot0/RUNNER_META.json
@@ -53,7 +54,7 @@ jobs:
           if ($env:GODOT) { $env:GODOT_BIN = $env:GODOT }
           elseif ($env:GODOT4) { $env:GODOT_BIN = $env:GODOT4 }
           Write-Host "Using GODOT_BIN=$env:GODOT_BIN"
-          & $env:GODOT_BIN --version
+          cmd.exe /c "`"$env:GODOT_BIN`" --version"
           python scripts/windows_pilot0_evidence.py
       - name: Short SHA
         id: meta
