@@ -1,0 +1,34 @@
+{
+  "game_id": "pedestrian-pursuit",
+  "label": "SYNTHETIC",
+  "not_human_playtest": true,
+  "schema": "stream_c_deterministic_fixture/v1",
+  "seed": 20260918,
+  "steps": [
+    {
+      "action": "launch_to_menu",
+      "id": "boot"
+    },
+    {
+      "action": "open_primary_mode",
+      "id": "enter_core_loop"
+    },
+    {
+      "action": "hold_neutral",
+      "frames": 120,
+      "id": "bot_idle"
+    },
+    {
+      "action": "toggle_pause",
+      "id": "pause"
+    },
+    {
+      "action": "toggle_pause",
+      "id": "resume"
+    },
+    {
+      "action": "return_to_menu",
+      "id": "quit_menu"
+    }
+  ]
+}
