@@ -1,0 +1,363 @@
+{
+  "stream": "C",
+  "GAMES_PRE_HUMAN_PLAYTEST_ENGINEERING_EXHAUSTED": true,
+  "HUMAN_FUN_BALANCE_FEEL": "HUMAN_VALIDATION_REQUIRED",
+  "RIGHTS_CLEARANCE_COMPLETE": false,
+  "games": {
+    "anime-aggressors": {
+      "title": "Anime Aggressors",
+      "gate_exhausted": true,
+      "head": "258cc0c45991ac9dded0c3d7813894d9fd7ca56d",
+      "failures": [],
+      "quarantine_count": 800,
+      "quarantine_status_counts": {
+        "UNPROVENANCED": 789,
+        "MARKER_QUARANTINE": 4,
+        "PROXY_UNPROVENANCED": 7
+      },
+      "asset_count": 819,
+      "artifact_root": "artifacts/digital_engineering_exhaustion/stream_c/",
+      "blockers": [
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "save_load",
+          "evidence": "test:game-core / persistence tests"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "menus",
+          "evidence": "res://tests/smoke_runner.gd"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "input",
+          "evidence": "regression scripts exist; host smoke limited"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "pause_resume",
+          "evidence": "wave020 pause diagnostics exist historically; smoke coverage"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "crash_recovery",
+          "evidence": "mini_soak 5x headless quit"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "persistence",
+          "evidence": "test:game-core / persistence tests"
+        },
+        {
+          "blocker_class": "PHYSICAL_HARDWARE_REQUIRED",
+          "dimension": "frame_pacing",
+          "evidence": "device/frame telemetry needs interactive or device run"
+        },
+        {
+          "blocker_class": "PHYSICAL_HARDWARE_REQUIRED",
+          "dimension": "leaks",
+          "evidence": "leak instrumentation needs longer soak + profiler"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "resolution",
+          "evidence": "viewport/export presets present"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "a11y",
+          "evidence": "automation incomplete for disabled-user validation"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "local_multiplayer",
+          "evidence": "local versus paths exist; need bot/host soak"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "install_update",
+          "evidence": "digital-rc-update-rollback.mjs exists"
+        },
+        {
+          "blocker_class": "PHYSICAL_HARDWARE_REQUIRED",
+          "dimension": "android",
+          "evidence": "no adb device"
+        },
+        {
+          "blocker_class": "LEGAL_RIGHTS_REVIEW_REQUIRED",
+          "dimension": "rights",
+          "evidence": "800 quarantined assets"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "fun_balance_feel",
+          "evidence": "playtest task sheets are templates only"
+        }
+      ]
+    },
+    "pedestrian-pursuit": {
+      "title": "Pedestrian Pursuit",
+      "gate_exhausted": true,
+      "head": "ba698e929b573096ef50e0699990f3f0c6d571b6",
+      "failures": [],
+      "quarantine_count": 589,
+      "quarantine_status_counts": {
+        "UNPROVENANCED": 589
+      },
+      "asset_count": 633,
+      "artifact_root": "artifacts/digital_engineering_exhaustion/stream_c/",
+      "blockers": [
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "save_load",
+          "evidence": "profile/achievement persistence tests"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "input",
+          "evidence": "mobile_input / unit tests"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "pause_resume",
+          "evidence": "race scene pause paths"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "crash_recovery",
+          "evidence": "mini_soak"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "persistence",
+          "evidence": "profile/achievement persistence tests"
+        },
+        {
+          "blocker_class": "PHYSICAL_HARDWARE_REQUIRED",
+          "dimension": "frame_pacing",
+          "evidence": "PHYSICAL_FPS pending"
+        },
+        {
+          "blocker_class": "PHYSICAL_HARDWARE_REQUIRED",
+          "dimension": "leaks",
+          "evidence": "needs profiler soak"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "resolution",
+          "evidence": "export presets"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "audio",
+          "evidence": "assets/audio present"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "a11y",
+          "evidence": "a11y automation incomplete"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "local_multiplayer",
+          "evidence": "local race modes"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "install_update",
+          "evidence": "rc packaging scripts"
+        },
+        {
+          "blocker_class": "PHYSICAL_HARDWARE_REQUIRED",
+          "dimension": "android",
+          "evidence": "no adb device"
+        },
+        {
+          "blocker_class": "LEGAL_RIGHTS_REVIEW_REQUIRED",
+          "dimension": "rights",
+          "evidence": "589 quarantined assets"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "fun_balance_feel",
+          "evidence": "playtest task sheets are templates only"
+        }
+      ]
+    },
+    "archive-of-life-artifact-world": {
+      "title": "Archive of Life",
+      "gate_exhausted": true,
+      "head": "8611d2e30315792c38d7d5062e108b8bb87df2c2",
+      "failures": [],
+      "quarantine_count": 136,
+      "quarantine_status_counts": {
+        "UNPROVENANCED": 136
+      },
+      "asset_count": 136,
+      "artifact_root": "artifacts/digital_engineering_exhaustion/stream_c/",
+      "blockers": [
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "save_load",
+          "evidence": "local persistence / snapshot fixtures"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "menus",
+          "evidence": "UI routes covered by vitest/playwright when run"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "input",
+          "evidence": "web pointer/keyboard"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "crash_recovery",
+          "evidence": "reload + snapshot reproduction fixtures"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "persistence",
+          "evidence": "local persistence / snapshot fixtures"
+        },
+        {
+          "blocker_class": "PHYSICAL_HARDWARE_REQUIRED",
+          "dimension": "frame_pacing",
+          "evidence": "browser perf needs device/lab"
+        },
+        {
+          "blocker_class": "PHYSICAL_HARDWARE_REQUIRED",
+          "dimension": "leaks",
+          "evidence": "heap soak needs longer browser session"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "resolution",
+          "evidence": "responsive web"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "a11y",
+          "evidence": "axe/automation incomplete vs disabled users"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "networking",
+          "evidence": "offline-first + optional live ingest blocked by claim firewall"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "install_update",
+          "evidence": "web deploy / PWA paths if present"
+        },
+        {
+          "blocker_class": "PHYSICAL_HARDWARE_REQUIRED",
+          "dimension": "android",
+          "evidence": "Capacitor/native-run tooling may exist; device required"
+        },
+        {
+          "blocker_class": "LEGAL_RIGHTS_REVIEW_REQUIRED",
+          "dimension": "rights",
+          "evidence": "136 quarantined assets"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "fun_balance_feel",
+          "evidence": "playtest task sheets are templates only"
+        }
+      ]
+    },
+    "beatlink-party": {
+      "title": "BeatLink Party",
+      "gate_exhausted": true,
+      "head": "06b4a6f74159ee933984be913e269eab64246efb",
+      "failures": [],
+      "quarantine_count": 204,
+      "quarantine_status_counts": {
+        "UNPROVENANCED": 204
+      },
+      "asset_count": 204,
+      "artifact_root": "artifacts/digital_engineering_exhaustion/stream_c/",
+      "blockers": [
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "menus",
+          "evidence": "web UI create-room flows"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "input",
+          "evidence": "device UX package"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "pause_resume",
+          "evidence": "session resume A/B/C"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "crash_recovery",
+          "evidence": "reconnect / network failure tests"
+        },
+        {
+          "blocker_class": "PHYSICAL_HARDWARE_REQUIRED",
+          "dimension": "frame_pacing",
+          "evidence": "device timing profile needs hardware"
+        },
+        {
+          "blocker_class": "PHYSICAL_HARDWARE_REQUIRED",
+          "dimension": "leaks",
+          "evidence": "needs soak on device"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "resolution",
+          "evidence": "viewport responsive tests in wave007"
+        },
+        {
+          "blocker_class": "LEGAL_RIGHTS_REVIEW_REQUIRED",
+          "dimension": "audio",
+          "evidence": "synthetic catalog + rights gate; commercial playback not licensed"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "a11y",
+          "evidence": "a11y not disability-validated"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "local_multiplayer",
+          "evidence": "multi-client browser tests"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "offline",
+          "evidence": "degraded network paths; full offline party limited"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "install_update",
+          "evidence": "web/server deploy"
+        },
+        {
+          "blocker_class": "PHYSICAL_HARDWARE_REQUIRED",
+          "dimension": "android",
+          "evidence": "no adb device"
+        },
+        {
+          "blocker_class": "LEGAL_RIGHTS_REVIEW_REQUIRED",
+          "dimension": "rights",
+          "evidence": "204 quarantined assets"
+        },
+        {
+          "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+          "dimension": "fun_balance_feel",
+          "evidence": "playtest task sheets are templates only"
+        }
+      ]
+    }
+  },
+  "emitted_at": "2026-09-18T18:58:00.629958+00:00",
+  "note": "Per-game gates AND-ed. Fun/balance remain human. Quarantine lists require LEGAL_RIGHTS_REVIEW_REQUIRED attestation, not clearance claims."
+}

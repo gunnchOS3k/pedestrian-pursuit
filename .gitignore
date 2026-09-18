@@ -43,3 +43,7 @@ gate1/evidence/out/**
 !gate1/evidence/out/**/.gitkeep
 gate1/status/*
 !gate1/status/.gitkeep
+
+# Stream C quarantine binary copies (ledger JSON is committed)
+artifacts/digital_engineering_exhaustion/stream_c/quarantine/unclear_third_party/*
+!artifacts/digital_engineering_exhaustion/stream_c/quarantine/unclear_third_party/.gitkeep

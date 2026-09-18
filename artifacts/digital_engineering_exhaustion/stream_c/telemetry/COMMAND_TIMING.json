@@ -1,0 +1,36 @@
+{
+  "label": "HOST_DIGITAL",
+  "not_device_lab": true,
+  "rows": [
+    {
+      "name": "godot.import_quit",
+      "ok": true,
+      "seconds": 1.084
+    },
+    {
+      "name": "godot.smoke",
+      "ok": true,
+      "seconds": 0.797
+    },
+    {
+      "name": "headless_smoke",
+      "ok": true,
+      "seconds": 78.83
+    },
+    {
+      "name": "test_runner",
+      "ok": true,
+      "seconds": 1.423
+    },
+    {
+      "name": "validate_content",
+      "ok": true,
+      "seconds": 0.05
+    },
+    {
+      "name": "adb_devices",
+      "ok": true,
+      "seconds": 0.257
+    }
+  ]
+}

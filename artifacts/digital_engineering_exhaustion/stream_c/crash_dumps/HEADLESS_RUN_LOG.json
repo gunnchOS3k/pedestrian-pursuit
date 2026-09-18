@@ -1,0 +1,35 @@
+{
+  "import_quit": {
+    "cmd": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/stream-c-pre-human-playtest",
+      "--quit-after",
+      "1"
+    ],
+    "cwd": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/stream-c-pre-human-playtest",
+    "exit_code": 0,
+    "ok": true,
+    "seconds": 1.084,
+    "stderr_tail": "WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).\n   at: cleanup (core/object/object.cpp:2536)\nERROR: 1 resources still in use at exit (run with --verbose for details).\n   at: clear (core/io/resource.cpp:822)\n",
+    "stdout_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\n"
+  },
+  "note": "Headless exit logs only; not a physical crash dump",
+  "smoke": {
+    "cmd": [
+      "/opt/homebrew/bin/godot",
+      "--headless",
+      "--path",
+      "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/stream-c-pre-human-playtest",
+      "-s",
+      "res://tests/TestRunner.gd"
+    ],
+    "cwd": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/stream-c-pre-human-playtest",
+    "exit_code": 0,
+    "ok": true,
+    "seconds": 0.797,
+    "stderr_tail": "",
+    "stdout_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nGodot Wave E Alpha course smoke passed for 2 cups / 8 courses.\n"
+  }
+}

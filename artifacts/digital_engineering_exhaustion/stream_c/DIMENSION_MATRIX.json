@@ -1,0 +1,115 @@
+{
+  "a11y": {
+    "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+    "evidence": "a11y automation incomplete",
+    "notes": "",
+    "status": "HUMAN_VALIDATION_REQUIRED"
+  },
+  "android": {
+    "blocker_class": "PHYSICAL_HARDWARE_REQUIRED",
+    "evidence": "no adb device",
+    "notes": "",
+    "status": "BLOCKED"
+  },
+  "asset_validation": {
+    "evidence": "tools/validate_content.py",
+    "notes": "",
+    "status": "PASS"
+  },
+  "audio": {
+    "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+    "evidence": "assets/audio present",
+    "notes": "",
+    "status": "PARTIAL"
+  },
+  "build": {
+    "evidence": "godot import",
+    "notes": "",
+    "status": "PASS"
+  },
+  "crash_recovery": {
+    "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+    "evidence": "mini_soak",
+    "notes": "",
+    "status": "PARTIAL"
+  },
+  "frame_pacing": {
+    "blocker_class": "PHYSICAL_HARDWARE_REQUIRED",
+    "evidence": "PHYSICAL_FPS pending",
+    "notes": "",
+    "status": "BLOCKED"
+  },
+  "input": {
+    "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+    "evidence": "mobile_input / unit tests",
+    "notes": "",
+    "status": "PARTIAL"
+  },
+  "install_update": {
+    "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+    "evidence": "rc packaging scripts",
+    "notes": "",
+    "status": "PARTIAL"
+  },
+  "launch": {
+    "evidence": "tools/run_godot_headless.sh",
+    "notes": "",
+    "status": "PASS"
+  },
+  "leaks": {
+    "blocker_class": "PHYSICAL_HARDWARE_REQUIRED",
+    "evidence": "needs profiler soak",
+    "notes": "",
+    "status": "BLOCKED"
+  },
+  "loading": {
+    "evidence": "tools/run_godot_headless.sh",
+    "notes": "",
+    "status": "PASS"
+  },
+  "local_multiplayer": {
+    "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+    "evidence": "local race modes",
+    "notes": "",
+    "status": "PARTIAL"
+  },
+  "menus": {
+    "evidence": "tests/TestRunner.gd",
+    "notes": "",
+    "status": "PASS"
+  },
+  "networking": {
+    "evidence": "no production netplay claim on main digital RC",
+    "notes": "",
+    "status": "NOT_APPLICABLE"
+  },
+  "offline": {
+    "evidence": "local Godot offline",
+    "notes": "",
+    "status": "PASS"
+  },
+  "pause_resume": {
+    "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+    "evidence": "race scene pause paths",
+    "notes": "",
+    "status": "PARTIAL"
+  },
+  "persistence": {
+    "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+    "evidence": "profile/achievement persistence tests",
+    "notes": "",
+    "status": "PARTIAL"
+  },
+  "resolution": {
+    "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+    "evidence": "export presets",
+    "notes": "",
+    "status": "PARTIAL"
+  },
+  "save_load": {
+    "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+    "evidence": "profile/achievement persistence tests",
+    "notes": "",
+    "status": "PARTIAL"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "assertions": [
+    "no_unhandled_exception",
+    "required_assets_present_or_fail_closed",
+    "pause_resume_roundtrip"
+  ],
+  "game_id": "pedestrian-pursuit",
+  "scenes": [
+    "boot",
+    "main_menu",
+    "settings",
+    "core_loop_entry",
+    "pause_overlay",
+    "results_or_exit"
+  ],
+  "schema": "stream_c_smoke_scene/v1"
+}
