@@ -2,7 +2,7 @@
   "program": "VXP-3",
   "title": "Pedestrian Pursuit brand, race chrome, and player presentation",
   "base_sha": "e0c21fcc4d4c058eb42a5a9d4c858a77987c3a4e",
-  "head_sha": "9b5931f63c19056acb409dab573af0203f0dfbe2",
+  "head_sha": "5c82f5e80720171c412e45e1c219f41ee9232d9d",
   "merge_base_with_origin_main": "e0c21fcc4d4c058eb42a5a9d4c858a77987c3a4e",
   "branch": "vxp/vxp-3-pedestrian-pursuit-brand-chrome",
   "worktree": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-pedestrian-pursuit",
