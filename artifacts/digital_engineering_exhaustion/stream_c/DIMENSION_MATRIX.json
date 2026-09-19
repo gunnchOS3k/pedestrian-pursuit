@@ -7,9 +7,9 @@
   },
   "android": {
     "blocker_class": "PHYSICAL_HARDWARE_REQUIRED",
-    "evidence": "no adb device",
+    "evidence": "adb device",
     "notes": "",
-    "status": "BLOCKED"
+    "status": "PARTIAL"
   },
   "asset_validation": {
     "evidence": "tools/validate_content.py",

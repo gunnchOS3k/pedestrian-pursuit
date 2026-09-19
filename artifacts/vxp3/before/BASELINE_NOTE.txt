@@ -1,0 +1,9 @@
+VXP-3 before-mutation baseline
+base_sha: e0c21fcc4d4c058eb42a5a9d4c858a77987c3a4e (origin/main, Merge PR #24 Stream C)
+captured_at: 2026-09-18
+evidence_class: DETERMINISTIC_FIXTURE_CAPTURE (structural source snapshots)
+notes:
+- Player-facing copy includes engineer status ("DIGITAL RC READY", "procedural-final presentation").
+- Device Role is primary-menu surfaced.
+- HUD/pause/results use default Godot chrome without Kinetic Sole brand system.
+- launcher-icon.png remains UNPROVENANCED / ledger_only — not promoted.
