@@ -4,7 +4,7 @@
   "parent_pr": 25,
   "parent_branch": "vxp/vxp-3-pedestrian-pursuit-brand-chrome",
   "parent_head_sha": "1d790aae5d0abc9ffd9f4350cdca4a0add4ff151",
-  "closure_head_sha": "1d790aae5d0abc9ffd9f4350cdca4a0add4ff151",
+  "closure_head_sha": "8595280a0b3eecf21626c845cb43850ff1c45800",
   "worktree": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure",
   "VXP31_PARENT_PR25_HEAD_VERIFIED": true,
   "VXP31_PARENT_HEAD_DRIFT_RECONCILED": true,
