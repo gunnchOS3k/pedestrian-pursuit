@@ -154,13 +154,18 @@ static func apply_pause_chrome(pause: CanvasLayer) -> void:
 	var panel := pause.get_node_or_null("Panel") as PanelContainer
 	if panel and BRAND.theme():
 		panel.theme = BRAND.theme()
+	var hc := BRAND.high_contrast_active()
+	if hc and panel:
+		BRAND._apply_high_contrast_control_tree(panel)
 	var resume := pause.get_node_or_null("Panel/Margin/VBox/ResumeButton") as Button
 	if resume:
 		resume.text = "Resume"
 		BRAND.style_primary_cta(resume)
 	var title := pause.get_node_or_null("Panel/Margin/VBox/Title") as Label
 	if title:
-		title.add_theme_color_override("font_color", BRAND.COLOR_MIDSOLE_YELLOW)
+		title.add_theme_color_override(
+			"font_color", BRAND.COLOR_HC_ACCENT if hc else BRAND.COLOR_MIDSOLE_YELLOW
+		)
 	_ensure_tutorial_guide(pause)
 
 
@@ -196,9 +201,14 @@ static func apply_results_chrome(results: CanvasLayer) -> void:
 	var panel := results.get_node_or_null("Panel") as PanelContainer
 	if panel and BRAND.theme():
 		panel.theme = BRAND.theme()
+	var hc := BRAND.high_contrast_active()
+	if hc and panel:
+		BRAND._apply_high_contrast_control_tree(panel)
 	var title := results.get_node_or_null("Panel/Margin/VBox/TitleLabel") as Label
 	if title:
-		title.add_theme_color_override("font_color", BRAND.COLOR_MIDSOLE_YELLOW)
+		title.add_theme_color_override(
+			"font_color", BRAND.COLOR_HC_ACCENT if hc else BRAND.COLOR_MIDSOLE_YELLOW
+		)
 		title.add_theme_font_size_override("font_size", BRAND.TYPE_RACE_TITLE)
 
 
@@ -269,15 +279,19 @@ static func apply_hud_chrome(hud: CanvasLayer) -> void:
 	if margin and t:
 		margin.theme = t
 	_recluster_hud(hud)
+	var hc := BRAND.high_contrast_active()
+	var ink := BRAND.COLOR_HC_FG if hc else BRAND.COLOR_INK
+	var accent := BRAND.COLOR_HC_ACCENT if hc else BRAND.COLOR_KINETIC_ORANGE
+	var warn := BRAND.COLOR_HC_WARN if hc else BRAND.COLOR_HAZARD_RED
 	for path in ["Margin/VBox/LapLabel", "Margin/VBox/PositionLabel", "Margin/VBox/TimerLabel"]:
 		var lab := hud.get_node_or_null(path) as Label
 		if lab:
 			lab.add_theme_font_size_override("font_size", BRAND.TYPE_HUD_PRIMARY)
-			lab.add_theme_color_override("font_color", BRAND.COLOR_INK)
+			lab.add_theme_color_override("font_color", ink)
 	var pos := hud.get_node_or_null("Margin/VBox/PositionLabel") as Label
 	if pos:
 		pos.add_theme_font_size_override("font_size", BRAND.TYPE_POSITION_NUMBER)
-		pos.add_theme_color_override("font_color", BRAND.COLOR_KINETIC_ORANGE)
+		pos.add_theme_color_override("font_color", accent)
 		## Strip redundant "Position:" engineer stacking if present.
 		var tpos := pos.text
 		if tpos.begins_with("Position:"):
@@ -288,19 +302,28 @@ static func apply_hud_chrome(hud: CanvasLayer) -> void:
 	var timer := hud.get_node_or_null("Margin/VBox/TimerLabel") as Label
 	if timer:
 		timer.add_theme_font_size_override("font_size", BRAND.TYPE_TIMING_NUMBER)
-		timer.add_theme_color_override("font_color", BRAND.COLOR_BOOST_CYAN)
+		timer.add_theme_color_override(
+			"font_color", BRAND.COLOR_HC_OK if hc else BRAND.COLOR_BOOST_CYAN
+		)
 	var boost := hud.get_node_or_null("Margin/VBox/BoostBar") as ProgressBar
 	if boost:
-		boost.modulate = BRAND.COLOR_BOOST_CYAN
+		boost.modulate = BRAND.COLOR_HC_OK if hc else BRAND.COLOR_BOOST_CYAN
 	var course := hud.get_node_or_null("CourseLabel") as Label
 	if course:
-		course.add_theme_color_override("font_color", BRAND.COLOR_INK)
+		course.add_theme_color_override("font_color", ink)
 		course.add_theme_font_size_override("font_size", BRAND.TYPE_COURSE_NAME - 2)
 		course.modulate = Color(1, 1, 1, 0.92)
+	var ww := hud.get_node_or_null("WrongWayLabel") as Label
+	if ww == null:
+		ww = hud.find_child("WrongWayLabel", true, false) as Label
+	if ww:
+		ww.add_theme_color_override("font_color", warn)
 	## Demote device-lab map noise unless Advanced role needs it
 	var map_lab := hud.get_node_or_null("MapProfileLabel") as Label
 	if map_lab:
-		map_lab.add_theme_color_override("font_color", BRAND.COLOR_MUTED)
+		map_lab.add_theme_color_override(
+			"font_color", BRAND.COLOR_HC_MUTED if hc else BRAND.COLOR_MUTED
+		)
 		map_lab.add_theme_font_size_override("font_size", BRAND.TYPE_METADATA)
 		map_lab.modulate.a = 0.55
 

@@ -1,0 +1,10 @@
+{
+  "schema": "vxp311.evidence_integrity/v1",
+  "closure_head_sha": "b49505f9ed5f294e564caa3334841f1f10da3a4e",
+  "evidence_fingerprint_sha256": "90fd704788a27e766109132b472e1b98e8c797be573e1e6e758628a41d0b8207",
+  "manifest_sha256": "4ba3b2ad626832ea4be9a8fd8571f061d4c4dd62592dfd74fe1432277b33d8a9",
+  "gates_sha256": "3e23d3e5e44a649b5a5482343025dbc002e1a32e2aee2f55beed15a5546ef76a",
+  "capture_png_count": 43,
+  "final_sha_match": true,
+  "validator": "tools/vxp311/validate_capture_manifest.py"
+}
