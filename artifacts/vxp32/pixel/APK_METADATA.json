@@ -1,0 +1,20 @@
+{
+  "apk_path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-2-pixel-physical-deploy/build/android/pedestrian-pursuit-debug.apk",
+  "sha256": "a507e1a0756a4511a4d9cc7d3d3730ad3e56c5a58d3581468063b5fb8b33e167",
+  "size_bytes": 116012148,
+  "package_id": "com.gunnchos.pedestrianpursuit",
+  "version_name": "0.3.9",
+  "version_code": 13,
+  "signer_cert_sha256": "b637ea5f982aa1d3027e346fbfe9f672fdc5dee95407b1608b50b6f1631bd59a",
+  "signer_dn": "C=US, O=Android, CN=Android Debug",
+  "build_source_commit_base": "259389c11b45f94230bceca2f516452376419d8f",
+  "includes_mobile_touch_fix": true,
+  "godot_version": "4.5.stable.official.876b29033",
+  "export_preset": "Android",
+  "build_type": "debug",
+  "min_sdk": 24,
+  "target_sdk": 36,
+  "abis": [
+    "arm64-v8a"
+  ]
+}
