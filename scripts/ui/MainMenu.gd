@@ -908,13 +908,18 @@ func _apply_launch_presentation() -> void:
 		var stripe := TextureRect.new()
 		stripe.name = "Vxp3SpeedStripe"
 		stripe.texture = load("res://assets/branding/vxp3/pp-speed-stripe.png") as Texture2D
-		stripe.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
-		stripe.offset_top = -72
+		## Decorative left rail only — never cover bottom CTAs.
+		stripe.set_anchors_preset(Control.PRESET_LEFT_WIDE)
+		stripe.offset_left = 0
+		stripe.offset_right = 28
+		stripe.offset_top = 0
+		stripe.offset_bottom = 0
 		stripe.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		stripe.stretch_mode = TextureRect.STRETCH_SCALE
-		stripe.modulate = Color(1, 1, 1, 0.55)
+		stripe.modulate = Color(1, 1, 1, 0.35)
 		stripe.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		add_child(stripe)
+		move_child(stripe, 1)
 	var bg_node := get_node_or_null("Background") as ColorRect
 	if bg_node:
 		bg_node.color = Vxp3BrandScript.COLOR_NIGHT_TRACK
