@@ -1,0 +1,21 @@
+{
+  "schema": "vxp31.rights_closure/v1",
+  "updated_utc": "2026-09-19T14:18:36.165302+00:00",
+  "VXP31_NEW_ASSET_PROVENANCE_PASS": true,
+  "VXP31_ALL_HISTORICAL_RIGHTS_CLEARED": false,
+  "new_assets": [
+    "assets/branding/vxp31/",
+    "assets/fonts/vxp31/barlow_condensed/"
+  ],
+  "quarantined_unpromoted": [
+    "assets/branding/launcher-icon.png",
+    "assets/branding/splash-icon.png"
+  ],
+  "font": {
+    "family": "Barlow Condensed",
+    "license": "OFL-1.1",
+    "ofl_sha256": "186d750eb496a4c17a76385f82be6aea2ac1cf2de074a811d63786cf374ea73f",
+    "semibold_sha256": "7b619d14bc2327509a9ef32b0890f709626f7ecc9ff61191c2a4314c5499d2d9"
+  },
+  "notes": "Historical binary rights from prior lanes remain open. VXP-3.1 only clears newly authored assets + OFL font."
+}
