@@ -1,0 +1,8 @@
+46:  Package [com.gunnchos.pedestrianpursuit] (9de6414):
+50:    codePath=/data/app/~~HF4z_4mG9n0gtOQOCwjUYA==/com.gunnchos.pedestrianpursuit-hHxb94hTTTCYouyDVth-Aw==
+54:    primaryCpuAbi=arm64-v8a
+57:    versionCode=13 minSdk=24 targetSdk=36
+59:    versionName=0.3.9
+71:    lastUpdateTime=2026-09-19 13:08:38
+79:    signatures=PackageSignatures{77b3de7 version:2, signatures:[4c1db0e8], past signatures:[]}
+84:    User 0: ceDataInode=186809 deDataInode=167828 pccCeDataInode=0 pccDeDataInode=0 installed=true hidden=false suspended=false appLockEnabled=false distractionFlags=0 stopped=false notLaunched=false enabled=0 instant=false virtual=false quarantined=false

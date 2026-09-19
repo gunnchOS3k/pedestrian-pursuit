@@ -220,6 +220,8 @@ func apply_device_role(profile: Dictionary, map_profile: Dictionary = {}) -> voi
 	var gps := str(profile.get("gps_mode", "SIMULATED"))
 	if _role_hint:
 		var hint := str(profile.get("input_hints", ""))
+		if OS.has_feature("mobile"):
+			hint = "Touch: steer · RUN · JUMP · DRIFT · BOOST · ITEM · Pause (Ⅱ)"
 		if bool(profile.get("dock_display_hook", false)):
 			hint += "  ·  Dock: %s (screens=%d)" % [
 				"ON" if bool(profile.get("docked", false)) else "OFF",

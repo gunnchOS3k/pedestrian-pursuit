@@ -25,6 +25,10 @@ func _ready() -> void:
 
 func configure_for_device_role(profile: Dictionary) -> void:
 	var want := bool(profile.get("show_touch_controls", false)) or str(profile.get("input_default", "")) == "touch"
+	## Pixel / Android: never strip touch chrome for classroom keyboard roles.
+	## DeviceRoleRuntime may default to keyboard, but mobile still needs on-screen controls.
+	if OS.has_feature("mobile"):
+		want = true
 	if want:
 		show_on_desktop = true
 		_ensure_controls()

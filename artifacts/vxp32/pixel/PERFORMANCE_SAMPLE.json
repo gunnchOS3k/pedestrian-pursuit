@@ -1,0 +1,22 @@
+{
+  "class": "SHORT_DEVICE_SMOKE_SAMPLE",
+  "not_sustained_validation": true,
+  "meminfo": {
+    "total_pss_kb": 278702,
+    "native_heap_kb": 74648,
+    "graphics_kb": 109528
+  },
+  "gfxinfo_short": {
+    "total_frames_rendered": 25,
+    "janky_frames": 1,
+    "janky_percent": 4.0,
+    "p50_ms": 5,
+    "p90_ms": 5,
+    "p99_ms": 200
+  },
+  "paths": {
+    "meminfo": "meminfo_sample.txt",
+    "gfxinfo": "gfxinfo_sample.txt"
+  },
+  "notes": "Short dumpsys samples only; VXP32_SUSTAINED_PERFORMANCE_VALIDATION_PASS remains false."
+}
