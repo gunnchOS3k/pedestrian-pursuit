@@ -1,0 +1,110 @@
+{
+  "schema": "vxp31.brand_provenance/v1",
+  "game_name": "Pedestrian Pursuit",
+  "design_direction_label": "KINETIC SOLE",
+  "policy": "Original VXP-3.1 launcher/splash. Quarantined historical launcher/splash remain unpromoted.",
+  "quarantined_not_used": [
+    "assets/branding/launcher-icon.png",
+    "assets/branding/splash-icon.png"
+  ],
+  "updated_utc": "2026-09-19T14:17:04.134526+00:00",
+  "assets": [
+    {
+      "id": "vxp31.README",
+      "path": "assets/branding/vxp31/README.md",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "31cf81b2e18c7ff8ec1889ed9020e3abc8eba18d22b7e65fc1ac253e302ab8ef",
+      "bytes": 368
+    },
+    {
+      "id": "vxp31.launcher_adaptive_background_432",
+      "path": "assets/branding/vxp31/launcher_adaptive_background_432.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "63ba94624eac880d61b264ddce6c3f6932916e15d698d6fc845369f096467797",
+      "bytes": 1801
+    },
+    {
+      "id": "vxp31.launcher_adaptive_foreground_432",
+      "path": "assets/branding/vxp31/launcher_adaptive_foreground_432.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "9f52eb8894d22636c8b710fe20af9e3031df39134689091c7895a3f6322bd5ab",
+      "bytes": 24607
+    },
+    {
+      "id": "vxp31.launcher_icon_1024",
+      "path": "assets/branding/vxp31/launcher_icon_1024.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "71791ce01dea2011d1e76041d76244ad91cc8a2d6f70db7b116cef042d1289f4",
+      "bytes": 113050
+    },
+    {
+      "id": "vxp31.launcher_icon_192",
+      "path": "assets/branding/vxp31/launcher_icon_192.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "296e5652ae5ff7edfae26548a66b4b4ce1ef913e1adaa15d8a2796054f861319",
+      "bytes": 7421
+    },
+    {
+      "id": "vxp31.launcher_icon_512",
+      "path": "assets/branding/vxp31/launcher_icon_512.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "bc2cb301229c6ebc5f4972f04867e5f133e3438fc3dfef356a717478158cdc89",
+      "bytes": 34273
+    },
+    {
+      "id": "vxp31.launcher_mark",
+      "path": "assets/branding/vxp31/launcher_mark.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "e4eebebde08e541fb6a9c152c29b53cfe43e406275de6c755e81a52a1a3c47b3",
+      "bytes": 489
+    },
+    {
+      "id": "vxp31.splash_1242x2208",
+      "path": "assets/branding/vxp31/splash_1242x2208.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "ec5ab61802ab3176e2dccb1e998997e12e47ef27895c5720af4478545d87c056",
+      "bytes": 56616
+    },
+    {
+      "id": "vxp31.splash_1280x720",
+      "path": "assets/branding/vxp31/splash_1280x720.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "606bb51020a7456fe5ed8905173cdd1cd048cdf3dface44f850ab486b38e6187",
+      "bytes": 24103
+    },
+    {
+      "id": "vxp31.splash_1920x1080",
+      "path": "assets/branding/vxp31/splash_1920x1080.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "93520fc6c6a487648db82d63e98c15bf286ac0ad149888fe7bb8444ecc0ff997",
+      "bytes": 43816
+    },
+    {
+      "id": "vxp31.splash_icon_512",
+      "path": "assets/branding/vxp31/splash_icon_512.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "bc2cb301229c6ebc5f4972f04867e5f133e3438fc3dfef356a717478158cdc89",
+      "bytes": 34273
+    },
+    {
+      "id": "vxp31.splash_panel",
+      "path": "assets/branding/vxp31/splash_panel.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "05c668a27edc402a0dc053f87261a4178e5c664487a312b1ea273e253d239ff3",
+      "bytes": 561
+    }
+  ],
+  "VXP31_ALL_HISTORICAL_RIGHTS_CLEARED": false
+}
