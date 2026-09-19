@@ -1,0 +1,7 @@
+{
+  "program": "VXP-3",
+  "note": "No dedicated frame-time regression harness in this lane; presentation-only.",
+  "hud_chrome_added": true,
+  "gameplay_systems_mutated": false,
+  "VXP3_PERFORMANCE_REGRESSION_CLAIMED": false
+}

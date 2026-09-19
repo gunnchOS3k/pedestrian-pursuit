@@ -1,0 +1,66 @@
+{
+  "schema": "vxp3.before_source_ledger/v1",
+  "base_sha": "e0c21fcc4d4c058eb42a5a9d4c858a77987c3a4e",
+  "files": [
+    {
+      "path": "scripts/ui/MainMenu.gd",
+      "sha256": "5df7880593cda2316f77c6a33b5a4adb37ffae67c69fcc47c6164fcc78bb5a02",
+      "bytes": 31767,
+      "phase": "BEFORE_MUTATION"
+    },
+    {
+      "path": "scripts/ui/RaceHUD.gd",
+      "sha256": "de45c05c8f3a4f9204d4ef75caeb44afa38863042af0fa5315d8808be07dd057",
+      "bytes": 11913,
+      "phase": "BEFORE_MUTATION"
+    },
+    {
+      "path": "scripts/ui/ResultsScreen.gd",
+      "sha256": "d9b36e926051cf2e8314b6cff7b2e51f89c1ff3e7b6316630ad1cdd6ceaaa65a",
+      "bytes": 6267,
+      "phase": "BEFORE_MUTATION"
+    },
+    {
+      "path": "scripts/ui/PauseMenu.gd",
+      "sha256": "df98d745a1014e050d5e8068a31e2852d834e8fbce25723ad507c3c034d2e704",
+      "bytes": 2406,
+      "phase": "BEFORE_MUTATION"
+    },
+    {
+      "path": "scripts/ui/TutorialDirector.gd",
+      "sha256": "cc74011ae729593649d4b3fd24e5b82d677d2a47567f9291d54812b5896f11bf",
+      "bytes": 4795,
+      "phase": "BEFORE_MUTATION"
+    },
+    {
+      "path": "scripts/ui/AchievementToast.gd",
+      "sha256": "fe0c9c2dc8e9d8080585663036f410a6571d3455166a2f1d3dc5a5136cd33349",
+      "bytes": 2653,
+      "phase": "BEFORE_MUTATION"
+    },
+    {
+      "path": "scenes/main/MainMenu.tscn",
+      "sha256": "87b3599b4bb9e765ffe7eb4f8d2f5fd713466586e5efea57f792f27668956375",
+      "bytes": 3167,
+      "phase": "BEFORE_MUTATION"
+    },
+    {
+      "path": "scenes/ui/RaceHUD.tscn",
+      "sha256": "ae0a1ac65c80528df37b7b83e3f0538b347ecccb388c88ab7da291c495b8a5b6",
+      "bytes": 2069,
+      "phase": "BEFORE_MUTATION"
+    },
+    {
+      "path": "scenes/ui/ResultsScreen.tscn",
+      "sha256": "85d6cc956c53538eb2761dafc16713b34f1d84d8f7fc338dc20fa972096c6493",
+      "bytes": 2114,
+      "phase": "BEFORE_MUTATION"
+    },
+    {
+      "path": "scenes/ui/PauseMenu.tscn",
+      "sha256": "6a91232c2206b129a4510e6dcbf09f51163ac1dbb4debbd8f2468805120273eb",
+      "bytes": 1400,
+      "phase": "BEFORE_MUTATION"
+    }
+  ]
+}

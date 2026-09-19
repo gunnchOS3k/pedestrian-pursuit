@@ -1,0 +1,40 @@
+{
+  "schema": "vxp3.gates/v1",
+  "generated_utc": "2026-09-19T04:18:47.413460+00:00",
+  "base_sha_expected": "e0c21fcc4d4c058eb42a5a9d4c858a77987c3a4e",
+  "gates": {
+    "BRAND_PACK_PRESENT": true,
+    "GLYPH_SET_PRESENT": true,
+    "PRESENTATION_SCRIPTS_PRESENT": true,
+    "MAIN_MENU_VXP_WIRED": true,
+    "RACE_HUD_VXP_WIRED": true,
+    "RESULTS_GLYPH_PODIUM": true,
+    "PAUSE_CHROME_WIRED": true,
+    "DOCS_PACK_COMPLETE": true,
+    "ASSET_PROVENANCE_REPORT": true,
+    "LAUNCHER_ICON_NOT_PROMOTED": true,
+    "VXP3_CUSTOM_FONT_PENDING": true,
+    "RUNTIME_CAPTURE_PRESENT": true,
+    "VXP3_PIXEL_PHYSICAL_CAPTURE_PASS": false,
+    "HUMAN_VISUAL_PASS": false,
+    "HUMAN_FUN_PASS": false,
+    "HUMAN_A11Y_PASS": false,
+    "ALL_HISTORICAL_RIGHTS_CLEARED": false,
+    "MERGE_AUTHORIZED": false,
+    "GAMEPLAY_CONTRACTS_PRESERVED_CLAIM": true
+  },
+  "counts": {
+    "brand_svgs": 10,
+    "glyphs": 52,
+    "docs": 11,
+    "after_pngs": 44,
+    "capture_pngs": 2
+  },
+  "evidence_classes": {
+    "before_source_ledger": "DETERMINISTIC_FIXTURE_CAPTURE",
+    "runtime_screenshots": "REAL_RUNTIME_CAPTURE",
+    "physical_pixel": "PHYSICAL_DEVICE_CAPTURE_ABSENT"
+  },
+  "STRUCTURAL_PASS": true,
+  "MERGE_READY": false
+}
