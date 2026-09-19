@@ -49,6 +49,15 @@ func set_touch_accelerate(pressed: bool) -> void:
 		last_active_source = InputSource.TOUCH
 
 
+func clear_touch_state() -> void:
+	## Release all synthetic touch lanes — focus loss, pause, cancel, bg/fg.
+	_touch_steer = 0.0
+	_touch_accelerate = false
+	for action in ["move_left", "move_right", "accelerate", "brake", "jump", "drift", "slide", "boost", "use_item", "special", "trick"]:
+		if Input.is_action_pressed(action):
+			Input.action_release(action)
+
+
 func set_ring_confirm(pressed: bool) -> void:
 	_ring_confirm_held = pressed
 	if pressed:
@@ -66,7 +75,9 @@ func get_steer() -> float:
 		if Input.is_physical_key_pressed(KEY_A):
 			steer_p1 -= 1.0
 		if Input.get_connected_joypads().size() > 0:
-			steer_p1 += Input.get_joy_axis(0, JOY_AXIS_LEFT_X)
+			var axis := Input.get_joy_axis(0, JOY_AXIS_LEFT_X)
+			if absf(axis) >= 0.2:
+				steer_p1 += axis
 		steer_p1 = clampf(steer_p1, -1.0, 1.0)
 		_note_digital_source(steer_p1)
 		return steer_p1
@@ -77,12 +88,13 @@ func get_steer() -> float:
 	var assist := GameManager.mobile_assist_steer
 	if absf(assist) < 0.01:
 		return steer
+	# Soft RUN assist only — never inject yaw at idle/neutral (human hard-right blocker).
+	if not is_accelerating():
+		return steer
 	# While accelerating, prefer the racing line so touch/ADB runs stay on course.
 	# Strong player left/right still overrides.
-	if is_accelerating() and absf(steer) < 0.35:
+	if absf(steer) < 0.35:
 		return clampf(assist, -1.0, 1.0)
-	if absf(steer) < 0.2:
-		return clampf(assist * 0.9, -1.0, 1.0)
 	return clampf(steer * 0.7 + assist * 0.3, -1.0, 1.0)
 
 

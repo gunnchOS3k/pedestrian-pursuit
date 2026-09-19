@@ -30,7 +30,10 @@ func _on_body_entered(body: Node3D) -> void:
 	if a11y != null and bool(a11y.get("reduce_motion")):
 		force *= 0.72
 		forward_kick *= 0.72
-	body.velocity.y = force
+	if body.has_method("apply_bounce_impulse"):
+		body.apply_bounce_impulse(force)
+	else:
+		body.velocity.y = force
 	var forward := -body.global_transform.basis.z
 	body.velocity.x += forward.x * forward_kick
 	body.velocity.z += forward.z * forward_kick
