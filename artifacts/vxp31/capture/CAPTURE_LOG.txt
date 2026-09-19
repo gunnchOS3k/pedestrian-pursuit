@@ -1,0 +1,55 @@
+Godot: 4.5.stable.official.876b29033
+Binary: /Users/gunnchos/Applications/Godot/Godot-4.5.app/Contents/MacOS/Godot
+Godot Engine v4.5.stable.official.876b29033 - https://godotengine.org
+OpenGL API 4.1 Metal - 90.5 - Compatibility - Using Device: Apple - Apple M2
+
+[vxp31_capture] start authentic runtime capture
+[vxp31_capture] CAPTURED main_menu_default /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/main_menu_default.png
+[vxp31_capture] CAPTURED viewport_1280x720 /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/viewport_1280x720.png
+[vxp31_capture] CAPTURED main_menu_focus_race /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/main_menu_focus_race.png
+[vxp31_capture] CAPTURED runner_select /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/runner_select.png
+[vxp31_capture] CAPTURED footwear_select /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/footwear_select.png
+[vxp31_capture] CAPTURED cup_select /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/cup_select.png
+[vxp31_capture] CAPTURED course_select /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/course_select.png
+[vxp31_capture] CAPTURED resume_cup /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/resume_cup.png
+[vxp31_capture] CAPTURED first_run_learn_the_track /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/first_run_learn_the_track.png
+[vxp31_capture] CAPTURED a11y_larger_ui /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/a11y_larger_ui.png
+[vxp31_capture] CAPTURED a11y_colorblind /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/a11y_colorblind.png
+[vxp31_capture] CAPTURED a11y_reduce_motion /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/a11y_reduce_motion.png
+[vxp31_capture] CAPTURED viewport_1366x768 /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/viewport_1366x768.png
+[vxp31_capture] CAPTURED viewport_1600x900 /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/viewport_1600x900.png
+[vxp31_capture] CAPTURED viewport_pixel_landscape /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/viewport_pixel_landscape.png
+[vxp31_capture] CAPTURED race_countdown /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/race_countdown.png
+[vxp31_capture] CAPTURED tutorial_sprint /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/tutorial_sprint.png
+[vxp31_capture] CAPTURED tutorial_drift /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/tutorial_drift.png
+[vxp31_capture] CAPTURED tutorial_perfect_step /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/tutorial_perfect_step.png
+[vxp31_capture] CAPTURED tutorial_item /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/tutorial_item.png
+[vxp31_capture] CAPTURED tutorial_footwear /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/tutorial_footwear.png
+[vxp31_capture] CAPTURED race_hud_normal /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/race_hud_normal.png
+[vxp31_capture] CAPTURED race_position_lap_time /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/race_position_lap_time.png
+[vxp31_capture] CAPTURED race_minimap /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/race_minimap.png
+[vxp31_capture] CAPTURED race_footwear_surface /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/race_footwear_surface.png
+[vxp31_capture] WARN race_drift_meter low chroma variance (still REAL_RUNTIME if PNG saved)
+[vxp31_capture] CAPTURED race_drift_meter /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/race_drift_meter.png
+[vxp31_capture] CAPTURED race_boost /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/race_boost.png
+[vxp31_capture] CAPTURED race_item_slot /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/race_item_slot.png
+[vxp31_capture] CAPTURED race_wrong_way /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/race_wrong_way.png
+[vxp31_capture] CAPTURED pause_menu /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/pause_menu.png
+[vxp31_capture] CAPTURED pause_tutorial_guide /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/pause_tutorial_guide.png
+[vxp31_capture] CAPTURED achievement_toast /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/achievement_toast.png
+[vxp31_capture] CAPTURED results_finish /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/results_finish.png
+[vxp31_capture] CAPTURED results_podium /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/results_podium.png
+[vxp31_capture] CAPTURED cup_standings /Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure/artifacts/vxp31/capture/cup_standings.png
+[vxp31_capture] manifest written covered=35/35 missing=[]
+[vxp31_capture] done
+godot_exit=0
+{
+  "pass": true,
+  "covered": 35,
+  "missing": []
+}
+{
+  "DIGITAL_CLOSURE": false,
+  "JOURNEY": true
+}
+VXP31_RUNTIME_CAPTURE_COMPLETE exit=0

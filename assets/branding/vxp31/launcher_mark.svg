@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Pedestrian Pursuit Kinetic Sole mark">
+  <rect width="512" height="512" rx="96" fill="#0B1220"/>
+  <circle cx="256" cy="256" r="168" fill="none" stroke="#FF6A3D" stroke-width="48"/>
+  <circle cx="256" cy="256" r="88" fill="#0B1220"/>
+  <path d="M120 300 L256 140 L392 300" fill="none" stroke="#2EE6D6" stroke-width="28" stroke-linecap="round"/>
+  <circle cx="256" cy="168" r="28" fill="#F5C518"/>
+</svg>

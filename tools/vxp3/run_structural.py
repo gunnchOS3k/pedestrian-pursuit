@@ -72,7 +72,12 @@ prov = json.loads((brand / "BRAND_PROVENANCE.json").read_text())
 check(prov.get("design_direction_label") == "KINETIC SOLE", "provenance labels KINETIC SOLE")
 check(prov.get("game_name") == "Pedestrian Pursuit", "product name unchanged")
 check(prov.get("VXP3_ALL_HISTORICAL_RIGHTS_CLEARED") is False, "historical rights not falsely cleared")
-check(prov.get("VXP3_CUSTOM_FONT_PENDING") is True, "custom font pending flagged")
+check(prov.get("VXP3_CUSTOM_FONT_PENDING") in (True, False), "custom font pending flag present")
+if prov.get("VXP3_CUSTOM_FONT_PENDING") is False:
+    font = ROOT / "assets/fonts/vxp31/barlow_condensed/OFL.txt"
+    check(font.exists(), "cleared display font OFL present when pending=false")
+else:
+    check(True, "custom font still pending (allowed)")
 
 # Do not promote launcher-icon
 check(

@@ -5,32 +5,32 @@
     {
       "name": "godot.import_quit",
       "ok": true,
-      "seconds": 0.916
+      "seconds": 0.796
     },
     {
       "name": "godot.smoke",
       "ok": true,
-      "seconds": 0.646
+      "seconds": 0.509
     },
     {
       "name": "headless_smoke",
       "ok": true,
-      "seconds": 69.432
+      "seconds": 65.506
     },
     {
       "name": "test_runner",
       "ok": true,
-      "seconds": 1.045
+      "seconds": 0.928
     },
     {
       "name": "validate_content",
       "ok": true,
-      "seconds": 0.057
+      "seconds": 0.061
     },
     {
       "name": "adb_devices",
       "ok": true,
-      "seconds": 3.477
+      "seconds": 0.421
     }
   ]
 }

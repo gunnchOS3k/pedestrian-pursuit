@@ -4,15 +4,15 @@
       "/Users/gunnchos/Applications/Godot/Godot-4.5.app/Contents/MacOS/Godot",
       "--headless",
       "--path",
-      "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-pedestrian-pursuit",
+      "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure",
       "--quit-after",
       "1"
     ],
-    "cwd": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-pedestrian-pursuit",
+    "cwd": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure",
     "exit_code": 0,
     "ok": true,
-    "seconds": 0.916,
-    "stderr_tail": "WARNING: ObjectDB instances leaked at exit (run with --verbose for details).\n     at: cleanup (core/object/object.cpp:2514)\nERROR: 2 resources still in use at exit (run with --verbose for details).\n   at: clear (core/io/resource.cpp:795)\n",
+    "seconds": 0.796,
+    "stderr_tail": "WARNING: ObjectDB instances leaked at exit (run with --verbose for details).\n     at: cleanup (core/object/object.cpp:2514)\nERROR: 1 resources still in use at exit (run with --verbose for details).\n   at: clear (core/io/resource.cpp:795)\n",
     "stdout_tail": "Godot Engine v4.5.stable.official.876b29033 - https://godotengine.org\n\n"
   },
   "note": "Headless exit logs only; not a physical crash dump",
@@ -21,14 +21,14 @@
       "/Users/gunnchos/Applications/Godot/Godot-4.5.app/Contents/MacOS/Godot",
       "--headless",
       "--path",
-      "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-pedestrian-pursuit",
+      "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure",
       "-s",
       "res://tests/TestRunner.gd"
     ],
-    "cwd": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-pedestrian-pursuit",
+    "cwd": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-pedestrian-runtime-visual-closure",
     "exit_code": 0,
     "ok": true,
-    "seconds": 0.646,
+    "seconds": 0.509,
     "stderr_tail": "",
     "stdout_tail": "Godot Engine v4.5.stable.official.876b29033 - https://godotengine.org\n\nGodot Wave E Alpha course smoke passed for 2 cups / 8 courses.\n"
   }

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-label="Pedestrian Pursuit splash">
+  <rect width="1280" height="720" fill="#0B1220"/>
+  <path d="M0 620 L420 80 L460 80 L40 620 Z" fill="#FF6A3D"/>
+  <path d="M80 620 L500 80 L530 80 L110 620 Z" fill="#2EE6D6"/>
+  <circle cx="640" cy="360" r="140" fill="none" stroke="#FF6A3D" stroke-width="36"/>
+  <circle cx="640" cy="280" r="22" fill="#F5C518"/>
+  <text x="640" y="560" text-anchor="middle" fill="#F4F7FB" font-family="sans-serif" font-size="42">Pedestrian Pursuit</text>
+</svg>
