@@ -1,5 +1,7 @@
 extends CanvasLayer
 const LaunchArtCatalogScript = preload("res://scripts/ui/LaunchArtCatalog.gd")
+const Vxp3PresentationScript = preload("res://scripts/ui/vxp3/Vxp3Presentation.gd")
+const Vxp3BrandScript = preload("res://scripts/ui/vxp3/Vxp3Brand.gd")
 
 ## Results screen shown after race finish.
 
@@ -18,6 +20,7 @@ func _ready() -> void:
 	panel.visible = false
 	menu_button.pressed.connect(_on_menu)
 	retry_button.pressed.connect(_on_retry)
+	Vxp3PresentationScript.apply_results_chrome(self)
 
 
 func show_results(
@@ -84,6 +87,9 @@ func _play_finish_celebration(finished: bool, position: int) -> void:
 	## GAME-RC-003 digital finish celebration. Human juice remains HUMAN_PENDING.
 	if title_label == null:
 		return
+	Vxp3PresentationScript.apply_results_chrome(self)
+	if Vxp3BrandScript.reduce_motion_active():
+		return
 	title_label.pivot_offset = title_label.size * 0.5
 	title_label.scale = Vector2(0.88, 0.88)
 	var peak := Vector2(1.12, 1.12) if finished and position == 1 else Vector2(1.05, 1.05)
@@ -124,16 +130,15 @@ func annotate_local_mp(finish_results: Array) -> void:
 func _build_podium_text(field_lines: PackedStringArray) -> String:
 	if field_lines.is_empty():
 		return ""
-	var medals := ["🥇", "🥈", "🥉"]
+	## Replace emoji medals with VXP glyph text markers (texture glyphs available under branding/vxp3/glyphs).
 	var slots: PackedStringArray = []
 	for i in mini(3, field_lines.size()):
 		var name := str(field_lines[i])
-		# Strip leading "1. " style place numbers for a cleaner podium row.
 		var clean := name
 		var dot := name.find(". ")
 		if dot >= 0 and dot < 3:
 			clean = name.substr(dot + 2)
-		slots.append("%s %s" % [medals[i], clean])
+		slots.append("%s %s" % [Vxp3PresentationScript.podium_glyph_prefix(i + 1), clean])
 	return "Podium\n" + "\n".join(slots)
 
 

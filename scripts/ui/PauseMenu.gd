@@ -2,6 +2,8 @@ extends CanvasLayer
 
 ## Pause menu overlay — resume, restart race, or return to menu.
 
+const Vxp3PresentationScript = preload("res://scripts/ui/vxp3/Vxp3Presentation.gd")
+
 var _local_mp: bool = false
 var _hint: Label
 
@@ -12,6 +14,7 @@ func _ready() -> void:
 	$Panel/Margin/VBox/ResumeButton.pressed.connect(_on_resume)
 	$Panel/Margin/VBox/MenuButton.pressed.connect(_on_menu)
 	_ensure_restart_button()
+	Vxp3PresentationScript.apply_pause_chrome(self)
 
 
 func _unhandled_input(event: InputEvent) -> void:

@@ -1,5 +1,7 @@
 extends CanvasLayer
 const LaunchArtCatalogScript = preload("res://scripts/ui/LaunchArtCatalog.gd")
+const Vxp3PresentationScript = preload("res://scripts/ui/vxp3/Vxp3Presentation.gd")
+const Vxp3BrandScript = preload("res://scripts/ui/vxp3/Vxp3Brand.gd")
 
 ## Race HUD — lap, position, boost, item, timer, speed, wrong-way.
 
@@ -17,6 +19,10 @@ var _wrong_way_label: Label
 var _minimap: Control
 var _role_hint: Label
 var _map_label: Label
+var _drift_meter: ProgressBar
+var _footwear_label: Label
+var _spark_icon: TextureRect
+var _intro_phase: String = ""
 
 
 func setup(player: Node, race_manager: Node, course_data: Dictionary = {}) -> void:
@@ -49,9 +55,10 @@ func setup(player: Node, race_manager: Node, course_data: Dictionary = {}) -> vo
 		_wrong_way_label.offset_top = 120
 		_wrong_way_label.offset_bottom = 160
 		_wrong_way_label.add_theme_font_size_override("font_size", 28)
-		_wrong_way_label.add_theme_color_override("font_color", Color(1.0, 0.35, 0.25))
+		_wrong_way_label.add_theme_color_override("font_color", Vxp3BrandScript.COLOR_HAZARD_RED)
 		add_child(_wrong_way_label)
 	_wrong_way_label.visible = false
+	_ensure_vxp3_meters()
 	if _minimap == null:
 		_minimap = Control.new()
 		_minimap.set_script(load("res://scripts/ui/MiniMap.gd"))
@@ -71,6 +78,126 @@ func setup(player: Node, race_manager: Node, course_data: Dictionary = {}) -> vo
 	_ensure_role_labels()
 	_apply_ui_scale()
 	_apply_marker_colors()
+	Vxp3PresentationScript.apply_hud_chrome(self)
+	_play_race_intro(course_name)
+	_update_footwear_label()
+
+
+func _ensure_vxp3_meters() -> void:
+	var vbox := $Margin/VBox as VBoxContainer
+	if vbox == null:
+		return
+	if _drift_meter == null:
+		_drift_meter = ProgressBar.new()
+		_drift_meter.name = "DriftMeter"
+		_drift_meter.custom_minimum_size = Vector2(200, 14)
+		_drift_meter.max_value = 4.0
+		_drift_meter.show_percentage = false
+		_drift_meter.modulate = Vxp3BrandScript.COLOR_PURSUIT_BLUE
+		vbox.add_child(_drift_meter)
+		vbox.move_child(_drift_meter, boost_bar.get_index() + 1)
+	if _footwear_label == null:
+		_footwear_label = Label.new()
+		_footwear_label.name = "FootwearLabel"
+		_footwear_label.add_theme_font_size_override("font_size", Vxp3BrandScript.TYPE_HUD_SECONDARY)
+		_footwear_label.add_theme_color_override("font_color", Vxp3BrandScript.COLOR_MUTED)
+		vbox.add_child(_footwear_label)
+	if _spark_icon == null:
+		_spark_icon = TextureRect.new()
+		_spark_icon.name = "DriftSparkIcon"
+		_spark_icon.custom_minimum_size = Vector2(28, 28)
+		_spark_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		_spark_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		vbox.add_child(_spark_icon)
+		vbox.move_child(_spark_icon, _drift_meter.get_index() + 1)
+
+
+func _update_footwear_label() -> void:
+	if _footwear_label == null:
+		return
+	var shoe_id := str(GameManager.selected_shoe_id)
+	var shoe := ShoeData.load_by_id(shoe_id) if ClassDB.class_exists("ShoeData") else {}
+	## ShoeData is a GDScript class_name — call via preload helper.
+	var path := "res://data/shoes/%s.json" % shoe_id
+	if FileAccess.file_exists(path):
+		var f := FileAccess.open(path, FileAccess.READ)
+		var parsed = JSON.parse_string(f.get_as_text())
+		if typeof(parsed) == TYPE_DICTIONARY:
+			shoe = parsed
+	_footwear_label.text = "Footwear: %s" % str(shoe.get("display_name", shoe_id))
+
+
+func _play_race_intro(course_name: String) -> void:
+	## course → line → 3-2-1-GO (GO from RaceManager ticks). Reduce-motion safe.
+	_intro_phase = "course"
+	if countdown_label == null:
+		return
+	countdown_label.visible = true
+	countdown_label.text = course_name
+	countdown_label.add_theme_color_override("font_color", Vxp3BrandScript.COLOR_PURSUIT_BLUE)
+	if Vxp3BrandScript.reduce_motion_active():
+		countdown_label.text = "%s  ·  ON THE LINE" % course_name
+		return
+	countdown_label.scale = Vector2(0.92, 0.92)
+	var tw := create_tween()
+	tw.tween_property(countdown_label, "scale", Vector2.ONE, 0.25)
+	tw.tween_callback(func ():
+		if is_instance_valid(countdown_label) and _intro_phase == "course":
+			_intro_phase = "line"
+			countdown_label.text = "ON THE LINE"
+			countdown_label.add_theme_color_override("font_color", Vxp3BrandScript.COLOR_BOOST_CYAN)
+	)
+
+
+func _process(_delta: float) -> void:
+	if _player == null:
+		return
+	var race_mgr := get_tree().get_first_node_in_group("race_manager")
+	if race_mgr and race_mgr.has_node("LapManager"):
+		var lap_mgr := race_mgr.get_node("LapManager")
+		var lap: int = lap_mgr.get_lap(_player)
+		lap_label.text = (
+			"Lap: %d / %d" % [min(lap + 1, GameManager.total_laps), GameManager.total_laps]
+		)
+	if race_mgr and race_mgr.has_node("PositionTracker"):
+		var pos: int = race_mgr.get_node("PositionTracker").get_position_for(_player)
+		position_label.text = "P%d" % pos
+	_update_wrong_way(race_mgr)
+	_update_drift_meter()
+
+
+func _update_drift_meter() -> void:
+	if _drift_meter == null or _player == null:
+		return
+	var tier := 0.0
+	if _player.has_method("get_drift_spark_tier"):
+		tier = float(_player.get_drift_spark_tier())
+	elif _player.has_node("DriftSystem"):
+		var drift = _player.get_node("DriftSystem")
+		if drift.has_method("get_spark_tier"):
+			tier = float(drift.get_spark_tier())
+		elif "spark_tier" in drift:
+			tier = float(drift.spark_tier)
+	_drift_meter.value = clampf(tier, 0.0, 4.0)
+	var spark_name := "spark_%d" % int(clampf(tier, 1.0, 4.0)) if tier >= 1.0 else ""
+	if _spark_icon:
+		if spark_name.is_empty():
+			_spark_icon.texture = null
+		else:
+			_spark_icon.texture = Vxp3BrandScript.glyph_texture(spark_name)
+			## Shape redundancy: also tint by tier for colorblind-safe HUD when markers on.
+			if Vxp3BrandScript.colorblind_hud_active():
+				_spark_icon.modulate = Color.WHITE
+			else:
+				match int(tier):
+					2:
+						_spark_icon.modulate = Vxp3BrandScript.COLOR_PURSUIT_BLUE
+					3:
+						_spark_icon.modulate = Vxp3BrandScript.COLOR_BOOST_CYAN
+					4:
+						_spark_icon.modulate = Vxp3BrandScript.COLOR_MIDSOLE_YELLOW
+					_:
+						_spark_icon.modulate = Vxp3BrandScript.COLOR_MUTED
 
 
 func setup_local_mp_secondary(player2: Node) -> void:
@@ -99,10 +226,13 @@ func apply_device_role(profile: Dictionary, map_profile: Dictionary = {}) -> voi
 				int(profile.get("screen_count", 1)),
 			]
 		_role_hint.text = hint
+		_role_hint.add_theme_color_override("font_color", Vxp3BrandScript.COLOR_MUTED)
 	if _map_label:
 		var map_name := str(map_profile.get("label", map_id))
-		_map_label.text = "Map: %s  •  GPS: %s" % [map_name, gps]
+		## Demote device-lab GPS copy; keep data available for Advanced roles.
+		_map_label.text = "Map: %s" % map_name if map_id != "n/a" else ""
 		_map_label.visible = map_id != "n/a"
+		_map_label.add_theme_font_size_override("font_size", Vxp3BrandScript.TYPE_METADATA)
 	if _minimap:
 		_minimap.visible = map_id != "n/a"
 		if layout == "handheld":
@@ -116,6 +246,7 @@ func apply_device_role(profile: Dictionary, map_profile: Dictionary = {}) -> voi
 			_minimap.offset_bottom = 160
 	_apply_ui_scale()
 	_apply_marker_colors()
+	Vxp3PresentationScript.apply_hud_chrome(self)
 
 
 func _ensure_role_labels() -> void:
@@ -177,22 +308,6 @@ func _apply_marker_colors() -> void:
 		_minimap.apply_marker_colors()
 
 
-func _process(_delta: float) -> void:
-	if _player == null:
-		return
-	var race_mgr := get_tree().get_first_node_in_group("race_manager")
-	if race_mgr and race_mgr.has_node("LapManager"):
-		var lap_mgr := race_mgr.get_node("LapManager")
-		var lap: int = lap_mgr.get_lap(_player)
-		lap_label.text = (
-			"Lap: %d / %d" % [min(lap + 1, GameManager.total_laps), GameManager.total_laps]
-		)
-	if race_mgr and race_mgr.has_node("PositionTracker"):
-		var pos: int = race_mgr.get_node("PositionTracker").get_position_for(_player)
-		position_label.text = "Position: %d" % pos
-	_update_wrong_way(race_mgr)
-
-
 func _update_wrong_way(race_mgr: Node) -> void:
 	if _wrong_way_label == null or race_mgr == null or not (_player is CharacterBody3D):
 		return
@@ -223,8 +338,17 @@ func _update_wrong_way(race_mgr: Node) -> void:
 
 
 func _on_countdown(value: String) -> void:
-	countdown_label.text = value
+	var shown := value
+	if value in ["3", "2", "1", "GO"]:
+		shown = value
+	countdown_label.text = shown
 	countdown_label.visible = true
+	if value == "GO":
+		countdown_label.add_theme_color_override("font_color", Vxp3BrandScript.COLOR_MIDSOLE_YELLOW)
+	elif AccessibilitySettings != null:
+		countdown_label.add_theme_color_override(
+			"font_color", AccessibilitySettings.get_marker_color("finish")
+		)
 
 
 func _on_race_started() -> void:

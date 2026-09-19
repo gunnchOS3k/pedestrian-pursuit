@@ -1,10 +1,12 @@
 extends CanvasLayer
 
-## First-run / practice tutorial with gated advanced-mechanic prompts.
+## First-run / practice tutorial — VXP-3 skins the panel; completion contracts unchanged.
+## Prefer TutorialCoach for in-race non-blocking tips; this director remains for guided start.
 
 signal tutorial_finished
 
 const GRAMMAR_PATH := "res://data/mechanics/foot_racing_grammar.json"
+const Vxp3BrandScript = preload("res://scripts/ui/vxp3/Vxp3Brand.gd")
 
 var _lessons: Array = []
 var _index: int = 0
@@ -13,6 +15,7 @@ var _title: Label
 var _body: Label
 var _next_btn: Button
 var _active: bool = false
+var _coach: CanvasLayer
 
 
 func _ready() -> void:
@@ -21,6 +24,16 @@ func _ready() -> void:
 	_build_ui()
 	_load_lessons()
 	visible = false
+	_ensure_coach()
+
+
+func _ensure_coach() -> void:
+	if _coach != null:
+		return
+	_coach = CanvasLayer.new()
+	_coach.name = "TutorialCoach"
+	_coach.set_script(load("res://scripts/ui/vxp3/TutorialCoach.gd"))
+	get_tree().root.call_deferred("add_child", _coach)
 
 
 func begin(advanced_only: bool = false) -> void:
@@ -63,22 +76,26 @@ func _fallback_lessons() -> Array:
 
 func _build_ui() -> void:
 	var dim := ColorRect.new()
-	dim.color = Color(0.02, 0.04, 0.08, 0.72)
+	dim.color = Color(0.043, 0.071, 0.125, 0.55)
 	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	## Non-blocking: allow race input beneath; panel still readable.
+	dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(dim)
 	_panel = PanelContainer.new()
-	_panel.set_anchors_preset(Control.PRESET_CENTER)
-	_panel.custom_minimum_size = Vector2(520, 280)
-	_panel.offset_left = -260
-	_panel.offset_right = 260
-	_panel.offset_top = -140
-	_panel.offset_bottom = 140
+	_panel.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+	_panel.offset_left = 48
+	_panel.offset_right = -48
+	_panel.offset_top = -220
+	_panel.offset_bottom = -32
+	if Vxp3BrandScript.theme():
+		_panel.theme = Vxp3BrandScript.theme()
 	add_child(_panel)
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 12)
 	_panel.add_child(v)
 	_title = Label.new()
-	_title.add_theme_font_size_override("font_size", 26)
+	_title.add_theme_font_size_override("font_size", 22)
+	_title.add_theme_color_override("font_color", Vxp3BrandScript.COLOR_MIDSOLE_YELLOW)
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	v.add_child(_title)
 	_body = Label.new()
@@ -98,9 +115,11 @@ func _show_lesson() -> void:
 		return
 	var lesson: Dictionary = _lessons[_index]
 	var mech_id := str(lesson.get("id", "mechanic"))
-	_title.text = "Tutorial %d / %d — %s" % [_index + 1, _lessons.size(), mech_id.replace("_", " ").capitalize()]
+	_title.text = "Coach %d / %d — %s" % [_index + 1, _lessons.size(), mech_id.replace("_", " ").capitalize()]
 	_body.text = _copy_for(mech_id, str(lesson.get("tier", "core")), str(lesson.get("notes", "")))
-	_next_btn.text = "Finish" if _index == _lessons.size() - 1 else "Got it — next"
+	_next_btn.text = "Finish" if _index == _lessons.size() - 1 else "Got it — keep racing"
+	if _coach != null and _coach.has_method("show_mechanic_tip"):
+		_coach.show_mechanic_tip(mech_id)
 
 
 func _copy_for(mech_id: String, tier: String, notes: String) -> String:
