@@ -100,7 +100,7 @@ gates = {
     "VXP3_SCREENSHOT_FIXTURE_CAPTURE_PASS": shots_ok,
     "VXP3_SCREENSHOT_CAPTURE_CLASS": capture_class,
     "VXP3_SCREENSHOT_COUNT": shot_count,
-    "VXP3_REAL_RUNTIME_CAPTURE_PASS": (ROOT / "artifacts/vxp3/after/01_main_menu.png").exists(),
+    "VXP3_REAL_RUNTIME_CAPTURE_PASS": False,  # fixture composites are DETERMINISTIC_FIXTURE_CAPTURE only
     "VXP3_PIXEL_PHYSICAL_CAPTURE_PASS": False,
     "VXP3_HUMAN_VISUAL_VALIDATION_PASS": False,
     "VXP3_HUMAN_FUN_VALIDATION_PASS": False,
