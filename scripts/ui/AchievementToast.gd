@@ -1,4 +1,6 @@
 extends CanvasLayer
+const Vxp3PresentationScript = preload("res://scripts/ui/vxp3/Vxp3Presentation.gd")
+const Vxp3BrandScript = preload("res://scripts/ui/vxp3/Vxp3Brand.gd")
 
 ## UI notification for newly unlocked achievements. PROCESS_MODE_ALWAYS
 ## so toasts still appear while a race is paused.
@@ -41,17 +43,28 @@ func _build() -> void:
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 6)
 	_panel.add_child(v)
-	var header := Label.new()
-	header.text = "Achievement unlocked"
-	header.add_theme_font_size_override("font_size", 14)
+	var header := HBoxContainer.new()
 	v.add_child(header)
+	var glyph := TextureRect.new()
+	glyph.custom_minimum_size = Vector2(28, 28)
+	glyph.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	glyph.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	glyph.texture = Vxp3BrandScript.glyph_texture("confirm")
+	header.add_child(glyph)
+	var header_lab := Label.new()
+	header_lab.text = "Achievement unlocked"
+	header_lab.add_theme_font_size_override("font_size", 14)
+	header_lab.add_theme_color_override("font_color", Vxp3BrandScript.COLOR_MIDSOLE_YELLOW)
+	header.add_child(header_lab)
 	_title = Label.new()
 	_title.add_theme_font_size_override("font_size", 22)
+	_title.add_theme_color_override("font_color", Vxp3BrandScript.COLOR_INK)
 	v.add_child(_title)
 	_body = Label.new()
 	_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_body.add_theme_font_size_override("font_size", 14)
 	v.add_child(_body)
+	Vxp3PresentationScript.apply_toast_chrome(self)
 
 
 func enqueue(_id: String, entry: Dictionary) -> void:
@@ -80,6 +93,10 @@ func _show_next() -> void:
 
 func _apply_motion(alpha: float) -> void:
 	_panel.modulate.a = clampf(alpha, 0.0, 1.0)
+	if Vxp3BrandScript.reduce_motion_active():
+		_panel.offset_top = 24.0
+		_panel.offset_bottom = 140.0
+		return
 	var slide := (1.0 - alpha) * SLIDE_PX
 	_panel.offset_top = 24.0 - slide
 	_panel.offset_bottom = 140.0 - slide

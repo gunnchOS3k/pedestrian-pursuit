@@ -209,15 +209,34 @@ func _ready() -> void:
 
 
 func _attach_tutorial_director() -> void:
+	## Contextual coach during race (non-blocking). Full Tutorial Guide remains on Pause.
+	## Completion contract preserved: coach completion + director finish both call mark_tutorial_done.
+	var coach := CanvasLayer.new()
+	coach.name = "TutorialCoach"
+	coach.set_script(load("res://scripts/ui/vxp3/TutorialCoach.gd"))
+	add_child(coach)
+	var tips := ["sprint", "drift_spark_tiers", "perfect_step", "boost_chain", "items_counterplay", "footwear_surfaces"]
+	var delay := 1.2
+	for tip in tips:
+		var tip_id := str(tip)
+		get_tree().create_timer(delay).timeout.connect(func ():
+			if is_instance_valid(coach) and coach.has_method("show_mechanic_tip"):
+				coach.show_mechanic_tip(tip_id)
+		)
+		delay += 8.0
+	## Keep TutorialDirector available but do not auto-gate the race with a slideshow.
 	var director := CanvasLayer.new()
 	director.name = "TutorialDirector"
 	director.set_script(load("res://scripts/ui/TutorialDirector.gd"))
+	director.visible = false
 	add_child(director)
-	if director.has_method("begin"):
-		# Show advanced lessons after a short beat so race countdown can start.
-		get_tree().create_timer(0.2).timeout.connect(func ():
-			if is_instance_valid(director) and director.has_method("begin"):
-				director.begin(false)
+	## When the last tip is dismissed or race finishes in tutorial, completion is honored.
+	if coach.has_signal("tip_dismissed"):
+		coach.tip_dismissed.connect(func(tip_id: String):
+			if tip_id == "footwear_surfaces":
+				var prog := get_tree().root.get_node_or_null("ProgressionSave")
+				if prog != null and prog.has_method("mark_tutorial_done"):
+					prog.mark_tutorial_done()
 		)
 
 

@@ -1,0 +1,355 @@
+{
+  "program": "VXP-3",
+  "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+  "note": "Godot headless framebuffer boards composed from original VXP-3 brand assets when live capture unavailable.",
+  "physical_pixel": false,
+  "VXP3_PIXEL_PHYSICAL_CAPTURE_PASS": false,
+  "human_validation": false,
+  "godot_harness_attempted": true,
+  "godot_harness_framebuffer_ok": false,
+  "viewports": [
+    "1280x720",
+    "1366x768",
+    "1600x900",
+    "1920x1080",
+    "pixel-landscape-960x540"
+  ],
+  "shots": [
+    {
+      "surface": "main_menu",
+      "viewport": "1280x720",
+      "ok": true,
+      "file": "after_main_menu_1280x720.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "main_menu",
+      "viewport": "1366x768",
+      "ok": true,
+      "file": "after_main_menu_1366x768.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "main_menu",
+      "viewport": "1600x900",
+      "ok": true,
+      "file": "after_main_menu_1600x900.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "main_menu",
+      "viewport": "1920x1080",
+      "ok": true,
+      "file": "after_main_menu_1920x1080.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "main_menu",
+      "viewport": "pixel-landscape-960x540",
+      "ok": true,
+      "file": "after_main_menu_pixel-landscape-960x540.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "runner_select",
+      "viewport": "1280x720",
+      "ok": true,
+      "file": "after_runner_select_1280x720.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "runner_select",
+      "viewport": "1366x768",
+      "ok": true,
+      "file": "after_runner_select_1366x768.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "runner_select",
+      "viewport": "1600x900",
+      "ok": true,
+      "file": "after_runner_select_1600x900.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "runner_select",
+      "viewport": "1920x1080",
+      "ok": true,
+      "file": "after_runner_select_1920x1080.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "runner_select",
+      "viewport": "pixel-landscape-960x540",
+      "ok": true,
+      "file": "after_runner_select_pixel-landscape-960x540.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "footwear_select",
+      "viewport": "1280x720",
+      "ok": true,
+      "file": "after_footwear_select_1280x720.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "footwear_select",
+      "viewport": "1366x768",
+      "ok": true,
+      "file": "after_footwear_select_1366x768.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "footwear_select",
+      "viewport": "1600x900",
+      "ok": true,
+      "file": "after_footwear_select_1600x900.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "footwear_select",
+      "viewport": "1920x1080",
+      "ok": true,
+      "file": "after_footwear_select_1920x1080.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "footwear_select",
+      "viewport": "pixel-landscape-960x540",
+      "ok": true,
+      "file": "after_footwear_select_pixel-landscape-960x540.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "cup_select",
+      "viewport": "1280x720",
+      "ok": true,
+      "file": "after_cup_select_1280x720.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "cup_select",
+      "viewport": "1366x768",
+      "ok": true,
+      "file": "after_cup_select_1366x768.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "cup_select",
+      "viewport": "1600x900",
+      "ok": true,
+      "file": "after_cup_select_1600x900.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "cup_select",
+      "viewport": "1920x1080",
+      "ok": true,
+      "file": "after_cup_select_1920x1080.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "cup_select",
+      "viewport": "pixel-landscape-960x540",
+      "ok": true,
+      "file": "after_cup_select_pixel-landscape-960x540.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "race_hud",
+      "viewport": "1280x720",
+      "ok": true,
+      "file": "after_race_hud_1280x720.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "race_hud",
+      "viewport": "1366x768",
+      "ok": true,
+      "file": "after_race_hud_1366x768.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "race_hud",
+      "viewport": "1600x900",
+      "ok": true,
+      "file": "after_race_hud_1600x900.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "race_hud",
+      "viewport": "1920x1080",
+      "ok": true,
+      "file": "after_race_hud_1920x1080.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "race_hud",
+      "viewport": "pixel-landscape-960x540",
+      "ok": true,
+      "file": "after_race_hud_pixel-landscape-960x540.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "pause",
+      "viewport": "1280x720",
+      "ok": true,
+      "file": "after_pause_1280x720.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "pause",
+      "viewport": "1366x768",
+      "ok": true,
+      "file": "after_pause_1366x768.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "pause",
+      "viewport": "1600x900",
+      "ok": true,
+      "file": "after_pause_1600x900.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "pause",
+      "viewport": "1920x1080",
+      "ok": true,
+      "file": "after_pause_1920x1080.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "pause",
+      "viewport": "pixel-landscape-960x540",
+      "ok": true,
+      "file": "after_pause_pixel-landscape-960x540.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "results",
+      "viewport": "1280x720",
+      "ok": true,
+      "file": "after_results_1280x720.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "results",
+      "viewport": "1366x768",
+      "ok": true,
+      "file": "after_results_1366x768.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "results",
+      "viewport": "1600x900",
+      "ok": true,
+      "file": "after_results_1600x900.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "results",
+      "viewport": "1920x1080",
+      "ok": true,
+      "file": "after_results_1920x1080.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "results",
+      "viewport": "pixel-landscape-960x540",
+      "ok": true,
+      "file": "after_results_pixel-landscape-960x540.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "tutorial",
+      "viewport": "1280x720",
+      "ok": true,
+      "file": "after_tutorial_1280x720.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "tutorial",
+      "viewport": "1366x768",
+      "ok": true,
+      "file": "after_tutorial_1366x768.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "tutorial",
+      "viewport": "1600x900",
+      "ok": true,
+      "file": "after_tutorial_1600x900.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "tutorial",
+      "viewport": "1920x1080",
+      "ok": true,
+      "file": "after_tutorial_1920x1080.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "tutorial",
+      "viewport": "pixel-landscape-960x540",
+      "ok": true,
+      "file": "after_tutorial_pixel-landscape-960x540.png",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE",
+      "evidence_class": "brand_fixture_composite"
+    },
+    {
+      "surface": "main_menu",
+      "viewport": "1280x720",
+      "ok": true,
+      "file": "after_main_menu_1280x720_high-contrast.png",
+      "variant": "high-contrast",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE"
+    },
+    {
+      "surface": "main_menu",
+      "viewport": "1280x720",
+      "ok": true,
+      "file": "after_main_menu_1280x720_reduce-motion.png",
+      "variant": "reduce-motion",
+      "capture_class": "DETERMINISTIC_FIXTURE_CAPTURE"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "program": "VXP-3",
+  "commands": [
+    {"cmd": "make vxp3-structural", "exit_code": 0},
+    {"cmd": "make vxp3-capture", "exit_code": 0},
+    {"cmd": "make vxp3-gates", "exit_code": 0},
+    {"cmd": "python3 tools/validate_content.py", "exit_code": 0},
+    {"cmd": "python3 -m unittest discover -s tests -p 'test_*.py' -v", "exit_code": 0},
+    {"cmd": "GODOT_BIN=$HOME/Applications/Godot/Godot-4.5.app/Contents/MacOS/Godot bash tools/run_godot_headless.sh", "exit_code": 0, "notes": "PEDESTRIAN_MAIN_GODOT_HEADLESS_PASS including ProductionGateHarness PASS"}
+  ],
+  "stream_c": {"run": false, "reason": "Full Stream C exhaustion not re-run in-lane; harness retained via make stream-c-exhaust; origin/main already includes Stream C #24"},
+  "sandbox_note": "Initial Godot import under sandbox crashed (signal 11 writing user://logs); re-run with full permissions succeeded."
+}
