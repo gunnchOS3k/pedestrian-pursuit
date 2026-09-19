@@ -3,7 +3,7 @@
   "game_name": "Pedestrian Pursuit",
   "design_direction_label": "KINETIC SOLE",
   "concept": "Footwear is the machine. The runner is the vehicle.",
-  "VXP3_CUSTOM_FONT_PENDING": true,
+  "VXP3_CUSTOM_FONT_PENDING": false,
   "VXP3_ALL_HISTORICAL_RIGHTS_CLEARED": false,
   "policy": "Repository-authored originals. Quarantined launcher/splash icons not promoted.",
   "updated_utc": "2026-09-19T04:14:38.437275+00:00",
@@ -714,6 +714,30 @@
       "license": "ORIGINAL_INTERNAL",
       "status": "REPOSITORY_AUTHORED",
       "sha256": "4c26fb9f136e6ad8db17971f44fa05657f3a6fdbe971087860592238b2085e43"
+    },
+    {
+      "id": "vxp31.font.BarlowCondensed-Bold",
+      "path": "assets/fonts/vxp31/barlow_condensed/BarlowCondensed-Bold.ttf",
+      "license": "OFL-1.1",
+      "status": "THIRD_PARTY_OFL_CLEARED",
+      "sha256": "e476562ec9c1e16cf16475895b511f08c804f438cc9a9f80a44ea50a0eeb5b65",
+      "upstream": "https://github.com/google/fonts/tree/main/ofl/barlowcondensed"
+    },
+    {
+      "id": "vxp31.font.BarlowCondensed-SemiBold",
+      "path": "assets/fonts/vxp31/barlow_condensed/BarlowCondensed-SemiBold.ttf",
+      "license": "OFL-1.1",
+      "status": "THIRD_PARTY_OFL_CLEARED",
+      "sha256": "7b619d14bc2327509a9ef32b0890f709626f7ecc9ff61191c2a4314c5499d2d9",
+      "upstream": "https://github.com/google/fonts/tree/main/ofl/barlowcondensed"
+    },
+    {
+      "id": "vxp31.font.OFL",
+      "path": "assets/fonts/vxp31/barlow_condensed/OFL.txt",
+      "license": "OFL-1.1",
+      "status": "THIRD_PARTY_OFL_CLEARED",
+      "sha256": "186d750eb496a4c17a76385f82be6aea2ac1cf2de074a811d63786cf374ea73f",
+      "upstream": "https://github.com/google/fonts/tree/main/ofl/barlowcondensed"
     }
   ],
   "entries": [
@@ -1424,5 +1448,7 @@
       "status": "REPOSITORY_AUTHORED",
       "sha256": "4c26fb9f136e6ad8db17971f44fa05657f3a6fdbe971087860592238b2085e43"
     }
-  ]
+  ],
+  "VXP31_CLEARED_DISPLAY_FONT": "assets/fonts/vxp31/barlow_condensed/BarlowCondensed-SemiBold.ttf",
+  "font_note": "Barlow Condensed (SIL OFL) added in VXP-3.1 for display headings; HUD numerals remain engine-default for legibility."
 }
