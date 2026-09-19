@@ -264,11 +264,35 @@ func _step_settings_a11y() -> void:
 	a11y.set_colorblind_safe_hud(false)
 	a11y.set_larger_ui(false)
 	a11y.set_reduce_motion(false)
+	a11y.set_high_contrast(false)
 	_emit("settings_a11y_baseline", (not default_player.is_equal_approx(cb_player)) and scale_up >= 1.2 and shake_disabled and persisted, {
 		"colorblind_markers_differ": not default_player.is_equal_approx(cb_player),
 		"larger_ui_scale": scale_up,
 		"reduce_motion_disables_shake": shake_disabled,
 		"persisted_to_disk": persisted,
+	})
+	# High-contrast persistence + old-config compatibility (missing key → false).
+	var hc_before := bool(a11y.high_contrast)
+	a11y.set_high_contrast(true)
+	var cfg_hc := ConfigFile.new()
+	var hc_persisted := (
+		cfg_hc.load("user://accessibility.cfg") == OK
+		and bool(cfg_hc.get_value("a11y", "high_contrast", false))
+	)
+	a11y.set_high_contrast(false)
+	# Simulate legacy cfg without high_contrast key.
+	var legacy := ConfigFile.new()
+	legacy.set_value("a11y", "reduce_motion", false)
+	legacy.set_value("a11y", "larger_ui", false)
+	legacy.set_value("a11y", "auto_accelerate", false)
+	legacy.set_value("a11y", "colorblind_safe_hud", false)
+	legacy.save("user://accessibility.cfg")
+	a11y.load_settings()
+	var legacy_ok := bool(a11y.high_contrast) == false
+	a11y.set_high_contrast(hc_before)
+	_emit("settings_a11y_high_contrast", hc_persisted and legacy_ok, {
+		"high_contrast_persisted": hc_persisted,
+		"legacy_missing_key_defaults_false": legacy_ok,
 	})
 
 
