@@ -1,0 +1,14 @@
+{
+  "apk_path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-3-pedestrian-human-feedback-physics-input/build/android/pedestrian-pursuit-debug.apk",
+  "sha256": "5954ca11a2531d823e3b7b2037287f7de51b4987798126b42e90dd540f82dd8e",
+  "size_bytes": 117412953,
+  "package_id": "com.gunnchos.pedestrianpursuit",
+  "version_name": "0.3.10",
+  "version_code": 14,
+  "signer_cert_sha256": "b637ea5f982aa1d3027e346fbfe9f672fdc5dee95407b1608b50b6f1631bd59a",
+  "signer_dn": "C=US, O=Android, CN=Android Debug",
+  "parent_head": "ddb3020b2a785c8fd5d2136d8eebeb42bc6d84d7",
+  "branch": "vxp/vxp-3-3-pedestrian-human-feedback-physics-input",
+  "build_type": "debug",
+  "godot_version": "4.5.stable.official.876b29033"
+}
