@@ -2,7 +2,7 @@ extends Node
 
 ## Runtime accessibility settings (persisted). Seeds from device role defaults
 ## then lets the player override reduce-motion, larger UI, auto-accelerate,
-## and colorblind-safe HUD markers.
+## colorblind-safe HUD markers, and high-contrast presentation.
 
 signal settings_changed
 
@@ -12,6 +12,7 @@ var reduce_motion: bool = false
 var larger_ui: bool = false
 var auto_accelerate: bool = false
 var colorblind_safe_hud: bool = false
+var high_contrast: bool = false
 
 ## Colorblind-safe marker palette (Okabe–Ito inspired).
 const MARKER_PLAYER := Color(0.0, 0.45, 0.7) ## blue
@@ -61,6 +62,11 @@ func set_auto_accelerate(value: bool) -> void:
 
 func set_colorblind_safe_hud(value: bool) -> void:
 	colorblind_safe_hud = value
+	_persist_and_notify()
+
+
+func set_high_contrast(value: bool) -> void:
+	high_contrast = value
 	_persist_and_notify()
 
 
@@ -123,6 +129,8 @@ func load_settings() -> void:
 	larger_ui = bool(cfg.get_value("a11y", "larger_ui", false))
 	auto_accelerate = bool(cfg.get_value("a11y", "auto_accelerate", false))
 	colorblind_safe_hud = bool(cfg.get_value("a11y", "colorblind_safe_hud", false))
+	## Missing key → false (tolerate pre-VXP311 configs without high_contrast).
+	high_contrast = bool(cfg.get_value("a11y", "high_contrast", false))
 	var gm := _game_manager()
 	if gm != null and cfg.has_section_key("a11y", "auto_accelerate"):
 		gm.set_meta("accessibility_auto_accel_override", true)
@@ -134,6 +142,7 @@ func save_settings() -> void:
 	cfg.set_value("a11y", "larger_ui", larger_ui)
 	cfg.set_value("a11y", "auto_accelerate", auto_accelerate)
 	cfg.set_value("a11y", "colorblind_safe_hud", colorblind_safe_hud)
+	cfg.set_value("a11y", "high_contrast", high_contrast)
 	cfg.save(SETTINGS_PATH)
 
 

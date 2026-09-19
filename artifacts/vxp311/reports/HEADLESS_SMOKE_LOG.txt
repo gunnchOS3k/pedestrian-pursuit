@@ -1,0 +1,27 @@
+bash tools/run_godot_headless.sh
+Godot: 4.5.stable.official.876b29033
+Binary: /Users/gunnchos/Applications/Godot/Godot-4.5.app/Contents/MacOS/Godot
+=== import ===
+PASS import
+=== startup ===
+PASS startup
+=== TestRunner ===
+PASS TestRunner
+=== G2C6RuntimeTest ===
+PASS G2C6RuntimeTest
+=== CupFlowTest ===
+PASS CupFlowTest
+=== BetaProductStateTest ===
+PASS BetaProductStateTest
+=== FullProductDepthTest ===
+PASS FullProductDepthTest
+=== retired_false_green_script_smokes ===
+RETIRED AlphaProductStateTest DigitalRcProductStateTest (superseded by ProductionGateHarness)
+=== ProductionGateHarness ===
+PASS ProductionGateHarness
+=== CompetitiveAiEvalSubset ===
+PASS CompetitiveAiEvalSubset
+
+PEDESTRIAN_MAIN_GODOT_HEADLESS_PASS
+Headless suites green with false-green SCRIPT ERROR rejection; Alpha/DigitalRc --script smokes retired; ProductionGateHarness authoritative (AI full matrix is a separate evidence run).
+Full AI matrix: PP_AI_EVAL_TIME_SCALE=24 /Users/gunnchos/Applications/Godot/Godot-4.5.app/Contents/MacOS/Godot --headless --path . --script res://tests/CompetitiveAiEvalRunner.gd
