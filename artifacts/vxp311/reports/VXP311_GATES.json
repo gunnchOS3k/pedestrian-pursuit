@@ -6,7 +6,7 @@
   "parent_head_sha": "6e63861b78707441b81cee648934aa1304a757c6",
   "pr25_head_sha": "1d790aae5d0abc9ffd9f4350cdca4a0add4ff151",
   "origin_main_sha": "e0c21fcc4d4c058eb42a5a9d4c858a77987c3a4e",
-  "closure_head_sha": "6e63861b78707441b81cee648934aa1304a757c6",
+  "closure_head_sha": "bb63a082199fdb092dc7440b2686067dde553884",
   "evidence_fingerprint_sha256": "90fd704788a27e766109132b472e1b98e8c797be573e1e6e758628a41d0b8207",
   "worktree": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure",
   "VXP311_PARENT_PR26_HEAD_VERIFIED": true,
