@@ -15,7 +15,9 @@ config/description="Original arcade foot racing across the four-course Sole Surg
 config/version="0.4.0-digital-rc"
 run/main_scene="res://scenes/main/MainMenu.tscn"
 config/features=PackedStringArray("4.5", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="res://assets/branding/vxp31/launcher_icon_512.png"
+boot_splash/image="res://assets/branding/vxp31/splash_1280x720.png"
+boot_splash/bg_color=Color(0.0431373, 0.0705882, 0.12549, 1)
 
 [autoload]
 

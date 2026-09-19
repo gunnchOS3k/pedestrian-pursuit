@@ -2,8 +2,12 @@ extends Node
 
 ## Career progression + unlock surfacing (digital Beta).
 
-const SAVE_PATH := "user://pp_progression.cfg"
+const SAVE_PATH_DEFAULT := "user://pp_progression.cfg"
+const SAVE_PATH_VXP31 := "user://vxp31_sandbox/pp_progression.cfg"
 const SAVE_VERSION := 2
+
+var SAVE_PATH := SAVE_PATH_DEFAULT
+var _vxp31_sandbox := false
 
 var xp: int = 0
 var level: int = 1
@@ -16,7 +20,26 @@ var first_run_complete: bool = false
 
 
 func _ready() -> void:
+	if _cmdline_has_vxp31_capture():
+		enable_vxp31_sandbox()
 	load_or_migrate()
+
+
+func _cmdline_has_vxp31_capture() -> bool:
+	for arg in OS.get_cmdline_user_args():
+		var s := str(arg)
+		if s == "--vxp31-capture" or s.begins_with("--vxp31-capture="):
+			return true
+	return false
+
+
+func enable_vxp31_sandbox() -> void:
+	## Isolate capture/progression writes away from owner user:// saves.
+	_vxp31_sandbox = true
+	SAVE_PATH = SAVE_PATH_VXP31
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("user://vxp31_sandbox"))
+	tutorial_completed = false
+	first_run_complete = false
 
 
 func load_or_migrate() -> void:

@@ -8,7 +8,9 @@ class_name Vxp3Brand
 const BRAND_DIR := "res://assets/branding/vxp3/"
 const GLYPH_DIR := "res://assets/branding/vxp3/glyphs/"
 const THEME_PATH := "res://assets/ui/vxp3/themes/pp_vxp3_theme.tres"
-const CUSTOM_FONT_PENDING := true
+const DISPLAY_FONT_PATH := "res://assets/fonts/vxp31/barlow_condensed/BarlowCondensed-SemiBold.ttf"
+const DISPLAY_FONT_BOLD_PATH := "res://assets/fonts/vxp31/barlow_condensed/BarlowCondensed-Bold.ttf"
+const CUSTOM_FONT_PENDING := false
 
 ## Surfaces
 const COLOR_NIGHT_TRACK := Color("0B1220")
@@ -57,10 +59,34 @@ const ENGINEER_TOKENS := [
 ]
 
 
+static func display_font() -> Font:
+	if ResourceLoader.exists(DISPLAY_FONT_PATH):
+		return load(DISPLAY_FONT_PATH) as Font
+	return null
+
+
+static func display_font_bold() -> Font:
+	if ResourceLoader.exists(DISPLAY_FONT_BOLD_PATH):
+		return load(DISPLAY_FONT_BOLD_PATH) as Font
+	return display_font()
+
+
 static func theme() -> Theme:
 	if ResourceLoader.exists(THEME_PATH):
-		return load(THEME_PATH) as Theme
+		var loaded := load(THEME_PATH) as Theme
+		_apply_display_font(loaded)
+		return loaded
 	return _build_runtime_theme()
+
+
+static func _apply_display_font(t: Theme) -> void:
+	if t == null:
+		return
+	var font := display_font_bold()
+	if font == null:
+		return
+	t.set_font("font", "Label", font)
+	t.set_font("font", "Button", font)
 
 
 static func _build_runtime_theme() -> Theme:
