@@ -1,35 +1,35 @@
 {
   "import_quit": {
     "cmd": [
-      "/opt/homebrew/bin/godot",
+      "/Users/gunnchos/Applications/Godot/Godot-4.5.app/Contents/MacOS/Godot",
       "--headless",
       "--path",
-      "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/stream-c-pre-human-playtest",
+      "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-pedestrian-pursuit",
       "--quit-after",
       "1"
     ],
-    "cwd": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/stream-c-pre-human-playtest",
+    "cwd": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-pedestrian-pursuit",
     "exit_code": 0,
     "ok": true,
-    "seconds": 1.084,
-    "stderr_tail": "WARNING: 2 ObjectDB instances were leaked at exit (run with `--verbose` for details).\n   at: cleanup (core/object/object.cpp:2536)\nERROR: 1 resources still in use at exit (run with --verbose for details).\n   at: clear (core/io/resource.cpp:822)\n",
-    "stdout_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\n"
+    "seconds": 0.916,
+    "stderr_tail": "WARNING: ObjectDB instances leaked at exit (run with --verbose for details).\n     at: cleanup (core/object/object.cpp:2514)\nERROR: 2 resources still in use at exit (run with --verbose for details).\n   at: clear (core/io/resource.cpp:795)\n",
+    "stdout_tail": "Godot Engine v4.5.stable.official.876b29033 - https://godotengine.org\n\n"
   },
   "note": "Headless exit logs only; not a physical crash dump",
   "smoke": {
     "cmd": [
-      "/opt/homebrew/bin/godot",
+      "/Users/gunnchos/Applications/Godot/Godot-4.5.app/Contents/MacOS/Godot",
       "--headless",
       "--path",
-      "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/stream-c-pre-human-playtest",
+      "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-pedestrian-pursuit",
       "-s",
       "res://tests/TestRunner.gd"
     ],
-    "cwd": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/stream-c-pre-human-playtest",
+    "cwd": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-pedestrian-pursuit",
     "exit_code": 0,
     "ok": true,
-    "seconds": 0.797,
+    "seconds": 0.646,
     "stderr_tail": "",
-    "stdout_tail": "Godot Engine v4.7.1.stable.official.a13da4feb - https://godotengine.org\n\nGodot Wave E Alpha course smoke passed for 2 cups / 8 courses.\n"
+    "stdout_tail": "Godot Engine v4.5.stable.official.876b29033 - https://godotengine.org\n\nGodot Wave E Alpha course smoke passed for 2 cups / 8 courses.\n"
   }
 }
