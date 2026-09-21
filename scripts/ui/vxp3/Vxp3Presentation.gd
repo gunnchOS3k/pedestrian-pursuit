@@ -18,6 +18,9 @@ static func recomposite_main_menu(menu: Control) -> void:
 	if title:
 		title.text = "Pedestrian Pursuit"
 		title.visible = true
+		var df := BRAND.display_font_bold()
+		if df:
+			title.add_theme_font_override("font", df)
 	var subtitle := vbox.get_node_or_null("Subtitle") as Label
 	if subtitle:
 		subtitle.text = BRAND.player_subtitle()
@@ -34,7 +37,14 @@ static func recomposite_main_menu(menu: Control) -> void:
 	var start_cup := vbox.get_node_or_null("StartCupButton") as Button
 	if start_cup:
 		start_cup.text = "Championship"
-		BRAND.style_primary_cta(start_cup)
+		## Explicitly clear any prior primary CTA chrome so RACE stays sole hero action.
+		start_cup.remove_theme_stylebox_override("normal")
+		start_cup.remove_theme_stylebox_override("hover")
+		start_cup.remove_theme_stylebox_override("pressed")
+		start_cup.remove_theme_color_override("font_color")
+		BRAND.style_secondary_control(start_cup)
+		start_cup.custom_minimum_size.y = maxf(start_cup.custom_minimum_size.y, 48.0)
+		start_cup.add_theme_color_override("font_color", BRAND.COLOR_INK)
 	## Mode strip labels
 	_relabel_button(vbox, "TimeTrialButton", "Time Trial")
 	_relabel_button(vbox, "LocalMPButton", "Local 2P")
@@ -61,6 +71,7 @@ static func recomposite_main_menu(menu: Control) -> void:
 		device_hint.add_theme_color_override("font_color", BRAND.COLOR_MUTED)
 	_reorder_primary(vbox)
 	_refresh_shoe_copy(menu)
+	_style_pickers(vbox)
 
 
 static func _ensure_hero(menu: Control) -> void:
@@ -143,13 +154,18 @@ static func apply_pause_chrome(pause: CanvasLayer) -> void:
 	var panel := pause.get_node_or_null("Panel") as PanelContainer
 	if panel and BRAND.theme():
 		panel.theme = BRAND.theme()
+	var hc := BRAND.high_contrast_active()
+	if hc and panel:
+		BRAND._apply_high_contrast_control_tree(panel)
 	var resume := pause.get_node_or_null("Panel/Margin/VBox/ResumeButton") as Button
 	if resume:
 		resume.text = "Resume"
 		BRAND.style_primary_cta(resume)
 	var title := pause.get_node_or_null("Panel/Margin/VBox/Title") as Label
 	if title:
-		title.add_theme_color_override("font_color", BRAND.COLOR_MIDSOLE_YELLOW)
+		title.add_theme_color_override(
+			"font_color", BRAND.COLOR_HC_ACCENT if hc else BRAND.COLOR_MIDSOLE_YELLOW
+		)
 	_ensure_tutorial_guide(pause)
 
 
@@ -185,23 +201,74 @@ static func apply_results_chrome(results: CanvasLayer) -> void:
 	var panel := results.get_node_or_null("Panel") as PanelContainer
 	if panel and BRAND.theme():
 		panel.theme = BRAND.theme()
+	var hc := BRAND.high_contrast_active()
+	if hc and panel:
+		BRAND._apply_high_contrast_control_tree(panel)
 	var title := results.get_node_or_null("Panel/Margin/VBox/TitleLabel") as Label
 	if title:
-		title.add_theme_color_override("font_color", BRAND.COLOR_MIDSOLE_YELLOW)
+		title.add_theme_color_override(
+			"font_color", BRAND.COLOR_HC_ACCENT if hc else BRAND.COLOR_MIDSOLE_YELLOW
+		)
 		title.add_theme_font_size_override("font_size", BRAND.TYPE_RACE_TITLE)
 
 
 static func podium_glyph_prefix(place: int) -> String:
-	## Text-safe stand-in; TextureRect glyphs preferred when HUD builds visual podium.
+	## Accessible text fallback paired with TextureRect glyphs in ResultsScreen.
 	match place:
 		1:
-			return "[1]"
+			return "1st"
 		2:
-			return "[2]"
+			return "2nd"
 		3:
-			return "[3]"
+			return "3rd"
 		_:
 			return "%d." % place
+
+
+static func ensure_podium_glyphs(results: CanvasLayer, field_lines: PackedStringArray) -> void:
+	## Replace placeholder [1]/[2]/[3] text rows with glyph + accessible text.
+	if results == null:
+		return
+	var vbox := results.get_node_or_null("Panel/Margin/VBox") as VBoxContainer
+	if vbox == null:
+		return
+	var row := vbox.get_node_or_null("PodiumRow") as HBoxContainer
+	if row == null:
+		row = HBoxContainer.new()
+		row.name = "PodiumRow"
+		row.alignment = BoxContainer.ALIGNMENT_CENTER
+		row.add_theme_constant_override("separation", 18)
+		vbox.add_child(row)
+		var podium_label := vbox.get_node_or_null("PodiumLabel")
+		if podium_label:
+			vbox.move_child(row, podium_label.get_index())
+	for c in row.get_children():
+		c.queue_free()
+	for i in mini(3, field_lines.size()):
+		var slot := VBoxContainer.new()
+		slot.alignment = BoxContainer.ALIGNMENT_CENTER
+		var tex := TextureRect.new()
+		tex.custom_minimum_size = Vector2(48, 48)
+		tex.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tex.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		tex.texture = BRAND.glyph_texture("podium_%d" % (i + 1))
+		tex.tooltip_text = podium_glyph_prefix(i + 1)
+		slot.add_child(tex)
+		var lab := Label.new()
+		var name := str(field_lines[i])
+		var dot := name.find(". ")
+		if dot >= 0 and dot < 3:
+			name = name.substr(dot + 2)
+		lab.text = "%s · %s" % [podium_glyph_prefix(i + 1), name]
+		lab.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		lab.add_theme_font_size_override("font_size", BRAND.TYPE_METADATA)
+		lab.add_theme_color_override("font_color", BRAND.COLOR_INK)
+		slot.add_child(lab)
+		row.add_child(slot)
+	var legacy := vbox.get_node_or_null("PodiumLabel") as Label
+	if legacy:
+		## Keep accessible summary; hide raw placeholder look.
+		legacy.visible = false
 
 
 static func apply_hud_chrome(hud: CanvasLayer) -> void:
@@ -211,31 +278,84 @@ static func apply_hud_chrome(hud: CanvasLayer) -> void:
 	var margin := hud.get_node_or_null("Margin") as Control
 	if margin and t:
 		margin.theme = t
+	_recluster_hud(hud)
+	var hc := BRAND.high_contrast_active()
+	var ink := BRAND.COLOR_HC_FG if hc else BRAND.COLOR_INK
+	var accent := BRAND.COLOR_HC_ACCENT if hc else BRAND.COLOR_KINETIC_ORANGE
+	var warn := BRAND.COLOR_HC_WARN if hc else BRAND.COLOR_HAZARD_RED
 	for path in ["Margin/VBox/LapLabel", "Margin/VBox/PositionLabel", "Margin/VBox/TimerLabel"]:
 		var lab := hud.get_node_or_null(path) as Label
 		if lab:
 			lab.add_theme_font_size_override("font_size", BRAND.TYPE_HUD_PRIMARY)
-			lab.add_theme_color_override("font_color", BRAND.COLOR_INK)
+			lab.add_theme_color_override("font_color", ink)
 	var pos := hud.get_node_or_null("Margin/VBox/PositionLabel") as Label
 	if pos:
 		pos.add_theme_font_size_override("font_size", BRAND.TYPE_POSITION_NUMBER)
-		pos.add_theme_color_override("font_color", BRAND.COLOR_KINETIC_ORANGE)
+		pos.add_theme_color_override("font_color", accent)
+		## Strip redundant "Position:" engineer stacking if present.
+		var tpos := pos.text
+		if tpos.begins_with("Position:"):
+			pos.text = tpos.replace("Position:", "P").strip_edges()
+	var lap := hud.get_node_or_null("Margin/VBox/LapLabel") as Label
+	if lap and lap.text.begins_with("Lap:"):
+		lap.text = lap.text.replace("Lap:", "L").strip_edges()
 	var timer := hud.get_node_or_null("Margin/VBox/TimerLabel") as Label
 	if timer:
 		timer.add_theme_font_size_override("font_size", BRAND.TYPE_TIMING_NUMBER)
-		timer.add_theme_color_override("font_color", BRAND.COLOR_BOOST_CYAN)
+		timer.add_theme_color_override(
+			"font_color", BRAND.COLOR_HC_OK if hc else BRAND.COLOR_BOOST_CYAN
+		)
 	var boost := hud.get_node_or_null("Margin/VBox/BoostBar") as ProgressBar
 	if boost:
-		boost.modulate = BRAND.COLOR_BOOST_CYAN
+		boost.modulate = BRAND.COLOR_HC_OK if hc else BRAND.COLOR_BOOST_CYAN
 	var course := hud.get_node_or_null("CourseLabel") as Label
 	if course:
-		course.add_theme_color_override("font_color", BRAND.COLOR_MUTED)
-		course.add_theme_font_size_override("font_size", BRAND.TYPE_COURSE_NAME - 4)
+		course.add_theme_color_override("font_color", ink)
+		course.add_theme_font_size_override("font_size", BRAND.TYPE_COURSE_NAME - 2)
+		course.modulate = Color(1, 1, 1, 0.92)
+	var ww := hud.get_node_or_null("WrongWayLabel") as Label
+	if ww == null:
+		ww = hud.find_child("WrongWayLabel", true, false) as Label
+	if ww:
+		ww.add_theme_color_override("font_color", warn)
 	## Demote device-lab map noise unless Advanced role needs it
 	var map_lab := hud.get_node_or_null("MapProfileLabel") as Label
 	if map_lab:
-		map_lab.add_theme_color_override("font_color", BRAND.COLOR_MUTED)
+		map_lab.add_theme_color_override(
+			"font_color", BRAND.COLOR_HC_MUTED if hc else BRAND.COLOR_MUTED
+		)
 		map_lab.add_theme_font_size_override("font_size", BRAND.TYPE_METADATA)
+		map_lab.modulate.a = 0.55
+
+
+static func _recluster_hud(hud: CanvasLayer) -> void:
+	## Collapse stacked Map/Lap/Position/Time/Speed/Item into primary + secondary clusters.
+	var vbox := hud.get_node_or_null("Margin/VBox") as VBoxContainer
+	if vbox == null or vbox.get_node_or_null("HudCluster") != null:
+		return
+	var cluster := VBoxContainer.new()
+	cluster.name = "HudCluster"
+	cluster.add_theme_constant_override("separation", 6)
+	vbox.add_child(cluster)
+	vbox.move_child(cluster, 0)
+	var primary := HBoxContainer.new()
+	primary.name = "PrimaryRaceReadouts"
+	primary.add_theme_constant_override("separation", 16)
+	cluster.add_child(primary)
+	for n in ["PositionLabel", "LapLabel", "TimerLabel"]:
+		var node := vbox.get_node_or_null(n)
+		if node:
+			vbox.remove_child(node)
+			primary.add_child(node)
+	var secondary := HBoxContainer.new()
+	secondary.name = "SecondaryMeters"
+	secondary.add_theme_constant_override("separation", 12)
+	cluster.add_child(secondary)
+	for n in ["SpeedLabel", "ItemLabel", "BoostBar", "DriftMeter", "DriftSparkIcon", "FootwearLabel"]:
+		var node2 := vbox.get_node_or_null(n)
+		if node2:
+			vbox.remove_child(node2)
+			secondary.add_child(node2)
 
 
 static func apply_toast_chrome(toast: CanvasLayer) -> void:
@@ -259,3 +379,22 @@ static func apply_toast_chrome(toast: CanvasLayer) -> void:
 		sb.content_margin_top = 12
 		sb.content_margin_bottom = 12
 		panel.add_theme_stylebox_override("panel", sb)
+
+
+static func _style_pickers(vbox: VBoxContainer) -> void:
+	## Soften raw OptionButton form-lab look without removing selection contracts.
+	for name in ["RunnerPicker", "CoursePicker", "ShoePicker", "CupPicker", "DevicePicker"]:
+		var ob := vbox.get_node_or_null(name) as OptionButton
+		if ob == null:
+			continue
+		ob.custom_minimum_size.y = maxf(ob.custom_minimum_size.y, BRAND.TOUCH_MIN)
+		ob.add_theme_font_size_override("font_size", BRAND.TYPE_CONTROL)
+		ob.add_theme_color_override("font_color", BRAND.COLOR_INK)
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = BRAND.COLOR_PANEL
+		sb.set_corner_radius_all(10)
+		sb.content_margin_left = 12
+		sb.content_margin_right = 12
+		sb.content_margin_top = 8
+		sb.content_margin_bottom = 8
+		ob.add_theme_stylebox_override("normal", sb)

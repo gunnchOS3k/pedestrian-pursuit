@@ -1,0 +1,9 @@
+{
+  "schema": "vxp31.performance/v1",
+  "font_ttf_bytes": 219340,
+  "branding_vxp31_bytes": 356370,
+  "capture_png_count": 35,
+  "capture_png_bytes": 2757460,
+  "TARGET_60FPS_CLAIM": "UNVALIDATED",
+  "note": "No device FPS claimed. Presentation/capture metrics only."
+}

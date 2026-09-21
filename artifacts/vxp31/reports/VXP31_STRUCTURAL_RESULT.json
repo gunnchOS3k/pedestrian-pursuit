@@ -1,0 +1,12 @@
+{
+  "pass": true,
+  "errors": [],
+  "headless_smoke_pass": true,
+  "production_gate_pass": true,
+  "stream_c_pass": true,
+  "vxp3_structural_pass": true,
+  "evidence_logs": {
+    "headless": "artifacts/vxp31/reports/HEADLESS_SMOKE_LOG.txt",
+    "stream_c": "artifacts/vxp31/reports/STREAM_C_LOG.txt"
+  }
+}

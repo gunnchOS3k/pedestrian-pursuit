@@ -5,7 +5,7 @@
     "human_playtest_completed": false,
     "rights_clearance_complete": false
   },
-  "emitted_at": "2026-09-19T04:20:22.237408+00:00",
+  "emitted_at": "2026-09-19T14:29:23.778536+00:00",
   "fixtures": {
     "deterministic": "artifacts/digital_engineering_exhaustion/stream_c/fixtures/DETERMINISTIC_BOT_TRAVERSAL.json",
     "smoke_scenes": "artifacts/digital_engineering_exhaustion/stream_c/fixtures/SMOKE_SCENES.json"
@@ -21,7 +21,7 @@
     "HUMAN_FUN_BALANCE_FEEL": "HUMAN_VALIDATION_REQUIRED",
     "RIGHTS_CLEARANCE_COMPLETE": false,
     "RIGHTS_QUARANTINE_ACTIVE": true,
-    "accepted_main_sha": "9b5931f63c19056acb409dab573af0203f0dfbe2",
+    "accepted_main_sha": "1d790aae5d0abc9ffd9f4350cdca4a0add4ff151",
     "blockers": [
       {
         "blocker_class": "HUMAN_VALIDATION_REQUIRED",
@@ -86,12 +86,12 @@
       {
         "blocker_class": "PHYSICAL_HARDWARE_REQUIRED",
         "dimension": "android",
-        "evidence": "adb device"
+        "evidence": "no adb device"
       },
       {
         "blocker_class": "LEGAL_RIGHTS_REVIEW_REQUIRED",
         "dimension": "rights",
-        "evidence": "747 quarantined assets"
+        "evidence": "831 quarantined assets"
       },
       {
         "blocker_class": "HUMAN_VALIDATION_REQUIRED",
@@ -99,7 +99,7 @@
         "evidence": "playtest task sheets are templates only"
       }
     ],
-    "evaluated_at": "2026-09-19T04:20:22.155565+00:00",
+    "evaluated_at": "2026-09-19T14:29:23.727841+00:00",
     "failures": [],
     "game_id": "pedestrian-pursuit",
     "host": {
@@ -109,7 +109,7 @@
     "unclassified_partial": []
   },
   "playtest_task_sheets": "artifacts/digital_engineering_exhaustion/stream_c/playtest/PLAYTEST_TASK_SHEETS.md",
-  "rights_quarantine_count": 747,
+  "rights_quarantine_count": 831,
   "section": 9,
   "stream": "C"
 }

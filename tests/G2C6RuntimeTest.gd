@@ -77,6 +77,24 @@ func _test_accessibility(a11y: Node, failures: PackedStringArray) -> void:
 		failures.append("clearing reduce motion should restore camera shake")
 	a11y.set_larger_ui(false)
 	a11y.set_colorblind_safe_hud(false)
+	## High-contrast persistence + legacy config without key.
+	a11y.set_high_contrast(true)
+	if not bool(a11y.high_contrast):
+		failures.append("high_contrast should enable")
+	a11y.save_settings()
+	var cfg := ConfigFile.new()
+	if cfg.load("user://accessibility.cfg") != OK or not bool(cfg.get_value("a11y", "high_contrast", false)):
+		failures.append("high_contrast should persist")
+	a11y.set_high_contrast(false)
+	var legacy := ConfigFile.new()
+	legacy.set_value("a11y", "reduce_motion", false)
+	legacy.set_value("a11y", "larger_ui", false)
+	legacy.set_value("a11y", "auto_accelerate", false)
+	legacy.set_value("a11y", "colorblind_safe_hud", false)
+	legacy.save("user://accessibility.cfg")
+	a11y.load_settings()
+	if bool(a11y.high_contrast):
+		failures.append("missing high_contrast key must default false")
 
 
 func _test_telemetry(telemetry: Node, failures: PackedStringArray) -> void:

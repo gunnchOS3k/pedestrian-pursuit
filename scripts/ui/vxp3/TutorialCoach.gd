@@ -24,14 +24,35 @@ func _ready() -> void:
 	visible = false
 
 
+func place_adaptive(prefer: String = "bottom") -> void:
+	## Keep coach off runner center, touch controls, and minimap (top-right).
+	if _panel == null:
+		return
+	var vp := get_viewport().get_visible_rect().size
+	_panel.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	_panel.anchor_right = 0.0
+	_panel.anchor_bottom = 0.0
+	var w := minf(420.0, vp.x * 0.42)
+	var h := 150.0
+	if prefer == "left" or vp.x >= 1400.0:
+		## Left rail — clears minimap + bottom touch.
+		_panel.offset_left = 16
+		_panel.offset_top = vp.y * 0.28
+		_panel.offset_right = 16 + w
+		_panel.offset_bottom = vp.y * 0.28 + h
+	else:
+		## Bottom-left band — clears center runner + top-right minimap.
+		_panel.offset_left = 16
+		_panel.offset_right = 16 + w
+		_panel.offset_top = vp.y - h - 24
+		_panel.offset_bottom = vp.y - 24
+
+
 func _build() -> void:
 	_panel = PanelContainer.new()
 	_panel.name = "CoachPanel"
-	_panel.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
-	_panel.offset_left = 24
-	_panel.offset_right = -24
-	_panel.offset_top = -168
-	_panel.offset_bottom = -24
+	_panel.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	place_adaptive("bottom")
 	add_child(_panel)
 	var theme := BRAND.theme()
 	if theme:
@@ -70,6 +91,7 @@ func show_tip(tip_id: String, title: String, body: String, once: bool = true) ->
 	_active_id = tip_id
 	_title.text = title
 	_body.text = body
+	place_adaptive("left" if tip_id in ["sprint", "drift_spark_tiers", "perfect_step"] else "bottom")
 	visible = true
 	if BRAND.reduce_motion_active():
 		_panel.modulate.a = 1.0

@@ -8,7 +8,9 @@ class_name Vxp3Brand
 const BRAND_DIR := "res://assets/branding/vxp3/"
 const GLYPH_DIR := "res://assets/branding/vxp3/glyphs/"
 const THEME_PATH := "res://assets/ui/vxp3/themes/pp_vxp3_theme.tres"
-const CUSTOM_FONT_PENDING := true
+const DISPLAY_FONT_PATH := "res://assets/fonts/vxp31/barlow_condensed/BarlowCondensed-SemiBold.ttf"
+const DISPLAY_FONT_BOLD_PATH := "res://assets/fonts/vxp31/barlow_condensed/BarlowCondensed-Bold.ttf"
+const CUSTOM_FONT_PENDING := false
 
 ## Surfaces
 const COLOR_NIGHT_TRACK := Color("0B1220")
@@ -25,9 +27,15 @@ const COLOR_HAZARD_RED := Color("FF4D6A")
 const COLOR_GHOST_VIOLET := Color("A78BFA")
 const COLOR_INK := Color("F4F7FB")
 const COLOR_MUTED := Color("8FA3C4")
-const COLOR_HC_BG := Color(0, 0, 0, 1)
-const COLOR_HC_FG := Color(1, 1, 1, 1)
-const COLOR_HC_ACCENT := Color("FFE033")
+## Designed high-contrast palette (not pure black + neon). Charcoal / paper / amber.
+const COLOR_HC_BG := Color("141820")
+const COLOR_HC_PANEL := Color("222A38")
+const COLOR_HC_FG := Color("F7F4EC")
+const COLOR_HC_MUTED := Color("C8D0DC")
+const COLOR_HC_ACCENT := Color("E8A317")
+const COLOR_HC_FOCUS := Color("F0D060")
+const COLOR_HC_WARN := Color("E85D4C")
+const COLOR_HC_OK := Color("3DDC84")
 
 ## Type roles (px). Custom face deferred — hierarchy is the contract.
 const TYPE_DISPLAY := 48
@@ -57,10 +65,34 @@ const ENGINEER_TOKENS := [
 ]
 
 
+static func display_font() -> Font:
+	if ResourceLoader.exists(DISPLAY_FONT_PATH):
+		return load(DISPLAY_FONT_PATH) as Font
+	return null
+
+
+static func display_font_bold() -> Font:
+	if ResourceLoader.exists(DISPLAY_FONT_BOLD_PATH):
+		return load(DISPLAY_FONT_BOLD_PATH) as Font
+	return display_font()
+
+
 static func theme() -> Theme:
 	if ResourceLoader.exists(THEME_PATH):
-		return load(THEME_PATH) as Theme
+		var loaded := load(THEME_PATH) as Theme
+		_apply_display_font(loaded)
+		return loaded
 	return _build_runtime_theme()
+
+
+static func _apply_display_font(t: Theme) -> void:
+	if t == null:
+		return
+	var font := display_font_bold()
+	if font == null:
+		return
+	t.set_font("font", "Label", font)
+	t.set_font("font", "Button", font)
 
 
 static func _build_runtime_theme() -> Theme:
@@ -107,9 +139,8 @@ static func reduce_motion_active() -> bool:
 
 
 static func high_contrast_active() -> bool:
-	## No dedicated high-contrast flag yet — larger_ui + colorblind markers approximate.
 	if AccessibilitySettings != null:
-		return bool(AccessibilitySettings.larger_ui) and bool(AccessibilitySettings.colorblind_safe_hud)
+		return bool(AccessibilitySettings.high_contrast)
 	return false
 
 
@@ -125,18 +156,49 @@ static func apply_surface_chrome(root: Control, opts: Dictionary = {}) -> void:
 	var t := theme()
 	if t != null:
 		root.theme = t
+	var hc := high_contrast_active()
 	var bg := root.get_node_or_null("Background") as ColorRect
 	if bg != null:
-		bg.color = COLOR_HC_BG if high_contrast_active() else COLOR_NIGHT_TRACK
+		bg.color = COLOR_HC_BG if hc else COLOR_NIGHT_TRACK
 	var title := root.get_node_or_null("VBox/Title") as Label
 	if title == null:
 		title = root.find_child("Title", true, false) as Label
 	if title != null:
 		title.add_theme_font_size_override("font_size", int(opts.get("title_size", TYPE_DISPLAY)))
-		title.add_theme_color_override(
-			"font_color", COLOR_HC_FG if high_contrast_active() else COLOR_INK
-		)
+		title.add_theme_color_override("font_color", COLOR_HC_FG if hc else COLOR_INK)
+	if hc:
+		_apply_high_contrast_control_tree(root)
 	_ensure_min_touch_targets(root)
+
+
+static func _apply_high_contrast_control_tree(node: Node) -> void:
+	if node is Label:
+		var lab := node as Label
+		lab.add_theme_color_override("font_color", COLOR_HC_FG)
+	elif node is Button:
+		var btn := node as Button
+		btn.add_theme_color_override("font_color", COLOR_HC_FG)
+		var focus := StyleBoxFlat.new()
+		focus.bg_color = COLOR_HC_PANEL
+		focus.border_color = COLOR_HC_FOCUS
+		focus.set_border_width_all(3)
+		focus.set_corner_radius_all(10)
+		focus.content_margin_left = 14
+		focus.content_margin_right = 14
+		focus.content_margin_top = 10
+		focus.content_margin_bottom = 10
+		btn.add_theme_stylebox_override("focus", focus)
+	elif node is PanelContainer or node is Panel:
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = Color(COLOR_HC_PANEL.r, COLOR_HC_PANEL.g, COLOR_HC_PANEL.b, 0.96)
+		sb.set_corner_radius_all(12)
+		sb.content_margin_left = 16
+		sb.content_margin_right = 16
+		sb.content_margin_top = 14
+		sb.content_margin_bottom = 14
+		(node as Control).add_theme_stylebox_override("panel", sb)
+	for c in node.get_children():
+		_apply_high_contrast_control_tree(c)
 
 
 static func _ensure_min_touch_targets(node: Node) -> void:
@@ -208,8 +270,9 @@ static func style_primary_cta(btn: Button) -> void:
 	if btn == null:
 		return
 	btn.custom_minimum_size = Vector2(maxf(btn.custom_minimum_size.x, 220.0), maxf(btn.custom_minimum_size.y, 56.0))
+	var hc := high_contrast_active()
 	var sb := StyleBoxFlat.new()
-	sb.bg_color = COLOR_KINETIC_ORANGE if not high_contrast_active() else COLOR_HC_ACCENT
+	sb.bg_color = COLOR_HC_ACCENT if hc else COLOR_KINETIC_ORANGE
 	sb.set_corner_radius_all(14)
 	sb.content_margin_left = 18
 	sb.content_margin_right = 18
@@ -217,9 +280,13 @@ static func style_primary_cta(btn: Button) -> void:
 	sb.content_margin_bottom = 12
 	btn.add_theme_stylebox_override("normal", sb)
 	var hover := sb.duplicate() as StyleBoxFlat
-	hover.bg_color = COLOR_MIDSOLE_YELLOW
+	hover.bg_color = COLOR_HC_FOCUS if hc else COLOR_MIDSOLE_YELLOW
 	btn.add_theme_stylebox_override("hover", hover)
-	btn.add_theme_color_override("font_color", COLOR_NIGHT_TRACK)
+	var focus := sb.duplicate() as StyleBoxFlat
+	focus.border_color = COLOR_HC_FOCUS if hc else COLOR_MIDSOLE_YELLOW
+	focus.set_border_width_all(3)
+	btn.add_theme_stylebox_override("focus", focus)
+	btn.add_theme_color_override("font_color", COLOR_HC_BG if hc else COLOR_NIGHT_TRACK)
 	btn.add_theme_font_size_override("font_size", TYPE_CONTROL + 2)
 
 

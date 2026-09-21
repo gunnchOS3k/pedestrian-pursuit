@@ -44,7 +44,8 @@ func show_results(
 	GameManager.last_race_position = position
 	GameManager.last_race_finished = finished
 	podium_label.text = _build_podium_text(field_lines)
-	podium_label.visible = not podium_label.text.is_empty()
+	podium_label.visible = false
+	Vxp3PresentationScript.ensure_podium_glyphs(self, field_lines)
 	var field_block := "\n".join(field_lines) if not field_lines.is_empty() else ""
 	if GameManager.is_cup_active():
 		var total_time := GameManager.get_cup_total_time()
@@ -123,7 +124,8 @@ func annotate_local_mp(finish_results: Array) -> void:
 		tagged.append("%d. %s%s" % [place, name, tag])
 		place += 1
 	podium_label.text = _build_podium_text(tagged)
-	podium_label.visible = not podium_label.text.is_empty()
+	podium_label.visible = false
+	Vxp3PresentationScript.ensure_podium_glyphs(self, tagged)
 	cup_summary_label.text = "Couch session — career XP not written.\nField:\n%s" % "\n".join(tagged)
 
 

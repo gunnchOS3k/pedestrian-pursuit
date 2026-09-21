@@ -1,0 +1,259 @@
+{
+  "schema": "vxp31.real_runtime_capture_manifest/v1",
+  "lane": "VXP-3.1",
+  "parent_pr": 25,
+  "pass": true,
+  "required_count": 35,
+  "covered_count": 35,
+  "missing": [],
+  "surfaces": [
+    {
+      "id": "main_menu_default",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/main_menu_default.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "main_menu_focus_race",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/main_menu_focus_race.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "runner_select",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/runner_select.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "footwear_select",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/footwear_select.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "cup_select",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/cup_select.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "course_select",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/course_select.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "resume_cup",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/resume_cup.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "first_run_learn_the_track",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/first_run_learn_the_track.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "tutorial_sprint",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/tutorial_sprint.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "tutorial_drift",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/tutorial_drift.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "tutorial_perfect_step",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/tutorial_perfect_step.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "tutorial_item",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/tutorial_item.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "tutorial_footwear",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/tutorial_footwear.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "race_countdown",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/race_countdown.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "race_hud_normal",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/race_hud_normal.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "race_position_lap_time",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/race_position_lap_time.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "race_drift_meter",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/race_drift_meter.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "race_boost",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/race_boost.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "race_item_slot",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/race_item_slot.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "race_wrong_way",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/race_wrong_way.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "race_minimap",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/race_minimap.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "race_footwear_surface",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/race_footwear_surface.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "pause_menu",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/pause_menu.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "pause_tutorial_guide",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/pause_tutorial_guide.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "results_finish",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/results_finish.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "results_podium",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/results_podium.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "cup_standings",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/cup_standings.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "achievement_toast",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/achievement_toast.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "a11y_larger_ui",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/a11y_larger_ui.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "a11y_colorblind",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/a11y_colorblind.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "a11y_reduce_motion",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/a11y_reduce_motion.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "viewport_1280x720",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/viewport_1280x720.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "viewport_1366x768",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/viewport_1366x768.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "viewport_1600x900",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/viewport_1600x900.png",
+      "resolution": "1280x720"
+    },
+    {
+      "id": "viewport_pixel_landscape",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp31/capture/viewport_pixel_landscape.png",
+      "resolution": "1280x720"
+    }
+  ],
+  "high_contrast_dedicated": "NOT_IMPLEMENTED",
+  "VXP31_PIXEL_PHYSICAL_CAPTURE_PASS": false,
+  "note": "Surface coverage requires REAL_RUNTIME_CAPTURE class + non-trivial PNG."
+}

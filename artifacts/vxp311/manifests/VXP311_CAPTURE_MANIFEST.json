@@ -1,0 +1,456 @@
+{
+  "schema": "vxp311.capture_manifest/v1",
+  "lane": "VXP-3.1.1",
+  "parent_pr": 26,
+  "pass": true,
+  "required_count": 43,
+  "covered_count": 43,
+  "missing": [],
+  "errors": [],
+  "surfaces": [
+    {
+      "id": "main_menu_default",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/main_menu_default.png",
+      "requested_resolution": "1280x720",
+      "sha256": "b25a22db9fe0886fffa255a81f3e0ca59a6ffef0f4f17cfbbee5a50066a922ea",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "main_menu_focus_race",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/main_menu_focus_race.png",
+      "requested_resolution": "1280x720",
+      "sha256": "160c70b0e45ad62bf3d1f1a4a618c67a4008391662a87ffc2ebde2feb59e49a2",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "runner_select",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/runner_select.png",
+      "requested_resolution": "1280x720",
+      "sha256": "bcf278519ccc98cee90a63aae299b0cd0b66492de58b92c8d8fe3d91a51810e9",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "footwear_select",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/footwear_select.png",
+      "requested_resolution": "1280x720",
+      "sha256": "bcf278519ccc98cee90a63aae299b0cd0b66492de58b92c8d8fe3d91a51810e9",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "cup_select",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/cup_select.png",
+      "requested_resolution": "1280x720",
+      "sha256": "b5d48794e542e8dec09ce17820b66fed2874842af8049196821e680f4a42e3a5",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "course_select",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/course_select.png",
+      "requested_resolution": "1280x720",
+      "sha256": "6b993feeda330f93da6aadfc519ec120be2b0044c02641526f45237580713790",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "resume_cup",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/resume_cup.png",
+      "requested_resolution": "1280x720",
+      "sha256": "97dfadbd728030c6ae49ceb71f225b114d43ab1da0f97b5c1f5111d676667d8e",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "first_run_learn_the_track",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/first_run_learn_the_track.png",
+      "requested_resolution": "1280x720",
+      "sha256": "772f4f63ef9a6ffb694e24002ac617de8228a421cdd1e853f7b861d78840a39d",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "tutorial_sprint",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/tutorial_sprint.png",
+      "requested_resolution": "1280x720",
+      "sha256": "2f66823700f9d852f3b167b1b32e70447dd2975e5e7ce42c01a7219c0904355a",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "tutorial_drift",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/tutorial_drift.png",
+      "requested_resolution": "1280x720",
+      "sha256": "cdbca341482af797434a2e56a4da6698f54b7c90e63e05650b9a889e4549560f",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "tutorial_perfect_step",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/tutorial_perfect_step.png",
+      "requested_resolution": "1280x720",
+      "sha256": "ff094316eb23ab4a6501b7444a6a295b3b2bd29fc44886318e1f69658a58f4a7",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "tutorial_item",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/tutorial_item.png",
+      "requested_resolution": "1280x720",
+      "sha256": "6f53e2d353915a709d26d8bea0192a300ab70d89cebbb7d862a04aa652d30ad7",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "tutorial_footwear",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/tutorial_footwear.png",
+      "requested_resolution": "1280x720",
+      "sha256": "3e833f18c52789138ac745de06035b69d02a6c64d5cf1f4bf94015a26d77ac69",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "race_countdown",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/race_countdown.png",
+      "requested_resolution": "1280x720",
+      "sha256": "6dbcbea1b244de56cc68ae0bb40ab2dca8fe211a7fbb6367e828b242d46b24e7",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "race_hud_normal",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/race_hud_normal.png",
+      "requested_resolution": "1280x720",
+      "sha256": "6dbcbea1b244de56cc68ae0bb40ab2dca8fe211a7fbb6367e828b242d46b24e7",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "race_position_lap_time",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/race_position_lap_time.png",
+      "requested_resolution": "1280x720",
+      "sha256": "6dbcbea1b244de56cc68ae0bb40ab2dca8fe211a7fbb6367e828b242d46b24e7",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "race_drift_meter",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/race_drift_meter.png",
+      "requested_resolution": "1280x720",
+      "sha256": "a3ce2e683aacb39cab56262d332362aa741f344eddd2cbc7bf99a90c2ea8fb05",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "race_boost",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/race_boost.png",
+      "requested_resolution": "1280x720",
+      "sha256": "a3ce2e683aacb39cab56262d332362aa741f344eddd2cbc7bf99a90c2ea8fb05",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "race_item_slot",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/race_item_slot.png",
+      "requested_resolution": "1280x720",
+      "sha256": "a3ce2e683aacb39cab56262d332362aa741f344eddd2cbc7bf99a90c2ea8fb05",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "race_wrong_way",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/race_wrong_way.png",
+      "requested_resolution": "1280x720",
+      "sha256": "b2b5c74a137ece6853b30c5cb666eafbf2323c9599708bdb45e20176dd95123c",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "race_minimap",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/race_minimap.png",
+      "requested_resolution": "1280x720",
+      "sha256": "6dbcbea1b244de56cc68ae0bb40ab2dca8fe211a7fbb6367e828b242d46b24e7",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "race_footwear_surface",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/race_footwear_surface.png",
+      "requested_resolution": "1280x720",
+      "sha256": "6dbcbea1b244de56cc68ae0bb40ab2dca8fe211a7fbb6367e828b242d46b24e7",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "pause_menu",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/pause_menu.png",
+      "requested_resolution": "1280x720",
+      "sha256": "6e2415e66176493924058e81651cb384c7eec8a7d2be8505955e467795c72d8b",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "pause_tutorial_guide",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/pause_tutorial_guide.png",
+      "requested_resolution": "1280x720",
+      "sha256": "1119fa048d7ba4ff6e7e8f1b2aef8633d6e6f6d5e7d4c4788bb09094d620d979",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "results_finish",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/results_finish.png",
+      "requested_resolution": "1280x720",
+      "sha256": "8a077a1e9cf22f482f04788be21513c15f5c72659468321eb1969d6f51ff3df0",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "results_podium",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/results_podium.png",
+      "requested_resolution": "1280x720",
+      "sha256": "8a077a1e9cf22f482f04788be21513c15f5c72659468321eb1969d6f51ff3df0",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "cup_standings",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/cup_standings.png",
+      "requested_resolution": "1280x720",
+      "sha256": "8a077a1e9cf22f482f04788be21513c15f5c72659468321eb1969d6f51ff3df0",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "achievement_toast",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/achievement_toast.png",
+      "requested_resolution": "1280x720",
+      "sha256": "678ed585e619c2f3f9d96d859086594ee06c27f8f37be14f2ec9e1ecca32f62b",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "a11y_larger_ui",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/a11y_larger_ui.png",
+      "requested_resolution": "1280x720",
+      "sha256": "97dfadbd728030c6ae49ceb71f225b114d43ab1da0f97b5c1f5111d676667d8e",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "a11y_colorblind",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/a11y_colorblind.png",
+      "requested_resolution": "1280x720",
+      "sha256": "97dfadbd728030c6ae49ceb71f225b114d43ab1da0f97b5c1f5111d676667d8e",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "a11y_reduce_motion",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/a11y_reduce_motion.png",
+      "requested_resolution": "1280x720",
+      "sha256": "97dfadbd728030c6ae49ceb71f225b114d43ab1da0f97b5c1f5111d676667d8e",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "a11y_high_contrast_main_menu",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/a11y_high_contrast_main_menu.png",
+      "requested_resolution": "1280x720",
+      "sha256": "d158344f2297f37a3b0dbd63f0c2127bc0eeae04c093f8c3fd1857d2cc58db42",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "a11y_high_contrast_race_hud",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/a11y_high_contrast_race_hud.png",
+      "requested_resolution": "1280x720",
+      "sha256": "a3ce2e683aacb39cab56262d332362aa741f344eddd2cbc7bf99a90c2ea8fb05",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "a11y_high_contrast_pause",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/a11y_high_contrast_pause.png",
+      "requested_resolution": "1280x720",
+      "sha256": "6e2415e66176493924058e81651cb384c7eec8a7d2be8505955e467795c72d8b",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "a11y_high_contrast_results",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/a11y_high_contrast_results.png",
+      "requested_resolution": "1280x720",
+      "sha256": "8a077a1e9cf22f482f04788be21513c15f5c72659468321eb1969d6f51ff3df0",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "local2p_race_hud",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/local2p_race_hud.png",
+      "requested_resolution": "1280x720",
+      "sha256": "6dbcbea1b244de56cc68ae0bb40ab2dca8fe211a7fbb6367e828b242d46b24e7",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "local2p_pause",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/local2p_pause.png",
+      "requested_resolution": "1280x720",
+      "sha256": "e2f68b4d17a92f8bf09ab51f4c66fbc0c949ae6b59f0d1b7fc4a7fada1c0ea94",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "local2p_results",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/local2p_results.png",
+      "requested_resolution": "1280x720",
+      "sha256": "b285646f0a6f39374dd4e4918080711f8a52d9a3d107745e7e943f929f05a838",
+      "actual_png_width": 1280,
+      "actual_png_height": 720
+    },
+    {
+      "id": "viewport_1280x720",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/viewport_1280x720.png",
+      "requested_resolution": "1280x720",
+      "sha256": "d0de1d3e71d94c68e41e9f03816221715e1f9b883385485e256352c1a3a1d934",
+      "actual_png_width": 1280,
+      "actual_png_height": 720,
+      "dimension_match": true
+    },
+    {
+      "id": "viewport_1366x768",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/viewport_1366x768.png",
+      "requested_resolution": "1366x768",
+      "sha256": "be339c1df0c691976857156b9900a9daff86c9f425a2c0d3ff4f8755d8631c81",
+      "actual_png_width": 1366,
+      "actual_png_height": 768,
+      "dimension_match": true
+    },
+    {
+      "id": "viewport_1600x900",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/viewport_1600x900.png",
+      "requested_resolution": "1600x900",
+      "sha256": "78cf9f3a18fe60ea84dbaf78ce1d6cda6ff7cf80edc7fe48dae876bd63157780",
+      "actual_png_width": 1600,
+      "actual_png_height": 900,
+      "dimension_match": true
+    },
+    {
+      "id": "viewport_1920x1080",
+      "pass": true,
+      "evidence_class": "REAL_RUNTIME_CAPTURE",
+      "path": "artifacts/vxp311/capture/viewport_1920x1080.png",
+      "requested_resolution": "1920x1080",
+      "sha256": "a6b4d996a95a72db4b21a414c1bca02ed634681c3f27cd819082c3d54afe9375",
+      "actual_png_width": 1920,
+      "actual_png_height": 1080,
+      "dimension_match": true
+    },
+    {
+      "id": "viewport_pixel_landscape",
+      "pass": true,
+      "evidence_class": "PIXEL6A_LOGICAL_LANDSCAPE_REAL_RUNTIME_SIMULATION",
+      "path": "artifacts/vxp311/capture/viewport_pixel_landscape.png",
+      "requested_resolution": "960x540",
+      "sha256": "f08d3185fe71ab3c0e8a3a39608279dd0ac929c9f9e973f362e1865b463a6a53",
+      "actual_png_width": 960,
+      "actual_png_height": 540,
+      "dimension_match": true
+    }
+  ],
+  "viewport_truth": true,
+  "duplicate_viewport_hashes": false,
+  "podium_capture_pass": true,
+  "local_mp_capture_pass": true,
+  "high_contrast_capture_pass": true,
+  "high_contrast_dedicated": "IMPLEMENTED",
+  "VXP311_PIXEL_PHYSICAL_CAPTURE_PASS": false,
+  "viewport_capture_method": "subviewport_exact_size",
+  "note": "Viewport dimensions computed from PNG IHDR; duplicate viewport hashes fail."
+}
