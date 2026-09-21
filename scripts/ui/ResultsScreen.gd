@@ -21,6 +21,22 @@ func _ready() -> void:
 	menu_button.pressed.connect(_on_menu)
 	retry_button.pressed.connect(_on_retry)
 	Vxp3PresentationScript.apply_results_chrome(self)
+	_ensure_feedback_button()
+
+
+func _ensure_feedback_button() -> void:
+	var vbox := $Panel/Margin/VBox
+	if vbox.get_node_or_null("FeedbackBtn") != null:
+		return
+	var fb := Button.new()
+	fb.name = "FeedbackBtn"
+	fb.text = "Feedback & Suggestions"
+	fb.pressed.connect(_on_feedback)
+	vbox.add_child(fb)
+
+
+func _on_feedback() -> void:
+	OS.shell_open("https://github.com/gunnchOS3k/gunnchos-research-portal/blob/main/FEEDBACK.md?component=Pedestrian%20Pursuit")
 
 
 func show_results(

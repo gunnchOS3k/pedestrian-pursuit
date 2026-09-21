@@ -121,3 +121,11 @@ Before a public production release: upgrade and certify on a currently supported
 ## License
 
 MIT License — see [LICENSE](LICENSE).
+
+## Feedback & Suggestions
+
+Tried this project? File public feedback via the ecosystem hub:
+
+https://github.com/gunnchOS3k/gunnchos-research-portal/blob/main/FEEDBACK.md
+
+Security vulnerabilities: private only — https://github.com/gunnchOS3k/gunnchos-research-portal/blob/main/SECURITY.md
