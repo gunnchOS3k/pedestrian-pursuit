@@ -126,15 +126,14 @@ func get_steer_and_accel(body: CharacterBody3D, delta: float = 0.016) -> Diction
 	)
 
 	# Soft recovery magnet: only when clearly off the racing line.
+	# Lateral-only — never rewrite Y here. A prior y<0.2 → path_y+1.05 teleport
+	# fought floor contact every frame and produced infinite vertical cycling.
 	var lateral := body.global_position - on_path
 	lateral.y = 0.0
 	var off_track := lateral.length()
 	var recovery_limit := 9.0 if tier == Tier.ROOKIE else 14.0
 	if magnet_strength > 0.0 and off_track > recovery_limit * 0.55:
 		body.global_position -= lateral * clampf(magnet_strength, 0.0, 0.2)
-	if body.global_position.y < 0.2:
-		# Height floor is spawn safety, not a speed cheat.
-		body.global_position.y = on_path.y + 1.05
 
 	# Route planning: blend near and far look targets; Ace cuts inside slightly.
 	var planned := mid_pos.lerp(target_pos, 0.65 if tier == Tier.ACE else 0.5)

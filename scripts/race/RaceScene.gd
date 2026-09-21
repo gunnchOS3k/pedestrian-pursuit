@@ -412,7 +412,11 @@ func _physics_process(delta: float) -> void:
 		GameManager.accept_steer = steer_cmd
 	else:
 		GameManager.accept_steer = 0.0
-		GameManager.mobile_assist_steer = steer_cmd
+		# Soft assist is RUN-gated; neutral hands-off must keep assist at 0.
+		if InputManager != null and InputManager.is_accelerating():
+			GameManager.mobile_assist_steer = steer_cmd
+		else:
+			GameManager.mobile_assist_steer = 0.0
 
 
 func _rescue_fallen_onto_path(follower: Node) -> void:

@@ -46,7 +46,7 @@ func setup(player: Node, race_manager: Node, course_data: Dictionary = {}) -> vo
 		if tracker.has_signal("place_changed") and not tracker.place_changed.is_connected(_on_place_changed):
 			tracker.place_changed.connect(_on_place_changed)
 	countdown_label.visible = true
-	item_label.text = "Item: None"
+	item_label.text = "—"
 	if _wrong_way_label == null:
 		_wrong_way_label = Label.new()
 		_wrong_way_label.name = "WrongWayLabel"
@@ -157,7 +157,7 @@ func _process(_delta: float) -> void:
 		var lap_mgr := race_mgr.get_node("LapManager")
 		var lap: int = lap_mgr.get_lap(_player)
 		lap_label.text = (
-			"Lap: %d / %d" % [min(lap + 1, GameManager.total_laps), GameManager.total_laps]
+			"L %d/%d" % [min(lap + 1, GameManager.total_laps), GameManager.total_laps]
 		)
 	if race_mgr and race_mgr.has_node("PositionTracker"):
 		var pos: int = race_mgr.get_node("PositionTracker").get_position_for(_player)
@@ -220,6 +220,8 @@ func apply_device_role(profile: Dictionary, map_profile: Dictionary = {}) -> voi
 	var gps := str(profile.get("gps_mode", "SIMULATED"))
 	if _role_hint:
 		var hint := str(profile.get("input_hints", ""))
+		if OS.has_feature("mobile"):
+			hint = "Touch: steer · RUN · JUMP · DRIFT · BOOST · ITEM · Pause (Ⅱ)"
 		if bool(profile.get("dock_display_hook", false)):
 			hint += "  ·  Dock: %s (screens=%d)" % [
 				"ON" if bool(profile.get("docked", false)) else "OFF",
@@ -364,7 +366,7 @@ func _on_race_finished(_player: Node, _results: Array) -> void:
 func _on_timer(elapsed: float) -> void:
 	var mins := int(elapsed) / 60
 	var secs := fmod(elapsed, 60.0)
-	timer_label.text = "Time: %02d:%05.2f" % [mins, secs]
+	timer_label.text = "%02d:%05.2f" % [mins, secs]
 
 
 func _on_boost_changed(current: float, maximum: float) -> void:
@@ -374,11 +376,11 @@ func _on_boost_changed(current: float, maximum: float) -> void:
 
 func _on_item_changed(item_id: String) -> void:
 	if item_id.is_empty():
-		item_label.text = "Item: None"
+		item_label.text = "—"
 		_set_item_icon(null)
 		return
 	var data := ItemData.load_by_id(item_id)
-	item_label.text = "Item: %s" % data.get("display_name", item_id)
+	item_label.text = str(data.get("display_name", item_id))
 	_set_item_icon(LaunchArtCatalogScript.item_icon(item_id))
 
 
@@ -423,7 +425,7 @@ func _on_speed_changed(speed: float) -> void:
 	var state := "SPRINT"
 	if _player != null and _player.has_method("get_speed_state"):
 		state = str(_player.get_speed_state())
-	speed_label.text = "Speed: %.0f  [%s]" % [speed, state]
+	speed_label.text = "%.0f  [%s]" % [speed, state]
 	var scene := get_parent()
 	if scene != null:
 		var cam = scene.get_node_or_null("CameraRig")

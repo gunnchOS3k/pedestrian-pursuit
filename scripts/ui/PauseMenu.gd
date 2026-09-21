@@ -59,6 +59,12 @@ func _ensure_restart_button() -> void:
 func toggle_pause() -> void:
 	visible = not visible
 	get_tree().paused = visible
+	# Pause/resume must not leave sticky touch L/R/RUN held.
+	if InputManager != null and InputManager.has_method("clear_touch_state"):
+		InputManager.clear_touch_state()
+	var mobile := get_parent().get_node_or_null("MobileControls") if get_parent() else null
+	if mobile != null and mobile.has_method("clear_all_held_actions"):
+		mobile.clear_all_held_actions()
 	if not visible:
 		var ach := get_node_or_null("/root/AchievementRuntime")
 		if ach != null and ach.has_method("report_event"):

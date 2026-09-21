@@ -11,6 +11,7 @@ signal pause_requested
 @export var show_on_desktop: bool = false
 
 var _button_root: Control
+var _held_actions: Dictionary = {} # action -> true while held via chrome
 
 
 func _ready() -> void:
@@ -23,15 +24,41 @@ func _ready() -> void:
 		_ensure_controls()
 
 
+func _notification(what: int) -> void:
+	# Finger cancel / app bg / focus loss must clear sticky L/R/RUN.
+	if what == NOTIFICATION_APPLICATION_FOCUS_OUT \
+		or what == NOTIFICATION_APPLICATION_PAUSED \
+		or what == NOTIFICATION_WM_WINDOW_FOCUS_OUT:
+		clear_all_held_actions()
+
+
 func configure_for_device_role(profile: Dictionary) -> void:
 	var want := bool(profile.get("show_touch_controls", false)) or str(profile.get("input_default", "")) == "touch"
+	## Pixel / Android: never strip touch chrome for classroom keyboard roles.
+	## DeviceRoleRuntime may default to keyboard, but mobile still needs on-screen controls.
+	if OS.has_feature("mobile"):
+		want = true
 	if want:
 		show_on_desktop = true
 		_ensure_controls()
 	elif _button_root != null:
+		clear_all_held_actions()
 		_button_root.queue_free()
 		_button_root = null
 	_apply_a11y_scale()
+
+
+func clear_all_held_actions() -> void:
+	for action in _held_actions.keys():
+		if Input.is_action_pressed(str(action)):
+			Input.action_release(str(action))
+	_held_actions.clear()
+	if InputManager != null and InputManager.has_method("clear_touch_state"):
+		InputManager.clear_touch_state()
+	else:
+		if InputManager != null:
+			InputManager.set_touch_steer(0.0)
+			InputManager.set_touch_accelerate(false)
 
 
 func _ensure_controls() -> void:
@@ -181,43 +208,40 @@ func _add_button(
 	button.add_theme_color_override("font_color", Color.WHITE)
 	if button_name == "Pause":
 		button.pressed.connect(func(): pause_requested.emit())
-	elif action == "move_left":
-		button.button_down.connect(func():
-			Input.action_press(action)
-			InputManager.set_touch_steer(-1.0)
-		)
-		button.button_up.connect(func():
-			if Input.is_action_pressed(action):
-				Input.action_release(action)
-			InputManager.set_touch_steer(0.0)
-		)
-	elif action == "move_right":
-		button.button_down.connect(func():
-			Input.action_press(action)
-			InputManager.set_touch_steer(1.0)
-		)
-		button.button_up.connect(func():
-			if Input.is_action_pressed(action):
-				Input.action_release(action)
-			InputManager.set_touch_steer(0.0)
-		)
-	elif action == "accelerate":
-		button.button_down.connect(func():
-			Input.action_press(action)
-			InputManager.set_touch_accelerate(true)
-		)
-		button.button_up.connect(func():
-			if Input.is_action_pressed(action):
-				Input.action_release(action)
-			InputManager.set_touch_accelerate(false)
-		)
 	elif not action.is_empty():
-		button.button_down.connect(func(): Input.action_press(action))
-		button.button_up.connect(func():
-			if Input.is_action_pressed(action):
-				Input.action_release(action)
+		button.button_down.connect(func(): _press_action(action))
+		button.button_up.connect(func(): _release_action(action))
+		# Finger slides off without button_up on some Android paths — release held action.
+		button.mouse_exited.connect(func():
+			if bool(_held_actions.get(action, false)):
+				_release_action(action)
 		)
 	_button_root.add_child(button)
+
+
+func _press_action(action: String) -> void:
+	Input.action_press(action)
+	_held_actions[action] = true
+	_sync_touch_lanes()
+
+
+func _release_action(action: String) -> void:
+	if Input.is_action_pressed(action):
+		Input.action_release(action)
+	_held_actions.erase(action)
+	_sync_touch_lanes()
+
+
+func _sync_touch_lanes() -> void:
+	if InputManager == null:
+		return
+	var steer := 0.0
+	if bool(_held_actions.get("move_left", false)):
+		steer -= 1.0
+	if bool(_held_actions.get("move_right", false)):
+		steer += 1.0
+	InputManager.set_touch_steer(steer)
+	InputManager.set_touch_accelerate(bool(_held_actions.get("accelerate", false)))
 
 
 func _apply_a11y_scale() -> void:

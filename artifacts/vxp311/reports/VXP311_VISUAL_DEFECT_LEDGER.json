@@ -1,0 +1,78 @@
+{
+  "schema": "vxp311.visual_defect_ledger/v1",
+  "lane": "VXP-3.1.1",
+  "parent_pr": 26,
+  "note": "New ledger for VXP311; does not rewrite VXP31 ledger history.",
+  "defects": [
+    {
+      "id": "V311-001",
+      "surface": "viewport_manifest",
+      "severity": "S1",
+      "category": "EVIDENCE_TRUTH",
+      "status": "FIXED",
+      "digitally_solvable": true,
+      "evidence": "tools/vxp311/validate_capture_manifest.py + SubViewport exact capture",
+      "notes": "Viewport gates now require PNG IHDR == requested; duplicate hashes fail"
+    },
+    {
+      "id": "V311-002",
+      "surface": "digital_closure",
+      "severity": "S1",
+      "category": "FALSE_GREEN",
+      "status": "FIXED",
+      "digitally_solvable": true,
+      "evidence": "tools/vxp311/emit_vxp311_gates.py digital_closure_parts",
+      "notes": "Digital closure requires podium, local_mp, viewport_truth, HC, sha match, regressions"
+    },
+    {
+      "id": "V311-003",
+      "surface": "results_podium",
+      "severity": "S2",
+      "category": "GATE_SCAN_MISMATCH",
+      "status": "FIXED",
+      "digitally_solvable": true,
+      "evidence": "ensure_podium_glyphs + glyph_podium_*.png + results_podium capture",
+      "notes": "Podium gate validates presentation + assets + capture, not ResultsScreen string alone"
+    },
+    {
+      "id": "V311-004",
+      "surface": "local_mp",
+      "severity": "S2",
+      "category": "INCONSISTENT_COVERAGE",
+      "status": "FIXED",
+      "digitally_solvable": true,
+      "evidence": "local2p_race_hud / local2p_pause / local2p_results",
+      "notes": "Local 2P presentation captured via start_local_mp path"
+    },
+    {
+      "id": "V311-005",
+      "surface": "a11y_high_contrast",
+      "severity": "S2",
+      "category": "INCONSISTENT_A11Y",
+      "status": "FIXED",
+      "digitally_solvable": true,
+      "evidence": "AccessibilitySettings.high_contrast + HC captures",
+      "notes": "Dedicated high-contrast mode implemented with designed palette"
+    },
+    {
+      "id": "V311-006",
+      "surface": "human_validation",
+      "severity": "S3",
+      "category": "HUMAN_PENDING",
+      "status": "OPEN",
+      "digitally_solvable": false,
+      "evidence": "docs/vxp311/VXP311_HUMAN_REVIEW_HANDOFF.md",
+      "notes": "Owner visual / low-vision review not started"
+    },
+    {
+      "id": "V311-007",
+      "surface": "pixel_physical",
+      "severity": "S3",
+      "category": "DEVICE_PENDING",
+      "status": "OPEN",
+      "digitally_solvable": false,
+      "evidence": "gates",
+      "notes": "Physical Pixel capture remains false; logical landscape is simulation only"
+    }
+  ]
+}

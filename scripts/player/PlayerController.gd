@@ -51,6 +51,9 @@ var _jump_buffer: float = 0.0
 var _slide_timer: float = 0.0
 var _momentum_line_bonus: float = 1.0
 var _last_wall_kick: bool = false
+## Temporary / regression: log every positive vertical impulse source.
+var _instrument_vertical: bool = false
+var vertical_impulse_log: Array = []
 const COYOTE_SEC := 0.12
 const JUMP_BUFFER_SEC := 0.12
 const MAX_SLIDE_SEC := 1.35
@@ -58,6 +61,10 @@ const MAX_SLIDE_SEC := 1.35
 
 func _ready() -> void:
 	add_to_group("racers")
+	# Authoritative floor stick — prevent micro-bounce without Y hard-clamps.
+	floor_stop_on_slope = true
+	floor_snap_length = 0.35
+	floor_max_angle = deg_to_rad(50.0)
 	_ensure_aux_systems()
 	var racer_data := RacerData.load_by_id(racer_id)
 	var shoe_data := ShoeDataScript.load_by_id(shoe_id)
@@ -157,7 +164,7 @@ func _physics_process(delta: float) -> void:
 	if rail_grind_system and rail_grind_system.get("is_grinding"):
 		if is_player and InputManager.is_jumping() and rail_grind_system.has_method("request_jump_exit"):
 			if rail_grind_system.request_jump_exit():
-				velocity.y = stats.jump_force * 0.85
+				_set_vertical_impulse("rail_jump_exit", stats.jump_force * 0.85)
 				state_machine.set_state(state_machine.State.AIR)
 				return
 		var grind: Dictionary = rail_grind_system.tick(delta)
@@ -170,6 +177,7 @@ func _physics_process(delta: float) -> void:
 
 	var steer := _get_steer()
 	var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity") * stats.gravity_scale
+	var jumped_this_frame := false
 
 	if is_on_floor():
 		if state_machine.current_state == state_machine.State.AIR:
@@ -180,20 +188,27 @@ func _physics_process(delta: float) -> void:
 			trick_system.on_landed()
 			state_machine.set_state(state_machine.State.GROUNDED)
 		_coyote_timer = COYOTE_SEC
-		_handle_ground_movement(delta, steer)
+		jumped_this_frame = _handle_ground_movement(delta, steer)
 	else:
 		state_machine.set_state(state_machine.State.AIR)
 		trick_system.on_airborne(delta)
-		_handle_air_movement(delta, steer, gravity)
+		jumped_this_frame = _handle_air_movement(delta, steer, gravity)
 
-	velocity.y -= gravity * delta
+	if is_on_floor() and not jumped_this_frame:
+		# Stick to floor: gravity still applied lightly so slopes work, but kill
+		# residual upward from prior frame contact (no Y hard-clamp).
+		if velocity.y > 0.0:
+			velocity.y = 0.0
+		velocity.y -= gravity * delta
+	else:
+		velocity.y -= gravity * delta
 	move_and_slide()
 	_handle_collision_recovery(delta)
 	speed_changed.emit(horizontal_speed)
 	_emit_movement_telemetry(get_speed_state())
 
 
-func _handle_ground_movement(delta: float, steer: float) -> void:
+func _handle_ground_movement(delta: float, steer: float) -> bool:
 	var drifting := _get_drift_input() and absf(steer) > 0.1 and horizontal_speed > 2.0
 	var drift_charge_mult := 1.0
 	if special_ability and special_ability.has_method("get_drift_charge_multiplier"):
@@ -224,9 +239,9 @@ func _handle_ground_movement(delta: float, steer: float) -> void:
 		if rail_grind_system and rail_grind_system.has_method("try_start_from_jump"):
 			if rail_grind_system.try_start_from_jump():
 				_jump_buffer = 0.0
-				return
+				return false
 		_do_jump()
-		return
+		return true
 
 	if is_player and InputManager.is_sliding() and stomp_system.can_stomp() and _slide_timer > 0.12:
 		stomp_system.execute_ground_stomp(global_position, self)
@@ -284,9 +299,10 @@ func _handle_ground_movement(delta: float, steer: float) -> void:
 
 	if is_player:
 		_handle_player_actions()
+	return false
 
 
-func _handle_air_movement(delta: float, steer: float, _gravity: float) -> void:
+func _handle_air_movement(delta: float, steer: float, _gravity: float) -> bool:
 	if is_player and InputManager.is_tricking():
 		trick_system.try_trick()
 	if is_player and InputManager.is_sliding() and stomp_system.can_stomp():
@@ -298,7 +314,7 @@ func _handle_air_movement(delta: float, steer: float, _gravity: float) -> void:
 	# Coyote / buffered jump only when recently grounded — no infinite air chain.
 	if _wants_jump() and _coyote_timer > 0.0 and velocity.y <= 0.5:
 		_do_jump()
-		return
+		return true
 
 	var forward := -global_transform.basis.z
 	var air_cap: float = float(stats.air_control)
@@ -312,6 +328,7 @@ func _handle_air_movement(delta: float, steer: float, _gravity: float) -> void:
 		velocity.x = horiz.x
 		velocity.z = horiz.z
 	rotate_y(-steer * air_cap * 0.05 * delta)
+	return false
 
 
 func _handle_collision_recovery(delta: float) -> void:
@@ -334,7 +351,7 @@ func _handle_collision_recovery(delta: float) -> void:
 		# Wall-kick window: jump + collision while moving grants a rebound.
 		if _wall_kick_cooldown <= 0.0 and is_player and InputManager.is_jumping():
 			velocity += normal * 7.5
-			velocity.y = maxf(velocity.y, stats.jump_force * 0.65)
+			_set_vertical_impulse("wall_kick", maxf(velocity.y, stats.jump_force * 0.65))
 			horizontal_speed = maxf(horizontal_speed, stats.top_speed * 0.55)
 			_wall_kick_cooldown = 0.8
 			_last_wall_kick = true
@@ -411,8 +428,34 @@ func _wants_jump() -> bool:
 	return _jump_buffer > 0.0 or InputManager.is_jumping()
 
 
+func begin_vertical_impulse_instrumentation() -> void:
+	_instrument_vertical = true
+	vertical_impulse_log.clear()
+
+
+func end_vertical_impulse_instrumentation() -> Array:
+	_instrument_vertical = false
+	return vertical_impulse_log.duplicate(true)
+
+
+func _set_vertical_impulse(source: String, value: float) -> void:
+	if value > 0.01 and _instrument_vertical:
+		vertical_impulse_log.append({
+			"source": source,
+			"vy": value,
+			"frame": Engine.get_physics_frames(),
+			"y": global_position.y,
+		})
+	velocity.y = value
+
+
+func apply_bounce_impulse(force: float) -> void:
+	## Bounce pads / intentional launch mechanics — never ordinary floor contact.
+	_set_vertical_impulse("bounce_pad", force)
+
+
 func _do_jump() -> void:
-	velocity.y = stats.jump_force
+	_set_vertical_impulse("jump", stats.jump_force)
 	state_machine.set_state(state_machine.State.AIR)
 	_jump_buffer = 0.0
 	_coyote_timer = 0.0
@@ -496,7 +539,7 @@ func apply_stomp_slow(duration: float) -> void:
 		shield_active = false
 		return
 	if item_manager and item_manager.has_method("consume_bounce_bubble") and item_manager.consume_bounce_bubble():
-		velocity.y = maxf(velocity.y, 7.0)
+		_set_vertical_impulse("bounce_bubble", maxf(velocity.y, 7.0))
 		return
 	_slow_timer = maxf(_slow_timer, duration)
 

@@ -1,0 +1,47 @@
+{
+  "schema": "VXP33_HUMAN_FEEDBACK_GATES",
+  "generated_at_local": "2026-09-19",
+  "parent_pr": 28,
+  "parent_head": "ddb3020b2a785c8fd5d2136d8eebeb42bc6d84d7",
+  "fix_branch": "vxp/vxp-3-3-pedestrian-human-feedback-physics-input",
+  "gates": {
+    "VXP33_SPAWN_FALL_PASS": true,
+    "VXP33_STABLE_GROUND_CONTACT_PASS": true,
+    "VXP33_NO_UNCOMMANDED_VERTICAL_IMPULSE_PASS": true,
+    "VXP33_NEUTRAL_STEER_ZERO_PASS": true,
+    "VXP33_TOUCH_RELEASE_CLEARS_PASS": true,
+    "VXP33_PAUSE_RESUME_INPUT_RESET_PASS": true,
+    "VXP33_BACKGROUND_FOREGROUND_INPUT_RESET_PASS": true,
+    "VXP33_JUMP_LAND_PASS": true,
+    "VXP33_PIXEL_NEUTRAL_10S_PASS": true,
+    "VXP33_PIXEL_LEFT_RELEASE_PASS": true,
+    "VXP33_PIXEL_RIGHT_RELEASE_PASS": true,
+    "VXP33_HUMAN_FUN_PASS": false,
+    "VXP33_HUMAN_CONTROL_FEEL_PASS": false,
+    "VXP33_MERGE_AUTHORIZED": false
+  },
+  "digital_regressions": {
+    "Vxp33PhysicsInputRegression": {
+      "cmd": "godot --headless --path . --script res://tests/vxp33/Vxp33PhysicsInputRegression.gd",
+      "exit": 0
+    },
+    "headless-smoke": {
+      "cmd": "make headless-smoke",
+      "exit": 0
+    },
+    "ProductionGateHarness": {
+      "cmd": "included in make headless-smoke",
+      "exit": 0
+    }
+  },
+  "root_causes": {
+    "vertical_loop": "AIPathFollower.get_steer_and_accel teleported body.y to on_path.y+1.05 whenever y<0.2, fighting floor contact every frame on mobile (AcceptPathFollower always attached).",
+    "hard_right": "InputManager.get_steer applied GameManager.mobile_assist_steer even when not accelerating; RaceScene wrote path steer into mobile_assist_steer every physics frame on Android."
+  },
+  "notes": {
+    "device": "Pixel 6a",
+    "install": "adb install -r success, signer matched Android Debug b637ea5f..., versionCode 14 / 0.3.10",
+    "handoff": "app left on Main Menu for Edmund",
+    "draft_pr": "pending push/auth"
+  }
+}

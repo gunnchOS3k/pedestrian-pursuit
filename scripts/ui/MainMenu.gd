@@ -30,6 +30,7 @@ var _a11y_reduce: CheckButton
 var _a11y_larger: CheckButton
 var _a11y_auto: CheckButton
 var _a11y_colorblind: CheckButton
+var _a11y_high_contrast: CheckButton
 
 
 func _ready() -> void:
@@ -166,7 +167,7 @@ func _on_howto_play() -> void:
 		+ "Modes: Quick Race, Cup, Time Trial/Ghost, Local 2P, Tutorial, Challenges, Progression.\n"
 		+ "Footwear materials matter: Grip on mud, Speed on asphalt, Bounce on rails/pads.\n"
 		+ "Items warn before hitting — shield, slide, or jump for counterplay.\n"
-		+ "Accessibility toggles live on this menu (reduce motion, larger UI, auto-accel, colorblind HUD)."
+		+ "Accessibility toggles live on this menu (reduce motion, larger UI, auto-accel, colorblind HUD, high contrast)."
 	)
 	panel.add_child(body)
 	var close := Button.new()
@@ -307,6 +308,9 @@ func _ensure_settings_ui() -> void:
 		_a11y_larger = vbox.get_node("A11yLargerUI")
 		_a11y_auto = vbox.get_node("A11yAutoAccel")
 		_a11y_colorblind = vbox.get_node("A11yColorblind")
+		_a11y_high_contrast = vbox.get_node_or_null("A11yHighContrast") as CheckButton
+		if _a11y_high_contrast == null:
+			_ensure_high_contrast_toggle(vbox)
 		_ensure_resume_cup_button()
 		return
 
@@ -376,8 +380,33 @@ func _ensure_settings_ui() -> void:
 	_a11y_colorblind.text = "Colorblind-safe HUD markers"
 	vbox.add_child(_a11y_colorblind)
 	vbox.move_child(_a11y_colorblind, insert_at)
+	insert_at += 1
 	_a11y_colorblind.toggled.connect(func(v): AccessibilitySettings.set_colorblind_safe_hud(v))
+
+	_a11y_high_contrast = CheckButton.new()
+	_a11y_high_contrast.name = "A11yHighContrast"
+	_a11y_high_contrast.text = "High contrast"
+	vbox.add_child(_a11y_high_contrast)
+	vbox.move_child(_a11y_high_contrast, insert_at)
+	_a11y_high_contrast.toggled.connect(_on_high_contrast_toggled)
 	_ensure_resume_cup_button()
+
+
+func _ensure_high_contrast_toggle(vbox: VBoxContainer) -> void:
+	_a11y_high_contrast = CheckButton.new()
+	_a11y_high_contrast.name = "A11yHighContrast"
+	_a11y_high_contrast.text = "High contrast"
+	var after := vbox.get_node_or_null("A11yColorblind")
+	vbox.add_child(_a11y_high_contrast)
+	if after:
+		vbox.move_child(_a11y_high_contrast, after.get_index() + 1)
+	_a11y_high_contrast.toggled.connect(_on_high_contrast_toggled)
+
+
+func _on_high_contrast_toggled(value: bool) -> void:
+	if AccessibilitySettings != null:
+		AccessibilitySettings.set_high_contrast(value)
+	Vxp3PresentationScript.recomposite_main_menu(self)
 
 
 func _ensure_resume_cup_button() -> void:
@@ -464,6 +493,8 @@ func _sync_a11y_toggles() -> void:
 		_a11y_auto.set_pressed_no_signal(AccessibilitySettings.auto_accelerate)
 	if _a11y_colorblind:
 		_a11y_colorblind.set_pressed_no_signal(AccessibilitySettings.colorblind_safe_hud)
+	if _a11y_high_contrast:
+		_a11y_high_contrast.set_pressed_no_signal(AccessibilitySettings.high_contrast)
 
 
 func _setup_preview_viewport() -> void:
@@ -908,13 +939,18 @@ func _apply_launch_presentation() -> void:
 		var stripe := TextureRect.new()
 		stripe.name = "Vxp3SpeedStripe"
 		stripe.texture = load("res://assets/branding/vxp3/pp-speed-stripe.png") as Texture2D
-		stripe.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
-		stripe.offset_top = -72
+		## Decorative left rail only — never cover bottom CTAs.
+		stripe.set_anchors_preset(Control.PRESET_LEFT_WIDE)
+		stripe.offset_left = 0
+		stripe.offset_right = 28
+		stripe.offset_top = 0
+		stripe.offset_bottom = 0
 		stripe.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		stripe.stretch_mode = TextureRect.STRETCH_SCALE
-		stripe.modulate = Color(1, 1, 1, 0.55)
+		stripe.modulate = Color(1, 1, 1, 0.35)
 		stripe.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		add_child(stripe)
+		move_child(stripe, 1)
 	var bg_node := get_node_or_null("Background") as ColorRect
 	if bg_node:
 		bg_node.color = Vxp3BrandScript.COLOR_NIGHT_TRACK

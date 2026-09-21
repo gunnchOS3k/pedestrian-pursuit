@@ -21,4 +21,4 @@
 | networking | NOT_APPLICABLE | no production netplay claim on main digital RC |  |
 | offline | PASS | local Godot offline |  |
 | install_update | PARTIAL | rc packaging scripts | HUMAN_VALIDATION_REQUIRED |
-| android | PARTIAL | adb device | PHYSICAL_HARDWARE_REQUIRED |
+| android | BLOCKED | no adb device | PHYSICAL_HARDWARE_REQUIRED |
