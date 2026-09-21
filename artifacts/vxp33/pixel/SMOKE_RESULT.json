@@ -1,0 +1,29 @@
+{
+  "race_reached": true,
+  "countdown_captured": true,
+  "neutral_10s_observed": true,
+  "notes": {
+    "t0_timer": "00:09.13 WALK grounded on track",
+    "t11_timer": "00:20.90 WALK still on track (no sky-cycle evidence)",
+    "touch_chrome": "visible L/R/RUN/JUMP",
+    "assist_gate": "RUN-only in InputManager + RaceScene",
+    "path_y_teleport": "removed from AIPathFollower.get_steer_and_accel",
+    "human_gates": "remain false pending Edmund retest"
+  },
+  "screenshots": [
+    "pixel_after_bg_fg.png",
+    "pixel_after_race_tap.png",
+    "pixel_after_steer_release.png",
+    "pixel_boot_or_splash.png",
+    "pixel_footwear_or_runner.png",
+    "pixel_handoff_main_menu.png",
+    "pixel_main_menu.png",
+    "pixel_pause.png",
+    "pixel_race_hud_t0.png",
+    "pixel_race_hud_t11.png",
+    "pixel_race_hud_t5.png",
+    "pixel_resume_race.png"
+  ],
+  "video": "pixel_neutral_smoke.mp4",
+  "crash_or_anr_observed": false
+}

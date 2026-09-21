@@ -1,0 +1,55 @@
+{
+  "schema": "vxp3.color_system/v1",
+  "semantic_roles": {
+    "surfaces": [
+      "night_track",
+      "asphalt",
+      "panel"
+    ],
+    "brand_accents": [
+      "kinetic_orange",
+      "pursuit_blue",
+      "midsole_yellow"
+    ],
+    "gameplay_signals": [
+      "boost_cyan",
+      "grip_green",
+      "hazard_red",
+      "ghost_violet"
+    ],
+    "usage_note": "Accents are not equal weight. Kinetic Orange is primary CTA; Pursuit Blue supports navigation; Midsole Yellow highlights Perfect Step / podium 1. Gameplay signals map 1:1 to live systems."
+  },
+  "colors": {
+    "night_track": "#0B1220",
+    "asphalt": "#1A2332",
+    "panel": "#243044",
+    "kinetic_orange": "#FF6A3D",
+    "pursuit_blue": "#3D8BFF",
+    "midsole_yellow": "#F5D547",
+    "boost_cyan": "#2EE6D6",
+    "grip_green": "#3DCC7A",
+    "hazard_red": "#FF4D5E",
+    "ghost_violet": "#A78BFA",
+    "ink": "#F4F7FB",
+    "muted": "#9AA8BC"
+  },
+  "high_contrast": {
+    "night_track": "#000000",
+    "asphalt": "#111111",
+    "panel": "#1A1A1A",
+    "kinetic_orange": "#FF8800",
+    "pursuit_blue": "#66B2FF",
+    "midsole_yellow": "#FFE014",
+    "boost_cyan": "#00FFF0",
+    "grip_green": "#33FF88",
+    "hazard_red": "#FF2244",
+    "ghost_violet": "#C9A0FF",
+    "ink": "#FFFFFF",
+    "muted": "#DDDDDD"
+  },
+  "footwear_symbols_non_color": {
+    "grip": "horizontal tread bars",
+    "speed": "forward chevron",
+    "bounce": "arc + ball"
+  }
+}

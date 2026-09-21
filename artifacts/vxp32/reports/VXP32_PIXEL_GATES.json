@@ -1,0 +1,43 @@
+{
+  "schema": "VXP32_PIXEL_GATES",
+  "generated_at_local": "2026-09-19",
+  "parent_pr": 27,
+  "parent_head": "259389c11b45f94230bceca2f516452376419d8f",
+  "fix_branch": "vxp/vxp-3-2-pixel-physical-fixes",
+  "gates": {
+    "VXP32_PR27_HEAD_VERIFIED": true,
+    "VXP32_PIXEL_ADB_AUTHORIZED": true,
+    "VXP32_PIXEL_MODEL_IDENTIFIED": true,
+    "VXP32_PACKAGE_ID_VERIFIED": true,
+    "VXP32_CANDIDATE_APK_BUILT": true,
+    "VXP32_CANDIDATE_SIGNER_COMPATIBLE": true,
+    "VXP32_VERSION_UPDATE_SAFE": true,
+    "VXP32_PIXEL_INSTALL_PASS": true,
+    "VXP32_PIXEL_LAUNCH_PASS": true,
+    "VXP32_COLD_LAUNCH_CRASH_FREE_PASS": true,
+    "VXP32_PIXEL_MAIN_MENU_CAPTURE_PASS": true,
+    "VXP32_PIXEL_RACE_CAPTURE_PASS": true,
+    "VXP32_PIXEL_PAUSE_CAPTURE_PASS": true,
+    "VXP32_PIXEL_HIGH_CONTRAST_CAPTURE_PASS": false,
+    "VXP32_BACKGROUND_FOREGROUND_PASS": true,
+    "VXP32_FORCE_STOP_RELAUNCH_PASS": true,
+    "VXP32_BASIC_TOUCH_INPUT_PASS": true,
+    "VXP32_MULTI_TOUCH_GAMEPLAY_AUTOMATION_PASS": false,
+    "VXP32_PHYSICAL_DEVICE_SMOKE_PASS": true,
+    "VXP32_HUMAN_VISUAL_VALIDATION_PASS": false,
+    "VXP32_HUMAN_FUN_VALIDATION_PASS": false,
+    "VXP32_HUMAN_A11Y_VALIDATION_PASS": false,
+    "VXP32_HUMAN_LOW_VISION_VALIDATION_PASS": false,
+    "VXP32_SUSTAINED_PERFORMANCE_VALIDATION_PASS": false,
+    "VXP32_MERGE_AUTHORIZED": false
+  },
+  "notes": {
+    "device_label": "PIXEL_USB_DEVICE_1",
+    "model": "Pixel 6a",
+    "fix": "MobileControls retained on mobile despite classroom keyboard roles; RaceHUD touch hints.",
+    "high_contrast": "not proven on-device this lane",
+    "multi_touch": "AUTOMATED_MULTI_TOUCH_NOT_PROVEN",
+    "human_gates": "all false",
+    "draft_pr_status": "pending_owner_approval_to_publish"
+  }
+}

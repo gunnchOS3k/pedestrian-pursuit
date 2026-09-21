@@ -1,0 +1,132 @@
+{
+  "schema": "vxp31.visual_defect_ledger/v1",
+  "defects": [
+    {
+      "id": "VD-001",
+      "surface": "results_podium",
+      "viewport": "1280x720",
+      "severity": "S1",
+      "category": "ART_FIDELITY_MISMATCH",
+      "status": "FIXED",
+      "evidence": "scripts/ui/ResultsScreen.gd + ensure_podium_glyphs",
+      "notes": "Replaced [1][2][3] text placeholders with glyph_podium TextureRects + accessible text"
+    },
+    {
+      "id": "VD-002",
+      "surface": "race_hud",
+      "viewport": "1280x720",
+      "severity": "S1",
+      "category": "WEAK_HIERARCHY",
+      "status": "FIXED",
+      "evidence": "Vxp3Presentation._recluster_hud",
+      "notes": "Reclustered stacked Map/Lap/Position/Time/Speed/Item into primary+secondary HUD clusters; compact labels"
+    },
+    {
+      "id": "VD-003",
+      "surface": "tutorial_coach",
+      "viewport": "1280x720",
+      "severity": "S2",
+      "category": "HUD_OCCLUSION",
+      "status": "FIXED",
+      "digitally_solvable": true,
+      "evidence": "TutorialCoach.place_adaptive",
+      "notes": "Adaptive left/bottom placement away from minimap and center runner"
+    },
+    {
+      "id": "VD-004",
+      "surface": "main_menu",
+      "viewport": "1280x720",
+      "severity": "S2",
+      "category": "DEFAULT_GODOT_CONTROL_LEAK",
+      "status": "FIXED",
+      "digitally_solvable": true,
+      "evidence": "Vxp3Presentation._style_pickers",
+      "notes": "Styled OptionButtons to reduce form-lab look"
+    },
+    {
+      "id": "VD-005",
+      "surface": "launcher",
+      "viewport": "n/a",
+      "severity": "S1",
+      "category": "ART_FIDELITY_MISMATCH",
+      "status": "FIXED",
+      "evidence": "assets/branding/vxp31/",
+      "notes": "Authored cleared launcher/splash; export no longer references quarantined icon"
+    },
+    {
+      "id": "VD-006",
+      "surface": "typography",
+      "viewport": "n/a",
+      "severity": "S2",
+      "category": "WEAK_HIERARCHY",
+      "status": "FIXED",
+      "digitally_solvable": true,
+      "evidence": "assets/fonts/vxp31/barlow_condensed",
+      "notes": "Barlow Condensed OFL for display headings"
+    },
+    {
+      "id": "VD-007",
+      "surface": "a11y_high_contrast",
+      "viewport": "n/a",
+      "severity": "S3",
+      "category": "INCONSISTENT_A11Y",
+      "status": "WONTFIX_NOT_IMPLEMENTED",
+      "digitally_solvable": false,
+      "evidence": "docs/vxp31/VXP31_ACCESSIBILITY_RUNTIME_REVIEW.md",
+      "notes": "Dedicated high-contrast mode not implemented; reported honestly"
+    },
+    {
+      "id": "VD-008",
+      "surface": "local_mp",
+      "viewport": "n/a",
+      "severity": "S3",
+      "category": "INCONSISTENT_COVERAGE",
+      "status": "OPEN",
+      "digitally_solvable": false,
+      "evidence": "gates",
+      "notes": "Local 2P runtime presentation capture not automated in this lane"
+    },
+    {
+      "id": "VD-009",
+      "surface": "main_menu",
+      "viewport": "1280x720",
+      "severity": "S1",
+      "category": "CLIPPING",
+      "status": "FIXED",
+      "evidence": "MainMenu._apply_launch_presentation speed stripe left rail",
+      "notes": "Bottom-wide speed stripe no longer covers Progression CTA"
+    },
+    {
+      "id": "VD-010",
+      "surface": "main_menu",
+      "viewport": "1280x720",
+      "severity": "S2",
+      "category": "WEAK_HIERARCHY",
+      "status": "FIXED",
+      "digitally_solvable": true,
+      "evidence": "Vxp3Presentation Championship secondary",
+      "notes": "Championship demoted from primary orange; RACE remains sole primary CTA"
+    },
+    {
+      "id": "VD-011",
+      "surface": "pause_menu",
+      "viewport": "1280x720",
+      "severity": "S1",
+      "category": "OVERLAP",
+      "status": "FIXED",
+      "evidence": "visual_surface_driver pause-before-results sequencing",
+      "notes": "Pause captured during live race; results hidden; coaches dismissed before results"
+    },
+    {
+      "id": "VD-012",
+      "surface": "achievement_toast",
+      "viewport": "1280x720",
+      "severity": "S2",
+      "category": "ENGINEER_COPY",
+      "status": "FIXED",
+      "digitally_solvable": true,
+      "evidence": "capture toast copy",
+      "notes": "Toast description player-facing"
+    }
+  ]
+}

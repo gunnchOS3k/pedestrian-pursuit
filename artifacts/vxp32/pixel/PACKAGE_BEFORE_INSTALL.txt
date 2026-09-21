@@ -1,0 +1,80 @@
+* daemon not running; starting now at tcp:5037
+* daemon started successfully
+Activity Resolver Table:
+  Non-Data Actions:
+      android.intent.action.MAIN:
+        72964c2 com.gunnchos.pedestrianpursuit/com.godot.game.GodotAppLauncher filter 95f32d3
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.LAUNCHER"
+          Category: "android.intent.category.HOME"
+
+Receiver Resolver Table:
+  Non-Data Actions:
+      androidx.profileinstaller.action.SAVE_PROFILE:
+        1371e10 com.gunnchos.pedestrianpursuit/androidx.profileinstaller.ProfileInstallReceiver filter ae0292f
+          Action: "androidx.profileinstaller.action.SAVE_PROFILE"
+      androidx.profileinstaller.action.INSTALL_PROFILE:
+        1371e10 com.gunnchos.pedestrianpursuit/androidx.profileinstaller.ProfileInstallReceiver filter dd09
+          Action: "androidx.profileinstaller.action.INSTALL_PROFILE"
+      androidx.profileinstaller.action.SKIP_FILE:
+        1371e10 com.gunnchos.pedestrianpursuit/androidx.profileinstaller.ProfileInstallReceiver filter 1ad0b0e
+          Action: "androidx.profileinstaller.action.SKIP_FILE"
+      androidx.profileinstaller.action.BENCHMARK_OPERATION:
+        1371e10 com.gunnchos.pedestrianpursuit/androidx.profileinstaller.ProfileInstallReceiver filter 7580b3c
+          Action: "androidx.profileinstaller.action.BENCHMARK_OPERATION"
+
+Domain verification status:
+
+Registered ContentProviders:
+  com.gunnchos.pedestrianpursuit/androidx.startup.InitializationProvider:
+    Provider{75f9e4a com.gunnchos.pedestrianpursuit/androidx.startup.InitializationProvider}
+  com.gunnchos.pedestrianpursuit/androidx.core.content.FileProvider:
+    Provider{9337b72 com.gunnchos.pedestrianpursuit/androidx.core.content.FileProvider}
+
+ContentProvider Authorities:
+  [com.gunnchos.pedestrianpursuit.androidx-startup]:
+    Provider{75f9e4a com.gunnchos.pedestrianpursuit/androidx.startup.InitializationProvider}
+      applicationInfo=ApplicationInfo{804f051 com.gunnchos.pedestrianpursuit}
+  [com.gunnchos.pedestrianpursuit.fileprovider]:
+    Provider{9337b72 com.gunnchos.pedestrianpursuit/androidx.core.content.FileProvider}
+      applicationInfo=ApplicationInfo{af930b6 com.gunnchos.pedestrianpursuit}
+
+Key Set Manager:
+  [com.gunnchos.pedestrianpursuit]
+      Signing KeySets: 93
+
+Packages:
+  Package [com.gunnchos.pedestrianpursuit] (251cd5d):
+    appId=10333
+    pccId=-1
+    pkg=Package{63c2231 com.gunnchos.pedestrianpursuit}
+    codePath=/data/app/~~gDBlzgpS6InKytXb03oOHw==/com.gunnchos.pedestrianpursuit-XmmII0sCKXl2wzlSa3s93Q==
+    resourcePath=/data/app/~~gDBlzgpS6InKytXb03oOHw==/com.gunnchos.pedestrianpursuit-XmmII0sCKXl2wzlSa3s93Q==
+    legacyNativeLibraryDir=/data/app/~~gDBlzgpS6InKytXb03oOHw==/com.gunnchos.pedestrianpursuit-XmmII0sCKXl2wzlSa3s93Q==/lib
+    extractNativeLibs=false
+    primaryCpuAbi=arm64-v8a
+    secondaryCpuAbi=null
+    cpuAbiOverride=null
+    versionCode=13 minSdk=24 targetSdk=36
+    minExtensionVersions=[]
+    versionName=0.3.9
+    hiddenApiEnforcementPolicy=2
+    usesNonSdkApi=false
+    splits=[base]
+    apkSigningVersion=2
+    flags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ]
+    privateFlags=[ PRIVATE_FLAG_ACTIVITIES_RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION ALLOW_AUDIO_PLAYBACK_CAPTURE PRIVATE_FLAG_ALLOW_NATIVE_HEAP_POINTER_TAGGING ]
+    forceQueryable=false
+    pageSizeCompat=0
+    scannedAsStoppedSystemApp=false
+    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]
+    timeStamp=2026-09-18 18:43:31
+    lastUpdateTime=2026-09-18 18:43:33
+    installerPackageName=null
+    installerPackageUid=-1
+    initiatingPackageName=com.android.shell
+    originatingPackageName=null
+    packageSource=1
+    appMetadataFilePath=null
+    appMetadataSource=0

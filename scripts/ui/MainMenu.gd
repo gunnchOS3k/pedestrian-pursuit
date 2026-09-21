@@ -4,6 +4,8 @@ const _RunnerProfile = preload("res://scripts/data/RunnerProfile.gd")
 const _RacerVisualScript = preload("res://scripts/player/RacerVisual.gd")
 const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
 const LaunchArtCatalogScript = preload("res://scripts/ui/LaunchArtCatalog.gd")
+const Vxp3PresentationScript = preload("res://scripts/ui/vxp3/Vxp3Presentation.gd")
+const Vxp3BrandScript = preload("res://scripts/ui/vxp3/Vxp3Brand.gd")
 
 ## Main menu — Quick Race, Cup, Time Trial, Local MP entry points (Alpha).
 
@@ -28,6 +30,7 @@ var _a11y_reduce: CheckButton
 var _a11y_larger: CheckButton
 var _a11y_auto: CheckButton
 var _a11y_colorblind: CheckButton
+var _a11y_high_contrast: CheckButton
 
 
 func _ready() -> void:
@@ -46,9 +49,10 @@ func _ready() -> void:
 	_load_content()
 	_populate_device_picker()
 	_sync_a11y_toggles()
-	$VBox/CupLabel.text = "DIGITAL RC READY  •  8 COURSES  •  2 CUPS  •  8 RACERS"
-	$VBox/Subtitle.text = "Launch roster + footwear + items + audio — procedural-final presentation"
+	$VBox/CupLabel.text = "Sole Surge Cup  ·  Championship courses"
+	$VBox/Subtitle.text = Vxp3BrandScript.player_subtitle()
 	_apply_launch_presentation()
+	Vxp3PresentationScript.recomposite_main_menu(self)
 	var audio := get_node_or_null("/root/AudioDirector")
 	if audio and audio.has_method("play_menu_music"):
 		audio.play_menu_music()
@@ -63,48 +67,51 @@ func _prompt_first_run_tutorial() -> void:
 		return
 	if get_node_or_null("FirstRunTutorialPrompt") != null:
 		return
+	var copy := Vxp3PresentationScript.first_run_copy()
 	var overlay := ColorRect.new()
 	overlay.name = "FirstRunTutorialPrompt"
-	overlay.color = Color(0.04, 0.06, 0.1, 0.9)
+	overlay.color = Color(0.043, 0.071, 0.125, 0.92)
 	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
 	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
 	add_child(overlay)
 	var panel := VBoxContainer.new()
 	panel.set_anchors_preset(Control.PRESET_CENTER)
-	panel.offset_left = -260
-	panel.offset_right = 260
-	panel.offset_top = -160
-	panel.offset_bottom = 160
+	panel.offset_left = -280
+	panel.offset_right = 280
+	panel.offset_top = -180
+	panel.offset_bottom = 180
 	panel.add_theme_constant_override("separation", 12)
 	overlay.add_child(panel)
 	var title := Label.new()
-	title.text = "First run — Foot-Racing Tutorial"
+	title.text = str(copy.get("title", "Learn the Track"))
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.add_theme_font_size_override("font_size", 24)
+	title.add_theme_font_size_override("font_size", 26)
+	title.add_theme_color_override("font_color", Vxp3BrandScript.COLOR_MIDSOLE_YELLOW)
 	panel.add_child(title)
 	var body := Label.new()
 	body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	body.text = (
-		"Learn sprint, drift sparks, Perfect Step, jumps, items, and footwear surfaces "
-		+ "on a real course before your first cup."
-	)
+	body.text = str(copy.get("body", ""))
 	panel.add_child(body)
 	var start := Button.new()
-	start.text = "Start Tutorial"
-	start.custom_minimum_size = Vector2(0, 44)
+	start.text = str(copy.get("start", "Start Tutorial"))
+	start.custom_minimum_size = Vector2(0, 48)
+	Vxp3BrandScript.style_primary_cta(start)
 	start.pressed.connect(func ():
 		overlay.queue_free()
 		_on_start_tutorial()
 	)
 	panel.add_child(start)
-	var skip := Button.new()
-	skip.text = "Skip for now"
-	skip.custom_minimum_size = Vector2(0, 40)
-	skip.pressed.connect(func (): overlay.queue_free())
-	panel.add_child(skip)
+	var race_now := Button.new()
+	race_now.text = str(copy.get("race_now", "Race Now"))
+	race_now.custom_minimum_size = Vector2(0, 44)
+	race_now.pressed.connect(func ():
+		overlay.queue_free()
+		_on_start_single()
+	)
+	panel.add_child(race_now)
 	var tut_btn := $VBox.get_node_or_null("TutorialButton") as Button
 	if tut_btn != null:
-		tut_btn.text = "Tutorial (recommended — first run)"
+		tut_btn.text = "Learn the Track"
 
 
 func _ensure_howto_button() -> void:
@@ -161,7 +168,7 @@ func _on_howto_play() -> void:
 		+ "Modes: Quick Race, Cup, Time Trial/Ghost, Local 2P, Tutorial, Challenges, Progression.\n"
 		+ "Footwear materials matter: Grip on mud, Speed on asphalt, Bounce on rails/pads.\n"
 		+ "Items warn before hitting — shield, slide, or jump for counterplay.\n"
-		+ "Accessibility toggles live on this menu (reduce motion, larger UI, auto-accel, colorblind HUD)."
+		+ "Accessibility toggles live on this menu (reduce motion, larger UI, auto-accel, colorblind HUD, high contrast)."
 	)
 	panel.add_child(body)
 	var close := Button.new()
@@ -302,6 +309,9 @@ func _ensure_settings_ui() -> void:
 		_a11y_larger = vbox.get_node("A11yLargerUI")
 		_a11y_auto = vbox.get_node("A11yAutoAccel")
 		_a11y_colorblind = vbox.get_node("A11yColorblind")
+		_a11y_high_contrast = vbox.get_node_or_null("A11yHighContrast") as CheckButton
+		if _a11y_high_contrast == null:
+			_ensure_high_contrast_toggle(vbox)
 		_ensure_resume_cup_button()
 		return
 
@@ -309,9 +319,9 @@ func _ensure_settings_ui() -> void:
 
 	var device_label := Label.new()
 	device_label.name = "DeviceLabel"
-	device_label.text = "Device Role"
+	device_label.text = "Advanced · Device Lab"
 	device_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	device_label.add_theme_font_size_override("font_size", 16)
+	device_label.add_theme_font_size_override("font_size", 13)
 	vbox.add_child(device_label)
 	vbox.move_child(device_label, insert_at)
 	insert_at += 1
@@ -371,8 +381,33 @@ func _ensure_settings_ui() -> void:
 	_a11y_colorblind.text = "Colorblind-safe HUD markers"
 	vbox.add_child(_a11y_colorblind)
 	vbox.move_child(_a11y_colorblind, insert_at)
+	insert_at += 1
 	_a11y_colorblind.toggled.connect(func(v): AccessibilitySettings.set_colorblind_safe_hud(v))
+
+	_a11y_high_contrast = CheckButton.new()
+	_a11y_high_contrast.name = "A11yHighContrast"
+	_a11y_high_contrast.text = "High contrast"
+	vbox.add_child(_a11y_high_contrast)
+	vbox.move_child(_a11y_high_contrast, insert_at)
+	_a11y_high_contrast.toggled.connect(_on_high_contrast_toggled)
 	_ensure_resume_cup_button()
+
+
+func _ensure_high_contrast_toggle(vbox: VBoxContainer) -> void:
+	_a11y_high_contrast = CheckButton.new()
+	_a11y_high_contrast.name = "A11yHighContrast"
+	_a11y_high_contrast.text = "High contrast"
+	var after := vbox.get_node_or_null("A11yColorblind")
+	vbox.add_child(_a11y_high_contrast)
+	if after:
+		vbox.move_child(_a11y_high_contrast, after.get_index() + 1)
+	_a11y_high_contrast.toggled.connect(_on_high_contrast_toggled)
+
+
+func _on_high_contrast_toggled(value: bool) -> void:
+	if AccessibilitySettings != null:
+		AccessibilitySettings.set_high_contrast(value)
+	Vxp3PresentationScript.recomposite_main_menu(self)
 
 
 func _ensure_resume_cup_button() -> void:
@@ -459,6 +494,8 @@ func _sync_a11y_toggles() -> void:
 		_a11y_auto.set_pressed_no_signal(AccessibilitySettings.auto_accelerate)
 	if _a11y_colorblind:
 		_a11y_colorblind.set_pressed_no_signal(AccessibilitySettings.colorblind_safe_hud)
+	if _a11y_high_contrast:
+		_a11y_high_contrast.set_pressed_no_signal(AccessibilitySettings.high_contrast)
 
 
 func _setup_preview_viewport() -> void:
@@ -561,7 +598,8 @@ func _reload_selected_cup_tracks() -> void:
 		course_picker.set_item_metadata(course_picker.item_count - 1, str(track.get("id", "")))
 	var expected_track_count: int = _cup.get("track_ids", []).size()
 	$VBox/StartCupButton.disabled = _cup.is_empty() or _tracks.size() != expected_track_count
-	$VBox/StartCupButton.text = "Start Cup: %s" % str(_cup.get("display_name", "Cup"))
+	$VBox/StartCupButton.text = "Championship: %s" % str(_cup.get("display_name", "Cup"))
+	Vxp3BrandScript.style_primary_cta($VBox/StartCupButton)
 	if course_picker.item_count > 0:
 		course_picker.select(0)
 		_on_course_selected(0)
@@ -598,9 +636,44 @@ func _on_shoe_selected(index: int) -> void:
 		return
 	GameManager.selected_shoe_id = str(_shoe_picker.get_item_metadata(index))
 	_refresh_footwear_stage()
+	_refresh_shoe_player_copy()
 	var audio := get_node_or_null("/root/AudioDirector")
 	if audio and audio.has_method("play_ui"):
 		audio.play_ui("select")
+
+
+func _refresh_shoe_player_copy() -> void:
+	## Player-facing footwear card: name, material family, strength, surface affinity, symbol.
+	## No invented stats — values come from ShoeData JSON only.
+	var shoe_id := str(GameManager.selected_shoe_id)
+	var shoe := ShoeDataScript.load_by_id(shoe_id)
+	var info := $VBox.get_node_or_null("ShoeInfo") as Label
+	if info == null:
+		info = Label.new()
+		info.name = "ShoeInfo"
+		info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		info.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		info.add_theme_font_size_override("font_size", 13)
+		$VBox.add_child(info)
+		var picker := $VBox.get_node_or_null("ShoePicker")
+		if picker:
+			$VBox.move_child(info, picker.get_index() + 1)
+	var material := str(shoe.get("material_family", "balanced_rubber")).replace("_", " ")
+	info.text = (
+		"%s\n%s · %s\n%s"
+		% [
+			str(shoe.get("display_name", shoe_id)),
+			material,
+			Vxp3BrandScript.footwear_strength_label(shoe),
+			Vxp3BrandScript.footwear_affinity_blurb(shoe),
+		]
+	)
+	info.add_theme_color_override("font_color", Vxp3BrandScript.COLOR_MUTED)
+	var stage := $VBox.get_node_or_null("FootwearStage") as TextureRect
+	if stage != null:
+		var symbol := Vxp3BrandScript.footwear_symbol(material)
+		if symbol != null and LaunchArtCatalogScript.shoe_icon(shoe_id) == null:
+			stage.texture = symbol
 
 
 func _on_runner_selected(index: int) -> void:
@@ -855,30 +928,36 @@ func _on_course_selected(index: int) -> void:
 
 
 func _apply_launch_presentation() -> void:
-	var menu_tex: Texture2D = LaunchArtCatalogScript.ui_texture("menu_panel")
-	if menu_tex != null:
-		var bg := TextureRect.new()
+	## Prefer VXP-3 kinetic mark backdrop; do not promote unprovenanced launcher-icon.
+	if get_node_or_null("LaunchMenuBackdrop") == null:
+		var bg := ColorRect.new()
 		bg.name = "LaunchMenuBackdrop"
-		bg.texture = menu_tex
+		bg.color = Vxp3BrandScript.COLOR_NIGHT_TRACK
 		bg.set_anchors_preset(Control.PRESET_FULL_RECT)
-		bg.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		bg.stretch_mode = TextureRect.STRETCH_SCALE
-		bg.modulate = Color(1, 1, 1, 0.35)
 		bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		add_child(bg)
 		move_child(bg, 0)
-	var cup_tex: Texture2D = LaunchArtCatalogScript.ui_texture("cup_banner")
-	if cup_tex != null and $VBox.get_node_or_null("CupBanner") == null:
-		var banner := TextureRect.new()
-		banner.name = "CupBanner"
-		banner.texture = cup_tex
-		banner.custom_minimum_size = Vector2(0, 64)
-		banner.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		banner.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-		$VBox.add_child(banner)
-		$VBox.move_child(banner, 0)
+		var stripe := TextureRect.new()
+		stripe.name = "Vxp3SpeedStripe"
+		stripe.texture = load("res://assets/branding/vxp3/pp-speed-stripe.png") as Texture2D
+		## Decorative left rail only — never cover bottom CTAs.
+		stripe.set_anchors_preset(Control.PRESET_LEFT_WIDE)
+		stripe.offset_left = 0
+		stripe.offset_right = 28
+		stripe.offset_top = 0
+		stripe.offset_bottom = 0
+		stripe.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		stripe.stretch_mode = TextureRect.STRETCH_SCALE
+		stripe.modulate = Color(1, 1, 1, 0.35)
+		stripe.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(stripe)
+		move_child(stripe, 1)
+	var bg_node := get_node_or_null("Background") as ColorRect
+	if bg_node:
+		bg_node.color = Vxp3BrandScript.COLOR_NIGHT_TRACK
 	_ensure_footwear_stage()
 	_ensure_track_thumb()
+	_refresh_shoe_player_copy()
 
 
 func _ensure_footwear_stage() -> void:

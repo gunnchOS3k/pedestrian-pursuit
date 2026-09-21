@@ -1,0 +1,115 @@
+{
+  "artifact_root": "artifacts/digital_engineering_exhaustion/stream_c",
+  "claims": {
+    "fun_balance_feel": false,
+    "human_playtest_completed": false,
+    "rights_clearance_complete": false
+  },
+  "emitted_at": "2026-09-19T14:29:23.778536+00:00",
+  "fixtures": {
+    "deterministic": "artifacts/digital_engineering_exhaustion/stream_c/fixtures/DETERMINISTIC_BOT_TRAVERSAL.json",
+    "smoke_scenes": "artifacts/digital_engineering_exhaustion/stream_c/fixtures/SMOKE_SCENES.json"
+  },
+  "game": {
+    "godot_path": ".",
+    "id": "pedestrian-pursuit",
+    "kind": "godot",
+    "title": "Pedestrian Pursuit"
+  },
+  "gate": {
+    "GAMES_PRE_HUMAN_PLAYTEST_ENGINEERING_EXHAUSTED": true,
+    "HUMAN_FUN_BALANCE_FEEL": "HUMAN_VALIDATION_REQUIRED",
+    "RIGHTS_CLEARANCE_COMPLETE": false,
+    "RIGHTS_QUARANTINE_ACTIVE": true,
+    "accepted_main_sha": "1d790aae5d0abc9ffd9f4350cdca4a0add4ff151",
+    "blockers": [
+      {
+        "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+        "dimension": "save_load",
+        "evidence": "profile/achievement persistence tests"
+      },
+      {
+        "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+        "dimension": "input",
+        "evidence": "mobile_input / unit tests"
+      },
+      {
+        "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+        "dimension": "pause_resume",
+        "evidence": "race scene pause paths"
+      },
+      {
+        "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+        "dimension": "crash_recovery",
+        "evidence": "mini_soak"
+      },
+      {
+        "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+        "dimension": "persistence",
+        "evidence": "profile/achievement persistence tests"
+      },
+      {
+        "blocker_class": "PHYSICAL_HARDWARE_REQUIRED",
+        "dimension": "frame_pacing",
+        "evidence": "PHYSICAL_FPS pending"
+      },
+      {
+        "blocker_class": "PHYSICAL_HARDWARE_REQUIRED",
+        "dimension": "leaks",
+        "evidence": "needs profiler soak"
+      },
+      {
+        "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+        "dimension": "resolution",
+        "evidence": "export presets"
+      },
+      {
+        "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+        "dimension": "audio",
+        "evidence": "assets/audio present"
+      },
+      {
+        "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+        "dimension": "a11y",
+        "evidence": "a11y automation incomplete"
+      },
+      {
+        "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+        "dimension": "local_multiplayer",
+        "evidence": "local race modes"
+      },
+      {
+        "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+        "dimension": "install_update",
+        "evidence": "rc packaging scripts"
+      },
+      {
+        "blocker_class": "PHYSICAL_HARDWARE_REQUIRED",
+        "dimension": "android",
+        "evidence": "no adb device"
+      },
+      {
+        "blocker_class": "LEGAL_RIGHTS_REVIEW_REQUIRED",
+        "dimension": "rights",
+        "evidence": "831 quarantined assets"
+      },
+      {
+        "blocker_class": "HUMAN_VALIDATION_REQUIRED",
+        "dimension": "fun_balance_feel",
+        "evidence": "playtest task sheets are templates only"
+      }
+    ],
+    "evaluated_at": "2026-09-19T14:29:23.727841+00:00",
+    "failures": [],
+    "game_id": "pedestrian-pursuit",
+    "host": {
+      "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+      "python": "3.14.7"
+    },
+    "unclassified_partial": []
+  },
+  "playtest_task_sheets": "artifacts/digital_engineering_exhaustion/stream_c/playtest/PLAYTEST_TASK_SHEETS.md",
+  "rights_quarantine_count": 831,
+  "section": 9,
+  "stream": "C"
+}

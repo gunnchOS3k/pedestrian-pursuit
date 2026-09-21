@@ -1,0 +1,1454 @@
+{
+  "schema": "vxp3.brand_provenance/v1",
+  "game_name": "Pedestrian Pursuit",
+  "design_direction_label": "KINETIC SOLE",
+  "concept": "Footwear is the machine. The runner is the vehicle.",
+  "VXP3_CUSTOM_FONT_PENDING": false,
+  "VXP3_ALL_HISTORICAL_RIGHTS_CLEARED": false,
+  "policy": "Repository-authored originals. Quarantined launcher/splash icons not promoted.",
+  "updated_utc": "2026-09-19T04:14:38.437275+00:00",
+  "assets": [
+    {
+      "id": "vxp3.README",
+      "path": "assets/branding/vxp3/README.md",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "6226336cf12384e843a94beff96bddefd1adc7578bf39baa55c0747672bce0e0"
+    },
+    {
+      "id": "vxp3.glyph_accel",
+      "path": "assets/branding/vxp3/glyphs/glyph_accel.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "66120199641719f7e6b0fcd82b993c98871982361a2f046b9ea1cbc00d04fd6a"
+    },
+    {
+      "id": "vxp3.glyph_accel",
+      "path": "assets/branding/vxp3/glyphs/glyph_accel.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "b6d2e01636ee6da1139c4338f64026e3eaffc244eb2cd056a348ed6869898a13"
+    },
+    {
+      "id": "vxp3.glyph_achievement",
+      "path": "assets/branding/vxp3/glyphs/glyph_achievement.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "0b22923f51deedf7573fcc0892358b5ef0e3b92d011a0caaa00df8aaf44bb127"
+    },
+    {
+      "id": "vxp3.glyph_achievement",
+      "path": "assets/branding/vxp3/glyphs/glyph_achievement.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "22d2f101e9ee00e7d663e07e2cff30cba7e83c036c53037cb2acbf91a47f518c"
+    },
+    {
+      "id": "vxp3.glyph_back",
+      "path": "assets/branding/vxp3/glyphs/glyph_back.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "5268c0af6d125faac57247b75f733f91da247771df5c90bc5edf282eb49c4b2e"
+    },
+    {
+      "id": "vxp3.glyph_back",
+      "path": "assets/branding/vxp3/glyphs/glyph_back.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "1f835620a118574daf749544d420b37aaf10223845491de92261164eae9e4dda"
+    },
+    {
+      "id": "vxp3.glyph_boost",
+      "path": "assets/branding/vxp3/glyphs/glyph_boost.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "06ef0f24df091e864857a7f777fc79d523dacd49e4a3d6e1a42ff25824ad07fe"
+    },
+    {
+      "id": "vxp3.glyph_boost",
+      "path": "assets/branding/vxp3/glyphs/glyph_boost.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "2fc3847e1eac18de1294b5262b4ae612f6d7baa8f8e5da50ad686c9c81cd554d"
+    },
+    {
+      "id": "vxp3.glyph_brake",
+      "path": "assets/branding/vxp3/glyphs/glyph_brake.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "69e6f43e4a00c5f5e09aab9afc5bfe0779014a66c5253dcb9fb96abda65c5a00"
+    },
+    {
+      "id": "vxp3.glyph_brake",
+      "path": "assets/branding/vxp3/glyphs/glyph_brake.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "cb26a5fe760928cdfcb2628ba651c22ebfafc1b496f6e74afc2b8cee164a5eca"
+    },
+    {
+      "id": "vxp3.glyph_confirm",
+      "path": "assets/branding/vxp3/glyphs/glyph_confirm.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "dd3f1c6db54ca46281d5bd7c5c086a42c6ce63f2deaf92c0a7965a4f7bc93535"
+    },
+    {
+      "id": "vxp3.glyph_confirm",
+      "path": "assets/branding/vxp3/glyphs/glyph_confirm.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "a3bd333bd4afe29e05fad24b93ce875ea24c777fd20e169a197eae282b2b16b2"
+    },
+    {
+      "id": "vxp3.glyph_drift",
+      "path": "assets/branding/vxp3/glyphs/glyph_drift.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "e46c5bafe2676bd9d8c2f9f5e9a84e1c201b98ddea513c8d5b95ebcf037c542a"
+    },
+    {
+      "id": "vxp3.glyph_drift",
+      "path": "assets/branding/vxp3/glyphs/glyph_drift.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "43b3445335b7e4fc4d2d14f02a68ef83b801dae3a869d216d8efb4b15f1d5d4b"
+    },
+    {
+      "id": "vxp3.glyph_item",
+      "path": "assets/branding/vxp3/glyphs/glyph_item.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "3e564abbaa9b487a64beea6fea882ee7c68d7cb40bd6754e79f07162b8703028"
+    },
+    {
+      "id": "vxp3.glyph_item",
+      "path": "assets/branding/vxp3/glyphs/glyph_item.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "26bafb8755795790cf5b24738ccf93242b6ec1ecb798d38a6b0795687c9baa35"
+    },
+    {
+      "id": "vxp3.glyph_jump",
+      "path": "assets/branding/vxp3/glyphs/glyph_jump.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "bc6f261bc48dcf420ecd9038eb3ffb40f7a1c055613df745588a166fe4cb9209"
+    },
+    {
+      "id": "vxp3.glyph_jump",
+      "path": "assets/branding/vxp3/glyphs/glyph_jump.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "24d3538d362311bb3960e35f0a191b2b72e802e03df5393a7797120c03f751aa"
+    },
+    {
+      "id": "vxp3.glyph_lap",
+      "path": "assets/branding/vxp3/glyphs/glyph_lap.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "529d6c14e223bd0a03531453f81d40ed97c324af2ae064975cfc8c79f60e49d1"
+    },
+    {
+      "id": "vxp3.glyph_lap",
+      "path": "assets/branding/vxp3/glyphs/glyph_lap.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "9e60a69c1f25f7733c94d9a29adefebe7acd734d7025d687ca7d014a6f563e7b"
+    },
+    {
+      "id": "vxp3.glyph_menu",
+      "path": "assets/branding/vxp3/glyphs/glyph_menu.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "cf40a4122ccc3db777890627e13abc26d8f4dfd5a535f2c90eda67bbfce6696f"
+    },
+    {
+      "id": "vxp3.glyph_menu",
+      "path": "assets/branding/vxp3/glyphs/glyph_menu.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "b0eb320842ce3513d130de03a9657c2b096c0455db0ebd84d0ec4d71d52dd81b"
+    },
+    {
+      "id": "vxp3.glyph_pause",
+      "path": "assets/branding/vxp3/glyphs/glyph_pause.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "3724adb9c6fa49cffe296c53f44b7d54b6c6b8cf1b3268ecdc035273ee2bd588"
+    },
+    {
+      "id": "vxp3.glyph_pause",
+      "path": "assets/branding/vxp3/glyphs/glyph_pause.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "6744fb8d7bf61f4d3d4db6eddee7997e37be74e61b60384f384715a1d41291fe"
+    },
+    {
+      "id": "vxp3.glyph_perfect_step",
+      "path": "assets/branding/vxp3/glyphs/glyph_perfect_step.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "9dded8745f648c291cfccaee04cbd41bba4a7b40003bb59c394b7249fd5bf3ef"
+    },
+    {
+      "id": "vxp3.glyph_perfect_step",
+      "path": "assets/branding/vxp3/glyphs/glyph_perfect_step.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "22d2f101e9ee00e7d663e07e2cff30cba7e83c036c53037cb2acbf91a47f518c"
+    },
+    {
+      "id": "vxp3.glyph_podium_1",
+      "path": "assets/branding/vxp3/glyphs/glyph_podium_1.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "36ad7bf0683ecd2330ad8f7812fbc30d22653088a8c6283afe171896c4b6660e"
+    },
+    {
+      "id": "vxp3.glyph_podium_1",
+      "path": "assets/branding/vxp3/glyphs/glyph_podium_1.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "cf2c2e7146250a884cd4a7722749467d775fed54b777fb734a53488cacba57e3"
+    },
+    {
+      "id": "vxp3.glyph_podium_2",
+      "path": "assets/branding/vxp3/glyphs/glyph_podium_2.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "343c00d031128301e4dbef592396e0bb30ac4ef0963fdd78ea3e1d89c4ffa51b"
+    },
+    {
+      "id": "vxp3.glyph_podium_2",
+      "path": "assets/branding/vxp3/glyphs/glyph_podium_2.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "b22d12c45daa3a11d9e7b46e8f3fb5763d9db56c600140e475758469d16ac102"
+    },
+    {
+      "id": "vxp3.glyph_podium_3",
+      "path": "assets/branding/vxp3/glyphs/glyph_podium_3.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "b085f702bcca39921259c4120b5c92ebff7a50553f0f8dfca0a1a1fd3586a1dd"
+    },
+    {
+      "id": "vxp3.glyph_podium_3",
+      "path": "assets/branding/vxp3/glyphs/glyph_podium_3.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "08ddc8d8d7376a49e0f4a6bd252c5b625eb964a935cb8fb043f11885cb449951"
+    },
+    {
+      "id": "vxp3.glyph_position",
+      "path": "assets/branding/vxp3/glyphs/glyph_position.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "be2b40f30682c49472e78679b44fcc4000f9048a7014bb5799515542cea39d64"
+    },
+    {
+      "id": "vxp3.glyph_position",
+      "path": "assets/branding/vxp3/glyphs/glyph_position.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "51a6bd8fe95307fb54a103c70da2e8f348c8a22c5b7d952940b642faa183cd73"
+    },
+    {
+      "id": "vxp3.glyph_resume",
+      "path": "assets/branding/vxp3/glyphs/glyph_resume.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "80eed0841f50d2b652064b9cbed72f7bc99e81c84848e1b6b1a3eb18b1fae1e1"
+    },
+    {
+      "id": "vxp3.glyph_resume",
+      "path": "assets/branding/vxp3/glyphs/glyph_resume.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "20399f46e1c25cb59abe0c718a4358dc82a382c1663b8ad179139dfa4d1535c3"
+    },
+    {
+      "id": "vxp3.glyph_spark_1",
+      "path": "assets/branding/vxp3/glyphs/glyph_spark_1.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "8adc58db3ec003341abf7dd464b54d9ec87eae4cf4d550db87a30711a1df4dba"
+    },
+    {
+      "id": "vxp3.glyph_spark_1",
+      "path": "assets/branding/vxp3/glyphs/glyph_spark_1.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "1fcdec7a1253b4361089924ba4a7af3762ecc4d47b381380939ddc8fc6df1fea"
+    },
+    {
+      "id": "vxp3.glyph_spark_2",
+      "path": "assets/branding/vxp3/glyphs/glyph_spark_2.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "e32a7b8c6167567f1ad2130dfd86b855aa73bd71f4085be00fb1e9971d5422a4"
+    },
+    {
+      "id": "vxp3.glyph_spark_2",
+      "path": "assets/branding/vxp3/glyphs/glyph_spark_2.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "95c48531aa332f720aac29027b599034f377436d962aba9d8b666910e0b9e979"
+    },
+    {
+      "id": "vxp3.glyph_spark_3",
+      "path": "assets/branding/vxp3/glyphs/glyph_spark_3.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "b5dcfa7890dda5af6b3c68b04fccc0856deb09fb019f3c584321fac6fb747d4b"
+    },
+    {
+      "id": "vxp3.glyph_spark_3",
+      "path": "assets/branding/vxp3/glyphs/glyph_spark_3.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "cf2bd04eefca51707dd7740abc358b89a4af3b185a4167c415613d523567f91f"
+    },
+    {
+      "id": "vxp3.glyph_spark_4",
+      "path": "assets/branding/vxp3/glyphs/glyph_spark_4.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "57a17ecf71cdae35b5bcbb8bc68e8efea2fd2e35618657d546e425b4a3409486"
+    },
+    {
+      "id": "vxp3.glyph_spark_4",
+      "path": "assets/branding/vxp3/glyphs/glyph_spark_4.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "5fd9499ae80b7bbbf1089796f4db0972145288fc3b8da77435abd20f3583ae4e"
+    },
+    {
+      "id": "vxp3.glyph_steer_left",
+      "path": "assets/branding/vxp3/glyphs/glyph_steer_left.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "de160db0d523d0fc3807bd704b804ac24da6860a4db6bfd682e947780e8fa135"
+    },
+    {
+      "id": "vxp3.glyph_steer_left",
+      "path": "assets/branding/vxp3/glyphs/glyph_steer_left.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "28a737d2a7ef4ac8036e6e27ff917dc5e5305ee038c76082730e3d3cc52ad235"
+    },
+    {
+      "id": "vxp3.glyph_steer_right",
+      "path": "assets/branding/vxp3/glyphs/glyph_steer_right.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "06c1e123ae287f03aea1683d938a4ea577a05a2163b0ded9526cb273c477eace"
+    },
+    {
+      "id": "vxp3.glyph_steer_right",
+      "path": "assets/branding/vxp3/glyphs/glyph_steer_right.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "dfb6fe171e6ef21e61f023a4fa8b10c1edfcb910e035cd0c3d6fefdc6d01f5b4"
+    },
+    {
+      "id": "vxp3.glyph_touch",
+      "path": "assets/branding/vxp3/glyphs/glyph_touch.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "f2366f230ce32974361db3435f1d82d35b977bce7f6e03b3190c938d5fc76545"
+    },
+    {
+      "id": "vxp3.glyph_touch",
+      "path": "assets/branding/vxp3/glyphs/glyph_touch.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "1ceb86f57652cd9c2d549d9cf9d90643d6ae14717479d4ab33dfba0a91de53fc"
+    },
+    {
+      "id": "vxp3.glyph_wrong_way",
+      "path": "assets/branding/vxp3/glyphs/glyph_wrong_way.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "6d701349a016b689af69e3a214b6baabc9bb60df9f20772fc34e6313c032d2dd"
+    },
+    {
+      "id": "vxp3.glyph_wrong_way",
+      "path": "assets/branding/vxp3/glyphs/glyph_wrong_way.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "057ad56972ed660e2d0d079787d51565893a8a33b077388178340c02a7c3de95"
+    },
+    {
+      "id": "vxp3.icon-accel",
+      "path": "assets/branding/vxp3/glyphs/icon-accel.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "f3c01ac27ec21198430795be0b2a44c6343b36ee23202e049202b92a878904b9"
+    },
+    {
+      "id": "vxp3.icon-achievement",
+      "path": "assets/branding/vxp3/glyphs/icon-achievement.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "cd263ae6ac26d4a858a2e2f37cbb72f83d40ec317eb27ff0735a42e4cf1e235a"
+    },
+    {
+      "id": "vxp3.icon-boost",
+      "path": "assets/branding/vxp3/glyphs/icon-boost.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "9e29449dc28b28178ef45e84f7885e1f39c614be0281d10af139dbef8029cbad"
+    },
+    {
+      "id": "vxp3.icon-brake",
+      "path": "assets/branding/vxp3/glyphs/icon-brake.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "fb99d75f8274f61b8cc41849a34ec9cc5b632aed8ab91ff8907ed451503c77b6"
+    },
+    {
+      "id": "vxp3.icon-course",
+      "path": "assets/branding/vxp3/glyphs/icon-course.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "16264e7536ffd160c8bb88f54fe7633a910fbfd4d2bca5b95be6da7f9d82bc54"
+    },
+    {
+      "id": "vxp3.icon-cup",
+      "path": "assets/branding/vxp3/glyphs/icon-cup.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "3b0face8d1278f7c03f942fed7f6993dd96a0a515f4729536d0f1a566db88252"
+    },
+    {
+      "id": "vxp3.icon-drift",
+      "path": "assets/branding/vxp3/glyphs/icon-drift.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "d1d45b87e0f489c6286780ec5120e8938102f669b15e398b3801eeec6da516ea"
+    },
+    {
+      "id": "vxp3.icon-footwear-bounce",
+      "path": "assets/branding/vxp3/glyphs/icon-footwear-bounce.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "9035b9c54ba5058739d21923d4c9e246ed3aa050d4b59a2d18e9b0ff559c0609"
+    },
+    {
+      "id": "vxp3.icon-footwear-grip",
+      "path": "assets/branding/vxp3/glyphs/icon-footwear-grip.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "2739bbb9317a20936aec5dbcdcdf78818b3258151b8a2aa38c458f0fe5c61de0"
+    },
+    {
+      "id": "vxp3.icon-footwear-speed",
+      "path": "assets/branding/vxp3/glyphs/icon-footwear-speed.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "39fab17a2693a0a3637bc384b959c358ecafb63652430f813db756c9241d5ac9"
+    },
+    {
+      "id": "vxp3.icon-item",
+      "path": "assets/branding/vxp3/glyphs/icon-item.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "980d764e47ca540a0db025450875f02d543890983e3b36ce38c97ca267697c5c"
+    },
+    {
+      "id": "vxp3.icon-jump",
+      "path": "assets/branding/vxp3/glyphs/icon-jump.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "55f1b817ab8667d2d803dd8d86f55ac44db1ceaaf78f345f4f3d62d70d7432c1"
+    },
+    {
+      "id": "vxp3.icon-lap",
+      "path": "assets/branding/vxp3/glyphs/icon-lap.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "6d35c34daaa588db43f99cbfa01ee39da78ebbada62e5974e127b4852da5d01e"
+    },
+    {
+      "id": "vxp3.icon-minimap",
+      "path": "assets/branding/vxp3/glyphs/icon-minimap.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "03c5377052ab07d4e4008d09837551b9312452a1b7765017700831ba719c76e4"
+    },
+    {
+      "id": "vxp3.icon-pause",
+      "path": "assets/branding/vxp3/glyphs/icon-pause.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "9c23bfd84e2ffcf02eb511737ffa0409f539a7c51a0d342b359c6d0eec48d83a"
+    },
+    {
+      "id": "vxp3.icon-perfect-step",
+      "path": "assets/branding/vxp3/glyphs/icon-perfect-step.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "eebe2a3561de6dd02c1a04313b3d7ab902eb3cf18eecc21bd13b1bc88d12237e"
+    },
+    {
+      "id": "vxp3.icon-podium-1",
+      "path": "assets/branding/vxp3/glyphs/icon-podium-1.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "bbde21b5f2e0a9428bc13032cd46245e8d9e41dd4cacc4457380eb574f709bb5"
+    },
+    {
+      "id": "vxp3.icon-podium-2",
+      "path": "assets/branding/vxp3/glyphs/icon-podium-2.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "e5f7684a7bf6a6d445119aee2abd836efb716eaecd5df64eddf083986c284c7c"
+    },
+    {
+      "id": "vxp3.icon-podium-3",
+      "path": "assets/branding/vxp3/glyphs/icon-podium-3.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "177cfb2ddc593d1342b2778f69921b30c164c5c4927c4f1239411df040b44e9e"
+    },
+    {
+      "id": "vxp3.icon-position",
+      "path": "assets/branding/vxp3/glyphs/icon-position.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "9e6adc8147607111335c84a2dc7e7392453e98dadbf8591f24d81c7fce09655e"
+    },
+    {
+      "id": "vxp3.icon-spark-1",
+      "path": "assets/branding/vxp3/glyphs/icon-spark-1.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "efb9f376c587a6450964765d1209a0ecbb1e65d869d4fd587fff87820ff01d4f"
+    },
+    {
+      "id": "vxp3.icon-spark-2",
+      "path": "assets/branding/vxp3/glyphs/icon-spark-2.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "78bb1438ac6433fefee0013ef237e3c4111d7009a6f282f56a876a21356427e7"
+    },
+    {
+      "id": "vxp3.icon-spark-3",
+      "path": "assets/branding/vxp3/glyphs/icon-spark-3.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "a9213d0eb8dbc74f67b057208c80ead2d23215191f863eb8e20457a9f76a1d47"
+    },
+    {
+      "id": "vxp3.icon-spark-4",
+      "path": "assets/branding/vxp3/glyphs/icon-spark-4.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "d68ff889cfaf66b6fee85f9e26d549f87adddd3a88f5857043d315449d7fcaef"
+    },
+    {
+      "id": "vxp3.icon-steer",
+      "path": "assets/branding/vxp3/glyphs/icon-steer.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "d7b4cdc17d653efe1a4450f0827c91214cfcb104184bd5211786828e50f37b99"
+    },
+    {
+      "id": "vxp3.icon-timer",
+      "path": "assets/branding/vxp3/glyphs/icon-timer.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "4cc4eb3e4428627adebddd27276e10c842993b0528395db03c1a82aa6a142a07"
+    },
+    {
+      "id": "vxp3.icon-wrong-way",
+      "path": "assets/branding/vxp3/glyphs/icon-wrong-way.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "74fe007ebbcef0d834b340efc55adfaa9440fcab971427faf25b64b6d3a9ed66"
+    },
+    {
+      "id": "vxp3.pedestrian-pursuit-wordmark",
+      "path": "assets/branding/vxp3/pedestrian-pursuit-wordmark.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "d3a1b11e0e65a220e65ca5e6feae24c472bac81ff106fd9e0c673cecb26e9d56"
+    },
+    {
+      "id": "vxp3.pedestrian-pursuit-wordmark",
+      "path": "assets/branding/vxp3/pedestrian-pursuit-wordmark.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "b2fbf86cb230b241d198024f2109f53c6eedfb5d608918b1a00850fa18302ba6"
+    },
+    {
+      "id": "vxp3.pp-course-divider",
+      "path": "assets/branding/vxp3/pp-course-divider.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "f59a918f671a5a0e7eeac29aa63c4e8ab5cd06bb63527e5400ce948dd37e88e7"
+    },
+    {
+      "id": "vxp3.pp-course-divider",
+      "path": "assets/branding/vxp3/pp-course-divider.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "b4657dc6798456e07e74c48cee4e3edb576deaabb0c3818e1347caf89a193079"
+    },
+    {
+      "id": "vxp3.pp-focus-frame",
+      "path": "assets/branding/vxp3/pp-focus-frame.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "d483ed4e6bdb2007eb9a3135808473058f44ce34e71282986c8f918ae235322a"
+    },
+    {
+      "id": "vxp3.pp-focus-frame",
+      "path": "assets/branding/vxp3/pp-focus-frame.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "942fe0173091967bddf1f187c733964b9279300675573e3d6a2ad83712a75714"
+    },
+    {
+      "id": "vxp3.pp-kinetic-mark-128",
+      "path": "assets/branding/vxp3/pp-kinetic-mark-128.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "d4f235b2eac4ed4f398a7d4843d864a3c0f5a3eb22e354efded01fb78112468f"
+    },
+    {
+      "id": "vxp3.pp-kinetic-mark-monochrome",
+      "path": "assets/branding/vxp3/pp-kinetic-mark-monochrome.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "cc43187e0ff7715582ad8a5877f9217961bb325d01df7644ef4c2e8dff160eea"
+    },
+    {
+      "id": "vxp3.pp-kinetic-mark-monochrome",
+      "path": "assets/branding/vxp3/pp-kinetic-mark-monochrome.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "033cbc5105ea11a6f92af608ae162cabc63d6eabac82f178047b836735bcb78f"
+    },
+    {
+      "id": "vxp3.pp-kinetic-mark",
+      "path": "assets/branding/vxp3/pp-kinetic-mark.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "652045b825152b93223686748016437e0592a5493bc2c2a629f6012a44c32d27"
+    },
+    {
+      "id": "vxp3.pp-kinetic-mark",
+      "path": "assets/branding/vxp3/pp-kinetic-mark.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "721d21b9ee319d2e802595cccae4dcfb928c002caa696a0785f0f4277bf5be5c"
+    },
+    {
+      "id": "vxp3.pp-sole-track",
+      "path": "assets/branding/vxp3/pp-sole-track.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "9cb353f7c99adfaed7e6fd49c2f2a58f4f8995bfa72acf5c9e23801115fb7284"
+    },
+    {
+      "id": "vxp3.pp-sole-track",
+      "path": "assets/branding/vxp3/pp-sole-track.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "2e09560526c13428b1de706ecd33461f6f3c1273e752edfacae8d11e1b97f51b"
+    },
+    {
+      "id": "vxp3.pp-speed-stripe",
+      "path": "assets/branding/vxp3/pp-speed-stripe.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "4fcc1e1764edf783a8187b379844dfacd27c75964df94f44892d5dc00f6697b5"
+    },
+    {
+      "id": "vxp3.pp-speed-stripe",
+      "path": "assets/branding/vxp3/pp-speed-stripe.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "3e44be4842d54ccfdb48b0a2d0c8b8328523b49ede35a74292a262dd20016cfc"
+    },
+    {
+      "id": "vxp3.pp-symbol-bounce",
+      "path": "assets/branding/vxp3/pp-symbol-bounce.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "0ba9e33fae57b1375ab84abac75ebc4d8458d98277881aa5173a5ed8daddbe17"
+    },
+    {
+      "id": "vxp3.pp-symbol-bounce",
+      "path": "assets/branding/vxp3/pp-symbol-bounce.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "6513aa656396ddd938b10ca798979af01af9ad6b60ddba793dc7c96c937038d5"
+    },
+    {
+      "id": "vxp3.pp-symbol-grip",
+      "path": "assets/branding/vxp3/pp-symbol-grip.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "1147db736896f3208c6bdee9535c807cd465d1592c06eea3c5f8cfd3362f899b"
+    },
+    {
+      "id": "vxp3.pp-symbol-grip",
+      "path": "assets/branding/vxp3/pp-symbol-grip.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "62663bd37bc5d8cd7297fb2e93af86bbe2bc14bda7248d00079d727c68a5e957"
+    },
+    {
+      "id": "vxp3.pp-symbol-speed",
+      "path": "assets/branding/vxp3/pp-symbol-speed.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "347245ba417f839b676a008ac027e4dc230267d84fa521887b3a66dee287d368"
+    },
+    {
+      "id": "vxp3.pp-symbol-speed",
+      "path": "assets/branding/vxp3/pp-symbol-speed.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "4c26fb9f136e6ad8db17971f44fa05657f3a6fdbe971087860592238b2085e43"
+    },
+    {
+      "id": "vxp31.font.BarlowCondensed-Bold",
+      "path": "assets/fonts/vxp31/barlow_condensed/BarlowCondensed-Bold.ttf",
+      "license": "OFL-1.1",
+      "status": "THIRD_PARTY_OFL_CLEARED",
+      "sha256": "e476562ec9c1e16cf16475895b511f08c804f438cc9a9f80a44ea50a0eeb5b65",
+      "upstream": "https://github.com/google/fonts/tree/main/ofl/barlowcondensed"
+    },
+    {
+      "id": "vxp31.font.BarlowCondensed-SemiBold",
+      "path": "assets/fonts/vxp31/barlow_condensed/BarlowCondensed-SemiBold.ttf",
+      "license": "OFL-1.1",
+      "status": "THIRD_PARTY_OFL_CLEARED",
+      "sha256": "7b619d14bc2327509a9ef32b0890f709626f7ecc9ff61191c2a4314c5499d2d9",
+      "upstream": "https://github.com/google/fonts/tree/main/ofl/barlowcondensed"
+    },
+    {
+      "id": "vxp31.font.OFL",
+      "path": "assets/fonts/vxp31/barlow_condensed/OFL.txt",
+      "license": "OFL-1.1",
+      "status": "THIRD_PARTY_OFL_CLEARED",
+      "sha256": "186d750eb496a4c17a76385f82be6aea2ac1cf2de074a811d63786cf374ea73f",
+      "upstream": "https://github.com/google/fonts/tree/main/ofl/barlowcondensed"
+    }
+  ],
+  "entries": [
+    {
+      "id": "vxp3.README",
+      "path": "assets/branding/vxp3/README.md",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "6226336cf12384e843a94beff96bddefd1adc7578bf39baa55c0747672bce0e0"
+    },
+    {
+      "id": "vxp3.glyph_accel",
+      "path": "assets/branding/vxp3/glyphs/glyph_accel.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "66120199641719f7e6b0fcd82b993c98871982361a2f046b9ea1cbc00d04fd6a"
+    },
+    {
+      "id": "vxp3.glyph_accel",
+      "path": "assets/branding/vxp3/glyphs/glyph_accel.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "b6d2e01636ee6da1139c4338f64026e3eaffc244eb2cd056a348ed6869898a13"
+    },
+    {
+      "id": "vxp3.glyph_achievement",
+      "path": "assets/branding/vxp3/glyphs/glyph_achievement.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "0b22923f51deedf7573fcc0892358b5ef0e3b92d011a0caaa00df8aaf44bb127"
+    },
+    {
+      "id": "vxp3.glyph_achievement",
+      "path": "assets/branding/vxp3/glyphs/glyph_achievement.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "22d2f101e9ee00e7d663e07e2cff30cba7e83c036c53037cb2acbf91a47f518c"
+    },
+    {
+      "id": "vxp3.glyph_back",
+      "path": "assets/branding/vxp3/glyphs/glyph_back.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "5268c0af6d125faac57247b75f733f91da247771df5c90bc5edf282eb49c4b2e"
+    },
+    {
+      "id": "vxp3.glyph_back",
+      "path": "assets/branding/vxp3/glyphs/glyph_back.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "1f835620a118574daf749544d420b37aaf10223845491de92261164eae9e4dda"
+    },
+    {
+      "id": "vxp3.glyph_boost",
+      "path": "assets/branding/vxp3/glyphs/glyph_boost.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "06ef0f24df091e864857a7f777fc79d523dacd49e4a3d6e1a42ff25824ad07fe"
+    },
+    {
+      "id": "vxp3.glyph_boost",
+      "path": "assets/branding/vxp3/glyphs/glyph_boost.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "2fc3847e1eac18de1294b5262b4ae612f6d7baa8f8e5da50ad686c9c81cd554d"
+    },
+    {
+      "id": "vxp3.glyph_brake",
+      "path": "assets/branding/vxp3/glyphs/glyph_brake.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "69e6f43e4a00c5f5e09aab9afc5bfe0779014a66c5253dcb9fb96abda65c5a00"
+    },
+    {
+      "id": "vxp3.glyph_brake",
+      "path": "assets/branding/vxp3/glyphs/glyph_brake.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "cb26a5fe760928cdfcb2628ba651c22ebfafc1b496f6e74afc2b8cee164a5eca"
+    },
+    {
+      "id": "vxp3.glyph_confirm",
+      "path": "assets/branding/vxp3/glyphs/glyph_confirm.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "dd3f1c6db54ca46281d5bd7c5c086a42c6ce63f2deaf92c0a7965a4f7bc93535"
+    },
+    {
+      "id": "vxp3.glyph_confirm",
+      "path": "assets/branding/vxp3/glyphs/glyph_confirm.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "a3bd333bd4afe29e05fad24b93ce875ea24c777fd20e169a197eae282b2b16b2"
+    },
+    {
+      "id": "vxp3.glyph_drift",
+      "path": "assets/branding/vxp3/glyphs/glyph_drift.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "e46c5bafe2676bd9d8c2f9f5e9a84e1c201b98ddea513c8d5b95ebcf037c542a"
+    },
+    {
+      "id": "vxp3.glyph_drift",
+      "path": "assets/branding/vxp3/glyphs/glyph_drift.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "43b3445335b7e4fc4d2d14f02a68ef83b801dae3a869d216d8efb4b15f1d5d4b"
+    },
+    {
+      "id": "vxp3.glyph_item",
+      "path": "assets/branding/vxp3/glyphs/glyph_item.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "3e564abbaa9b487a64beea6fea882ee7c68d7cb40bd6754e79f07162b8703028"
+    },
+    {
+      "id": "vxp3.glyph_item",
+      "path": "assets/branding/vxp3/glyphs/glyph_item.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "26bafb8755795790cf5b24738ccf93242b6ec1ecb798d38a6b0795687c9baa35"
+    },
+    {
+      "id": "vxp3.glyph_jump",
+      "path": "assets/branding/vxp3/glyphs/glyph_jump.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "bc6f261bc48dcf420ecd9038eb3ffb40f7a1c055613df745588a166fe4cb9209"
+    },
+    {
+      "id": "vxp3.glyph_jump",
+      "path": "assets/branding/vxp3/glyphs/glyph_jump.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "24d3538d362311bb3960e35f0a191b2b72e802e03df5393a7797120c03f751aa"
+    },
+    {
+      "id": "vxp3.glyph_lap",
+      "path": "assets/branding/vxp3/glyphs/glyph_lap.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "529d6c14e223bd0a03531453f81d40ed97c324af2ae064975cfc8c79f60e49d1"
+    },
+    {
+      "id": "vxp3.glyph_lap",
+      "path": "assets/branding/vxp3/glyphs/glyph_lap.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "9e60a69c1f25f7733c94d9a29adefebe7acd734d7025d687ca7d014a6f563e7b"
+    },
+    {
+      "id": "vxp3.glyph_menu",
+      "path": "assets/branding/vxp3/glyphs/glyph_menu.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "cf40a4122ccc3db777890627e13abc26d8f4dfd5a535f2c90eda67bbfce6696f"
+    },
+    {
+      "id": "vxp3.glyph_menu",
+      "path": "assets/branding/vxp3/glyphs/glyph_menu.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "b0eb320842ce3513d130de03a9657c2b096c0455db0ebd84d0ec4d71d52dd81b"
+    },
+    {
+      "id": "vxp3.glyph_pause",
+      "path": "assets/branding/vxp3/glyphs/glyph_pause.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "3724adb9c6fa49cffe296c53f44b7d54b6c6b8cf1b3268ecdc035273ee2bd588"
+    },
+    {
+      "id": "vxp3.glyph_pause",
+      "path": "assets/branding/vxp3/glyphs/glyph_pause.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "6744fb8d7bf61f4d3d4db6eddee7997e37be74e61b60384f384715a1d41291fe"
+    },
+    {
+      "id": "vxp3.glyph_perfect_step",
+      "path": "assets/branding/vxp3/glyphs/glyph_perfect_step.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "9dded8745f648c291cfccaee04cbd41bba4a7b40003bb59c394b7249fd5bf3ef"
+    },
+    {
+      "id": "vxp3.glyph_perfect_step",
+      "path": "assets/branding/vxp3/glyphs/glyph_perfect_step.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "22d2f101e9ee00e7d663e07e2cff30cba7e83c036c53037cb2acbf91a47f518c"
+    },
+    {
+      "id": "vxp3.glyph_podium_1",
+      "path": "assets/branding/vxp3/glyphs/glyph_podium_1.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "36ad7bf0683ecd2330ad8f7812fbc30d22653088a8c6283afe171896c4b6660e"
+    },
+    {
+      "id": "vxp3.glyph_podium_1",
+      "path": "assets/branding/vxp3/glyphs/glyph_podium_1.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "cf2c2e7146250a884cd4a7722749467d775fed54b777fb734a53488cacba57e3"
+    },
+    {
+      "id": "vxp3.glyph_podium_2",
+      "path": "assets/branding/vxp3/glyphs/glyph_podium_2.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "343c00d031128301e4dbef592396e0bb30ac4ef0963fdd78ea3e1d89c4ffa51b"
+    },
+    {
+      "id": "vxp3.glyph_podium_2",
+      "path": "assets/branding/vxp3/glyphs/glyph_podium_2.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "b22d12c45daa3a11d9e7b46e8f3fb5763d9db56c600140e475758469d16ac102"
+    },
+    {
+      "id": "vxp3.glyph_podium_3",
+      "path": "assets/branding/vxp3/glyphs/glyph_podium_3.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "b085f702bcca39921259c4120b5c92ebff7a50553f0f8dfca0a1a1fd3586a1dd"
+    },
+    {
+      "id": "vxp3.glyph_podium_3",
+      "path": "assets/branding/vxp3/glyphs/glyph_podium_3.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "08ddc8d8d7376a49e0f4a6bd252c5b625eb964a935cb8fb043f11885cb449951"
+    },
+    {
+      "id": "vxp3.glyph_position",
+      "path": "assets/branding/vxp3/glyphs/glyph_position.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "be2b40f30682c49472e78679b44fcc4000f9048a7014bb5799515542cea39d64"
+    },
+    {
+      "id": "vxp3.glyph_position",
+      "path": "assets/branding/vxp3/glyphs/glyph_position.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "51a6bd8fe95307fb54a103c70da2e8f348c8a22c5b7d952940b642faa183cd73"
+    },
+    {
+      "id": "vxp3.glyph_resume",
+      "path": "assets/branding/vxp3/glyphs/glyph_resume.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "80eed0841f50d2b652064b9cbed72f7bc99e81c84848e1b6b1a3eb18b1fae1e1"
+    },
+    {
+      "id": "vxp3.glyph_resume",
+      "path": "assets/branding/vxp3/glyphs/glyph_resume.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "20399f46e1c25cb59abe0c718a4358dc82a382c1663b8ad179139dfa4d1535c3"
+    },
+    {
+      "id": "vxp3.glyph_spark_1",
+      "path": "assets/branding/vxp3/glyphs/glyph_spark_1.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "8adc58db3ec003341abf7dd464b54d9ec87eae4cf4d550db87a30711a1df4dba"
+    },
+    {
+      "id": "vxp3.glyph_spark_1",
+      "path": "assets/branding/vxp3/glyphs/glyph_spark_1.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "1fcdec7a1253b4361089924ba4a7af3762ecc4d47b381380939ddc8fc6df1fea"
+    },
+    {
+      "id": "vxp3.glyph_spark_2",
+      "path": "assets/branding/vxp3/glyphs/glyph_spark_2.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "e32a7b8c6167567f1ad2130dfd86b855aa73bd71f4085be00fb1e9971d5422a4"
+    },
+    {
+      "id": "vxp3.glyph_spark_2",
+      "path": "assets/branding/vxp3/glyphs/glyph_spark_2.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "95c48531aa332f720aac29027b599034f377436d962aba9d8b666910e0b9e979"
+    },
+    {
+      "id": "vxp3.glyph_spark_3",
+      "path": "assets/branding/vxp3/glyphs/glyph_spark_3.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "b5dcfa7890dda5af6b3c68b04fccc0856deb09fb019f3c584321fac6fb747d4b"
+    },
+    {
+      "id": "vxp3.glyph_spark_3",
+      "path": "assets/branding/vxp3/glyphs/glyph_spark_3.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "cf2bd04eefca51707dd7740abc358b89a4af3b185a4167c415613d523567f91f"
+    },
+    {
+      "id": "vxp3.glyph_spark_4",
+      "path": "assets/branding/vxp3/glyphs/glyph_spark_4.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "57a17ecf71cdae35b5bcbb8bc68e8efea2fd2e35618657d546e425b4a3409486"
+    },
+    {
+      "id": "vxp3.glyph_spark_4",
+      "path": "assets/branding/vxp3/glyphs/glyph_spark_4.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "5fd9499ae80b7bbbf1089796f4db0972145288fc3b8da77435abd20f3583ae4e"
+    },
+    {
+      "id": "vxp3.glyph_steer_left",
+      "path": "assets/branding/vxp3/glyphs/glyph_steer_left.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "de160db0d523d0fc3807bd704b804ac24da6860a4db6bfd682e947780e8fa135"
+    },
+    {
+      "id": "vxp3.glyph_steer_left",
+      "path": "assets/branding/vxp3/glyphs/glyph_steer_left.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "28a737d2a7ef4ac8036e6e27ff917dc5e5305ee038c76082730e3d3cc52ad235"
+    },
+    {
+      "id": "vxp3.glyph_steer_right",
+      "path": "assets/branding/vxp3/glyphs/glyph_steer_right.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "06c1e123ae287f03aea1683d938a4ea577a05a2163b0ded9526cb273c477eace"
+    },
+    {
+      "id": "vxp3.glyph_steer_right",
+      "path": "assets/branding/vxp3/glyphs/glyph_steer_right.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "dfb6fe171e6ef21e61f023a4fa8b10c1edfcb910e035cd0c3d6fefdc6d01f5b4"
+    },
+    {
+      "id": "vxp3.glyph_touch",
+      "path": "assets/branding/vxp3/glyphs/glyph_touch.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "f2366f230ce32974361db3435f1d82d35b977bce7f6e03b3190c938d5fc76545"
+    },
+    {
+      "id": "vxp3.glyph_touch",
+      "path": "assets/branding/vxp3/glyphs/glyph_touch.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "1ceb86f57652cd9c2d549d9cf9d90643d6ae14717479d4ab33dfba0a91de53fc"
+    },
+    {
+      "id": "vxp3.glyph_wrong_way",
+      "path": "assets/branding/vxp3/glyphs/glyph_wrong_way.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "6d701349a016b689af69e3a214b6baabc9bb60df9f20772fc34e6313c032d2dd"
+    },
+    {
+      "id": "vxp3.glyph_wrong_way",
+      "path": "assets/branding/vxp3/glyphs/glyph_wrong_way.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "057ad56972ed660e2d0d079787d51565893a8a33b077388178340c02a7c3de95"
+    },
+    {
+      "id": "vxp3.icon-accel",
+      "path": "assets/branding/vxp3/glyphs/icon-accel.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "f3c01ac27ec21198430795be0b2a44c6343b36ee23202e049202b92a878904b9"
+    },
+    {
+      "id": "vxp3.icon-achievement",
+      "path": "assets/branding/vxp3/glyphs/icon-achievement.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "cd263ae6ac26d4a858a2e2f37cbb72f83d40ec317eb27ff0735a42e4cf1e235a"
+    },
+    {
+      "id": "vxp3.icon-boost",
+      "path": "assets/branding/vxp3/glyphs/icon-boost.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "9e29449dc28b28178ef45e84f7885e1f39c614be0281d10af139dbef8029cbad"
+    },
+    {
+      "id": "vxp3.icon-brake",
+      "path": "assets/branding/vxp3/glyphs/icon-brake.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "fb99d75f8274f61b8cc41849a34ec9cc5b632aed8ab91ff8907ed451503c77b6"
+    },
+    {
+      "id": "vxp3.icon-course",
+      "path": "assets/branding/vxp3/glyphs/icon-course.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "16264e7536ffd160c8bb88f54fe7633a910fbfd4d2bca5b95be6da7f9d82bc54"
+    },
+    {
+      "id": "vxp3.icon-cup",
+      "path": "assets/branding/vxp3/glyphs/icon-cup.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "3b0face8d1278f7c03f942fed7f6993dd96a0a515f4729536d0f1a566db88252"
+    },
+    {
+      "id": "vxp3.icon-drift",
+      "path": "assets/branding/vxp3/glyphs/icon-drift.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "d1d45b87e0f489c6286780ec5120e8938102f669b15e398b3801eeec6da516ea"
+    },
+    {
+      "id": "vxp3.icon-footwear-bounce",
+      "path": "assets/branding/vxp3/glyphs/icon-footwear-bounce.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "9035b9c54ba5058739d21923d4c9e246ed3aa050d4b59a2d18e9b0ff559c0609"
+    },
+    {
+      "id": "vxp3.icon-footwear-grip",
+      "path": "assets/branding/vxp3/glyphs/icon-footwear-grip.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "2739bbb9317a20936aec5dbcdcdf78818b3258151b8a2aa38c458f0fe5c61de0"
+    },
+    {
+      "id": "vxp3.icon-footwear-speed",
+      "path": "assets/branding/vxp3/glyphs/icon-footwear-speed.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "39fab17a2693a0a3637bc384b959c358ecafb63652430f813db756c9241d5ac9"
+    },
+    {
+      "id": "vxp3.icon-item",
+      "path": "assets/branding/vxp3/glyphs/icon-item.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "980d764e47ca540a0db025450875f02d543890983e3b36ce38c97ca267697c5c"
+    },
+    {
+      "id": "vxp3.icon-jump",
+      "path": "assets/branding/vxp3/glyphs/icon-jump.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "55f1b817ab8667d2d803dd8d86f55ac44db1ceaaf78f345f4f3d62d70d7432c1"
+    },
+    {
+      "id": "vxp3.icon-lap",
+      "path": "assets/branding/vxp3/glyphs/icon-lap.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "6d35c34daaa588db43f99cbfa01ee39da78ebbada62e5974e127b4852da5d01e"
+    },
+    {
+      "id": "vxp3.icon-minimap",
+      "path": "assets/branding/vxp3/glyphs/icon-minimap.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "03c5377052ab07d4e4008d09837551b9312452a1b7765017700831ba719c76e4"
+    },
+    {
+      "id": "vxp3.icon-pause",
+      "path": "assets/branding/vxp3/glyphs/icon-pause.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "9c23bfd84e2ffcf02eb511737ffa0409f539a7c51a0d342b359c6d0eec48d83a"
+    },
+    {
+      "id": "vxp3.icon-perfect-step",
+      "path": "assets/branding/vxp3/glyphs/icon-perfect-step.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "eebe2a3561de6dd02c1a04313b3d7ab902eb3cf18eecc21bd13b1bc88d12237e"
+    },
+    {
+      "id": "vxp3.icon-podium-1",
+      "path": "assets/branding/vxp3/glyphs/icon-podium-1.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "bbde21b5f2e0a9428bc13032cd46245e8d9e41dd4cacc4457380eb574f709bb5"
+    },
+    {
+      "id": "vxp3.icon-podium-2",
+      "path": "assets/branding/vxp3/glyphs/icon-podium-2.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "e5f7684a7bf6a6d445119aee2abd836efb716eaecd5df64eddf083986c284c7c"
+    },
+    {
+      "id": "vxp3.icon-podium-3",
+      "path": "assets/branding/vxp3/glyphs/icon-podium-3.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "177cfb2ddc593d1342b2778f69921b30c164c5c4927c4f1239411df040b44e9e"
+    },
+    {
+      "id": "vxp3.icon-position",
+      "path": "assets/branding/vxp3/glyphs/icon-position.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "9e6adc8147607111335c84a2dc7e7392453e98dadbf8591f24d81c7fce09655e"
+    },
+    {
+      "id": "vxp3.icon-spark-1",
+      "path": "assets/branding/vxp3/glyphs/icon-spark-1.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "efb9f376c587a6450964765d1209a0ecbb1e65d869d4fd587fff87820ff01d4f"
+    },
+    {
+      "id": "vxp3.icon-spark-2",
+      "path": "assets/branding/vxp3/glyphs/icon-spark-2.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "78bb1438ac6433fefee0013ef237e3c4111d7009a6f282f56a876a21356427e7"
+    },
+    {
+      "id": "vxp3.icon-spark-3",
+      "path": "assets/branding/vxp3/glyphs/icon-spark-3.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "a9213d0eb8dbc74f67b057208c80ead2d23215191f863eb8e20457a9f76a1d47"
+    },
+    {
+      "id": "vxp3.icon-spark-4",
+      "path": "assets/branding/vxp3/glyphs/icon-spark-4.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "d68ff889cfaf66b6fee85f9e26d549f87adddd3a88f5857043d315449d7fcaef"
+    },
+    {
+      "id": "vxp3.icon-steer",
+      "path": "assets/branding/vxp3/glyphs/icon-steer.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "d7b4cdc17d653efe1a4450f0827c91214cfcb104184bd5211786828e50f37b99"
+    },
+    {
+      "id": "vxp3.icon-timer",
+      "path": "assets/branding/vxp3/glyphs/icon-timer.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "4cc4eb3e4428627adebddd27276e10c842993b0528395db03c1a82aa6a142a07"
+    },
+    {
+      "id": "vxp3.icon-wrong-way",
+      "path": "assets/branding/vxp3/glyphs/icon-wrong-way.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "74fe007ebbcef0d834b340efc55adfaa9440fcab971427faf25b64b6d3a9ed66"
+    },
+    {
+      "id": "vxp3.pedestrian-pursuit-wordmark",
+      "path": "assets/branding/vxp3/pedestrian-pursuit-wordmark.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "d3a1b11e0e65a220e65ca5e6feae24c472bac81ff106fd9e0c673cecb26e9d56"
+    },
+    {
+      "id": "vxp3.pedestrian-pursuit-wordmark",
+      "path": "assets/branding/vxp3/pedestrian-pursuit-wordmark.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "b2fbf86cb230b241d198024f2109f53c6eedfb5d608918b1a00850fa18302ba6"
+    },
+    {
+      "id": "vxp3.pp-course-divider",
+      "path": "assets/branding/vxp3/pp-course-divider.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "f59a918f671a5a0e7eeac29aa63c4e8ab5cd06bb63527e5400ce948dd37e88e7"
+    },
+    {
+      "id": "vxp3.pp-course-divider",
+      "path": "assets/branding/vxp3/pp-course-divider.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "b4657dc6798456e07e74c48cee4e3edb576deaabb0c3818e1347caf89a193079"
+    },
+    {
+      "id": "vxp3.pp-focus-frame",
+      "path": "assets/branding/vxp3/pp-focus-frame.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "d483ed4e6bdb2007eb9a3135808473058f44ce34e71282986c8f918ae235322a"
+    },
+    {
+      "id": "vxp3.pp-focus-frame",
+      "path": "assets/branding/vxp3/pp-focus-frame.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "942fe0173091967bddf1f187c733964b9279300675573e3d6a2ad83712a75714"
+    },
+    {
+      "id": "vxp3.pp-kinetic-mark-128",
+      "path": "assets/branding/vxp3/pp-kinetic-mark-128.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "d4f235b2eac4ed4f398a7d4843d864a3c0f5a3eb22e354efded01fb78112468f"
+    },
+    {
+      "id": "vxp3.pp-kinetic-mark-monochrome",
+      "path": "assets/branding/vxp3/pp-kinetic-mark-monochrome.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "cc43187e0ff7715582ad8a5877f9217961bb325d01df7644ef4c2e8dff160eea"
+    },
+    {
+      "id": "vxp3.pp-kinetic-mark-monochrome",
+      "path": "assets/branding/vxp3/pp-kinetic-mark-monochrome.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "033cbc5105ea11a6f92af608ae162cabc63d6eabac82f178047b836735bcb78f"
+    },
+    {
+      "id": "vxp3.pp-kinetic-mark",
+      "path": "assets/branding/vxp3/pp-kinetic-mark.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "652045b825152b93223686748016437e0592a5493bc2c2a629f6012a44c32d27"
+    },
+    {
+      "id": "vxp3.pp-kinetic-mark",
+      "path": "assets/branding/vxp3/pp-kinetic-mark.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "721d21b9ee319d2e802595cccae4dcfb928c002caa696a0785f0f4277bf5be5c"
+    },
+    {
+      "id": "vxp3.pp-sole-track",
+      "path": "assets/branding/vxp3/pp-sole-track.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "9cb353f7c99adfaed7e6fd49c2f2a58f4f8995bfa72acf5c9e23801115fb7284"
+    },
+    {
+      "id": "vxp3.pp-sole-track",
+      "path": "assets/branding/vxp3/pp-sole-track.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "2e09560526c13428b1de706ecd33461f6f3c1273e752edfacae8d11e1b97f51b"
+    },
+    {
+      "id": "vxp3.pp-speed-stripe",
+      "path": "assets/branding/vxp3/pp-speed-stripe.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "4fcc1e1764edf783a8187b379844dfacd27c75964df94f44892d5dc00f6697b5"
+    },
+    {
+      "id": "vxp3.pp-speed-stripe",
+      "path": "assets/branding/vxp3/pp-speed-stripe.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "3e44be4842d54ccfdb48b0a2d0c8b8328523b49ede35a74292a262dd20016cfc"
+    },
+    {
+      "id": "vxp3.pp-symbol-bounce",
+      "path": "assets/branding/vxp3/pp-symbol-bounce.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "0ba9e33fae57b1375ab84abac75ebc4d8458d98277881aa5173a5ed8daddbe17"
+    },
+    {
+      "id": "vxp3.pp-symbol-bounce",
+      "path": "assets/branding/vxp3/pp-symbol-bounce.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "6513aa656396ddd938b10ca798979af01af9ad6b60ddba793dc7c96c937038d5"
+    },
+    {
+      "id": "vxp3.pp-symbol-grip",
+      "path": "assets/branding/vxp3/pp-symbol-grip.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "1147db736896f3208c6bdee9535c807cd465d1592c06eea3c5f8cfd3362f899b"
+    },
+    {
+      "id": "vxp3.pp-symbol-grip",
+      "path": "assets/branding/vxp3/pp-symbol-grip.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "62663bd37bc5d8cd7297fb2e93af86bbe2bc14bda7248d00079d727c68a5e957"
+    },
+    {
+      "id": "vxp3.pp-symbol-speed",
+      "path": "assets/branding/vxp3/pp-symbol-speed.png",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "347245ba417f839b676a008ac027e4dc230267d84fa521887b3a66dee287d368"
+    },
+    {
+      "id": "vxp3.pp-symbol-speed",
+      "path": "assets/branding/vxp3/pp-symbol-speed.svg",
+      "license": "ORIGINAL_INTERNAL",
+      "status": "REPOSITORY_AUTHORED",
+      "sha256": "4c26fb9f136e6ad8db17971f44fa05657f3a6fdbe971087860592238b2085e43"
+    }
+  ],
+  "VXP31_CLEARED_DISPLAY_FONT": "assets/fonts/vxp31/barlow_condensed/BarlowCondensed-SemiBold.ttf",
+  "font_note": "Barlow Condensed (SIL OFL) added in VXP-3.1 for display headings; HUD numerals remain engine-default for legibility."
+}

@@ -1,0 +1,851 @@
+{
+	"VXP311_PIXEL_PHYSICAL_CAPTURE_PASS": false,
+	"engine": {
+		"build": "official",
+		"hash": "876b290332ec6f2e6d173d08162a02aa7e6ca46d",
+		"hex": 263424,
+		"major": 4,
+		"minor": 5,
+		"patch": 0,
+		"status": "stable",
+		"string": "4.5-stable (official)",
+		"timestamp": 0
+	},
+	"evidence_class_default": "REAL_RUNTIME_CAPTURE",
+	"high_contrast_dedicated": "IMPLEMENTED",
+	"lane": "VXP-3.1.1",
+	"missing_required_surfaces": [],
+	"parent_pr": 26,
+	"required_map": {
+		"a11y_colorblind": true,
+		"a11y_high_contrast_main_menu": true,
+		"a11y_high_contrast_pause": true,
+		"a11y_high_contrast_race_hud": true,
+		"a11y_high_contrast_results": true,
+		"a11y_larger_ui": true,
+		"a11y_reduce_motion": true,
+		"achievement_toast": true,
+		"course_select": true,
+		"cup_select": true,
+		"cup_standings": true,
+		"first_run_learn_the_track": true,
+		"footwear_select": true,
+		"local2p_pause": true,
+		"local2p_race_hud": true,
+		"local2p_results": true,
+		"main_menu_default": true,
+		"main_menu_focus_race": true,
+		"pause_menu": true,
+		"pause_tutorial_guide": true,
+		"race_boost": true,
+		"race_countdown": true,
+		"race_drift_meter": true,
+		"race_footwear_surface": true,
+		"race_hud_normal": true,
+		"race_item_slot": true,
+		"race_minimap": true,
+		"race_position_lap_time": true,
+		"race_wrong_way": true,
+		"results_finish": true,
+		"results_podium": true,
+		"resume_cup": true,
+		"runner_select": true,
+		"tutorial_drift": true,
+		"tutorial_footwear": true,
+		"tutorial_item": true,
+		"tutorial_perfect_step": true,
+		"tutorial_sprint": true,
+		"viewport_1280x720": true,
+		"viewport_1366x768": true,
+		"viewport_1600x900": true,
+		"viewport_1920x1080": true,
+		"viewport_pixel_landscape": true
+	},
+	"required_surface_count": 43,
+	"required_surfaces_covered": 43,
+	"schema": "vxp311.real_runtime_capture_run/v1",
+	"shot_count": 43,
+	"shots": [
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "main_menu_default",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/main_menu_default.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "main_menu"
+			},
+			"timestamp": "2026-09-19T15:50:05"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "main_menu_focus_race",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/main_menu_focus_race.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"focus": "RACE",
+				"surface": "main_menu"
+			},
+			"timestamp": "2026-09-19T15:50:05"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "runner_select",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/runner_select.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "runner_select"
+			},
+			"timestamp": "2026-09-19T15:50:06"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "footwear_select",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/footwear_select.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "footwear_select"
+			},
+			"timestamp": "2026-09-19T15:50:06"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "cup_select",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/cup_select.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "cup_select"
+			},
+			"timestamp": "2026-09-19T15:50:07"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "course_select",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/course_select.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "course_select"
+			},
+			"timestamp": "2026-09-19T15:50:07"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "resume_cup",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/resume_cup.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"sandbox": true,
+				"surface": "resume_cup"
+			},
+			"timestamp": "2026-09-19T15:50:07"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "first_run_learn_the_track",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/first_run_learn_the_track.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "first_run"
+			},
+			"timestamp": "2026-09-19T15:50:07"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "a11y_larger_ui",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/a11y_larger_ui.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"mode": "larger_ui",
+				"surface": "a11y"
+			},
+			"timestamp": "2026-09-19T15:50:08"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "a11y_colorblind",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/a11y_colorblind.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"mode": "colorblind",
+				"surface": "a11y"
+			},
+			"timestamp": "2026-09-19T15:50:08"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "a11y_reduce_motion",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/a11y_reduce_motion.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"mode": "reduce_motion",
+				"surface": "a11y"
+			},
+			"timestamp": "2026-09-19T15:50:08"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"flat_warning": true,
+			"id": "a11y_high_contrast_main_menu",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/a11y_high_contrast_main_menu.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"mode": "high_contrast",
+				"surface": "a11y"
+			},
+			"timestamp": "2026-09-19T15:50:08"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "subviewport_exact_size",
+			"dimension_match": true,
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "viewport_1280x720",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/viewport_1280x720.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"requested_height": 720,
+			"requested_resolution": "1280x720",
+			"requested_width": 1280,
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"exact_size": true,
+				"surface": "viewport"
+			},
+			"timestamp": "2026-09-19T15:50:09"
+		},
+		{
+			"actual_png_height": 768,
+			"actual_png_width": 1366,
+			"capture_method": "subviewport_exact_size",
+			"dimension_match": true,
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "viewport_1366x768",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/viewport_1366x768.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"requested_height": 768,
+			"requested_resolution": "1366x768",
+			"requested_width": 1366,
+			"resolution": "1366x768",
+			"status": "CAPTURED",
+			"tags": {
+				"exact_size": true,
+				"surface": "viewport"
+			},
+			"timestamp": "2026-09-19T15:50:10"
+		},
+		{
+			"actual_png_height": 900,
+			"actual_png_width": 1600,
+			"capture_method": "subviewport_exact_size",
+			"dimension_match": true,
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "viewport_1600x900",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/viewport_1600x900.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"requested_height": 900,
+			"requested_resolution": "1600x900",
+			"requested_width": 1600,
+			"resolution": "1600x900",
+			"status": "CAPTURED",
+			"tags": {
+				"exact_size": true,
+				"surface": "viewport"
+			},
+			"timestamp": "2026-09-19T15:50:10"
+		},
+		{
+			"actual_png_height": 1080,
+			"actual_png_width": 1920,
+			"capture_method": "subviewport_exact_size",
+			"dimension_match": true,
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "viewport_1920x1080",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/viewport_1920x1080.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"requested_height": 1080,
+			"requested_resolution": "1920x1080",
+			"requested_width": 1920,
+			"resolution": "1920x1080",
+			"status": "CAPTURED",
+			"tags": {
+				"exact_size": true,
+				"surface": "viewport"
+			},
+			"timestamp": "2026-09-19T15:50:11"
+		},
+		{
+			"actual_png_height": 540,
+			"actual_png_width": 960,
+			"capture_method": "subviewport_exact_size",
+			"dimension_match": true,
+			"engine": "4.5-stable (official)",
+			"evidence_class": "PIXEL6A_LOGICAL_LANDSCAPE_REAL_RUNTIME_SIMULATION",
+			"id": "viewport_pixel_landscape",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/viewport_pixel_landscape.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"requested_height": 540,
+			"requested_resolution": "960x540",
+			"requested_width": 960,
+			"resolution": "960x540",
+			"status": "CAPTURED",
+			"tags": {
+				"exact_size": true,
+				"not_physical_device": true,
+				"pixel_class_proxy": true,
+				"surface": "viewport"
+			},
+			"timestamp": "2026-09-19T15:50:11"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "race_countdown",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/race_countdown.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "race_intro"
+			},
+			"timestamp": "2026-09-19T15:50:13"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "tutorial_sprint",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/tutorial_sprint.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "tutorial",
+				"tip": "sprint"
+			},
+			"timestamp": "2026-09-19T15:50:13"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "tutorial_drift",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/tutorial_drift.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "tutorial",
+				"tip": "drift_spark_tiers"
+			},
+			"timestamp": "2026-09-19T15:50:13"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "tutorial_perfect_step",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/tutorial_perfect_step.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "tutorial",
+				"tip": "perfect_step"
+			},
+			"timestamp": "2026-09-19T15:50:14"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "tutorial_item",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/tutorial_item.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "tutorial",
+				"tip": "items_counterplay"
+			},
+			"timestamp": "2026-09-19T15:50:14"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "tutorial_footwear",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/tutorial_footwear.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "tutorial",
+				"tip": "footwear_surfaces"
+			},
+			"timestamp": "2026-09-19T15:50:15"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "race_hud_normal",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/race_hud_normal.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "race_hud"
+			},
+			"timestamp": "2026-09-19T15:50:16"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "race_position_lap_time",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/race_position_lap_time.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "race_hud"
+			},
+			"timestamp": "2026-09-19T15:50:16"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "race_minimap",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/race_minimap.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "race_hud"
+			},
+			"timestamp": "2026-09-19T15:50:16"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "race_footwear_surface",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/race_footwear_surface.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "race_hud"
+			},
+			"timestamp": "2026-09-19T15:50:16"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "a11y_high_contrast_race_hud",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/a11y_high_contrast_race_hud.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"mode": "high_contrast",
+				"surface": "a11y"
+			},
+			"timestamp": "2026-09-19T15:50:17"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "race_drift_meter",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/race_drift_meter.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"drift": true,
+				"surface": "race_hud"
+			},
+			"timestamp": "2026-09-19T15:50:17"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "race_boost",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/race_boost.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"boost": true,
+				"surface": "race_hud"
+			},
+			"timestamp": "2026-09-19T15:50:17"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "race_item_slot",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/race_item_slot.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"item": true,
+				"surface": "race_hud"
+			},
+			"timestamp": "2026-09-19T15:50:17"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "race_wrong_way",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/race_wrong_way.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "race_hud",
+				"wrong_way": true
+			},
+			"timestamp": "2026-09-19T15:50:17"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "pause_menu",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/pause_menu.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "pause"
+			},
+			"timestamp": "2026-09-19T15:50:17"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "a11y_high_contrast_pause",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/a11y_high_contrast_pause.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"mode": "high_contrast",
+				"surface": "a11y"
+			},
+			"timestamp": "2026-09-19T15:50:17"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "pause_tutorial_guide",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/pause_tutorial_guide.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "pause"
+			},
+			"timestamp": "2026-09-19T15:50:18"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "achievement_toast",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/achievement_toast.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "achievement"
+			},
+			"timestamp": "2026-09-19T15:50:18"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "results_finish",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/results_finish.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "results"
+			},
+			"timestamp": "2026-09-19T15:50:19"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "results_podium",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/results_podium.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "podium"
+			},
+			"timestamp": "2026-09-19T15:50:19"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "a11y_high_contrast_results",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/a11y_high_contrast_results.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"mode": "high_contrast",
+				"surface": "a11y"
+			},
+			"timestamp": "2026-09-19T15:50:19"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "cup_standings",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/cup_standings.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"surface": "cup_standings"
+			},
+			"timestamp": "2026-09-19T15:50:19"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "local2p_race_hud",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/local2p_race_hud.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"mode": "race_hud",
+				"surface": "local2p"
+			},
+			"timestamp": "2026-09-19T15:50:21"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "local2p_pause",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/local2p_pause.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"mode": "pause",
+				"surface": "local2p"
+			},
+			"timestamp": "2026-09-19T15:50:21"
+		},
+		{
+			"actual_png_height": 720,
+			"actual_png_width": 1280,
+			"capture_method": "root_viewport_framebuffer",
+			"engine": "4.5-stable (official)",
+			"evidence_class": "REAL_RUNTIME_CAPTURE",
+			"id": "local2p_results",
+			"path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/pedestrian-pursuit/.worktrees/vxp-3-1-1-pedestrian-evidence-a11y-closure/artifacts/vxp311/capture/local2p_results.png",
+			"pixel_physical": false,
+			"platform": "macOS",
+			"resolution": "1280x720",
+			"status": "CAPTURED",
+			"tags": {
+				"mode": "results",
+				"surface": "local2p"
+			},
+			"timestamp": "2026-09-19T15:50:22"
+		}
+	],
+	"viewport_capture_method": "subviewport_exact_size"
+}

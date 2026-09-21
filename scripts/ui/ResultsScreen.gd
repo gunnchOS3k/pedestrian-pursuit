@@ -1,5 +1,7 @@
 extends CanvasLayer
 const LaunchArtCatalogScript = preload("res://scripts/ui/LaunchArtCatalog.gd")
+const Vxp3PresentationScript = preload("res://scripts/ui/vxp3/Vxp3Presentation.gd")
+const Vxp3BrandScript = preload("res://scripts/ui/vxp3/Vxp3Brand.gd")
 
 ## Results screen shown after race finish.
 
@@ -18,7 +20,9 @@ func _ready() -> void:
 	panel.visible = false
 	menu_button.pressed.connect(_on_menu)
 	retry_button.pressed.connect(_on_retry)
+	Vxp3PresentationScript.apply_results_chrome(self)
 	_ensure_feedback_button()
+
 
 func _ensure_feedback_button() -> void:
 	var vbox := $Panel/Margin/VBox
@@ -29,6 +33,7 @@ func _ensure_feedback_button() -> void:
 	fb.text = "Feedback & Suggestions"
 	fb.pressed.connect(_on_feedback)
 	vbox.add_child(fb)
+
 
 func _on_feedback() -> void:
 	OS.shell_open("https://github.com/gunnchOS3k/gunnchos-research-portal/blob/main/FEEDBACK.md?component=Pedestrian%20Pursuit")
@@ -55,7 +60,8 @@ func show_results(
 	GameManager.last_race_position = position
 	GameManager.last_race_finished = finished
 	podium_label.text = _build_podium_text(field_lines)
-	podium_label.visible = not podium_label.text.is_empty()
+	podium_label.visible = false
+	Vxp3PresentationScript.ensure_podium_glyphs(self, field_lines)
 	var field_block := "\n".join(field_lines) if not field_lines.is_empty() else ""
 	if GameManager.is_cup_active():
 		var total_time := GameManager.get_cup_total_time()
@@ -98,6 +104,9 @@ func _play_finish_celebration(finished: bool, position: int) -> void:
 	## GAME-RC-003 digital finish celebration. Human juice remains HUMAN_PENDING.
 	if title_label == null:
 		return
+	Vxp3PresentationScript.apply_results_chrome(self)
+	if Vxp3BrandScript.reduce_motion_active():
+		return
 	title_label.pivot_offset = title_label.size * 0.5
 	title_label.scale = Vector2(0.88, 0.88)
 	var peak := Vector2(1.12, 1.12) if finished and position == 1 else Vector2(1.05, 1.05)
@@ -131,23 +140,23 @@ func annotate_local_mp(finish_results: Array) -> void:
 		tagged.append("%d. %s%s" % [place, name, tag])
 		place += 1
 	podium_label.text = _build_podium_text(tagged)
-	podium_label.visible = not podium_label.text.is_empty()
+	podium_label.visible = false
+	Vxp3PresentationScript.ensure_podium_glyphs(self, tagged)
 	cup_summary_label.text = "Couch session — career XP not written.\nField:\n%s" % "\n".join(tagged)
 
 
 func _build_podium_text(field_lines: PackedStringArray) -> String:
 	if field_lines.is_empty():
 		return ""
-	var medals := ["🥇", "🥈", "🥉"]
+	## Replace emoji medals with VXP glyph text markers (texture glyphs available under branding/vxp3/glyphs).
 	var slots: PackedStringArray = []
 	for i in mini(3, field_lines.size()):
 		var name := str(field_lines[i])
-		# Strip leading "1. " style place numbers for a cleaner podium row.
 		var clean := name
 		var dot := name.find(". ")
 		if dot >= 0 and dot < 3:
 			clean = name.substr(dot + 2)
-		slots.append("%s %s" % [medals[i], clean])
+		slots.append("%s %s" % [Vxp3PresentationScript.podium_glyph_prefix(i + 1), clean])
 	return "Podium\n" + "\n".join(slots)
 
 

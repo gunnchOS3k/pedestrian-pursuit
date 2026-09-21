@@ -1,0 +1,12 @@
+{
+  "device_label": "PIXEL_USB_DEVICE_1",
+  "manufacturer": "Google",
+  "model": "Pixel 6a",
+  "android_release": "17",
+  "sdk": "37",
+  "wm_size": "1080x2400",
+  "wm_density": "420",
+  "transport": "usb",
+  "adb_state": "device",
+  "notes": "Raw serial intentionally omitted from evidence."
+}

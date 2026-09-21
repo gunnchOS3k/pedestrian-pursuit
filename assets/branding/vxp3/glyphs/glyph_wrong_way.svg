@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="wrong_way">
+  <rect width="96" height="96" rx="20" fill="#1A2336"/>
+  <path d="M20 48 H76 M36 32 L20 48 L36 64" fill="none" stroke="#FF4D6A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,33 @@
+{
+  "schema": "accepted_main_recovery.v1",
+  "generated_at_utc": "2026-09-21T14:36:59Z",
+  "repo": "pedestrian-pursuit",
+  "original_pr": 29,
+  "recovery_branch": "recovery/pr29-accepted-main-convergence",
+  "merge_authorized": false,
+  "method": "git merge --no-ff <exact-missing-child-tip> onto current origin/main",
+  "history_rewrite": false,
+  "force_push": false,
+  "main_sha": "68855fe7c3ce6cc900ec1c9b2705eeefb17cafc4",
+  "missing_child_sha": "622ed74d2dfc4a500ecad6f26fdbb0c4f762f962",
+  "merge_base": "1d790aae5d0abc9ffd9f4350cdca4a0add4ff151",
+  "commits_missing_before": 13,
+  "recovery_branch_sha": "59266e2b79850137987c27d4670d7057f5da38fc",
+  "child_tip_is_ancestor_of_recovery": true,
+  "diff_summary": {
+    "files_changed": 355,
+    "insertions": 12623,
+    "deletions": 425,
+    "shortstat": "355 files changed, 12623 insertions(+), 425 deletions(-)"
+  },
+  "duplicate_work_check": "child_tip_not_ancestor_of_main_before_recovery; recovery_tree_equals_tip_tree; main_unique_content_preserved",
+  "conflicts": "none",
+  "ci": {
+    "status": "pass",
+    "command": "make vxp311-structural",
+    "detail": "structural/gates pass",
+    "updated_at_utc": "2026-09-21T14:38:59Z",
+    "github_ci": "will_run_on_draft_pr"
+  },
+  "owner_landing_note": "DO NOT MERGE until owner approval. Prefer normal merge commit (no squash/rebase)."
+}
