@@ -41,6 +41,7 @@ func _ready() -> void:
 	_ensure_settings_ui()
 	_ensure_mode_buttons()
 	_ensure_howto_button()
+	_ensure_feedback_button()
 	_ensure_cup_and_shoe_pickers()
 	_load_content()
 	_populate_device_picker()
@@ -931,3 +932,13 @@ func _refresh_track_thumb(track_id: String) -> void:
 
 func _on_quit() -> void:
 	get_tree().quit()
+
+func _ensure_feedback_button() -> void:
+	var vbox := $VBox
+	if vbox.get_node_or_null("FeedbackBtn") != null:
+		return
+	var fb := Button.new()
+	fb.name = "FeedbackBtn"
+	fb.text = "Feedback & Suggestions"
+	fb.pressed.connect(func(): OS.shell_open("https://github.com/gunnchOS3k/gunnchos-research-portal/blob/main/FEEDBACK.md?component=Pedestrian%20Pursuit"))
+	vbox.add_child(fb)
