@@ -1,0 +1,98 @@
+{
+  "schema": "pp_guest_footwear_compat/v1",
+  "note": "Selected shoe gameplay modifiers remain authoritative. Guest model never overrides shoe stats.",
+  "attach_method": "foot_socket_overlay_plus_sole_effect_layer",
+  "rows": [
+    {
+      "guest_id": "ember_vale",
+      "compatible_shoes": [
+        "starter_soles",
+        "speed_sneakers",
+        "grip_soles",
+        "bounce_boots"
+      ],
+      "preferred_shoe": "speed_sneakers",
+      "visual_bind": "Foot_L/Foot_R sockets + sole overlay",
+      "stats_source": "ShoeData + twin envelope",
+      "guest_grants_secret_speed": false
+    },
+    {
+      "guest_id": "rook_ironside",
+      "compatible_shoes": [
+        "starter_soles",
+        "speed_sneakers",
+        "grip_soles",
+        "bounce_boots"
+      ],
+      "preferred_shoe": "grip_soles",
+      "visual_bind": "Foot_L/Foot_R sockets + sole overlay",
+      "stats_source": "ShoeData + twin envelope",
+      "guest_grants_secret_speed": false
+    },
+    {
+      "guest_id": "juno_spark",
+      "compatible_shoes": [
+        "starter_soles",
+        "speed_sneakers",
+        "grip_soles",
+        "bounce_boots"
+      ],
+      "preferred_shoe": "speed_sneakers",
+      "visual_bind": "Foot_L/Foot_R sockets + sole overlay",
+      "stats_source": "ShoeData + twin envelope",
+      "guest_grants_secret_speed": false
+    },
+    {
+      "guest_id": "kaia_windrow",
+      "compatible_shoes": [
+        "starter_soles",
+        "speed_sneakers",
+        "grip_soles",
+        "bounce_boots"
+      ],
+      "preferred_shoe": "bounce_boots",
+      "visual_bind": "Foot_L/Foot_R sockets + sole overlay",
+      "stats_source": "ShoeData + twin envelope",
+      "guest_grants_secret_speed": false
+    },
+    {
+      "guest_id": "nix_calder",
+      "compatible_shoes": [
+        "starter_soles",
+        "speed_sneakers",
+        "grip_soles",
+        "bounce_boots"
+      ],
+      "preferred_shoe": "starter_soles",
+      "visual_bind": "Foot_L/Foot_R sockets + sole overlay",
+      "stats_source": "ShoeData + twin envelope",
+      "guest_grants_secret_speed": false
+    },
+    {
+      "guest_id": "orion_vell",
+      "compatible_shoes": [
+        "starter_soles",
+        "speed_sneakers",
+        "grip_soles",
+        "bounce_boots"
+      ],
+      "preferred_shoe": "starter_soles",
+      "visual_bind": "Foot_L/Foot_R sockets + sole overlay",
+      "stats_source": "ShoeData + twin envelope",
+      "guest_grants_secret_speed": false
+    },
+    {
+      "guest_id": "vesper_nyx",
+      "compatible_shoes": [
+        "starter_soles",
+        "speed_sneakers",
+        "grip_soles",
+        "bounce_boots"
+      ],
+      "preferred_shoe": "bounce_boots",
+      "visual_bind": "Foot_L/Foot_R sockets + sole overlay",
+      "stats_source": "ShoeData + twin envelope",
+      "guest_grants_secret_speed": false
+    }
+  ]
+}

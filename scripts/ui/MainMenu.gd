@@ -6,6 +6,8 @@ const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
 const LaunchArtCatalogScript = preload("res://scripts/ui/LaunchArtCatalog.gd")
 const Vxp3PresentationScript = preload("res://scripts/ui/vxp3/Vxp3Presentation.gd")
 const Vxp3BrandScript = preload("res://scripts/ui/vxp3/Vxp3Brand.gd")
+const RunnerVisualResolver = preload("res://scripts/player/RunnerVisualResolver.gd")
+const RunnerIdsScript = preload("res://scripts/data/RunnerIds.gd")
 
 ## Main menu — Quick Race, Cup, Time Trial, Local MP entry points (Alpha).
 
@@ -44,6 +46,8 @@ func _ready() -> void:
 	_ensure_settings_ui()
 	_ensure_mode_buttons()
 	_ensure_howto_button()
+	_ensure_labs_button()
+	_ensure_build_info_button()
 	_ensure_feedback_button()
 	_ensure_cup_and_shoe_pickers()
 	_load_content()
@@ -130,6 +134,54 @@ func _ensure_howto_button() -> void:
 	if quit != null:
 		vbox.move_child(btn, quit.get_index())
 	btn.pressed.connect(_on_howto_play)
+
+
+func _ensure_labs_button() -> void:
+	var vbox: VBoxContainer = $VBox
+	if vbox.get_node_or_null("LabsReviewButton") != null:
+		var existing := vbox.get_node("LabsReviewButton") as Button
+		if existing and not existing.pressed.is_connected(_on_open_guest_review):
+			existing.pressed.connect(_on_open_guest_review)
+		return
+	var btn := Button.new()
+	btn.name = "LabsReviewButton"
+	btn.text = "Labs / Character Review"
+	btn.custom_minimum_size = Vector2(0, 40)
+	vbox.add_child(btn)
+	var howto := vbox.get_node_or_null("HowToPlayButton")
+	if howto != null:
+		vbox.move_child(btn, howto.get_index() + 1)
+	else:
+		var quit := vbox.get_node_or_null("QuitButton")
+		if quit != null:
+			vbox.move_child(btn, quit.get_index())
+	btn.pressed.connect(_on_open_guest_review)
+
+
+func _on_open_guest_review() -> void:
+	SceneLoader.go_to_guest_runner_review()
+
+
+func _ensure_build_info_button() -> void:
+	var vbox: VBoxContainer = $VBox
+	if vbox.get_node_or_null("BuildInfoButton") != null:
+		var existing := vbox.get_node("BuildInfoButton") as Button
+		if existing and not existing.pressed.is_connected(_on_open_build_info):
+			existing.pressed.connect(_on_open_build_info)
+		return
+	var btn := Button.new()
+	btn.name = "BuildInfoButton"
+	btn.text = "Build Info"
+	btn.custom_minimum_size = Vector2(0, 40)
+	vbox.add_child(btn)
+	var labs := vbox.get_node_or_null("LabsReviewButton")
+	if labs != null:
+		vbox.move_child(btn, labs.get_index() + 1)
+	btn.pressed.connect(_on_open_build_info)
+
+
+func _on_open_build_info() -> void:
+	SceneLoader.go_to_build_info(false)
 
 
 func _on_howto_play() -> void:
@@ -610,18 +662,40 @@ func _populate_runner_picker() -> void:
 	var preferred := str(GameManager.selected_runner_id)
 	if preferred.is_empty():
 		preferred = "dash_reed"
+	var cores: Array = []
+	var guests: Array = []
+	for p in _roster:
+		if str(p.roster_group) == "guest" or RunnerIdsScript.is_guest(str(p.id)):
+			guests.append(p)
+		else:
+			cores.append(p)
 	var select_index := 0
-	for i in _roster.size():
-		var p = _roster[i]
-		runner_picker.add_item(str(p.display_name))
-		runner_picker.set_item_metadata(i, str(p.id))
-		if str(p.id) == preferred:
+	_add_picker_group("CORE RUNNERS", cores, preferred)
+	if not guests.is_empty():
+		runner_picker.add_separator()
+		_add_picker_group("GUEST RUNNERS", guests, preferred)
+	for i in runner_picker.item_count:
+		if str(runner_picker.get_item_metadata(i)) == preferred:
 			select_index = i
+			break
 	if runner_picker.item_count == 0:
 		runner_info_label.text = "No runners loaded."
 		return
 	runner_picker.select(select_index)
 	_on_runner_selected(select_index)
+
+
+func _add_picker_group(title: String, profiles: Array, preferred: String) -> void:
+	var header_index := runner_picker.item_count
+	runner_picker.add_item(title)
+	runner_picker.set_item_disabled(header_index, true)
+	runner_picker.set_item_metadata(header_index, "")
+	for p in profiles:
+		runner_picker.add_item(str(p.display_name))
+		var idx := runner_picker.item_count - 1
+		runner_picker.set_item_metadata(idx, str(p.id))
+		if str(p.id) == preferred:
+			pass
 
 
 func _on_cup_selected(index: int) -> void:
@@ -677,21 +751,30 @@ func _refresh_shoe_player_copy() -> void:
 
 
 func _on_runner_selected(index: int) -> void:
-	if index < 0 or index >= _roster.size():
+	if index < 0 or runner_picker.item_count == 0:
 		return
-	var p = _roster[index]
+	var rid := str(runner_picker.get_item_metadata(index))
+	if rid.is_empty():
+		return
+	var p = _RunnerProfile.by_id(rid)
+	if p == null or str(p.id) != rid:
+		return
 	GameManager.selected_runner_id = str(p.id)
+	var group_line := "Core Runner"
+	if str(p.roster_group) == "guest" or RunnerIdsScript.is_guest(str(p.id)):
+		group_line = RunnerIdsScript.DEV_REVIEW_LABEL
 	runner_info_label.text = (
-		"%s  •  %s\nShoes: %s\n%s"
+		"%s\n%s  •  %s\nFootwear: %s\n%s"
 		% [
+			group_line,
 			str(p.archetype).capitalize().replace("_", " "),
 			str(p.pronouns),
 			str(p.shoes),
 			str(p.tagline),
 		]
 	)
-	if _preview_visual != null and _preview_visual.has_method("apply_profile"):
-		_preview_visual.apply_profile(p)
+	if _preview_visual != null:
+		_preview_visual = RunnerVisualResolver.attach(_preview_visual, p)
 		if _preview_visual.has_method("set_menu_preview"):
 			_preview_visual.set_menu_preview(true)
 

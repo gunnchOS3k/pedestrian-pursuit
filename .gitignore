@@ -24,6 +24,9 @@ __pycache__/
 .idea/
 *.code-workspace
 
+# Export-time build identity (regenerated; review APKs must not embed UNKNOWN)
+data/build_identity.json
+
 # Build / export
 build/
 export/

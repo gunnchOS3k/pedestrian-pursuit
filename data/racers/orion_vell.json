@@ -1,0 +1,26 @@
+{
+  "id": "orion_vell",
+  "display_name": "Orion Vell",
+  "class_type": "all_terrain",
+  "top_speed": 22.0,
+  "acceleration": 18.0,
+  "handling": 12.0,
+  "drift_control": 10.0,
+  "trick_skill": 8.0,
+  "recovery": 11.0,
+  "strength": 9.0,
+  "boost_efficiency": 1.0,
+  "default_shoe_id": "starter_soles",
+  "preferred_surfaces": [
+    "standard",
+    "asphalt",
+    "packed_dirt"
+  ],
+  "ai_line_bias": "balanced",
+  "special_ability_id": "clean_lines",
+  "description": "Guest runner mapped to dash_reed envelope. Authority in the stride, not the sword.",
+  "roster_group": "guest",
+  "stat_envelope_twin": "dash_reed",
+  "visual_only": true,
+  "guest_unique_ability": false
+}

@@ -1,0 +1,27 @@
+{
+  "id": "juno_spark",
+  "display_name": "Juno Spark",
+  "class_type": "kinetic",
+  "top_speed": 22.5,
+  "acceleration": 18.0,
+  "handling": 12.0,
+  "drift_control": 10.0,
+  "trick_skill": 10.0,
+  "recovery": 11.5,
+  "strength": 9.0,
+  "boost_efficiency": 1.18,
+  "default_shoe_id": "speed_sneakers",
+  "preferred_surfaces": [
+    "neon",
+    "metal",
+    "speed_lane",
+    "standard"
+  ],
+  "ai_line_bias": "boost_chain",
+  "special_ability_id": "kinetic_flare",
+  "description": "Guest runner mapped to kai_volt envelope. Snap the lane, keep the current.",
+  "roster_group": "guest",
+  "stat_envelope_twin": "kai_volt",
+  "visual_only": true,
+  "guest_unique_ability": false
+}

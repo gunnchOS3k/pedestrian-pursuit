@@ -3,6 +3,7 @@ const _TrackCatalog = preload("res://scripts/data/TrackCatalog.gd")
 const _RunnerProfile = preload("res://scripts/data/RunnerProfile.gd")
 const CrashWatchdogScript = preload("res://scripts/rc/CrashWatchdog.gd")
 const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
+const RunnerVisualResolver = preload("res://scripts/player/RunnerVisualResolver.gd")
 
 ## Wires together track, racers, race manager, HUD, and results.
 ## Assigns named character-life profiles so every racer reads as a person.
@@ -318,8 +319,8 @@ func _assign_profile(racer: Node, profile) -> void:
 	racer.set_meta("runner_profile_id", profile.id)
 	racer.set_meta("runner_display_name", profile.display_name)
 	var visual = racer.get_node_or_null("RacerVisual")
-	if visual != null and visual.has_method("apply_profile"):
-		visual.apply_profile(profile)
+	if visual != null:
+		visual = RunnerVisualResolver.attach(visual, profile)
 	_wire_racer_visual_hooks(racer, visual)
 
 
