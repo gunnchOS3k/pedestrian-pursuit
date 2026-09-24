@@ -21,6 +21,10 @@ export JAVA_HOME
 export PATH="$JAVA_HOME/bin:$PATH"
 
 mkdir -p "$(dirname "$OUT")"
+if [[ -f "$ROOT/tools/build_identity/generate_build_identity.py" ]]; then
+  python3 "$ROOT/tools/build_identity/generate_build_identity.py" \
+    --repo-root "$ROOT" --flavor "${BUILD_IDENTITY_FLAVOR:-smoothcam-shortcuts-review}"
+fi
 # Keep previous APK for rollback comparison.
 if [[ -f "$OUT" ]]; then
   cp -f "$OUT" "${OUT%.apk}-prev.apk" || true

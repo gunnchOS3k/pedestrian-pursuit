@@ -48,6 +48,7 @@ func _ready() -> void:
 	_ensure_howto_button()
 	_ensure_labs_button()
 	_ensure_build_info_button()
+	_ensure_camera_profile_picker()
 	_ensure_feedback_button()
 	_ensure_cup_and_shoe_pickers()
 	_load_content()
@@ -182,6 +183,30 @@ func _ensure_build_info_button() -> void:
 
 func _on_open_build_info() -> void:
 	SceneLoader.go_to_build_info(false)
+
+
+func _ensure_camera_profile_picker() -> void:
+	var vbox: VBoxContainer = $VBox
+	if vbox.get_node_or_null("CameraProfilePicker") != null:
+		return
+	var picker := OptionButton.new()
+	picker.name = "CameraProfilePicker"
+	picker.add_item("Camera: Comfort", 0)
+	picker.add_item("Camera: Dynamic", 1)
+	picker.add_item("Camera: Reduced Motion", 2)
+	picker.custom_minimum_size = Vector2(0, 40)
+	var profile := 0
+	if AccessibilitySettings != null and "camera_profile" in AccessibilitySettings:
+		profile = int(AccessibilitySettings.camera_profile)
+	picker.select(profile)
+	picker.item_selected.connect(func(idx):
+		if AccessibilitySettings != null and AccessibilitySettings.has_method("set_camera_profile"):
+			AccessibilitySettings.set_camera_profile(idx)
+	)
+	vbox.add_child(picker)
+	var info := vbox.get_node_or_null("BuildInfoButton")
+	if info != null:
+		vbox.move_child(picker, info.get_index() + 1)
 
 
 func _on_howto_play() -> void:
