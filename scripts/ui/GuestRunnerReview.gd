@@ -106,6 +106,7 @@ func _build_ui() -> void:
 	_time_scale_button = _btn(row, "1.0x", _toggle_speed)
 	_btn(row, "Next State", _next_state)
 	_btn(row, "Next Shoe", _next_shoe)
+	_btn(row, "Build Info", func(): SceneLoader.go_to_build_info(true))
 	_btn(row, "Back to Menu", func(): SceneLoader.go_to_main_menu())
 
 

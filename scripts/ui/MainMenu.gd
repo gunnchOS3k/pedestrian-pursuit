@@ -47,6 +47,7 @@ func _ready() -> void:
 	_ensure_mode_buttons()
 	_ensure_howto_button()
 	_ensure_labs_button()
+	_ensure_build_info_button()
 	_ensure_feedback_button()
 	_ensure_cup_and_shoe_pickers()
 	_load_content()
@@ -159,6 +160,28 @@ func _ensure_labs_button() -> void:
 
 func _on_open_guest_review() -> void:
 	SceneLoader.go_to_guest_runner_review()
+
+
+func _ensure_build_info_button() -> void:
+	var vbox: VBoxContainer = $VBox
+	if vbox.get_node_or_null("BuildInfoButton") != null:
+		var existing := vbox.get_node("BuildInfoButton") as Button
+		if existing and not existing.pressed.is_connected(_on_open_build_info):
+			existing.pressed.connect(_on_open_build_info)
+		return
+	var btn := Button.new()
+	btn.name = "BuildInfoButton"
+	btn.text = "Build Info"
+	btn.custom_minimum_size = Vector2(0, 40)
+	vbox.add_child(btn)
+	var labs := vbox.get_node_or_null("LabsReviewButton")
+	if labs != null:
+		vbox.move_child(btn, labs.get_index() + 1)
+	btn.pressed.connect(_on_open_build_info)
+
+
+func _on_open_build_info() -> void:
+	SceneLoader.go_to_build_info(false)
 
 
 func _on_howto_play() -> void:
