@@ -4,6 +4,7 @@ extends Node
 
 const MAIN_MENU := "res://scenes/main/MainMenu.tscn"
 const RACE_SCENE := "res://scenes/race/RaceScene.tscn"
+const GUEST_RUNNER_REVIEW := "res://scenes/labs/GuestRunnerReview.tscn"
 
 
 func go_to_main_menu() -> void:
@@ -18,6 +19,13 @@ func go_to_race() -> void:
 	if tree != null and tree.paused:
 		tree.paused = false
 	tree.change_scene_to_file(RACE_SCENE)
+
+
+func go_to_guest_runner_review() -> void:
+	var tree := get_tree()
+	if tree != null and tree.paused:
+		tree.paused = false
+	tree.change_scene_to_file(GUEST_RUNNER_REVIEW)
 
 
 func restart_race(reason: String = "rematch") -> void:

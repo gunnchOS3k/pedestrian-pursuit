@@ -1,0 +1,162 @@
+{
+  "schema": "pp_guest_runner_provenance/v1",
+  "label": "AA_CC0_CANDIDATE_DERIVATIVE",
+  "not_bespoke_pp_human_commission": true,
+  "source_repo": "gunnchOS3k/anime-aggressors",
+  "source_pr": 109,
+  "source_pr_head": "3447c91de66e9fa41c9d0de6c2558e5557564b7c",
+  "elemental_pr": 110,
+  "elemental_pr_head": "762c597f3677a110b8bddef9b79327a17369f8a6",
+  "copied_experiment_art_v2_v9": false,
+  "license": "CC0 1.0 Universal",
+  "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "models_present": "7/7",
+  "runners": [
+    {
+      "guest_id": "ember_vale",
+      "display_name": "Ember Vale",
+      "source_pack": "KayKit Character Pack Adventures 1.0",
+      "source_character": "Mage",
+      "source_url": "https://github.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0",
+      "source_sha256": "cf898585da33fab50c724d31605fb931eb2912e6d2280092141e98ca81ad507d",
+      "aa_adapted_sha256": "1da02b8882b06f3c88f97b5d4a595c89917203dfc02ff2d4055cd1cfde5db93e",
+      "pp_copy_sha256": "1da02b8882b06f3c88f97b5d4a595c89917203dfc02ff2d4055cd1cfde5db93e",
+      "pp_model_path": "assets/models/guest_runners/ember_vale/ember_vale.glb",
+      "license": "CC0 1.0 Universal",
+      "label": "AA_CC0_CANDIDATE_DERIVATIVE",
+      "weapons_to_hide": [
+        "Spellbook",
+        "Spellbook_open",
+        "1H_Wand",
+        "2H_Staff"
+      ],
+      "stat_envelope_twin": "nova_quill",
+      "hash_verified": true
+    },
+    {
+      "guest_id": "rook_ironside",
+      "display_name": "Rook Ironside",
+      "source_pack": "KayKit Character Pack Adventures 1.0",
+      "source_character": "Barbarian",
+      "source_url": "https://github.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0",
+      "source_sha256": "cefc311a0e10c7858b6141f5ada7e33268727564fb8ac1347aab97d000669cc6",
+      "aa_adapted_sha256": "18d96e68de21152b44fabdd6294935d9964f1b16f8aca73b6a1db08f039c3b2e",
+      "pp_copy_sha256": "18d96e68de21152b44fabdd6294935d9964f1b16f8aca73b6a1db08f039c3b2e",
+      "pp_model_path": "assets/models/guest_runners/rook_ironside/rook_ironside.glb",
+      "license": "CC0 1.0 Universal",
+      "label": "AA_CC0_CANDIDATE_DERIVATIVE",
+      "weapons_to_hide": [
+        "1H_Axe",
+        "1H_Axe_Offhand",
+        "2H_Axe"
+      ],
+      "stat_envelope_twin": "bolt_harbor",
+      "hash_verified": true
+    },
+    {
+      "guest_id": "juno_spark",
+      "display_name": "Juno Spark",
+      "source_pack": "KayKit Character Pack Adventures 1.0",
+      "source_character": "Rogue",
+      "source_url": "https://github.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0",
+      "source_sha256": "e825437cd4d2ee9c1960b517a74a69101e33eb409ae7fa8cedc7134a998fbb7d",
+      "aa_adapted_sha256": "2f579f1a24c599007242e065079e5a5d280fed005731cde30ba663339a0e5067",
+      "pp_copy_sha256": "2f579f1a24c599007242e065079e5a5d280fed005731cde30ba663339a0e5067",
+      "pp_model_path": "assets/models/guest_runners/juno_spark/juno_spark.glb",
+      "license": "CC0 1.0 Universal",
+      "label": "AA_CC0_CANDIDATE_DERIVATIVE",
+      "weapons_to_hide": [
+        "1H_Crossbow",
+        "2H_Crossbow",
+        "1H_Dagger",
+        "1H_Dagger_Offhand"
+      ],
+      "stat_envelope_twin": "kai_volt",
+      "hash_verified": true
+    },
+    {
+      "guest_id": "kaia_windrow",
+      "display_name": "Kaia Windrow",
+      "source_pack": "KayKit Character Pack Adventures 1.0",
+      "source_character": "Rogue_Hooded",
+      "source_url": "https://github.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0",
+      "source_sha256": "93e6e25213009952276d9cf34f5d96a243767334c66f280db0433ddfabb91545",
+      "aa_adapted_sha256": "af3d540a18dda9370c17c3b88a5e18adcc1783c02e419312e043a8675c52853b",
+      "pp_copy_sha256": "af3d540a18dda9370c17c3b88a5e18adcc1783c02e419312e043a8675c52853b",
+      "pp_model_path": "assets/models/guest_runners/kaia_windrow/kaia_windrow.glb",
+      "license": "CC0 1.0 Universal",
+      "label": "AA_CC0_CANDIDATE_DERIVATIVE",
+      "weapons_to_hide": [
+        "1H_Crossbow",
+        "2H_Crossbow",
+        "1H_Dagger",
+        "1H_Dagger_Offhand"
+      ],
+      "stat_envelope_twin": "sierra_flux",
+      "hash_verified": true
+    },
+    {
+      "guest_id": "nix_calder",
+      "display_name": "Nix Calder",
+      "source_pack": "KayKit Character Pack Skeletons 1.0",
+      "source_character": "Skeleton_Mage",
+      "source_url": "https://github.com/KayKit-Game-Assets/KayKit-Character-Pack-Skeletons-1.0",
+      "source_sha256": "e05b0f5cfa395271c9f75fd07c0a0613c56f401ece4ab644e080001a79971075",
+      "aa_adapted_sha256": "324556bb3ad563397d96a29825b43ff552de8468b604ae619f19461930054c0f",
+      "pp_copy_sha256": "324556bb3ad563397d96a29825b43ff552de8468b604ae619f19461930054c0f",
+      "pp_model_path": "assets/models/guest_runners/nix_calder/nix_calder.glb",
+      "license": "CC0 1.0 Universal",
+      "label": "AA_CC0_CANDIDATE_DERIVATIVE",
+      "weapons_to_hide": [
+        "1H_Wand",
+        "2H_Staff",
+        "Spellbook",
+        "Spellbook_open"
+      ],
+      "stat_envelope_twin": "mira_lane",
+      "hash_verified": true
+    },
+    {
+      "guest_id": "orion_vell",
+      "display_name": "Orion Vell",
+      "source_pack": "KayKit Character Pack Adventures 1.0",
+      "source_character": "Knight",
+      "source_url": "https://github.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0",
+      "source_sha256": "60428e3abc09ba83e595d256e3af8c5c976b46cdae599f0802fc82b4a3445168",
+      "aa_adapted_sha256": "7e688084067236905db9604018a1ced240273cb1db7db274e14b4dece76997c3",
+      "pp_copy_sha256": "7e688084067236905db9604018a1ced240273cb1db7db274e14b4dece76997c3",
+      "pp_model_path": "assets/models/guest_runners/orion_vell/orion_vell.glb",
+      "license": "CC0 1.0 Universal",
+      "label": "AA_CC0_CANDIDATE_DERIVATIVE",
+      "weapons_to_hide": [
+        "1H_Sword",
+        "1H_Sword_Offhand",
+        "2H_Sword",
+        "Shield"
+      ],
+      "stat_envelope_twin": "dash_reed",
+      "hash_verified": true
+    },
+    {
+      "guest_id": "vesper_nyx",
+      "display_name": "Vesper Nyx",
+      "source_pack": "KayKit Character Pack Skeletons 1.0",
+      "source_character": "Skeleton_Rogue",
+      "source_url": "https://github.com/KayKit-Game-Assets/KayKit-Character-Pack-Skeletons-1.0",
+      "source_sha256": "4003f2b77891bb56f7e0de7d555abcb497aebbcaee35b614211f16275f9ccae3",
+      "aa_adapted_sha256": "706dedbe6d4c2d32831d131f4f33cbee3774740e9573fd03d405dd03effaf8b7",
+      "pp_copy_sha256": "706dedbe6d4c2d32831d131f4f33cbee3774740e9573fd03d405dd03effaf8b7",
+      "pp_model_path": "assets/models/guest_runners/vesper_nyx/vesper_nyx.glb",
+      "license": "CC0 1.0 Universal",
+      "label": "AA_CC0_CANDIDATE_DERIVATIVE",
+      "weapons_to_hide": [
+        "1H_Dagger",
+        "1H_Dagger_Offhand",
+        "1H_Crossbow",
+        "2H_Crossbow"
+      ],
+      "stat_envelope_twin": "zig_riven",
+      "hash_verified": true
+    }
+  ]
+}

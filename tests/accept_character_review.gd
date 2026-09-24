@@ -12,6 +12,7 @@ extends SceneTree
 const OUT := "user://character_review"
 const _RunnerProfile = preload("res://scripts/data/RunnerProfile.gd")
 const _RacerVisual = preload("res://scripts/player/RacerVisual.gd")
+const RunnerVisualResolver = preload("res://scripts/player/RunnerVisualResolver.gd")
 
 const YAWS := [
 	{"name": "front", "yaw": 0.0},
@@ -93,7 +94,15 @@ func _run() -> void:
 
 	var roster: Array = _RunnerProfile.load_roster()
 	if roster.size() < 8:
-		_log("FAIL expected 8 runners got %d" % roster.size())
+		_log("FAIL expected at least 8 runners got %d" % roster.size())
+		quit(1)
+		return
+	var core_count := 0
+	for profile in roster:
+		if str(profile.roster_group) != "guest":
+			core_count += 1
+	if core_count < 8:
+		_log("FAIL expected 8 core runners got %d" % core_count)
 		quit(1)
 		return
 
@@ -109,14 +118,15 @@ func _run() -> void:
 		visual.name = "Runner_%s" % str(profile.id)
 		visual.position = Vector3(-3.15 + i * 0.9, 0, 0)
 		group_root.add_child(visual)
-		visual.call("apply_profile", profile)
-		visual.call("set_menu_preview", true)
+		visual = RunnerVisualResolver.attach(visual, profile)
+		if visual.has_method("set_menu_preview"):
+			visual.call("set_menu_preview", true)
 		group_visuals.append(visual)
 		await _wait(0.03)
 
 	cam.position = Vector3(0.0, 1.6, 6.2)
 	cam.look_at(Vector3(0, 0.85, 0))
-	caption.text = "Roster — eight stylized production runners (rear-readable)"
+	caption.text = "Roster — core plus guest runners (rear-readable)"
 	await _wait(0.9)
 	await _shot("00-roster-group")
 	# Second view for rear silhouette identity
@@ -145,8 +155,9 @@ func _run() -> void:
 		visual.set_script(_RacerVisual)
 		visual.name = "Solo_%s" % rid
 		world.add_child(visual)
-		visual.call("apply_profile", profile)
-		visual.call("set_menu_preview", true)
+		visual = RunnerVisualResolver.attach(visual, profile)
+		if visual.has_method("set_menu_preview"):
+			visual.call("set_menu_preview", true)
 
 		for yaw in YAWS:
 			visual.rotation_degrees.y = float(yaw["yaw"])

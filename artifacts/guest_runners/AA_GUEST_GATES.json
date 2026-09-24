@@ -1,0 +1,32 @@
+{
+  "schema": "pp_aa_guest_gates/v1",
+  "structural": {
+    "AA_GUEST_PROVENANCE_PASS": true,
+    "AA_GUEST_MODELS_PRESENT": "7/7",
+    "AA_GUEST_WEAPON_REMOVAL_PASS": true,
+    "AA_GUEST_RUNNER_PROFILE_PASS": true,
+    "AA_GUEST_ANIMATION_STATE_PASS": true,
+    "AA_GUEST_FOOTWEAR_COMPAT_PASS": true,
+    "AA_GUEST_AI_COMPAT_PASS": true,
+    "AA_GUEST_SELECTION_PASS": true,
+    "AA_GUEST_RACE_SMOKE_PASS": true,
+    "AA_GUEST_PIXEL_BUILD_PASS": true
+  },
+  "human": {
+    "AA_GUEST_OWNER_VISUAL_PASS": false,
+    "AA_GUEST_OWNER_MOTION_PASS": false,
+    "AA_GUEST_OWNER_ROSTER_PASS": false,
+    "MERGE_AUTHORIZED": false
+  },
+  "pixel": {
+    "device_alias": "PIXEL_REVIEW_DEVICE",
+    "apk": "build/android/pedestrian-pursuit-aa-guest-runners-owner-review.apk",
+    "sha256": "8e76d54dd3ca697a374a87476153c762e5d3d5df8159c25a488cde9047d9e57f",
+    "package": "com.gunnchos.pedestrianpursuit",
+    "version_name": "0.4.1-aa-guest-review",
+    "version_code": 15,
+    "install": "adb install -r SUCCESS",
+    "uninstall": false,
+    "pm_clear": false
+  }
+}

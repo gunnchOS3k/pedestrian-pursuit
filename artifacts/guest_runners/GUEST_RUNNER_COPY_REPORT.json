@@ -1,0 +1,68 @@
+{
+  "models_ok": 7,
+  "report": [
+    {
+      "id": "ember_vale",
+      "ok": true,
+      "src": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/anime-aggressors/.worktrees/full-roster-cc0-models-animations-pixel-v1/game-godot/content/human_art_staging/ember-vale/ember-vale.glb",
+      "dest": "assets/models/guest_runners/ember_vale/ember_vale.glb",
+      "bytes": 1059416,
+      "sha256": "1da02b8882b06f3c88f97b5d4a595c89917203dfc02ff2d4055cd1cfde5db93e",
+      "license": "CC0 1.0 Universal"
+    },
+    {
+      "id": "rook_ironside",
+      "ok": true,
+      "src": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/anime-aggressors/.worktrees/full-roster-cc0-models-animations-pixel-v1/game-godot/content/human_art_staging/rook-ironside/rook-ironside.glb",
+      "dest": "assets/models/guest_runners/rook_ironside/rook_ironside.glb",
+      "bytes": 993648,
+      "sha256": "18d96e68de21152b44fabdd6294935d9964f1b16f8aca73b6a1db08f039c3b2e",
+      "license": "CC0 1.0 Universal"
+    },
+    {
+      "id": "juno_spark",
+      "ok": true,
+      "src": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/anime-aggressors/.worktrees/full-roster-cc0-models-animations-pixel-v1/game-godot/content/human_art_staging/juno-spark/juno-spark.glb",
+      "dest": "assets/models/guest_runners/juno_spark/juno_spark.glb",
+      "bytes": 1121876,
+      "sha256": "2f579f1a24c599007242e065079e5a5d280fed005731cde30ba663339a0e5067",
+      "license": "CC0 1.0 Universal"
+    },
+    {
+      "id": "kaia_windrow",
+      "ok": true,
+      "src": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/anime-aggressors/.worktrees/full-roster-cc0-models-animations-pixel-v1/game-godot/content/human_art_staging/kaia-windrow/kaia-windrow.glb",
+      "dest": "assets/models/guest_runners/kaia_windrow/kaia_windrow.glb",
+      "bytes": 1101196,
+      "sha256": "af3d540a18dda9370c17c3b88a5e18adcc1783c02e419312e043a8675c52853b",
+      "license": "CC0 1.0 Universal"
+    },
+    {
+      "id": "nix_calder",
+      "ok": true,
+      "src": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/anime-aggressors/.worktrees/full-roster-cc0-models-animations-pixel-v1/game-godot/content/human_art_staging/nix-calder/nix-calder.glb",
+      "dest": "assets/models/guest_runners/nix_calder/nix_calder.glb",
+      "bytes": 1188752,
+      "sha256": "324556bb3ad563397d96a29825b43ff552de8468b604ae619f19461930054c0f",
+      "license": "CC0 1.0 Universal"
+    },
+    {
+      "id": "orion_vell",
+      "ok": true,
+      "src": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/anime-aggressors/.worktrees/full-roster-cc0-models-animations-pixel-v1/game-godot/content/human_art_staging/orion-vell/orion-vell.glb",
+      "dest": "assets/models/guest_runners/orion_vell/orion_vell.glb",
+      "bytes": 1157244,
+      "sha256": "7e688084067236905db9604018a1ced240273cb1db7db274e14b4dece76997c3",
+      "license": "CC0 1.0 Universal"
+    },
+    {
+      "id": "vesper_nyx",
+      "ok": true,
+      "src": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/repos/anime-aggressors/.worktrees/full-roster-cc0-models-animations-pixel-v1/game-godot/content/human_art_staging/vesper-nyx/vesper-nyx.glb",
+      "dest": "assets/models/guest_runners/vesper_nyx/vesper_nyx.glb",
+      "bytes": 1264012,
+      "sha256": "706dedbe6d4c2d32831d131f4f33cbee3774740e9573fd03d405dd03effaf8b7",
+      "license": "CC0 1.0 Universal"
+    }
+  ]
+}
