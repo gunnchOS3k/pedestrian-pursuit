@@ -11,7 +11,9 @@ const TERRAIN_ZONE_SCRIPT := preload("res://scripts/tracks/TerrainZone.gd")
 const BOUNCE_PAD_SCRIPT := preload("res://scripts/tracks/BouncePad.gd")
 const BOOST_PICKUP_SCRIPT := preload("res://scripts/tracks/BoostPickup.gd")
 const SHORTCUT_SCRIPT := preload("res://scripts/tracks/ShortcutCorridor.gd")
+const SHORTCUT_GEO := preload("res://scripts/tracks/ShortcutGeometry.gd")
 const ITEM_BOX_SCENE := preload("res://scenes/items/ItemBox.tscn")
+const CAMERA_OCCLUDER_LAYER := 128
 
 var _data: Dictionary = {}
 var _course_points: Array[Vector3] = []
@@ -22,6 +24,10 @@ var _start_transform := Transform3D.IDENTITY
 var _lane_width: float = 14.0
 var _built: bool = false
 var _material_cache: Dictionary = {}
+var _rail_openings: Dictionary = {}
+var _shortcut_follow_paths: Array = []
+var _shortcut_audits: Array = []
+var _alternate_checkpoints: Array[Node3D] = []
 
 
 func configure(course_data: Dictionary) -> void:
@@ -45,6 +51,9 @@ func build() -> bool:
 		)
 	for raw_index in _data.get("checkpoint_points", []):
 		_checkpoint_point_indices.append(int(raw_index))
+	_rail_openings = SHORTCUT_GEO.compute_rail_openings(
+		_course_points, _data.get("shortcut_routes", [])
+	)
 	_build_environment()
 	_build_race_path()
 	_build_surface()
@@ -112,6 +121,22 @@ func get_rail_world_points() -> Array:
 
 func get_shortcut_routes() -> Array:
 	return _data.get("shortcut_routes", [])
+
+
+func get_shortcut_follow_paths() -> Array:
+	return _shortcut_follow_paths.duplicate()
+
+
+func get_shortcut_audits() -> Array:
+	return _shortcut_audits.duplicate()
+
+
+func get_alternate_checkpoints() -> Array:
+	return _alternate_checkpoints.duplicate()
+
+
+func get_rail_openings() -> Dictionary:
+	return _rail_openings.duplicate()
 
 
 func get_checkpoint_recovery_transform(checkpoint_index: int) -> Transform3D:
@@ -194,7 +219,13 @@ func _add_track_segment(
 	body.add_child(visual)
 
 	if bool(_data.get("guard_rails", false)):
+		var opening: Dictionary = _rail_openings.get(index, {"left": false, "right": false})
 		for side in [-1.0, 1.0]:
+			var open_this: bool = (side < 0.0 and bool(opening.get("left", false))) or (
+				side > 0.0 and bool(opening.get("right", false))
+			)
+			if open_this:
+				continue
 			var rail_size := Vector3(0.45, 1.4, maxf(1.0, length - _lane_width * 0.25))
 			var rail_shape := BoxShape3D.new()
 			rail_shape.size = rail_size
@@ -349,14 +380,44 @@ func _add_boost_pickup(parent: Node3D, point_index: int) -> void:
 
 
 func _add_shortcut_corridor(parent: Node3D, route: Dictionary) -> void:
-	## Physical corridor between entry/exit path points. Does not alter checkpoint sequence.
+	## Real drivable shortcut: floor, funnel, merge, alt gates. Same logical CP order.
 	var entry_i := int(route.get("entry_point_index", 0))
 	var exit_i := int(route.get("exit_point_index", entry_i))
 	if entry_i < 0 or exit_i < 0 or entry_i >= _course_points.size() or exit_i >= _course_points.size():
 		return
-	var entry := _course_points[entry_i]
-	var exitp := _course_points[exit_i]
-	var mid := entry.lerp(exitp, 0.5)
+	var curve: Curve3D = SHORTCUT_GEO.build_curve(_course_points, route, _lane_width)
+	if curve == null:
+		return
+	var difficulty := str(_data.get("difficulty", "intermediate"))
+	var funnel_ratio: float = SHORTCUT_GEO.entry_width_ratio(difficulty)
+	var interior_ratio := clampf(funnel_ratio - 0.12, 0.48, funnel_ratio)
+	var path := Path3D.new()
+	path.name = "ShortcutPath_%s" % str(route.get("id", "cut"))
+	path.curve = curve
+	parent.add_child(path)
+	var baked_len := maxf(curve.get_baked_length(), 1.0)
+	var samples := maxi(4, int(ceili(baked_len / 6.0)))
+	for s in range(samples):
+		var a := float(s) / float(samples)
+		var b := float(s + 1) / float(samples)
+		var p0 := curve.sample_baked(a * baked_len)
+		var p1 := curve.sample_baked(b * baked_len)
+		var width_ratio := lerpf(funnel_ratio, interior_ratio, minf(a, 1.0 - b) * 2.0 if minf(a, 1.0 - b) < 0.5 else 1.0)
+		if a < 0.18:
+			width_ratio = funnel_ratio
+		elif b > 0.82:
+			width_ratio = lerpf(interior_ratio, funnel_ratio, (a - 0.82) / 0.18)
+		_add_shortcut_segment(parent, p0, p1, _lane_width * width_ratio, s)
+	_add_junction_pad(parent, _course_points[entry_i], _lane_width * funnel_ratio, "EntryPad_%s" % route.get("id", "cut"))
+	_add_junction_pad(parent, _course_points[exit_i], _lane_width * funnel_ratio, "ExitPad_%s" % route.get("id", "cut"))
+	_add_shortcut_telegraph(parent, entry_i, str(route.get("id", "cut")), str(route.get("risk", "")))
+	var skipped: Array = SHORTCUT_GEO.skipped_logical_checkpoints(
+		_checkpoint_point_indices, entry_i, exit_i
+	)
+	for order_i in range(skipped.size()):
+		var logical := int(skipped[order_i])
+		var t := (float(order_i) + 1.0) / (float(skipped.size()) + 1.0)
+		_add_alternate_checkpoint(parent, curve.sample_baked(t * baked_len), logical, str(route.get("id", "cut")))
 	var corridor := Area3D.new()
 	corridor.name = "Shortcut_%s" % str(route.get("id", "cut"))
 	corridor.set_script(SHORTCUT_SCRIPT)
@@ -366,20 +427,132 @@ func _add_shortcut_corridor(parent: Node3D, route: Dictionary) -> void:
 		corridor.set("risk_terrain", risk)
 		corridor.set("risk_speed_mult", 0.86)
 		corridor.set("risk_handling_mult", 0.9)
+	var mid := curve.sample_baked(baked_len * 0.5)
 	var xf := Transform3D()
-	xf.origin = mid + Vector3(0, 0.2, 0)
-	var dir := exitp - entry
+	xf.origin = mid + Vector3(0, 0.35, 0)
+	var dir := curve.sample_baked(minf(baked_len, baked_len * 0.5 + 2.0)) - mid
 	dir.y = 0.0
 	if dir.length_squared() > 0.01:
 		xf = xf.looking_at(mid + dir.normalized(), Vector3.UP)
 	corridor.transform = xf
-	var length := maxf(entry.distance_to(exitp) * 0.55, 6.0)
-	_add_box_trigger_visual(corridor, Vector2(_lane_width * 0.55, length), Color(0.95, 0.75, 0.2), true)
+	_add_box_trigger_visual(corridor, Vector2(_lane_width * funnel_ratio, maxf(baked_len * 0.35, 6.0)), Color(0.95, 0.75, 0.2), true)
 	parent.add_child(corridor)
-	# AI preference metadata for path follower (no teleport).
 	corridor.set_meta("ai_preference", float(route.get("ai_preference", 0.3)))
 	corridor.set_meta("entry_point_index", entry_i)
 	corridor.set_meta("exit_point_index", exit_i)
+	var entry_offset := 0.0
+	var exit_offset := 0.0
+	if _race_path != null and _race_path.curve != null:
+		entry_offset = _race_path.curve.get_closest_offset(_course_points[entry_i] + Vector3(0, 0.8, 0))
+		exit_offset = _race_path.curve.get_closest_offset(_course_points[exit_i] + Vector3(0, 0.8, 0))
+	_shortcut_follow_paths.append({
+		"id": str(route.get("id", "shortcut")),
+		"path": path,
+		"entry_offset": entry_offset,
+		"exit_offset": exit_offset,
+		"ai_preference": float(route.get("ai_preference", 0.3)),
+	})
+	_shortcut_audits.append(
+		SHORTCUT_GEO.audit_row(str(_data.get("id", "")), _data, route, _lane_width)
+	)
+
+
+func _add_shortcut_segment(parent: Node3D, start_point: Vector3, end_point: Vector3, width: float, index: int) -> void:
+	var length := maxf(start_point.distance_to(end_point), 0.8)
+	var body := StaticBody3D.new()
+	body.name = "ShortcutSegment%02d" % index
+	body.collision_layer = 1
+	body.collision_mask = 0
+	parent.add_child(body)
+	body.global_position = (start_point + end_point) * 0.5 + Vector3(0.0, -0.28, 0.0)
+	var look := end_point + Vector3(0.0, -0.28, 0.0)
+	if look.distance_to(body.global_position) > 0.01:
+		body.look_at(look, Vector3.UP)
+	var surface_size := Vector3(width, 0.55, length + 1.2)
+	var shape := BoxShape3D.new()
+	shape.size = surface_size
+	var collider := CollisionShape3D.new()
+	collider.shape = shape
+	body.add_child(collider)
+	var mesh := BoxMesh.new()
+	mesh.size = surface_size
+	var visual := MeshInstance3D.new()
+	visual.mesh = mesh
+	visual.material_override = _make_material(Color(0.93, 0.72, 0.22), true)
+	body.add_child(visual)
+
+
+func _add_junction_pad(parent: Node3D, point: Vector3, width: float, pad_name: String) -> void:
+	var body := StaticBody3D.new()
+	body.name = pad_name
+	body.position = point + Vector3(0.0, -0.26, 0.0)
+	body.collision_layer = 1
+	body.collision_mask = 0
+	var radius := maxf(width * 0.55, 4.0)
+	var shape := CylinderShape3D.new()
+	shape.radius = radius
+	shape.height = 0.55
+	var collider := CollisionShape3D.new()
+	collider.shape = shape
+	body.add_child(collider)
+	var mesh := CylinderMesh.new()
+	mesh.top_radius = radius
+	mesh.bottom_radius = radius
+	mesh.height = 0.55
+	var visual := MeshInstance3D.new()
+	visual.mesh = mesh
+	visual.material_override = _make_material(Color(0.98, 0.82, 0.28), true)
+	body.add_child(visual)
+	parent.add_child(body)
+
+
+func _add_shortcut_telegraph(parent: Node3D, entry_i: int, shortcut_id: String, risk: String) -> void:
+	## Cue ~1.5–2.5s before entry at ~18 u/s → 27–45 units back along the main path.
+	var target_dist := 36.0
+	var walked := 0.0
+	var idx := entry_i
+	var guard := 0
+	while walked < target_dist and guard < _course_points.size():
+		var prev := posmod(idx - 1, _course_points.size())
+		walked += _course_points[prev].distance_to(_course_points[idx])
+		idx = prev
+		guard += 1
+	var cue_pos := _course_points[idx] + Vector3(0.0, 0.12, 0.0)
+	var mark := Label3D.new()
+	mark.name = "ShortcutTelegraph_%s" % shortcut_id
+	mark.position = cue_pos + Vector3(0.0, 2.4, 0.0)
+	mark.text = "SHORTCUT"
+	if not risk.is_empty():
+		mark.text = "SHORTCUT · %s" % risk.to_upper()
+	mark.font_size = 64
+	mark.outline_size = 10
+	mark.modulate = Color(1.0, 0.85, 0.2)
+	parent.add_child(mark)
+	var chevron := MeshInstance3D.new()
+	chevron.name = "ShortcutChevron_%s" % shortcut_id
+	var box := BoxMesh.new()
+	box.size = Vector3(2.4, 0.08, 4.2)
+	chevron.mesh = box
+	chevron.position = cue_pos
+	chevron.material_override = _make_material(Color(1.0, 0.78, 0.15), true)
+	parent.add_child(chevron)
+
+
+func _add_alternate_checkpoint(parent: Node3D, point: Vector3, logical_index: int, shortcut_id: String) -> void:
+	var checkpoint := Area3D.new()
+	checkpoint.name = "AltCheckpoint_%s_%d" % [shortcut_id, logical_index]
+	checkpoint.set_script(CHECKPOINT_SCRIPT)
+	checkpoint.set("checkpoint_index", logical_index)
+	var xf := Transform3D()
+	xf.origin = point + Vector3(0.0, 1.8, 0.0)
+	checkpoint.transform = xf
+	var shape := BoxShape3D.new()
+	shape.size = Vector3(_lane_width * 0.85, 5.0, 3.2)
+	var collider := CollisionShape3D.new()
+	collider.shape = shape
+	checkpoint.add_child(collider)
+	parent.add_child(checkpoint)
+	_alternate_checkpoints.append(checkpoint)
 
 
 func _add_box_trigger_visual(area: Area3D, size_2d: Vector2, color: Color, emissive: bool) -> void:

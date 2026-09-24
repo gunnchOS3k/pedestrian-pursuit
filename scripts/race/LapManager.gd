@@ -24,6 +24,7 @@ func register_racer(racer: Node) -> void:
 		"next_checkpoint": 1 if checkpoint_count > 1 else 0,
 		"finished": false,
 		"finish_time": 0.0,
+		"collected": {},
 	}
 
 
@@ -36,9 +37,15 @@ func on_checkpoint(racer: Node, index: int) -> void:
 		return
 	if index != state.next_checkpoint:
 		return
+	var collected: Dictionary = state.get("collected", {})
+	if bool(collected.get(index, false)):
+		return
+	collected[index] = true
+	state.collected = collected
 	if index == 0:
 		state.next_checkpoint = 1 if checkpoint_count > 1 else 0
 		state.lap += 1
+		state.collected = {}
 		lap_changed.emit(racer, state.lap)
 		if state.lap >= total_laps:
 			state.finished = true

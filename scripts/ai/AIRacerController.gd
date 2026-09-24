@@ -44,6 +44,11 @@ func configure_shortcuts(routes: Array) -> void:
 		path_follower.configure_shortcut_from_course(routes, ai_tier_name)
 
 
+func configure_shortcut_paths(paths: Array) -> void:
+	if path_follower != null and path_follower.has_method("configure_physical_shortcuts"):
+		path_follower.configure_physical_shortcuts(paths)
+
+
 func notify_shoe_changed() -> void:
 	if path_follower != null and path_follower.has_method("set_shoe_context"):
 		path_follower.set_shoe_context(shoe_id)

@@ -73,6 +73,11 @@ run_step G2C6RuntimeTest "$GODOT" --headless --path "$ROOT" --script res://tests
 run_step CupFlowTest "$GODOT" --headless --path "$ROOT" --script res://tests/CupFlowTest.gd
 run_step BetaProductStateTest "$GODOT" --headless --path "$ROOT" --script res://tests/BetaProductStateTest.gd
 run_step FullProductDepthTest "$GODOT" --headless --path "$ROOT" --script res://tests/FullProductDepthTest.gd
+run_step AaGuestRunnerRosterTest "$GODOT" --headless --path "$ROOT" --script res://tests/AaGuestRunnerRosterTest.gd
+run_step CameraSmoothnessTest "$GODOT" --headless --path "$ROOT" --script res://tests/CameraSmoothnessTest.gd
+run_step ShortcutReachabilityTest "$GODOT" --headless --path "$ROOT" --script res://tests/ShortcutReachabilityTest.gd
+run_step BuildIdentityTest "$GODOT" --headless --path "$ROOT" --script res://tests/BuildIdentityTest.gd
+run_step CameraTelemetryHarness "$GODOT" --headless --path "$ROOT" --script res://tools/gamefeel/run_camera_telemetry.gd
 # AlphaProductStateTest / DigitalRcProductStateTest retired from --script runner:
 # they printed PASS while SCRIPT ERROR / Compilation failed (autoload-blind).
 # Authoritative product evidence: ProductionGateHarness --production-gate below.

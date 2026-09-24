@@ -13,6 +13,7 @@ var larger_ui: bool = false
 var auto_accelerate: bool = false
 var colorblind_safe_hud: bool = false
 var high_contrast: bool = false
+var camera_profile: int = 0 ## 0 comfort, 1 dynamic, 2 reduced_motion
 
 ## Colorblind-safe marker palette (Okabe–Ito inspired).
 const MARKER_PLAYER := Color(0.0, 0.45, 0.7) ## blue
@@ -67,6 +68,11 @@ func set_colorblind_safe_hud(value: bool) -> void:
 
 func set_high_contrast(value: bool) -> void:
 	high_contrast = value
+	_persist_and_notify()
+
+
+func set_camera_profile(value: int) -> void:
+	camera_profile = clampi(value, 0, 2)
 	_persist_and_notify()
 
 
@@ -131,6 +137,7 @@ func load_settings() -> void:
 	colorblind_safe_hud = bool(cfg.get_value("a11y", "colorblind_safe_hud", false))
 	## Missing key → false (tolerate pre-VXP311 configs without high_contrast).
 	high_contrast = bool(cfg.get_value("a11y", "high_contrast", false))
+	camera_profile = int(cfg.get_value("a11y", "camera_profile", 0))
 	var gm := _game_manager()
 	if gm != null and cfg.has_section_key("a11y", "auto_accelerate"):
 		gm.set_meta("accessibility_auto_accel_override", true)
@@ -143,6 +150,7 @@ func save_settings() -> void:
 	cfg.set_value("a11y", "auto_accelerate", auto_accelerate)
 	cfg.set_value("a11y", "colorblind_safe_hud", colorblind_safe_hud)
 	cfg.set_value("a11y", "high_contrast", high_contrast)
+	cfg.set_value("a11y", "camera_profile", camera_profile)
 	cfg.save(SETTINGS_PATH)
 
 
@@ -158,6 +166,8 @@ func _sync_game_manager() -> void:
 	gm.auto_accelerate = auto_accelerate
 	# Reduce-motion owns shake while enabled; restoring clears the freeze.
 	gm.camera_shake_enabled = not reduce_motion
+	if "camera_profile" in gm:
+		gm.camera_profile = 2 if reduce_motion else camera_profile
 
 
 func _persist_and_notify() -> void:
