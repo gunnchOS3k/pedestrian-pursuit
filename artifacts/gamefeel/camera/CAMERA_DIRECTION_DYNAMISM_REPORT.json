@@ -1,10 +1,22 @@
 {
+  "CAMERA_BOOST_RESPONSE_PASS": true,
+  "CAMERA_DIRECTION_PASS": true,
+  "CAMERA_DRIFT_RESPONSE_PASS": true,
+  "CAMERA_LANDING_IMPULSE_BOUNDED_PASS": true,
   "CAMERA_NORMAL_RUN_STABILITY_PASS": true,
-  "CAMERA_SPRINGARM_POP_AUDIT_PASS": true,
+  "CAMERA_REDUCED_MOTION_PASS": true,
+  "CAMERA_SPEED_RESPONSE_PASS": true,
+  "CAMERA_TURN_ANTICIPATION_PASS": true,
+  "HUMAN_CAMERA_EXCITEMENT_PASS": false,
   "HUMAN_CAMERA_SMOOTHNESS_PASS": false,
+  "MERGE_AUTHORIZED": false,
+  "OWNER_CAMERA_DIRECTION_PASS": false,
+  "OWNER_CAMERA_EXCITEMENT_PASS": false,
+  "OWNER_CAMERA_SMOOTHNESS_PASS": false,
   "metrics_defined_before_results": {
     "HIGH_FREQ_POS_RMS_MAX": 0.08,
     "HIGH_FREQ_YAW_RMS_MAX": 0.04,
+    "LANDING_IMPACT_THRESHOLD": 6.0,
     "NORMAL_RUN_SHAKE_MAX": 0.0,
     "OPTICAL_ALIGN_MIN": 0.95,
     "POSITION_DISCONTINUITY_M": 0.35,
@@ -221,6 +233,5 @@
       "springarm_retracted_frames": 0,
       "yaw_discontinuity_count": 0
     }
-  ],
-  "springarm_findings": "Parent camera collided with layer-1 track deck and low rails. Comfort camera now masks only layer 8 occluders and damps spring recovery. Collision is not globally disabled."
+  ]
 }
