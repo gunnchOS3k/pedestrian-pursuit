@@ -75,6 +75,9 @@ run_step BetaProductStateTest "$GODOT" --headless --path "$ROOT" --script res://
 run_step FullProductDepthTest "$GODOT" --headless --path "$ROOT" --script res://tests/FullProductDepthTest.gd
 run_step AaGuestRunnerRosterTest "$GODOT" --headless --path "$ROOT" --script res://tests/AaGuestRunnerRosterTest.gd
 run_step CameraSmoothnessTest "$GODOT" --headless --path "$ROOT" --script res://tests/CameraSmoothnessTest.gd
+run_step CameraDirectionConventionProof "$GODOT" --headless --path "$ROOT" --script res://tests/CameraDirectionConventionProof.gd
+run_step CameraDirectionTest "$GODOT" --headless --path "$ROOT" --script res://tests/CameraDirectionTest.gd
+run_step CameraDynamismTest "$GODOT" --headless --path "$ROOT" --script res://tests/CameraDynamismTest.gd
 run_step ShortcutReachabilityTest "$GODOT" --headless --path "$ROOT" --script res://tests/ShortcutReachabilityTest.gd
 run_step BuildIdentityTest "$GODOT" --headless --path "$ROOT" --script res://tests/BuildIdentityTest.gd
 run_step CameraTelemetryHarness "$GODOT" --headless --path "$ROOT" --script res://tools/gamefeel/run_camera_telemetry.gd
