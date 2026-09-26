@@ -1,0 +1,19 @@
+{
+  "HUMAN_FUN_JUDGMENT": false,
+  "passed": 12,
+  "required": 12,
+  "results": {
+    "boost": true,
+    "collision": true,
+    "drafting": true,
+    "final_lap": true,
+    "finish": true,
+    "jump_landing": true,
+    "missed_shortcut": true,
+    "overtake": true,
+    "shortcut_completion": true,
+    "shortcut_entry": true,
+    "start_straight": true,
+    "sustained_turn": true
+  }
+}

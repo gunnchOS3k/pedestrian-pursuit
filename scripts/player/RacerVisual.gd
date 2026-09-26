@@ -79,6 +79,15 @@ func set_boosting(active: bool) -> void:
 		set_pose_state("forward_lean", 0.35)
 
 
+func apply_locomotion_presentation(lean: float, landing: float, skid: float, boost_posture: float) -> void:
+	## Presentation only. Physics stays on the CharacterBody3D.
+	if _torso:
+		_torso.rotation.z = lerpf(_torso.rotation.z, lean + skid * 0.08, 0.35)
+		_torso.position.y = _rest_torso_y - landing * 0.16
+		if boost_posture > 0.1:
+			_torso.rotation.x = lerpf(_torso.rotation.x, -0.22 * boost_posture, 0.25)
+
+
 func play_start_line() -> void:
 	set_pose_state(str(profile.start_pose if profile else "lace_check"), 1.2)
 

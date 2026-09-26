@@ -14,6 +14,8 @@ var auto_accelerate: bool = false
 var colorblind_safe_hud: bool = false
 var high_contrast: bool = false
 var camera_profile: int = 0 ## 0 comfort, 1 dynamic, 2 reduced_motion
+var haptic_feedback: bool = true
+var captions_enabled: bool = true
 
 ## Colorblind-safe marker palette (Okabe–Ito inspired).
 const MARKER_PLAYER := Color(0.0, 0.45, 0.7) ## blue
@@ -74,6 +76,26 @@ func set_high_contrast(value: bool) -> void:
 func set_camera_profile(value: int) -> void:
 	camera_profile = clampi(value, 0, 2)
 	_persist_and_notify()
+
+
+func set_haptic_feedback(value: bool) -> void:
+	haptic_feedback = value
+	_persist_and_notify()
+
+
+func set_captions_enabled(value: bool) -> void:
+	captions_enabled = value
+	_persist_and_notify()
+
+
+func profile_name() -> String:
+	match camera_profile:
+		1:
+			return "DYNAMIC"
+		2:
+			return "REDUCED_MOTION"
+		_:
+			return "COMFORT"
 
 
 func get_ui_scale_multiplier() -> float:
@@ -138,6 +160,8 @@ func load_settings() -> void:
 	## Missing key → false (tolerate pre-VXP311 configs without high_contrast).
 	high_contrast = bool(cfg.get_value("a11y", "high_contrast", false))
 	camera_profile = int(cfg.get_value("a11y", "camera_profile", 0))
+	haptic_feedback = bool(cfg.get_value("a11y", "haptic_feedback", true))
+	captions_enabled = bool(cfg.get_value("a11y", "captions_enabled", true))
 	var gm := _game_manager()
 	if gm != null and cfg.has_section_key("a11y", "auto_accelerate"):
 		gm.set_meta("accessibility_auto_accel_override", true)
@@ -151,6 +175,8 @@ func save_settings() -> void:
 	cfg.set_value("a11y", "colorblind_safe_hud", colorblind_safe_hud)
 	cfg.set_value("a11y", "high_contrast", high_contrast)
 	cfg.set_value("a11y", "camera_profile", camera_profile)
+	cfg.set_value("a11y", "haptic_feedback", haptic_feedback)
+	cfg.set_value("a11y", "captions_enabled", captions_enabled)
 	cfg.save(SETTINGS_PATH)
 
 
