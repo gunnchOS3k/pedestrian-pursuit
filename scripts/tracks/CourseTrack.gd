@@ -12,6 +12,7 @@ const BOUNCE_PAD_SCRIPT := preload("res://scripts/tracks/BouncePad.gd")
 const BOOST_PICKUP_SCRIPT := preload("res://scripts/tracks/BoostPickup.gd")
 const SHORTCUT_SCRIPT := preload("res://scripts/tracks/ShortcutCorridor.gd")
 const SHORTCUT_GEO := preload("res://scripts/tracks/ShortcutGeometry.gd")
+const IDENTITY := preload("res://scripts/gamefeel/CourseIdentityCatalog.gd")
 const ITEM_BOX_SCENE := preload("res://scenes/items/ItemBox.tscn")
 const CAMERA_OCCLUDER_LAYER := 128
 
@@ -60,10 +61,26 @@ func build() -> bool:
 	_build_checkpoints()
 	_build_features()
 	_build_scenery()
+	_build_identity_landmarks()
 	_build_start_marker()
 	_start_transform = _transform_at_point(0, 1.05)
 	_built = true
 	return true
+
+
+func get_course_points() -> Array:
+	return _course_points.duplicate()
+
+
+func get_identity() -> Dictionary:
+	return IDENTITY.identity_for(str(_data.get("id", "")))
+
+
+func count_landmarks() -> int:
+	var root := get_node_or_null("Landmarks")
+	if root == null:
+		return 0
+	return root.get_child_count()
 
 
 func get_checkpoints() -> Array:
@@ -164,6 +181,7 @@ func _build_environment() -> void:
 	sun.light_energy = 1.1
 	sun.shadow_enabled = true
 	add_child(sun)
+	IDENTITY.apply_lighting(world_environment, sun, IDENTITY.identity_for(str(_data.get("id", ""))))
 
 
 func _build_race_path() -> void:
@@ -536,6 +554,15 @@ func _add_shortcut_telegraph(parent: Node3D, entry_i: int, shortcut_id: String, 
 	chevron.position = cue_pos
 	chevron.material_override = _make_material(Color(1.0, 0.78, 0.15), true)
 	parent.add_child(chevron)
+	# Shape cue in addition to color — colorblind-safe decision telegraph.
+	var icon := Label3D.new()
+	icon.name = "ShortcutTelegraphIcon_%s" % shortcut_id
+	icon.position = cue_pos + Vector3(0.0, 3.6, 0.0)
+	icon.text = "≫ CUT"
+	icon.font_size = 48
+	icon.outline_size = 8
+	icon.modulate = Color(1, 1, 1)
+	parent.add_child(icon)
 
 
 func _add_alternate_checkpoint(parent: Node3D, point: Vector3, logical_index: int, shortcut_id: String) -> void:
@@ -739,6 +766,13 @@ func _build_mesa_scenery(parent: Node3D) -> void:
 		_add_visual_cylinder(
 			parent, position + Vector3(0, 5.0, 0), 3.5, 1.2, Color(0.85, 0.55, 0.3), true
 		)
+
+
+func _build_identity_landmarks() -> void:
+	var identity: Dictionary = IDENTITY.identity_for(str(_data.get("id", "")))
+	if identity.is_empty():
+		return
+	IDENTITY.build_landmarks(self, _course_points, identity, Callable(self, "_make_material"))
 
 
 func _build_start_marker() -> void:

@@ -1,0 +1,20 @@
+{
+  "schema": "pp_audio_audit/v3",
+  "licensed_or_procedural_only": true,
+  "unlicensed_commercial_music": false,
+  "course_music_status": "existing procedural-final race beds for all 8 launch courses",
+  "cues": {
+    "countdown": "res://assets/audio/ui/countdown.wav",
+    "go": "res://assets/audio/ui/start.wav",
+    "footsteps": "res://assets/audio/sfx/footstep_*.wav",
+    "speed_wind": "ambience volume follows speed; no new commercial bed",
+    "boost": "res://assets/audio/sfx/boost.wav",
+    "turn_skid": "res://assets/audio/sfx/drift.wav",
+    "collision": "existing stomp/drift banks; no new unlicensed hit",
+    "shortcut_cue": "res://assets/audio/ui/select.wav",
+    "checkpoint": "res://assets/audio/sfx/checkpoint.wav",
+    "final_lap": "res://assets/audio/ui/confirm.wav",
+    "finish": "res://assets/audio/ui/finish.wav"
+  },
+  "captions": ["COUNTDOWN", "GO", "BOOST", "DRAFT", "CHECKPOINT", "FINAL LAP", "FINISH", "SHORTCUT", "SKID"]
+}

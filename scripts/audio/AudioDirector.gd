@@ -71,6 +71,61 @@ func play_sfx(name: String) -> void:
 	_play_oneshot(_sfx, SFX_DIR + "%s.wav" % name, -1.0)
 
 
+func play_race_cue(cue: String) -> void:
+	## Critical race cues map to existing procedural / repo-licensed banks only.
+	match cue:
+		"countdown":
+			play_ui("countdown")
+		"go":
+			play_ui("start")
+		"boost":
+			play_sfx("boost")
+		"draft":
+			play_sfx("drift")
+		"checkpoint":
+			play_sfx("checkpoint")
+		"final_lap":
+			play_ui("confirm")
+		"finish":
+			play_ui("finish")
+		"skid":
+			play_sfx("drift")
+		"shortcut":
+			play_ui("select")
+		_:
+			pass
+
+
+func cue_caption(cue: String) -> String:
+	match cue:
+		"countdown":
+			return "COUNTDOWN"
+		"go":
+			return "GO"
+		"boost":
+			return "BOOST"
+		"draft":
+			return "DRAFT"
+		"checkpoint":
+			return "CHECKPOINT"
+		"final_lap":
+			return "FINAL LAP"
+		"finish":
+			return "FINISH"
+		"skid":
+			return "SKID"
+		"shortcut":
+			return "SHORTCUT"
+		_:
+			return ""
+
+
+func set_speed_wind(ratio: float) -> void:
+	if _ambience == null:
+		return
+	_ambience.volume_db = lerpf(-16.0, -6.0, clampf(ratio, 0.0, 1.0))
+
+
 func play_item(item_id: String) -> void:
 	play_sfx("item_%s" % item_id)
 
@@ -86,11 +141,13 @@ func has_bank(path: String) -> bool:
 
 func describe() -> Dictionary:
 	return {
-		"schema": "pp_audio_director/v1",
+		"schema": "pp_audio_director/v2",
 		"enabled": _enabled,
 		"music_dir": MUSIC_DIR,
 		"sfx_dir": SFX_DIR,
 		"procedural_final": true,
+		"licensed_or_procedural_only": true,
+		"unlicensed_commercial_music": false,
 	}
 
 

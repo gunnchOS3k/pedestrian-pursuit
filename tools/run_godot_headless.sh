@@ -79,6 +79,10 @@ run_step CameraDirectionConventionProof "$GODOT" --headless --path "$ROOT" --scr
 run_step CameraDirectionTest "$GODOT" --headless --path "$ROOT" --script res://tests/CameraDirectionTest.gd
 run_step CameraDynamismTest "$GODOT" --headless --path "$ROOT" --script res://tests/CameraDynamismTest.gd
 run_step ShortcutReachabilityTest "$GODOT" --headless --path "$ROOT" --script res://tests/ShortcutReachabilityTest.gd
+run_step RaceExperienceV3Test "$GODOT" --headless --path "$ROOT" --script res://tests/RaceExperienceV3Test.gd
+run_step CourseIdentityV3Test "$GODOT" --headless --path "$ROOT" --script res://tests/CourseIdentityV3Test.gd
+run_step ShortcutRiskRewardV3Test "$GODOT" --headless --path "$ROOT" --script res://tests/ShortcutRiskRewardV3Test.gd
+run_step RaceScenarioV3Test "$GODOT" --headless --path "$ROOT" --script res://tests/RaceScenarioV3Test.gd
 run_step BuildIdentityTest "$GODOT" --headless --path "$ROOT" --script res://tests/BuildIdentityTest.gd
 run_step CameraTelemetryHarness "$GODOT" --headless --path "$ROOT" --script res://tools/gamefeel/run_camera_telemetry.gd
 # AlphaProductStateTest / DigitalRcProductStateTest retired from --script runner:

@@ -1,0 +1,83 @@
+{
+  "schema": "pp_race_experience_matrix/v3",
+  "generated_at": "2026-09-26T19:45:00Z",
+  "baseline": "live PR #34 head 1413997a2146b5cf2401839a3cbd7257b809ea5b",
+  "note": "Audit of the pre-V3 journey. Functional is not the same as complete feel.",
+  "moments": [
+    {
+      "id": "main_menu",
+      "classification": "CLEAR",
+      "notes": "Mode entry, a11y, Comfort/Dynamic/Reduced Motion picker exist."
+    },
+    {
+      "id": "course_selection",
+      "classification": "FUNCTIONAL_BUT_FLAT",
+      "notes": "Eight courses load by name and color. Little authored identity preview or landmark memory."
+    },
+    {
+      "id": "runner_selection",
+      "classification": "CLEAR",
+      "notes": "AA guest roster and runner profiles present."
+    },
+    {
+      "id": "countdown",
+      "classification": "CONFUSING",
+      "notes": "Dual countdown emitters, HUD intro overlap, GO vs GO! string mismatch."
+    },
+    {
+      "id": "go",
+      "classification": "FUNCTIONAL_BUT_FLAT",
+      "notes": "Input lock until enable_movement is real. Start audio exists. GO presentation is muddy."
+    },
+    {
+      "id": "first_10_seconds",
+      "classification": "FUNCTIONAL_BUT_FLAT",
+      "notes": "Corrected chase FOV exists. HUD is telemetry-heavy (footwear, GPS, drift sparks)."
+    },
+    {
+      "id": "first_turn",
+      "classification": "FUNCTIONAL_BUT_FLAT",
+      "notes": "Camera turn anticipation inherited. No next-turn / route cue."
+    },
+    {
+      "id": "opponent_interaction",
+      "classification": "FUNCTIONAL_BUT_FLAT",
+      "notes": "Place-change pulse exists. No proximity, draft target, or offscreen read."
+    },
+    {
+      "id": "shortcut_decision",
+      "classification": "FUNCTIONAL_BUT_FLAT",
+      "notes": "Physical 8/8 rules exist. Telegraph is late text/color, not a decision."
+    },
+    {
+      "id": "drafting",
+      "classification": "CONFUSING",
+      "notes": "Slipstream math exists. Silent enter/build/active/leave."
+    },
+    {
+      "id": "boost",
+      "classification": "FUNCTIONAL_BUT_FLAT",
+      "notes": "Meter + FOV pulse exist. Not an authored event with start/stop presentation tests."
+    },
+    {
+      "id": "lap_checkpoint",
+      "classification": "FUNCTIONAL_BUT_FLAT",
+      "notes": "Lap label updates. No confirmation, final-lap, or finish-approach cue. Internal IDs stay hidden."
+    },
+    {
+      "id": "final_stretch",
+      "classification": "MISSING",
+      "notes": "No distinct last-lap or finish-landmark presentation."
+    },
+    {
+      "id": "finish",
+      "classification": "FUNCTIONAL_BUT_FLAT",
+      "notes": "FINISH! overlay and results. Short celebration already. Weak position drama."
+    },
+    {
+      "id": "results_retry",
+      "classification": "FUNCTIONAL_BUT_FLAT",
+      "notes": "Retry / next / menu exist. No real-event highlights. No invented rankings."
+    }
+  ]
+}
