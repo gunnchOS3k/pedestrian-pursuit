@@ -1,0 +1,75 @@
+{
+  "schema": "pp_guest_animation_map/v1",
+  "policy": "Do not reuse combat clips that still look like attacks.",
+  "required_states": [
+    "idle",
+    "walk",
+    "run",
+    "jump",
+    "boost",
+    "stumble",
+    "recovery",
+    "finish_victory",
+    "finish_defeat",
+    "selection_pose"
+  ],
+  "shared_map": {
+    "idle": {
+      "source_clip": "idle",
+      "approximation": false,
+      "notes": "KayKit Idle / Idle_B"
+    },
+    "walk": {
+      "source_clip": "walk",
+      "approximation": false,
+      "notes": "KayKit Walking"
+    },
+    "run": {
+      "source_clip": "run",
+      "approximation": false,
+      "notes": "KayKit Running"
+    },
+    "jump": {
+      "source_clip": "run",
+      "approximation": true,
+      "notes": "No safe jump clip in adapted GLB. launch maps to Death and is not used. Airborne uses run at reduced speed with upward presentation lean."
+    },
+    "boost": {
+      "source_clip": "run",
+      "approximation": true,
+      "notes": "super/heavy are attack/spell clips and are not used. Boost is faster run plus racing sole VFX."
+    },
+    "stumble": {
+      "source_clip": "hurt_heavy",
+      "approximation": false,
+      "notes": "Hit reaction reads as stumble, not an attack."
+    },
+    "recovery": {
+      "source_clip": "walk",
+      "approximation": true,
+      "notes": "No dedicated recovery clip; walk is the honest locomotion return."
+    },
+    "finish_victory": {
+      "source_clip": "idle",
+      "approximation": true,
+      "notes": "super/taunt still read combat-adjacent; idle plus victory pose overlay."
+    },
+    "finish_defeat": {
+      "source_clip": "hurt_heavy",
+      "approximation": true,
+      "notes": "launch/Death is not used. Hurt clip plus slumped overlay."
+    },
+    "selection_pose": {
+      "source_clip": "idle",
+      "approximation": true,
+      "notes": "Idle plus runner start_pose overlay. charged_idle is combat idle and is not used."
+    }
+  },
+  "unused_combat_clips": [
+    "charged_idle",
+    "heavy",
+    "super",
+    "clash_lock",
+    "launch"
+  ]
+}

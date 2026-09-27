@@ -1,0 +1,26 @@
+{
+  "id": "nix_calder",
+  "display_name": "Nix Calder",
+  "class_type": "endurance",
+  "top_speed": 21.5,
+  "acceleration": 16.0,
+  "handling": 12.5,
+  "drift_control": 11.5,
+  "trick_skill": 7.0,
+  "recovery": 14.0,
+  "strength": 8.5,
+  "boost_efficiency": 1.12,
+  "default_shoe_id": "starter_soles",
+  "preferred_surfaces": [
+    "standard",
+    "packed_dirt",
+    "grass"
+  ],
+  "ai_line_bias": "smooth_arcs",
+  "special_ability_id": "tempo_hold",
+  "description": "Guest runner mapped to mira_lane envelope. Exact steps, cold recovery.",
+  "roster_group": "guest",
+  "stat_envelope_twin": "mira_lane",
+  "visual_only": true,
+  "guest_unique_ability": false
+}

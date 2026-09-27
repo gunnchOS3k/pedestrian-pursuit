@@ -29,6 +29,13 @@ var stumble_style: String = "stutter"
 var recovery_style: String = "jog"
 var finish_style: String = "arms_up"
 var tagline: String = ""
+var roster_group: String = "core"
+var model_asset_path: String = ""
+var animation_set_id: String = ""
+var provenance_id: String = ""
+var boost_vfx: String = ""
+var stat_envelope_twin: String = ""
+var dev_label: String = ""
 
 
 static func from_dict(data: Dictionary) -> RunnerProfile:
@@ -64,6 +71,15 @@ static func from_dict(data: Dictionary) -> RunnerProfile:
 	p.recovery_style = str(data.get("recovery_style", p.recovery_style))
 	p.finish_style = str(data.get("finish_style", p.finish_style))
 	p.tagline = str(data.get("tagline", ""))
+	p.roster_group = str(data.get("roster_group", "core"))
+	if p.id in ["ember_vale", "rook_ironside", "juno_spark", "kaia_windrow", "nix_calder", "orion_vell", "vesper_nyx"]:
+		p.roster_group = "guest"
+	p.model_asset_path = str(data.get("model_asset_path", ""))
+	p.animation_set_id = str(data.get("animation_set_id", ""))
+	p.provenance_id = str(data.get("provenance_id", ""))
+	p.boost_vfx = str(data.get("boost_vfx", ""))
+	p.stat_envelope_twin = str(data.get("stat_envelope_twin", ""))
+	p.dev_label = str(data.get("dev_label", ""))
 	return p
 
 

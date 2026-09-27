@@ -1,0 +1,14 @@
+{
+  "schema": "pp_guest_race_validation/v1",
+  "note": "Headless structural race-smoke passed. Physical Pixel laps are owner review.",
+  "runs": [
+    {"guest_id": "ember_vale", "course_id": "verdant_cascade_circuit", "intent": "sprint burst on Verdant"},
+    {"guest_id": "rook_ironside", "course_id": "emberkeep_gauntlet", "intent": "uphill-heavy power"},
+    {"guest_id": "juno_spark", "course_id": "prism_apex", "intent": "sprint-friendly kinetic"},
+    {"guest_id": "kaia_windrow", "course_id": "cloverwind_ranch", "intent": "technical parkour/cornering"},
+    {"guest_id": "nix_calder", "course_id": "tideglass_harbor", "intent": "precision endurance"},
+    {"guest_id": "orion_vell", "course_id": "mirage_mesa", "intent": "mixed terrain"},
+    {"guest_id": "vesper_nyx", "course_id": "neon_switchyard", "intent": "trick/technical"},
+    {"guest_id": "mixed_field", "course_id": "cloudstep_ridge", "intent": "core+guest AI mix"}
+  ]
+}

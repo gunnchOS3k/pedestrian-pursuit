@@ -4,7 +4,7 @@
   "digital_rc": "PEDESTRIAN_DIGITAL_RC_READY",
   "physical_fps": "PEDESTRIAN_PHYSICAL_PERFORMANCE_PENDING",
   "counts": {
-    "racers": 8,
+    "racers": 15,
     "shoes": 4,
     "items": 6,
     "tracks": 8,
@@ -363,6 +363,62 @@
       "sha256": "f7e6a2b3fccc645d69e0d728fa8c383274a34f85c3dea4325389ae482375cc27",
       "license": "ORIGINAL_INTERNAL",
       "notes": "Digital RC contact sheet"
+    },
+    {
+      "id": "art.racers.ember_vale",
+      "path": "assets/art/racers/ember_vale.png",
+      "status": "AA_CC0_CANDIDATE_DERIVATIVE",
+      "sha256": "f43eedfc09d6e8f4f416d6c2f5e29222411cec06004162df2c650b07408b7635",
+      "license": "CC0 1.0 Universal",
+      "notes": "Guest runner selection card generated from imported model palette. 3D preview is authoritative."
+    },
+    {
+      "id": "art.racers.rook_ironside",
+      "path": "assets/art/racers/rook_ironside.png",
+      "status": "AA_CC0_CANDIDATE_DERIVATIVE",
+      "sha256": "9a27556c3db7da5b5db957dfee11abe1dc8bab731b2a46e865b56baae436afff",
+      "license": "CC0 1.0 Universal",
+      "notes": "Guest runner selection card generated from imported model palette. 3D preview is authoritative."
+    },
+    {
+      "id": "art.racers.juno_spark",
+      "path": "assets/art/racers/juno_spark.png",
+      "status": "AA_CC0_CANDIDATE_DERIVATIVE",
+      "sha256": "4ba2b3b97686a7bb65d34a0b701c91b5062d3084bdf0c7d8749d926ec9f766b2",
+      "license": "CC0 1.0 Universal",
+      "notes": "Guest runner selection card generated from imported model palette. 3D preview is authoritative."
+    },
+    {
+      "id": "art.racers.kaia_windrow",
+      "path": "assets/art/racers/kaia_windrow.png",
+      "status": "AA_CC0_CANDIDATE_DERIVATIVE",
+      "sha256": "75e764c247236940fee6bb36f33d38161fc119f0fdc686b32c31f84ec6cf4202",
+      "license": "CC0 1.0 Universal",
+      "notes": "Guest runner selection card generated from imported model palette. 3D preview is authoritative."
+    },
+    {
+      "id": "art.racers.nix_calder",
+      "path": "assets/art/racers/nix_calder.png",
+      "status": "AA_CC0_CANDIDATE_DERIVATIVE",
+      "sha256": "0fc060d1f72d3e548e158dcd0ebf73b63dc0486a55fc5d69bcf7a1937531da28",
+      "license": "CC0 1.0 Universal",
+      "notes": "Guest runner selection card generated from imported model palette. 3D preview is authoritative."
+    },
+    {
+      "id": "art.racers.orion_vell",
+      "path": "assets/art/racers/orion_vell.png",
+      "status": "AA_CC0_CANDIDATE_DERIVATIVE",
+      "sha256": "defe1a8400cf2a9fa1ca9b5755e0a4a671a253a6099c7e1f183f0f43409818fe",
+      "license": "CC0 1.0 Universal",
+      "notes": "Guest runner selection card generated from imported model palette. 3D preview is authoritative."
+    },
+    {
+      "id": "art.racers.vesper_nyx",
+      "path": "assets/art/racers/vesper_nyx.png",
+      "status": "AA_CC0_CANDIDATE_DERIVATIVE",
+      "sha256": "c309965185b149de042610abfacd9d21f3584935333ef8e718b14380e3b1334d",
+      "license": "CC0 1.0 Universal",
+      "notes": "Guest runner selection card generated from imported model palette. 3D preview is authoritative."
     }
   ]
 }

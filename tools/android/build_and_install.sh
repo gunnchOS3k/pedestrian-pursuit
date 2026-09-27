@@ -3,6 +3,7 @@ set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 APK_PATH="$PROJECT_ROOT/build/android/pedestrian-pursuit-debug.apk"
+REVIEW_APK_PATH="$PROJECT_ROOT/build/android/pedestrian-pursuit-aa-guest-runners-owner-review.apk"
 PACKAGE_ID="com.gunnchos.pedestrianpursuit"
 
 if [[ -n "${GODOT_BIN:-}" ]]; then
@@ -39,10 +40,32 @@ if [[ "$DEVICE_STATE" != "device" ]]; then
   exit 3
 fi
 
+python3 "$PROJECT_ROOT/tools/build_identity/generate_build_identity.py" --repo-root "$PROJECT_ROOT" --flavor guest-runner-review-debug
+STAMPED_SHA="$(python3 - "$PROJECT_ROOT" <<'PY'
+import json, sys
+from pathlib import Path
+p = Path(sys.argv[1]) / "data/build_identity.json"
+data = json.loads(p.read_text())
+sha = str(data.get("git_sha") or "")
+if not sha or sha.upper() == "UNKNOWN":
+    raise SystemExit("Review APK refused: embedded SHA is UNKNOWN")
+print(sha)
+PY
+)"
 mkdir -p "$(dirname "$APK_PATH")" build/logs
 "$GODOT" --headless --path "$PROJECT_ROOT" --export-debug "Android" "$APK_PATH" --verbose 2>&1 | tee build/logs/android-export.log
 test -f "$APK_PATH" || { echo "APK not produced: $APK_PATH" >&2; exit 1; }
-"${ADB[@]}" install -r "$APK_PATH"
+if ! grep -a -F "$STAMPED_SHA" "$APK_PATH" >/dev/null; then
+  echo "Review APK refused: packed APK does not embed $STAMPED_SHA" >&2
+  exit 1
+fi
+cp "$APK_PATH" "$REVIEW_APK_PATH"
+shasum -a 256 "$REVIEW_APK_PATH" | tee "$REVIEW_APK_PATH.sha256"
+if [[ "${SKIP_INSTALL:-0}" == "1" ]]; then
+  echo "SKIP_INSTALL=1; exported $REVIEW_APK_PATH"
+  exit 0
+fi
+"${ADB[@]}" install -r "$REVIEW_APK_PATH"
 "${ADB[@]}" shell monkey -p "$PACKAGE_ID" -c android.intent.category.LAUNCHER 1 >/dev/null
 
 echo "Installed and launched $PACKAGE_ID on the connected device."
