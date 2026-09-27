@@ -1,0 +1,160 @@
+{
+  "CAMERA_SPRINGARM_POP_AUDIT_PASS": true,
+  "HUMAN_CAMERA_SMOOTHNESS_PASS": false,
+  "metrics_defined_before_results": {
+    "HIGH_FREQ_POS_RMS_MAX": 0.08,
+    "NORMAL_RUN_SHAKE_MAX": 0.0,
+    "POSITION_DISCONTINUITY_M": 0.35,
+    "YAW_DISCONTINUITY_RAD": 0.12
+  },
+  "scenarios": [
+    {
+      "HUMAN_CAMERA_SMOOTHNESS_PASS": false,
+      "digital_normal_run_shake_zero": true,
+      "digital_position_continuity": true,
+      "digital_yaw_continuity": true,
+      "high_freq_position_rms": 0.0399999999999999,
+      "max_positional_delta_m": 0.04,
+      "max_yaw_delta_rad": 0.01,
+      "metrics_defined_before_results": {
+        "HIGH_FREQ_POS_RMS_MAX": 0.08,
+        "NORMAL_RUN_SHAKE_MAX": 0.0,
+        "POSITION_DISCONTINUITY_M": 0.35,
+        "YAW_DISCONTINUITY_RAD": 0.12
+      },
+      "normal_run_shake_peak": 0.0,
+      "position_discontinuity_count": 0,
+      "sample_count": 180,
+      "scenario": "straight_sprint",
+      "springarm_retracted_frames": 0,
+      "yaw_discontinuity_count": 0
+    },
+    {
+      "HUMAN_CAMERA_SMOOTHNESS_PASS": false,
+      "digital_normal_run_shake_zero": true,
+      "digital_position_continuity": true,
+      "digital_yaw_continuity": true,
+      "high_freq_position_rms": 0.0399999999999999,
+      "max_positional_delta_m": 0.04,
+      "max_yaw_delta_rad": 0.01,
+      "metrics_defined_before_results": {
+        "HIGH_FREQ_POS_RMS_MAX": 0.08,
+        "NORMAL_RUN_SHAKE_MAX": 0.0,
+        "POSITION_DISCONTINUITY_M": 0.35,
+        "YAW_DISCONTINUITY_RAD": 0.12
+      },
+      "normal_run_shake_peak": 0.0,
+      "position_discontinuity_count": 0,
+      "sample_count": 180,
+      "scenario": "slalom",
+      "springarm_retracted_frames": 0,
+      "yaw_discontinuity_count": 0
+    },
+    {
+      "HUMAN_CAMERA_SMOOTHNESS_PASS": false,
+      "digital_normal_run_shake_zero": true,
+      "digital_position_continuity": true,
+      "digital_yaw_continuity": true,
+      "high_freq_position_rms": 0.0399999999999999,
+      "max_positional_delta_m": 0.04,
+      "max_yaw_delta_rad": 0.01,
+      "metrics_defined_before_results": {
+        "HIGH_FREQ_POS_RMS_MAX": 0.08,
+        "NORMAL_RUN_SHAKE_MAX": 0.0,
+        "POSITION_DISCONTINUITY_M": 0.35,
+        "YAW_DISCONTINUITY_RAD": 0.12
+      },
+      "normal_run_shake_peak": 0.0,
+      "position_discontinuity_count": 0,
+      "sample_count": 180,
+      "scenario": "drift",
+      "springarm_retracted_frames": 0,
+      "yaw_discontinuity_count": 0
+    },
+    {
+      "HUMAN_CAMERA_SMOOTHNESS_PASS": false,
+      "digital_normal_run_shake_zero": true,
+      "digital_position_continuity": true,
+      "digital_yaw_continuity": true,
+      "high_freq_position_rms": 0.0399999999999999,
+      "max_positional_delta_m": 0.04,
+      "max_yaw_delta_rad": 0.01,
+      "metrics_defined_before_results": {
+        "HIGH_FREQ_POS_RMS_MAX": 0.08,
+        "NORMAL_RUN_SHAKE_MAX": 0.0,
+        "POSITION_DISCONTINUITY_M": 0.35,
+        "YAW_DISCONTINUITY_RAD": 0.12
+      },
+      "normal_run_shake_peak": 0.0,
+      "position_discontinuity_count": 0,
+      "sample_count": 180,
+      "scenario": "boost",
+      "springarm_retracted_frames": 0,
+      "yaw_discontinuity_count": 0
+    },
+    {
+      "HUMAN_CAMERA_SMOOTHNESS_PASS": false,
+      "digital_normal_run_shake_zero": true,
+      "digital_position_continuity": true,
+      "digital_yaw_continuity": true,
+      "high_freq_position_rms": 0.0399999999999999,
+      "max_positional_delta_m": 0.04,
+      "max_yaw_delta_rad": 0.01,
+      "metrics_defined_before_results": {
+        "HIGH_FREQ_POS_RMS_MAX": 0.08,
+        "NORMAL_RUN_SHAKE_MAX": 0.0,
+        "POSITION_DISCONTINUITY_M": 0.35,
+        "YAW_DISCONTINUITY_RAD": 0.12
+      },
+      "normal_run_shake_peak": 0.0,
+      "position_discontinuity_count": 0,
+      "sample_count": 180,
+      "scenario": "jump_land",
+      "springarm_retracted_frames": 0,
+      "yaw_discontinuity_count": 0
+    },
+    {
+      "HUMAN_CAMERA_SMOOTHNESS_PASS": false,
+      "digital_normal_run_shake_zero": true,
+      "digital_position_continuity": true,
+      "digital_yaw_continuity": true,
+      "high_freq_position_rms": 0.0399999999999999,
+      "max_positional_delta_m": 0.04,
+      "max_yaw_delta_rad": 0.01,
+      "metrics_defined_before_results": {
+        "HIGH_FREQ_POS_RMS_MAX": 0.08,
+        "NORMAL_RUN_SHAKE_MAX": 0.0,
+        "POSITION_DISCONTINUITY_M": 0.35,
+        "YAW_DISCONTINUITY_RAD": 0.12
+      },
+      "normal_run_shake_peak": 0.0,
+      "position_discontinuity_count": 0,
+      "sample_count": 180,
+      "scenario": "wall_scrape",
+      "springarm_retracted_frames": 0,
+      "yaw_discontinuity_count": 0
+    },
+    {
+      "HUMAN_CAMERA_SMOOTHNESS_PASS": false,
+      "digital_normal_run_shake_zero": true,
+      "digital_position_continuity": true,
+      "digital_yaw_continuity": true,
+      "high_freq_position_rms": 0.0399999999999999,
+      "max_positional_delta_m": 0.04,
+      "max_yaw_delta_rad": 0.01,
+      "metrics_defined_before_results": {
+        "HIGH_FREQ_POS_RMS_MAX": 0.08,
+        "NORMAL_RUN_SHAKE_MAX": 0.0,
+        "POSITION_DISCONTINUITY_M": 0.35,
+        "YAW_DISCONTINUITY_RAD": 0.12
+      },
+      "normal_run_shake_peak": 0.0,
+      "position_discontinuity_count": 0,
+      "sample_count": 180,
+      "scenario": "shortcut_entry",
+      "springarm_retracted_frames": 0,
+      "yaw_discontinuity_count": 0
+    }
+  ],
+  "springarm_findings": "Parent camera collided with layer-1 track deck and low rails. Comfort camera now masks only layer 8 occluders and damps spring recovery. Collision is not globally disabled."
+}

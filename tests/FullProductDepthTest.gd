@@ -85,6 +85,8 @@ func _test_sense_of_speed(failures: PackedStringArray) -> void:
 	cam._on_speed_changed(24.0)
 	cam.set_boosting(true)
 	cam._physics_process(0.16)
+	if cam.has_method("_process"):
+		cam._process(0.16)
 	if float(cam.look_ahead) <= float(cam.base_look_ahead) + 0.01:
 		failures.append("sense-of-speed look_ahead did not respond to speed")
 	if float(cam3d.fov) <= float(cam.base_fov) + 0.05:

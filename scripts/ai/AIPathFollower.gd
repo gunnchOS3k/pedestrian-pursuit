@@ -22,6 +22,9 @@ var _lane_bias: float = 0.0
 var _shoe_id: String = "starter_soles"
 var _soft_surface_score: float = 1.0
 var _prefer_vertical: bool = false
+var _shortcut_paths: Array = []
+var _active_shortcut: Dictionary = {}
+var _shortcut_progress: float = 0.0
 
 
 func setup(race_path: Path3D) -> void:
@@ -79,6 +82,10 @@ func configure_shortcut_from_course(routes: Array, tier_name: String) -> void:
 			_shortcut_bias = 0.0
 
 
+func configure_physical_shortcuts(paths: Array) -> void:
+	_shortcut_paths = paths.duplicate()
+
+
 func _apply_tier_defaults() -> void:
 	match tier:
 		Tier.ROOKIE:
@@ -115,6 +122,7 @@ func get_steer_and_accel(body: CharacterBody3D, delta: float = 0.016) -> Diction
 
 	# Advance progress from actual travel — never invent extra path speed.
 	_progress = fposmod(_progress + maxf(speed, 2.5) * delta, _path_length)
+	_maybe_enter_shortcut()
 
 	var sample_ahead := look_ahead + _shortcut_bias
 	var on_path := path.to_global(_curve.sample_baked(_progress))
@@ -124,6 +132,12 @@ func get_steer_and_accel(body: CharacterBody3D, delta: float = 0.016) -> Diction
 	var target_pos := path.to_global(
 		_curve.sample_baked(fposmod(_progress + sample_ahead, _path_length))
 	)
+	if not _active_shortcut.is_empty():
+		var followed := _follow_active_shortcut(speed, delta, sample_ahead)
+		if not followed.is_empty():
+			on_path = followed.get("on_path", on_path)
+			mid_pos = followed.get("mid_pos", mid_pos)
+			target_pos = followed.get("target_pos", target_pos)
 
 	# Soft recovery magnet: only when clearly off the racing line.
 	# Lateral-only — never rewrite Y here. A prior y<0.2 → path_y+1.05 teleport
@@ -220,6 +234,42 @@ func _estimate_curvature() -> float:
 	if v1.length_squared() < 0.01 or v2.length_squared() < 0.01:
 		return 0.0
 	return absf(v1.normalized().cross(v2.normalized()).y)
+
+
+func _maybe_enter_shortcut() -> void:
+	if not _prefer_shortcut or _shortcut_paths.is_empty() or not _active_shortcut.is_empty():
+		return
+	for route in _shortcut_paths:
+		if typeof(route) != TYPE_DICTIONARY:
+			continue
+		var entry_off := float(route.get("entry_offset", -999.0))
+		var dist := absf(wrapf(_progress - entry_off, -_path_length * 0.5, _path_length * 0.5))
+		if dist < 8.0:
+			_active_shortcut = route
+			_shortcut_progress = 0.0
+			return
+
+
+func _follow_active_shortcut(speed: float, delta: float, sample_ahead: float) -> Dictionary:
+	var sc_path: Path3D = _active_shortcut.get("path") as Path3D
+	if sc_path == null or sc_path.curve == null:
+		_active_shortcut = {}
+		return {}
+	var sc_len := maxf(sc_path.curve.get_baked_length(), 1.0)
+	_shortcut_progress += maxf(speed, 2.5) * delta
+	if _shortcut_progress >= sc_len - 1.5:
+		_progress = float(_active_shortcut.get("exit_offset", _progress))
+		_active_shortcut = {}
+		_shortcut_progress = 0.0
+		return {}
+	var on_path := sc_path.to_global(sc_path.curve.sample_baked(_shortcut_progress))
+	var mid_pos := sc_path.to_global(
+		sc_path.curve.sample_baked(minf(_shortcut_progress + sample_ahead * 0.45, sc_len))
+	)
+	var target_pos := sc_path.to_global(
+		sc_path.curve.sample_baked(minf(_shortcut_progress + sample_ahead, sc_len))
+	)
+	return {"on_path": on_path, "mid_pos": mid_pos, "target_pos": target_pos}
 
 
 func snap_to_path(body: Node3D, offset: float, lane_offset: float = 0.0) -> void:

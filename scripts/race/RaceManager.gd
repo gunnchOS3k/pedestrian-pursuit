@@ -53,6 +53,14 @@ func setup_race(racers: Array, player: Node, checkpoints: Array, laps: int) -> v
 		cp.racer_passed.connect(_on_checkpoint_passed)
 
 
+func bind_alternate_checkpoints(alternates: Array) -> void:
+	## Same logical indices as canonical gates. Does not change checkpoint_count.
+	for cp in alternates:
+		if cp != null and cp.has_signal("racer_passed"):
+			if not cp.racer_passed.is_connected(_on_checkpoint_passed):
+				cp.racer_passed.connect(_on_checkpoint_passed)
+
+
 func begin_countdown() -> void:
 	var tree := get_tree()
 	if tree != null and tree.paused:

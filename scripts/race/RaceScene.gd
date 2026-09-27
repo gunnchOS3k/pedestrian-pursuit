@@ -119,6 +119,8 @@ func _ready() -> void:
 			ai.set_ai_tier(ai_tiers[mini(i, ai_tiers.size() - 1)])
 		if ai.has_method("configure_shortcuts") and track.has_method("get_shortcut_routes"):
 			ai.configure_shortcuts(track.get_shortcut_routes())
+		if ai.has_method("configure_shortcut_paths") and track.has_method("get_shortcut_follow_paths"):
+			ai.configure_shortcut_paths(track.get_shortcut_follow_paths())
 		if ai.has_method("notify_shoe_changed"):
 			ai.notify_shoe_changed()
 		racers.append(ai)
@@ -169,6 +171,12 @@ func _ready() -> void:
 			if GameManager.accept_test_mode:
 				set_meta("accept_follower", follower)
 	race_manager.setup_race(racers, player, checkpoints, GameManager.total_laps)
+	if track.has_method("get_alternate_checkpoints") and race_manager.has_method("bind_alternate_checkpoints"):
+		var alts: Array = track.get_alternate_checkpoints()
+		race_manager.bind_alternate_checkpoints(alts)
+		for alt in alts:
+			if alt != null and alt.has_signal("racer_passed"):
+				alt.racer_passed.connect(_on_checkpoint_for_recovery)
 	for checkpoint in checkpoints:
 		checkpoint.racer_passed.connect(_on_checkpoint_for_recovery)
 	hud.setup(player, race_manager, course_data)
