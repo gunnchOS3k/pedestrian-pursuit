@@ -1,0 +1,63 @@
+{
+  "schema": "pp_predecessor_build_freshness/v3",
+  "generated_at": "2026-09-26T19:45:00Z",
+  "rewrote_old_evidence": false,
+  "historical_install_proof_preserved": "artifacts/gamefeel/camera/PIXEL_DIRECTION_DYNAMISM_INSTALL.json",
+  "expected_at_prompt_authoring": {
+    "pr": 34,
+    "branch": "gamefeel/camera-direction-dynamic-chase-v2",
+    "head": "1413997a2146b5cf2401839a3cbd7257b809ea5b",
+    "base_pr": 33,
+    "base_head": "dac4de98619af88bbe4d2e378632dea4721c021f",
+    "state": "draft/open/mergeable",
+    "implementation_commit_used_for_pixel_apk": "fe165df5c4d255ca3eefea57f8c8ea9efaa08c41",
+    "watermark_on_installed_apk": "PP fe165df5c4d2"
+  },
+  "live_verified": {
+    "pr": 34,
+    "branch": "gamefeel/camera-direction-dynamic-chase-v2",
+    "head": "1413997a2146b5cf2401839a3cbd7257b809ea5b",
+    "base_branch": "gamefeel/smooth-camera-reachable-shortcuts-v1",
+    "base_head": "dac4de98619af88bbe4d2e378632dea4721c021f",
+    "is_draft": true,
+    "state": "OPEN",
+    "mergeable": "MERGEABLE",
+    "moved_from_expected": false
+  },
+  "ancestry": {
+    "fe165df5_is_ancestor_of_1413997a": true,
+    "dac4de98_33_is_ancestor_of_1413997a": true,
+    "docs_only_commit_after_apk": "1413997a2146b5cf2401839a3cbd7257b809ea5b"
+  },
+  "installed_apk_at_v3_start": {
+    "equals_branch_tip_1413997a": false,
+    "equals_implementation_fe165df5": true,
+    "do_not_call_old_apk_exact_tip_34": true,
+    "reason": "Pixel review APK was exported from fe165df5; branch tip later added a docs-only proof commit."
+  },
+  "stack": {
+    "pr_32": {
+      "title": "art: add Anime Aggressors guest runner roster",
+      "head": "6e7308658ec58669dabbf7b717d25b80d77725e5",
+      "draft": true,
+      "do_not_merge": true
+    },
+    "pr_33": {
+      "title": "gamefeel: smooth chase camera and make shortcuts reachable",
+      "head": "dac4de98619af88bbe4d2e378632dea4721c021f",
+      "draft": true,
+      "do_not_merge": true
+    },
+    "pr_34": {
+      "title": "gamefeel: correct chase direction and restore smooth race dynamism",
+      "head": "1413997a2146b5cf2401839a3cbd7257b809ea5b",
+      "draft": true,
+      "do_not_merge": true
+    }
+  },
+  "v3_policy": {
+    "child_branch": "gamefeel/race-experience-course-identity-v3",
+    "export_from_actual_child_tip": true,
+    "eliminate_docs_after_apk_ambiguity": true
+  }
+}

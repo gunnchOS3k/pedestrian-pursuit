@@ -1,0 +1,26 @@
+{
+  "schema": "pp_mobile_performance_budget/v3",
+  "generated_at": "2026-09-26T19:50:00Z",
+  "physical_fps_claimed": false,
+  "budgets": {
+    "target_frame_ms_hint": 33.3,
+    "camera_update": "existing CameraRig process; no extra shake samples",
+    "shortcut_geometry": "unchanged #33 corridors",
+    "vfx": {
+      "speed_lines": 6,
+      "draft_wake_meshes": 1,
+      "boost_trail_meshes": 1,
+      "gpu_particles_added": 0,
+      "max_active_particles_hint": 64
+    },
+    "opponent_count": 4,
+    "landmarks_per_course": "2-3",
+    "hud": "primary four facts; telemetry hidden in normal play",
+    "worst_case_course": "prism_apex + emberkeep_gauntlet (emissive scenery + landmarks)"
+  },
+  "notes": [
+    "Do not fake physical FPS.",
+    "Pixel profiling is captured on the exact-head review APK when install succeeds.",
+    "GL Compatibility renderer remains the mobile path."
+  ]
+}

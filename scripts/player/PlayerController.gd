@@ -595,6 +595,14 @@ func _on_special_activated(ability_id: String) -> void:
 		bus.special_ability(ability_id, racer_id)
 
 
+func get_camera_steer() -> float:
+	return _get_steer()
+
+
+func is_camera_drifting() -> bool:
+	return drift_system != null and bool(drift_system.is_drifting)
+
+
 func get_speed_state() -> String:
 	if boost_system != null and boost_system.get_speed_multiplier() > 1.05:
 		return "BOOST"

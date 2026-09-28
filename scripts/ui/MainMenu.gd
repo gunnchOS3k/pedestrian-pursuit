@@ -48,6 +48,7 @@ func _ready() -> void:
 	_ensure_howto_button()
 	_ensure_labs_button()
 	_ensure_build_info_button()
+	_ensure_camera_profile_picker()
 	_ensure_feedback_button()
 	_ensure_cup_and_shoe_pickers()
 	_load_content()
@@ -182,6 +183,30 @@ func _ensure_build_info_button() -> void:
 
 func _on_open_build_info() -> void:
 	SceneLoader.go_to_build_info(false)
+
+
+func _ensure_camera_profile_picker() -> void:
+	var vbox: VBoxContainer = $VBox
+	if vbox.get_node_or_null("CameraProfilePicker") != null:
+		return
+	var picker := OptionButton.new()
+	picker.name = "CameraProfilePicker"
+	picker.add_item("Camera: Comfort", 0)
+	picker.add_item("Camera: Dynamic", 1)
+	picker.add_item("Camera: Reduced Motion", 2)
+	picker.custom_minimum_size = Vector2(0, 40)
+	var profile := 0
+	if AccessibilitySettings != null and "camera_profile" in AccessibilitySettings:
+		profile = int(AccessibilitySettings.camera_profile)
+	picker.select(profile)
+	picker.item_selected.connect(func(idx):
+		if AccessibilitySettings != null and AccessibilitySettings.has_method("set_camera_profile"):
+			AccessibilitySettings.set_camera_profile(idx)
+	)
+	vbox.add_child(picker)
+	var info := vbox.get_node_or_null("BuildInfoButton")
+	if info != null:
+		vbox.move_child(picker, info.get_index() + 1)
 
 
 func _on_howto_play() -> void:
@@ -442,6 +467,30 @@ func _ensure_settings_ui() -> void:
 	vbox.add_child(_a11y_high_contrast)
 	vbox.move_child(_a11y_high_contrast, insert_at)
 	_a11y_high_contrast.toggled.connect(_on_high_contrast_toggled)
+	insert_at += 1
+	var haptic := CheckButton.new()
+	haptic.name = "A11yHaptics"
+	haptic.text = "Optional haptics"
+	if AccessibilitySettings != null:
+		haptic.set_pressed_no_signal(bool(AccessibilitySettings.haptic_feedback))
+	haptic.toggled.connect(func(v):
+		if AccessibilitySettings != null and AccessibilitySettings.has_method("set_haptic_feedback"):
+			AccessibilitySettings.set_haptic_feedback(v)
+	)
+	vbox.add_child(haptic)
+	vbox.move_child(haptic, insert_at)
+	insert_at += 1
+	var captions := CheckButton.new()
+	captions.name = "A11yCaptions"
+	captions.text = "Cue captions"
+	if AccessibilitySettings != null:
+		captions.set_pressed_no_signal(bool(AccessibilitySettings.captions_enabled))
+	captions.toggled.connect(func(v):
+		if AccessibilitySettings != null and AccessibilitySettings.has_method("set_captions_enabled"):
+			AccessibilitySettings.set_captions_enabled(v)
+	)
+	vbox.add_child(captions)
+	vbox.move_child(captions, insert_at)
 	_ensure_resume_cup_button()
 
 

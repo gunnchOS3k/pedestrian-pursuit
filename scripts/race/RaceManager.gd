@@ -53,6 +53,14 @@ func setup_race(racers: Array, player: Node, checkpoints: Array, laps: int) -> v
 		cp.racer_passed.connect(_on_checkpoint_passed)
 
 
+func bind_alternate_checkpoints(alternates: Array) -> void:
+	## Same logical indices as canonical gates. Does not change checkpoint_count.
+	for cp in alternates:
+		if cp != null and cp.has_signal("racer_passed"):
+			if not cp.racer_passed.is_connected(_on_checkpoint_passed):
+				cp.racer_passed.connect(_on_checkpoint_passed)
+
+
 func begin_countdown() -> void:
 	var tree := get_tree()
 	if tree != null and tree.paused:
@@ -63,7 +71,7 @@ func begin_countdown() -> void:
 	_go_time = -1.0
 	_perfect_window = 0.0
 	_perfect_latched = false
-	countdown_tick.emit(str(countdown_seconds))
+	# Authored sequence owns the visible ticks. Process only failsafe-starts.
 	call_deferred("_countdown_sequence")
 
 
@@ -80,7 +88,7 @@ func _countdown_sequence() -> void:
 		await tree.create_timer(1.0, true, false, true).timeout
 	if state != RaceState.COUNTDOWN:
 		return
-	countdown_tick.emit("GO!")
+	countdown_tick.emit("GO")
 	_start_race()
 
 
@@ -101,11 +109,9 @@ func _process(delta: float) -> void:
 
 func _process_countdown(delta: float) -> void:
 	_countdown_timer -= delta
-	var display_val := ceili(_countdown_timer) - 1
-	if display_val <= countdown_seconds and display_val >= 1:
-		countdown_tick.emit(str(display_val))
+	# Do not re-emit 3-2-1 here — that doubled the authored sequence.
 	if _countdown_timer <= 0.0 and state == RaceState.COUNTDOWN:
-		countdown_tick.emit("GO!")
+		countdown_tick.emit("GO")
 		_start_race()
 
 

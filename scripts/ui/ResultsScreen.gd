@@ -44,7 +44,8 @@ func show_results(
 	position: int,
 	finished: bool,
 	course_data: Dictionary = {},
-	field_lines: PackedStringArray = PackedStringArray()
+	field_lines: PackedStringArray = PackedStringArray(),
+	highlights: PackedStringArray = PackedStringArray()
 ) -> void:
 	panel.visible = true
 	_ensure_results_art()
@@ -97,6 +98,9 @@ func show_results(
 			else "Single-course race"
 		)
 		retry_button.text = "Race Again"
+	if not highlights.is_empty():
+		var extra := "Highlights:\n%s" % "\n".join(highlights)
+		cup_summary_label.text = ("%s\n\n%s" % [cup_summary_label.text, extra]).strip_edges()
 	_play_finish_celebration(finished, position)
 
 

@@ -27,6 +27,9 @@ var cup_standings: Dictionary = {} # racer_label -> points
 var last_field_results: Array = []
 
 var camera_shake_enabled: bool = true
+## Comfort is the owner-review default. Dynamic is optional. Reduce Motion wins.
+enum CameraProfile { COMFORT, DYNAMIC, REDUCED_MOTION }
+var camera_profile: int = CameraProfile.COMFORT
 var auto_accelerate: bool = false
 ## Acceptance-only overrides (default off). accept_force_laps>0 shortens RC races.
 ## Wave010 gameplay proof MUST NOT rely on accept_force_laps / accept_test_mode.

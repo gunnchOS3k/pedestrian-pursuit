@@ -1,0 +1,267 @@
+{
+  "HUMAN_SHORTCUT_ACCESSIBILITY_PASS": false,
+  "HUMAN_SHORTCUT_FUN_PASS": false,
+  "courses": [
+    {
+      "ai_compatibility": true,
+      "alternate_checkpoint_gates": [
+        2
+      ],
+      "collision_continuity": true,
+      "entry_angle_deg": 43.4925682571335,
+      "entry_point": [
+        44.0,
+        0.0,
+        20.0
+      ],
+      "entry_width": 12.0,
+      "entry_width_ratio": 0.8,
+      "estimated_time_saving_s": 0.781320254007975,
+      "exit_point": [
+        0.0,
+        0.0,
+        -42.0
+      ],
+      "guard_rail_opening": true,
+      "main_route_distance_skipped": 90.9553966522217,
+      "mobile_reachability": true,
+      "player_completion_result": "digital_geometry_ready",
+      "risk": "wet_runoff",
+      "shortcut_id": "cascade_inner_cut",
+      "shortcut_route_length": 76.8916320800781,
+      "skipped_logical_checkpoints": [
+        2
+      ],
+      "track_id": "verdant_cascade_circuit"
+    },
+    {
+      "ai_compatibility": true,
+      "alternate_checkpoint_gates": [
+        2,
+        3
+      ],
+      "collision_continuity": true,
+      "entry_angle_deg": 37.6766143675435,
+      "entry_point": [
+        46.0,
+        0.0,
+        -18.0
+      ],
+      "entry_width": 9.8,
+      "entry_width_ratio": 0.7,
+      "estimated_time_saving_s": 1.25395403967963,
+      "exit_point": [
+        -50.0,
+        0.0,
+        -13.0
+      ],
+      "guard_rail_opening": true,
+      "main_route_distance_skipped": 119.662664413452,
+      "mobile_reachability": true,
+      "player_completion_result": "digital_geometry_ready",
+      "risk": "mud",
+      "shortcut_id": "barn_alley",
+      "shortcut_route_length": 97.0914916992188,
+      "skipped_logical_checkpoints": [
+        2,
+        3
+      ],
+      "track_id": "cloverwind_ranch"
+    },
+    {
+      "ai_compatibility": true,
+      "alternate_checkpoint_gates": [
+        2
+      ],
+      "collision_continuity": true,
+      "entry_angle_deg": 28.4086111544427,
+      "entry_point": [
+        52.0,
+        0.0,
+        36.0
+      ],
+      "entry_width": 11.2,
+      "entry_width_ratio": 0.8,
+      "estimated_time_saving_s": 0.382447984483507,
+      "exit_point": [
+        28.0,
+        0.0,
+        -46.0
+      ],
+      "guard_rail_opening": true,
+      "main_route_distance_skipped": 92.7331848144531,
+      "mobile_reachability": true,
+      "player_completion_result": "digital_geometry_ready",
+      "risk": "medium",
+      "shortcut_id": "pier_cut",
+      "shortcut_route_length": 85.84912109375,
+      "skipped_logical_checkpoints": [
+        2
+      ],
+      "track_id": "tideglass_harbor"
+    },
+    {
+      "ai_compatibility": true,
+      "alternate_checkpoint_gates": [
+        3
+      ],
+      "collision_continuity": true,
+      "entry_angle_deg": 20.3647605481685,
+      "entry_point": [
+        52.0,
+        0.0,
+        -18.0
+      ],
+      "entry_width": 8.4,
+      "entry_width_ratio": 0.7,
+      "estimated_time_saving_s": 0.34097523159451,
+      "exit_point": [
+        -18.0,
+        0.0,
+        -42.0
+      ],
+      "guard_rail_opening": true,
+      "main_route_distance_skipped": 80.1685981750488,
+      "mobile_reachability": true,
+      "player_completion_result": "digital_geometry_ready",
+      "risk": "high",
+      "shortcut_id": "yard_rail_cut",
+      "shortcut_route_length": 74.0310440063477,
+      "skipped_logical_checkpoints": [
+        3
+      ],
+      "track_id": "neon_switchyard"
+    },
+    {
+      "ai_compatibility": true,
+      "alternate_checkpoint_gates": [
+        2
+      ],
+      "collision_continuity": true,
+      "entry_angle_deg": 73.0338535873015,
+      "entry_point": [
+        42.0,
+        0.0,
+        2.0
+      ],
+      "entry_width": 8.06,
+      "entry_width_ratio": 0.62,
+      "estimated_time_saving_s": 1.80858739217122,
+      "exit_point": [
+        2.0,
+        0.0,
+        -36.0
+      ],
+      "guard_rail_opening": false,
+      "main_route_distance_skipped": 88.9938621520996,
+      "mobile_reachability": true,
+      "player_completion_result": "digital_geometry_ready",
+      "risk": "high",
+      "shortcut_id": "cliff_bounce",
+      "shortcut_route_length": 56.4392890930176,
+      "skipped_logical_checkpoints": [
+        2
+      ],
+      "track_id": "cloudstep_ridge"
+    },
+    {
+      "ai_compatibility": true,
+      "alternate_checkpoint_gates": [
+        2
+      ],
+      "collision_continuity": true,
+      "entry_angle_deg": 31.4295662582989,
+      "entry_point": [
+        54.0,
+        0.0,
+        24.0
+      ],
+      "entry_width": 7.75,
+      "entry_width_ratio": 0.62,
+      "estimated_time_saving_s": 2.38653045230442,
+      "exit_point": [
+        -8.0,
+        0.0,
+        -37.0
+      ],
+      "guard_rail_opening": false,
+      "main_route_distance_skipped": 130.879354476929,
+      "mobile_reachability": true,
+      "player_completion_result": "digital_geometry_ready",
+      "risk": "narrow",
+      "shortcut_id": "ribbon_cut",
+      "shortcut_route_length": 87.9218063354492,
+      "skipped_logical_checkpoints": [
+        2
+      ],
+      "track_id": "prism_apex"
+    },
+    {
+      "ai_compatibility": true,
+      "alternate_checkpoint_gates": [
+        1
+      ],
+      "collision_continuity": true,
+      "entry_angle_deg": 27.8014585636473,
+      "entry_point": [
+        32.0,
+        0.0,
+        46.0
+      ],
+      "entry_width": 8.7,
+      "entry_width_ratio": 0.58,
+      "estimated_time_saving_s": 0.479656431410048,
+      "exit_point": [
+        58.0,
+        0.0,
+        -38.0
+      ],
+      "guard_rail_opening": true,
+      "main_route_distance_skipped": 96.7263984680176,
+      "mobile_reachability": true,
+      "player_completion_result": "digital_geometry_ready",
+      "risk": "medium",
+      "shortcut_id": "dry_wash",
+      "shortcut_route_length": 88.0925827026367,
+      "skipped_logical_checkpoints": [
+        1
+      ],
+      "track_id": "mirage_mesa"
+    },
+    {
+      "ai_compatibility": true,
+      "alternate_checkpoint_gates": [
+        2,
+        3
+      ],
+      "collision_continuity": true,
+      "entry_angle_deg": 103.222961869678,
+      "entry_point": [
+        42.0,
+        0.0,
+        0.0
+      ],
+      "entry_width": 7.83,
+      "entry_width_ratio": 0.58,
+      "estimated_time_saving_s": 3.31805430518256,
+      "exit_point": [
+        -52.0,
+        0.0,
+        -27.0
+      ],
+      "guard_rail_opening": true,
+      "main_route_distance_skipped": 158.229639053345,
+      "mobile_reachability": true,
+      "player_completion_result": "digital_geometry_ready",
+      "risk": "ash",
+      "shortcut_id": "forge_vent_cut",
+      "shortcut_route_length": 98.5046615600586,
+      "skipped_logical_checkpoints": [
+        2,
+        3
+      ],
+      "track_id": "emberkeep_gauntlet"
+    }
+  ],
+  "generated_at": "2026-09-24 18:48:51"
+}
