@@ -5,7 +5,7 @@ class_name OnlineArchitecture
 ## Mirrors the private-room pattern used elsewhere in the product spine.
 
 const PROTOCOL_VERSION := 1
-const SCOPE := "same_room_lan_v1"
+const SCOPE := "private_same_room_lan_v1"
 
 static func describe() -> Dictionary:
 	return {

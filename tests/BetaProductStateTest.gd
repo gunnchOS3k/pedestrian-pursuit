@@ -136,10 +136,16 @@ func _test_progression_save(failures: PackedStringArray) -> void:
 
 func _test_online_arch(failures: PackedStringArray) -> void:
 	var desc: Dictionary = _OnlineArchitecture.describe()
-	if str(desc.get("scope", "")).find("private") < 0:
+	# PartyLink same-room/LAN remains private/dev scoped (never public matchmaking).
+	var scope := str(desc.get("scope", ""))
+	if scope.find("private") < 0:
 		failures.append("online arch must stay private/dev scoped")
 	if bool(desc.get("public_matchmaking", true)):
 		failures.append("public matchmaking must be false")
+	var modes: Dictionary = desc.get("modes", {})
+	var partylink: Dictionary = modes.get("partylink_8p", {})
+	if not partylink.is_empty() and bool(partylink.get("public_relay", true)):
+		failures.append("partylink public_relay must be false")
 	var path := "res://gate1/evidence/out/pp_online_architecture.json"
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(path).get_base_dir())
 	if _OnlineArchitecture.write_evidence(path).is_empty():
