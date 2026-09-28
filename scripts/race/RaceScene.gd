@@ -433,7 +433,9 @@ func _tick_race_experience(delta: float) -> void:
 		if race_manager != null and race_manager.has_node("LapManager"):
 			lap = int(race_manager.lap_manager.get_lap(player))
 			next_cp = int(race_manager.lap_manager.get_next_checkpoint(player))
-		var start_pt := points[0] if not points.is_empty() else Vector3.ZERO
+		var start_pt: Vector3 = Vector3.ZERO
+		if not points.is_empty() and points[0] is Vector3:
+			start_pt = points[0]
 		finish_near = ShortcutDecisionScript.finish_approach(
 			player, start_pt, lap, GameManager.total_laps if GameManager else 3, next_cp
 		)

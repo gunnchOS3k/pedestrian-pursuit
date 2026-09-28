@@ -40,7 +40,7 @@ func update_field(player: Node3D, racers: Array, reduced_motion: bool) -> Dictio
 		if fwd.length_squared() > 0.001 and fwd.normalized().dot(delta.normalized()) > 0.25 and dist < ahead_gap:
 			ahead_gap = dist
 		if cam != null and dist > 14.0:
-			var unproj: Vector3 = cam.unproject_position(body.global_position)
+			var unproj: Vector2 = cam.unproject_position(body.global_position)
 			var off := unproj.x < 24.0 or unproj.x > vp.x - 24.0 or unproj.y < 24.0 or unproj.y > vp.y - 24.0
 			if off:
 				_place_mark(str(body.get_instance_id()), vp, unproj, reduced_motion)
@@ -54,7 +54,7 @@ func update_field(player: Node3D, racers: Array, reduced_motion: bool) -> Dictio
 	return {"proximity": last_proximity, "gap": last_gap, "overtake": last_overtake}
 
 
-func _place_mark(id: String, vp: Vector2, unproj: Vector3, reduced_motion: bool) -> void:
+func _place_mark(id: String, vp: Vector2, unproj: Vector2, reduced_motion: bool) -> void:
 	var mark: Label = _marks.get(id)
 	if mark == null:
 		mark = Label.new()
