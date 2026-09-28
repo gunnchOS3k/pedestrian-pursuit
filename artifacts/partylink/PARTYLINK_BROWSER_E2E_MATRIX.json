@@ -1,0 +1,69 @@
+{
+  "generated": true,
+  "results": [
+    {
+      "player_count": 2,
+      "unique_seats": true,
+      "unique_input_ownership": true,
+      "start_ok": true,
+      "racer_entity_count": 2,
+      "start_grid_ok": true,
+      "reconnect_ok": true,
+      "late_spectator_ok": true,
+      "rematch_ok": true,
+      "race_director_live_ok": true,
+      "controller_html_ok": true,
+      "pass": true,
+      "room_code": "Y44V3",
+      "controller_url": "http://127.0.0.1:62096/controller"
+    },
+    {
+      "player_count": 4,
+      "unique_seats": true,
+      "unique_input_ownership": true,
+      "start_ok": true,
+      "racer_entity_count": 4,
+      "start_grid_ok": true,
+      "reconnect_ok": true,
+      "late_spectator_ok": true,
+      "rematch_ok": true,
+      "race_director_live_ok": true,
+      "controller_html_ok": true,
+      "pass": true,
+      "room_code": "CLNHY",
+      "controller_url": "http://127.0.0.1:62113/controller"
+    },
+    {
+      "player_count": 6,
+      "unique_seats": true,
+      "unique_input_ownership": true,
+      "start_ok": true,
+      "racer_entity_count": 6,
+      "start_grid_ok": true,
+      "reconnect_ok": true,
+      "late_spectator_ok": true,
+      "rematch_ok": true,
+      "race_director_live_ok": true,
+      "controller_html_ok": true,
+      "pass": true,
+      "room_code": "AZRTM",
+      "controller_url": "http://127.0.0.1:62138/controller"
+    },
+    {
+      "player_count": 8,
+      "unique_seats": true,
+      "unique_input_ownership": true,
+      "start_ok": true,
+      "racer_entity_count": 8,
+      "start_grid_ok": true,
+      "reconnect_ok": true,
+      "late_spectator_ok": true,
+      "rematch_ok": true,
+      "race_director_live_ok": true,
+      "controller_html_ok": true,
+      "pass": true,
+      "room_code": "FRB79",
+      "controller_url": "http://127.0.0.1:62171/controller"
+    }
+  ]
+}

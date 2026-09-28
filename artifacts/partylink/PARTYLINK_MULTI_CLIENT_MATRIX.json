@@ -22,8 +22,8 @@
       ],
       "race_director_mode": "close_battle",
       "race_director_hud_ok": true,
-      "mean_frame_ms": 0.002640866538664947,
-      "p95_frame_ms": 0.003749999450519681,
+      "mean_frame_ms": 0.0026408832733674594,
+      "p95_frame_ms": 0.002792003215290606,
       "state_payload_bytes": 323,
       "desync_count": 0,
       "pass": true
@@ -63,8 +63,8 @@
       ],
       "race_director_mode": "close_battle",
       "race_director_hud_ok": true,
-      "mean_frame_ms": 0.003881866480999937,
-      "p95_frame_ms": 0.0040000013541430235,
+      "mean_frame_ms": 0.003870150491517658,
+      "p95_frame_ms": 0.004082998202648014,
       "state_payload_bytes": 569,
       "desync_count": 0,
       "pass": true
@@ -118,8 +118,8 @@
       ],
       "race_director_mode": "close_battle",
       "race_director_hud_ok": true,
-      "mean_frame_ms": 0.01198063267414303,
-      "p95_frame_ms": 0.014375000318977982,
+      "mean_frame_ms": 0.005237417766087067,
+      "p95_frame_ms": 0.006250003934837878,
       "state_payload_bytes": 865,
       "desync_count": 0,
       "pass": true
@@ -187,8 +187,8 @@
       ],
       "race_director_mode": "close_battle",
       "race_director_hud_ok": true,
-      "mean_frame_ms": 0.01859511709578025,
-      "p95_frame_ms": 0.021708001440856606,
+      "mean_frame_ms": 0.0065688000177033246,
+      "p95_frame_ms": 0.006833004590589553,
       "state_payload_bytes": 1159,
       "desync_count": 0,
       "pass": true

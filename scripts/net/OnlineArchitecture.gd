@@ -5,7 +5,7 @@ class_name OnlineArchitecture
 ## Mirrors the private-room pattern used elsewhere in the product spine.
 
 const PROTOCOL_VERSION := 1
-const SCOPE := "private_dev_loopback_only"
+const SCOPE := "same_room_lan_v1"
 
 static func describe() -> Dictionary:
 	return {
@@ -23,6 +23,8 @@ static func describe() -> Dictionary:
 				"authority": "HOST_AUTHORITATIVE_PARTY",
 				"public_relay": false,
 				"race_director_view": true,
+				"lan_join_route": true,
+				"browser_controller": true,
 				"input_sync": "semantic_sequence_v1",
 				"note": "Same-room/LAN PartyLink V2; spectators never consume player seats.",
 			},
@@ -44,8 +46,9 @@ static func describe() -> Dictionary:
 			"no_server_speed_override",
 			"client_physics_shared_rules",
 			"ghost_checksum_planned",
+			"no_client_forged_lap_finish",
 		],
-		"status": "architecture_documented",
+		"status": "lan_party_mode_implemented",
 	}
 
 

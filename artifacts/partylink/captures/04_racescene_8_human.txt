@@ -1,0 +1,1 @@
+CAPTURE: racer_entity_count=8 start_grid_ok=True

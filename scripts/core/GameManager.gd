@@ -16,6 +16,9 @@ var selected_challenge_id: String = ""
 var total_laps: int = 3
 var local_mp_players: int = 2
 var ai_field_size: int = 3
+## PartyLink Party Race: human seats only; spectators never occupy a racer slot.
+var party_race_active: bool = false
+var party_room_code: String = ""
 var ai_eval_mode: bool = false
 var ai_eval_tier: String = "standard"
 
@@ -147,11 +150,12 @@ func start_local_mp(track_id: String, players: int = 2) -> void:
 	clear_cup()
 	current_race_mode = RaceMode.LOCAL_MP
 	selected_track_id = track_id
-	# PartyLink V2: 2–8 human racers (AI fillers only if host opts in separately).
+	# Classic local split-screen stays 2P with optional AI fillers.
 	local_mp_players = clampi(players, 2, 8)
 	ai_field_size = 2
+	party_race_active = false
+	party_room_code = ""
 	reset_race_stats()
-
 
 
 func start_party_race(track_id: String, players: int = 8) -> void:
@@ -161,8 +165,13 @@ func start_party_race(track_id: String, players: int = 8) -> void:
 	selected_track_id = track_id
 	local_mp_players = clampi(players, 2, 8)
 	ai_field_size = 0
+	party_race_active = true
 	reset_race_stats()
 	sync_race_mode_string()
+
+
+func is_party_race() -> bool:
+	return party_race_active and current_race_mode == RaceMode.LOCAL_MP
 
 
 func start_tutorial(track_id: String = "verdant_cascade_circuit") -> void:
@@ -170,6 +179,7 @@ func start_tutorial(track_id: String = "verdant_cascade_circuit") -> void:
 	current_race_mode = RaceMode.TUTORIAL
 	selected_track_id = track_id
 	ai_field_size = 1
+	party_race_active = false
 	reset_race_stats()
 
 
