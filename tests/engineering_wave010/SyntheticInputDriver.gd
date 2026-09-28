@@ -22,25 +22,28 @@ const DRIVER_INTENT_COUNTED_AS_SUCCESS: bool = false
 const DRIFT_MIN_SPEED: float = 5.0
 ## Race V3 opens shortcut rails: hairpin drifts balloon lateral and erase skill
 ## gains. Prefer medium corners, bank spark before leaving the sealed lane.
-const DRIFT_CURVATURE_ENTER: float = 0.095
-const DRIFT_CURVATURE_MAX: float = 0.195
-const DRIFT_CURVATURE_HOLD: float = 0.055
-const DRIFT_STEER_ENTER: float = 0.34
-const DRIFT_STEER_HOLD: float = 0.20
-const DRIFT_MIN_HOLD_SEC: float = 0.40
-const DRIFT_MAX_HOLD_SEC: float = 1.35
-const DRIFT_SAFE_RELEASE_SEC: float = 0.95
+## Linux CI under Engine.time_scale can jump lateral past ABORT in one tick —
+## release earlier on protect so boost spends on-line, not in the rails.
+const DRIFT_CURVATURE_ENTER: float = 0.100
+const DRIFT_CURVATURE_MAX: float = 0.175
+const DRIFT_CURVATURE_HOLD: float = 0.050
+const DRIFT_STEER_ENTER: float = 0.36
+const DRIFT_STEER_HOLD: float = 0.18
+const DRIFT_MIN_HOLD_SEC: float = 0.32
+const DRIFT_MAX_HOLD_SEC: float = 1.15
+const DRIFT_SAFE_RELEASE_SEC: float = 0.85
 const OVERCOMMIT_PROD_SEC: float = 2.4
-const SKILL_COOLDOWN_SEC: float = 2.5
-const LINE_ABORT_COOLDOWN_SEC: float = 5.8
-const BOOST_COOLDOWN_SEC: float = 1.15
+const SKILL_COOLDOWN_SEC: float = 2.2
+const LINE_ABORT_COOLDOWN_SEC: float = 6.4
+const BOOST_COOLDOWN_SEC: float = 0.95
 const BOOST_PULSE_SEC: float = 0.06
-const BOOST_START_DELAY_SEC: float = 0.70
-const STRAIGHT_CURVATURE: float = 0.085
-const STRAIGHT_STEER: float = 0.42
-const MAX_LATERAL_FOR_SKILL: float = 2.0
-const PROTECT_LATERAL: float = 2.2
-const ABORT_LATERAL: float = 3.2
+const BOOST_START_DELAY_SEC: float = 1.35
+const BOOST_MIN_SPEED: float = 8.0
+const STRAIGHT_CURVATURE: float = 0.095
+const STRAIGHT_STEER: float = 0.48
+const MAX_LATERAL_FOR_SKILL: float = 1.55
+const PROTECT_LATERAL: float = 1.65
+const ABORT_LATERAL: float = 2.55
 const MAX_SKILL_EVENT_LOG: int = 48
 
 var look_ahead: float = LOOK_AHEAD
@@ -365,15 +368,24 @@ func _tick_advanced(player: Node3D, path: Path3D, steer: float, dt: float) -> vo
 		# Prefer banking a real spark before an offtrack excursion (open rails).
 		# Under Engine.time_scale, lateral can jump past abort in one tick — if we
 		# already have charge, treat that as a productive protect release.
+		# Release as soon as tier>=2 and lateral approaches protect so the boost
+		# spends while still near the sealed lane (Linux CI spike case).
 		if (
+			prod_tier >= 2
+			and _drift_elapsed_sec >= 0.18
+			and lateral >= PROTECT_LATERAL * 0.85
+		):
+			release_now = true
+			release_reason = "lateral_protect"
+		elif (
 			prod_tier >= 1
-			and _drift_elapsed_sec >= minf(DRIFT_MIN_HOLD_SEC, 0.35)
+			and _drift_elapsed_sec >= minf(DRIFT_MIN_HOLD_SEC, 0.28)
 			and lateral >= PROTECT_LATERAL
 		):
 			release_now = true
 			release_reason = "lateral_protect"
 		elif lateral >= ABORT_LATERAL or not upright:
-			if prod_tier >= 1 and _drift_elapsed_sec >= 0.25:
+			if prod_tier >= 1 and _drift_elapsed_sec >= 0.18:
 				release_now = true
 				release_reason = "lateral_protect"
 			else:
@@ -428,10 +440,12 @@ func _tick_advanced(player: Node3D, path: Path3D, steer: float, dt: float) -> vo
 				diagnostics["low_quality_skips"] = int(diagnostics["low_quality_skips"]) + 1
 
 	# Manual boost: meter/cost, not unsafe corner, sim-time cooldown; confirm via production later.
+	# Require higher speed so the early-lap low-speed dump does not waste meter.
+	var boost_speed_ok := speed >= BOOST_MIN_SPEED
 	if (
 		upright
 		and not _drift_held
-		and fast_enough
+		and boost_speed_ok
 		and straight
 		and line_ok
 		and _boost_cooldown_sec <= 0.0
@@ -454,7 +468,7 @@ func _tick_advanced(player: Node3D, path: Path3D, steer: float, dt: float) -> vo
 				"curvature": snappedf(curve_mag, 0.001),
 				"meter": snappedf(float(boost_sys.current_boost), 0.1) if boost_sys != null and "current_boost" in boost_sys else -1.0,
 			})
-	elif not straight and not _drift_held and _boost_cooldown_sec <= 0.0 and fast_enough:
+	elif not straight and not _drift_held and _boost_cooldown_sec <= 0.0 and boost_speed_ok:
 		diagnostics["boost_suppressed_corner"] = int(diagnostics["boost_suppressed_corner"]) + 1
 
 	Input.action_release("jump")
