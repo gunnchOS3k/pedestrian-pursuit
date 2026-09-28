@@ -3,10 +3,15 @@ const LaunchArtCatalogScript = preload("res://scripts/ui/LaunchArtCatalog.gd")
 const Vxp3PresentationScript = preload("res://scripts/ui/vxp3/Vxp3Presentation.gd")
 const Vxp3BrandScript = preload("res://scripts/ui/vxp3/Vxp3Brand.gd")
 
-## Race HUD — lap, position, boost, item, timer, speed, wrong-way.
+## Race HUD — position, lap/progress, boost/draft, shortcut cue. Not telemetry-heavy.
 
 var _player: Node = null
 var _wrong_way_label: Label
+var _draft_label: Label
+var _shortcut_cue: Label
+var _proximity_label: Label
+var _caption_label: Label
+var _director: Node
 
 @onready var lap_label: Label = $Margin/VBox/LapLabel
 @onready var position_label: Label = $Margin/VBox/PositionLabel
@@ -76,10 +81,12 @@ func setup(player: Node, race_manager: Node, course_data: Dictionary = {}) -> vo
 		"%s  •  %s" % [round_prefix, course_name] if not round_prefix.is_empty() else course_name
 	)
 	_ensure_role_labels()
+	_ensure_experience_labels()
 	_apply_ui_scale()
 	_apply_marker_colors()
 	Vxp3PresentationScript.apply_hud_chrome(self)
 	_play_race_intro(course_name)
+	_hide_normal_play_telemetry()
 	_update_footwear_label()
 
 
@@ -127,8 +134,120 @@ func _update_footwear_label() -> void:
 	_footwear_label.text = "Footwear: %s" % str(shoe.get("display_name", shoe_id))
 
 
+func bind_experience(director: Node) -> void:
+	_director = director
+	if _director != null and _director.has_signal("caption_requested"):
+		if not _director.caption_requested.is_connected(_on_caption):
+			_director.caption_requested.connect(_on_caption)
+
+
+func apply_experience_snapshot(snap: Dictionary) -> void:
+	if position_label:
+		position_label.text = "P%d" % int(snap.get("position", 1))
+	if lap_label:
+		var lap_n := int(snap.get("lap", 1))
+		var total := int(snap.get("total_laps", 3))
+		var prog := int(float(snap.get("progress", 0.0)) * 100.0)
+		var suffix := " FINAL" if bool(snap.get("final_lap", false)) else ""
+		lap_label.text = "L %d/%d · %d%%%s" % [lap_n, total, prog, suffix]
+	if _draft_label:
+		var phase := str(snap.get("draft_phase", "none"))
+		_draft_label.text = _draft_token(phase)
+		_draft_label.visible = not _draft_label.text.is_empty()
+	if _shortcut_cue:
+		var cue := str(snap.get("shortcut_cue", ""))
+		if bool(snap.get("finish_approach", false)):
+			cue = "FINISH"
+		_shortcut_cue.text = cue
+		_shortcut_cue.visible = not cue.is_empty()
+	if _proximity_label:
+		var prox := str(snap.get("proximity", ""))
+		var gap := str(snap.get("gap", ""))
+		_proximity_label.text = prox if gap.is_empty() else ("%s  %s" % [prox, gap]).strip_edges()
+		_proximity_label.visible = not _proximity_label.text.is_empty()
+	if course_label:
+		course_label.visible = bool(snap.get("course_banner_visible", false))
+	_hide_normal_play_telemetry()
+
+
+func _draft_token(phase: String) -> String:
+	match phase:
+		"entering":
+			return "DRAFT ·"
+		"building":
+			return "DRAFT ··"
+		"active":
+			return "DRAFT"
+		"leaving":
+			return "DRAFT ▾"
+		_:
+			return ""
+
+
+func _ensure_experience_labels() -> void:
+	if _draft_label == null:
+		_draft_label = Label.new()
+		_draft_label.name = "DraftLabel"
+		_draft_label.add_theme_font_size_override("font_size", Vxp3BrandScript.TYPE_HUD_SECONDARY)
+		_draft_label.add_theme_color_override("font_color", Vxp3BrandScript.COLOR_BOOST_CYAN)
+		$Margin/VBox.add_child(_draft_label)
+	if _shortcut_cue == null:
+		_shortcut_cue = Label.new()
+		_shortcut_cue.name = "ShortcutCue"
+		_shortcut_cue.set_anchors_preset(Control.PRESET_CENTER_TOP)
+		_shortcut_cue.offset_top = 72
+		_shortcut_cue.offset_bottom = 108
+		_shortcut_cue.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_shortcut_cue.add_theme_font_size_override("font_size", 22)
+		add_child(_shortcut_cue)
+	if _proximity_label == null:
+		_proximity_label = Label.new()
+		_proximity_label.name = "ProximityLabel"
+		_proximity_label.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+		_proximity_label.offset_left = 16
+		_proximity_label.offset_top = -86
+		_proximity_label.offset_right = 320
+		_proximity_label.offset_bottom = -54
+		_proximity_label.add_theme_font_size_override("font_size", 14)
+		add_child(_proximity_label)
+	if _caption_label == null:
+		_caption_label = Label.new()
+		_caption_label.name = "CueCaption"
+		_caption_label.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+		_caption_label.offset_top = -78
+		_caption_label.offset_bottom = -50
+		_caption_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_caption_label.add_theme_font_size_override("font_size", 16)
+		add_child(_caption_label)
+
+
+func _hide_normal_play_telemetry() -> void:
+	if _footwear_label:
+		_footwear_label.visible = false
+	if _spark_icon:
+		_spark_icon.visible = false
+	if _map_label:
+		_map_label.visible = false
+	if speed_label:
+		var useful := false
+		if _director != null and _director.has_method("snapshot"):
+			var snap: Dictionary = _director.snapshot()
+			useful = bool(snap.get("boost_active", false)) or str(snap.get("draft_phase", "none")) != "none"
+		speed_label.visible = useful
+
+
+func _on_caption(text: String) -> void:
+	if _caption_label == null:
+		return
+	var show := true
+	if AccessibilitySettings != null and "captions_enabled" in AccessibilitySettings:
+		show = bool(AccessibilitySettings.captions_enabled) or not text.is_empty()
+	_caption_label.text = text
+	_caption_label.visible = show and not text.is_empty()
+
+
 func _play_race_intro(course_name: String) -> void:
-	## course → line → 3-2-1-GO (GO from RaceManager ticks). Reduce-motion safe.
+	## Short establish: course name, then 3-2-1-GO. Not a cutscene.
 	_intro_phase = "course"
 	if countdown_label == null:
 		return
@@ -341,11 +460,13 @@ func _update_wrong_way(race_mgr: Node) -> void:
 
 func _on_countdown(value: String) -> void:
 	var shown := value
-	if value in ["3", "2", "1", "GO"]:
+	if value.begins_with("GO"):
+		shown = "GO"
+	elif value in ["3", "2", "1"]:
 		shown = value
 	countdown_label.text = shown
 	countdown_label.visible = true
-	if value == "GO":
+	if shown == "GO":
 		countdown_label.add_theme_color_override("font_color", Vxp3BrandScript.COLOR_MIDSOLE_YELLOW)
 	elif AccessibilitySettings != null:
 		countdown_label.add_theme_color_override(
@@ -442,7 +563,7 @@ func _on_place_changed(racer: Node, old_place: int, new_place: int) -> void:
 	if racer != _player or position_label == null:
 		return
 	var gained := new_place < old_place
-	position_label.text = "Position: %d" % new_place
+	position_label.text = "P%d" % new_place
 	position_label.modulate = Color(0.45, 1.0, 0.55) if gained else Color(1.0, 0.55, 0.45)
 	var tw := create_tween()
 	tw.tween_property(position_label, "scale", Vector2(1.18, 1.18), 0.1)

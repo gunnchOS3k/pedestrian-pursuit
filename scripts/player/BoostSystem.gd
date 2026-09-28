@@ -5,6 +5,7 @@ extends Node
 
 signal boost_changed(current: float, maximum: float)
 signal boost_activated(multiplier: float, duration: float, source: String)
+signal boost_ended
 signal boost_source_recorded(source: String, amount: float)
 
 @export var max_boost: float = 100.0
@@ -85,6 +86,7 @@ func tick(delta: float) -> void:
 		if _active_time <= 0.0:
 			_active_multiplier = 1.0
 			_active_source = "none"
+			boost_ended.emit()
 
 
 func get_speed_multiplier() -> float:

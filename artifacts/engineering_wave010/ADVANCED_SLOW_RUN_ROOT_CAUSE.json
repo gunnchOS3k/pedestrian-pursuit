@@ -2,28 +2,28 @@
 	"ADVANCED_OVERCOMMIT_RELEASES": 0,
 	"ADVANCED_SLOW_RUN_ROOT_CAUSE": "NONE_STABLE",
 	"ADVANCED_TIMES": [
-		231.753,
-		231.846,
-		231.955,
-		234.165,
-		234.193
+		231.825,
+		231.914,
+		231.969,
+		232.37,
+		232.372
 	],
 	"ADVANCED_WIPEOUT_RUNS": 0,
 	"BASIC_TIMES": [
-		234.372,
-		234.395,
-		234.465,
-		234.613,
-		234.631
+		234.115,
+		234.164,
+		234.164,
+		234.292,
+		234.382
 	],
 	"EXTERNAL_RERUN_AS_STABILITY_EVIDENCE": false,
 	"prior_causal_ci_class": {
 		"advanced_sec_class": [
-			233.0,
-			243.0,
-			243.0
+			233,
+			243,
+			243
 		],
-		"basic_sec_class": 234.0,
+		"basic_sec_class": 234,
 		"note": "Pre-repair frame-counted skill timing under Engine.time_scale overcommitted DriftSystem (>2.4s).",
 		"pairwise_then": "1/3"
 	},

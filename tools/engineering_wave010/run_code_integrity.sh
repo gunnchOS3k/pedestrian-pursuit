@@ -43,6 +43,18 @@ if emit.exists():
   if 'for k in list(req):\n        req[k] = "PARTIAL"' in et and '"GAME-PP-001": "IMPLEMENTED"' in et and "derive_requirements" not in et:
     findings.append({"severity": "S1", "id": "BLANKET_REQUIREMENT_ASSIGNMENT", "path": str(emit.relative_to(root))})
 
+
+# Race V3 open-rail mastery: protect release must exist (no hairpin line_abort-only policy).
+driver_pp015 = root/"tests/engineering_wave010/SyntheticInputDriver.gd"
+if driver_pp015.exists():
+  dt_pp015 = driver_pp015.read_text(errors="ignore")
+  if "PROTECT_LATERAL" not in dt_pp015:
+    findings.append({"severity": "S0", "id": "MISSING_PROTECT_LATERAL", "path": str(driver_pp015.relative_to(root))})
+  if "lateral_protect" not in dt_pp015:
+    findings.append({"severity": "S0", "id": "MISSING_LATERAL_PROTECT_RELEASE", "path": str(driver_pp015.relative_to(root))})
+  if "DRIFT_CURVATURE_MAX" not in dt_pp015:
+    findings.append({"severity": "S0", "id": "MISSING_DRIFT_CURVATURE_MAX", "path": str(driver_pp015.relative_to(root))})
+
 # Causal mastery authenticity gates (GAME-PP-015) — static S0 if present.
 driver = root/"tests/engineering_wave010/SyntheticInputDriver.gd"
 mastery_e2e = root/"tests/engineering_wave010/Wave010TimeTrialMasteryE2E.gd"

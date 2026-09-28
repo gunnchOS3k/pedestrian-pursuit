@@ -9,6 +9,7 @@ const RunnerVisualResolver = preload("res://scripts/player/RunnerVisualResolver.
 ## Assigns named character-life profiles so every racer reads as a person.
 
 const AI_SCENE := preload("res://scenes/ai/AIRacer.tscn")
+const ShortcutDecisionScript = preload("res://scripts/gamefeel/ShortcutDecisionDirector.gd")
 
 var track: CourseTrack
 var course_data: Dictionary = {}
@@ -119,6 +120,8 @@ func _ready() -> void:
 			ai.set_ai_tier(ai_tiers[mini(i, ai_tiers.size() - 1)])
 		if ai.has_method("configure_shortcuts") and track.has_method("get_shortcut_routes"):
 			ai.configure_shortcuts(track.get_shortcut_routes())
+		if ai.has_method("configure_shortcut_paths") and track.has_method("get_shortcut_follow_paths"):
+			ai.configure_shortcut_paths(track.get_shortcut_follow_paths())
 		if ai.has_method("notify_shoe_changed"):
 			ai.notify_shoe_changed()
 		racers.append(ai)
@@ -169,11 +172,18 @@ func _ready() -> void:
 			if GameManager.accept_test_mode:
 				set_meta("accept_follower", follower)
 	race_manager.setup_race(racers, player, checkpoints, GameManager.total_laps)
+	if track.has_method("get_alternate_checkpoints") and race_manager.has_method("bind_alternate_checkpoints"):
+		var alts: Array = track.get_alternate_checkpoints()
+		race_manager.bind_alternate_checkpoints(alts)
+		for alt in alts:
+			if alt != null and alt.has_signal("racer_passed"):
+				alt.racer_passed.connect(_on_checkpoint_for_recovery)
 	for checkpoint in checkpoints:
 		checkpoint.racer_passed.connect(_on_checkpoint_for_recovery)
 	hud.setup(player, race_manager, course_data)
 	if GameManager.is_local_mp() and local_p2 != null and hud.has_method("setup_local_mp_secondary"):
 		hud.setup_local_mp_secondary(local_p2)
+	_setup_race_experience()
 	CrashWatchdogScript.note_event("race_scene_ready", str(course_data.get("id", "")))
 	PackageLifecycle.migrate_or_update()
 	var audio := get_node_or_null("/root/AudioDirector")
@@ -243,6 +253,12 @@ func _attach_tutorial_director() -> void:
 
 var _ghost_recorder: Node
 var _ghost_player: Node3D
+var _experience: Node
+var _speed_layer: CanvasLayer
+var _draft_fx: Node
+var _boost_fx: Node
+var _opponents: CanvasLayer
+var _loco: Node
 
 
 func _setup_time_trial_ghost() -> void:
@@ -266,10 +282,175 @@ func _on_race_started_ghost() -> void:
 		_ghost_recorder.begin(GameManager.selected_track_id)
 
 
+func _setup_race_experience() -> void:
+	_experience = Node.new()
+	_experience.name = "RaceExperienceDirector"
+	_experience.set_script(load("res://scripts/gamefeel/RaceExperienceDirector.gd"))
+	add_child(_experience)
+	if _experience.has_method("setup"):
+		_experience.setup(player, race_manager, track, course_data)
+	if hud.has_method("bind_experience"):
+		hud.bind_experience(_experience)
+	_speed_layer = CanvasLayer.new()
+	_speed_layer.name = "SpeedPresentation"
+	_speed_layer.set_script(load("res://scripts/gamefeel/SpeedPresentationLayer.gd"))
+	add_child(_speed_layer)
+	_draft_fx = Node.new()
+	_draft_fx.name = "DraftFeedback"
+	_draft_fx.set_script(load("res://scripts/gamefeel/DraftFeedback.gd"))
+	add_child(_draft_fx)
+	if _draft_fx.has_method("setup"):
+		_draft_fx.setup(player)
+	_boost_fx = Node.new()
+	_boost_fx.name = "BoostFeedback"
+	_boost_fx.set_script(load("res://scripts/gamefeel/BoostFeedback.gd"))
+	add_child(_boost_fx)
+	if _boost_fx.has_method("setup"):
+		_boost_fx.setup(player)
+	if AccessibilitySettings != null and _boost_fx.has_method("set_haptics_allowed"):
+		_boost_fx.set_haptics_allowed(bool(AccessibilitySettings.haptic_feedback))
+	_opponents = CanvasLayer.new()
+	_opponents.name = "OpponentAwareness"
+	_opponents.set_script(load("res://scripts/gamefeel/OpponentAwareness.gd"))
+	add_child(_opponents)
+	_loco = Node.new()
+	_loco.name = "LocomotionPresenter"
+	_loco.set_script(load("res://scripts/gamefeel/LocomotionPresenter.gd"))
+	add_child(_loco)
+	if player != null and player.has_node("BoostSystem"):
+		var boost = player.get_node("BoostSystem")
+		if boost.has_signal("boost_activated"):
+			boost.boost_activated.connect(_on_player_boost_fx)
+		if boost.has_signal("boost_ended"):
+			boost.boost_ended.connect(_on_player_boost_fx_end)
+	if race_manager != null and race_manager.has_node("PositionTracker"):
+		var tracker = race_manager.get_node("PositionTracker")
+		if tracker.has_signal("place_changed") and not tracker.place_changed.is_connected(_on_experience_place):
+			tracker.place_changed.connect(_on_experience_place)
+	_wire_shortcut_highlights()
+
+
+func _wire_shortcut_highlights() -> void:
+	if track == null:
+		return
+	var stack: Array = [track]
+	while not stack.is_empty():
+		var node: Node = stack.pop_back()
+		if node.has_signal("shortcut_entered") and not node.shortcut_entered.is_connected(_on_shortcut_entered):
+			node.shortcut_entered.connect(_on_shortcut_entered)
+		for child in node.get_children():
+			stack.append(child)
+
+
+func _on_experience_place(racer: Node, old_place: int, new_place: int) -> void:
+	if racer == player and new_place < old_place and _experience != null and _experience.has_method("record_overtake"):
+		_experience.record_overtake()
+
+
+func _on_shortcut_entered(racer: Node, shortcut_id: String) -> void:
+	if racer == player and _experience != null and _experience.has_method("record_shortcut_taken"):
+		_experience.record_shortcut_taken(shortcut_id)
+	var audio := get_node_or_null("/root/AudioDirector")
+	if audio != null and racer == player and audio.has_method("play_race_cue"):
+		audio.play_race_cue("shortcut")
+
+
+func _on_player_boost_fx(_m: float, _d: float, _s: String) -> void:
+	if _boost_fx != null and _boost_fx.has_method("set_active"):
+		_boost_fx.set_active(true, _reduced_motion())
+
+
+func _on_player_boost_fx_end() -> void:
+	if _boost_fx != null and _boost_fx.has_method("set_active"):
+		_boost_fx.set_active(false, _reduced_motion())
+
+
+func _reduced_motion() -> bool:
+	if AccessibilitySettings != null and bool(AccessibilitySettings.reduce_motion):
+		return true
+	if GameManager != null and int(GameManager.camera_profile) == 2:
+		return true
+	return false
+
+
 func _process(delta: float) -> void:
 	if _ghost_recorder != null and _ghost_recorder.get("recording") and player != null:
 		if _ghost_recorder.has_method("tick"):
 			_ghost_recorder.tick(delta, player)
+	_tick_race_experience(delta)
+
+
+func _tick_race_experience(delta: float) -> void:
+	if player == null:
+		return
+	var profile := 0
+	if GameManager != null:
+		profile = int(GameManager.camera_profile)
+	if AccessibilitySettings != null and bool(AccessibilitySettings.reduce_motion):
+		profile = 2
+	var speed := 0.0
+	if "horizontal_speed" in player:
+		speed = float(player.horizontal_speed)
+	var ratio := clampf(speed / 24.0, 0.0, 1.35)
+	var boosting := false
+	if player.has_node("BoostSystem"):
+		var boost = player.get_node("BoostSystem")
+		if boost.has_method("get_speed_multiplier"):
+			boosting = float(boost.get_speed_multiplier()) > 1.05
+	if _speed_layer != null and _speed_layer.has_method("apply"):
+		_speed_layer.apply(ratio, boosting, profile)
+	var draft_phase := "none"
+	var draft_str := 0.0
+	if player.has_node("DraftingSystem"):
+		var draft = player.get_node("DraftingSystem")
+		draft_phase = str(draft.get("draft_phase"))
+		draft_str = float(draft.get("draft_strength"))
+	if _draft_fx != null and _draft_fx.has_method("apply"):
+		_draft_fx.apply(draft_phase, draft_str, profile == 2)
+	if _loco != null and _loco.has_method("tick") and player is CharacterBody3D:
+		var drifting := false
+		if "drift_system" in player and player.drift_system != null:
+			drifting = bool(player.drift_system.get("is_drifting"))
+		var steer := 0.0
+		if InputManager != null and InputManager.has_method("get_steer"):
+			steer = float(InputManager.get_steer())
+		_loco.tick(delta, player, boosting, drifting, steer)
+	var prox := ""
+	var gap := ""
+	if _opponents != null and _opponents.has_method("update_field"):
+		var field: Dictionary = _opponents.update_field(player, get_tree().get_nodes_in_group("racers"), profile == 2)
+		prox = str(field.get("proximity", ""))
+		gap = str(field.get("gap", ""))
+	var cue := ""
+	var finish_near := false
+	if track != null and track.has_method("get_course_points"):
+		var points: Array = track.get_course_points()
+		var routes: Array = track.get_shortcut_routes() if track.has_method("get_shortcut_routes") else []
+		var decision: Dictionary = ShortcutDecisionScript.cue_for_player(player, points, routes, speed)
+		cue = str(decision.get("cue", ""))
+		var lap := 0
+		var next_cp := 0
+		if race_manager != null and race_manager.has_node("LapManager"):
+			lap = int(race_manager.lap_manager.get_lap(player))
+			next_cp = int(race_manager.lap_manager.get_next_checkpoint(player))
+		var start_pt: Vector3 = Vector3.ZERO
+		if not points.is_empty() and points[0] is Vector3:
+			start_pt = points[0]
+		finish_near = ShortcutDecisionScript.finish_approach(
+			player, start_pt, lap, GameManager.total_laps if GameManager else 3, next_cp
+		)
+	if _experience != null and _experience.has_method("tick"):
+		_experience.tick(delta, {
+			"shortcut_cue": cue,
+			"proximity": prox,
+			"gap": gap,
+			"finish_approach": finish_near,
+		})
+		if hud.has_method("apply_experience_snapshot"):
+			hud.apply_experience_snapshot(_experience.snapshot())
+	var audio := get_node_or_null("/root/AudioDirector")
+	if audio != null and audio.has_method("set_speed_wind"):
+		audio.set_speed_wind(ratio)
 
 
 func _on_race_started_telemetry() -> void:
@@ -487,7 +668,10 @@ func _on_race_finished(finished_player: Node, finish_results: Array) -> void:
 
 	_play_finish_reactions(finish_results, pos)
 	var field_lines := _build_field_lines(finish_results)
-	results.show_results(race_manager.race_time, pos, true, course_data, field_lines)
+	var highlights := PackedStringArray()
+	if _experience != null and _experience.has_method("results_highlights"):
+		highlights = _experience.results_highlights()
+	results.show_results(race_manager.race_time, pos, true, course_data, field_lines, highlights)
 	if GameManager.is_local_mp() and results.has_method("annotate_local_mp"):
 		results.annotate_local_mp(finish_results)
 	var audio := get_node_or_null("/root/AudioDirector")

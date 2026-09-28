@@ -1,0 +1,197 @@
+{
+  "schema": "pp_course_identity/v3",
+  "courses": {
+    "verdant_cascade_circuit": {
+      "short_name": "Verdant",
+      "display_name": "Verdant Cascade Circuit",
+      "visual_theme": "Riverside garden circuit under mist and pale daylight.",
+      "route_rhythm": "Wide opening straight, sweeping garden bend, runoff pocket, climb back to the falls.",
+      "signature_section": "Mist columns over the inner river cut.",
+      "shortcut_id": "cascade_inner_cut",
+      "shortcut_style": "Wet inner cut — save time if you keep the line, wash out if you overcommit.",
+      "lighting": {
+        "sun_degrees": [-48.0, -28.0, 0.0],
+        "sun_energy": 1.15,
+        "ambient": "#D8F0E8",
+        "ambient_energy": 0.82,
+        "fog_color": "#9FD4C8",
+        "fog_density": 0.004
+      },
+      "audio_direction": "Water and leaf hush under the existing verdant race bed.",
+      "challenge_identity": "Read the runoff. Beginner-friendly unless you force the wet cut.",
+      "landmarks": [
+        {"id": "falls_arch", "kind": "arch", "point_index": 0, "offset": [0, 0, 0], "scale": 1.0, "role": "start_and_finish"},
+        {"id": "cascade_columns", "kind": "waterfall", "point_index": 2, "offset": [-10, 0, 4], "scale": 1.1, "role": "shortcut_anticipation"},
+        {"id": "garden_lantern", "kind": "beacon", "point_index": 6, "offset": [8, 0, 2], "scale": 0.9, "role": "lap_progress"}
+      ]
+    },
+    "cloverwind_ranch": {
+      "short_name": "Cloverwind",
+      "display_name": "Cloverwind Ranch",
+      "visual_theme": "Sunlit clover fields, timber, and hay.",
+      "route_rhythm": "Open pasture sprint, gate squeeze, muddy alley option, windy back stretch.",
+      "signature_section": "Timber gate into the barn alley decision.",
+      "shortcut_id": "barn_alley",
+      "shortcut_style": "Mud alley — shorter, sloppy steering, cheap to miss.",
+      "lighting": {
+        "sun_degrees": [-55.0, -40.0, 0.0],
+        "sun_energy": 1.25,
+        "ambient": "#F2E6B8",
+        "ambient_energy": 0.88,
+        "fog_color": "#E8D9A0",
+        "fog_density": 0.002
+      },
+      "audio_direction": "Open-air wind and timber creak under the ranch race bed.",
+      "challenge_identity": "Commit early to the alley or keep the dry pasture.",
+      "landmarks": [
+        {"id": "timber_gate", "kind": "gate", "point_index": 2, "offset": [0, 0, 0], "scale": 1.15, "role": "shortcut_anticipation"},
+        {"id": "hay_tower", "kind": "tower", "point_index": 5, "offset": [12, 0, -6], "scale": 1.2, "role": "route_memory"},
+        {"id": "clover_windmill", "kind": "sculpture", "point_index": 7, "offset": [-14, 0, 4], "scale": 1.0, "role": "lap_progress"}
+      ]
+    },
+    "tideglass_harbor": {
+      "short_name": "Tideglass",
+      "display_name": "Tideglass Harbor",
+      "visual_theme": "Glassy piers, pale tide flats, and a harbor beacon.",
+      "route_rhythm": "Wide runoff start, pier jump choice, glass straight, lighthouse close.",
+      "signature_section": "Pier-cut over the tide flats.",
+      "shortcut_id": "pier_cut",
+      "shortcut_style": "Medium risk jump cut — readable, punish over-brake.",
+      "lighting": {
+        "sun_degrees": [-42.0, 20.0, 0.0],
+        "sun_energy": 1.05,
+        "ambient": "#C8E4F2",
+        "ambient_energy": 0.9,
+        "fog_color": "#B8D8E8",
+        "fog_density": 0.006
+      },
+      "audio_direction": "Tide slap and gull-distance hush under the harbor race bed.",
+      "challenge_identity": "Newcomer-wide runoff with one brave pier line.",
+      "landmarks": [
+        {"id": "glass_pier", "kind": "bridge", "point_index": 2, "offset": [0, 0, 0], "scale": 1.2, "role": "shortcut_anticipation"},
+        {"id": "harbor_crane", "kind": "tower", "point_index": 4, "offset": [16, 0, 8], "scale": 1.1, "role": "route_memory"},
+        {"id": "tide_beacon", "kind": "beacon", "point_index": 0, "offset": [-8, 0, 10], "scale": 1.0, "role": "start_and_finish"}
+      ]
+    },
+    "neon_switchyard": {
+      "short_name": "Neon",
+      "display_name": "Neon Switchyard",
+      "visual_theme": "Freight corridors, magenta gantries, night yard tower.",
+      "route_rhythm": "Tight switch, neon speed lane, rail-cut dare, tower rejoin.",
+      "signature_section": "Yard tower rail grind cut.",
+      "shortcut_id": "yard_rail_cut",
+      "shortcut_style": "High-risk rail cut — late entry is a wall, not a bonus.",
+      "lighting": {
+        "sun_degrees": [-18.0, 80.0, 0.0],
+        "sun_energy": 0.35,
+        "ambient": "#1A2040",
+        "ambient_energy": 0.55,
+        "fog_color": "#141828",
+        "fog_density": 0.01
+      },
+      "audio_direction": "Hum and switch-clack under the neon race bed.",
+      "challenge_identity": "Read the gantry early or stay on the freight floor.",
+      "landmarks": [
+        {"id": "yard_tower", "kind": "tower", "point_index": 4, "offset": [10, 0, 0], "scale": 1.4, "role": "shortcut_anticipation"},
+        {"id": "neon_gantry", "kind": "arch", "point_index": 1, "offset": [0, 0, 0], "scale": 1.2, "role": "route_memory"},
+        {"id": "freight_glyph", "kind": "sculpture", "point_index": 6, "offset": [-12, 0, 6], "scale": 0.95, "role": "lap_progress"}
+      ]
+    },
+    "cloudstep_ridge": {
+      "short_name": "Cloudstep",
+      "display_name": "Cloudstep Ridge",
+      "visual_theme": "High shelves, pale mist, and cliff light.",
+      "route_rhythm": "Shelf climb, mist slowdown, cliff-bounce option, ridge rejoin.",
+      "signature_section": "Cliff bounce over the drop.",
+      "shortcut_id": "cliff_bounce",
+      "shortcut_style": "High-risk bounce — miss the pad and you eat the shelf.",
+      "lighting": {
+        "sun_degrees": [-62.0, -10.0, 0.0],
+        "sun_energy": 1.2,
+        "ambient": "#D0E4F4",
+        "ambient_energy": 0.95,
+        "fog_color": "#C8D8E8",
+        "fog_density": 0.012
+      },
+      "audio_direction": "Thin wind and distant drop under the ridge race bed.",
+      "challenge_identity": "Elevation and mist. The bounce is a choice, not a door puzzle.",
+      "landmarks": [
+        {"id": "mist_bridge", "kind": "bridge", "point_index": 2, "offset": [0, 0, 0], "scale": 1.15, "role": "route_memory"},
+        {"id": "ridge_beacon", "kind": "beacon", "point_index": 3, "offset": [8, 0, -6], "scale": 1.1, "role": "shortcut_anticipation"},
+        {"id": "cloud_shelf", "kind": "gate", "point_index": 6, "offset": [0, 0, 0], "scale": 1.0, "role": "lap_progress"}
+      ]
+    },
+    "prism_apex": {
+      "short_name": "Prism",
+      "display_name": "Prism Apex",
+      "visual_theme": "Orbital ribbon, sparse rails, alternating color sectors.",
+      "route_rhythm": "Precision boost gates, ribbon cut, void rejoin.",
+      "signature_section": "Narrow ribbon cut between color sectors.",
+      "shortcut_id": "ribbon_cut",
+      "shortcut_style": "Narrow precision cut — always tempting, expensive to miss.",
+      "lighting": {
+        "sun_degrees": [-30.0, 140.0, 0.0],
+        "sun_energy": 0.7,
+        "ambient": "#14183A",
+        "ambient_energy": 0.7,
+        "fog_color": "#0C1030",
+        "fog_density": 0.008
+      },
+      "audio_direction": "Soft harmonic bed already authored for Prism. No extra commercial music.",
+      "challenge_identity": "Precision over power. The ribbon is a skill check.",
+      "landmarks": [
+        {"id": "sector_gate", "kind": "gate", "point_index": 1, "offset": [0, 0, 0], "scale": 1.2, "role": "route_memory"},
+        {"id": "ribbon_sculpture", "kind": "sculpture", "point_index": 2, "offset": [8, 0, 0], "scale": 1.15, "role": "shortcut_anticipation"},
+        {"id": "void_beacon", "kind": "beacon", "point_index": 6, "offset": [0, 0, 8], "scale": 1.0, "role": "lap_progress"}
+      ]
+    },
+    "mirage_mesa": {
+      "short_name": "Mirage",
+      "display_name": "Mirage Mesa",
+      "visual_theme": "Sun-baked banks, sand haze, long draft straights.",
+      "route_rhythm": "Long straight, wash decision, banked mesa, heat-haze close.",
+      "signature_section": "Dry wash under the mesa arch.",
+      "shortcut_id": "dry_wash",
+      "shortcut_style": "Sand wash — shorter if you keep speed, a trap if you plow.",
+      "lighting": {
+        "sun_degrees": [-70.0, -55.0, 0.0],
+        "sun_energy": 1.4,
+        "ambient": "#F4D8A0",
+        "ambient_energy": 0.92,
+        "fog_color": "#E8C878",
+        "fog_density": 0.005
+      },
+      "audio_direction": "Dry wind and grit under the mesa race bed.",
+      "challenge_identity": "Drafting straights plus a wash that is never free.",
+      "landmarks": [
+        {"id": "mesa_arch", "kind": "arch", "point_index": 1, "offset": [0, 0, 0], "scale": 1.3, "role": "shortcut_anticipation"},
+        {"id": "sand_tower", "kind": "tower", "point_index": 4, "offset": [14, 0, -8], "scale": 1.2, "role": "route_memory"},
+        {"id": "wash_beacon", "kind": "beacon", "point_index": 5, "offset": [-10, 0, 4], "scale": 0.95, "role": "lap_progress"}
+      ]
+    },
+    "emberkeep_gauntlet": {
+      "short_name": "Emberkeep",
+      "display_name": "Emberkeep Gauntlet",
+      "visual_theme": "Basalt keep, forge vents, ash courtyards.",
+      "route_rhythm": "Fortress entry, vent cut, ash patches, courtyard finish.",
+      "signature_section": "Forge vent cut into the final courtyard.",
+      "shortcut_id": "forge_vent_cut",
+      "shortcut_style": "Ash vent — fast if you hold the line, blind if you panic-steer.",
+      "lighting": {
+        "sun_degrees": [-35.0, 160.0, 0.0],
+        "sun_energy": 0.85,
+        "ambient": "#3A2018",
+        "ambient_energy": 0.62,
+        "fog_color": "#2A1410",
+        "fog_density": 0.009
+      },
+      "audio_direction": "Low forge rumble under the Emberkeep race bed.",
+      "challenge_identity": "Expert courtyard close. The vent is a dare, not a mandatory skip.",
+      "landmarks": [
+        {"id": "keep_gate", "kind": "gate", "point_index": 0, "offset": [0, 0, 0], "scale": 1.25, "role": "start_and_finish"},
+        {"id": "keep_tower", "kind": "tower", "point_index": 3, "offset": [12, 0, 0], "scale": 1.35, "role": "shortcut_anticipation"},
+        {"id": "courtyard_beacon", "kind": "beacon", "point_index": 8, "offset": [0, 0, 0], "scale": 1.05, "role": "finish"}
+      ]
+    }
+  }
+}

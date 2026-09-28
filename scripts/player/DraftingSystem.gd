@@ -4,6 +4,7 @@ extends Node
 ## Breaking the cone or overtaking clears the draft.
 
 signal draft_changed(active: bool, strength: float)
+signal draft_phase_changed(phase: String, strength: float)
 
 @export var max_distance: float = 9.0
 @export var cone_dot: float = 0.72
@@ -13,6 +14,7 @@ signal draft_changed(active: bool, strength: float)
 
 var draft_active: bool = false
 var draft_strength: float = 0.0
+var draft_phase: String = "none"
 var _host: Node3D
 
 
@@ -67,6 +69,7 @@ func tick(delta: float) -> void:
 		draft_active = draft_strength > 0.35
 		if draft_active != was:
 			draft_changed.emit(draft_active, get_speed_multiplier())
+		_set_phase(_phase_from_strength(true))
 	else:
 		_clear(delta)
 
@@ -79,7 +82,29 @@ func get_speed_multiplier() -> float:
 
 func _clear(delta: float) -> void:
 	var was := draft_active
+	var had_any := draft_strength > 0.02 or draft_active
 	draft_strength = maxf(0.0, draft_strength - decay_rate * delta)
 	draft_active = draft_strength > 0.35
 	if draft_active != was:
 		draft_changed.emit(draft_active, get_speed_multiplier())
+	if had_any and draft_strength <= 0.02:
+		_set_phase("none")
+	elif had_any:
+		_set_phase("leaving")
+
+
+func _phase_from_strength(aligned: bool) -> String:
+	if not aligned:
+		return "none" if draft_strength <= 0.02 else "leaving"
+	if draft_strength <= 0.15:
+		return "entering"
+	if draft_strength <= 0.35:
+		return "building"
+	return "active"
+
+
+func _set_phase(next: String) -> void:
+	if next == draft_phase:
+		return
+	draft_phase = next
+	draft_phase_changed.emit(draft_phase, draft_strength)

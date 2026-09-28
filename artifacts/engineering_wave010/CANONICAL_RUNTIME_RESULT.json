@@ -36,7 +36,7 @@
 			"test_class": "COMPONENT_RUNTIME"
 		},
 		"comeback": {
-			"assist": 1.0,
+			"assist": 1,
 			"eval": {
 				"by_place": {
 					"1": {
@@ -137,7 +137,7 @@
 		"sprint": {
 			"mud_accel_lower": true,
 			"observed": true,
-			"speed_band": 22.0
+			"speed_band": 22
 		},
 		"stomp": {
 			"first_ok": true,
@@ -156,14 +156,14 @@
 		"trick_fail_penalty": {
 			"TRICK_FAIL_DOUBLE_PENALTY": false,
 			"TRICK_FAIL_SINGLE_PENALTY_PASS": true,
-			"after_fail": 44.0,
+			"after_fail": 44,
 			"clamped_zero": true,
 			"observed": true,
 			"success_positive": true
 		},
 		"trick_success": {
 			"observed": true,
-			"reward": 12.0
+			"reward": 12
 		},
 		"wall": {
 			"cooldown_clears": true,

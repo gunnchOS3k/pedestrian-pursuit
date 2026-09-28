@@ -14,6 +14,7 @@ func _ready() -> void:
 	$Panel/Margin/VBox/ResumeButton.pressed.connect(_on_resume)
 	$Panel/Margin/VBox/MenuButton.pressed.connect(_on_menu)
 	_ensure_restart_button()
+	_ensure_comfort_profile()
 	Vxp3PresentationScript.apply_pause_chrome(self)
 
 
@@ -41,6 +42,26 @@ func configure_local_mp(enabled: bool) -> void:
 		vbox.move_child(_hint, 0)
 	_hint.visible = enabled
 	_hint.text = "Local MP — either player may pause (Esc / Start). Career save unchanged."
+
+
+func _ensure_comfort_profile() -> void:
+	var vbox: VBoxContainer = $Panel/Margin/VBox
+	if vbox.get_node_or_null("ComfortProfile") != null:
+		return
+	var picker := OptionButton.new()
+	picker.name = "ComfortProfile"
+	picker.add_item("Comfort", 0)
+	picker.add_item("Dynamic", 1)
+	picker.add_item("Reduced Motion", 2)
+	var profile := 0
+	if AccessibilitySettings != null:
+		profile = int(AccessibilitySettings.camera_profile)
+	picker.select(profile)
+	picker.item_selected.connect(func(idx):
+		if AccessibilitySettings != null and AccessibilitySettings.has_method("set_camera_profile"):
+			AccessibilitySettings.set_camera_profile(idx)
+	)
+	vbox.add_child(picker)
 
 
 func _ensure_restart_button() -> void:
