@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "partylink_session.v1.schema.json",
+  "title": "PartyLink Session v1",
+  "type": "object",
+  "required": [
+    "protocol_version",
+    "session_id",
+    "code",
+    "phase",
+    "max_player_seats",
+    "max_spectator_seats",
+    "authority_mode"
+  ],
+  "properties": {
+    "protocol_version": {
+      "const": "partylink.v1"
+    },
+    "session_id": {
+      "type": "string"
+    },
+    "code": {
+      "type": "string",
+      "minLength": 4,
+      "maxLength": 8
+    },
+    "phase": {
+      "type": "string"
+    },
+    "max_player_seats": {
+      "type": "integer",
+      "minimum": 2,
+      "maximum": 8
+    },
+    "max_spectator_seats": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "authority_mode": {
+      "enum": [
+        "HOST_AUTHORITATIVE_PARTY",
+        "DETERMINISTIC_ROLLBACK"
+      ]
+    },
+    "game_id": {
+      "enum": [
+        "anime-aggressors",
+        "pedestrian-pursuit"
+      ]
+    },
+    "public_relay_deployed": {
+      "type": "boolean"
+    }
+  }
+}

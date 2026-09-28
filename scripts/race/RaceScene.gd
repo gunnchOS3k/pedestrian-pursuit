@@ -65,8 +65,53 @@ func _ready() -> void:
 	_assign_profile(player, player_profile)
 	_assigned_profiles = [player_profile]
 
+	# PartyLink Party Race: spawn 2–8 human-controlled racers on StartGrid8 (no AI fillers).
+	if GameManager.is_party_race():
+		var StartGrid8 = load("res://scripts/net/partylink/StartGrid8.gd")
+		var RaceDirectorViewScript = load("res://scripts/net/partylink/RaceDirectorView.gd")
+		var human_count := clampi(GameManager.local_mp_players, 2, 8)
+		var grid: Array = StartGrid8.slots(human_count) if StartGrid8 else []
+		if grid.size() > 0:
+			var p0: Dictionary = grid[0]
+			player.global_transform = start_xf.translated_local(Vector3(float(p0.get("x", 0.0)), 0.0, float(p0.get("z", 0.0))))
+			player.setup_for_race(player.global_transform)
+			if "local_player_index" in player:
+				player.local_player_index = 0
+		for seat_i in range(1, human_count):
+			var human: Node = AI_SCENE.instantiate()
+			human.name = "PartyHuman_%d" % seat_i
+			add_child(human)
+			if "is_player" in human:
+				human.is_player = true
+			if "local_player_index" in human:
+				human.local_player_index = seat_i
+			var h_profile = _pick_ai_profile(seat_i)
+			_assign_profile(human, h_profile)
+			_assigned_profiles.append(h_profile)
+			if "racer_id" in human:
+				human.racer_id = str(h_profile.id)
+			var slot: Dictionary = grid[seat_i] if seat_i < grid.size() else {"x": float(seat_i), "z": 0.0}
+			var h_start := start_xf.translated_local(Vector3(float(slot.get("x", 0.0)), 0.0, float(slot.get("z", 0.0))))
+			human.global_transform = h_start
+			human.setup_for_race(h_start)
+			if human.has_method("setup_rails"):
+				human.setup_rails(track.get_rail_world_points())
+			racers.append(human)
+		ai_count = 0
+		if ai_racer != null:
+			ai_racer.visible = false
+			ai_racer.movement_enabled = false
+		if RaceDirectorViewScript:
+			var director = RaceDirectorViewScript.new()
+			set_meta("race_director_view", director)
+			set_meta("party_human_count", human_count)
+		# Race Director camera: frame pack, not Player-1-only follow.
+		if camera_rig and camera_rig.has_method("set_target") and racers.size() > 0:
+			camera_rig.set_target(player)
+			set_meta("party_race_director", true)
+
 	# Local MP: second human + vertical split-screen cameras.
-	if GameManager.is_local_mp():
+	elif GameManager.is_local_mp():
 		local_p2 = AI_SCENE.instantiate()
 		local_p2.name = "Player2Racer"
 		add_child(local_p2)

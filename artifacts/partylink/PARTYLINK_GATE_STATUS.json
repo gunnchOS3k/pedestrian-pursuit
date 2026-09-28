@@ -1,0 +1,252 @@
+{
+  "generated_at": "2026-09-28T20:27:33.540236Z",
+  "scope": "pedestrian-pursuit PartyLink 8P V2 digital",
+  "authority_mode": "HOST_AUTHORITATIVE_PARTY",
+  "PARTYLINK_PUBLIC_RELAY_PASS": false,
+  "human_approval": false,
+  "gates": {
+    "PEDESTRIAN_2P_PARTY_PASS": true,
+    "PEDESTRIAN_4P_PARTY_PASS": true,
+    "PEDESTRIAN_6P_PARTY_PASS": true,
+    "PEDESTRIAN_8P_PARTY_PASS": true,
+    "PEDESTRIAN_8P_START_GRID_PASS": true,
+    "PEDESTRIAN_8P_LAP_INTEGRITY_PASS": true,
+    "PEDESTRIAN_8P_SHORTCUT_INTEGRITY_PASS": true,
+    "PEDESTRIAN_8P_FINISH_ORDER_PASS": true,
+    "PEDESTRIAN_8P_RACE_DIRECTOR_PASS": true,
+    "PARTYLINK_8_PLAYER_CAPACITY_SCHEMA_PASS": true,
+    "PARTYLINK_SPECTATOR_CAPACITY_SEPARATE_PASS": true,
+    "PARTYLINK_PLAYER_AUTHZ_8P_PASS": true,
+    "PARTYLINK_WRONG_SEAT_INPUT_REJECTED_PASS": true,
+    "PARTYLINK_SPECTATOR_INPUT_REJECTED_PASS": true,
+    "PARTYLINK_8P_RECONNECT_PASS": true,
+    "PARTYLINK_ARENA_STATE_SYNC_8P_PASS": true,
+    "PARTYLINK_PUBLIC_RELAY_PASS": false,
+    "PEDESTRIAN_PARTY_MODE_USABILITY_PASS": false,
+    "PEDESTRIAN_PARTY_MODE_FUN_PASS": false,
+    "PEDESTRIAN_PHONE_CONTROL_FEEL_PASS": false,
+    "PEDESTRIAN_RACE_DIRECTOR_HUMAN_PASS": false
+  },
+  "capacity_ladder": [
+    {
+      "player_count": 2,
+      "start_grid_slots": 2,
+      "standings": [
+        {
+          "place": 1,
+          "seat": 1,
+          "name": "R2",
+          "lap": 1,
+          "progress": 0.6420000000000005
+        },
+        {
+          "place": 2,
+          "seat": 0,
+          "name": "R1",
+          "lap": 1,
+          "progress": 0.6000000000000003
+        }
+      ],
+      "race_director_mode": "close_battle",
+      "race_director_hud_ok": true,
+      "mean_frame_ms": 0.002640866538664947,
+      "p95_frame_ms": 0.003749999450519681,
+      "state_payload_bytes": 323,
+      "desync_count": 0,
+      "pass": true
+    },
+    {
+      "player_count": 4,
+      "start_grid_slots": 4,
+      "standings": [
+        {
+          "place": 1,
+          "seat": 3,
+          "name": "R4",
+          "lap": 1,
+          "progress": 0.726
+        },
+        {
+          "place": 2,
+          "seat": 2,
+          "name": "R3",
+          "lap": 1,
+          "progress": 0.684
+        },
+        {
+          "place": 3,
+          "seat": 1,
+          "name": "R2",
+          "lap": 1,
+          "progress": 0.6420000000000005
+        },
+        {
+          "place": 4,
+          "seat": 0,
+          "name": "R1",
+          "lap": 1,
+          "progress": 0.6000000000000003
+        }
+      ],
+      "race_director_mode": "close_battle",
+      "race_director_hud_ok": true,
+      "mean_frame_ms": 0.003881866480999937,
+      "p95_frame_ms": 0.0040000013541430235,
+      "state_payload_bytes": 569,
+      "desync_count": 0,
+      "pass": true
+    },
+    {
+      "player_count": 6,
+      "start_grid_slots": 6,
+      "standings": [
+        {
+          "place": 1,
+          "seat": 5,
+          "name": "R6",
+          "lap": 1,
+          "progress": 0.8099999999999993
+        },
+        {
+          "place": 2,
+          "seat": 4,
+          "name": "R5",
+          "lap": 1,
+          "progress": 0.7680000000000013
+        },
+        {
+          "place": 3,
+          "seat": 3,
+          "name": "R4",
+          "lap": 1,
+          "progress": 0.726
+        },
+        {
+          "place": 4,
+          "seat": 2,
+          "name": "R3",
+          "lap": 1,
+          "progress": 0.684
+        },
+        {
+          "place": 5,
+          "seat": 1,
+          "name": "R2",
+          "lap": 1,
+          "progress": 0.6420000000000005
+        },
+        {
+          "place": 6,
+          "seat": 0,
+          "name": "R1",
+          "lap": 1,
+          "progress": 0.6000000000000003
+        }
+      ],
+      "race_director_mode": "close_battle",
+      "race_director_hud_ok": true,
+      "mean_frame_ms": 0.01198063267414303,
+      "p95_frame_ms": 0.014375000318977982,
+      "state_payload_bytes": 865,
+      "desync_count": 0,
+      "pass": true
+    },
+    {
+      "player_count": 8,
+      "start_grid_slots": 8,
+      "standings": [
+        {
+          "place": 1,
+          "seat": 7,
+          "name": "R8",
+          "lap": 1,
+          "progress": 0.894000000000001
+        },
+        {
+          "place": 2,
+          "seat": 6,
+          "name": "R7",
+          "lap": 1,
+          "progress": 0.8519999999999996
+        },
+        {
+          "place": 3,
+          "seat": 5,
+          "name": "R6",
+          "lap": 1,
+          "progress": 0.8099999999999993
+        },
+        {
+          "place": 4,
+          "seat": 4,
+          "name": "R5",
+          "lap": 1,
+          "progress": 0.7680000000000013
+        },
+        {
+          "place": 5,
+          "seat": 3,
+          "name": "R4",
+          "lap": 1,
+          "progress": 0.726
+        },
+        {
+          "place": 6,
+          "seat": 2,
+          "name": "R3",
+          "lap": 1,
+          "progress": 0.684
+        },
+        {
+          "place": 7,
+          "seat": 1,
+          "name": "R2",
+          "lap": 1,
+          "progress": 0.6420000000000005
+        },
+        {
+          "place": 8,
+          "seat": 0,
+          "name": "R1",
+          "lap": 1,
+          "progress": 0.6000000000000003
+        }
+      ],
+      "race_director_mode": "close_battle",
+      "race_director_hud_ok": true,
+      "mean_frame_ms": 0.01859511709578025,
+      "p95_frame_ms": 0.021708001440856606,
+      "state_payload_bytes": 1159,
+      "desync_count": 0,
+      "pass": true
+    }
+  ],
+  "PARTYLINK_8P_DIGITAL_READY": true,
+  "productization": {
+    "PARTYLINK_LAN_JOIN_ROUTE_PASS": true,
+    "PARTYLINK_ROOM_CODE_USER_FLOW_PASS": true,
+    "PARTYLINK_QR_USER_FLOW_PASS": true,
+    "PARTYLINK_BROWSER_CONTROLLER_PASS": true,
+    "PARTYLINK_BROWSER_SPECTATOR_PASS": true,
+    "PARTYLINK_2_CLIENT_E2E_PASS": true,
+    "PARTYLINK_4_CLIENT_E2E_PASS": true,
+    "PARTYLINK_6_CLIENT_E2E_PASS": true,
+    "PARTYLINK_8_CLIENT_E2E_PASS": true,
+    "PARTYLINK_REAL_RUNTIME_INPUT_OWNERSHIP_PASS": true,
+    "PARTYLINK_REAL_RUNTIME_RECONNECT_PASS": true,
+    "PARTYLINK_REAL_RUNTIME_LATE_SPECTATOR_PASS": true,
+    "PARTYLINK_RESULTS_REMATCH_E2E_PASS": true,
+    "PEDESTRIAN_PARTY_RACE_UI_2_TO_8_PASS": true,
+    "PEDESTRIAN_8_HUMAN_RACESCENE_PASS": true,
+    "PEDESTRIAN_8_HUMAN_INPUT_ROUTING_PASS": true,
+    "PEDESTRIAN_RACE_DIRECTOR_LIVE_RUNTIME_PASS": true,
+    "PEDESTRIAN_BROWSER_CONTROLLER_E2E_PASS": true,
+    "PEDESTRIAN_REAL_LAP_FINISH_AUTHORITY_PASS": true,
+    "PARTYLINK_PUBLIC_RELAY_PASS": false,
+    "PEDESTRIAN_PARTY_MODE_USABILITY_PASS": false,
+    "PEDESTRIAN_PARTY_MODE_FUN_PASS": false,
+    "PEDESTRIAN_PHONE_CONTROL_FEEL_PASS": false,
+    "PEDESTRIAN_RACE_DIRECTOR_HUMAN_PASS": false
+  },
+  "PARTYLINK_8P_END_TO_END_READY": true
+}

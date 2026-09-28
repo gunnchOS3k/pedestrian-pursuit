@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "partylink_public_state.v1.schema.json",
+  "title": "PartyLink Public Game State v1",
+  "type": "object",
+  "required": [
+    "session_id",
+    "game_id",
+    "protocol_version",
+    "phase",
+    "host_tick",
+    "players"
+  ],
+  "properties": {
+    "session_id": {
+      "type": "string"
+    },
+    "game_id": {
+      "type": "string"
+    },
+    "protocol_version": {
+      "type": "string"
+    },
+    "phase": {
+      "type": "string"
+    },
+    "host_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "players": {
+      "type": "array",
+      "maxItems": 8
+    },
+    "result": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  }
+}

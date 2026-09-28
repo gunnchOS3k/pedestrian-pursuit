@@ -1,0 +1,197 @@
+{
+  "generated": true,
+  "tiers": [
+    {
+      "player_count": 2,
+      "start_grid_slots": 2,
+      "standings": [
+        {
+          "place": 1,
+          "seat": 1,
+          "name": "R2",
+          "lap": 1,
+          "progress": 0.6420000000000005
+        },
+        {
+          "place": 2,
+          "seat": 0,
+          "name": "R1",
+          "lap": 1,
+          "progress": 0.6000000000000003
+        }
+      ],
+      "race_director_mode": "close_battle",
+      "race_director_hud_ok": true,
+      "mean_frame_ms": 0.0026408832733674594,
+      "p95_frame_ms": 0.002792003215290606,
+      "state_payload_bytes": 323,
+      "desync_count": 0,
+      "pass": true
+    },
+    {
+      "player_count": 4,
+      "start_grid_slots": 4,
+      "standings": [
+        {
+          "place": 1,
+          "seat": 3,
+          "name": "R4",
+          "lap": 1,
+          "progress": 0.726
+        },
+        {
+          "place": 2,
+          "seat": 2,
+          "name": "R3",
+          "lap": 1,
+          "progress": 0.684
+        },
+        {
+          "place": 3,
+          "seat": 1,
+          "name": "R2",
+          "lap": 1,
+          "progress": 0.6420000000000005
+        },
+        {
+          "place": 4,
+          "seat": 0,
+          "name": "R1",
+          "lap": 1,
+          "progress": 0.6000000000000003
+        }
+      ],
+      "race_director_mode": "close_battle",
+      "race_director_hud_ok": true,
+      "mean_frame_ms": 0.003870150491517658,
+      "p95_frame_ms": 0.004082998202648014,
+      "state_payload_bytes": 569,
+      "desync_count": 0,
+      "pass": true
+    },
+    {
+      "player_count": 6,
+      "start_grid_slots": 6,
+      "standings": [
+        {
+          "place": 1,
+          "seat": 5,
+          "name": "R6",
+          "lap": 1,
+          "progress": 0.8099999999999993
+        },
+        {
+          "place": 2,
+          "seat": 4,
+          "name": "R5",
+          "lap": 1,
+          "progress": 0.7680000000000013
+        },
+        {
+          "place": 3,
+          "seat": 3,
+          "name": "R4",
+          "lap": 1,
+          "progress": 0.726
+        },
+        {
+          "place": 4,
+          "seat": 2,
+          "name": "R3",
+          "lap": 1,
+          "progress": 0.684
+        },
+        {
+          "place": 5,
+          "seat": 1,
+          "name": "R2",
+          "lap": 1,
+          "progress": 0.6420000000000005
+        },
+        {
+          "place": 6,
+          "seat": 0,
+          "name": "R1",
+          "lap": 1,
+          "progress": 0.6000000000000003
+        }
+      ],
+      "race_director_mode": "close_battle",
+      "race_director_hud_ok": true,
+      "mean_frame_ms": 0.005237417766087067,
+      "p95_frame_ms": 0.006250003934837878,
+      "state_payload_bytes": 865,
+      "desync_count": 0,
+      "pass": true
+    },
+    {
+      "player_count": 8,
+      "start_grid_slots": 8,
+      "standings": [
+        {
+          "place": 1,
+          "seat": 7,
+          "name": "R8",
+          "lap": 1,
+          "progress": 0.894000000000001
+        },
+        {
+          "place": 2,
+          "seat": 6,
+          "name": "R7",
+          "lap": 1,
+          "progress": 0.8519999999999996
+        },
+        {
+          "place": 3,
+          "seat": 5,
+          "name": "R6",
+          "lap": 1,
+          "progress": 0.8099999999999993
+        },
+        {
+          "place": 4,
+          "seat": 4,
+          "name": "R5",
+          "lap": 1,
+          "progress": 0.7680000000000013
+        },
+        {
+          "place": 5,
+          "seat": 3,
+          "name": "R4",
+          "lap": 1,
+          "progress": 0.726
+        },
+        {
+          "place": 6,
+          "seat": 2,
+          "name": "R3",
+          "lap": 1,
+          "progress": 0.684
+        },
+        {
+          "place": 7,
+          "seat": 1,
+          "name": "R2",
+          "lap": 1,
+          "progress": 0.6420000000000005
+        },
+        {
+          "place": 8,
+          "seat": 0,
+          "name": "R1",
+          "lap": 1,
+          "progress": 0.6000000000000003
+        }
+      ],
+      "race_director_mode": "close_battle",
+      "race_director_hud_ok": true,
+      "mean_frame_ms": 0.0065688000177033246,
+      "p95_frame_ms": 0.006833004590589553,
+      "state_payload_bytes": 1159,
+      "desync_count": 0,
+      "pass": true
+    }
+  ]
+}

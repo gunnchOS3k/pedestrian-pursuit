@@ -1,0 +1,10 @@
+{
+  "race_director_modes": [
+    "lead_pack",
+    "close_battle",
+    "finish_line"
+  ],
+  "standings_1_to_8": true,
+  "overhead_insert": true,
+  "human_pass": false
+}

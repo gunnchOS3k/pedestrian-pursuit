@@ -276,7 +276,21 @@ func _ensure_mode_buttons() -> void:
 		vbox.move_child(lmp, insert_at)
 
 	_ensure_beta_mode_buttons()
+	_ensure_party_race_button()
 	_wire_mode_buttons()
+
+
+func _ensure_party_race_button() -> void:
+	var vbox: VBoxContainer = $VBox
+	if vbox.get_node_or_null("PartyRaceButton") != null:
+		return
+	var insert_at := vbox.get_node("LocalMPButton").get_index() + 1 if vbox.get_node_or_null("LocalMPButton") else vbox.get_node("SingleRaceButton").get_index() + 1
+	var btn := Button.new()
+	btn.name = "PartyRaceButton"
+	btn.text = "Party Race (2–8 LAN)"
+	btn.custom_minimum_size = Vector2(0, 44)
+	vbox.add_child(btn)
+	vbox.move_child(btn, insert_at)
 
 
 func _ensure_beta_mode_buttons() -> void:
@@ -324,6 +338,7 @@ func _ensure_beta_mode_buttons() -> void:
 func _wire_mode_buttons() -> void:
 	var tt := $VBox.get_node_or_null("TimeTrialButton") as Button
 	var lmp := $VBox.get_node_or_null("LocalMPButton") as Button
+	var party := $VBox.get_node_or_null("PartyRaceButton") as Button
 	var tut := $VBox.get_node_or_null("TutorialButton") as Button
 	var ch := $VBox.get_node_or_null("ChallengesButton") as Button
 	var prog := $VBox.get_node_or_null("ProgressionButton") as Button
@@ -332,6 +347,8 @@ func _wire_mode_buttons() -> void:
 		tt.pressed.connect(_on_start_time_trial)
 	if lmp and not lmp.pressed.is_connected(_on_start_local_mp):
 		lmp.pressed.connect(_on_start_local_mp)
+	if party and not party.pressed.is_connected(_on_start_party_race):
+		party.pressed.connect(_on_start_party_race)
 	if tut and not tut.pressed.is_connected(_on_start_tutorial):
 		tut.pressed.connect(_on_start_tutorial)
 	if ch and not ch.pressed.is_connected(_on_open_challenges):
@@ -863,6 +880,75 @@ func _on_start_local_mp() -> void:
 		return
 	GameManager.start_local_mp(track_id, 2)
 	SceneLoader.go_to_race()
+
+
+func _on_start_party_race() -> void:
+	## Party Race → Create Room lobby overlay → host start → RaceScene 2–8 humans.
+	var track_id := _selected_track_id()
+	if track_id.is_empty():
+		return
+	_open_party_race_lobby(track_id)
+
+
+func _open_party_race_lobby(track_id: String) -> void:
+	var existing := get_node_or_null("PartyRaceLobby")
+	if existing != null:
+		existing.queue_free()
+	var overlay := ColorRect.new()
+	overlay.name = "PartyRaceLobby"
+	overlay.color = Color(0.04, 0.06, 0.1, 0.94)
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	add_child(overlay)
+	var panel := VBoxContainer.new()
+	panel.set_anchors_preset(Control.PRESET_CENTER)
+	panel.offset_left = -320
+	panel.offset_right = 320
+	panel.offset_top = -220
+	panel.offset_bottom = 220
+	overlay.add_child(panel)
+	var title := Label.new()
+	title.text = "Party Race Lobby / Race Director"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	panel.add_child(title)
+	# Generate a short room code (public); auth tokens live on LAN host / party room.
+	var alphabet := "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
+	var code := ""
+	for i in range(5):
+		code += alphabet[randi() % alphabet.length()]
+	GameManager.party_room_code = code
+	var code_lbl := Label.new()
+	code_lbl.name = "RoomCodeLabel"
+	code_lbl.text = "Room code: %s" % code
+	code_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	panel.add_child(code_lbl)
+	var join_lbl := Label.new()
+	join_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	join_lbl.text = "Phone/browser: run scripts/net/partylink/lan_host.py then open /controller?code=%s\nQR encodes join URL (not player tokens). Spectators never take a seat." % code
+	panel.add_child(join_lbl)
+	var count_picker := OptionButton.new()
+	count_picker.name = "PartyCountPicker"
+	for n in [2, 3, 4, 5, 6, 7, 8]:
+		count_picker.add_item("%d racers" % n, n)
+	count_picker.select(6) # 8
+	panel.add_child(count_picker)
+	var seats := Label.new()
+	seats.text = "8 seat slots · spectators separate · host-authoritative laps/finish"
+	panel.add_child(seats)
+	var start_btn := Button.new()
+	start_btn.text = "Start Party Race"
+	start_btn.custom_minimum_size = Vector2(0, 48)
+	start_btn.pressed.connect(func ():
+		var players := int(count_picker.get_selected_id())
+		if players < 2:
+			players = 8
+		GameManager.start_party_race(track_id, players)
+		SceneLoader.go_to_race()
+	)
+	panel.add_child(start_btn)
+	var back := Button.new()
+	back.text = "Back"
+	back.pressed.connect(func (): overlay.queue_free())
+	panel.add_child(back)
 
 
 func _on_start_tutorial() -> void:
