@@ -1,0 +1,246 @@
+{
+  "schema": "pp_v4_powerup_distribution/v1",
+  "courses": {
+    "verdant_cascade_circuit": {
+      "path_points": 9,
+      "item_boxes": [
+        1,
+        4,
+        7
+      ],
+      "boost_pickups": [
+        2,
+        6
+      ],
+      "speed_lanes": [
+        1
+      ],
+      "bounce_pads": [
+        7
+      ],
+      "shortcuts": [
+        "cascade_inner_cut"
+      ],
+      "terrain_zones": [
+        {
+          "point_index": 5,
+          "terrain_name": "cascade_runoff"
+        }
+      ]
+    },
+    "cloverwind_ranch": {
+      "path_points": 10,
+      "item_boxes": [
+        2,
+        5,
+        8
+      ],
+      "boost_pickups": [
+        1,
+        7
+      ],
+      "speed_lanes": [
+        9
+      ],
+      "bounce_pads": [
+        3
+      ],
+      "shortcuts": [
+        "barn_alley"
+      ],
+      "terrain_zones": [
+        {
+          "point_index": 6,
+          "terrain_name": "ranch_mud"
+        }
+      ]
+    },
+    "tideglass_harbor": {
+      "path_points": 12,
+      "item_boxes": [
+        1,
+        4,
+        8,
+        11
+      ],
+      "boost_pickups": [
+        2,
+        6,
+        10
+      ],
+      "speed_lanes": [
+        1
+      ],
+      "bounce_pads": [
+        3
+      ],
+      "shortcuts": [
+        "pier_cut"
+      ],
+      "terrain_zones": [
+        {
+          "point_index": 7,
+          "terrain_name": "tide_flats"
+        }
+      ]
+    },
+    "neon_switchyard": {
+      "path_points": 12,
+      "item_boxes": [
+        2,
+        5,
+        8,
+        11
+      ],
+      "boost_pickups": [
+        0,
+        6,
+        10
+      ],
+      "speed_lanes": [
+        1,
+        9
+      ],
+      "bounce_pads": [
+        3
+      ],
+      "shortcuts": [
+        "yard_rail_cut"
+      ],
+      "terrain_zones": [
+        {
+          "point_index": 5,
+          "terrain_name": "oil_slick"
+        }
+      ]
+    },
+    "cloudstep_ridge": {
+      "path_points": 12,
+      "item_boxes": [
+        1,
+        4,
+        8,
+        10
+      ],
+      "boost_pickups": [
+        2,
+        6,
+        9
+      ],
+      "speed_lanes": [
+        11
+      ],
+      "bounce_pads": [
+        3,
+        5
+      ],
+      "shortcuts": [
+        "cliff_bounce"
+      ],
+      "terrain_zones": [
+        {
+          "point_index": 7,
+          "terrain_name": "ridge_mist"
+        }
+      ]
+    },
+    "prism_apex": {
+      "path_points": 11,
+      "item_boxes": [
+        1,
+        4,
+        7,
+        10
+      ],
+      "boost_pickups": [
+        3,
+        8
+      ],
+      "speed_lanes": [
+        2,
+        9
+      ],
+      "bounce_pads": [
+        5
+      ],
+      "shortcuts": [
+        "ribbon_cut"
+      ],
+      "terrain_zones": [
+        {
+          "point_index": 5,
+          "terrain_name": "neon"
+        }
+      ]
+    },
+    "mirage_mesa": {
+      "path_points": 12,
+      "item_boxes": [
+        2,
+        5,
+        8,
+        11
+      ],
+      "boost_pickups": [
+        1,
+        4,
+        10
+      ],
+      "speed_lanes": [
+        0,
+        9
+      ],
+      "bounce_pads": [
+        7
+      ],
+      "shortcuts": [
+        "dry_wash"
+      ],
+      "terrain_zones": [
+        {
+          "point_index": 5,
+          "terrain_name": "mesa_sand"
+        }
+      ]
+    },
+    "emberkeep_gauntlet": {
+      "path_points": 12,
+      "item_boxes": [
+        2,
+        5,
+        8,
+        11
+      ],
+      "boost_pickups": [
+        1,
+        6,
+        10
+      ],
+      "speed_lanes": [
+        11
+      ],
+      "bounce_pads": [
+        3,
+        9
+      ],
+      "shortcuts": [
+        "forge_vent_cut"
+      ],
+      "terrain_zones": [
+        {
+          "point_index": 7,
+          "terrain_name": "hot_ash"
+        }
+      ]
+    }
+  },
+  "rules": {
+    "no_item_boost_overlap": true,
+    "each_course_has_item_boxes": true,
+    "each_course_has_boost_pickups": true,
+    "each_course_has_speed_lane": true,
+    "each_course_has_shortcut": true,
+    "fair_comeback_policy_retained": true
+  },
+  "PASS": true
+}

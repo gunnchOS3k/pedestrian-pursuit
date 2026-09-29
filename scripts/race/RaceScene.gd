@@ -401,12 +401,16 @@ func _on_shortcut_entered(racer: Node, shortcut_id: String) -> void:
 
 
 func _on_player_boost_fx(_m: float, _d: float, _s: String) -> void:
-	if _boost_fx != null and _boost_fx.has_method("set_active"):
+	if _boost_fx != null and _boost_fx.has_method("mark_boost_event"):
+		_boost_fx.mark_boost_event(true)
+	elif _boost_fx != null and _boost_fx.has_method("set_active"):
 		_boost_fx.set_active(true, _reduced_motion())
 
 
 func _on_player_boost_fx_end() -> void:
-	if _boost_fx != null and _boost_fx.has_method("set_active"):
+	if _boost_fx != null and _boost_fx.has_method("mark_boost_event"):
+		_boost_fx.mark_boost_event(false)
+	elif _boost_fx != null and _boost_fx.has_method("set_active"):
 		_boost_fx.set_active(false, _reduced_motion())
 
 

@@ -1,0 +1,149 @@
+{
+  "schema": "pp_powerup_distribution/v4",
+  "courses": {
+    "cloudstep_ridge": {
+      "track_id": "cloudstep_ridge",
+      "item_boxes": 4,
+      "boost_pickups": 3,
+      "speed_lanes": 1,
+      "bounce_pads": 2,
+      "shortcuts": 1,
+      "terrain_zones": 1,
+      "rail_segments": 3,
+      "checks": {
+        "has_boost_pickup": true,
+        "has_speed_lane": true,
+        "has_item_box": true,
+        "no_empty_boost_surface": true
+      },
+      "fair_comeback_policy_retained": true,
+      "party_8p_safe_claim": "BOUNDED_BY_EXISTING_POLICY"
+    },
+    "cloverwind_ranch": {
+      "track_id": "cloverwind_ranch",
+      "item_boxes": 3,
+      "boost_pickups": 2,
+      "speed_lanes": 1,
+      "bounce_pads": 1,
+      "shortcuts": 1,
+      "terrain_zones": 1,
+      "rail_segments": 3,
+      "checks": {
+        "has_boost_pickup": true,
+        "has_speed_lane": true,
+        "has_item_box": true,
+        "no_empty_boost_surface": true
+      },
+      "fair_comeback_policy_retained": true,
+      "party_8p_safe_claim": "BOUNDED_BY_EXISTING_POLICY"
+    },
+    "emberkeep_gauntlet": {
+      "track_id": "emberkeep_gauntlet",
+      "item_boxes": 4,
+      "boost_pickups": 3,
+      "speed_lanes": 1,
+      "bounce_pads": 2,
+      "shortcuts": 1,
+      "terrain_zones": 1,
+      "rail_segments": 3,
+      "checks": {
+        "has_boost_pickup": true,
+        "has_speed_lane": true,
+        "has_item_box": true,
+        "no_empty_boost_surface": true
+      },
+      "fair_comeback_policy_retained": true,
+      "party_8p_safe_claim": "BOUNDED_BY_EXISTING_POLICY"
+    },
+    "mirage_mesa": {
+      "track_id": "mirage_mesa",
+      "item_boxes": 4,
+      "boost_pickups": 3,
+      "speed_lanes": 2,
+      "bounce_pads": 1,
+      "shortcuts": 1,
+      "terrain_zones": 1,
+      "rail_segments": 2,
+      "checks": {
+        "has_boost_pickup": true,
+        "has_speed_lane": true,
+        "has_item_box": true,
+        "no_empty_boost_surface": true
+      },
+      "fair_comeback_policy_retained": true,
+      "party_8p_safe_claim": "BOUNDED_BY_EXISTING_POLICY"
+    },
+    "neon_switchyard": {
+      "track_id": "neon_switchyard",
+      "item_boxes": 4,
+      "boost_pickups": 3,
+      "speed_lanes": 2,
+      "bounce_pads": 1,
+      "shortcuts": 1,
+      "terrain_zones": 1,
+      "rail_segments": 3,
+      "checks": {
+        "has_boost_pickup": true,
+        "has_speed_lane": true,
+        "has_item_box": true,
+        "no_empty_boost_surface": true
+      },
+      "fair_comeback_policy_retained": true,
+      "party_8p_safe_claim": "BOUNDED_BY_EXISTING_POLICY"
+    },
+    "prism_apex": {
+      "track_id": "prism_apex",
+      "item_boxes": 4,
+      "boost_pickups": 2,
+      "speed_lanes": 2,
+      "bounce_pads": 1,
+      "shortcuts": 1,
+      "terrain_zones": 1,
+      "rail_segments": 4,
+      "checks": {
+        "has_boost_pickup": true,
+        "has_speed_lane": true,
+        "has_item_box": true,
+        "no_empty_boost_surface": true
+      },
+      "fair_comeback_policy_retained": true,
+      "party_8p_safe_claim": "BOUNDED_BY_EXISTING_POLICY"
+    },
+    "tideglass_harbor": {
+      "track_id": "tideglass_harbor",
+      "item_boxes": 4,
+      "boost_pickups": 3,
+      "speed_lanes": 1,
+      "bounce_pads": 1,
+      "shortcuts": 1,
+      "terrain_zones": 1,
+      "rail_segments": 2,
+      "checks": {
+        "has_boost_pickup": true,
+        "has_speed_lane": true,
+        "has_item_box": true,
+        "no_empty_boost_surface": true
+      },
+      "fair_comeback_policy_retained": true,
+      "party_8p_safe_claim": "BOUNDED_BY_EXISTING_POLICY"
+    },
+    "verdant_cascade_circuit": {
+      "track_id": "verdant_cascade_circuit",
+      "item_boxes": 3,
+      "boost_pickups": 2,
+      "speed_lanes": 1,
+      "bounce_pads": 1,
+      "shortcuts": 1,
+      "terrain_zones": 1,
+      "rail_segments": 2,
+      "checks": {
+        "has_boost_pickup": true,
+        "has_speed_lane": true,
+        "has_item_box": true,
+        "no_empty_boost_surface": true
+      },
+      "fair_comeback_policy_retained": true,
+      "party_8p_safe_claim": "BOUNDED_BY_EXISTING_POLICY"
+    }
+  }
+}

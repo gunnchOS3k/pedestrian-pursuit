@@ -1,0 +1,18 @@
+{
+  "track_id": "emberkeep_gauntlet",
+  "item_boxes": 4,
+  "boost_pickups": 3,
+  "speed_lanes": 1,
+  "bounce_pads": 2,
+  "shortcuts": 1,
+  "terrain_zones": 1,
+  "rail_segments": 3,
+  "checks": {
+    "has_boost_pickup": true,
+    "has_speed_lane": true,
+    "has_item_box": true,
+    "no_empty_boost_surface": true
+  },
+  "fair_comeback_policy_retained": true,
+  "party_8p_safe_claim": "BOUNDED_BY_EXISTING_POLICY"
+}

@@ -537,6 +537,8 @@ func collect_boost_pickup() -> void:
 func apply_stomp_slow(duration: float) -> void:
 	if shield_active:
 		shield_active = false
+		var fx := preload("res://scripts/items/ItemEffectVisuals.gd")
+		fx.break_sole_shield(self)
 		return
 	if item_manager and item_manager.has_method("consume_bounce_bubble") and item_manager.consume_bounce_bubble():
 		_set_vertical_impulse("bounce_bubble", maxf(velocity.y, 7.0))
