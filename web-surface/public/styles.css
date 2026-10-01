@@ -7,7 +7,7 @@ a:focus-visible, .skip:focus { outline: 3px solid var(--accent, #f4f1ea); outlin
 .skip:focus { top: 0.5rem; }
 .top { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1rem 1.25rem; border-bottom: 1px solid #2a3142; }
 .mark { margin: 0; font-weight: 700; letter-spacing: 0.04em; }
-#portal-return { min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; padding: 0.4rem 0.8rem; border: 1px solid var(--accent, #f4f1ea); border-radius: 8px; text-decoration: none; }
+#portal-return, #primary-action { min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; padding: 0.4rem 0.8rem; border: 1px solid var(--accent, #f4f1ea); border-radius: 8px; text-decoration: none; }
 main { max-width: 46rem; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
 h1 { font-size: 2.2rem; line-height: 1.15; margin: 0.2rem 0; }
 h2 { font-size: 1.15rem; margin-top: 1.6rem; }

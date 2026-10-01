@@ -2,17 +2,19 @@
   "repo": "pedestrian-pursuit",
   "productName": "Pedestrian Pursuit",
   "family": "Games",
-  "classification": "GAME_LANDING_WORKER",
+  "classification": "HEAVY_ASSET_EXTERNAL_RUNTIME_SURFACE",
   "acceptedSha": "77a5413c15e0d25524fe5381e117678aa2d42edf",
+  "developmentSha": "c4f2f42b792307034e6e343c055c45c26e4ddf0d",
   "status": "STAGING_WORKER",
-  "summary": "Arcade foot-racing game on Godot 4. Accepted main has no browser export.",
+  "summary": "Development Godot 4.5.2 web build served from an R2 runtime prefix. Not accepted main.",
   "capabilities": [
-    "Read what the game is and that browser play is unavailable",
+    "Open the development build",
     "Open the source repository"
   ],
   "limitations": [
-    "No Play action is offered",
-    "No gameplay is simulated on this Worker"
+    "Draft branch v4/course-worlds-powerup-readability is not accepted main",
+    "This is a development build, not a release",
+    "Course and fun approval remain with the owner"
   ],
   "sourceUrl": "https://github.com/gunnchOS3k/pedestrian-pursuit",
   "returnUrlEnv": "GUNNCHOS_PORTAL_URL",

@@ -16,32 +16,37 @@
   <main id="content">
     <p class="kicker">Games</p>
     <h1>Pedestrian Pursuit</h1>
+    <p class="badge" id="dev-label">DEVELOPMENT BUILD</p>
     <p class="badge">STAGING_WORKER</p>
-    <p class="lead">Arcade foot-racing game on Godot 4. Accepted main has no browser export.</p>
+    <p class="lead">Development web build of draft ref v4/course-worlds-powerup-readability. The Godot payload is loaded same-origin from a dedicated runtime prefix. It is not accepted main.</p>
+    <p><a id="primary-action" href="/runtime/c4f2f42b792307034e6e343c055c45c26e4ddf0d/index.html">Play Development Build</a></p>
     <section aria-labelledby="what">
       <h2 id="what">What is this?</h2>
-      <p>Arcade foot-racing game on Godot 4. Accepted main has no browser export.</p>
-      <p>Gameplay is not hosted here.</p>
+      <p>Arcade foot-racing game. This staging Worker loads a development Godot web export through an R2 binding. The wasm file is not a Worker static asset.</p>
     </section>
     <section aria-labelledby="why">
       <h2 id="why">Why does it exist?</h2>
-      <p>It gives this repository a public web surface inside the gunnchOS ecosystem without pretending the original runtime runs on Cloudflare Workers.</p>
+      <p>It gives this repository a public web surface and a development boot path. The oversized wasm and pck stay in R2, outside the Worker static-asset limit.</p>
     </section>
     <section aria-labelledby="today">
       <h2 id="today">What can I actually do with it today?</h2>
-      <ul><li>Read what the game is and that browser play is unavailable</li><li>Open the source repository</li></ul>
+      <ul><li>Open the development build</li><li>Open the source repository</li></ul>
     </section>
     <section aria-labelledby="tech">
       <h2 id="tech">What technology is inside it?</h2>
-      <p>Classification GAME_LANDING_WORKER. Accepted source <code>77a5413c15e0d25524fe5381e117678aa2d42edf</code>.</p>
+      <p>Classification HEAVY_ASSET_EXTERNAL_RUNTIME_SURFACE. Development source <code>c4f2f42b792307034e6e343c055c45c26e4ddf0d</code>. Accepted main remains <code>77a5413c15e0d25524fe5381e117678aa2d42edf</code>. Godot 4.5.2 Web preset, threaded, with cross-origin isolation headers.</p>
     </section>
     <section aria-labelledby="evidence">
       <h2 id="evidence">What evidence exists?</h2>
-      <p><a href="https://github.com/gunnchOS3k/pedestrian-pursuit">Source repository</a>. Read the repository for methods, results, and status. This page does not add new experimental claims.</p>
+      <p><a href="https://github.com/gunnchOS3k/pedestrian-pursuit">Source repository</a>. Runtime identity is at <a href="/runtime-manifest">/runtime-manifest</a>.</p>
     </section>
     <section aria-labelledby="limits">
       <h2 id="limits">What is not finished?</h2>
-      <ul><li>No Play action is offered</li><li>No gameplay is simulated on this Worker</li></ul>
+      <ul>
+        <li>Draft branch v4/course-worlds-powerup-readability is not accepted main</li>
+        <li>This is a development build, not a release</li>
+        <li>Course and fun approval remain with the owner</li>
+      </ul>
     </section>
     <section aria-labelledby="fit">
       <h2 id="fit">Where does it fit in gunnchOS?</h2>
