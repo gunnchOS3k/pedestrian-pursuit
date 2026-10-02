@@ -8,6 +8,7 @@ const Vxp3PresentationScript = preload("res://scripts/ui/vxp3/Vxp3Presentation.g
 const Vxp3BrandScript = preload("res://scripts/ui/vxp3/Vxp3Brand.gd")
 const RunnerVisualResolver = preload("res://scripts/player/RunnerVisualResolver.gd")
 const RunnerIdsScript = preload("res://scripts/data/RunnerIds.gd")
+const _CourseIdentity = preload("res://scripts/gamefeel/CourseIdentityCatalog.gd")
 
 ## Main menu — Quick Race, Cup, Time Trial, Local MP entry points (Alpha).
 
@@ -1134,15 +1135,29 @@ func _on_course_selected(index: int) -> void:
 	if index < 0 or index >= _all_tracks.size():
 		return
 	var track := _all_tracks[index]
-	description_label.text = (
-		"%s  •  %s\n%s"
-		% [
-			str(track.get("difficulty", "")).capitalize(),
-			"%d laps" % int(track.get("lap_count", 3)),
-			str(track.get("description", "")),
-		]
-	)
-	_refresh_track_thumb(str(track.get("id", "")))
+	var track_id := str(track.get("id", ""))
+	var identity_line := _CourseIdentity.preview_copy(track_id)
+	if identity_line.is_empty():
+		description_label.text = (
+			"%s  •  %s\n%s"
+			% [
+				str(track.get("difficulty", "")).capitalize(),
+				"%d laps" % int(track.get("lap_count", 3)),
+				str(track.get("description", "")),
+			]
+		)
+	else:
+		description_label.text = (
+			"%s  •  %s\n%s\n\n%s"
+			% [
+				str(track.get("difficulty", "")).capitalize(),
+				"%d laps" % int(track.get("lap_count", 3)),
+				str(track.get("description", "")),
+				identity_line,
+			]
+		)
+	_refresh_track_thumb(track_id)
+	_refresh_course_identity_card(track_id)
 
 
 func _apply_launch_presentation() -> void:
@@ -1225,6 +1240,37 @@ func _refresh_track_thumb(track_id: String) -> void:
 	var tex := LaunchArtCatalogScript.track_icon(track_id)
 	if tex != null:
 		thumb.texture = tex
+
+
+func _refresh_course_identity_card(track_id: String) -> void:
+	## Course-select preview: silhouette, landmark, mechanic, boost identity.
+	var card := $VBox.get_node_or_null("CourseIdentityCard") as Label
+	if card == null:
+		card = Label.new()
+		card.name = "CourseIdentityCard"
+		card.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		card.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		card.add_theme_font_size_override("font_size", 13)
+		card.add_theme_color_override("font_color", Color(0.75, 0.88, 1.0))
+		$VBox.add_child(card)
+		var thumb := $VBox.get_node_or_null("TrackThumb")
+		if thumb:
+			$VBox.move_child(card, thumb.get_index() + 1)
+	var ident := _CourseIdentity.identity_for(track_id)
+	if ident.is_empty():
+		card.text = ""
+		return
+	var preview: Dictionary = ident.get("preview", {})
+	card.text = (
+		"Course identity\nSilhouette: %s\nLandmark: %s\nMechanic: %s\nBoost: %s\nRisk: %s"
+		% [
+			str(preview.get("silhouette", ident.get("silhouette_grammar", ""))),
+			str(preview.get("landmark", "")),
+			str(preview.get("mechanic", ident.get("signature_mechanic", ""))),
+			str(preview.get("boost", ident.get("boost_moment", ""))),
+			str(ident.get("risk_reward", ident.get("shortcut_style", ""))),
+		]
+	)
 
 
 func _on_quit() -> void:

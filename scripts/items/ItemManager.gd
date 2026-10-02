@@ -8,6 +8,7 @@ signal item_warning(item_id: String, seconds: float, target: Node)
 signal item_countered(item_id: String, by: String)
 
 const FairComebackPolicyScript = preload("res://scripts/race/FairComebackPolicy.gd")
+const ItemFX := preload("res://scripts/items/ItemEffectVisuals.gd")
 
 var held_item_id: String = ""
 var _item_defs: Dictionary = {}
@@ -107,6 +108,8 @@ func _use_turbo_toes(racer: Node) -> void:
 			boost.apply_external_boost(1.45, 2.0, "item_turbo_toes")
 		if boost.has_method("add_boost"):
 			boost.add_boost(10.0, "item_turbo_toes")
+	if racer is Node3D:
+		ItemFX.spawn_turbo_toes(racer as Node3D)
 
 
 func _use_lace_trap(racer: Node) -> void:
@@ -126,11 +129,15 @@ func _use_lace_trap(racer: Node) -> void:
 	host.add_child(trap)
 	var back: Vector3 = racer.global_transform.basis.z
 	trap.global_position = racer.global_position + back * 3.0
+	if trap is Node3D:
+		ItemFX.decorate_lace_trap(trap as Node3D)
 
 
 func _use_sole_shield(racer: Node) -> void:
 	if racer.has_method("activate_shield"):
 		racer.activate_shield()
+	if racer is Node3D:
+		ItemFX.spawn_sole_shield(racer as Node3D)
 
 
 func _use_pulse_horn(racer: Node) -> void:
@@ -139,6 +146,8 @@ func _use_pulse_horn(racer: Node) -> void:
 	var strength := float(def.get("effect_strength", 0.65))
 	var duration := float(def.get("duration", 1.2))
 	item_warning.emit("pulse_horn", warn, null)
+	if racer is Node3D:
+		ItemFX.spawn_pulse_horn(racer as Node3D)
 	var tree := racer.get_tree()
 	if tree == null:
 		return
@@ -170,6 +179,8 @@ func _use_magnet_lace(racer: Node) -> void:
 	var duration := float(def.get("duration", 2.4))
 	var target := _find_leader(racer)
 	item_warning.emit("magnet_lace", warn, target)
+	if racer is Node3D and target is Node3D:
+		ItemFX.spawn_magnet_lace(racer as Node3D, target as Node3D)
 	var tree := racer.get_tree()
 	if tree == null or target == null:
 		return
@@ -185,6 +196,8 @@ func _use_bounce_bubble(racer: Node) -> void:
 		racer.activate_shield()
 	if racer is CharacterBody3D:
 		(racer as CharacterBody3D).velocity.y = maxf((racer as CharacterBody3D).velocity.y, 8.5)
+	if racer is Node3D:
+		ItemFX.spawn_bounce_bubble(racer as Node3D, _bubble_timer)
 
 
 func _apply_hazard(target: Node, slow_duration: float, item_id: String = "") -> void:
@@ -205,6 +218,8 @@ func _apply_hazard(target: Node, slow_duration: float, item_id: String = "") -> 
 			return
 	if target.get("shield_active") == true:
 		target.set("shield_active", false)
+		if target is Node3D:
+			ItemFX.break_sole_shield(target as Node3D)
 		item_countered.emit(item_id, "shield")
 		return
 	if target.has_method("apply_lace_trap_slow"):
@@ -225,3 +240,18 @@ func _find_leader(racer: Node) -> Node:
 			best_place = place
 			best = other
 	return best
+
+
+func present_item_world_effect(item_id: String) -> void:
+	var parent := get_parent()
+	if parent == null or not (parent is Node3D):
+		return
+	var facing := Vector3.FORWARD
+	if "velocity" in parent:
+		var v: Vector3 = parent.velocity
+		v.y = 0.0
+		if v.length_squared() > 0.01:
+			facing = v.normalized()
+	elif parent is Node3D:
+		facing = -(parent as Node3D).global_transform.basis.z
+	ItemEffectPresenter.spawn_world_effect(parent as Node3D, item_id, Vector3.ZERO, facing)

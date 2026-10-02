@@ -3,21 +3,21 @@
   "productName": "Pedestrian Pursuit",
   "family": "Games",
   "classification": "HEAVY_ASSET_EXTERNAL_RUNTIME_SURFACE",
-  "acceptedSha": "77a5413c15e0d25524fe5381e117678aa2d42edf",
-  "developmentSha": "c4f2f42b792307034e6e343c055c45c26e4ddf0d",
+  "acceptedSha": "8eeb5051d70fab7fc9339a1fef6272e943df1be1",
+  "developmentSha": "8eeb5051d70fab7fc9339a1fef6272e943df1be1",
   "status": "STAGING_WORKER",
-  "summary": "Development Godot 4.5.2 web build served from an R2 runtime prefix. Not accepted main.",
+  "summary": "Development Godot 4.5.2 web build served from an R2 prefix pinned to merged main. Course and fun approval remain false.",
   "capabilities": [
     "Open the development build",
     "Open the source repository"
   ],
   "limitations": [
-    "Draft branch v4/course-worlds-powerup-readability is not accepted main",
-    "This is a development build, not a release",
-    "Course and fun approval remain with the owner"
+    "Release channel stays DEVELOPMENT. This is not a V1 release.",
+    "HUMAN_COURSE_APPROVAL is false.",
+    "HUMAN_FUN_APPROVAL is false."
   ],
   "sourceUrl": "https://github.com/gunnchOS3k/pedestrian-pursuit",
   "returnUrlEnv": "GUNNCHOS_PORTAL_URL",
-  "returnUrl": "https://gunnchos-site.gunnchos-finds.workers.dev",
+  "returnUrl": "https://gunnchos.com",
   "workerName": "pedestrian-pursuit-web"
 }

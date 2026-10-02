@@ -1,14 +1,14 @@
-const SHA = "c4f2f42b792307034e6e343c055c45c26e4ddf0d";
+const SHA = "8eeb5051d70fab7fc9339a1fef6272e943df1be1";
 const PREFIX = `pursuit/${SHA}/`;
 
 const FILES = {
   "index.apple-touch-icon.png": { bytes: 10335, sha256: "2fa37c90392db27b8cfb77dc0689de5d1f0bdc92ab80d5980cd5cff24b2dbb14" },
   "index.audio.position.worklet.js": { bytes: 2973, sha256: "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8" },
   "index.audio.worklet.js": { bytes: 7298, sha256: "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3" },
-  "index.html": { bytes: 5449, sha256: "1a5d87801cd96c6d1c12e3f68e80cd6fc8149d526049821f5395527b80bb4662" },
+  "index.html": { bytes: 5449, sha256: "f33cc6143a769bf0e5411f634441229e7cbae6a00169a8f4f482e221d7ff4292" },
   "index.icon.png": { bytes: 24966, sha256: "26ae33aacbc5cc6b2aa783717bf02e7a7d3113fbcdfccd87b194122369150963" },
   "index.js": { bytes: 358024, sha256: "6f74d38f35066e0fd6e9b9f265af4c88a36f113726de9fbba9b50dd939bf7b2e" },
-  "index.pck": { bytes: 43133012, sha256: "01447b772098e2b7996d8204ad2969742d2a375a23eb935f049735747b8159b8" },
+  "index.pck": { bytes: 43130240, sha256: "2b8327a628f3f9feaf53e05f38caaa36e5cfc15ae75e7e4cf92589ab71878902" },
   "index.png": { bytes: 18543, sha256: "d29f2916a26619b43d54a2cdec1585e9b7f7201608e42c81e7ea0f1e1ebfd636" },
   "index.wasm": { bytes: 37334478, sha256: "e68cbce74b58c38d58b75806ab1a7dbecbc0345e5332e40ed8264aa5b955e4fc" },
 };
@@ -24,11 +24,16 @@ const MIME = {
 export function runtimeManifest() {
   return {
     channel: "DEVELOPMENT",
+    release_channel: "DEVELOPMENT",
     label: "DEVELOPMENT_BUILD",
     repo: "gunnchOS3k/pedestrian-pursuit",
-    ref: "v4/course-worlds-powerup-readability",
+    ref: "main",
+    source_ref: "main",
     sha: SHA,
-    acceptedMain: false,
+    source_sha: SHA,
+    acceptedMain: true,
+    HUMAN_COURSE_APPROVAL: false,
+    HUMAN_FUN_APPROVAL: false,
     godot: "4.5.2.stable.official",
     exportPreset: "Web",
     threads: true,

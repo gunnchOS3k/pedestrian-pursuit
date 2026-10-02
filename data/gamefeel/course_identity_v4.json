@@ -1,0 +1,716 @@
+{
+  "schema": "pp_course_identity/v4",
+  "version": 4,
+  "courses": {
+    "verdant_cascade_circuit": {
+      "short_name": "Verdant",
+      "display_name": "Verdant Cascade Circuit",
+      "visual_theme": "Riverside garden circuit under mist and pale daylight.",
+      "route_rhythm": "Wide opening straight, sweeping garden bend, runoff pocket, climb back to the falls.",
+      "signature_section": "Mist columns over the inner river cut.",
+      "shortcut_id": "cascade_inner_cut",
+      "shortcut_style": "Wet inner cut \u2014 save time if you keep the line, wash out if you overcommit.",
+      "lighting": {
+        "sun_degrees": [
+          -48.0,
+          -28.0,
+          0.0
+        ],
+        "sun_energy": 1.15,
+        "ambient": "#D8F0E8",
+        "ambient_energy": 0.82,
+        "fog_color": "#9FD4C8",
+        "fog_density": 0.004
+      },
+      "audio_direction": "Water and leaf hush under the existing verdant race bed.",
+      "challenge_identity": "Read the runoff. Beginner-friendly unless you force the wet cut.",
+      "landmarks": [
+        {
+          "id": "falls_arch",
+          "kind": "arch",
+          "point_index": 0,
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": 1.0,
+          "role": "start_and_finish"
+        },
+        {
+          "id": "cascade_columns",
+          "kind": "waterfall",
+          "point_index": 2,
+          "offset": [
+            -10,
+            0,
+            4
+          ],
+          "scale": 1.1,
+          "role": "shortcut_anticipation"
+        },
+        {
+          "id": "garden_lantern",
+          "kind": "beacon",
+          "point_index": 6,
+          "offset": [
+            8,
+            0,
+            2
+          ],
+          "scale": 0.9,
+          "role": "lap_progress"
+        }
+      ],
+      "fantasy": "river garden + waterfall circuit",
+      "route_topology": "flowing_s_curves_bridge_waterfall_wet_inner_cut",
+      "macro_terrain": "river_shelf_with_cascade_drop",
+      "silhouette_skyline": "falls_arch_plus_cascade_columns",
+      "signature_mechanic": "mist_water_runoff_grip_readability",
+      "shortcut_grammar": "wet_inner_cut_commitment",
+      "boost_moment": "acceleration_strip_exiting_waterfall",
+      "landmark_memory": "large_cascade_readable_across_lap",
+      "audio_ambience": "water_leaf_hush_cascade_roar",
+      "risk_reward": "wet_cut_time_vs_washout",
+      "preview": {
+        "silhouette": "S-curve with falls spike",
+        "landmark": "Cascade columns",
+        "mechanic": "Mist runoff grip",
+        "shortcut_risk": "Wet inner cut",
+        "boost_identity": "Cascade exit strip",
+        "boost": "Cascade exit strip",
+        "shortcut": "Wet inner cut"
+      },
+      "silhouette_grammar": "falls_arch_plus_cascade_columns",
+      "signature_mechanic_blurb": "mist water runoff grip readability",
+      "boost_moment_blurb": "acceleration strip exiting waterfall",
+      "skyline_props": [
+        "falls_arch",
+        "cascade_columns",
+        "garden_canopy_ring"
+      ]
+    },
+    "cloverwind_ranch": {
+      "short_name": "Cloverwind",
+      "display_name": "Cloverwind Ranch",
+      "visual_theme": "Sunlit clover fields, timber, and hay.",
+      "route_rhythm": "Open pasture sprint, gate squeeze, muddy alley option, windy back stretch.",
+      "signature_section": "Timber gate into the barn alley decision.",
+      "shortcut_id": "barn_alley",
+      "shortcut_style": "Mud alley \u2014 shorter, sloppy steering, cheap to miss.",
+      "lighting": {
+        "sun_degrees": [
+          -55.0,
+          -40.0,
+          0.0
+        ],
+        "sun_energy": 1.25,
+        "ambient": "#F2E6B8",
+        "ambient_energy": 0.88,
+        "fog_color": "#E8D9A0",
+        "fog_density": 0.002
+      },
+      "audio_direction": "Open-air wind and timber creak under the ranch race bed.",
+      "challenge_identity": "Commit early to the alley or keep the dry pasture.",
+      "landmarks": [
+        {
+          "id": "timber_gate",
+          "kind": "gate",
+          "point_index": 2,
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": 1.15,
+          "role": "shortcut_anticipation"
+        },
+        {
+          "id": "hay_tower",
+          "kind": "tower",
+          "point_index": 5,
+          "offset": [
+            12,
+            0,
+            -6
+          ],
+          "scale": 1.2,
+          "role": "route_memory"
+        },
+        {
+          "id": "clover_windmill",
+          "kind": "sculpture",
+          "point_index": 7,
+          "offset": [
+            -14,
+            0,
+            4
+          ],
+          "scale": 1.0,
+          "role": "lap_progress"
+        }
+      ],
+      "fantasy": "open pasture + timber farm + wind",
+      "route_topology": "pasture_sprint_barn_gate_mud_alley_backstretch",
+      "macro_terrain": "open_field_to_timber_compression",
+      "silhouette_skyline": "barn_gate_windmill_hay_tower",
+      "signature_mechanic": "crosswind_gust_lateral_line",
+      "shortcut_grammar": "mud_alley_vs_dry_pasture",
+      "boost_moment": "windmill_timber_gate_boost_corridor",
+      "landmark_memory": "barn_silhouette_and_windmill",
+      "audio_ambience": "open_wind_timber_creak",
+      "risk_reward": "alley_save_vs_sloppy_exit",
+      "preview": {
+        "silhouette": "Wide oval with barn pinch",
+        "landmark": "Timber gate + windmill",
+        "mechanic": "Crosswind gust zones",
+        "shortcut_risk": "Mud alley",
+        "boost_identity": "Gate corridor",
+        "boost": "Gate corridor",
+        "shortcut": "Mud alley"
+      },
+      "silhouette_grammar": "barn_gate_windmill_hay_tower",
+      "signature_mechanic_blurb": "crosswind gust lateral line",
+      "boost_moment_blurb": "windmill timber gate boost corridor",
+      "skyline_props": [
+        "barn_silhouette",
+        "timber_gate",
+        "windmill",
+        "hay_tower"
+      ]
+    },
+    "tideglass_harbor": {
+      "short_name": "Tideglass",
+      "display_name": "Tideglass Harbor",
+      "visual_theme": "Glassy piers, pale tide flats, and a harbor beacon.",
+      "route_rhythm": "Wide runoff start, pier jump choice, glass straight, lighthouse close.",
+      "signature_section": "Pier-cut over the tide flats.",
+      "shortcut_id": "pier_cut",
+      "shortcut_style": "Medium risk jump cut \u2014 readable, punish over-brake.",
+      "lighting": {
+        "sun_degrees": [
+          -42.0,
+          20.0,
+          0.0
+        ],
+        "sun_energy": 1.05,
+        "ambient": "#C8E4F2",
+        "ambient_energy": 0.9,
+        "fog_color": "#B8D8E8",
+        "fog_density": 0.006
+      },
+      "audio_direction": "Tide slap and gull-distance hush under the harbor race bed.",
+      "challenge_identity": "Newcomer-wide runoff with one brave pier line.",
+      "landmarks": [
+        {
+          "id": "glass_pier",
+          "kind": "bridge",
+          "point_index": 2,
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": 1.2,
+          "role": "shortcut_anticipation"
+        },
+        {
+          "id": "harbor_crane",
+          "kind": "tower",
+          "point_index": 4,
+          "offset": [
+            16,
+            0,
+            8
+          ],
+          "scale": 1.1,
+          "role": "route_memory"
+        },
+        {
+          "id": "tide_beacon",
+          "kind": "beacon",
+          "point_index": 0,
+          "offset": [
+            -8,
+            0,
+            10
+          ],
+          "scale": 1.0,
+          "role": "start_and_finish"
+        }
+      ],
+      "fantasy": "glass piers + tide flats + working harbor",
+      "route_topology": "wide_start_pier_jump_dock_turn_beacon_finish",
+      "macro_terrain": "harbor_flat_with_pier_elevation",
+      "silhouette_skyline": "crane_glass_pier_lighthouse",
+      "signature_mechanic": "timed_harbor_gate_tide_window",
+      "shortcut_grammar": "pier_jump_cut",
+      "boost_moment": "pier_exit_dock_sprint",
+      "landmark_memory": "crane_and_beacon",
+      "audio_ambience": "tide_slap_gull_distance",
+      "risk_reward": "pier_cut_vs_safe_dock",
+      "preview": {
+        "silhouette": "Harbor U with pier spike",
+        "landmark": "Glass pier + crane",
+        "mechanic": "Tide-window gate",
+        "shortcut_risk": "Pier jump",
+        "boost_identity": "Dock sprint",
+        "boost": "Dock sprint",
+        "shortcut": "Pier jump"
+      },
+      "silhouette_grammar": "crane_glass_pier_lighthouse",
+      "signature_mechanic_blurb": "timed harbor gate tide window",
+      "boost_moment_blurb": "pier exit dock sprint",
+      "skyline_props": [
+        "glass_pier",
+        "harbor_crane",
+        "lighthouse_beacon",
+        "dock_vessel_abstract"
+      ]
+    },
+    "neon_switchyard": {
+      "short_name": "Neon",
+      "display_name": "Neon Switchyard",
+      "visual_theme": "Freight corridors, magenta gantries, night yard tower.",
+      "route_rhythm": "Tight switch, neon speed lane, rail-cut dare, tower rejoin.",
+      "signature_section": "Yard tower rail grind cut.",
+      "shortcut_id": "yard_rail_cut",
+      "shortcut_style": "High-risk rail cut \u2014 late entry is a wall, not a bonus.",
+      "lighting": {
+        "sun_degrees": [
+          -18.0,
+          80.0,
+          0.0
+        ],
+        "sun_energy": 0.35,
+        "ambient": "#1A2040",
+        "ambient_energy": 0.55,
+        "fog_color": "#141828",
+        "fog_density": 0.01
+      },
+      "audio_direction": "Hum and switch-clack under the neon race bed.",
+      "challenge_identity": "Read the gantry early or stay on the freight floor.",
+      "landmarks": [
+        {
+          "id": "yard_tower",
+          "kind": "tower",
+          "point_index": 4,
+          "offset": [
+            10,
+            0,
+            0
+          ],
+          "scale": 1.4,
+          "role": "shortcut_anticipation"
+        },
+        {
+          "id": "neon_gantry",
+          "kind": "arch",
+          "point_index": 1,
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": 1.2,
+          "role": "route_memory"
+        },
+        {
+          "id": "freight_glyph",
+          "kind": "sculpture",
+          "point_index": 6,
+          "offset": [
+            -12,
+            0,
+            6
+          ],
+          "scale": 0.95,
+          "role": "lap_progress"
+        }
+      ],
+      "fantasy": "night freight yard + neon gantries + rail switching",
+      "route_topology": "tight_switchbacks_freight_lane_rail_cut_tower_rejoin",
+      "macro_terrain": "freight_corridor_canyon",
+      "silhouette_skyline": "yard_tower_gantries_switch_signals",
+      "signature_mechanic": "readable_switching_lanes_rail_gate_rhythm",
+      "shortcut_grammar": "rail_cut_dare",
+      "boost_moment": "multi_pad_neon_speed_lane_commitment",
+      "landmark_memory": "illuminated_switch_signals",
+      "audio_ambience": "hum_neon_freight_clank",
+      "risk_reward": "rail_cut_vs_long_freight",
+      "preview": {
+        "silhouette": "Zigzag freight with tower",
+        "landmark": "Neon gantries",
+        "mechanic": "Switch lane rhythm",
+        "shortcut_risk": "Rail cut",
+        "boost_identity": "Neon multi-pad lane",
+        "boost": "Neon multi-pad lane",
+        "shortcut": "Rail cut"
+      },
+      "silhouette_grammar": "yard_tower_gantries_switch_signals",
+      "signature_mechanic_blurb": "readable switching lanes rail gate rhythm",
+      "boost_moment_blurb": "multi pad neon speed lane commitment",
+      "skyline_props": [
+        "yard_tower",
+        "neon_gantries",
+        "switch_signals",
+        "container_stack"
+      ]
+    },
+    "cloudstep_ridge": {
+      "short_name": "Cloudstep",
+      "display_name": "Cloudstep Ridge",
+      "visual_theme": "High shelves, pale mist, and cliff light.",
+      "route_rhythm": "Shelf climb, mist slowdown, cliff-bounce option, ridge rejoin.",
+      "signature_section": "Cliff bounce over the drop.",
+      "shortcut_id": "cliff_bounce",
+      "shortcut_style": "High-risk bounce \u2014 miss the pad and you eat the shelf.",
+      "lighting": {
+        "sun_degrees": [
+          -62.0,
+          -10.0,
+          0.0
+        ],
+        "sun_energy": 1.2,
+        "ambient": "#D0E4F4",
+        "ambient_energy": 0.95,
+        "fog_color": "#C8D8E8",
+        "fog_density": 0.012
+      },
+      "audio_direction": "Thin wind and distant drop under the ridge race bed.",
+      "challenge_identity": "Elevation and mist. The bounce is a choice, not a door puzzle.",
+      "landmarks": [
+        {
+          "id": "mist_bridge",
+          "kind": "bridge",
+          "point_index": 2,
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": 1.15,
+          "role": "route_memory"
+        },
+        {
+          "id": "ridge_beacon",
+          "kind": "beacon",
+          "point_index": 3,
+          "offset": [
+            8,
+            0,
+            -6
+          ],
+          "scale": 1.1,
+          "role": "shortcut_anticipation"
+        },
+        {
+          "id": "cloud_shelf",
+          "kind": "gate",
+          "point_index": 6,
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": 1.0,
+          "role": "lap_progress"
+        }
+      ],
+      "fantasy": "high mountain shelves + cloud gaps + vertical movement",
+      "route_topology": "climb_ledge_mist_bridge_bounce_chain_downhill",
+      "macro_terrain": "stacked_shelves_with_void_gaps",
+      "silhouette_skyline": "cliff_shelf_mist_bridge_ridge_beacon",
+      "signature_mechanic": "updraft_downdraft_bounce_sequence",
+      "shortcut_grammar": "bounce_chain_shortcut",
+      "boost_moment": "bounce_chain_converts_to_ridge_boost",
+      "landmark_memory": "mist_bridge_over_depth",
+      "audio_ambience": "thin_wind_altitude_hush",
+      "risk_reward": "bounce_chain_vs_safe_ledge",
+      "preview": {
+        "silhouette": "Stepped ridge climb",
+        "landmark": "Mist bridge",
+        "mechanic": "Bounce + draft sequence",
+        "shortcut_risk": "Bounce chain",
+        "boost_identity": "Ridge boost after chain",
+        "boost": "Ridge boost after chain",
+        "shortcut": "Bounce chain"
+      },
+      "silhouette_grammar": "cliff_shelf_mist_bridge_ridge_beacon",
+      "signature_mechanic_blurb": "updraft downdraft bounce sequence",
+      "boost_moment_blurb": "bounce chain converts to ridge boost",
+      "skyline_props": [
+        "mist_bridge",
+        "cliff_shelf",
+        "ridge_beacon",
+        "depth_void_read"
+      ]
+    },
+    "prism_apex": {
+      "short_name": "Prism",
+      "display_name": "Prism Apex",
+      "visual_theme": "Orbital ribbon, sparse rails, alternating color sectors.",
+      "route_rhythm": "Precision boost gates, ribbon cut, void rejoin.",
+      "signature_section": "Narrow ribbon cut between color sectors.",
+      "shortcut_id": "ribbon_cut",
+      "shortcut_style": "Narrow precision cut \u2014 always tempting, expensive to miss.",
+      "lighting": {
+        "sun_degrees": [
+          -30.0,
+          140.0,
+          0.0
+        ],
+        "sun_energy": 0.7,
+        "ambient": "#14183A",
+        "ambient_energy": 0.7,
+        "fog_color": "#0C1030",
+        "fog_density": 0.008
+      },
+      "audio_direction": "Soft harmonic bed already authored for Prism. No extra commercial music.",
+      "challenge_identity": "Precision over power. The ribbon is a skill check.",
+      "landmarks": [
+        {
+          "id": "sector_gate",
+          "kind": "gate",
+          "point_index": 1,
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": 1.2,
+          "role": "route_memory"
+        },
+        {
+          "id": "ribbon_sculpture",
+          "kind": "sculpture",
+          "point_index": 2,
+          "offset": [
+            8,
+            0,
+            0
+          ],
+          "scale": 1.15,
+          "role": "shortcut_anticipation"
+        },
+        {
+          "id": "void_beacon",
+          "kind": "beacon",
+          "point_index": 6,
+          "offset": [
+            0,
+            0,
+            8
+          ],
+          "scale": 1.0,
+          "role": "lap_progress"
+        }
+      ],
+      "fantasy": "orbital ribbon precision course",
+      "route_topology": "narrow_ribbon_banked_arcs_alternating_sectors_void_rejoin",
+      "macro_terrain": "elevated_ribbon_over_void",
+      "silhouette_skyline": "ribbon_sculpture_orbit_void_beacon",
+      "signature_mechanic": "precision_boost_gates_rhythm_chain",
+      "shortcut_grammar": "sector_gate_combo_path",
+      "boost_moment": "sector_gate_combo",
+      "landmark_memory": "orbit_structures_void_beacon",
+      "audio_ambience": "crystalline_hum_void_wind",
+      "risk_reward": "miss_gate_loses_chain_not_hard_stop",
+      "preview": {
+        "silhouette": "Narrow orbital ribbon",
+        "landmark": "Ribbon sculpture",
+        "mechanic": "Boost gate rhythm",
+        "shortcut_risk": "Void sector miss",
+        "boost_identity": "Sector gate combo",
+        "boost": "Sector gate combo",
+        "shortcut": "Void sector miss"
+      },
+      "silhouette_grammar": "ribbon_sculpture_orbit_void_beacon",
+      "signature_mechanic_blurb": "precision boost gates rhythm chain",
+      "boost_moment_blurb": "sector gate combo",
+      "skyline_props": [
+        "ribbon_sculpture",
+        "orbit_ring",
+        "void_beacon",
+        "sector_gate"
+      ]
+    },
+    "mirage_mesa": {
+      "short_name": "Mirage",
+      "display_name": "Mirage Mesa",
+      "visual_theme": "Sun-baked banks, sand haze, long draft straights.",
+      "route_rhythm": "Long straight, wash decision, banked mesa, heat-haze close.",
+      "signature_section": "Dry wash under the mesa arch.",
+      "shortcut_id": "dry_wash",
+      "shortcut_style": "Sand wash \u2014 shorter if you keep speed, a trap if you plow.",
+      "lighting": {
+        "sun_degrees": [
+          -70.0,
+          -55.0,
+          0.0
+        ],
+        "sun_energy": 1.4,
+        "ambient": "#F4D8A0",
+        "ambient_energy": 0.92,
+        "fog_color": "#E8C878",
+        "fog_density": 0.005
+      },
+      "audio_direction": "Dry wind and grit under the mesa race bed.",
+      "challenge_identity": "Drafting straights plus a wash that is never free.",
+      "landmarks": [
+        {
+          "id": "mesa_arch",
+          "kind": "arch",
+          "point_index": 1,
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": 1.3,
+          "role": "shortcut_anticipation"
+        },
+        {
+          "id": "sand_tower",
+          "kind": "tower",
+          "point_index": 4,
+          "offset": [
+            14,
+            0,
+            -8
+          ],
+          "scale": 1.2,
+          "role": "route_memory"
+        },
+        {
+          "id": "wash_beacon",
+          "kind": "beacon",
+          "point_index": 5,
+          "offset": [
+            -10,
+            0,
+            4
+          ],
+          "scale": 0.95,
+          "role": "lap_progress"
+        }
+      ],
+      "fantasy": "sun-baked mesa + long drafting straights + dry wash",
+      "route_topology": "long_draft_straight_banked_canyon_dry_wash_heat_return",
+      "macro_terrain": "mesa_plateau_canyon_walls",
+      "silhouette_skyline": "mesa_arch_layered_canyon_sand_tower",
+      "signature_mechanic": "drafting_sand_heat_visibility_traction",
+      "shortcut_grammar": "dry_wash_cut",
+      "boost_moment": "draft_slingshot_into_mesa_gate",
+      "landmark_memory": "mesa_arch",
+      "audio_ambience": "dry_wind_heat_haze_hush",
+      "risk_reward": "draft_line_vs_heat_traction",
+      "preview": {
+        "silhouette": "Long straight into canyon arch",
+        "landmark": "Mesa arch",
+        "mechanic": "Draft + heat haze",
+        "shortcut_risk": "Dry wash",
+        "boost_identity": "Draft slingshot gate",
+        "boost": "Draft slingshot gate",
+        "shortcut": "Dry wash"
+      },
+      "silhouette_grammar": "mesa_arch_layered_canyon_sand_tower",
+      "signature_mechanic_blurb": "drafting sand heat visibility traction",
+      "boost_moment_blurb": "draft slingshot into mesa gate",
+      "skyline_props": [
+        "mesa_arch",
+        "canyon_wall_layers",
+        "sand_tower"
+      ]
+    },
+    "emberkeep_gauntlet": {
+      "short_name": "Emberkeep",
+      "display_name": "Emberkeep Gauntlet",
+      "visual_theme": "Basalt keep, forge vents, ash courtyards.",
+      "route_rhythm": "Fortress entry, vent cut, ash patches, courtyard finish.",
+      "signature_section": "Forge vent cut into the final courtyard.",
+      "shortcut_id": "forge_vent_cut",
+      "shortcut_style": "Ash vent \u2014 fast if you hold the line, blind if you panic-steer.",
+      "lighting": {
+        "sun_degrees": [
+          -35.0,
+          160.0,
+          0.0
+        ],
+        "sun_energy": 0.85,
+        "ambient": "#3A2018",
+        "ambient_energy": 0.62,
+        "fog_color": "#2A1410",
+        "fog_density": 0.009
+      },
+      "audio_direction": "Low forge rumble under the Emberkeep race bed.",
+      "challenge_identity": "Expert courtyard close. The vent is a dare, not a mandatory skip.",
+      "landmarks": [
+        {
+          "id": "keep_gate",
+          "kind": "gate",
+          "point_index": 0,
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": 1.25,
+          "role": "start_and_finish"
+        },
+        {
+          "id": "keep_tower",
+          "kind": "tower",
+          "point_index": 3,
+          "offset": [
+            12,
+            0,
+            0
+          ],
+          "scale": 1.35,
+          "role": "shortcut_anticipation"
+        },
+        {
+          "id": "courtyard_beacon",
+          "kind": "beacon",
+          "point_index": 8,
+          "offset": [
+            0,
+            0,
+            0
+          ],
+          "scale": 1.05,
+          "role": "finish"
+        }
+      ],
+      "fantasy": "basalt fortress + forge machinery + ash courtyard",
+      "route_topology": "fortress_gate_keep_passage_vent_cut_ash_yard_courtyard",
+      "macro_terrain": "basalt_walls_forge_courtyard",
+      "silhouette_skyline": "keep_towers_furnace_vents_courtyard",
+      "signature_mechanic": "telegraphed_forge_vent_eruption_windows",
+      "shortcut_grammar": "vent_cut_timing",
+      "boost_moment": "vent_timing_rewards_fast_courtyard_entry",
+      "landmark_memory": "forge_vent_towers",
+      "audio_ambience": "forge_roar_ash_crunch",
+      "risk_reward": "vent_window_vs_safe_keep",
+      "preview": {
+        "silhouette": "Fortress gate into courtyard",
+        "landmark": "Forge vents",
+        "mechanic": "Vent eruption windows",
+        "shortcut_risk": "Vent cut",
+        "boost_identity": "Timed courtyard entry",
+        "boost": "Timed courtyard entry",
+        "shortcut": "Vent cut"
+      },
+      "silhouette_grammar": "keep_towers_furnace_vents_courtyard",
+      "signature_mechanic_blurb": "telegraphed forge vent eruption windows",
+      "boost_moment_blurb": "vent timing rewards fast courtyard entry",
+      "skyline_props": [
+        "keep_gate",
+        "forge_vent_towers",
+        "ash_courtyard",
+        "furnace_stack"
+      ]
+    }
+  }
+}
