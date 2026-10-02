@@ -13,6 +13,7 @@ const BOOST_PICKUP_SCRIPT := preload("res://scripts/tracks/BoostPickup.gd")
 const SHORTCUT_SCRIPT := preload("res://scripts/tracks/ShortcutCorridor.gd")
 const SHORTCUT_GEO := preload("res://scripts/tracks/ShortcutGeometry.gd")
 const IDENTITY := preload("res://scripts/gamefeel/CourseIdentityCatalog.gd")
+const WORLD_ASSEMBLER := preload("res://scripts/gamefeel/CourseWorldAssembler.gd")
 const ITEM_BOX_SCENE := preload("res://scenes/items/ItemBox.tscn")
 const CAMERA_OCCLUDER_LAYER := 128
 
@@ -29,6 +30,7 @@ var _rail_openings: Dictionary = {}
 var _shortcut_follow_paths: Array = []
 var _shortcut_audits: Array = []
 var _alternate_checkpoints: Array[Node3D] = []
+var _world_assembly_stats: Dictionary = {}
 
 
 func configure(course_data: Dictionary) -> void:
@@ -61,7 +63,9 @@ func build() -> bool:
 	_build_checkpoints()
 	_build_features()
 	_build_scenery()
+	_build_world_assembly_v4()
 	_build_identity_landmarks()
+	_build_macro_terrain()
 	_build_start_marker()
 	_start_transform = _transform_at_point(0, 1.05)
 	_built = true
@@ -81,6 +85,21 @@ func count_landmarks() -> int:
 	if root == null:
 		return 0
 	return root.get_child_count()
+
+
+func get_world_assembly_stats() -> Dictionary:
+	return _world_assembly_stats.duplicate(true)
+
+
+func count_feature_nodes(prefix: String) -> int:
+	var features := get_node_or_null("CourseFeatures")
+	if features == null:
+		return 0
+	var count := 0
+	for child in features.get_children():
+		if str(child.name).begins_with(prefix):
+			count += 1
+	return count
 
 
 func get_checkpoints() -> Array:
@@ -235,6 +254,16 @@ func _add_track_segment(
 		_segment_color(index), _data.get("theme", "") == "prism_void"
 	)
 	body.add_child(visual)
+	# V4 curb edges — readable road boundary without changing collision.
+	for side in [-1.0, 1.0]:
+		var curb := MeshInstance3D.new()
+		curb.name = "CurbVisual"
+		var curb_mesh := BoxMesh.new()
+		curb_mesh.size = Vector3(0.35, 0.35, maxf(1.0, length - 0.5))
+		curb.mesh = curb_mesh
+		curb.position = Vector3(side * (_lane_width * 0.5 - 0.15), 0.35, 0.0)
+		curb.material_override = _make_material(_color("accent_color", Color.WHITE), true)
+		body.add_child(curb)
 
 	if bool(_data.get("guard_rails", false)):
 		var opening: Dictionary = _rail_openings.get(index, {"left": false, "right": false})
@@ -768,11 +797,29 @@ func _build_mesa_scenery(parent: Node3D) -> void:
 		)
 
 
+func _build_world_assembly_v4() -> void:
+	## Unique macro terrain + skyline per course (V4). Collision remains on track primitives.
+	var identity: Dictionary = IDENTITY.identity_for(str(_data.get("id", "")))
+	_world_assembly_stats = WORLD_ASSEMBLER.assemble(
+		self,
+		_course_points,
+		str(_data.get("theme", "")),
+		identity,
+		Callable(self, "_make_material")
+	)
+
+
 func _build_identity_landmarks() -> void:
 	var identity: Dictionary = IDENTITY.identity_for(str(_data.get("id", "")))
 	if identity.is_empty():
 		return
 	IDENTITY.build_landmarks(self, _course_points, identity, Callable(self, "_make_material"))
+
+
+func _build_macro_terrain() -> void:
+	var identity := IDENTITY.identity_for(str(_data.get("id", "")))
+	IDENTITY.build_macro_terrain(self, _course_points, identity, Callable(self, "_make_material"))
+
 
 
 func _build_start_marker() -> void:
