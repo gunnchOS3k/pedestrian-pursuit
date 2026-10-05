@@ -2,6 +2,8 @@ extends PlayerController
 
 ## AI-controlled racer using tiered route planning (no physics speed cheats).
 
+const MAX_AI_TOP_SPEED_MULTIPLIER := 1.6
+
 var _ai_steer: float = 0.0
 var _ai_accel: bool = true
 var _ai_drift: bool = false
@@ -73,7 +75,11 @@ func _get_drift_input() -> bool:
 
 
 func _compute_target_speed() -> float:
-	return super._compute_target_speed() * path_follower.speed_multiplier
+	var planned_speed: float = super._compute_target_speed() * float(path_follower.speed_multiplier)
+	# Authored lane/item/footwear boosts may stack, but AI remains inside the
+	# competitive-physics envelope enforced by CompetitiveAiEvalRunner.
+	var physics_ceiling: float = float(stats.top_speed) * MAX_AI_TOP_SPEED_MULTIPLIER
+	return minf(planned_speed, physics_ceiling)
 
 
 func _physics_process(delta: float) -> void:
