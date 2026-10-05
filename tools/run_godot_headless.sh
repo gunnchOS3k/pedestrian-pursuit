@@ -69,6 +69,7 @@ run_step() {
 run_step import "$GODOT" --headless --path "$ROOT" --import
 run_step startup "$GODOT" --headless --path "$ROOT" --quit-after 2
 run_step TestRunner "$GODOT" --headless --path "$ROOT" --script res://tests/TestRunner.gd
+run_step FirstRunOnboardingRaceFlowTest "$GODOT" --headless --path "$ROOT" --script res://tests/FirstRunOnboardingRaceFlowTest.gd
 run_step G2C6RuntimeTest "$GODOT" --headless --path "$ROOT" --script res://tests/G2C6RuntimeTest.gd
 run_step CupFlowTest "$GODOT" --headless --path "$ROOT" --script res://tests/CupFlowTest.gd
 run_step BetaProductStateTest "$GODOT" --headless --path "$ROOT" --script res://tests/BetaProductStateTest.gd

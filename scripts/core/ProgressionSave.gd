@@ -145,6 +145,12 @@ func complete_challenge(challenge_id: String, reward_xp: int = 50) -> void:
 	_ach_event("challenge_complete")
 
 
+func mark_first_run_prompt_seen() -> void:
+	## Acknowledging onboarding is not the same as completing the tutorial.
+	first_run_complete = true
+	save()
+
+
 func mark_tutorial_done() -> void:
 	tutorial_completed = true
 	first_run_complete = true
