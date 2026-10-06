@@ -19,6 +19,7 @@ var _rail_points: Array[Vector3] = []
 var _rail_index: int = 0
 var _host: CharacterBody3D
 var _segments_ridden: int = 0
+var _grind_speed: float = 0.0
 
 
 func setup(host: CharacterBody3D, rail_world_points: Array) -> void:
@@ -55,6 +56,10 @@ func try_start_from_jump() -> bool:
 	_timer = grind_duration
 	_rail_index = nearest
 	_segments_ridden = 0
+	var entry_speed := 14.0
+	if "horizontal_speed" in _host:
+		entry_speed = maxf(float(_host.horizontal_speed), entry_speed)
+	_grind_speed = entry_speed * grind_speed_bonus
 	grind_started.emit()
 	return true
 
@@ -90,13 +95,11 @@ func tick(delta: float) -> Dictionary:
 	var look := _host.global_position + dir * 3.0
 	look.y = _host.global_position.y
 	_host.look_at(look, Vector3.UP)
-	var speed := 16.0
 	if "horizontal_speed" in _host:
-		speed = maxf(float(_host.horizontal_speed), 14.0)
-		_host.horizontal_speed = speed * grind_speed_bonus
+		_host.horizontal_speed = _grind_speed
 	return {
 		"active": true,
-		"velocity": dir * speed * grind_speed_bonus,
+		"velocity": dir * _grind_speed,
 		"multiplier": grind_speed_bonus,
 	}
 
@@ -117,6 +120,7 @@ func _finish(reason: String, grant_exit_boost: bool) -> void:
 		return
 	is_grinding = false
 	_timer = 0.0
+	_grind_speed = 0.0
 	if grant_exit_boost and _host != null:
 		var boost := _host.get_node_or_null("BoostSystem")
 		if boost != null and boost.has_method("apply_external_boost"):

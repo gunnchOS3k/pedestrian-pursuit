@@ -19,6 +19,7 @@ var _roster: Array = []
 var _preview_visual: Node3D
 var _cup_picker: OptionButton
 var _shoe_picker: OptionButton
+var _first_run_tutorial_prompt: Control
 
 @onready var course_picker: OptionButton = $VBox/CoursePicker
 @onready var description_label: Label = $VBox/Description
@@ -65,11 +66,23 @@ func _ready() -> void:
 	call_deferred("_prompt_first_run_tutorial")
 
 
+func _unhandled_input(event: InputEvent) -> void:
+	if (
+		is_instance_valid(_first_run_tutorial_prompt)
+		and event.is_action_pressed("ui_cancel")
+	):
+		_dismiss_first_run_tutorial_prompt()
+		get_viewport().set_input_as_handled()
+
+
 func _prompt_first_run_tutorial() -> void:
 	var prog := get_node_or_null("/root/ProgressionSave")
 	if prog == null:
 		return
-	if bool(prog.get("tutorial_completed")):
+	if (
+		bool(prog.get("tutorial_completed"))
+		or bool(prog.get("first_run_complete"))
+	):
 		return
 	if get_node_or_null("FirstRunTutorialPrompt") != null:
 		return
@@ -80,6 +93,8 @@ func _prompt_first_run_tutorial() -> void:
 	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
 	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
 	add_child(overlay)
+	_first_run_tutorial_prompt = overlay
+	overlay.tree_exited.connect(func (): _first_run_tutorial_prompt = null)
 	var panel := VBoxContainer.new()
 	panel.set_anchors_preset(Control.PRESET_CENTER)
 	panel.offset_left = -280
@@ -102,22 +117,45 @@ func _prompt_first_run_tutorial() -> void:
 	start.text = str(copy.get("start", "Start Tutorial"))
 	start.custom_minimum_size = Vector2(0, 48)
 	Vxp3BrandScript.style_primary_cta(start)
-	start.pressed.connect(func ():
-		overlay.queue_free()
-		_on_start_tutorial()
-	)
+	start.pressed.connect(_accept_first_run_tutorial)
 	panel.add_child(start)
 	var race_now := Button.new()
 	race_now.text = str(copy.get("race_now", "Race Now"))
 	race_now.custom_minimum_size = Vector2(0, 44)
-	race_now.pressed.connect(func ():
-		overlay.queue_free()
-		_on_start_single()
-	)
+	race_now.pressed.connect(_accept_first_run_race)
 	panel.add_child(race_now)
+	var not_now := Button.new()
+	not_now.text = "Not now"
+	not_now.tooltip_text = "Close onboarding. Learn the Track remains available from How to Play."
+	not_now.custom_minimum_size = Vector2(0, 44)
+	not_now.pressed.connect(_dismiss_first_run_tutorial_prompt)
+	panel.add_child(not_now)
+	race_now.call_deferred("grab_focus")
 	var tut_btn := $VBox.get_node_or_null("TutorialButton") as Button
 	if tut_btn != null:
 		tut_btn.text = "Learn the Track"
+
+
+func _mark_first_run_prompt_seen() -> void:
+	var prog := get_node_or_null("/root/ProgressionSave")
+	if prog != null and prog.has_method("mark_first_run_prompt_seen"):
+		prog.mark_first_run_prompt_seen()
+
+
+func _dismiss_first_run_tutorial_prompt() -> void:
+	_mark_first_run_prompt_seen()
+	if is_instance_valid(_first_run_tutorial_prompt):
+		_first_run_tutorial_prompt.queue_free()
+
+
+func _accept_first_run_tutorial() -> void:
+	_dismiss_first_run_tutorial_prompt()
+	_on_start_tutorial()
+
+
+func _accept_first_run_race() -> void:
+	_dismiss_first_run_tutorial_prompt()
+	_on_start_single()
 
 
 func _ensure_howto_button() -> void:
@@ -249,6 +287,15 @@ func _on_howto_play() -> void:
 		+ "Accessibility toggles live on this menu (reduce motion, larger UI, auto-accel, colorblind HUD, high contrast)."
 	)
 	panel.add_child(body)
+	var tutorial := Button.new()
+	tutorial.name = "StartTutorialButton"
+	tutorial.text = "Learn the Track"
+	tutorial.custom_minimum_size = Vector2(0, 44)
+	tutorial.pressed.connect(func ():
+		overlay.queue_free()
+		_on_start_tutorial()
+	)
+	panel.add_child(tutorial)
 	var close := Button.new()
 	close.text = "Got it"
 	close.custom_minimum_size = Vector2(0, 44)

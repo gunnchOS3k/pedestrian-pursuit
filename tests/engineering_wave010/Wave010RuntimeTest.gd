@@ -303,7 +303,13 @@ func _test_rail_angle() -> void:
 	var active: bool = bool(tick1.get("active", false))
 	if not active:
 		_fail("rail tick inactive after attach")
-	_observations["rail"] = {"observed": true, "bad_rejected": not bad, "good_accepted": good, "tick_active": active}
+	var first_speed := (tick1.get("velocity", Vector3.ZERO) as Vector3).length()
+	var tick2: Dictionary = rail.tick(0.05)
+	var second_speed := (tick2.get("velocity", Vector3.ZERO) as Vector3).length()
+	var bounded: bool = is_equal_approx(first_speed, second_speed)
+	if not bounded:
+		_fail("rail speed bonus compounded across ticks")
+	_observations["rail"] = {"observed": true, "bad_rejected": not bad, "good_accepted": good, "tick_active": active, "second_tick_active": bool(tick2.get("active", false)), "speed_bounded": bounded}
 	host.queue_free()
 
 
