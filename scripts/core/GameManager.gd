@@ -300,7 +300,15 @@ func save_cup_progress() -> void:
 	cfg.set_value("cup", "results", cup_results)
 	cfg.set_value("cup", "standings", cup_standings)
 	cfg.set_value("cup", "track_ids", cup_track_ids)
-	cfg.set_value("cup", "completed", is_cup_active() and not has_next_cup_race() and not cup_results.is_empty())
+	# A cup is complete only after the current round has a recorded result.
+	# The last course has no "next" race before that result exists; saving a
+	# pause/quit on the finale must stay resumable instead of looking finished.
+	var round_recorded := cup_round_index >= 0 and cup_results.size() > cup_round_index
+	cfg.set_value(
+		"cup",
+		"completed",
+		is_cup_active() and not has_next_cup_race() and round_recorded
+	)
 	cfg.set_value("meta", "saved_at", Time.get_datetime_string_from_system())
 	cfg.set_value("meta", "save_version", 2)
 	cfg.save("user://cup_progress.cfg")
@@ -341,6 +349,65 @@ func load_cup_progress() -> bool:
 	return false
 
 
+func describe_saved_cup() -> Dictionary:
+	## Read cup_progress.cfg without arming a race.
+	## A recorded round resumes on the next course so standings are not applied twice.
+	var none := {
+		"resumable": false,
+		"course_number": 0,
+		"track_id": "",
+		"completed": false,
+	}
+	var cfg := ConfigFile.new()
+	if cfg.load("user://cup_progress.cfg") != OK:
+		return none
+	var active := str(cfg.get_value("cup", "active_cup_id", ""))
+	var tracks_v = cfg.get_value("cup", "track_ids", [])
+	var results_v = cfg.get_value("cup", "results", [])
+	var tracks: Array = tracks_v if typeof(tracks_v) == TYPE_ARRAY else []
+	var results: Array = results_v if typeof(results_v) == TYPE_ARRAY else []
+	var round_index := int(cfg.get_value("cup", "round_index", 0))
+	var completed_flag := bool(cfg.get_value("cup", "completed", false))
+	var next_index := round_index
+	if results.size() > round_index:
+		next_index = round_index + 1
+	var finished_cup := completed_flag or (not tracks.is_empty() and next_index >= tracks.size())
+	var resumable := (
+		not finished_cup
+		and not active.is_empty()
+		and next_index >= 0
+		and next_index < tracks.size()
+	)
+	var track_id := ""
+	if resumable:
+		track_id = str(tracks[next_index])
+	return {
+		"resumable": resumable,
+		"course_number": next_index + 1,
+		"track_id": track_id,
+		"completed": finished_cup,
+	}
+
+
+func resume_saved_cup() -> bool:
+	## Continue an in-progress cup. Refuses a finished cup.
+	## If the saved round already has a result, start the following course
+	## without adding that result's points again.
+	var plan := describe_saved_cup()
+	if not bool(plan.get("resumable", false)):
+		return false
+	if not load_cup_progress():
+		return false
+	if cup_results.size() > cup_round_index:
+		if not advance_cup():
+			clear_cup()
+			return false
+	if not is_cup_active() or selected_track_id != str(plan.get("track_id", "")):
+		clear_cup()
+		return false
+	return true
+
+
 func get_cup_total_points() -> int:
 	var total := 0
 	for result in cup_results:
@@ -369,13 +436,23 @@ func record_field_results(finish_results: Array) -> void:
 	var points_table: Array = cup.get("points_by_position", [10, 7, 5, 3, 2, 1])
 	for i in finish_results.size():
 		var entry: Dictionary = finish_results[i]
-		var racer: Node = entry.get("racer")
-		var label := "You" if bool(entry.get("is_player", false)) else "AI %d" % (i + 1)
-		if racer != null and racer.has_method("get") and str(racer.get("display_name")) != "":
-			pass
+		var label := _cup_standing_label(entry)
 		var points_index := clampi(i, 0, points_table.size() - 1)
 		var pts := int(points_table[points_index])
 		cup_standings[label] = int(cup_standings.get(label, 0)) + pts
+
+
+func _cup_standing_label(entry: Dictionary) -> String:
+	## Same identity RaceScene field lines use: runner_display_name, else "Runner".
+	## The local player with no profile stays "You" so cup points stay on one row.
+	var racer: Node = entry.get("racer")
+	if racer != null and racer.has_meta("runner_display_name"):
+		var named := str(racer.get_meta("runner_display_name")).strip_edges()
+		if not named.is_empty():
+			return named
+	if bool(entry.get("is_player", false)):
+		return "You"
+	return "Runner"
 
 
 func get_cup_standings_lines() -> PackedStringArray:

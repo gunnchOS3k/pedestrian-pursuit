@@ -106,4 +106,7 @@ func _on_menu() -> void:
 	get_tree().paused = false
 	if _local_mp:
 		GameManager.clear_cup()
+	elif GameManager.is_cup_active() and GameManager.has_method("save_cup_progress"):
+		# Quit mid-course keeps the unrecorded round resumable.
+		GameManager.save_cup_progress()
 	SceneLoader.go_to_main_menu()
