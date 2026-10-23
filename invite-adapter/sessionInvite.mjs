@@ -92,3 +92,32 @@ export function joinFromInvite(token, session, nowMs) {
   if (url.url !== canonical) return { ok: false, error: "malformed" };
   return { ok: true, sessionId: session.id, mode: GAME_MODE, url: url.url };
 }
+
+/**
+ * Host and client are seats on an already accepted invite. This does not
+ * open a socket. A browser that cannot write the clipboard still returns
+ * the HTTPS URL for the person to copy.
+ * @param {string} token
+ * @param {{ id: string, expiresAt: number, revoked: boolean, used: boolean, capacity: number, hostClaimed?: boolean }} session
+ * @param {number} nowMs
+ * @param {"host" | "client"} role
+ */
+export function assignSeat(token, session, nowMs, role) {
+  if (role !== "host" && role !== "client") return { ok: false, error: "role" };
+  const joined = joinFromInvite(token, session, nowMs);
+  if (!joined.ok) return joined;
+  if (role === "host" && session.hostClaimed) return { ok: false, error: "host_taken" };
+  return {
+    ok: true,
+    sessionId: joined.sessionId,
+    mode: joined.mode,
+    url: joined.url,
+    role,
+  };
+}
+
+export function browserInviteFallback(token) {
+  const url = inviteUrlForToken(token);
+  if (!url.ok) return { ok: false, reason: url.reason };
+  return { ok: true, url: url.url, copy: "manual", clipboard: false };
+}

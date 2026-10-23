@@ -3,6 +3,8 @@ import { describe, it } from "node:test";
 import {
   GAME_MODE,
   inviteUrlForToken,
+  assignSeat,
+  browserInviteFallback,
   joinFromInvite,
   opaqueTokenFromBytes,
   parseInviteUrl,
@@ -112,4 +114,34 @@ describe("Pedestrian Pursuit invite adapter", () => {
     }
     assert.equal(urls.size, 8);
   });
+
+  it("assigns host and client seats and returns a manual copy link", () => {
+    const token = tokenFromSeed(11);
+    const host = assignSeat(token, openSession(), NOW + 1, "host");
+    assert.equal(host.ok, true);
+    if (!host.ok) return;
+    assert.equal(host.role, "host");
+    assert.equal(host.url.includes("?"), false);
+    const client = assignSeat(token, openSession({ id: host.sessionId, hostClaimed: true }), NOW + 1, "client");
+    assert.equal(client.ok, true);
+    if (!client.ok) return;
+    assert.equal(client.role, "client");
+    assert.equal(client.sessionId, host.sessionId);
+    assert.deepEqual(assignSeat(token, openSession({ hostClaimed: true }), NOW + 1, "host"), {
+      ok: false,
+      error: "host_taken",
+    });
+    assert.deepEqual(assignSeat(token, openSession(), NOW + 1, "spectator"), {
+      ok: false,
+      error: "role",
+    });
+    const copy = browserInviteFallback(token);
+    assert.equal(copy.ok, true);
+    if (!copy.ok) return;
+    assert.equal(copy.copy, "manual");
+    assert.equal(copy.clipboard, false);
+    assert.equal(copy.url, host.url);
+    assert.equal(browserInviteFallback("ROOMCODE").ok, false);
+  });
+
 });
