@@ -23,28 +23,59 @@ const ENTER_FRAMES := 180
 const COUNTDOWN_WAIT_MSEC := 8000
 ## Per-course bound after GO. Not extended, and not a substitute for the gate.
 const DRIVE_BOUND_MSEC := 150000
+const TELEMETRY_INTERVAL_MSEC := 1000
+const TELEMETRY_MAX_SAMPLES := 160
 
 
 func _initialize() -> void:
 	call_deferred("_run")
 
 
+func _observe_plan() -> Dictionary:
+	var mode := OS.get_environment("RACE_OBSERVE_MODE").strip_edges()
+	if mode == "solo":
+		return {
+			"mode": "solo",
+			"courses": PackedStringArray(["verdant_cascade_circuit"]),
+			"stop_after": 1,
+		}
+	if mode == "batch-first":
+		return {
+			"mode": "batch-first",
+			"courses": PackedStringArray(COURSE_IDS),
+			"stop_after": 1,
+		}
+	return {
+		"mode": "all",
+		"courses": PackedStringArray(COURSE_IDS),
+		"stop_after": COURSE_IDS.size(),
+	}
+
+
 func _run() -> void:
+	var plan := _observe_plan()
+	print("OBSERVE_MODE=%s" % str(plan["mode"]))
+	print("OBSERVE_STOP_AFTER=%d" % int(plan["stop_after"]))
+	var courses := PackedStringArray(plan["courses"])
 	var gm := get_root().get_node_or_null("GameManager")
 	var input := get_root().get_node_or_null("InputManager")
 	if gm == null or not gm.has_method("start_quick_race"):
-		for track_id in COURSE_IDS:
+		for track_id in courses:
 			_print_course(track_id, false, -1, -1, -1, false, 0, false, false, false, false, "GameManager.start_quick_race is missing")
 		quit(0)
 		return
 	var packed: PackedScene = load("res://scenes/race/RaceScene.tscn") as PackedScene
 	if packed == null:
-		for track_id in COURSE_IDS:
+		for track_id in courses:
 			_print_course(track_id, false, -1, -1, -1, false, 0, false, false, false, false, "res://scenes/race/RaceScene.tscn did not load")
 		quit(0)
 		return
-	for track_id in COURSE_IDS:
+	var seen := 0
+	for track_id in courses:
 		await _observe_course(gm, input, packed, track_id)
+		seen += 1
+		if seen >= int(plan["stop_after"]):
+			break
 	quit(0)
 
 
@@ -114,6 +145,7 @@ func _observe_course(gm: Node, input: Node, packed: PackedScene, track_id: Strin
 			if lap >= 1:
 				observed["lap"] = true
 		)
+	var checkpoint_history: Array = []
 	if track.has_method("get_checkpoints"):
 		for checkpoint in track.get_checkpoints():
 			if checkpoint != null and checkpoint.has_signal("racer_passed"):
@@ -121,6 +153,8 @@ func _observe_course(gm: Node, input: Node, packed: PackedScene, track_id: Strin
 					# Index 0 is the start line. Spawn overlap is not a crossing.
 					if index > 0:
 						observed["checkpoint"] = true
+					if checkpoint_history.size() < 64:
+						checkpoint_history.append(str(index))
 				)
 	if race_manager.has_signal("race_finished"):
 		race_manager.race_finished.connect(func(_finished_player: Node, _finish_results: Array) -> void:
@@ -142,10 +176,16 @@ func _observe_course(gm: Node, input: Node, packed: PackedScene, track_id: Strin
 		follower = _attach_line_steer(player, track)
 		line_steer = follower != null
 	var driven_msec := 0
+	var sample_count := 0
+	var max_gap := 0.0
+	var max_lateral := 0.0
+	var max_speed := 0.0
+	var completed_laps := 0
 	if countdown_finished:
 		var drive_started := Time.get_ticks_msec()
 		var drive_deadline := drive_started + DRIVE_BOUND_MSEC
 		var last_tick := drive_started
+		var next_sample := drive_started
 		while Time.get_ticks_msec() < drive_deadline:
 			var now := Time.get_ticks_msec()
 			var delta := clampf(float(now - last_tick) / 1000.0, 0.001, 0.05)
@@ -159,12 +199,29 @@ func _observe_course(gm: Node, input: Node, packed: PackedScene, track_id: Strin
 				if panel != null and bool(panel.get("visible")):
 					observed["results"] = true
 			if lap_manager != null and is_instance_valid(player) and lap_manager.has_method("get_lap"):
-				if int(lap_manager.get_lap(player)) >= 1:
+				completed_laps = int(lap_manager.get_lap(player))
+				if completed_laps >= 1:
 					observed["lap"] = true
+			if sample_count < TELEMETRY_MAX_SAMPLES and now >= next_sample:
+				var snap := _sample_driver(track_id, now - drive_started, delta, player, follower, lap_manager, race_manager, results, input)
+				sample_count += 1
+				next_sample = now + TELEMETRY_INTERVAL_MSEC
+				max_gap = maxf(max_gap, absf(float(snap.get("progress_gap", 0.0))))
+				max_lateral = maxf(max_lateral, float(snap.get("lateral", 0.0)))
+				max_speed = maxf(max_speed, float(snap.get("hspeed", 0.0)))
 			if bool(observed["checkpoint"]) and bool(observed["lap"]) and bool(observed["results"]):
 				break
 		driven_msec = Time.get_ticks_msec() - drive_started
 		_release_gameplay_input(input)
+	print("DRIVER_SUMMARY track=%s samples=%d max_gap=%.3f max_lateral=%.3f max_hspeed=%.3f completed_laps=%d checkpoint_history=%s" % [
+		track_id,
+		sample_count,
+		max_gap,
+		max_lateral,
+		max_speed,
+		completed_laps,
+		",".join(PackedStringArray(checkpoint_history)),
+	])
 	var state_after := -1
 	if is_instance_valid(race_manager):
 		state_after = int(race_manager.get("state"))
@@ -255,6 +312,92 @@ func _attach_line_steer(player: Node, track: Node) -> Node:
 	follower.set("look_ahead", 5.5)
 	follower.set("magnet_strength", 0.0)
 	return follower
+
+
+func _sample_driver(
+	track_id: String,
+	elapsed_msec: int,
+	wall_delta: float,
+	player: Node,
+	follower: Node,
+	lap_manager: Node,
+	race_manager: Node,
+	results: Node,
+	input: Node
+) -> Dictionary:
+	var pos := Vector3.ZERO
+	var vel := Vector3.ZERO
+	var hspeed := 0.0
+	var grounded := false
+	var movement := false
+	var slides := 0
+	if player is CharacterBody3D:
+		var body := player as CharacterBody3D
+		pos = body.global_position
+		vel = body.velocity
+		grounded = body.is_on_floor()
+		slides = body.get_slide_collision_count()
+		if "horizontal_speed" in body:
+			hspeed = float(body.horizontal_speed)
+		if "movement_enabled" in body:
+			movement = bool(body.movement_enabled)
+	var steer := 0.0
+	var accelerate := Input.is_action_pressed("accelerate")
+	if input != null:
+		if input.has_method("get_steer"):
+			steer = float(input.get_steer())
+		if input.has_method("is_accelerating"):
+			accelerate = bool(input.is_accelerating())
+	var follower_progress := 0.0
+	var closest := 0.0
+	var gap := 0.0
+	var lateral := 0.0
+	if follower != null and follower.has_method("measure_course_progress") and player is Node3D:
+		var measured: Dictionary = follower.measure_course_progress(player)
+		follower_progress = float(measured.get("follower_progress", 0.0))
+		closest = float(measured.get("closest_offset", 0.0))
+		gap = float(measured.get("progress_gap", 0.0))
+		lateral = float(measured.get("lateral", 0.0))
+	var lap := 0
+	var next_cp := -1
+	if lap_manager != null and is_instance_valid(player):
+		if lap_manager.has_method("get_lap"):
+			lap = int(lap_manager.get_lap(player))
+		if lap_manager.has_method("get_next_checkpoint"):
+			next_cp = int(lap_manager.get_next_checkpoint(player))
+	var race_state := -1
+	if race_manager != null and is_instance_valid(race_manager):
+		race_state = int(race_manager.get("state"))
+	var results_visible := false
+	if results != null:
+		var panel := results.get_node_or_null("Panel")
+		if panel != null:
+			results_visible = bool(panel.get("visible"))
+	print(
+		"DRIVER_SAMPLE track=%s t_ms=%d pos=%.2f,%.2f,%.2f vel=%.2f,%.2f,%.2f hspeed=%.3f grounded=%s movement=%s phys_delta=%.4f wall_delta=%.4f accel=%s steer=%.3f follower_progress=%.2f closest=%.2f gap=%.2f lateral=%.2f slides=%d lap=%d next_cp=%d race_state=%d results=%s" % [
+			track_id,
+			elapsed_msec,
+			pos.x, pos.y, pos.z,
+			vel.x, vel.y, vel.z,
+			hspeed,
+			str(grounded).to_lower(),
+			str(movement).to_lower(),
+			float(Engine.get_physics_process_delta_time()) if Engine.get_frames_per_second() >= 0 else 0.0,
+			wall_delta,
+			str(accelerate).to_lower(),
+			steer,
+			follower_progress,
+			closest,
+			gap,
+			lateral,
+			slides,
+			lap,
+			next_cp,
+			race_state,
+			str(results_visible).to_lower(),
+		]
+	)
+	return {"progress_gap": gap, "lateral": lateral, "hspeed": hspeed}
 
 
 func _hold_gameplay_input(input: Node, follower: Node, player: Node, delta: float) -> void:

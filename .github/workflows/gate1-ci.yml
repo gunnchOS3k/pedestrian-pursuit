@@ -238,3 +238,76 @@ jobs:
           '
         env:
           DISPLAY: ":99"
+
+  verdant-repro-diagnostics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Godot 4.7.1 headless
+        run: |
+          set -euo pipefail
+          url="https://github.com/godotengine/godot/releases/download/4.7.1-stable/Godot_v4.7.1-stable_linux.x86_64.zip"
+          for attempt in 1 2 3 4 5; do
+            if curl -fsSL --retry 3 --retry-all-errors --retry-delay 2 -o godot.zip "$url"; then
+              break
+            fi
+            echo "Godot download attempt ${attempt} failed; sleeping..."
+            sleep $((attempt * 5))
+            if [[ "$attempt" -eq 5 ]]; then
+              echo "Godot download failed after retries"
+              exit 1
+            fi
+          done
+          unzip -q godot.zip
+          chmod +x Godot_v4.7.1-stable_linux.x86_64
+          sudo mv Godot_v4.7.1-stable_linux.x86_64 /usr/local/bin/godot
+          godot --version
+
+      - name: Import project cache
+        run: |
+          set -euo pipefail
+          xvfb-run -a godot --headless --path . --import || \
+            xvfb-run -a godot --headless --editor --path . --quit-after 2 || true
+
+      - name: Solo Verdant, second solo, and first-of-batch
+        run: |
+          set -euo pipefail
+          mkdir -p tmp/repro
+          run_one() {
+            local name="$1"
+            local mode="$2"
+            local log="tmp/repro/${name}.log"
+            echo "=== ${name} mode=${mode} ==="
+            set +e
+            RACE_OBSERVE_MODE="${mode}" xvfb-run -a godot --headless --path . --script res://tests/VerdantRaceSceneObserve.gd >"${log}" 2>&1
+            local code=$?
+            set -e
+            echo "PROCESS_EXIT ${name}=${code}"
+            if grep -Eiq "SCRIPT ERROR|Parse Error|Failed to load script" "${log}"; then
+              echo "FAIL ${name} script error"
+              rg -n -i "SCRIPT ERROR|Parse Error|Failed to load script" "${log}" | head -20 || true
+              exit 1
+            fi
+          }
+          run_one solo-a solo
+          run_one solo-b solo
+          run_one batch-first batch-first
+          python3 - <<'PY'
+          import hashlib
+          from pathlib import Path
+          root = Path("tmp/repro")
+          for path in sorted(root.glob("*.log")):
+              digest = hashlib.sha256(path.read_bytes()).hexdigest()
+              print(f"LOG_SHA256 {path.name} {digest}")
+          PY
+
+      - name: Upload repro logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verdant-repro-diagnostics
+          path: tmp/repro/*.log
+          if-no-files-found: warn
+          retention-days: 30

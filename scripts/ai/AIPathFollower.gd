@@ -98,6 +98,30 @@ func _apply_tier_defaults() -> void:
 			_shortcut_bias = 5.5
 
 
+func measure_course_progress(body: Node3D) -> Dictionary:
+	## Read-only. Compares the integrated progress estimate with the baked
+	## offset closest to the body. Does not move the body or change steering.
+	if _curve == null or path == null:
+		return {}
+	var local := path.to_local(body.global_position)
+	var closest := _curve.get_closest_offset(local)
+	var on_path := path.to_global(_curve.sample_baked(closest))
+	var lateral := body.global_position - on_path
+	lateral.y = 0.0
+	var gap := closest - _progress
+	if gap > _path_length * 0.5:
+		gap -= _path_length
+	elif gap < -_path_length * 0.5:
+		gap += _path_length
+	return {
+		"follower_progress": _progress,
+		"closest_offset": closest,
+		"progress_gap": gap,
+		"lateral": lateral.length(),
+		"path_length": _path_length,
+	}
+
+
 func get_steer_and_accel(body: CharacterBody3D, delta: float = 0.016) -> Dictionary:
 	if _curve == null:
 		return {"steer": 0.0, "accelerate": true, "drift": false, "use_item": false}
