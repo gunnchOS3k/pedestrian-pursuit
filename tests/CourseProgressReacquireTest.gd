@@ -18,6 +18,7 @@ func _run() -> void:
 	_test_slow_body_has_no_speed_floor(failures)
 	_test_airborne_gap_does_not_reacquire(failures)
 	_test_grounded_gap_reacquires_estimate_only(failures)
+	_test_racing_speed_keeps_the_forward_estimate(failures)
 	_test_small_grounded_gap_integrates(failures)
 	_test_rising_body_does_not_reacquire(failures)
 	if failures.is_empty():
@@ -110,6 +111,21 @@ func _test_grounded_gap_reacquires_estimate_only(failures: PackedStringArray) ->
 		failures.append("reacquire left progress at %.2f" % float(follower._progress))
 	if int(follower.reacquire_count) != 1:
 		failures.append("reacquire_count %d" % int(follower.reacquire_count))
+
+
+func _test_racing_speed_keeps_the_forward_estimate(failures: PackedStringArray) -> void:
+	# Run 39972796105 snapped this gap at racing speed and never reached checkpoint 4.
+	var follower = _follower(failures)
+	if follower == null:
+		return
+	follower._progress = 228.0
+	var step := float(follower.physics_step_seconds())
+	var result: Dictionary = follower.advance_course_estimate(22.0, true, 0.0, 173.0)
+	if bool(result["reacquired"]) or int(follower.reacquire_count) != 0:
+		failures.append("a 22 m/s body reacquired and gave up the forward line")
+	var expected := fposmod(228.0 + 22.0 * step, PATH_LENGTH)
+	if not is_equal_approx(float(follower._progress), expected):
+		failures.append("racing progress %.4f != integrated %.4f" % [float(follower._progress), expected])
 
 
 func _test_small_grounded_gap_integrates(failures: PackedStringArray) -> void:

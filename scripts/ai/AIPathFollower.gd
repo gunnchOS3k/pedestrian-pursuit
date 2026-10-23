@@ -27,17 +27,20 @@ var _prefer_vertical: bool = false
 var last_reacquired: bool = false
 var reacquire_count: int = 0
 
-## A grounded body this far from the open-loop estimate has left the racing
-## line. Run 39966865889 at f39658f measured the Verdant failure: after the
-## airborne crossing, closest offset jumped from about 212 back to about 173
-## while the estimate kept integrating. Wall deltas of 0.013–0.022 s (physics
-## tick is 1/60) plus a 2.5 m/s floor then grew the gap to about 135. The body
-## stayed grounded at lateral ~6.5 m and ~2 m/s, steer collapsed near 0, and
-## solo-b never retook checkpoint 4. solo-a and batch-first recovered by
-## chance and finished. Snapping to closest on every call, including in the
-## air, missed that same checkpoint on runs 39963277126 and 39964928289.
+## A crawling body this far from the open-loop estimate is no longer being
+## steered along the line. Run 39966865889 at f39658f: after Verdant's
+## airborne crossing, wall deltas of 0.013–0.022 s plus a 2.5 m/s floor grew
+## the gap to about 135. solo-b crawled at ~2 m/s and never retook checkpoint
+## 4; solo-a and batch-first finished. Run 39972796105 at 38b6435 used the
+## physics tick, so those three processes finally matched, but reacquiring
+## every grounded gap over 12 m (44 times, including at racing speed) pulled
+## the look target back before checkpoint 4 and all three finished zero laps.
+## Reacquire only while the body is slow. A moving body keeps the forward
+## estimate through the crossing. Snapping on every call, including in the
+## air, missed checkpoint 4 on runs 39963277126 and 39964928289.
 const REACQUIRE_GAP_M := 12.0
 const REACQUIRE_VERTICAL_SPEED := 0.5
+const REACQUIRE_MAX_SPEED := 4.0
 
 
 func setup(race_path: Path3D) -> void:
@@ -153,14 +156,16 @@ func wrapped_course_gap(closest_offset: float, progress: float) -> float:
 
 func advance_course_estimate(speed: float, grounded: bool, vertical_speed: float, closest_offset: float) -> Dictionary:
 	## Move the look-ahead estimate. Does not move the body.
-	## Airborne closest-offset is ambiguous on the Verdant crossing, so a
-	## large gap reacquires only after the body is back on the ground and no
-	## longer rising or falling. A slow body does not get a speed floor.
+	## Airborne closest-offset is ambiguous on the Verdant crossing. A large
+	## gap reacquires only when the body is grounded, not rising or falling,
+	## and crawling. A moving body keeps the forward estimate. There is no
+	## speed floor.
 	var step := physics_step_seconds()
 	var gap := wrapped_course_gap(closest_offset, _progress)
 	var reacquired := (
 		grounded
 		and absf(vertical_speed) <= REACQUIRE_VERTICAL_SPEED
+		and speed <= REACQUIRE_MAX_SPEED
 		and absf(gap) > REACQUIRE_GAP_M
 	)
 	if reacquired:
