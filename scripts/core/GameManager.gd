@@ -410,13 +410,23 @@ func record_field_results(finish_results: Array) -> void:
 	var points_table: Array = cup.get("points_by_position", [10, 7, 5, 3, 2, 1])
 	for i in finish_results.size():
 		var entry: Dictionary = finish_results[i]
-		var racer: Node = entry.get("racer")
-		var label := "You" if bool(entry.get("is_player", false)) else "AI %d" % (i + 1)
-		if racer != null and racer.has_method("get") and str(racer.get("display_name")) != "":
-			pass
+		var label := _cup_standing_label(entry)
 		var points_index := clampi(i, 0, points_table.size() - 1)
 		var pts := int(points_table[points_index])
 		cup_standings[label] = int(cup_standings.get(label, 0)) + pts
+
+
+func _cup_standing_label(entry: Dictionary) -> String:
+	## Same identity RaceScene field lines use: runner_display_name, else "Runner".
+	## The local player with no profile stays "You" so cup points stay on one row.
+	var racer: Node = entry.get("racer")
+	if racer != null and racer.has_meta("runner_display_name"):
+		var named := str(racer.get_meta("runner_display_name")).strip_edges()
+		if not named.is_empty():
+			return named
+	if bool(entry.get("is_player", false)):
+		return "You"
+	return "Runner"
 
 
 func get_cup_standings_lines() -> PackedStringArray:
