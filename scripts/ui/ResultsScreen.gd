@@ -76,7 +76,8 @@ func show_results(
 		else:
 			title_label.text = "Cup Complete!"
 			retry_button.text = "Race Cup Again"
-			GameManager.save_cup_progress()
+		# Persist after every cup round, including rounds that still have a next course.
+		GameManager.save_cup_progress()
 	elif GameManager.is_local_mp():
 		cup_summary_label.text = (
 			"Couch session — career XP not written.\nField:\n%s" % field_block

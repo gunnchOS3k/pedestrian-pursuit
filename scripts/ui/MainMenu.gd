@@ -398,16 +398,20 @@ func _refresh_resume_cup_button() -> void:
 	var resume := $VBox.get_node_or_null("ResumeCupButton") as Button
 	if resume == null:
 		return
-	var cfg := ConfigFile.new()
-	var has_save := cfg.load("user://cup_progress.cfg") == OK and str(cfg.get_value("cup", "active_cup_id", "")) != ""
-	resume.visible = has_save
-	if has_save:
-		var round_i := int(cfg.get_value("cup", "round_index", 0)) + 1
-		resume.text = "Resume Saved Cup (course %d)" % round_i
+	var plan: Dictionary = {}
+	if GameManager.has_method("describe_saved_cup"):
+		plan = GameManager.describe_saved_cup()
+	var resumable := bool(plan.get("resumable", false))
+	resume.visible = resumable
+	if resumable:
+		resume.text = "Resume Saved Cup (course %d)" % int(plan.get("course_number", 1))
 
 
 func _on_resume_cup() -> void:
-	if GameManager.load_cup_progress():
+	var resumed := false
+	if GameManager.has_method("resume_saved_cup"):
+		resumed = bool(GameManager.resume_saved_cup())
+	if resumed:
 		SceneLoader.go_to_race()
 	else:
 		_refresh_resume_cup_button()
