@@ -12,7 +12,9 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tests"))
 
 from verdant_race_acceptance_gate import (  # noqa: E402
+    LAUNCH_COURSE_IDS,
     acceptance_failure,
+    evaluate_courses,
     parse_observer_log,
 )
 
@@ -111,7 +113,64 @@ class VerdantRaceAcceptanceGateTests(unittest.TestCase):
         )
         self.assertEqual(completed.returncode, 1)
         self.assertIn("RACE_ACCEPTANCE_GATE=fail", completed.stdout)
-        self.assertIn("LAP_COMPLETED=absent", completed.stdout)
+        self.assertIn("COURSE_GATE verdant_cascade_circuit=absent", completed.stdout)
+
+    def test_one_failed_course_fails_the_gate(self) -> None:
+        report, failures = evaluate_courses(
+            _all_courses(cloverwind_ranch={"RESULTS_PATH": "false", "RACE_STATE": "2"})
+        )
+        self.assertEqual(failures, ["cloverwind_ranch"])
+        self.assertIn("RACE_ACCEPTANCE_GATE=fail", report)
+        self.assertIn("COURSE_GATE verdant_cascade_circuit=pass", report)
+        self.assertIn("COURSE_GATE cloverwind_ranch=fail", report)
+        self.assertIn("COURSE_GATE mirage_mesa=pass", report)
+
+    def test_later_pass_does_not_erase_an_earlier_fail(self) -> None:
+        first = _course_block("prism_apex", RESULTS_PATH="false")
+        second = _course_block("prism_apex", RESULTS_PATH="true")
+        others = _all_courses()
+        report, failures = evaluate_courses(first + "\n" + second + "\n" + others)
+        self.assertIn("prism_apex", failures)
+        self.assertIn("COURSE_GATE prism_apex=fail", report)
+        self.assertNotIn("COURSE_GATE prism_apex=pass", report)
+
+    def test_owner_accepted_course_does_not_pass(self) -> None:
+        report, failures = evaluate_courses(
+            _all_courses(emberkeep_gauntlet={"COURSE_ACCEPTED": "true"})
+        )
+        self.assertEqual(failures, ["emberkeep_gauntlet"])
+        self.assertIn("COURSE_ACCEPTED", report)
+
+    def test_all_eight_real_results_pass(self) -> None:
+        report, failures = evaluate_courses(_all_courses())
+        self.assertEqual(failures, [])
+        self.assertIn("RACE_ACCEPTANCE_GATE=pass", report)
+        for course_id in LAUNCH_COURSE_IDS:
+            self.assertIn("COURSE_GATE %s=pass" % course_id, report)
+
+
+def _course_block(track_id: str, **overrides: str) -> str:
+    fields = {
+        "RACE_ENTERED": "true",
+        "CHECKPOINT_CROSSED": "true",
+        "LAP_COMPLETED": "true",
+        "RESULTS_PATH": "true",
+        "COURSE_ACCEPTED": "false",
+        "DEVICE_RUN": "false",
+        "RACE_STATE": "3",
+        "DRIVEN_MSEC": "87000",
+        "LAP_COUNT": "3",
+    }
+    fields.update(overrides)
+    lines = ["COURSE_OBSERVE_BEGIN", "TRACK_ID=%s" % track_id]
+    for key, value in fields.items():
+        lines.append("%s=%s" % (key, value))
+    lines.append("COURSE_OBSERVE_END")
+    return "\n".join(lines)
+
+
+def _all_courses(**by_id: dict[str, str]) -> str:
+    return "\n".join(_course_block(course_id, **by_id.get(course_id, {})) for course_id in LAUNCH_COURSE_IDS)
 
 
 if __name__ == "__main__":

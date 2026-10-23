@@ -1,14 +1,10 @@
 #!/usr/bin/env python3
-"""Fail unless a Verdant observer log shows a real lap.
+"""Fail unless every launch course log shows a real finished race.
 
-Exit 0 from Godot is not acceptance. The gate passes only when the log
-records all of:
-  RACE_ENTERED=true
-  CHECKPOINT_CROSSED=true
-  LAP_COMPLETED=true
-  RESULTS_PATH=true
-and does not record COURSE_ACCEPTED=true or a RACE_SCENE_FAIL line.
-Missing keys are absent, not true.
+Exit 0 from Godot is not acceptance. A course passes only when its own
+block records RACE_ENTERED, CHECKPOINT_CROSSED, LAP_COMPLETED, and
+RESULTS_PATH as true. COURSE_ACCEPTED=true and RACE_SCENE_FAIL fail that
+course. A later course cannot turn an earlier failure into a pass.
 """
 
 from __future__ import annotations
@@ -31,6 +27,18 @@ REQUIRED_TRUE = (
     "CHECKPOINT_CROSSED",
     "LAP_COMPLETED",
     "RESULTS_PATH",
+)
+
+# Verdant first, then the other seven launch courses. Order is the observer order.
+LAUNCH_COURSE_IDS = (
+    "verdant_cascade_circuit",
+    "cloverwind_ranch",
+    "prism_apex",
+    "emberkeep_gauntlet",
+    "tideglass_harbor",
+    "neon_switchyard",
+    "cloudstep_ridge",
+    "mirage_mesa",
 )
 
 
@@ -69,6 +77,100 @@ def acceptance_failure(fields: dict[str, str | None]) -> str | None:
     return None
 
 
+def _blank_block() -> dict[str, str | None]:
+    fields: dict[str, str | None] = {key: None for key in OBSERVED_KEYS}
+    fields["RACE_SCENE_FAIL"] = None
+    fields["TRACK_ID"] = None
+    fields["RACE_STATE"] = None
+    fields["DRIVEN_MSEC"] = None
+    fields["LAP_COUNT"] = None
+    return fields
+
+
+def parse_course_blocks(text: str) -> dict[str, dict[str, str | None]]:
+    """Group COURSE_OBSERVE blocks by TRACK_ID. A later pass does not erase a fail."""
+    blocks: dict[str, dict[str, str | None]] = {}
+    current: dict[str, str | None] | None = None
+    for raw_line in text.splitlines():
+        line = raw_line.strip()
+        if line == "COURSE_OBSERVE_BEGIN":
+            current = _blank_block()
+            continue
+        if line == "COURSE_OBSERVE_END":
+            if current is not None:
+                _store_block(blocks, current)
+            current = None
+            continue
+        if current is None:
+            continue
+        if line.startswith("RACE_SCENE_FAIL"):
+            reason = line[len("RACE_SCENE_FAIL") :].strip()
+            current["RACE_SCENE_FAIL"] = reason if reason else "present"
+            continue
+        if "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        if key in current or key in ("TRACK_ID", "RACE_STATE", "DRIVEN_MSEC", "LAP_COUNT"):
+            current[key] = value.strip()
+    if current is not None:
+        _store_block(blocks, current)
+    return blocks
+
+
+def _store_block(
+    blocks: dict[str, dict[str, str | None]],
+    fields: dict[str, str | None],
+) -> None:
+    track_id = fields.get("TRACK_ID")
+    if not track_id:
+        return
+    previous = blocks.get(track_id)
+    if previous is None or acceptance_failure(previous) is None:
+        if previous is not None and acceptance_failure(fields) is None:
+            blocks[track_id] = previous
+            return
+        blocks[track_id] = fields
+        return
+    # Keep the recorded failure. A later pass must not replace it.
+
+
+def evaluate_courses(text: str) -> tuple[str, list[str]]:
+    blocks = parse_course_blocks(text)
+    failures: list[str] = []
+    lines: list[str] = []
+    for course_id in LAUNCH_COURSE_IDS:
+        fields = blocks.get(course_id)
+        if fields is None:
+            failures.append(course_id)
+            lines.append("COURSE_GATE %s=absent" % course_id)
+            continue
+        reason = acceptance_failure(fields)
+        if reason:
+            failures.append(course_id)
+            lines.append("COURSE_GATE %s=fail %s" % (course_id, reason))
+        else:
+            lines.append("COURSE_GATE %s=pass" % course_id)
+        for key in (
+            "RACE_ENTERED",
+            "CHECKPOINT_CROSSED",
+            "LAP_COMPLETED",
+            "RESULTS_PATH",
+            "COURSE_ACCEPTED",
+            "DEVICE_RUN",
+            "RACE_STATE",
+            "DRIVEN_MSEC",
+            "LAP_COUNT",
+        ):
+            value = fields.get(key)
+            lines.append("%s %s=%s" % (course_id, key, "absent" if value is None else value))
+    header = ["RACE_ACCEPTANCE_GATE=%s" % ("fail" if failures else "pass")]
+    if failures:
+        header.append("RACE_ACCEPTANCE_FAIL " + ",".join(failures))
+    else:
+        header.append("RACE_ACCEPTANCE_FAIL none")
+    return "\n".join(header + lines) + "\n", failures
+
+
 def format_report(fields: dict[str, str | None], failure: str | None) -> str:
     lines = ["RACE_ACCEPTANCE_GATE=%s" % ("fail" if failure else "pass")]
     for key in (*OBSERVED_KEYS, "RACE_SCENE_FAIL"):
@@ -87,13 +189,13 @@ def main(argv: list[str]) -> int:
         return 2
     path = Path(argv[1])
     if not path.is_file():
-        fields = parse_observer_log("")
-        print(format_report(fields, "observer log absent: %s" % path), end="")
+        report, _failures = evaluate_courses("")
+        print(report, end="")
+        print("RACE_ACCEPTANCE_FAIL observer log absent: %s" % path)
         return 1
-    fields = parse_observer_log(path.read_text(encoding="utf-8", errors="replace"))
-    failure = acceptance_failure(fields)
-    print(format_report(fields, failure), end="")
-    return 0 if failure is None else 1
+    report, failures = evaluate_courses(path.read_text(encoding="utf-8", errors="replace"))
+    print(report, end="")
+    return 0 if not failures else 1
 
 
 if __name__ == "__main__":

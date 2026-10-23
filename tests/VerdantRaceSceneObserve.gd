@@ -1,20 +1,27 @@
 extends SceneTree
 
-## Headless observer for the one shared race scene on Verdant Cascade Circuit.
-## Records whether a lap, a non-start checkpoint, and the results screen actually run.
-## A 12-second watch is not acceptance. This script does not accept the course,
-## does not force laps, and does not claim a device run.
-## Exits nonzero when the scene cannot be entered. A finished observation with
-## an incomplete lap still exits 0; tests/verdant_race_acceptance_gate.py fails
-## the job unless checkpoint, lap, and results were all observed.
+## Headless observer for the eight launch courses on the shared RaceScene.
+## Verdant runs first. Each course uses the lap count in its track file.
+## The same ground-restore steer and accelerate path is used for every course.
+## A course is not owner-accepted. An unfinished course is printed and the run
+## continues so the acceptance gate can fail that course without hiding it.
+## Exits 0 after every course is printed. tests/verdant_race_acceptance_gate.py
+## fails the job unless each course saw a checkpoint, a lap, and results.
 
-const TRACK_ID := "verdant_cascade_circuit"
-const DISPLAY_NAME := "Verdant Cascade Circuit"
+const COURSE_IDS: Array[String] = [
+	"verdant_cascade_circuit",
+	"cloverwind_ranch",
+	"prism_apex",
+	"emberkeep_gauntlet",
+	"tideglass_harbor",
+	"neon_switchyard",
+	"cloudstep_ridge",
+	"mirage_mesa",
+]
 const ENTER_FRAMES := 180
 ## Countdown holds movement. Wait for RACING before any drive time counts.
 const COUNTDOWN_WAIT_MSEC := 8000
-## Bounded racing window after GO. Not long enough to declare the other courses,
-## and not a substitute for the acceptance gate.
+## Per-course bound after GO. Not extended, and not a substitute for the gate.
 const DRIVE_BOUND_MSEC := 150000
 
 
@@ -24,24 +31,42 @@ func _initialize() -> void:
 
 func _run() -> void:
 	var gm := get_root().get_node_or_null("GameManager")
+	var input := get_root().get_node_or_null("InputManager")
 	if gm == null or not gm.has_method("start_quick_race"):
-		_fail("GameManager.start_quick_race is missing")
+		for track_id in COURSE_IDS:
+			_print_course(track_id, false, -1, -1, -1, false, 0, false, false, false, false, "GameManager.start_quick_race is missing")
+		quit(0)
 		return
+	var packed: PackedScene = load("res://scenes/race/RaceScene.tscn") as PackedScene
+	if packed == null:
+		for track_id in COURSE_IDS:
+			_print_course(track_id, false, -1, -1, -1, false, 0, false, false, false, false, "res://scenes/race/RaceScene.tscn did not load")
+		quit(0)
+		return
+	for track_id in COURSE_IDS:
+		await _observe_course(gm, input, packed, track_id)
+	quit(0)
+
+
+func _observe_course(gm: Node, input: Node, packed: PackedScene, track_id: String) -> void:
 	if "accept_test_mode" in gm:
 		gm.accept_test_mode = false
 	if "accept_force_laps" in gm:
 		gm.accept_force_laps = 0
-	gm.start_quick_race(TRACK_ID)
-	if str(gm.get("selected_track_id")) != TRACK_ID:
-		_fail("quick race did not select %s" % TRACK_ID)
+	_release_gameplay_input(input)
+	var course := _load_course_file(track_id)
+	var expected_laps := int(course.get("lap_count", -1))
+	var display_name := str(course.get("display_name", ""))
+	if course.is_empty() or expected_laps < 1 or display_name.is_empty():
+		_print_course(track_id, false, expected_laps, -1, -1, false, 0, false, false, false, false, "course file missing lap count or display name")
 		return
-	var packed: PackedScene = load("res://scenes/race/RaceScene.tscn") as PackedScene
-	if packed == null:
-		_fail("res://scenes/race/RaceScene.tscn did not load")
+	gm.start_quick_race(track_id)
+	if str(gm.get("selected_track_id")) != track_id:
+		_print_course(track_id, false, expected_laps, int(gm.get("total_laps")), -1, false, 0, false, false, false, false, "quick race did not select %s" % track_id)
 		return
 	var scene := packed.instantiate()
 	if scene == null:
-		_fail("RaceScene instantiate returned null")
+		_print_course(track_id, false, expected_laps, int(gm.get("total_laps")), -1, false, 0, false, false, false, false, "RaceScene instantiate returned null")
 		return
 	get_root().add_child(scene)
 	var entered := false
@@ -51,7 +76,7 @@ func _run() -> void:
 	for _i in ENTER_FRAMES:
 		await physics_frame
 		if not is_instance_valid(scene):
-			_fail("RaceScene left the tree before the race was entered")
+			_print_course(track_id, false, expected_laps, int(gm.get("total_laps")), -1, false, 0, false, false, false, false, "RaceScene left the tree before the race was entered")
 			return
 		track = scene.get_node_or_null("CourseTrack")
 		player = scene.get_node_or_null("PlayerRacer")
@@ -59,12 +84,14 @@ func _run() -> void:
 		if track == null or player == null or race_manager == null:
 			continue
 		if not track.has_method("get_race_path") or not track.has_method("get_display_name"):
-			_fail("CourseTrack is missing get_race_path or get_display_name")
+			_print_course(track_id, false, expected_laps, int(gm.get("total_laps")), -1, false, 0, false, false, false, false, "CourseTrack is missing get_race_path or get_display_name")
+			await _drop_scene(scene)
 			return
 		if track.get_race_path() == null:
 			continue
-		if str(track.get_display_name()) != DISPLAY_NAME:
-			_fail("entered display name %s" % str(track.get_display_name()))
+		if str(track.get_display_name()) != display_name:
+			_print_course(track_id, false, expected_laps, int(gm.get("total_laps")), int(race_manager.get("state")), false, 0, false, false, false, false, "entered display name %s" % str(track.get_display_name()))
+			await _drop_scene(scene)
 			return
 		var state := int(race_manager.get("state"))
 		# RaceManager.RaceState: WAITING=0, COUNTDOWN=1, RACING=2, FINISHED=3.
@@ -72,9 +99,14 @@ func _run() -> void:
 			entered = true
 			break
 	if not entered:
-		_fail("Verdant RaceScene did not reach countdown")
+		_print_course(track_id, false, expected_laps, int(gm.get("total_laps")), -1, false, 0, false, false, false, false, "%s RaceScene did not reach countdown" % track_id)
+		await _drop_scene(scene)
 		return
-	# Dictionary so signal callbacks mutate the same record. A bool capture would not.
+	var runtime_laps := int(gm.get("total_laps"))
+	if runtime_laps != expected_laps:
+		_print_course(track_id, true, expected_laps, runtime_laps, int(race_manager.get("state")), false, 0, false, false, false, false, "runtime laps %d did not match course lap_count %d" % [runtime_laps, expected_laps])
+		await _drop_scene(scene)
+		return
 	var observed := {"checkpoint": false, "lap": false, "results": false}
 	var lap_manager := race_manager.get_node_or_null("LapManager")
 	if lap_manager != null and lap_manager.has_signal("lap_changed"):
@@ -95,14 +127,12 @@ func _run() -> void:
 			observed["results"] = true
 		)
 	var results := scene.get_node_or_null("ResultsScreen")
-	var input := get_root().get_node_or_null("InputManager")
 	var countdown_finished := false
 	var countdown_deadline := Time.get_ticks_msec() + COUNTDOWN_WAIT_MSEC
 	while Time.get_ticks_msec() < countdown_deadline:
 		await physics_frame
 		if not is_instance_valid(race_manager):
 			break
-		# RaceManager.RaceState: RACING=2, FINISHED=3. Movement stays off until then.
 		if int(race_manager.get("state")) >= 2:
 			countdown_finished = true
 			break
@@ -138,21 +168,73 @@ func _run() -> void:
 	var state_after := -1
 	if is_instance_valid(race_manager):
 		state_after = int(race_manager.get("state"))
-	print("RACE_ENTERED=true")
-	print("TRACK_ID=%s" % TRACK_ID)
-	print("RACE_STATE=%d" % state_after)
+	_print_course(
+		track_id,
+		true,
+		expected_laps,
+		runtime_laps,
+		state_after,
+		countdown_finished,
+		driven_msec,
+		line_steer,
+		bool(observed["lap"]),
+		bool(observed["checkpoint"]),
+		bool(observed["results"]),
+		""
+	)
+	await _drop_scene(scene)
+
+
+func _load_course_file(track_id: String) -> Dictionary:
+	var path := "res://data/tracks/%s.json" % track_id
+	if not FileAccess.file_exists(path):
+		return {}
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+	if typeof(parsed) != TYPE_DICTIONARY:
+		return {}
+	return parsed as Dictionary
+
+
+func _print_course(
+	track_id: String,
+	entered: bool,
+	expected_laps: int,
+	runtime_laps: int,
+	race_state: int,
+	countdown_finished: bool,
+	driven_msec: int,
+	line_steer: bool,
+	lap_completed: bool,
+	checkpoint_crossed: bool,
+	results_path: bool,
+	fail_reason: String
+) -> void:
+	print("COURSE_OBSERVE_BEGIN")
+	print("TRACK_ID=%s" % track_id)
+	print("RACE_ENTERED=%s" % str(entered).to_lower())
+	print("RACE_STATE=%d" % race_state)
+	print("LAP_COUNT=%d" % expected_laps)
+	print("LAP_COUNT_RUNTIME=%d" % runtime_laps)
 	print("COUNTDOWN_FINISHED=%s" % str(countdown_finished).to_lower())
 	print("DRIVE_BOUND_MSEC=%d" % DRIVE_BOUND_MSEC)
 	print("DRIVEN_MSEC=%d" % driven_msec)
 	print("LINE_STEER=%s" % str(line_steer).to_lower())
 	print("INPUT_PATH=accelerate_action+touch_accelerate+touch_steer")
-	print("LAP_COMPLETED=%s" % str(bool(observed["lap"])).to_lower())
-	print("CHECKPOINT_CROSSED=%s" % str(bool(observed["checkpoint"])).to_lower())
-	print("RESULTS_PATH=%s" % str(bool(observed["results"])).to_lower())
+	print("LAP_COMPLETED=%s" % str(lap_completed).to_lower())
+	print("CHECKPOINT_CROSSED=%s" % str(checkpoint_crossed).to_lower())
+	print("RESULTS_PATH=%s" % str(results_path).to_lower())
 	print("COURSE_ACCEPTED=false")
 	print("DEVICE_RUN=false")
-	print("RACE_SCENE_OBSERVE_ENTERED %s" % TRACK_ID)
-	quit(0)
+	if not fail_reason.is_empty():
+		print("RACE_SCENE_FAIL %s" % fail_reason)
+	print("COURSE_OBSERVE_END")
+
+
+func _drop_scene(scene: Node) -> void:
+	if scene != null and is_instance_valid(scene):
+		scene.queue_free()
+	for _i in 3:
+		await physics_frame
 
 
 func _attach_line_steer(player: Node, track: Node) -> Node:
@@ -211,16 +293,3 @@ func _release_gameplay_input(input: Node) -> void:
 		input.set_touch_accelerate(false)
 	if input.has_method("set_touch_steer"):
 		input.set_touch_steer(0.0)
-
-
-func _fail(reason: String) -> void:
-	print("RACE_ENTERED=false")
-	print("TRACK_ID=%s" % TRACK_ID)
-	print("LAP_COMPLETED=false")
-	print("CHECKPOINT_CROSSED=false")
-	print("RESULTS_PATH=false")
-	print("COURSE_ACCEPTED=false")
-	print("DEVICE_RUN=false")
-	print("RACE_SCENE_FAIL %s" % reason)
-	push_error(reason)
-	quit(1)
