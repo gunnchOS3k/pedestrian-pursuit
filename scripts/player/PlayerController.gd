@@ -5,6 +5,7 @@ extends CharacterBody3D
 ## drafting, rail grind, and collision recovery.
 
 const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
+const _VoidRecovery = preload("res://scripts/player/VoidRecovery.gd")
 
 signal speed_changed(speed: float)
 signal terrain_changed(terrain_name: String)
@@ -26,6 +27,10 @@ var _slow_timer: float = 0.0
 var _start_boost_multiplier: float = 1.0
 var _start_boost_time: float = 0.0
 var _recovery_transform := Transform3D.IDENTITY
+## Start line from setup_for_race. Used until the first accepted gate.
+var _start_fallback := Transform3D.IDENTITY
+## False until set_recovery_transform records an accepted gate.
+var _accepted_checkpoint := false
 var _collision_stun: float = 0.0
 var _wall_kick_cooldown: float = 0.0
 
@@ -109,6 +114,8 @@ func _setup_special_ability(racer_data: Dictionary) -> void:
 func setup_for_race(start_transform: Transform3D) -> void:
 	global_transform = start_transform
 	_recovery_transform = start_transform
+	_start_fallback = start_transform
+	_accepted_checkpoint = false
 	horizontal_speed = 0.0
 	movement_enabled = false
 	_collision_stun = 0.0
@@ -511,28 +518,17 @@ func activate_shield() -> void:
 
 func set_recovery_transform(recovery_transform: Transform3D) -> void:
 	_recovery_transform = recovery_transform
+	_accepted_checkpoint = true
 
 
 func _recover_from_fall() -> void:
 	var visual := get_node_or_null("RacerVisual")
 	if visual != null and visual.has_method("play_stumble"):
 		visual.play_stumble()
-	var recovered := false
-	var follower := get_node_or_null("AcceptPathFollower")
-	if follower != null and follower.has_method("snap_to_path") and follower.get("path") != null:
-		var path: Path3D = follower.path
-		if path != null and path.curve != null:
-			var offset := path.curve.get_closest_offset(path.to_local(global_position))
-			follower.snap_to_path(self, offset, 0.0)
-			recovered = true
-	if not recovered:
-		# Production path: recover via owning RaceScene CourseTrack when present.
-		var scene := get_parent()
-		var track = scene.get("track") if scene != null else null
-		if track != null and track.has_method("snap_body_to_nearest_path"):
-			recovered = bool(track.snap_body_to_nearest_path(self, 0.0))
-	if not recovered:
-		global_transform = _recovery_transform
+	# An accepted gate restores that checkpoint. Before the first accept, the
+	# start line stored by setup_for_race is the respawn. Nearest-path snaps
+	# skip or rewind gates, so void recovery does not use them.
+	global_transform = _VoidRecovery.choose(_accepted_checkpoint, _recovery_transform, _start_fallback)
 	velocity = Vector3.ZERO
 	horizontal_speed = maxf(horizontal_speed * 0.35, 0.0)
 	_collision_stun = 0.6
