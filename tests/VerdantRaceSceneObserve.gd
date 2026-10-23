@@ -179,7 +179,12 @@ func _hold_gameplay_input(input: Node, follower: Node, player: Node, delta: floa
 	var accelerate := true
 	var steer := 0.0
 	if follower != null and player is CharacterBody3D and follower.has_method("get_steer_and_accel"):
+		# The follower lifts any body below y=0.2 onto the path. A grounded
+		# capsule origin sits near y=0, so that lift fires before physics and
+		# the racer never stays on the floor. Throttle only builds speed there.
+		var grounded_y := player.global_position.y
 		var cmd: Dictionary = follower.get_steer_and_accel(player, delta)
+		player.global_position.y = grounded_y
 		steer = float(cmd.get("steer", 0.0))
 		accelerate = bool(cmd.get("accelerate", true))
 	if input != null and input.has_method("set_touch_steer"):
