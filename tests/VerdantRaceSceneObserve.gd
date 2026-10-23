@@ -382,7 +382,7 @@ func _sample_driver(
 			hspeed,
 			str(grounded).to_lower(),
 			str(movement).to_lower(),
-			get_physics_process_delta_time(),
+			1.0 / float(Engine.get_physics_ticks_per_second()),
 			wall_delta,
 			str(accelerate).to_lower(),
 			steer,
