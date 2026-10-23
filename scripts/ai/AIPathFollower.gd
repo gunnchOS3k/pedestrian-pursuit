@@ -137,26 +137,13 @@ func get_steer_and_accel(body: CharacterBody3D, delta: float = 0.016) -> Diction
 	if "movement_enabled" in body and not bool(body.movement_enabled):
 		return {"steer": 0.0, "accelerate": true, "drift": false, "use_item": false}
 
-	# Measured course offset, not speed * delta. The 2.5 unit/second floor ran
-	# the look target up to half a lap ahead of a slow body (run 39961888813,
-	# gap about 135, horizontal speed about 2). Snapping to every closest
-	# sample is also wrong: airborne beside the Verdant crossing, closest
-	# jumps from about 218 back to 171 and the car retreads that pocket
-	# (run 39963277126, next checkpoint stuck at 4). Keep the forward offset
-	# through that airborne jump. Rejoin when the body is on the floor.
-	# This does not move the body. The height floor and look_at below stay.
-	if path != null:
-		var closest := _curve.get_closest_offset(path.to_local(body.global_position))
-		var along := closest - _progress
-		if along > _path_length * 0.5:
-			along -= _path_length
-		elif along < -_path_length * 0.5:
-			along += _path_length
-		var airborne_reverse := along < -30.0 and not body.is_on_floor()
-		if not airborne_reverse:
-			_progress = closest
-	else:
-		_progress = fposmod(_progress + speed * delta, _path_length)
+	# Speed times delta, with a 2.5 unit/second floor. Measured course offset
+	# was tried on runs 39963277126 and 39964928289. It removed this floor,
+	# and all six Verdant processes then missed checkpoint 4 at the point-7
+	# bounce. The integrator stays until that landing is fixed. It does run
+	# the look target ahead of a slow body: run 39961888813 recorded a gap of
+	# about 135 while horizontal speed was about 2.
+	_progress = fposmod(_progress + maxf(speed, 2.5) * delta, _path_length)
 
 	var sample_ahead := look_ahead + _shortcut_bias
 	var on_path := path.to_global(_curve.sample_baked(_progress))
