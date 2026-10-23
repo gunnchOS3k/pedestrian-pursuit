@@ -195,6 +195,8 @@ func _add_track_segment(
 
 	if bool(_data.get("guard_rails", false)):
 		for side in [-1.0, 1.0]:
+			if _rail_side_open_for_shortcut(index, side):
+				continue
 			var rail_size := Vector3(0.45, 1.4, maxf(1.0, length - _lane_width * 0.25))
 			var rail_shape := BoxShape3D.new()
 			rail_shape.size = rail_size
@@ -348,6 +350,83 @@ func _add_boost_pickup(parent: Node3D, point_index: int) -> void:
 	parent.add_child(pickup)
 
 
+func _rail_side_open_for_shortcut(segment_index: int, side: float) -> bool:
+	## Drop the rail on the side an authored shortcut leaves or rejoins.
+	## The racing line itself stays walled on the outside.
+	var count := _course_points.size()
+	if count < 2 or segment_index < 0 or segment_index >= count:
+		return false
+	var start := _course_points[segment_index]
+	var end := _course_points[(segment_index + 1) % count]
+	var forward := end - start
+	forward.y = 0.0
+	if forward.length_squared() < 0.001:
+		return false
+	# look_at points local -Z along travel, so local +X is forward × up.
+	var local_x := forward.normalized().cross(Vector3.UP)
+	var start_index := segment_index
+	var end_index := (segment_index + 1) % count
+	for route in _data.get("shortcut_routes", []):
+		if typeof(route) != TYPE_DICTIONARY:
+			continue
+		var entry_i := int(route.get("entry_point_index", -1))
+		var exit_i := int(route.get("exit_point_index", -1))
+		if entry_i < 0 or exit_i < 0 or entry_i >= count or exit_i >= count or entry_i == exit_i:
+			continue
+		var anchor := -1
+		var other := -1
+		if start_index == entry_i or end_index == entry_i:
+			anchor = entry_i
+			other = exit_i
+		elif start_index == exit_i or end_index == exit_i:
+			anchor = exit_i
+			other = entry_i
+		if anchor < 0:
+			continue
+		var to_target := _course_points[other] - _course_points[anchor]
+		to_target.y = 0.0
+		var side_dot := to_target.dot(local_x)
+		if side > 0.0 and side_dot > 0.5:
+			return true
+		if side < 0.0 and side_dot < -0.5:
+			return true
+	return false
+
+
+func _add_shortcut_floor(parent: Node3D, start_point: Vector3, end_point: Vector3, shortcut_id: String) -> void:
+	## Collision under the authored chord. The trigger alone is not a drivable route.
+	var surface_y := (start_point.y + end_point.y) * 0.5
+	var flat_start := Vector3(start_point.x, surface_y, start_point.z)
+	var flat_end := Vector3(end_point.x, surface_y, end_point.z)
+	var length := flat_start.distance_to(flat_end)
+	if length < 1.0:
+		return
+	var body := StaticBody3D.new()
+	body.name = "ShortcutFloor_%s" % shortcut_id
+	body.collision_layer = 1
+	body.collision_mask = 0
+	parent.add_child(body)
+	body.global_position = (flat_start + flat_end) * 0.5 + Vector3(0.0, -0.3, 0.0)
+	var look_target := flat_end + Vector3(0.0, -0.3, 0.0)
+	if body.global_position.distance_squared_to(look_target) > 0.04:
+		body.look_at(look_target, Vector3.UP)
+	var width := _lane_width * 0.55
+	var surface_size := Vector3(width, 0.6, length)
+	var shape := BoxShape3D.new()
+	shape.size = surface_size
+	var collider := CollisionShape3D.new()
+	collider.name = "ShortcutFloorCollision"
+	collider.shape = shape
+	body.add_child(collider)
+	var mesh := BoxMesh.new()
+	mesh.size = surface_size
+	var visual := MeshInstance3D.new()
+	visual.name = "ShortcutFloorVisual"
+	visual.mesh = mesh
+	visual.material_override = _make_material(Color(0.95, 0.75, 0.2), true)
+	body.add_child(visual)
+
+
 func _add_shortcut_corridor(parent: Node3D, route: Dictionary) -> void:
 	## Physical corridor between entry/exit path points. Does not alter checkpoint sequence.
 	var entry_i := int(route.get("entry_point_index", 0))
@@ -356,6 +435,7 @@ func _add_shortcut_corridor(parent: Node3D, route: Dictionary) -> void:
 		return
 	var entry := _course_points[entry_i]
 	var exitp := _course_points[exit_i]
+	_add_shortcut_floor(parent, entry, exitp, str(route.get("id", "cut")))
 	var mid := entry.lerp(exitp, 0.5)
 	var corridor := Area3D.new()
 	corridor.name = "Shortcut_%s" % str(route.get("id", "cut"))
