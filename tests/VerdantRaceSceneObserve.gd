@@ -141,20 +141,22 @@ func _observe_course(gm: Node, input: Node, packed: PackedScene, track_id: Strin
 	var observed := {"checkpoint": false, "lap": false, "results": false}
 	var lap_manager := race_manager.get_node_or_null("LapManager")
 	if lap_manager != null and lap_manager.has_signal("lap_changed"):
-		lap_manager.lap_changed.connect(func(_racer: Node, lap: int) -> void:
-			if lap >= 1:
+		lap_manager.lap_changed.connect(func(racer: Node, lap: int) -> void:
+			if racer == player and lap >= 1:
 				observed["lap"] = true
 		)
 	var checkpoint_history: Array = []
 	if track.has_method("get_checkpoints"):
 		for checkpoint in track.get_checkpoints():
 			if checkpoint != null and checkpoint.has_signal("racer_passed"):
-				checkpoint.racer_passed.connect(func(_racer: Node, index: int) -> void:
+				checkpoint.racer_passed.connect(func(racer: Node, index: int) -> void:
 					# Index 0 is the start line. Spawn overlap is not a crossing.
-					if index > 0:
+					# Prefix the racer so an AI lap cannot satisfy the player gate.
+					if racer == player and index > 0:
 						observed["checkpoint"] = true
 					if checkpoint_history.size() < 64:
-						checkpoint_history.append(str(index))
+						var who := "p" if racer == player else "a"
+						checkpoint_history.append("%s%d" % [who, index])
 				)
 	if race_manager.has_signal("race_finished"):
 		race_manager.race_finished.connect(func(_finished_player: Node, _finish_results: Array) -> void:

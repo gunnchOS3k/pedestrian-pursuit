@@ -137,14 +137,24 @@ func get_steer_and_accel(body: CharacterBody3D, delta: float = 0.016) -> Diction
 	if "movement_enabled" in body and not bool(body.movement_enabled):
 		return {"steer": 0.0, "accelerate": true, "drift": false, "use_item": false}
 
-	# Steer from the body's measured course offset. Integrating speed * delta,
-	# including the old 2.5 unit/second floor, walks the look target away from
-	# the body when the racer slows, hits a wall, or the caller passes
-	# wall-clock time. On a closed loop that aims the car at a different
-	# segment. This does not move the body. The height floor and look_at below
-	# are unchanged.
+	# Measured course offset, not speed * delta. The 2.5 unit/second floor ran
+	# the look target up to half a lap ahead of a slow body (run 39961888813,
+	# gap about 135, horizontal speed about 2). Snapping to every closest
+	# sample is also wrong: airborne beside the Verdant crossing, closest
+	# jumps from about 218 back to 171 and the car retreads that pocket
+	# (run 39963277126, next checkpoint stuck at 4). Keep the forward offset
+	# through that airborne jump. Rejoin when the body is on the floor.
+	# This does not move the body. The height floor and look_at below stay.
 	if path != null:
-		_progress = _curve.get_closest_offset(path.to_local(body.global_position))
+		var closest := _curve.get_closest_offset(path.to_local(body.global_position))
+		var along := closest - _progress
+		if along > _path_length * 0.5:
+			along -= _path_length
+		elif along < -_path_length * 0.5:
+			along += _path_length
+		var airborne_reverse := along < -30.0 and not body.is_on_floor()
+		if not airborne_reverse:
+			_progress = closest
 	else:
 		_progress = fposmod(_progress + speed * delta, _path_length)
 
