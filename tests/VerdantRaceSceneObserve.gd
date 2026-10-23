@@ -2,13 +2,20 @@ extends SceneTree
 
 ## Headless observer for the one shared race scene on Verdant Cascade Circuit.
 ## Records whether a lap, a non-start checkpoint, and the results screen actually run.
-## Does not accept the course and does not claim a device run.
-## Exits nonzero when the scene cannot be entered.
+## A 12-second watch is not acceptance. This script does not accept the course,
+## does not force laps, and does not claim a device run.
+## Exits nonzero when the scene cannot be entered. A finished observation with
+## an incomplete lap still exits 0; tests/verdant_race_acceptance_gate.py fails
+## the job unless checkpoint, lap, and results were all observed.
 
 const TRACK_ID := "verdant_cascade_circuit"
 const DISPLAY_NAME := "Verdant Cascade Circuit"
 const ENTER_FRAMES := 180
-const OBSERVE_MSEC := 12000
+## Countdown holds movement. Wait for RACING before any drive time counts.
+const COUNTDOWN_WAIT_MSEC := 8000
+## Bounded racing window after GO. Not long enough to declare the other courses,
+## and not a substitute for the acceptance gate.
+const DRIVE_BOUND_MSEC := 150000
 
 
 func _initialize() -> void:
@@ -89,26 +96,56 @@ func _run() -> void:
 		)
 	var results := scene.get_node_or_null("ResultsScreen")
 	var input := get_root().get_node_or_null("InputManager")
-	var deadline := Time.get_ticks_msec() + OBSERVE_MSEC
-	while Time.get_ticks_msec() < deadline:
-		if input != null and input.has_method("set_touch_accelerate"):
-			input.set_touch_accelerate(true)
+	var countdown_finished := false
+	var countdown_deadline := Time.get_ticks_msec() + COUNTDOWN_WAIT_MSEC
+	while Time.get_ticks_msec() < countdown_deadline:
 		await physics_frame
-		if not is_instance_valid(scene):
+		if not is_instance_valid(race_manager):
 			break
-		if results != null:
-			var panel := results.get_node_or_null("Panel")
-			if panel != null and bool(panel.get("visible")):
-				observed["results"] = true
-		if lap_manager != null and player != null and lap_manager.has_method("get_lap"):
-			if int(lap_manager.get_lap(player)) >= 1:
-				observed["lap"] = true
+		# RaceManager.RaceState: RACING=2, FINISHED=3. Movement stays off until then.
+		if int(race_manager.get("state")) >= 2:
+			countdown_finished = true
+			break
+	var follower: Node = null
+	var line_steer := false
+	if countdown_finished and is_instance_valid(player) and is_instance_valid(track):
+		follower = _attach_line_steer(player, track)
+		line_steer = follower != null
+	var driven_msec := 0
+	if countdown_finished:
+		var drive_started := Time.get_ticks_msec()
+		var drive_deadline := drive_started + DRIVE_BOUND_MSEC
+		var last_tick := drive_started
+		while Time.get_ticks_msec() < drive_deadline:
+			var now := Time.get_ticks_msec()
+			var delta := clampf(float(now - last_tick) / 1000.0, 0.001, 0.05)
+			last_tick = now
+			_hold_gameplay_input(input, follower, player, delta)
+			await physics_frame
+			if not is_instance_valid(scene):
+				break
+			if results != null:
+				var panel := results.get_node_or_null("Panel")
+				if panel != null and bool(panel.get("visible")):
+					observed["results"] = true
+			if lap_manager != null and is_instance_valid(player) and lap_manager.has_method("get_lap"):
+				if int(lap_manager.get_lap(player)) >= 1:
+					observed["lap"] = true
+			if bool(observed["checkpoint"]) and bool(observed["lap"]) and bool(observed["results"]):
+				break
+		driven_msec = Time.get_ticks_msec() - drive_started
+		_release_gameplay_input(input)
 	var state_after := -1
 	if is_instance_valid(race_manager):
 		state_after = int(race_manager.get("state"))
 	print("RACE_ENTERED=true")
 	print("TRACK_ID=%s" % TRACK_ID)
 	print("RACE_STATE=%d" % state_after)
+	print("COUNTDOWN_FINISHED=%s" % str(countdown_finished).to_lower())
+	print("DRIVE_BOUND_MSEC=%d" % DRIVE_BOUND_MSEC)
+	print("DRIVEN_MSEC=%d" % driven_msec)
+	print("LINE_STEER=%s" % str(line_steer).to_lower())
+	print("INPUT_PATH=accelerate_action+touch_accelerate+touch_steer")
 	print("LAP_COMPLETED=%s" % str(bool(observed["lap"])).to_lower())
 	print("CHECKPOINT_CROSSED=%s" % str(bool(observed["checkpoint"])).to_lower())
 	print("RESULTS_PATH=%s" % str(bool(observed["results"])).to_lower())
@@ -116,6 +153,55 @@ func _run() -> void:
 	print("DEVICE_RUN=false")
 	print("RACE_SCENE_OBSERVE_ENTERED %s" % TRACK_ID)
 	quit(0)
+
+
+func _attach_line_steer(player: Node, track: Node) -> Node:
+	## Feed the existing racing-line steer through touch input. Do not snap the
+	## body onto the path and do not enable accept_test_mode.
+	if not track.has_method("get_race_path"):
+		return null
+	var path: Path3D = track.get_race_path()
+	if path == null or path.curve == null:
+		return null
+	var follower_script = load("res://scripts/ai/AIPathFollower.gd")
+	if follower_script == null:
+		return null
+	var follower: Node = follower_script.new()
+	follower.name = "HeadlessLineSteer"
+	player.add_child(follower)
+	follower.setup(path)
+	follower.set("look_ahead", 5.5)
+	follower.set("magnet_strength", 0.0)
+	return follower
+
+
+func _hold_gameplay_input(input: Node, follower: Node, player: Node, delta: float) -> void:
+	var accelerate := true
+	var steer := 0.0
+	if follower != null and player is CharacterBody3D and follower.has_method("get_steer_and_accel"):
+		var cmd: Dictionary = follower.get_steer_and_accel(player, delta)
+		steer = float(cmd.get("steer", 0.0))
+		accelerate = bool(cmd.get("accelerate", true))
+	if input != null and input.has_method("set_touch_steer"):
+		input.set_touch_steer(steer)
+	if accelerate:
+		Input.action_press("accelerate")
+		if input != null and input.has_method("set_touch_accelerate"):
+			input.set_touch_accelerate(true)
+	else:
+		Input.action_release("accelerate")
+		if input != null and input.has_method("set_touch_accelerate"):
+			input.set_touch_accelerate(false)
+
+
+func _release_gameplay_input(input: Node) -> void:
+	Input.action_release("accelerate")
+	if input == null:
+		return
+	if input.has_method("set_touch_accelerate"):
+		input.set_touch_accelerate(false)
+	if input.has_method("set_touch_steer"):
+		input.set_touch_steer(0.0)
 
 
 func _fail(reason: String) -> void:
