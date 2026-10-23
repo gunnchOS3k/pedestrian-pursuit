@@ -19,6 +19,9 @@ func _run() -> void:
 	_test_airborne_gap_does_not_reacquire(failures)
 	_test_grounded_gap_reacquires_estimate_only(failures)
 	_test_racing_speed_keeps_the_forward_estimate(failures)
+	_test_on_line_short_landing_reacquires(failures)
+	_test_off_line_racing_gap_does_not_reacquire(failures)
+	_test_small_on_line_lead_does_not_reacquire(failures)
 	_test_small_grounded_gap_integrates(failures)
 	_test_rising_body_does_not_reacquire(failures)
 	if failures.is_empty():
@@ -126,6 +129,45 @@ func _test_racing_speed_keeps_the_forward_estimate(failures: PackedStringArray) 
 	var expected := fposmod(228.0 + 22.0 * step, PATH_LENGTH)
 	if not is_equal_approx(float(follower._progress), expected):
 		failures.append("racing progress %.4f != integrated %.4f" % [float(follower._progress), expected])
+
+
+func _test_on_line_short_landing_reacquires(failures: PackedStringArray) -> void:
+	# Run 39975106922 sample t=12006: speed about 10, lateral 0.6, gap about 55.
+	var follower = _follower(failures)
+	if follower == null:
+		return
+	follower._progress = 228.0
+	var result: Dictionary = follower.advance_course_estimate(10.12, true, 0.0, 173.0, 0.6)
+	if not bool(result["reacquired"]):
+		failures.append("on-line short landing did not reacquire")
+	if not is_equal_approx(float(follower._progress), 173.0):
+		failures.append("on-line reacquire left progress at %.2f" % float(follower._progress))
+
+
+func _test_off_line_racing_gap_does_not_reacquire(failures: PackedStringArray) -> void:
+	# Same run, one second later: lateral 6.5 and still fast. Do not snap there.
+	var follower = _follower(failures)
+	if follower == null:
+		return
+	follower._progress = 228.0
+	var step := float(follower.physics_step_seconds())
+	var result: Dictionary = follower.advance_course_estimate(18.76, true, 0.0, 173.0, 6.5)
+	if bool(result["reacquired"]):
+		failures.append("off-line racing body reacquired")
+	var expected := fposmod(228.0 + 18.76 * step, PATH_LENGTH)
+	if not is_equal_approx(float(follower._progress), expected):
+		failures.append("off-line progress %.4f != integrated %.4f" % [float(follower._progress), expected])
+
+
+func _test_small_on_line_lead_does_not_reacquire(failures: PackedStringArray) -> void:
+	# Same run, after checkpoint 4: on line, about 13 m ahead, still racing.
+	var follower = _follower(failures)
+	if follower == null:
+		return
+	follower._progress = 228.0
+	var result: Dictionary = follower.advance_course_estimate(22.0, true, 0.0, 215.0, 0.2)
+	if bool(result["reacquired"]):
+		failures.append("a 13 m on-line lead reacquired")
 
 
 func _test_small_grounded_gap_integrates(failures: PackedStringArray) -> void:

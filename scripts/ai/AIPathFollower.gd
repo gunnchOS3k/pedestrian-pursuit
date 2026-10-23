@@ -35,12 +35,19 @@ var reacquire_count: int = 0
 ## physics tick, so those three processes finally matched, but reacquiring
 ## every grounded gap over 12 m (44 times, including at racing speed) pulled
 ## the look target back before checkpoint 4 and all three finished zero laps.
-## Reacquire only while the body is slow. A moving body keeps the forward
-## estimate through the crossing. Snapping on every call, including in the
+## A moving body that is off the line keeps the forward estimate through the
+## crossing. Snapping on every call, including in the
 ## air, missed checkpoint 4 on runs 39963277126 and 39964928289.
 const REACQUIRE_GAP_M := 12.0
 const REACQUIRE_VERTICAL_SPEED := 0.5
 const REACQUIRE_MAX_SPEED := 4.0
+## Run 39975106922 at 595e1f0: a short Verdant landing was still on the path
+## (lateral 0.6 m, speed about 10) with a 55 m progress gap. The crawl-only
+## gate left that gap in place, and one second later the body was in the wall
+## at lateral 6.5 m. Healthy laps in that same log led the body by at most
+## about 13 m. An on-line gap past 20 m is the missed landing, not that lead.
+const REACQUIRE_ON_LINE_M := 1.5
+const REACQUIRE_ON_LINE_GAP_M := 20.0
 
 
 func setup(race_path: Path3D) -> void:
@@ -154,20 +161,18 @@ func wrapped_course_gap(closest_offset: float, progress: float) -> float:
 	return gap
 
 
-func advance_course_estimate(speed: float, grounded: bool, vertical_speed: float, closest_offset: float) -> Dictionary:
+func advance_course_estimate(speed: float, grounded: bool, vertical_speed: float, closest_offset: float, lateral_m: float = 99.0) -> Dictionary:
 	## Move the look-ahead estimate. Does not move the body.
 	## Airborne closest-offset is ambiguous on the Verdant crossing. A large
-	## gap reacquires only when the body is grounded, not rising or falling,
-	## and crawling. A moving body keeps the forward estimate. There is no
-	## speed floor.
+	## gap reacquires when the body is grounded and not rising or falling,
+	## and either crawling or still on the racing line. A moving body that is
+	## off the line keeps the forward estimate. There is no speed floor.
 	var step := physics_step_seconds()
 	var gap := wrapped_course_gap(closest_offset, _progress)
-	var reacquired := (
-		grounded
-		and absf(vertical_speed) <= REACQUIRE_VERTICAL_SPEED
-		and speed <= REACQUIRE_MAX_SPEED
-		and absf(gap) > REACQUIRE_GAP_M
-	)
+	var settled := grounded and absf(vertical_speed) <= REACQUIRE_VERTICAL_SPEED
+	var crawling := speed <= REACQUIRE_MAX_SPEED and absf(gap) > REACQUIRE_GAP_M
+	var on_line := lateral_m <= REACQUIRE_ON_LINE_M and absf(gap) > REACQUIRE_ON_LINE_GAP_M
+	var reacquired := settled and (crawling or on_line)
 	if reacquired:
 		_progress = fposmod(closest_offset, _path_length)
 		reacquire_count += 1
@@ -200,7 +205,10 @@ func get_steer_and_accel(body: CharacterBody3D, _delta: float = 0.016) -> Dictio
 	# Physics-tick integration. The unused caller delta is wall time in the
 	# headless observer and must not advance the racing line.
 	var closest_offset := _curve.get_closest_offset(path.to_local(body.global_position))
-	advance_course_estimate(speed, body.is_on_floor(), body.velocity.y, closest_offset)
+	var on_path_now := path.to_global(_curve.sample_baked(closest_offset))
+	var off_line := body.global_position - on_path_now
+	off_line.y = 0.0
+	advance_course_estimate(speed, body.is_on_floor(), body.velocity.y, closest_offset, off_line.length())
 
 	var sample_ahead := look_ahead + _shortcut_bias
 	var on_path := path.to_global(_curve.sample_baked(_progress))
