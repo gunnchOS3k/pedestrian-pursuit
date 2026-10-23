@@ -2,7 +2,7 @@ name: Gate 1 post-merge integrity
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, lane-b/course-gameplay-fix-cup-resume]
   push:
     branches: [main]
   workflow_dispatch:
@@ -148,7 +148,7 @@ jobs:
 
   godot-headless-no-false-green:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
 
@@ -207,7 +207,18 @@ jobs:
               echo "PASS ${name}"
             }
             run_step startup "$GODOT" --headless --path "$ROOT" --quit-after 2
+            run_step CourseProgressReacquireTest "$GODOT" --headless --path "$ROOT" --script res://tests/CourseProgressReacquireTest.gd
             run_step TestRunner "$GODOT" --headless --path "$ROOT" --script res://tests/TestRunner.gd
+            run_step CourseBuildSurfaceTest "$GODOT" --headless --path "$ROOT" --script res://tests/CourseBuildSurfaceTest.gd
+            run_step VerdantRaceSceneObserve "$GODOT" --headless --path "$ROOT" --script res://tests/VerdantRaceSceneObserve.gd
+            echo "=== VerdantRaceSceneObserve markers ==="
+            if [[ -f tmp/godot-VerdantRaceSceneObserve.log ]]; then
+              grep -E "^(RACE_ENTERED|LAP_COMPLETED|CHECKPOINT_CROSSED|RESULTS_PATH|COURSE_ACCEPTED|DEVICE_RUN|RACE_STATE|TRACK_ID|LAP_COUNT|LAP_COUNT_RUNTIME|COUNTDOWN_FINISHED|DRIVE_BOUND_MSEC|DRIVEN_MSEC|LINE_STEER|INPUT_PATH)=|^RACE_SCENE_FAIL|^COURSE_OBSERVE_" tmp/godot-VerdantRaceSceneObserve.log || true
+            else
+              echo "OBSERVER_LOG=absent"
+            fi
+            # Exit 0 from the observer is not a lap. This gate fails closed.
+            python3 tests/verdant_race_acceptance_gate.py tmp/godot-VerdantRaceSceneObserve.log
             run_step G2C6RuntimeTest "$GODOT" --headless --path "$ROOT" --script res://tests/G2C6RuntimeTest.gd
             run_step CupFlowTest "$GODOT" --headless --path "$ROOT" --script res://tests/CupFlowTest.gd
             run_step BetaProductStateTest "$GODOT" --headless --path "$ROOT" --script res://tests/BetaProductStateTest.gd
@@ -228,3 +239,76 @@ jobs:
           '
         env:
           DISPLAY: ":99"
+
+  verdant-repro-diagnostics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Godot 4.7.1 headless
+        run: |
+          set -euo pipefail
+          url="https://github.com/godotengine/godot/releases/download/4.7.1-stable/Godot_v4.7.1-stable_linux.x86_64.zip"
+          for attempt in 1 2 3 4 5; do
+            if curl -fsSL --retry 3 --retry-all-errors --retry-delay 2 -o godot.zip "$url"; then
+              break
+            fi
+            echo "Godot download attempt ${attempt} failed; sleeping..."
+            sleep $((attempt * 5))
+            if [[ "$attempt" -eq 5 ]]; then
+              echo "Godot download failed after retries"
+              exit 1
+            fi
+          done
+          unzip -q godot.zip
+          chmod +x Godot_v4.7.1-stable_linux.x86_64
+          sudo mv Godot_v4.7.1-stable_linux.x86_64 /usr/local/bin/godot
+          godot --version
+
+      - name: Import project cache
+        run: |
+          set -euo pipefail
+          xvfb-run -a godot --headless --path . --import || \
+            xvfb-run -a godot --headless --editor --path . --quit-after 2 || true
+
+      - name: Solo Verdant, second solo, and first-of-batch
+        run: |
+          set -euo pipefail
+          mkdir -p tmp/repro
+          run_one() {
+            local name="$1"
+            local mode="$2"
+            local log="tmp/repro/${name}.log"
+            echo "=== ${name} mode=${mode} ==="
+            set +e
+            RACE_OBSERVE_MODE="${mode}" xvfb-run -a godot --headless --path . --script res://tests/VerdantRaceSceneObserve.gd >"${log}" 2>&1
+            local code=$?
+            set -e
+            echo "PROCESS_EXIT ${name}=${code}"
+            if grep -Eiq "SCRIPT ERROR|Parse Error|Failed to load script" "${log}"; then
+              echo "FAIL ${name} script error"
+              grep -nEi "SCRIPT ERROR|Parse Error|Failed to load script" "${log}" | head -20 || true
+              exit 1
+            fi
+          }
+          run_one solo-a solo
+          run_one solo-b solo
+          run_one batch-first batch-first
+          python3 - <<'PY'
+          import hashlib
+          from pathlib import Path
+          root = Path("tmp/repro")
+          for path in sorted(root.glob("*.log")):
+              digest = hashlib.sha256(path.read_bytes()).hexdigest()
+              print(f"LOG_SHA256 {path.name} {digest}")
+          PY
+
+      - name: Upload repro logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verdant-repro-diagnostics
+          path: tmp/repro/*.log
+          if-no-files-found: warn
+          retention-days: 30
