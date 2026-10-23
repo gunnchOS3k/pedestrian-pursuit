@@ -22,6 +22,22 @@ var _lane_bias: float = 0.0
 var _shoe_id: String = "starter_soles"
 var _soft_surface_score: float = 1.0
 var _prefer_vertical: bool = false
+## Last advance_course_estimate call, and how many grounded reacquisitions
+## have happened. The headless observer reads both. Neither moves the body.
+var last_reacquired: bool = false
+var reacquire_count: int = 0
+
+## A grounded body this far from the open-loop estimate has left the racing
+## line. Run 39966865889 at f39658f measured the Verdant failure: after the
+## airborne crossing, closest offset jumped from about 212 back to about 173
+## while the estimate kept integrating. Wall deltas of 0.013–0.022 s (physics
+## tick is 1/60) plus a 2.5 m/s floor then grew the gap to about 135. The body
+## stayed grounded at lateral ~6.5 m and ~2 m/s, steer collapsed near 0, and
+## solo-b never retook checkpoint 4. solo-a and batch-first recovered by
+## chance and finished. Snapping to closest on every call, including in the
+## air, missed that same checkpoint on runs 39963277126 and 39964928289.
+const REACQUIRE_GAP_M := 12.0
+const REACQUIRE_VERTICAL_SPEED := 0.5
 
 
 func setup(race_path: Path3D) -> void:
@@ -108,11 +124,7 @@ func measure_course_progress(body: Node3D) -> Dictionary:
 	var on_path := path.to_global(_curve.sample_baked(closest))
 	var lateral := body.global_position - on_path
 	lateral.y = 0.0
-	var gap := closest - _progress
-	if gap > _path_length * 0.5:
-		gap -= _path_length
-	elif gap < -_path_length * 0.5:
-		gap += _path_length
+	var gap := wrapped_course_gap(closest, _progress)
 	return {
 		"follower_progress": _progress,
 		"closest_offset": closest,
@@ -122,7 +134,50 @@ func measure_course_progress(body: Node3D) -> Dictionary:
 	}
 
 
-func get_steer_and_accel(body: CharacterBody3D, delta: float = 0.016) -> Dictionary:
+func physics_step_seconds() -> float:
+	## One physics tick, scaled when the game slows time. Callers must invoke
+	## advance once per physics frame. Wall-clock gaps between those frames
+	## are not course distance.
+	var ticks := maxi(Engine.get_physics_ticks_per_second(), 1)
+	return (1.0 / float(ticks)) * maxf(Engine.time_scale, 0.0)
+
+
+func wrapped_course_gap(closest_offset: float, progress: float) -> float:
+	var gap := closest_offset - progress
+	if gap > _path_length * 0.5:
+		gap -= _path_length
+	elif gap < -_path_length * 0.5:
+		gap += _path_length
+	return gap
+
+
+func advance_course_estimate(speed: float, grounded: bool, vertical_speed: float, closest_offset: float) -> Dictionary:
+	## Move the look-ahead estimate. Does not move the body.
+	## Airborne closest-offset is ambiguous on the Verdant crossing, so a
+	## large gap reacquires only after the body is back on the ground and no
+	## longer rising or falling. A slow body does not get a speed floor.
+	var step := physics_step_seconds()
+	var gap := wrapped_course_gap(closest_offset, _progress)
+	var reacquired := (
+		grounded
+		and absf(vertical_speed) <= REACQUIRE_VERTICAL_SPEED
+		and absf(gap) > REACQUIRE_GAP_M
+	)
+	if reacquired:
+		_progress = fposmod(closest_offset, _path_length)
+		reacquire_count += 1
+	else:
+		_progress = fposmod(_progress + maxf(speed, 0.0) * step, _path_length)
+	last_reacquired = reacquired
+	return {
+		"progress": _progress,
+		"gap": gap,
+		"reacquired": reacquired,
+		"physics_delta": step,
+	}
+
+
+func get_steer_and_accel(body: CharacterBody3D, _delta: float = 0.016) -> Dictionary:
 	if _curve == null:
 		return {"steer": 0.0, "accelerate": true, "drift": false, "use_item": false}
 
@@ -137,13 +192,10 @@ func get_steer_and_accel(body: CharacterBody3D, delta: float = 0.016) -> Diction
 	if "movement_enabled" in body and not bool(body.movement_enabled):
 		return {"steer": 0.0, "accelerate": true, "drift": false, "use_item": false}
 
-	# Speed times delta, with a 2.5 unit/second floor. Measured course offset
-	# was tried on runs 39963277126 and 39964928289. It removed this floor,
-	# and all six Verdant processes then missed checkpoint 4 at the point-7
-	# bounce. The integrator stays until that landing is fixed. It does run
-	# the look target ahead of a slow body: run 39961888813 recorded a gap of
-	# about 135 while horizontal speed was about 2.
-	_progress = fposmod(_progress + maxf(speed, 2.5) * delta, _path_length)
+	# Physics-tick integration. The unused caller delta is wall time in the
+	# headless observer and must not advance the racing line.
+	var closest_offset := _curve.get_closest_offset(path.to_local(body.global_position))
+	advance_course_estimate(speed, body.is_on_floor(), body.velocity.y, closest_offset)
 
 	var sample_ahead := look_ahead + _shortcut_bias
 	var on_path := path.to_global(_curve.sample_baked(_progress))

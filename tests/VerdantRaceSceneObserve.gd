@@ -215,13 +215,17 @@ func _observe_course(gm: Node, input: Node, packed: PackedScene, track_id: Strin
 				break
 		driven_msec = Time.get_ticks_msec() - drive_started
 		_release_gameplay_input(input)
-	print("DRIVER_SUMMARY track=%s samples=%d max_gap=%.3f max_lateral=%.3f max_hspeed=%.3f completed_laps=%d checkpoint_history=%s" % [
+	var reacquire_count := 0
+	if follower != null and is_instance_valid(follower) and "reacquire_count" in follower:
+		reacquire_count = int(follower.reacquire_count)
+	print("DRIVER_SUMMARY track=%s samples=%d max_gap=%.3f max_lateral=%.3f max_hspeed=%.3f completed_laps=%d reacquire_count=%d checkpoint_history=%s" % [
 		track_id,
 		sample_count,
 		max_gap,
 		max_lateral,
 		max_speed,
 		completed_laps,
+		reacquire_count,
 		",".join(PackedStringArray(checkpoint_history)),
 	])
 	var state_after := -1
@@ -360,6 +364,9 @@ func _sample_driver(
 		closest = float(measured.get("closest_offset", 0.0))
 		gap = float(measured.get("progress_gap", 0.0))
 		lateral = float(measured.get("lateral", 0.0))
+	var reacquired := false
+	if follower != null and "last_reacquired" in follower:
+		reacquired = bool(follower.last_reacquired)
 	var lap := 0
 	var next_cp := -1
 	if lap_manager != null and is_instance_valid(player):
@@ -376,7 +383,7 @@ func _sample_driver(
 		if panel != null:
 			results_visible = bool(panel.get("visible"))
 	print(
-		"DRIVER_SAMPLE track=%s t_ms=%d pos=%.2f,%.2f,%.2f vel=%.2f,%.2f,%.2f hspeed=%.3f grounded=%s movement=%s phys_delta=%.4f wall_delta=%.4f accel=%s steer=%.3f follower_progress=%.2f closest=%.2f gap=%.2f lateral=%.2f slides=%d lap=%d next_cp=%d race_state=%d results=%s" % [
+		"DRIVER_SAMPLE track=%s t_ms=%d pos=%.2f,%.2f,%.2f vel=%.2f,%.2f,%.2f hspeed=%.3f grounded=%s movement=%s phys_delta=%.4f wall_delta=%.4f accel=%s steer=%.3f follower_progress=%.2f closest=%.2f gap=%.2f lateral=%.2f slides=%d lap=%d next_cp=%d race_state=%d results=%s reacquired=%s" % [
 			track_id,
 			elapsed_msec,
 			pos.x, pos.y, pos.z,
@@ -397,9 +404,10 @@ func _sample_driver(
 			next_cp,
 			race_state,
 			str(results_visible).to_lower(),
+			str(reacquired).to_lower(),
 		]
 	)
-	return {"progress_gap": gap, "lateral": lateral, "hspeed": hspeed}
+	return {"progress_gap": gap, "lateral": lateral, "hspeed": hspeed, "reacquired": reacquired}
 
 
 func _hold_gameplay_input(input: Node, follower: Node, player: Node, delta: float) -> void:
@@ -410,6 +418,8 @@ func _hold_gameplay_input(input: Node, follower: Node, player: Node, delta: floa
 		# capsule origin sits near y=0, so that lift fires before physics and
 		# the racer never stays on the floor. Throttle only builds speed there.
 		# player is typed as Node, so assigning global_position.y edits a copy.
+		# Course progress uses the physics tick inside the follower. `delta`
+		# remains the wall gap and is not course distance.
 		var body := player as CharacterBody3D
 		var grounded_y: float = body.global_position.y
 		var cmd: Dictionary = follower.get_steer_and_accel(body, delta)
