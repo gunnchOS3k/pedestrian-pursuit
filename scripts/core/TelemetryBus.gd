@@ -1,5 +1,7 @@
 extends Node
 
+const _PerfBudget = preload("res://scripts/core/PerfBudget.gd")
+
 ## Local race telemetry: signal bus + append-only JSONL under user://.
 ## Events: race_start, checkpoint, item_use, finish, restart.
 ## No PII — track ids, counts, and durations only.
@@ -134,7 +136,7 @@ func perf_sample(track_id: String, fps: float, extra: Dictionary = {}) -> void:
 	var payload := {
 		"track_id": track_id,
 		"fps": snappedf(fps, 0.1),
-		"renderer": str(PerfBudget.BUDGETS.get("renderer", "gl_compatibility")),
+		"renderer": str(_PerfBudget.BUDGETS.get("renderer", "gl_compatibility")),
 	}
 	for key in extra.keys():
 		payload[str(key)] = extra[key]
