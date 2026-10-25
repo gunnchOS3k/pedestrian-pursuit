@@ -318,12 +318,18 @@ func _add_terrain_zone(parent: Node3D, definition: Dictionary) -> void:
 
 
 func _add_bounce_pad(parent: Node3D, definition: Dictionary) -> void:
+	var point_index := int(definition.get("point_index", 0))
 	var pad := Area3D.new()
-	pad.name = "BouncePad%d" % int(definition.get("point_index", 0))
+	pad.name = "BouncePad%d" % point_index
 	pad.set_script(BOUNCE_PAD_SCRIPT)
 	pad.set("bounce_force", float(definition.get("bounce_force", 12.0)))
 	pad.set("forward_boost", float(definition.get("forward_boost", 4.0)))
-	pad.transform = _transform_at_point(int(definition.get("point_index", 0)), 0.2)
+	var next_index := (point_index + 1) % _course_points.size()
+	var line := _course_points[next_index] - _course_points[point_index]
+	line.y = 0.0
+	if line.length_squared() > 0.001:
+		pad.set("launch_forward", line.normalized())
+	pad.transform = _transform_at_point(point_index, 0.2)
 	_add_box_trigger_visual(
 		pad, _feature_size(definition, Vector2(5.0, 5.0)), Color(0.96, 0.45, 0.25), true
 	)

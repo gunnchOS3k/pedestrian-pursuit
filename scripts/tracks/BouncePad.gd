@@ -5,6 +5,8 @@ extends Area3D
 @export var bounce_force: float = 16.0
 @export var forward_boost: float = 4.0
 @export var cooldown_sec: float = 0.45
+## Next-segment direction authored with the pad. Zero falls back to the path.
+@export var launch_forward: Vector3 = Vector3.ZERO
 
 var _last_hit: Dictionary = {}
 
@@ -37,7 +39,7 @@ func _on_body_entered(body: Node3D) -> void:
 		facing = Vector3.FORWARD
 	else:
 		facing = facing.normalized()
-	var along_line := _racing_line_forward()
+	var along_line := _authored_line_forward()
 	var horiz := Vector3(body.velocity.x, 0.0, body.velocity.z)
 	var carried := horiz.length()
 	# A misaligned hop leaves the next segment and never reaches the gate.
@@ -51,6 +53,18 @@ func _on_body_entered(body: Node3D) -> void:
 	else:
 		body.velocity.x += facing.x * forward_kick
 		body.velocity.z += facing.z * forward_kick
+
+
+func _authored_line_forward() -> Vector3:
+	var authored := launch_forward
+	authored.y = 0.0
+	if authored.length_squared() > 0.0001:
+		return authored.normalized()
+	var pad_forward := -global_transform.basis.z
+	pad_forward.y = 0.0
+	if pad_forward.length_squared() > 0.0001:
+		return pad_forward.normalized()
+	return _racing_line_forward()
 
 
 func _racing_line_forward() -> Vector3:
