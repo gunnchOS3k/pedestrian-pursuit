@@ -31,9 +31,47 @@ func _on_body_entered(body: Node3D) -> void:
 		force *= 0.72
 		forward_kick *= 0.72
 	body.velocity.y = force
-	var forward := -body.global_transform.basis.z
-	body.velocity.x += forward.x * forward_kick
-	body.velocity.z += forward.z * forward_kick
+	var facing := -body.global_transform.basis.z
+	facing.y = 0.0
+	if facing.length_squared() < 0.001:
+		facing = Vector3.FORWARD
+	else:
+		facing = facing.normalized()
+	var along_line := _racing_line_forward()
+	var horiz := Vector3(body.velocity.x, 0.0, body.velocity.z)
+	var carried := horiz.length()
+	# A misaligned hop leaves the next segment and never reaches the gate.
+	# Keep the speed already earned and aim it along the racing line.
+	if along_line.length_squared() > 0.01 and facing.dot(along_line) < 0.9 and carried > 1.0:
+		body.velocity.x = along_line.x * (carried + forward_kick)
+		body.velocity.z = along_line.z * (carried + forward_kick)
+		var look := body.global_position + along_line
+		look.y = body.global_position.y
+		body.look_at(look, Vector3.UP)
+	else:
+		body.velocity.x += facing.x * forward_kick
+		body.velocity.z += facing.z * forward_kick
+
+
+func _racing_line_forward() -> Vector3:
+	var node := get_parent()
+	while node != null and not node.has_method("get_race_path"):
+		node = node.get_parent()
+	if node == null:
+		return Vector3.ZERO
+	var path: Path3D = node.get_race_path()
+	if path == null or path.curve == null:
+		return Vector3.ZERO
+	var length := path.curve.get_baked_length()
+	if length < 1.0:
+		return Vector3.ZERO
+	var offset := path.curve.get_closest_offset(path.to_local(global_position))
+	var ahead := path.to_global(path.curve.sample_baked(fposmod(offset + 8.0, length)))
+	var tangent := ahead - global_position
+	tangent.y = 0.0
+	if tangent.length_squared() < 0.01:
+		return Vector3.ZERO
+	return tangent.normalized()
 
 
 func _accessibility() -> Node:

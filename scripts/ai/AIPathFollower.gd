@@ -261,7 +261,7 @@ func get_steer_and_accel(body: CharacterBody3D, _delta: float = 0.016) -> Dictio
 		look.y = body.global_position.y
 		body.look_at(look, Vector3.UP)
 
-	var curvature := _estimate_curvature()
+	var curvature := _estimate_curvature(speed)
 	# Hard-plate footwear brakes earlier when curvature rises (material-aware planning).
 	var soft_factor := clampf(_soft_surface_score, 0.7, 1.25)
 	var drift: bool = absf(steer) > 0.5 and speed > 8.0 and curvature > 0.015
@@ -285,7 +285,8 @@ func get_steer_and_accel(body: CharacterBody3D, _delta: float = 0.016) -> Dictio
 		use_item = bool(body.get_meta("held_item_ready")) and absf(steer) < 0.4
 
 	# Bounce-family footwear seeks rails when nearby (no teleport — steer bias only).
-	if _prefer_vertical and body.has_meta("nearest_rail_dist"):
+	# A sharp corner still coasts; a nearby rail must not hold full throttle into the apex.
+	if _prefer_vertical and body.has_meta("nearest_rail_dist") and curvature < 0.03:
 		var rail_d := float(body.get_meta("nearest_rail_dist"))
 		if rail_d < 6.0 and absf(steer) < 0.55:
 			accelerate = true
@@ -302,12 +303,21 @@ func get_steer_and_accel(body: CharacterBody3D, _delta: float = 0.016) -> Dictio
 	}
 
 
-func _estimate_curvature() -> float:
+func _estimate_curvature(speed: float) -> float:
 	if _curve == null:
 		return 0.0
+	var near := _chord_turn(4.0, 8.0)
+	# Eight meters sees the apex only after a full-speed racer is already on it.
+	# Look far enough to coast before the bounce, without moving the body.
+	var reach := clampf(maxf(speed, 8.0) * 1.35, 12.0, 32.0)
+	var far := _chord_turn(reach * 0.5, reach)
+	return maxf(near, far)
+
+
+func _chord_turn(near_m: float, far_m: float) -> float:
 	var p0 := _curve.sample_baked(_progress)
-	var p1 := _curve.sample_baked(fposmod(_progress + 4.0, _path_length))
-	var p2 := _curve.sample_baked(fposmod(_progress + 8.0, _path_length))
+	var p1 := _curve.sample_baked(fposmod(_progress + near_m, _path_length))
+	var p2 := _curve.sample_baked(fposmod(_progress + far_m, _path_length))
 	var v1 := p1 - p0
 	var v2 := p2 - p1
 	v1.y = 0.0
