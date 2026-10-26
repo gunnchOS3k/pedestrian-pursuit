@@ -1,8 +1,8 @@
 extends RefCounted
 
-## Void respawn choice. The racer already stores the last accepted gate via
-## set_recovery_transform, and the start line via setup_for_race.
-## Nearest-path snaps are not a respawn.
+## Void respawn choice. Not a new checkpoint system: the racer already stores
+## the last accepted gate via set_recovery_transform, and the start line via
+## setup_for_race. Nearest-path snaps are not a respawn.
 
 
 static func choose(
