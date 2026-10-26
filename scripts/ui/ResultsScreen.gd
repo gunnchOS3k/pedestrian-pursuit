@@ -175,7 +175,10 @@ func _ensure_results_art() -> void:
 
 
 func _on_menu() -> void:
-	GameManager.clear_cup()
+	# The standing was written in show_results. Clearing the cup here dropped
+	# it from the session and the next Start Cup began again at race 1.
+	if GameManager.is_cup_active() and GameManager.has_method("save_cup_progress"):
+		GameManager.save_cup_progress()
 	var tree := get_tree()
 	if tree != null and tree.paused:
 		tree.paused = false

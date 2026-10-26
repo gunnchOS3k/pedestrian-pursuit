@@ -247,6 +247,8 @@ func advance_cup() -> bool:
 	cup_round_index += 1
 	selected_track_id = cup_track_ids[cup_round_index]
 	reset_race_stats()
+	# The race just entered is the one a reload must continue.
+	save_cup_progress()
 	return true
 
 
@@ -267,13 +269,56 @@ func clear_cup() -> void:
 		current_race_mode = RaceMode.SINGLE
 
 
+func _snapshot_results() -> Array:
+	var copy: Array = []
+	for result in cup_results:
+		if typeof(result) == TYPE_DICTIONARY:
+			copy.append((result as Dictionary).duplicate(true))
+	return copy
+
+
+func _snapshot_standings() -> Dictionary:
+	var copy := {}
+	for key in cup_standings.keys():
+		copy[str(key)] = int(cup_standings[key])
+	return copy
+
+
+func _resume_index_for_save() -> int:
+	## The next unplayed race. A recorded finish must not reload as race 1.
+	var resume_index := cup_round_index
+	if cup_results.size() > cup_round_index:
+		resume_index += 1
+	return resume_index
+
+
+func _assign_saved_results(raw) -> void:
+	cup_results.clear()
+	if typeof(raw) != TYPE_ARRAY:
+		return
+	for item in raw:
+		if typeof(item) == TYPE_DICTIONARY:
+			cup_results.append((item as Dictionary).duplicate(true))
+
+
+func _assign_saved_standings(raw) -> void:
+	cup_standings.clear()
+	if typeof(raw) != TYPE_DICTIONARY:
+		return
+	for key in raw.keys():
+		cup_standings[str(key)] = int(raw[key])
+
+
 func save_cup_progress() -> void:
 	var cfg := ConfigFile.new()
+	var resume_index := _resume_index_for_save()
 	cfg.set_value("cup", "active_cup_id", active_cup_id)
 	cfg.set_value("cup", "round_index", cup_round_index)
-	cfg.set_value("cup", "results", cup_results)
-	cfg.set_value("cup", "standings", cup_standings)
-	cfg.set_value("cup", "track_ids", cup_track_ids)
+	cfg.set_value("cup", "resume_index", resume_index)
+	# Snapshots, not the live arrays. A later clear must not rewrite this save.
+	cfg.set_value("cup", "results", _snapshot_results())
+	cfg.set_value("cup", "standings", _snapshot_standings())
+	cfg.set_value("cup", "track_ids", cup_track_ids.duplicate())
 	# A cup is complete only after the current round has a recorded result.
 	# The last course has no "next" race before that result exists; saving a
 	# pause/quit on the finale must stay resumable instead of looking finished.
@@ -284,7 +329,7 @@ func save_cup_progress() -> void:
 		is_cup_active() and not has_next_cup_race() and round_recorded
 	)
 	cfg.set_value("meta", "saved_at", Time.get_datetime_string_from_system())
-	cfg.set_value("meta", "save_version", 2)
+	cfg.set_value("meta", "save_version", 3)
 	cfg.save("user://cup_progress.cfg")
 	# Mirror selection into progression save for RC migration continuity.
 	var prog := _progression()
@@ -309,8 +354,8 @@ func load_cup_progress() -> bool:
 		return false
 	active_cup_id = str(cfg.get_value("cup", "active_cup_id", ""))
 	cup_round_index = int(cfg.get_value("cup", "round_index", 0))
-	cup_results = cfg.get_value("cup", "results", [])
-	cup_standings = cfg.get_value("cup", "standings", {})
+	_assign_saved_results(cfg.get_value("cup", "results", []))
+	_assign_saved_standings(cfg.get_value("cup", "standings", {}))
 	var tracks = cfg.get_value("cup", "track_ids", [])
 	cup_track_ids.clear()
 	for tid in tracks:
@@ -331,6 +376,8 @@ func describe_saved_cup() -> Dictionary:
 		"course_number": 0,
 		"track_id": "",
 		"completed": false,
+		"cup_id": "",
+		"round_index": 0,
 	}
 	var cfg := ConfigFile.new()
 	if cfg.load("user://cup_progress.cfg") != OK:
@@ -345,6 +392,9 @@ func describe_saved_cup() -> Dictionary:
 	var next_index := round_index
 	if results.size() > round_index:
 		next_index = round_index + 1
+	# resume_index is the race to play. It wins over "start at race 1".
+	if cfg.has_section_key("cup", "resume_index"):
+		next_index = int(cfg.get_value("cup", "resume_index"))
 	var finished_cup := completed_flag or (not tracks.is_empty() and next_index >= tracks.size())
 	var resumable := (
 		not finished_cup
@@ -360,22 +410,29 @@ func describe_saved_cup() -> Dictionary:
 		"course_number": next_index + 1,
 		"track_id": track_id,
 		"completed": finished_cup,
+		"cup_id": active,
+		"round_index": next_index,
 	}
 
 
 func resume_saved_cup() -> bool:
 	## Continue an in-progress cup. Refuses a finished cup.
-	## If the saved round already has a result, start the following course
-	## without adding that result's points again.
+	## The saved race is resume_index, not race 1, and its points are not added again.
 	var plan := describe_saved_cup()
 	if not bool(plan.get("resumable", false)):
 		return false
 	if not load_cup_progress():
 		return false
-	if cup_results.size() > cup_round_index:
-		if not advance_cup():
-			clear_cup()
-			return false
+	var target := int(plan.get("round_index", -1))
+	if target < 0 or target >= cup_track_ids.size():
+		clear_cup()
+		return false
+	if target != cup_round_index:
+		cup_round_index = target
+		selected_track_id = cup_track_ids[target]
+		reset_race_stats()
+	elif selected_track_id != cup_track_ids[target]:
+		selected_track_id = cup_track_ids[target]
 	if not is_cup_active() or selected_track_id != str(plan.get("track_id", "")):
 		clear_cup()
 		return false

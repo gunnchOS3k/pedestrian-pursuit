@@ -636,7 +636,15 @@ func _selected_track_id() -> String:
 func _on_start_cup() -> void:
 	if _cup.is_empty():
 		return
-	if GameManager.start_cup(str(_cup.get("id", "")), _cup.get("track_ids", [])):
+	var cup_id := str(_cup.get("id", ""))
+	var plan: Dictionary = {}
+	if GameManager.has_method("describe_saved_cup"):
+		plan = GameManager.describe_saved_cup()
+	if bool(plan.get("resumable", false)) and str(plan.get("cup_id", "")) == cup_id:
+		if GameManager.resume_saved_cup():
+			SceneLoader.go_to_race()
+		return
+	if GameManager.start_cup(cup_id, _cup.get("track_ids", [])):
 		SceneLoader.go_to_race()
 
 
