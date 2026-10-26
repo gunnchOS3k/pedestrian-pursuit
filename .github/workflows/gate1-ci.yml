@@ -241,6 +241,16 @@ jobs:
         env:
           DISPLAY: ":99"
 
+      - name: Checkout BeatLink room contract
+        uses: actions/checkout@v4
+        with:
+          repository: gunnchOS3k/beatlink-party
+          ref: fix/loopback-room-lifecycle
+          path: beatlink-party
+
+      - name: Two-member race through the room contract
+        run: bash tools/run_game_session_race.sh
+
   verdant-repro-diagnostics:
     runs-on: ubuntu-latest
     timeout-minutes: 20
