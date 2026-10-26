@@ -46,7 +46,7 @@ func _run() -> void:
 	follower.setup(track.get_race_path())
 	follower.set("look_ahead", 5.5)
 	follower.set("magnet_strength", 0.0)
-	var body := GroundedProbe.new()
+	var body := CharacterBody3D.new()
 	body.name = "GuestInputBody"
 	get_root().add_child(body)
 	_write_json(dir.path_join("sync/guest_ready.json"), {
@@ -92,11 +92,6 @@ func _run() -> void:
 	print("HOST_SECRET_IN_GUEST_STATE=false")
 	print("GAME_SESSION_COURSE_AI_IS_GUEST=false")
 	quit(0 if frames > 30 else 1)
-
-
-class GroundedProbe extends CharacterBody3D:
-	func is_on_floor() -> bool:
-		return true
 
 
 func _report(dir: String, frames: int, secret_seen: bool) -> void:
