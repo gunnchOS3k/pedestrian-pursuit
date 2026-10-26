@@ -22,6 +22,9 @@ var terrain_speed_multiplier: float = 1.0
 var terrain_handling_multiplier: float = 1.0
 var terrain_name: String = "standard"
 var movement_enabled: bool = true
+var _remote_steer: float = 0.0
+var _remote_accelerate: bool = false
+var _remote_input: bool = false
 var shield_active: bool = false
 var _slow_timer: float = 0.0
 var _start_boost_multiplier: float = 1.0
@@ -427,8 +430,16 @@ func _do_jump() -> void:
 		TelemetryBus.record("jump", {"racer_id": racer_id})
 
 
+func set_remote_drive(steer: float, accelerate: bool) -> void:
+	_remote_input = true
+	_remote_steer = clampf(steer, -1.0, 1.0)
+	_remote_accelerate = accelerate
+
+
 func _get_steer() -> float:
 	if is_player:
+		if local_player_index == 1 and _remote_input:
+			return _remote_steer
 		if local_player_index == 1:
 			var steer := Input.get_action_strength("p2_move_right") - Input.get_action_strength("p2_move_left")
 			# Prefer gamepad 1 when present.
@@ -441,6 +452,8 @@ func _get_steer() -> float:
 
 func _get_accelerate_input() -> bool:
 	if is_player:
+		if local_player_index == 1 and _remote_input:
+			return _remote_accelerate
 		if local_player_index == 1:
 			if Input.is_action_pressed("p2_accelerate"):
 				return true

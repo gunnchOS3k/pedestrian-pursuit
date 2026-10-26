@@ -102,7 +102,7 @@ func _run() -> void:
 	var countdown_deadline := Time.get_ticks_msec() + COUNTDOWN_WAIT_MSEC
 	while Time.get_ticks_msec() < countdown_deadline:
 		_write_snapshot(dir, race_manager, guest, flags)
-		_apply_guest_input(dir)
+		_apply_guest_input(dir, guest)
 		await physics_frame
 		if is_instance_valid(race_manager) and int(race_manager.get("state")) >= 2:
 			countdown_finished = true
@@ -112,6 +112,7 @@ func _run() -> void:
 		follower = _attach_line_steer(player, track)
 	var driven_msec := 0
 	var guest_commands := 0
+	var guest_max_speed := 0.0
 	var lap_manager: Node = null
 	if is_instance_valid(race_manager):
 		lap_manager = race_manager.get_node_or_null("LapManager")
@@ -124,8 +125,10 @@ func _run() -> void:
 			var delta := clampf(float(now - last_tick) / 1000.0, 0.001, 0.05)
 			last_tick = now
 			_write_snapshot(dir, race_manager, guest, flags)
-			if _apply_guest_input(dir):
+			if _apply_guest_input(dir, guest):
 				guest_commands += 1
+			if "horizontal_speed" in guest:
+				guest_max_speed = maxf(guest_max_speed, float(guest.horizontal_speed))
 			_hold_input(input, follower, player, delta)
 			await physics_frame
 			if not is_instance_valid(scene):
@@ -182,6 +185,7 @@ func _run() -> void:
 		"courseAiIsGuest": false,
 		"hostPid": OS.get_process_id(),
 		"guestCommands": guest_commands,
+		"guestMaxSpeed": guest_max_speed,
 		"ecosystemReturn": "ready",
 	}
 	_write_json(dir.path_join("result.json"), result)
@@ -196,6 +200,7 @@ func _run() -> void:
 	print("GAME_SESSION_GUEST_CHECKS=%d" % guest_checks)
 	print("GAME_SESSION_DRIVEN_MSEC=%d" % driven_msec)
 	print("GAME_SESSION_GUEST_COMMANDS=%d" % guest_commands)
+	print("GAME_SESSION_GUEST_MAX_SPEED=%.3f" % guest_max_speed)
 	print("GAME_SESSION_BOTH_FINISHED=%s" % str(both).to_lower())
 	print("ECOSYSTEM_RETURN=ready")
 	if scene != null and is_instance_valid(scene):
@@ -225,24 +230,28 @@ func _write_snapshot(dir: String, race_manager: Node, guest: Node, flags: Dictio
 		"guestForward": [forward.x, forward.y, forward.z],
 		"guestSpeed": speed,
 		"hostPid": OS.get_process_id(),
+		"pathStart": _path_start(race_manager),
 	})
 
 
-func _apply_guest_input(dir: String) -> bool:
+func _apply_guest_input(dir: String, guest: Node) -> bool:
 	var cmd := _read_json(dir.path_join("sync/guest_input.json"))
-	Input.action_release("p2_move_left")
-	Input.action_release("p2_move_right")
-	Input.action_release("p2_accelerate")
-	if str(cmd.get("source", "")) != "guest-process":
+	if str(cmd.get("source", "")) != "guest-process" or guest == null or not guest.has_method("set_remote_drive"):
 		return false
-	var steer := float(cmd.get("steer", 0.0))
-	if steer > 0.05:
-		Input.action_press("p2_move_right", clampf(steer, 0.0, 1.0))
-	elif steer < -0.05:
-		Input.action_press("p2_move_left", clampf(-steer, 0.0, 1.0))
-	if bool(cmd.get("accelerate", false)):
-		Input.action_press("p2_accelerate")
+	guest.set_remote_drive(float(cmd.get("steer", 0.0)), bool(cmd.get("accelerate", false)))
 	return true
+
+
+func _path_start(race_manager: Node) -> Array:
+	var scene := race_manager.get_parent() if race_manager != null else null
+	var track: Node = scene.get_node_or_null("CourseTrack") if scene != null else null
+	if track == null or not track.has_method("get_race_path"):
+		return [0.0, 0.0, 0.0]
+	var path: Path3D = track.get_race_path()
+	if path == null or path.curve == null:
+		return [0.0, 0.0, 0.0]
+	var point: Vector3 = path.to_global(path.curve.sample_baked(0.0))
+	return [point.x, point.y, point.z]
 
 
 func _read_json(path: String) -> Dictionary:

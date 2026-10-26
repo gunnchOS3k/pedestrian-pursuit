@@ -46,7 +46,7 @@ func _run() -> void:
 	follower.setup(track.get_race_path())
 	follower.set("look_ahead", 5.5)
 	follower.set("magnet_strength", 0.0)
-	var body := CharacterBody3D.new()
+	var body := GroundedProbe.new()
 	body.name = "GuestInputBody"
 	get_root().add_child(body)
 	_write_json(dir.path_join("sync/guest_ready.json"), {
@@ -59,7 +59,15 @@ func _run() -> void:
 		var snap := _read_json(dir.path_join("sync/snapshot.json"))
 		var position: Array = snap.get("guestPosition", [])
 		if position.size() == 3 and follower.has_method("get_steer_and_accel"):
-			body.global_position = Vector3(float(position[0]), float(position[1]), float(position[2]))
+			var world := Vector3(float(position[0]), float(position[1]), float(position[2]))
+			var path_start: Array = snap.get("pathStart", [])
+			if path_start.size() == 3 and track.has_method("get_race_path"):
+				var race_path: Path3D = track.get_race_path()
+				if race_path != null and race_path.curve != null:
+					var local_start: Vector3 = race_path.to_global(race_path.curve.sample_baked(0.0))
+					var host_start := Vector3(float(path_start[0]), float(path_start[1]), float(path_start[2]))
+					world += local_start - host_start
+			body.global_position = world
 			var forward_raw: Array = snap.get("guestForward", [])
 			if forward_raw.size() == 3:
 				var forward := Vector3(float(forward_raw[0]), float(forward_raw[1]), float(forward_raw[2]))
@@ -84,6 +92,11 @@ func _run() -> void:
 	print("HOST_SECRET_IN_GUEST_STATE=false")
 	print("GAME_SESSION_COURSE_AI_IS_GUEST=false")
 	quit(0 if frames > 30 else 1)
+
+
+class GroundedProbe extends CharacterBody3D:
+	func is_on_floor() -> bool:
+		return true
 
 
 func _report(dir: String, frames: int, secret_seen: bool) -> void:
