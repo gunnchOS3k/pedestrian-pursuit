@@ -64,6 +64,7 @@ func _run() -> void:
 	if not entered:
 		_fail(dir, session, "race did not reach countdown")
 		return
+	_write_path(dir, track)
 	var course := _load_course(COURSE_ID)
 	var expected_laps := int(course.get("lap_count", -1))
 	if int(gm.get("total_laps")) != expected_laps or expected_laps < 1:
@@ -240,6 +241,22 @@ func _apply_guest_input(dir: String, guest: Node) -> bool:
 		return false
 	guest.set_remote_drive(float(cmd.get("steer", 0.0)), bool(cmd.get("accelerate", false)))
 	return true
+
+
+func _write_path(dir: String, track: Node) -> void:
+	if track == null or not track.has_method("get_race_path"):
+		return
+	var path: Path3D = track.get_race_path()
+	if path == null or path.curve == null:
+		return
+	var length := path.curve.get_baked_length()
+	var points: Array = []
+	var distance := 0.0
+	while distance <= length:
+		var point := path.to_global(path.curve.sample_baked(distance))
+		points.append([point.x, point.y, point.z])
+		distance += 2.0
+	_write_json(dir.path_join("sync/path.json"), {"points": points})
 
 
 func _path_start(race_manager: Node) -> Array:

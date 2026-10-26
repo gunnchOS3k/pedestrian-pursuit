@@ -27,60 +27,33 @@ func _run() -> void:
 		print("GAME_SESSION_RACE_FAIL guest view is missing")
 		quit(1)
 		return
-	var catalog = preload("res://scripts/data/TrackCatalog.gd")
-	var course: Dictionary = catalog.load_track(COURSE_ID)
-	var track_script = load("res://scripts/tracks/CourseTrack.gd")
-	var track: Node = track_script.new()
-	track.configure(course)
-	get_root().add_child(track)
-	if course.is_empty() or not track.build() or track.get_race_path() == null:
-		_report(dir, 0, false)
-		print("GAME_SESSION_ROLE=guest")
-		print("GAME_SESSION_RACE_FAIL guest could not build the racing line")
-		quit(1)
-		return
-	var follower_script = load("res://scripts/ai/AIPathFollower.gd")
-	var follower: Node = follower_script.new()
-	follower.name = "GuestLineSteer"
-	track.add_child(follower)
-	follower.setup(track.get_race_path())
-	follower.set("look_ahead", 5.5)
-	follower.set("magnet_strength", 0.0)
-	var body := CharacterBody3D.new()
-	body.name = "GuestInputBody"
-	get_root().add_child(body)
 	_write_json(dir.path_join("sync/guest_ready.json"), {
 		"source": "guest-process",
 		"pid": OS.get_process_id(),
 	})
+	var points: Array = []
 	var frames := 0
 	var deadline := Time.get_ticks_msec() + WAIT_MSEC
 	while Time.get_ticks_msec() < deadline:
+		if points.is_empty():
+			var path_file := _read_json(dir.path_join("sync/path.json"))
+			var loaded: Array = path_file.get("points", [])
+			if loaded.size() > 2:
+				points = loaded
 		var snap := _read_json(dir.path_join("sync/snapshot.json"))
 		var position: Array = snap.get("guestPosition", [])
-		if position.size() == 3 and follower.has_method("get_steer_and_accel"):
+		if position.size() == 3 and not points.is_empty():
 			var world := Vector3(float(position[0]), float(position[1]), float(position[2]))
-			var path_start: Array = snap.get("pathStart", [])
-			if path_start.size() == 3 and track.has_method("get_race_path"):
-				var race_path: Path3D = track.get_race_path()
-				if race_path != null and race_path.curve != null:
-					var local_start: Vector3 = race_path.to_global(race_path.curve.sample_baked(0.0))
-					var host_start := Vector3(float(path_start[0]), float(path_start[1]), float(path_start[2]))
-					world += local_start - host_start
-			body.global_position = world
+			var forward := Vector3.FORWARD
 			var forward_raw: Array = snap.get("guestForward", [])
 			if forward_raw.size() == 3:
-				var forward := Vector3(float(forward_raw[0]), float(forward_raw[1]), float(forward_raw[2]))
-				if forward.length_squared() > 0.001 and absf(forward.normalized().dot(Vector3.UP)) < 0.95:
-					body.look_at(body.global_position + forward, Vector3.UP)
-			body.velocity = -body.global_transform.basis.z * float(snap.get("guestSpeed", 0.0))
-			var cmd: Dictionary = follower.get_steer_and_accel(body, 0.016)
+				forward = Vector3(float(forward_raw[0]), float(forward_raw[1]), float(forward_raw[2]))
 			_write_json(dir.path_join("sync/guest_input.json"), {
 				"source": "guest-process",
 				"pid": OS.get_process_id(),
 				"seq": frames + 1,
-				"steer": float(cmd.get("steer", 0.0)),
-				"accelerate": bool(cmd.get("accelerate", true)),
+				"steer": _steer_along(points, world, forward),
+				"accelerate": true,
 			})
 			frames += 1
 			if bool(snap.get("finished", false)) or int(snap.get("raceState", -1)) >= 3:
@@ -88,10 +61,42 @@ func _run() -> void:
 		await physics_frame
 	_report(dir, frames, false)
 	print("GAME_SESSION_ROLE=guest")
+	print("GAME_SESSION_COURSE=%s" % COURSE_ID)
 	print("GAME_SESSION_GUEST_INPUT_FRAMES=%d" % frames)
 	print("HOST_SECRET_IN_GUEST_STATE=false")
 	print("GAME_SESSION_COURSE_AI_IS_GUEST=false")
 	quit(0 if frames > 30 else 1)
+
+
+func _steer_along(points: Array, pos: Vector3, forward: Vector3) -> float:
+	var closest := 0
+	var best := 1.0e12
+	for i in points.size():
+		var raw: Array = points[i]
+		var point := Vector3(float(raw[0]), float(raw[1]), float(raw[2]))
+		var distance := pos.distance_squared_to(point)
+		if distance < best:
+			best = distance
+			closest = i
+	var traveled := 0.0
+	var index := closest
+	var previous: Array = points[index]
+	var previous_point := Vector3(float(previous[0]), float(previous[1]), float(previous[2]))
+	while traveled < 5.5:
+		var next_index := (index + 1) % points.size()
+		var raw_next: Array = points[next_index]
+		var next_point := Vector3(float(raw_next[0]), float(raw_next[1]), float(raw_next[2]))
+		traveled += previous_point.distance_to(next_point)
+		previous_point = next_point
+		index = next_index
+		if index == closest:
+			break
+	var to_target := previous_point - pos
+	to_target.y = 0.0
+	forward.y = 0.0
+	if to_target.length_squared() < 0.0001 or forward.length_squared() < 0.0001:
+		return 0.0
+	return clampf(forward.normalized().cross(to_target.normalized()).y * 2.8, -1.0, 1.0)
 
 
 func _report(dir: String, frames: int, secret_seen: bool) -> void:
