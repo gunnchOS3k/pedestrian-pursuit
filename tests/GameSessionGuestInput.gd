@@ -5,6 +5,7 @@ extends SceneTree
 
 const COURSE_ID := "verdant_cascade_circuit"
 const WAIT_MSEC := 210000
+var _path_cursor: int = 0
 
 
 func _initialize() -> void:
@@ -69,21 +70,31 @@ func _run() -> void:
 
 
 func _steer_along(points: Array, pos: Vector3, forward: Vector3) -> float:
-	var closest := 0
+	# Stay on the forward path. A full-loop nearest sample at the start line
+	# also matches the lap closure and steers back toward the finish.
+	var closest := _path_cursor
 	var best := 1.0e12
-	for i in points.size():
-		var raw: Array = points[i]
-		var point := Vector3(float(raw[0]), float(raw[1]), float(raw[2]))
+	var origin := maxi(0, _path_cursor - 2)
+	var window := 6
+	for step in window:
+		var index := origin + step
+		if index >= points.size():
+			break
+		var raw: Array = points[index]
+		var point := Vector3(float(raw[0]), pos.y, float(raw[2]))
 		var distance := pos.distance_squared_to(point)
 		if distance < best:
 			best = distance
-			closest = i
+			closest = index
+	_path_cursor = closest
 	var traveled := 0.0
 	var index := closest
 	var previous: Array = points[index]
 	var previous_point := Vector3(float(previous[0]), float(previous[1]), float(previous[2]))
-	while traveled < 5.5:
-		var next_index := (index + 1) % points.size()
+	while traveled < 8.0:
+		var next_index := index + 1
+		if next_index >= points.size():
+			next_index = 0
 		var raw_next: Array = points[next_index]
 		var next_point := Vector3(float(raw_next[0]), float(raw_next[1]), float(raw_next[2]))
 		traveled += previous_point.distance_to(next_point)
