@@ -1,7 +1,7 @@
 /** Second client for the BeatLink room. The race result comes from the Godot file. */
 
-import { spawnSync } from 'node:child_process';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { spawn } from 'node:child_process';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { resetAuthority } from '../beatlink-party/apps/server/src/rooms/roomHttp.mjs';
@@ -57,13 +57,28 @@ function prepare() {
   if (text.includes(opened.hostSession) || text.includes(redeemed.memberSession)) {
     throw new Error('guest session file contains a secret');
   }
+  mkdirSync(join(dir, 'sync'), { recursive: true });
   writeFileSync(sessionPath(), text);
+  const hostView = JSON.stringify({ ...session, role: 'host' });
+  const guestView = JSON.stringify({
+    applicationId: session.applicationId,
+    roomCode: session.roomCode,
+    memberId: session.memberId,
+    courseId: session.courseId,
+    role: 'guest',
+  });
+  if (guestView.includes(opened.hostSession) || guestView.includes('hostSession')) {
+    throw new Error('guest view contains the host session');
+  }
+  writeFileSync(join(dir, 'host_view.json'), hostView);
+  writeFileSync(join(dir, 'guest_view.json'), guestView);
   writeFileSync(statePath(), JSON.stringify({
     roomCode: opened.session.roomCode,
     hostSession: opened.hostSession,
     memberSession: redeemed.memberSession,
     hostId: opened.session.hostId,
     memberId: redeemed.memberId,
+    invitation: opened.invitation,
   }));
   console.log(`GAME_SESSION_PREPARED room=${opened.session.roomCode}`);
 }
@@ -71,19 +86,49 @@ function prepare() {
 function publish() {
   const state = JSON.parse(readFileSync(statePath(), 'utf8'));
   const produced = JSON.parse(readFileSync(resultPath(), 'utf8'));
-  if (produced.bothFinished !== true) {
-    console.log(`GAME_SESSION_RACE_INCOMPLETE ${JSON.stringify({
+  const guestReport = JSON.parse(readFileSync(join(dir, 'guest_report.json'), 'utf8'));
+  const guestView = readFileSync(join(dir, 'guest_view.json'), 'utf8');
+  const independent = (
+    produced.bothFinished === true
+    && produced.courseAiIsGuest === false
+    && produced.guestSeat === 'Player2Racer'
+    && produced.guestControl === 'guest-process'
+    && produced.hostControl === 'host-process'
+    && guestReport.source === 'guest-process'
+    && guestReport.containsHostSession === false
+    && guestReport.courseAiIsGuest === false
+    && Number(guestReport.pid) !== Number(produced.hostPid)
+    && Number(guestReport.inputFrames) > 30
+    && !guestView.includes(state.hostSession)
+  );
+  if (!independent) {
+    console.log(`INDEPENDENT_CLIENTS_RACED=false ${JSON.stringify({
       bothFinished: produced.bothFinished,
       failReason: produced.failReason || '',
+      guestSeat: produced.guestSeat || '',
+      guestControl: produced.guestControl || '',
+      courseAiIsGuest: produced.courseAiIsGuest,
       lapsCompleted: produced.lapsCompleted || null,
       checkpointCrossings: produced.checkpointCrossings || null,
       drivenMsec: produced.drivenMsec || 0,
+      guestCommands: produced.guestCommands || 0,
     })}`);
     process.exit(1);
   }
-  const { ecosystemReturn, failReason, ...fields } = produced;
-  void ecosystemReturn;
-  void failReason;
+  const fields = {
+    applicationId: produced.applicationId,
+    roomCode: produced.roomCode,
+    courseId: produced.courseId,
+    hostMemberId: produced.hostMemberId,
+    guestMemberId: produced.guestMemberId,
+    lapsCompleted: produced.lapsCompleted,
+    checkpointCrossings: produced.checkpointCrossings,
+    drivenMsec: produced.drivenMsec,
+    finishOrder: produced.finishOrder,
+    bothFinished: produced.bothFinished,
+    producedBy: produced.producedBy,
+    sourceLog: produced.sourceLog,
+  };
   const runtimeDigest = runtimeRaceDigest(fields);
   const stored = submitRuntimeRaceResult({ ...fields, runtimeDigest });
   if (stored.status !== 200) {
@@ -104,8 +149,14 @@ function publish() {
   if (disconnectGuest(state.memberSession).payload.guestConnected !== false) {
     throw new Error('guest did not disconnect');
   }
-  if (reconnectGuest(state.memberSession).payload.guestConnected !== true) {
+  const again = redeemInvitationOnRoom(state.invitation);
+  if (again.status !== 409) throw new Error('a second redeem created a duplicate member');
+  const restored = reconnectGuest(state.memberSession);
+  if (restored.status !== 200 || restored.payload.guestConnected !== true) {
     throw new Error('guest did not reconnect');
+  }
+  if (restored.payload.memberId !== state.memberId) {
+    throw new Error('reconnect duplicated the member');
   }
   const decision = publishRematchOrExit(state.hostSession, 'exit');
   acknowledge(state.hostSession, decision.event.eventId);
@@ -122,26 +173,57 @@ function publish() {
   });
   if (visible.includes(state.hostSession)) throw new Error('host session leaked');
   console.log(`GAME_SESSION_PUBLISHED room=${state.roomCode} course=${produced.courseId} digest=${runtimeDigest}`);
-  console.log('GAME_SESSION_TWO_CLIENT_RACE=true');
+  console.log('INDEPENDENT_CLIENTS_RACED=true');
   console.log('ECOSYSTEM_RETURN=ready');
   console.log('HUMAN_COURSE_APPROVAL=unset');
   console.log('HUMAN_FUN_APPROVAL=unset');
 }
 
-function run() {
+function startGodot(root, script) {
+  return spawn(
+    'xvfb-run',
+    ['-a', 'godot', '--headless', '--path', root, '--rendering-driver', 'opengl3', '--script', script],
+    { stdio: 'inherit', env: process.env },
+  );
+}
+
+function waitFor(child) {
+  return new Promise((resolve) => {
+    child.on('exit', (code) => resolve(code ?? 1));
+  });
+}
+
+async function run() {
   prepare();
   const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-  const godot = spawnSync(
-    'xvfb-run',
-    ['-a', 'godot', '--headless', '--path', root, '--rendering-driver', 'opengl3', '--script', 'res://tests/GameSessionTwoMemberRace.gd'],
-    { stdio: 'inherit' },
-  );
-  if (godot.status !== 0) process.exit(godot.status || 1);
+  const guest = startGodot(root, 'res://tests/GameSessionGuestInput.gd');
+  const host = startGodot(root, 'res://tests/GameSessionHostRace.gd');
+  const finished = Promise.all([waitFor(guest), waitFor(host)]);
+  const outcome = await Promise.race([
+    finished.then((codes) => ({ codes })),
+    new Promise((resolve) => setTimeout(() => resolve('timeout'), 240000)),
+  ]);
+  if (outcome === 'timeout') {
+    guest.kill('SIGKILL');
+    host.kill('SIGKILL');
+    console.log('INDEPENDENT_CLIENTS_RACED=false reason=two-process-timeout');
+    process.exit(1);
+  }
+  const [guestCode, hostCode] = outcome.codes;
+  if (guestCode !== 0 || hostCode !== 0) {
+    console.log(`INDEPENDENT_CLIENTS_RACED=false host_exit=${hostCode} guest_exit=${guestCode}`);
+    process.exit(guestCode || hostCode || 1);
+  }
   publish();
 }
 
 if (!dir) throw new Error('GAME_SESSION_DIR is required');
 if (mode === 'prepare') prepare();
 else if (mode === 'publish') publish();
-else if (mode === 'run') run();
-else throw new Error(`unknown mode ${mode}`);
+else if (mode === 'run') {
+  run().catch((error) => {
+    console.error(error);
+    console.log('INDEPENDENT_CLIENTS_RACED=false');
+    process.exit(1);
+  });
+} else throw new Error(`unknown mode ${mode}`);
