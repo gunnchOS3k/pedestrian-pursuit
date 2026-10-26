@@ -375,9 +375,9 @@ func _unhandled_input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	if player == null:
 		return
-	# Production void recovery: always available when a CourseTrack path exists.
-	if float(player.global_position.y) < -2.0 and track != null and track.has_method("snap_body_to_nearest_path"):
-		track.snap_body_to_nearest_path(player, 0.0)
+	# Void recovery uses the last accepted checkpoint, not the nearest path point.
+	if float(player.global_position.y) < -2.0 and player.has_method("_recover_from_fall"):
+		player._recover_from_fall()
 	var follower = null
 	if has_meta("path_steer_follower"):
 		follower = get_meta("path_steer_follower")
@@ -396,22 +396,13 @@ func _physics_process(delta: float) -> void:
 		GameManager.mobile_assist_steer = steer_cmd
 
 
-func _rescue_fallen_onto_path(follower: Node) -> void:
-	## Catch void falls early and snap onto the racing line instead of restarting the course.
+func _rescue_fallen_onto_path(_follower: Node) -> void:
+	## Same checkpoint respawn as _physics_process. The path follower's closest
+	## offset is not a gate, so it must not move a racer who already has one.
 	if player == null or float(player.global_position.y) > -2.0:
 		return
-	if follower.has_method("snap_to_path") and track != null and track.has_method("get_race_path"):
-		var path: Path3D = track.get_race_path()
-		if path != null and path.curve != null:
-			var offset := path.curve.get_closest_offset(path.to_local(player.global_position))
-			follower.snap_to_path(player, offset, 0.0)
-			if "horizontal_speed" in player:
-				player.horizontal_speed = minf(float(player.horizontal_speed), 12.0)
-			if "velocity" in player:
-				player.velocity = Vector3.ZERO
-			return
-	if player.has_method("set_recovery_transform") == false and "global_transform" in player:
-		pass
+	if player.has_method("_recover_from_fall"):
+		player._recover_from_fall()
 
 
 
