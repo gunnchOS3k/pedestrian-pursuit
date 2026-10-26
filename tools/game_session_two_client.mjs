@@ -1,7 +1,9 @@
 /** Second client for the BeatLink room. The race result comes from the Godot file. */
 
+import { spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { resetAuthority } from '../beatlink-party/apps/server/src/rooms/roomHttp.mjs';
 import {
   acknowledge,
@@ -126,7 +128,20 @@ function publish() {
   console.log('HUMAN_FUN_APPROVAL=unset');
 }
 
+function run() {
+  prepare();
+  const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+  const godot = spawnSync(
+    'xvfb-run',
+    ['-a', 'godot', '--headless', '--path', root, '--rendering-driver', 'opengl3', '--script', 'res://tests/GameSessionTwoMemberRace.gd'],
+    { stdio: 'inherit' },
+  );
+  if (godot.status !== 0) process.exit(godot.status || 1);
+  publish();
+}
+
 if (!dir) throw new Error('GAME_SESSION_DIR is required');
 if (mode === 'prepare') prepare();
 else if (mode === 'publish') publish();
+else if (mode === 'run') run();
 else throw new Error(`unknown mode ${mode}`);
