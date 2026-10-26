@@ -84,6 +84,21 @@ class CloudstepFinishTests(unittest.TestCase):
         self.assertFalse(forced.results_visible)
         self.assertEqual(forced.state, "racing")
 
+    def test_cliff_cut_does_not_skip_an_ordered_gate(self) -> None:
+        points = self.course["path_points"]
+        gates = {int(index) for index in self.course["checkpoint_points"]}
+        self.assertTrue(self.course["guard_rails"])
+        self.assertEqual(len(gates), self.checkpoint_count)
+        for route in self.course["shortcut_routes"]:
+            entry = int(route["entry_point_index"])
+            exit_index = int(route["exit_point_index"])
+            self.assertIn(entry, gates)
+            self.assertIn(exit_index, gates)
+            cursor = (entry + 1) % len(points)
+            while cursor != exit_index:
+                self.assertNotIn(cursor, gates)
+                cursor = (cursor + 1) % len(points)
+
 
 if __name__ == "__main__":
     unittest.main()
