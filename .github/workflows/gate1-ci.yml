@@ -225,6 +225,13 @@ jobs:
             run_step BetaProductStateTest "$GODOT" --headless --path "$ROOT" --script res://tests/BetaProductStateTest.gd
             run_step FullProductDepthTest "$GODOT" --headless --path "$ROOT" --script res://tests/FullProductDepthTest.gd
             run_step AchievementRuntimeTest "$GODOT" --headless --path "$ROOT" --script res://tests/AchievementRuntimeTest.gd
+            # Kinetic Sole Verdant + Dash Reed runtime capture (xvfb). Soft on image
+            # nulls would hide art regressions; require at least one CAPTURED shot.
+            run_step KineticSoleVerdantCapture xvfb-run -a "$GODOT" --path "$ROOT" --script res://tests/KineticSoleVerdantCapture.gd
+            if [[ -f artifacts/kinetic_sole_verdant/CAPTURE_RUN.json ]]; then
+              echo "=== KineticSoleVerdantCapture markers ==="
+              grep -E "KINETIC_SOLE_|CAPTURED|CAPTURE_FAILED" tmp/godot-KineticSoleVerdantCapture.log || true
+            fi
             # Retired smokes must hard-fail (exit != 0) if invoked
             set +e
             "$GODOT" --headless --path "$ROOT" --script res://tests/AlphaProductStateTest.gd > tmp/godot-AlphaRetired.log 2>&1
@@ -240,6 +247,14 @@ jobs:
           '
         env:
           DISPLAY: ":99"
+
+      - name: Upload Kinetic Sole Verdant capture
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kinetic-sole-verdant-dash
+          path: artifacts/kinetic_sole_verdant/
+          if-no-files-found: warn
 
       - name: Checkout BeatLink room contract
         uses: actions/checkout@v4

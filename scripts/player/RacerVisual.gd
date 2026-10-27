@@ -29,6 +29,7 @@ var _scarf: MeshInstance3D
 var _backpack: MeshInstance3D
 var _accent_fx: MeshInstance3D
 var _name_label: Label3D
+var _speed_trail: GPUParticles3D
 var _phase: float = 0.0
 var _parent_body: CharacterBody3D
 var _emotion_t: float = 0.0
@@ -73,6 +74,8 @@ func set_pose_state(state: String, duration: float = 0.45) -> void:
 
 func set_boosting(active: bool) -> void:
 	_boosting = active
+	if _speed_trail != null:
+		_speed_trail.emitting = active
 	if active and profile:
 		set_pose_state(str(profile.boost_style), 0.35)
 	elif active:
@@ -123,6 +126,7 @@ func _rebuild() -> void:
 	_backpack = null
 	_accent_fx = null
 	_name_label = null
+	_speed_trail = null
 	_build_figure()
 
 
@@ -307,6 +311,28 @@ func _build_figure() -> void:
 	_name_label.outline_modulate = Color(0, 0, 0, 0.8)
 	_name_label.outline_size = 4
 	add_child(_name_label)
+	## Footwear-forward speed trail — Kinetic Sole boost readability.
+	_speed_trail = GPUParticles3D.new()
+	_speed_trail.name = "KineticSoleTrail"
+	_speed_trail.position = Vector3(0.0, 0.2, 0.35)
+	_speed_trail.amount = 28
+	_speed_trail.lifetime = 0.45
+	_speed_trail.emitting = false
+	var trail_mat := ParticleProcessMaterial.new()
+	trail_mat.direction = Vector3(0.0, 0.2, 1.0)
+	trail_mat.spread = 12.0
+	trail_mat.initial_velocity_min = 1.5
+	trail_mat.initial_velocity_max = 4.0
+	trail_mat.gravity = Vector3(0.0, 0.4, 0.0)
+	trail_mat.scale_min = 0.08
+	trail_mat.scale_max = 0.22
+	trail_mat.color = Color(1.0, 0.42, 0.24, 0.75) if arch == "all_terrain" else accent_color
+	_speed_trail.process_material = trail_mat
+	var trail_mesh := SphereMesh.new()
+	trail_mesh.radius = 0.12
+	trail_mesh.height = 0.24
+	_speed_trail.draw_pass_1 = trail_mesh
+	add_child(_speed_trail)
 
 
 func _add_face(head: Node3D, head_r: float, eye_mat: Material, mouth_mat: Material) -> void:
@@ -441,35 +467,91 @@ func _attach_shoes(
 	accent: Material, dark: Material
 ) -> void:
 	var side := -1.0 if is_left else 1.0
+	var arch := profile.archetype if profile else "all_terrain"
+	# Kinetic Sole stack: outsole / midsole yellow / kinetic upper / tread bars.
+	var midsole := StandardMaterial3D.new()
+	midsole.albedo_color = Color(0.96, 0.77, 0.09) # Midsole Yellow
+	midsole.roughness = 0.45
+	midsole.emission_enabled = arch == "all_terrain"
+	if midsole.emission_enabled:
+		midsole.emission = Color(0.96, 0.77, 0.09)
+		midsole.emission_energy_multiplier = 0.22
+	var upper := StandardMaterial3D.new()
+	## Prefer Kinetic Orange for Dash Reed (all_terrain); other arches keep accent.
+	upper.albedo_color = Color(1.0, 0.42, 0.24) if arch == "all_terrain" else self.accent_color
+	upper.roughness = 0.38
+	upper.emission_enabled = true
+	upper.emission = upper.albedo_color
+	upper.emission_energy_multiplier = 0.28
+	var outsole := StandardMaterial3D.new()
+	outsole.albedo_color = Color(0.12, 0.12, 0.14)
+	outsole.roughness = 0.85
 	# Toe / sole body (forward +Z).
 	var sole := _mesh_box(
-		Vector3(0.14 * ws * shoe_scale, 0.07 * shoe_scale, 0.28 * shoe_scale),
+		Vector3(0.15 * ws * shoe_scale, 0.05 * shoe_scale, 0.3 * shoe_scale),
 		Vector3.ZERO,
-		accent
+		outsole
 	)
 	leg.add_child(sole)
-	sole.position = Vector3(0, -leg_len - 0.02, 0.06 * shoe_scale)
+	sole.position = Vector3(0, -leg_len - 0.035, 0.06 * shoe_scale)
+	var mid := _mesh_box(
+		Vector3(0.145 * ws * shoe_scale, 0.045 * shoe_scale, 0.28 * shoe_scale),
+		Vector3.ZERO,
+		midsole
+	)
+	leg.add_child(mid)
+	mid.position = Vector3(0, -leg_len + 0.005, 0.05 * shoe_scale)
+	var vamp := _mesh_box(
+		Vector3(0.13 * ws * shoe_scale, 0.08 * shoe_scale, 0.22 * shoe_scale),
+		Vector3.ZERO,
+		upper
+	)
+	leg.add_child(vamp)
+	vamp.position = Vector3(0, -leg_len + 0.05, 0.04 * shoe_scale)
 	# Rounded toe nub.
-	var toe := _mesh_sphere(0.055 * shoe_scale * ws / 0.55, Vector3.ZERO, accent)
+	var toe := _mesh_sphere(0.055 * shoe_scale * ws / 0.55, Vector3.ZERO, upper)
 	leg.add_child(toe)
-	toe.position = Vector3(0, -leg_len - 0.01, 0.18 * shoe_scale)
+	toe.position = Vector3(0, -leg_len - 0.01, 0.2 * shoe_scale)
 	toe.scale = Vector3(1.1, 0.7, 1.2)
-	# Heel block (rear).
+	# Forward chevron (speed symbol) on the tongue.
+	var chevron := _mesh_box(
+		Vector3(0.06 * ws * shoe_scale, 0.02 * shoe_scale, 0.08 * shoe_scale),
+		Vector3.ZERO,
+		midsole
+	)
+	leg.add_child(chevron)
+	chevron.position = Vector3(0, -leg_len + 0.09, 0.12 * shoe_scale)
+	# Grip tread bars under the outsole.
+	for i in range(3):
+		var tread := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.02 * shoe_scale, 0.03 * shoe_scale),
+			Vector3.ZERO,
+			dark
+		)
+		leg.add_child(tread)
+		tread.position = Vector3(0, -leg_len - 0.055, (float(i) - 1.0) * 0.07 * shoe_scale)
+	# Heel block (rear) with flare for Dash Reed.
 	var heel := _mesh_box(
-		Vector3(0.12 * ws * shoe_scale, 0.08 * shoe_scale, 0.1 * shoe_scale),
+		Vector3(0.13 * ws * shoe_scale, 0.1 * shoe_scale, 0.11 * shoe_scale),
 		Vector3.ZERO,
 		dark
 	)
 	leg.add_child(heel)
-	heel.position = Vector3(0, -leg_len - 0.015, -0.1 * shoe_scale)
+	heel.position = Vector3(0, -leg_len - 0.01, -0.11 * shoe_scale)
+	if arch == "all_terrain":
+		var flare := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.12 * shoe_scale, 0.05 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(flare)
+		flare.position = Vector3(side * 0.08 * ws * shoe_scale, -leg_len + 0.04, -0.12 * shoe_scale)
 	if is_left:
 		_shoe_l = sole
 		_heel_l = heel
 	else:
 		_shoe_r = sole
 		_heel_r = heel
-	# Quiet unused warning for side symmetry quirks.
-	sole.position.x = side * 0.0
 
 
 func _make_pivot(parent: Node3D, pos: Vector3) -> Node3D:
@@ -856,6 +938,33 @@ func _apply_pose_overlay(delta: float) -> void:
 				_arm_l.rotation.x = lerpf(_arm_l.rotation.x, -2.0, delta * 5.0)
 			if _arm_r:
 				_arm_r.rotation.x = lerpf(_arm_r.rotation.x, -2.0, delta * 5.0)
+		"jump":
+			if _torso:
+				_torso.rotation.x = lerpf(_torso.rotation.x, -0.15, delta * 10.0)
+			if _leg_l:
+				_leg_l.rotation.x = lerpf(_leg_l.rotation.x, 0.55, delta * 10.0)
+			if _leg_r:
+				_leg_r.rotation.x = lerpf(_leg_r.rotation.x, -0.55, delta * 10.0)
+			if _arm_l:
+				_arm_l.rotation.x = lerpf(_arm_l.rotation.x, -1.2, delta * 10.0)
+			if _arm_r:
+				_arm_r.rotation.x = lerpf(_arm_r.rotation.x, -1.2, delta * 10.0)
+		"trick":
+			if _torso:
+				_torso.rotation.y = sin(_emotion_t * 14.0) * 0.55
+				_torso.rotation.x = lerpf(_torso.rotation.x, -0.35, delta * 8.0)
+			if _arm_l:
+				_arm_l.rotation.z = lerpf(_arm_l.rotation.z, 1.1, delta * 8.0)
+			if _arm_r:
+				_arm_r.rotation.z = lerpf(_arm_r.rotation.z, -1.1, delta * 8.0)
+		"drift":
+			if _torso:
+				_torso.rotation.z = lerpf(_torso.rotation.z, -0.42, delta * 9.0)
+				_torso.rotation.x = lerpf(_torso.rotation.x, -0.12, delta * 8.0)
+			if _leg_l:
+				_leg_l.rotation.x = lerpf(_leg_l.rotation.x, 0.35, delta * 8.0)
+			if _arm_r:
+				_arm_r.rotation.z = lerpf(_arm_r.rotation.z, -0.55, delta * 8.0)
 		"defeat":
 			if _torso:
 				_torso.rotation.x = lerpf(_torso.rotation.x, 0.4, delta * 4.0)

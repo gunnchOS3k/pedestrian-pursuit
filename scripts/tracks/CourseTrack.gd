@@ -130,6 +130,18 @@ func _build_environment() -> void:
 	environment.ambient_light_color = Color(0.88, 0.9, 1.0)
 	environment.ambient_light_energy = 0.75
 	environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
+	var theme := str(_data.get("theme", ""))
+	if theme == "cascade_garden":
+		## Misty riverside read — fog softens the horizon without hiding gates.
+		environment.ambient_light_color = Color(0.78, 0.9, 0.95)
+		environment.ambient_light_energy = 0.92
+		environment.fog_enabled = true
+		environment.fog_light_color = Color(0.72, 0.86, 0.9)
+		environment.fog_density = 0.0045
+		environment.fog_aerial_perspective = 0.35
+		environment.glow_enabled = true
+		environment.glow_intensity = 0.35
+		environment.glow_bloom = 0.12
 	world_environment.environment = environment
 	add_child(world_environment)
 
@@ -138,6 +150,17 @@ func _build_environment() -> void:
 	sun.rotation_degrees = Vector3(-52.0, -35.0, 0.0)
 	sun.light_energy = 1.1
 	sun.shadow_enabled = true
+	if theme == "cascade_garden":
+		sun.rotation_degrees = Vector3(-48.0, -28.0, 0.0)
+		sun.light_energy = 1.35
+		sun.light_color = Color(1.0, 0.97, 0.9)
+		var fill := OmniLight3D.new()
+		fill.name = "CascadeFill"
+		fill.position = Vector3(0.0, 14.0, 0.0)
+		fill.light_energy = 2.4
+		fill.light_color = Color(0.55, 0.85, 0.95)
+		fill.omni_range = 90.0
+		add_child(fill)
 	add_child(sun)
 
 
@@ -188,9 +211,15 @@ func _add_track_segment(
 	var visual := MeshInstance3D.new()
 	visual.name = "TrackVisual"
 	visual.mesh = mesh
-	visual.material_override = _make_material(
-		_segment_color(index), _data.get("theme", "") == "prism_void"
-	)
+	var theme := str(_data.get("theme", ""))
+	var track_mat := _make_material(_segment_color(index), theme == "prism_void")
+	if theme == "cascade_garden":
+		## Wet riverside asphalt: moss tint + soft specular read.
+		track_mat = track_mat.duplicate()
+		track_mat.roughness = 0.42
+		track_mat.metallic = 0.08
+		track_mat.albedo_color = track_mat.albedo_color.lerp(Color(0.28, 0.42, 0.36), 0.22)
+	visual.material_override = track_mat
 	body.add_child(visual)
 
 	if bool(_data.get("guard_rails", false)):
@@ -513,19 +542,99 @@ func _build_scenery() -> void:
 
 
 func _build_cascade_scenery(parent: Node3D) -> void:
-	## Procedural-final launch riverside presentation.
+	## Kinetic Sole riverside: garden banks, mist columns, vertical cliff route,
+	## and a readable start arch. Collision path stays on the authored race line.
 	_add_visual_box(
 		parent,
 		Vector3(0.0, -0.78, 0.0),
-		Vector3(140.0, 0.18, 140.0),
+		Vector3(150.0, 0.22, 150.0),
 		_color("backdrop_color", Color(0.2, 0.5, 0.3))
 	)
-	_add_visual_cylinder(parent, Vector3(0.0, -0.55, 0.0), 24.0, 0.18, Color(0.2, 0.65, 0.82), true)
-	for position in [Vector3(-13, 6, -2), Vector3(0, 8, -8), Vector3(14, 5, 2), Vector3(-20, 4, 10), Vector3(18, 7, -14)]:
-		_add_visual_cylinder(parent, position, 3.2, position.y * 2.0, Color(0.35, 0.8, 0.9), true)
-	for position in [Vector3(-8, 1.2, 12), Vector3(10, 1.2, -16), Vector3(-22, 1.2, -6), Vector3(22, 1.2, 8)]:
-		_add_visual_box(parent, position, Vector3(1.4, 2.4, 1.4), Color(0.25, 0.45, 0.22))
-		_add_visual_sphere(parent, position + Vector3(0, 2.0, 0), 2.2, Color(0.3, 0.62, 0.28))
+	## Shallow runoff basin (emissive water read).
+	_add_visual_cylinder(parent, Vector3(0.0, -0.52, 0.0), 28.0, 0.22, Color(0.18, 0.62, 0.82), true)
+	_add_visual_cylinder(parent, Vector3(4.0, -0.42, -6.0), 12.0, 0.16, Color(0.32, 0.78, 0.9), true)
+	## Cascade columns — misty vertical landmarks.
+	for position in [
+		Vector3(-13, 7, -2), Vector3(0, 9, -10), Vector3(14, 6, 2),
+		Vector3(-22, 5, 10), Vector3(18, 8, -14), Vector3(-6, 6.5, 16)
+	]:
+		_add_visual_cylinder(parent, position, 2.6, position.y * 2.0, Color(0.4, 0.86, 0.95), true)
+		_add_visual_cylinder(
+			parent, position + Vector3(0.0, -position.y * 0.15, 0.0), 3.4, 0.35, Color(0.55, 0.9, 1.0), true
+		)
+	## Garden canopy trees with layered crowns.
+	for position in [
+		Vector3(-10, 1.1, 14), Vector3(12, 1.1, -18), Vector3(-24, 1.1, -4),
+		Vector3(24, 1.1, 10), Vector3(-16, 1.1, -20), Vector3(8, 1.1, 22),
+		Vector3(28, 1.1, -6), Vector3(-28, 1.1, 14)
+	]:
+		_add_visual_box(parent, position, Vector3(1.1, 2.8, 1.1), Color(0.28, 0.2, 0.12))
+		_add_visual_sphere(parent, position + Vector3(0, 2.4, 0), 2.4, Color(0.28, 0.58, 0.26))
+		_add_visual_sphere(parent, position + Vector3(0.8, 3.2, -0.4), 1.5, Color(0.34, 0.68, 0.3))
+	## Cliff terrace — vertical playground route outside the racing line.
+	var cliff_root := Node3D.new()
+	cliff_root.name = "CascadeCliffTerrace"
+	cliff_root.position = Vector3(36.0, 0.0, -18.0)
+	parent.add_child(cliff_root)
+	for step in range(5):
+		var y := 1.2 + float(step) * 2.4
+		var shelf := Vector3(float(step) * -1.6, y, float(step) * -1.2)
+		_add_visual_box(cliff_root, shelf, Vector3(7.5, 0.55, 4.2), Color(0.42, 0.5, 0.38))
+		_add_visual_box(
+			cliff_root, shelf + Vector3(0.0, 1.1, -1.8), Vector3(6.5, 2.0, 0.45), Color(0.35, 0.45, 0.32)
+		)
+		## Soft collision shelves so the terrace is a real vertical route.
+		var body := StaticBody3D.new()
+		body.name = "CliffShelf%d" % step
+		body.collision_layer = 1
+		body.collision_mask = 0
+		body.position = shelf + Vector3(0.0, -0.15, 0.0)
+		cliff_root.add_child(body)
+		var shape := BoxShape3D.new()
+		shape.size = Vector3(7.5, 0.55, 4.2)
+		var col := CollisionShape3D.new()
+		col.shape = shape
+		body.add_child(col)
+	## Stone bridge landmark spanning the inner basin.
+	_add_visual_box(parent, Vector3(2.0, 2.4, -4.0), Vector3(18.0, 0.55, 3.2), Color(0.55, 0.52, 0.45))
+	_add_visual_box(parent, Vector3(-5.0, 1.2, -4.0), Vector3(1.2, 2.6, 1.2), Color(0.48, 0.45, 0.4))
+	_add_visual_box(parent, Vector3(9.0, 1.2, -4.0), Vector3(1.2, 2.6, 1.2), Color(0.48, 0.45, 0.4))
+	## Start arch — Kinetic Sole midsole yellow + pursuit blue accents.
+	var start := _course_points[0] if not _course_points.is_empty() else Vector3.ZERO
+	_add_visual_box(parent, start + Vector3(-5.5, 3.2, 0.0), Vector3(1.0, 6.4, 1.0), Color(0.24, 0.3, 0.42))
+	_add_visual_box(parent, start + Vector3(5.5, 3.2, 0.0), Vector3(1.0, 6.4, 1.0), Color(0.24, 0.3, 0.42))
+	_add_visual_box(parent, start + Vector3(0.0, 6.4, 0.0), Vector3(12.0, 0.7, 1.2), Color(0.96, 0.77, 0.09), true)
+	_add_visual_box(parent, start + Vector3(0.0, 5.6, 0.35), Vector3(10.0, 0.25, 0.35), Color(1.0, 0.42, 0.24), true)
+	## Moss rocks + lanterns along the banks.
+	for position in [
+		Vector3(-18, 0.6, 8), Vector3(16, 0.55, 14), Vector3(-4, 0.5, -28), Vector3(20, 0.6, -22)
+	]:
+		_add_visual_sphere(parent, position, 1.4, Color(0.32, 0.42, 0.3))
+		_add_visual_cylinder(parent, position + Vector3(0.0, 1.8, 0.0), 0.18, 2.4, Color(0.35, 0.3, 0.22))
+		_add_visual_sphere(parent, position + Vector3(0.0, 3.1, 0.0), 0.55, Color(0.18, 0.9, 0.85), true)
+	## Mist particle sheet near the main cascade.
+	var mist := GPUParticles3D.new()
+	mist.name = "CascadeMist"
+	mist.position = Vector3(0.0, 4.0, -8.0)
+	mist.amount = 48
+	mist.lifetime = 3.2
+	mist.visibility_aabb = AABB(Vector3(-30, -5, -30), Vector3(60, 30, 60))
+	var mist_mat := ParticleProcessMaterial.new()
+	mist_mat.direction = Vector3(0.0, 1.0, 0.15)
+	mist_mat.spread = 28.0
+	mist_mat.initial_velocity_min = 0.4
+	mist_mat.initial_velocity_max = 1.6
+	mist_mat.gravity = Vector3(0.0, 0.15, 0.0)
+	mist_mat.scale_min = 0.35
+	mist_mat.scale_max = 0.9
+	mist_mat.color = Color(0.75, 0.92, 0.98, 0.35)
+	mist.process_material = mist_mat
+	var mist_mesh := SphereMesh.new()
+	mist_mesh.radius = 0.35
+	mist_mesh.height = 0.7
+	mist.draw_pass_1 = mist_mesh
+	mist.emitting = true
+	parent.add_child(mist)
 
 
 

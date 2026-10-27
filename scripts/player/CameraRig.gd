@@ -5,13 +5,13 @@ extends SpringArm3D
 @export var follow_smoothing: float = 8.0
 @export var look_ahead: float = 2.0
 @export var shake_decay: float = 6.0
-@export var base_fov: float = 65.0
-@export var max_fov: float = 82.0
-@export var base_spring_length: float = 8.0
-@export var max_spring_length: float = 11.5
-@export var base_look_ahead: float = 2.0
-@export var max_look_ahead: float = 5.5
-@export var speed_ref: float = 24.0
+@export var base_fov: float = 68.0
+@export var max_fov: float = 88.0
+@export var base_spring_length: float = 7.6
+@export var max_spring_length: float = 12.2
+@export var base_look_ahead: float = 2.2
+@export var max_look_ahead: float = 6.2
+@export var speed_ref: float = 22.0
 
 var _target: Node3D
 var _shake_strength: float = 0.0

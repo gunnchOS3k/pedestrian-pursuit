@@ -41,6 +41,14 @@ func setup(player: Node, race_manager: Node, course_data: Dictionary = {}) -> vo
 			tracker.place_changed.connect(_on_place_changed)
 	countdown_label.visible = true
 	item_label.text = "Item: None"
+	## Kinetic Sole race read — boost cyan / midsole yellow / kinetic orange.
+	if boost_bar != null:
+		boost_bar.modulate = Color(0.18, 0.9, 0.84)
+	if speed_label != null:
+		speed_label.add_theme_color_override("font_color", Color(0.96, 0.77, 0.09))
+	if course_label != null:
+		course_label.add_theme_color_override("font_color", Color(0.85, 0.92, 1.0))
+	_ensure_runner_chip(player, course_data)
 	if _wrong_way_label == null:
 		_wrong_way_label = Label.new()
 		_wrong_way_label.name = "WrongWayLabel"
@@ -300,6 +308,9 @@ func _on_speed_changed(speed: float) -> void:
 	if _player != null and _player.has_method("get_speed_state"):
 		state = str(_player.get_speed_state())
 	speed_label.text = "Speed: %.0f  [%s]" % [speed, state]
+	## High-speed glow for kinetic feedback without changing physics.
+	var heat := clampf((speed - 10.0) / 14.0, 0.0, 1.0)
+	speed_label.modulate = Color(1.0, 1.0 - heat * 0.25, 1.0 - heat * 0.45)
 	var scene := get_parent()
 	if scene != null:
 		var cam = scene.get_node_or_null("CameraRig")
@@ -309,6 +320,25 @@ func _on_speed_changed(speed: float) -> void:
 			if boost != null and boost.has_method("get_speed_multiplier"):
 				boosting = boost.get_speed_multiplier() > 1.05
 			cam.set_boosting(boosting)
+
+
+func _ensure_runner_chip(player: Node, _course_data: Dictionary) -> void:
+	var chip := get_node_or_null("RunnerChip") as Label
+	if chip == null:
+		chip = Label.new()
+		chip.name = "RunnerChip"
+		chip.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
+		chip.offset_left = 18
+		chip.offset_top = -72
+		chip.offset_right = 320
+		chip.offset_bottom = -24
+		chip.add_theme_font_size_override("font_size", 18)
+		chip.add_theme_color_override("font_color", Color(1.0, 0.42, 0.24))
+		add_child(chip)
+	var name := "Dash Reed"
+	if player != null and player.has_meta("runner_display_name"):
+		name = str(player.get_meta("runner_display_name"))
+	chip.text = "KINETIC SOLE  ·  %s" % name
 
 
 ## GAME-RC-003 — overtake / being-overtaken HUD pulse + optional SFX.
