@@ -164,6 +164,7 @@
     "checkpoints": true,
     "shortcuts": true,
     "rails": true,
-    "visual_final": false
+    "visual_final": true,
+    "kinetic_sole_pass": "prism_solen_pike_v1"
   }
 }

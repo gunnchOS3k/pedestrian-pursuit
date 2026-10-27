@@ -15,8 +15,9 @@ func _run() -> void:
 	var failures := PackedStringArray()
 	await _exercise_course("verdant_cascade_circuit", failures)
 	await _exercise_course("cloverwind_ranch", failures)
+	await _exercise_course("prism_apex", failures)
 	if failures.is_empty():
-		print("COURSE_BUILD_SURFACE_PASS verdant_cascade_circuit cloverwind_ranch")
+		print("COURSE_BUILD_SURFACE_PASS verdant_cascade_circuit cloverwind_ranch prism_apex")
 		quit(0)
 		return
 	for failure in failures:
@@ -46,6 +47,12 @@ func _exercise_course(track_id: String, failures: PackedStringArray) -> void:
 			failures.append("cloverwind missing RanchBarn scenery landmark")
 		if scenery == null or scenery.get_node_or_null("RanchWindmill") == null:
 			failures.append("cloverwind missing RanchWindmill landmark")
+	elif track_id == "prism_apex":
+		var scenery := course.get_node_or_null("Scenery")
+		if scenery == null or scenery.get_node_or_null("PrismApexSpire") == null:
+			failures.append("prism missing PrismApexSpire landmark")
+		if scenery == null or scenery.get_node_or_null("PrismBoostGate2") == null:
+			failures.append("prism missing PrismBoostGate2 landmark")
 	course.queue_free()
 
 

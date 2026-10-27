@@ -153,6 +153,17 @@ func _build_environment() -> void:
 		environment.glow_enabled = true
 		environment.glow_intensity = 0.22
 		environment.glow_bloom = 0.08
+	elif theme == "prism_void":
+		## Orbital void — deep night, cyan bloom, readable gates.
+		environment.ambient_light_color = Color(0.45, 0.55, 0.85)
+		environment.ambient_light_energy = 0.7
+		environment.fog_enabled = true
+		environment.fog_light_color = Color(0.25, 0.35, 0.7)
+		environment.fog_density = 0.0035
+		environment.fog_aerial_perspective = 0.45
+		environment.glow_enabled = true
+		environment.glow_intensity = 0.55
+		environment.glow_bloom = 0.2
 	world_environment.environment = environment
 	add_child(world_environment)
 
@@ -183,6 +194,24 @@ func _build_environment() -> void:
 		fill.light_color = Color(1.0, 0.88, 0.55)
 		fill.omni_range = 100.0
 		add_child(fill)
+	elif theme == "prism_void":
+		sun.rotation_degrees = Vector3(-35.0, 18.0, 0.0)
+		sun.light_energy = 0.85
+		sun.light_color = Color(0.65, 0.75, 1.0)
+		var fill := OmniLight3D.new()
+		fill.name = "PrismFill"
+		fill.position = Vector3(0.0, 18.0, 0.0)
+		fill.light_energy = 3.2
+		fill.light_color = Color(0.45, 0.85, 1.0)
+		fill.omni_range = 110.0
+		add_child(fill)
+		var violet := OmniLight3D.new()
+		violet.name = "PrismVioletFill"
+		violet.position = Vector3(-12.0, 10.0, -8.0)
+		violet.light_energy = 2.0
+		violet.light_color = Color(0.65, 0.45, 0.98)
+		violet.omni_range = 70.0
+		add_child(violet)
 	add_child(sun)
 
 
@@ -247,6 +276,14 @@ func _add_track_segment(
 		track_mat.roughness = 0.9
 		track_mat.metallic = 0.0
 		track_mat.albedo_color = track_mat.albedo_color.lerp(Color(0.55, 0.4, 0.24), 0.28)
+	elif theme == "prism_void":
+		## Alternating luminous ribbon — glossy void asphalt.
+		track_mat = track_mat.duplicate()
+		track_mat.roughness = 0.28
+		track_mat.metallic = 0.35
+		track_mat.emission_enabled = true
+		track_mat.emission = track_mat.albedo_color * 0.55
+		track_mat.emission_energy_multiplier = 0.45
 	visual.material_override = track_mat
 	body.add_child(visual)
 
@@ -793,19 +830,127 @@ func _build_ranch_scenery(parent: Node3D) -> void:
 
 
 func _build_prism_scenery(parent: Node3D) -> void:
-	for index in range(30):
+	## Kinetic Sole orbital ribbon: void floor, crystal pillars, apex spire,
+	## boost gates, and a ribbon-cut frame that stays off the racing chord.
+	_add_visual_box(
+		parent,
+		Vector3(0.0, -1.2, 0.0),
+		Vector3(170.0, 0.35, 170.0),
+		_color("backdrop_color", Color(0.07, 0.09, 0.24))
+	)
+	## Inner void basin — luminous disk under the loop.
+	_add_visual_cylinder(parent, Vector3(0.0, -0.85, 0.0), 42.0, 0.25, Color(0.12, 0.16, 0.42), true)
+	_add_visual_cylinder(parent, Vector3(0.0, -0.7, 0.0), 22.0, 0.18, Color(0.28, 0.55, 0.95), true)
+	## Starfield / orbit beads outside the lane.
+	for index in range(36):
 		var angle := float(index) * 2.39996
-		var radius := 66.0 + float((index * 13) % 34)
+		var radius := 68.0 + float((index * 13) % 34)
 		var position := Vector3(
-			cos(angle) * radius, float((index * 7) % 24) - 6.0, sin(angle) * radius
+			cos(angle) * radius, float((index * 7) % 24) - 4.0, sin(angle) * radius
 		)
 		_add_visual_sphere(
-			parent, position, 0.18 + float(index % 3) * 0.08, Color(0.8, 0.9, 1.0), true
+			parent, position, 0.2 + float(index % 3) * 0.1, Color(0.85, 0.92, 1.0), true
 		)
-	for position in [Vector3(-10, 6, 0), Vector3(12, 8, -4), Vector3(0, 10, 14)]:
-		_add_visual_cylinder(
-			parent, position, 0.8, position.y * 2.0, _color("accent_color", Color.CYAN), true
+	## Crystal pillars with soft collision — outer landmarks, not on ribbon_cut.
+	var pillar_colors := [
+		Color(0.93, 0.37, 0.61), Color(0.95, 0.66, 0.3), Color(0.91, 0.91, 0.4),
+		Color(0.37, 0.9, 0.64), Color(0.29, 0.78, 0.93), Color(0.64, 0.48, 0.94)
+	]
+	var pillar_spots := [
+		Vector3(-28, 5, 28), Vector3(32, 6, 22), Vector3(36, 5, -26),
+		Vector3(8, 7, -40), Vector3(-36, 5, -22), Vector3(-24, 6, 8)
+	]
+	for i in pillar_spots.size():
+		var pos: Vector3 = pillar_spots[i]
+		var col: Color = pillar_colors[i % pillar_colors.size()]
+		_add_visual_cylinder(parent, pos, 1.1, pos.y * 2.0, col, true)
+		_add_visual_sphere(parent, pos + Vector3(0.0, pos.y + 0.6, 0.0), 1.4, col, true)
+		var body := StaticBody3D.new()
+		body.name = "PrismPillar%d" % i
+		body.collision_layer = 1
+		body.collision_mask = 0
+		body.position = pos
+		parent.add_child(body)
+		var shape := CylinderShape3D.new()
+		shape.radius = 1.1
+		shape.height = pos.y * 2.0
+		var col_shape := CollisionShape3D.new()
+		col_shape.shape = shape
+		body.add_child(col_shape)
+	## Apex crystal spire — course identity landmark with collision.
+	var apex := Node3D.new()
+	apex.name = "PrismApexSpire"
+	apex.position = Vector3(18.0, 0.0, 32.0)
+	parent.add_child(apex)
+	_add_visual_cylinder(apex, Vector3(0.0, 7.0, 0.0), 2.2, 14.0, Color(0.55, 0.75, 1.0), true)
+	_add_visual_sphere(apex, Vector3(0.0, 15.0, 0.0), 3.2, Color(0.65, 0.45, 0.98), true)
+	_add_visual_box(apex, Vector3(0.0, 4.0, 0.0), Vector3(5.5, 0.45, 5.5), Color(0.18, 0.9, 0.95), true)
+	var apex_body := StaticBody3D.new()
+	apex_body.name = "ApexCollision"
+	apex_body.collision_layer = 1
+	apex_body.collision_mask = 0
+	apex_body.position = Vector3(0.0, 7.0, 0.0)
+	apex.add_child(apex_body)
+	var apex_shape := CylinderShape3D.new()
+	apex_shape.radius = 2.2
+	apex_shape.height = 14.0
+	var apex_col := CollisionShape3D.new()
+	apex_col.shape = apex_shape
+	apex_body.add_child(apex_col)
+	## Precision boost gates along authored speed-lane indices (visual only).
+	for gate_i in [2, 9]:
+		if gate_i >= _course_points.size():
+			continue
+		var gate_xf := _transform_at_point(gate_i, 0.0)
+		var gate := Node3D.new()
+		gate.name = "PrismBoostGate%d" % gate_i
+		gate.transform = gate_xf
+		parent.add_child(gate)
+		_add_visual_box(gate, Vector3(-4.2, 3.2, 0.0), Vector3(0.55, 6.4, 0.55), Color(0.18, 0.9, 0.95), true)
+		_add_visual_box(gate, Vector3(4.2, 3.2, 0.0), Vector3(0.55, 6.4, 0.55), Color(0.18, 0.9, 0.95), true)
+		_add_visual_box(gate, Vector3(0.0, 6.4, 0.0), Vector3(9.0, 0.45, 0.55), Color(0.96, 0.77, 0.09), true)
+	## Ribbon-cut frame — thin emissive rails beside the shortcut, not blocking it.
+	if _course_points.size() > 6:
+		var entry: Vector3 = _course_points[2]
+		var exitp: Vector3 = _course_points[6]
+		var mid := entry.lerp(exitp, 0.5)
+		var dir := (exitp - entry)
+		dir.y = 0.0
+		var side := Vector3(-dir.z, 0.0, dir.x).normalized() if dir.length_squared() > 0.01 else Vector3.RIGHT
+		_add_visual_box(
+			parent, mid + side * 9.0 + Vector3(0.0, 1.2, 0.0), Vector3(1.2, 2.4, 18.0), Color(0.65, 0.45, 0.98), true
 		)
+		_add_visual_box(
+			parent, mid - side * 9.0 + Vector3(0.0, 1.2, 0.0), Vector3(1.2, 2.4, 18.0), Color(0.18, 0.9, 0.95), true
+		)
+	## Start arch — Ghost Violet + Boost Cyan Kinetic Sole read.
+	var start := _course_points[0] if not _course_points.is_empty() else Vector3.ZERO
+	_add_visual_box(parent, start + Vector3(-5.2, 3.2, 0.0), Vector3(0.9, 6.4, 0.9), Color(0.2, 0.24, 0.45))
+	_add_visual_box(parent, start + Vector3(5.2, 3.2, 0.0), Vector3(0.9, 6.4, 0.9), Color(0.2, 0.24, 0.45))
+	_add_visual_box(parent, start + Vector3(0.0, 6.4, 0.0), Vector3(11.5, 0.65, 1.1), Color(0.65, 0.45, 0.98), true)
+	_add_visual_box(parent, start + Vector3(0.0, 5.6, 0.35), Vector3(9.5, 0.22, 0.3), Color(0.18, 0.9, 0.95), true)
+	## Floating prism shards near the apex.
+	var shards := GPUParticles3D.new()
+	shards.name = "PrismShards"
+	shards.position = Vector3(18.0, 10.0, 32.0)
+	shards.amount = 36
+	shards.lifetime = 3.5
+	shards.visibility_aabb = AABB(Vector3(-40, -8, -40), Vector3(80, 40, 80))
+	var shard_mat := ParticleProcessMaterial.new()
+	shard_mat.direction = Vector3(0.1, 1.0, 0.05)
+	shard_mat.spread = 50.0
+	shard_mat.initial_velocity_min = 0.3
+	shard_mat.initial_velocity_max = 1.8
+	shard_mat.gravity = Vector3(0.0, -0.05, 0.0)
+	shard_mat.scale_min = 0.12
+	shard_mat.scale_max = 0.4
+	shard_mat.color = Color(0.55, 0.85, 1.0, 0.55)
+	shards.process_material = shard_mat
+	var shard_mesh := BoxMesh.new()
+	shard_mesh.size = Vector3(0.35, 0.35, 0.35)
+	shards.draw_pass_1 = shard_mesh
+	shards.emitting = true
+	parent.add_child(shards)
 
 
 func _build_ember_scenery(parent: Node3D) -> void:
