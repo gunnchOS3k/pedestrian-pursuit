@@ -114,6 +114,8 @@ func _run() -> void:
 	var driven_msec := 0
 	var guest_commands := 0
 	var guest_max_speed := 0.0
+	var guest_max_lateral := 0.0
+	var guest_last_progress := 0.0
 	var lap_manager: Node = null
 	if is_instance_valid(race_manager):
 		lap_manager = race_manager.get_node_or_null("LapManager")
@@ -128,6 +130,9 @@ func _run() -> void:
 			_write_snapshot(dir, race_manager, guest, flags)
 			if _apply_guest_input(dir, guest):
 				guest_commands += 1
+				var last_cmd := _read_json(dir.path_join("sync/guest_input.json"))
+				guest_max_lateral = maxf(guest_max_lateral, float(last_cmd.get("lateralM", 0.0)))
+				guest_last_progress = float(last_cmd.get("progressM", guest_last_progress))
 			if "horizontal_speed" in guest:
 				guest_max_speed = maxf(guest_max_speed, float(guest.horizontal_speed))
 			_hold_input(input, follower, player, delta)
@@ -187,6 +192,8 @@ func _run() -> void:
 		"hostPid": OS.get_process_id(),
 		"guestCommands": guest_commands,
 		"guestMaxSpeed": guest_max_speed,
+		"guestMaxLateral": guest_max_lateral,
+		"guestLastProgress": guest_last_progress,
 		"ecosystemReturn": "ready",
 	}
 	_write_json(dir.path_join("result.json"), result)
@@ -202,6 +209,8 @@ func _run() -> void:
 	print("GAME_SESSION_DRIVEN_MSEC=%d" % driven_msec)
 	print("GAME_SESSION_GUEST_COMMANDS=%d" % guest_commands)
 	print("GAME_SESSION_GUEST_MAX_SPEED=%.3f" % guest_max_speed)
+	print("GAME_SESSION_GUEST_MAX_LATERAL=%.3f" % guest_max_lateral)
+	print("GAME_SESSION_GUEST_PROGRESS=%.3f" % guest_last_progress)
 	print("GAME_SESSION_BOTH_FINISHED=%s" % str(both).to_lower())
 	print("ECOSYSTEM_RETURN=ready")
 	if scene != null and is_instance_valid(scene):
@@ -239,7 +248,20 @@ func _apply_guest_input(dir: String, guest: Node) -> bool:
 	var cmd := _read_json(dir.path_join("sync/guest_input.json"))
 	if str(cmd.get("source", "")) != "guest-process" or guest == null or not guest.has_method("set_remote_drive"):
 		return false
-	guest.set_remote_drive(float(cmd.get("steer", 0.0)), bool(cmd.get("accelerate", false)))
+	var steer := float(cmd.get("steer", 0.0))
+	guest.set_remote_drive(steer, bool(cmd.get("accelerate", false)))
+	# STANDARD headless line-steer uses look_at when the steer intent is large
+	# at speed. Apply the guest-authored look target the same way so remote
+	# Player2 can corner; this does not move the body or invent checkpoints.
+	if guest is CharacterBody3D and absf(steer) > 0.75 and cmd.has("lookX") and cmd.has("lookZ"):
+		var body := guest as CharacterBody3D
+		var speed := 0.0
+		if "horizontal_speed" in body:
+			speed = float(body.horizontal_speed)
+		if speed > 7.0:
+			var look := Vector3(float(cmd["lookX"]), body.global_position.y, float(cmd["lookZ"]))
+			if body.global_position.distance_squared_to(look) > 0.25:
+				body.look_at(look, Vector3.UP)
 	return true
 
 
