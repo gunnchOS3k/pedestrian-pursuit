@@ -142,6 +142,17 @@ func _build_environment() -> void:
 		environment.glow_enabled = true
 		environment.glow_intensity = 0.35
 		environment.glow_bloom = 0.12
+	elif theme == "windy_ranch":
+		## Sunlit ranch — clear sky, warm fill, light dust haze.
+		environment.ambient_light_color = Color(0.95, 0.9, 0.78)
+		environment.ambient_light_energy = 0.98
+		environment.fog_enabled = true
+		environment.fog_light_color = Color(0.92, 0.86, 0.7)
+		environment.fog_density = 0.0028
+		environment.fog_aerial_perspective = 0.22
+		environment.glow_enabled = true
+		environment.glow_intensity = 0.22
+		environment.glow_bloom = 0.08
 	world_environment.environment = environment
 	add_child(world_environment)
 
@@ -160,6 +171,17 @@ func _build_environment() -> void:
 		fill.light_energy = 2.4
 		fill.light_color = Color(0.55, 0.85, 0.95)
 		fill.omni_range = 90.0
+		add_child(fill)
+	elif theme == "windy_ranch":
+		sun.rotation_degrees = Vector3(-58.0, 42.0, 0.0)
+		sun.light_energy = 1.55
+		sun.light_color = Color(1.0, 0.94, 0.78)
+		var fill := OmniLight3D.new()
+		fill.name = "RanchFill"
+		fill.position = Vector3(0.0, 16.0, 0.0)
+		fill.light_energy = 2.0
+		fill.light_color = Color(1.0, 0.88, 0.55)
+		fill.omni_range = 100.0
 		add_child(fill)
 	add_child(sun)
 
@@ -219,6 +241,12 @@ func _add_track_segment(
 		track_mat.roughness = 0.42
 		track_mat.metallic = 0.08
 		track_mat.albedo_color = track_mat.albedo_color.lerp(Color(0.28, 0.42, 0.36), 0.22)
+	elif theme == "windy_ranch":
+		## Packed dirt lane with dusty warm read.
+		track_mat = track_mat.duplicate()
+		track_mat.roughness = 0.9
+		track_mat.metallic = 0.0
+		track_mat.albedo_color = track_mat.albedo_color.lerp(Color(0.55, 0.4, 0.24), 0.28)
 	visual.material_override = track_mat
 	body.add_child(visual)
 
@@ -639,26 +667,129 @@ func _build_cascade_scenery(parent: Node3D) -> void:
 
 
 func _build_ranch_scenery(parent: Node3D) -> void:
+	## Kinetic Sole ranch: clover banks, timber gates, barn alley, mud switchback.
+	## Collision for the racing line stays on authored path_points / shortcuts.
 	_add_visual_box(
 		parent,
 		Vector3(0.0, -0.78, 0.0),
-		Vector3(150.0, 0.18, 150.0),
+		Vector3(155.0, 0.2, 155.0),
 		_color("backdrop_color", Color(0.4, 0.6, 0.25))
 	)
+	## Clover field patches flanking the loop.
 	for position in [
-		Vector3(-18, 1.2, -4), Vector3(8, 1.2, 5), Vector3(25, 1.2, -12), Vector3(-6, 1.2, 18)
+		Vector3(-28, -0.55, 12), Vector3(30, -0.55, -16), Vector3(-8, -0.55, -32),
+		Vector3(16, -0.55, 28), Vector3(-34, -0.55, -18), Vector3(36, -0.55, 8)
+	]:
+		_add_visual_box(parent, position, Vector3(18.0, 0.18, 14.0), Color(0.32, 0.58, 0.28))
+		_add_visual_box(
+			parent, position + Vector3(2.0, 0.12, -1.5), Vector3(8.0, 0.12, 6.0), Color(0.42, 0.68, 0.32)
+		)
+	## Hay stacks — rolled bales + square stacks.
+	for position in [
+		Vector3(-18, 1.2, -4), Vector3(8, 1.2, 5), Vector3(25, 1.2, -12),
+		Vector3(-6, 1.2, 18), Vector3(14, 1.1, -28), Vector3(-30, 1.15, 6)
 	]:
 		_add_visual_cylinder(
 			parent, position, 1.7, 2.4, Color(0.84, 0.64, 0.23), false, Vector3(0.0, 0.0, 90.0)
 		)
-	for position in [Vector3(-22, 4, 5), Vector3(18, 4, 14)]:
+		_add_visual_box(
+			parent, position + Vector3(3.2, 0.2, 0.0), Vector3(2.4, 2.2, 2.4), Color(0.78, 0.58, 0.2)
+		)
+	## Timber fence posts along the outer banks.
+	for i in range(12):
+		var angle := float(i) * TAU / 12.0
+		var post := Vector3(cos(angle) * 52.0, 1.4, sin(angle) * 52.0)
+		_add_visual_box(parent, post, Vector3(0.35, 2.8, 0.35), Color(0.42, 0.28, 0.14))
+		_add_visual_box(
+			parent, post + Vector3(0.0, 0.6, 0.0), Vector3(0.18, 0.22, 3.6), Color(0.5, 0.34, 0.18)
+		)
+	## Timber race gates — readable mid-course landmarks.
+	for position in [Vector3(-22, 4, 5), Vector3(18, 4, 14), Vector3(4, 3.6, -30)]:
 		_add_visual_box(parent, position, Vector3(1.1, 8.0, 1.1), Color(0.55, 0.35, 0.18))
 		_add_visual_box(
-			parent, position + Vector3(0, 3.0, 0), Vector3(8.0, 0.4, 0.8), Color(0.92, 0.9, 0.72)
+			parent, position + Vector3(7.0, 0.0, 0.0), Vector3(1.1, 8.0, 1.1), Color(0.55, 0.35, 0.18)
 		)
 		_add_visual_box(
-			parent, position + Vector3(0, 3.0, 0), Vector3(0.8, 0.4, 8.0), Color(0.92, 0.9, 0.72)
+			parent, position + Vector3(3.5, 3.2, 0.0), Vector3(8.0, 0.45, 0.9), Color(0.92, 0.9, 0.72)
 		)
+		_add_visual_box(
+			parent,
+			position + Vector3(3.5, 2.5, 0.35),
+			Vector3(6.5, 0.22, 0.3),
+			Color(0.24, 0.86, 0.52),
+			true
+		)
+	## Barn landmark with real collision — frames barn_alley, offset off the chord.
+	var barn := Node3D.new()
+	barn.name = "RanchBarn"
+	barn.position = Vector3(-2.0, 0.0, 14.0)
+	parent.add_child(barn)
+	_add_visual_box(barn, Vector3(0.0, 3.2, 0.0), Vector3(14.0, 6.4, 10.0), Color(0.55, 0.22, 0.16))
+	_add_visual_box(barn, Vector3(0.0, 6.8, 0.0), Vector3(15.5, 1.2, 11.2), Color(0.35, 0.28, 0.2))
+	_add_visual_box(barn, Vector3(0.0, 2.4, 5.2), Vector3(4.5, 4.0, 0.35), Color(0.25, 0.18, 0.12))
+	var barn_body := StaticBody3D.new()
+	barn_body.name = "BarnCollision"
+	barn_body.collision_layer = 1
+	barn_body.collision_mask = 0
+	barn_body.position = Vector3(0.0, 3.2, 0.0)
+	barn.add_child(barn_body)
+	var barn_shape := BoxShape3D.new()
+	barn_shape.size = Vector3(14.0, 6.4, 10.0)
+	var barn_col := CollisionShape3D.new()
+	barn_col.shape = barn_shape
+	barn_body.add_child(barn_col)
+	## Mud switchback hazard read near ranch_mud terrain (point 6).
+	var mud_pt := _course_points[6] if _course_points.size() > 6 else Vector3(-34, 0, -40)
+	_add_visual_box(
+		parent, mud_pt + Vector3(0.0, -0.35, 0.0), Vector3(14.0, 0.28, 16.0), Color(0.38, 0.26, 0.16)
+	)
+	_add_visual_box(
+		parent, mud_pt + Vector3(2.0, -0.22, -3.0), Vector3(7.0, 0.2, 6.0), Color(0.28, 0.18, 0.1)
+	)
+	## Windmill landmark — kinetic silhouette against the sky.
+	var mill := Node3D.new()
+	mill.name = "RanchWindmill"
+	mill.position = Vector3(32.0, 0.0, 22.0)
+	parent.add_child(mill)
+	_add_visual_box(mill, Vector3(0.0, 5.0, 0.0), Vector3(2.2, 10.0, 2.2), Color(0.72, 0.68, 0.58))
+	_add_visual_box(mill, Vector3(0.0, 10.5, 0.0), Vector3(1.4, 1.4, 1.4), Color(0.45, 0.4, 0.32))
+	for blade in range(4):
+		var yaw := float(blade) * 90.0
+		_add_visual_box(
+			mill,
+			Vector3(cos(deg_to_rad(yaw)) * 3.2, 10.5, sin(deg_to_rad(yaw)) * 3.2),
+			Vector3(0.35, 0.25, 6.5),
+			Color(0.92, 0.9, 0.82)
+		)
+	## Start arch — Midsole Yellow beam + Grip Green accent for mud footwear read.
+	var start := _course_points[0] if not _course_points.is_empty() else Vector3.ZERO
+	_add_visual_box(parent, start + Vector3(-5.5, 3.2, 0.0), Vector3(1.0, 6.4, 1.0), Color(0.42, 0.28, 0.14))
+	_add_visual_box(parent, start + Vector3(5.5, 3.2, 0.0), Vector3(1.0, 6.4, 1.0), Color(0.42, 0.28, 0.14))
+	_add_visual_box(parent, start + Vector3(0.0, 6.4, 0.0), Vector3(12.0, 0.7, 1.2), Color(0.96, 0.77, 0.09), true)
+	_add_visual_box(parent, start + Vector3(0.0, 5.6, 0.35), Vector3(10.0, 0.25, 0.35), Color(0.24, 0.86, 0.52), true)
+	## Dust / clover pollen particles.
+	var dust := GPUParticles3D.new()
+	dust.name = "RanchDust"
+	dust.position = Vector3(0.0, 2.5, 0.0)
+	dust.amount = 40
+	dust.lifetime = 4.0
+	dust.visibility_aabb = AABB(Vector3(-40, -4, -40), Vector3(80, 28, 80))
+	var dust_mat := ParticleProcessMaterial.new()
+	dust_mat.direction = Vector3(0.35, 0.2, 0.15)
+	dust_mat.spread = 40.0
+	dust_mat.initial_velocity_min = 0.6
+	dust_mat.initial_velocity_max = 2.2
+	dust_mat.gravity = Vector3(0.0, 0.05, 0.0)
+	dust_mat.scale_min = 0.2
+	dust_mat.scale_max = 0.55
+	dust_mat.color = Color(0.92, 0.86, 0.62, 0.28)
+	dust.process_material = dust_mat
+	var dust_mesh := SphereMesh.new()
+	dust_mesh.radius = 0.28
+	dust_mesh.height = 0.56
+	dust.draw_pass_1 = dust_mesh
+	dust.emitting = true
+	parent.add_child(dust)
 
 
 func _build_prism_scenery(parent: Node3D) -> void:

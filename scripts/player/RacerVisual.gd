@@ -468,24 +468,40 @@ func _attach_shoes(
 ) -> void:
 	var side := -1.0 if is_left else 1.0
 	var arch := profile.archetype if profile else "all_terrain"
+	## Ranch / mud courses need a louder footwear silhouette (Grip Green).
+	var ranch_grip := arch == "endurance"
+	if ranch_grip:
+		shoe_scale *= 1.18
 	# Kinetic Sole stack: outsole / midsole yellow / kinetic upper / tread bars.
 	var midsole := StandardMaterial3D.new()
 	midsole.albedo_color = Color(0.96, 0.77, 0.09) # Midsole Yellow
 	midsole.roughness = 0.45
-	midsole.emission_enabled = arch == "all_terrain"
+	midsole.emission_enabled = arch == "all_terrain" or ranch_grip
 	if midsole.emission_enabled:
 		midsole.emission = Color(0.96, 0.77, 0.09)
-		midsole.emission_energy_multiplier = 0.22
+		midsole.emission_energy_multiplier = 0.28 if ranch_grip else 0.22
 	var upper := StandardMaterial3D.new()
-	## Prefer Kinetic Orange for Dash Reed (all_terrain); other arches keep accent.
-	upper.albedo_color = Color(1.0, 0.42, 0.24) if arch == "all_terrain" else self.accent_color
+	## Prefer Kinetic Orange for Dash Reed; Mira Lane (endurance) uses sky + grip.
+	if arch == "all_terrain":
+		upper.albedo_color = Color(1.0, 0.42, 0.24)
+	elif ranch_grip:
+		upper.albedo_color = Color(0.45, 0.75, 0.98)
+	else:
+		upper.albedo_color = self.accent_color
 	upper.roughness = 0.38
 	upper.emission_enabled = true
 	upper.emission = upper.albedo_color
-	upper.emission_energy_multiplier = 0.28
+	upper.emission_energy_multiplier = 0.35 if ranch_grip else 0.28
 	var outsole := StandardMaterial3D.new()
 	outsole.albedo_color = Color(0.12, 0.12, 0.14)
 	outsole.roughness = 0.85
+	var grip := StandardMaterial3D.new()
+	grip.albedo_color = Color(0.24, 0.86, 0.52) # Grip Green
+	grip.roughness = 0.55
+	grip.emission_enabled = ranch_grip
+	if grip.emission_enabled:
+		grip.emission = Color(0.24, 0.86, 0.52)
+		grip.emission_energy_multiplier = 0.4
 	# Toe / sole body (forward +Z).
 	var sole := _mesh_box(
 		Vector3(0.15 * ws * shoe_scale, 0.05 * shoe_scale, 0.3 * shoe_scale),
@@ -521,16 +537,20 @@ func _attach_shoes(
 	)
 	leg.add_child(chevron)
 	chevron.position = Vector3(0, -leg_len + 0.09, 0.12 * shoe_scale)
-	# Grip tread bars under the outsole.
-	for i in range(3):
+	# Grip tread bars under the outsole (loud Grip Green on ranch endurance).
+	var tread_count := 5 if ranch_grip else 3
+	for i in range(tread_count):
 		var tread := _mesh_box(
-			Vector3(0.12 * ws * shoe_scale, 0.02 * shoe_scale, 0.03 * shoe_scale),
+			Vector3(0.13 * ws * shoe_scale, 0.025 * shoe_scale, 0.035 * shoe_scale),
 			Vector3.ZERO,
-			dark
+			grip if ranch_grip else dark
 		)
 		leg.add_child(tread)
-		tread.position = Vector3(0, -leg_len - 0.055, (float(i) - 1.0) * 0.07 * shoe_scale)
-	# Heel block (rear) with flare for Dash Reed.
+		var z_spread := 0.055 if ranch_grip else 0.07
+		tread.position = Vector3(
+			0, -leg_len - 0.058, (float(i) - float(tread_count - 1) * 0.5) * z_spread * shoe_scale
+		)
+	# Heel block (rear) with flare for Dash Reed / wind cup for Mira.
 	var heel := _mesh_box(
 		Vector3(0.13 * ws * shoe_scale, 0.1 * shoe_scale, 0.11 * shoe_scale),
 		Vector3.ZERO,
@@ -546,6 +566,15 @@ func _attach_shoes(
 		)
 		leg.add_child(flare)
 		flare.position = Vector3(side * 0.08 * ws * shoe_scale, -leg_len + 0.04, -0.12 * shoe_scale)
+	elif ranch_grip:
+		## Slim wind-cup heel wing — silhouette reads at chase distance.
+		var wing := _mesh_box(
+			Vector3(0.035 * ws * shoe_scale, 0.1 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			grip
+		)
+		leg.add_child(wing)
+		wing.position = Vector3(side * 0.09 * ws * shoe_scale, -leg_len + 0.03, -0.08 * shoe_scale)
 	if is_left:
 		_shoe_l = sole
 		_heel_l = heel

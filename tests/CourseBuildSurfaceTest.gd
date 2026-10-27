@@ -13,29 +13,40 @@ func _initialize() -> void:
 
 func _run() -> void:
 	var failures := PackedStringArray()
-	var track_id := "verdant_cascade_circuit"
-	var data := _TrackCatalog.load_track(track_id)
-	if data.is_empty():
-		failures.append("verdant course did not load")
-	else:
-		var course: Node3D = _CourseTrack.new()
-		get_root().add_child(course)
-		course.configure(data)
-		if not course.build():
-			failures.append("CourseTrack.build() rejected verdant_cascade_circuit")
-		else:
-			await physics_frame
-			await physics_frame
-			_assert_on_route(course, data, failures)
-			_assert_shortcut_floor(course, data, failures)
-		course.queue_free()
+	await _exercise_course("verdant_cascade_circuit", failures)
+	await _exercise_course("cloverwind_ranch", failures)
 	if failures.is_empty():
-		print("COURSE_BUILD_SURFACE_PASS verdant_cascade_circuit")
+		print("COURSE_BUILD_SURFACE_PASS verdant_cascade_circuit cloverwind_ranch")
 		quit(0)
 		return
 	for failure in failures:
 		push_error(failure)
 	quit(1)
+
+
+func _exercise_course(track_id: String, failures: PackedStringArray) -> void:
+	var data := _TrackCatalog.load_track(track_id)
+	if data.is_empty():
+		failures.append("%s course did not load" % track_id)
+		return
+	var course: Node3D = _CourseTrack.new()
+	get_root().add_child(course)
+	course.configure(data)
+	if not course.build():
+		failures.append("CourseTrack.build() rejected %s" % track_id)
+		course.queue_free()
+		return
+	await physics_frame
+	await physics_frame
+	_assert_on_route(course, data, failures)
+	_assert_shortcut_floor(course, data, failures)
+	if track_id == "cloverwind_ranch":
+		var scenery := course.get_node_or_null("Scenery")
+		if scenery == null or scenery.get_node_or_null("RanchBarn") == null:
+			failures.append("cloverwind missing RanchBarn scenery landmark")
+		if scenery == null or scenery.get_node_or_null("RanchWindmill") == null:
+			failures.append("cloverwind missing RanchWindmill landmark")
+	course.queue_free()
 
 
 func _assert_on_route(course: Node3D, data: Dictionary, failures: PackedStringArray) -> void:
@@ -59,7 +70,7 @@ func _assert_on_route(course: Node3D, data: Dictionary, failures: PackedStringAr
 func _assert_shortcut_floor(course: Node3D, data: Dictionary, failures: PackedStringArray) -> void:
 	var routes: Array = data.get("shortcut_routes", [])
 	if routes.is_empty():
-		failures.append("verdant shortcut_routes missing")
+		failures.append("shortcut_routes missing")
 		return
 	var route: Dictionary = routes[0]
 	var points: Array = data.get("path_points", [])

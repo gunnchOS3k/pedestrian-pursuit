@@ -322,7 +322,7 @@ func _on_speed_changed(speed: float) -> void:
 			cam.set_boosting(boosting)
 
 
-func _ensure_runner_chip(player: Node, _course_data: Dictionary) -> void:
+func _ensure_runner_chip(player: Node, course_data: Dictionary) -> void:
 	var chip := get_node_or_null("RunnerChip") as Label
 	if chip == null:
 		chip = Label.new()
@@ -330,14 +330,17 @@ func _ensure_runner_chip(player: Node, _course_data: Dictionary) -> void:
 		chip.set_anchors_preset(Control.PRESET_BOTTOM_LEFT)
 		chip.offset_left = 18
 		chip.offset_top = -72
-		chip.offset_right = 320
+		chip.offset_right = 360
 		chip.offset_bottom = -24
 		chip.add_theme_font_size_override("font_size", 18)
-		chip.add_theme_color_override("font_color", Color(1.0, 0.42, 0.24))
 		add_child(chip)
 	var name := "Dash Reed"
 	if player != null and player.has_meta("runner_display_name"):
 		name = str(player.get_meta("runner_display_name"))
+	var theme := str(course_data.get("theme", ""))
+	## Ranch mud reads Grip Green; cascade stays Kinetic Orange.
+	var chip_color := Color(0.24, 0.86, 0.52) if theme == "windy_ranch" else Color(1.0, 0.42, 0.24)
+	chip.add_theme_color_override("font_color", chip_color)
 	chip.text = "KINETIC SOLE  ·  %s" % name
 
 

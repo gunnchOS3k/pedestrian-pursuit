@@ -26,6 +26,7 @@ Footwear is the machine. The runner is the vehicle. Energetic, athletic, tactile
 - Speed: forward chevron
 - Bounce: arc + ball
 
-## First integrated course + character
-- Course: Verdant Cascade Circuit (`cascade_garden`)
-- Character: Dash Reed (`all_terrain`) with Reedline Circlers Kinetic Sole stack
+## Integrated courses + characters (in progress)
+- Course 1: Verdant Cascade Circuit (`cascade_garden`) — Dash Reed (`all_terrain`) with Reedline Circlers Kinetic Sole stack
+- Course 2: Cloverwind Ranch (`windy_ranch`) — Mira Lane (`endurance`) with Lanewind Tempo Flats Kinetic Sole stack (Grip Green mud tread)
+- Remaining Sole Surge / Stride Circuit courses: not yet at this bar
