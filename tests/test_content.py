@@ -72,8 +72,8 @@ class WaveEAlphaContentTests(unittest.TestCase):
         self.assertEqual(len(ids), len(set(ids)))
         playable = [v for v in vehicles if v.get("playable")]
         stubs = [v for v in vehicles if not v.get("playable")]
-        self.assertEqual(len(playable), 22)
-        self.assertEqual(len(stubs), 28)
+        self.assertEqual(len(playable), 28)
+        self.assertEqual(len(stubs), 22)
         street = [v for v in vehicles if v.get("family_id") == "street_legends"]
         self.assertEqual(len(street), 8)
         for v in street:
@@ -83,6 +83,7 @@ class WaveEAlphaContentTests(unittest.TestCase):
         for family_id, expect in (
             ("roller_revolution", 7),
             ("hover_couture", 7),
+            ("elemental_amphibious", 6),
         ):
             family = [v for v in vehicles if v.get("family_id") == family_id]
             self.assertEqual(len(family), expect)
@@ -91,7 +92,7 @@ class WaveEAlphaContentTests(unittest.TestCase):
                 self.assertTrue(v["playable"])
                 self.assertEqual(v["art_status"], "native_v1")
                 self.assertTrue((ROOT / f"data/shoes/{v['id']}.json").exists())
-                if family_id == "hover_couture":
+                if family_id in ("hover_couture", "elemental_amphibious"):
                     contract = str(v.get("collision_contract", "")).lower()
                     self.assertTrue("grounded" in contract or "checkpoint" in contract)
                 fp = (

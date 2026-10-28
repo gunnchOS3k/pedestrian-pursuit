@@ -524,10 +524,20 @@ func _attach_shoes(
 	var hover_boost := march == "hover_boost"
 	var hover_bounce := march == "hover_bounce"
 	var hover_precision := march == "hover_precision"
+	var elemental_wet := march == "elemental_wet"
+	var elemental_dive := march == "elemental_dive"
+	var elemental_sand := march == "elemental_sand"
+	var elemental_magma := march == "elemental_magma"
+	var elemental_frost := march == "elemental_frost"
+	var elemental_mud := march == "elemental_mud"
 	var native_street := balanced or sprint or parkour or tempo or power or trick or rail or kinetic
 	var native_roller := roller_inline or roller_quad or roller_hover
 	var native_hover := hover_glide or hover_boost or hover_bounce or hover_precision
-	if tempo or rail or power or sprint or trick or kinetic or parkour or native_roller or native_hover:
+	var native_elemental := (
+		elemental_wet or elemental_dive or elemental_sand
+		or elemental_magma or elemental_frost or elemental_mud
+	)
+	if tempo or rail or power or sprint or trick or kinetic or parkour or native_roller or native_hover or native_elemental:
 		shoe_scale *= 1.14
 	if power:
 		shoe_scale *= 1.08 ## Blockier iron silhouette for forge ash.
@@ -541,6 +551,12 @@ func _attach_shoes(
 		shoe_scale *= 1.12
 	if hover_boost:
 		shoe_scale *= 1.05
+	if elemental_mud:
+		shoe_scale *= 1.12
+	if elemental_magma:
+		shoe_scale *= 1.08
+	if elemental_frost:
+		shoe_scale *= 1.05
 	if vehicle_id == "treadfall_blades":
 		shoe_scale *= 0.98
 	elif vehicle_id == "iron_derby_blitz":
@@ -549,17 +565,21 @@ func _attach_shoes(
 		shoe_scale *= 1.15
 	elif vehicle_id == "starglass_pointe":
 		shoe_scale *= 0.92
+	elif vehicle_id == "kelpjet_submariners":
+		shoe_scale *= 1.06
+	elif vehicle_id == "tidefin_runners":
+		shoe_scale *= 0.98
 	# Kinetic Sole stack: outsole / midsole yellow / kinetic upper / tread bars.
 	var midsole := StandardMaterial3D.new()
 	midsole.albedo_color = Color(0.96, 0.77, 0.09) # Midsole Yellow
 	midsole.roughness = 0.45
-	midsole.emission_enabled = native_street or native_roller or native_hover
+	midsole.emission_enabled = native_street or native_roller or native_hover or native_elemental
 	if midsole.emission_enabled:
 		midsole.emission = Color(0.96, 0.77, 0.09)
 		midsole.emission_energy_multiplier = (
-			0.36 if (hover_boost or hover_bounce) else (
-				0.34 if (power or kinetic or roller_hover or hover_glide) else (
-					0.3 if (tempo or rail or roller_inline or hover_precision) else 0.22
+			0.36 if (hover_boost or hover_bounce or elemental_magma) else (
+				0.34 if (power or kinetic or roller_hover or hover_glide or elemental_dive) else (
+					0.3 if (tempo or rail or roller_inline or hover_precision or elemental_wet or elemental_frost) else 0.22
 				)
 			)
 		)
@@ -608,15 +628,31 @@ func _attach_shoes(
 		upper.albedo_color = Color(0.9, 0.9, 0.85) # Moon foam
 	elif vehicle_id == "starglass_pointe":
 		upper.albedo_color = Color(0.85, 0.75, 1.0) # Starglass lilac
+	elif vehicle_id == "tidefin_runners":
+		upper.albedo_color = Color(0.15, 0.72, 0.88) # Tidefin aqua
+	elif vehicle_id == "kelpjet_submariners":
+		upper.albedo_color = Color(0.18, 0.55, 0.42) # Kelp deep green
+	elif vehicle_id == "sandstorm_skimmers":
+		upper.albedo_color = Color(0.92, 0.72, 0.38) # Sandstorm gold
+	elif vehicle_id == "magma_treaders":
+		upper.albedo_color = Color(0.95, 0.28, 0.12) # Magma crimson
+	elif vehicle_id == "snowglobe_galoshes":
+		upper.albedo_color = Color(0.78, 0.92, 0.98) # Frost ice
+	elif vehicle_id == "mud_monster_waders":
+		upper.albedo_color = Color(0.42, 0.32, 0.18) # Mud ochre
 	else:
 		upper.albedo_color = self.accent_color
-	upper.roughness = 0.38 if not power else 0.55
+	upper.roughness = 0.38 if not (power or elemental_mud or elemental_magma) else 0.55
 	upper.emission_enabled = true
 	upper.emission = Color(1.0, 0.42, 0.24) if power else upper.albedo_color
 	upper.emission_energy_multiplier = (
-		0.45 if hover_boost else (
-			0.42 if (kinetic or roller_hover or hover_bounce) else (
-				0.38 if power else (0.4 if (rail or hover_precision) else (0.35 if (tempo or roller_inline or hover_glide) else 0.28))
+		0.45 if (hover_boost or elemental_magma) else (
+			0.42 if (kinetic or roller_hover or hover_bounce or elemental_dive) else (
+				0.38 if power else (
+					0.4 if (rail or hover_precision or elemental_frost) else (
+						0.35 if (tempo or roller_inline or hover_glide or elemental_wet) else 0.28
+					)
+				)
 			)
 		)
 	)
@@ -633,6 +669,42 @@ func _attach_shoes(
 	hover_pad.emission_enabled = true
 	hover_pad.emission = Color(0.45, 0.75, 1.0)
 	hover_pad.emission_energy_multiplier = 0.4
+	var hydro := StandardMaterial3D.new()
+	hydro.albedo_color = Color(0.2, 0.75, 0.95)
+	hydro.roughness = 0.28
+	hydro.emission_enabled = elemental_wet or elemental_dive
+	if hydro.emission_enabled:
+		hydro.emission = Color(0.15, 0.65, 0.9)
+		hydro.emission_energy_multiplier = 0.42 if elemental_dive else 0.36
+	var sand_pad := StandardMaterial3D.new()
+	sand_pad.albedo_color = Color(0.88, 0.7, 0.4)
+	sand_pad.roughness = 0.65
+	sand_pad.emission_enabled = elemental_sand
+	if sand_pad.emission_enabled:
+		sand_pad.emission = Color(0.95, 0.75, 0.35)
+		sand_pad.emission_energy_multiplier = 0.28
+	var magma_plate := StandardMaterial3D.new()
+	magma_plate.albedo_color = Color(0.95, 0.35, 0.12)
+	magma_plate.roughness = 0.4
+	magma_plate.metallic = 0.45
+	magma_plate.emission_enabled = elemental_magma
+	if magma_plate.emission_enabled:
+		magma_plate.emission = Color(1.0, 0.4, 0.08)
+		magma_plate.emission_energy_multiplier = 0.48
+	var frost_pad := StandardMaterial3D.new()
+	frost_pad.albedo_color = Color(0.75, 0.9, 1.0)
+	frost_pad.roughness = 0.22
+	frost_pad.emission_enabled = elemental_frost
+	if frost_pad.emission_enabled:
+		frost_pad.emission = Color(0.65, 0.85, 1.0)
+		frost_pad.emission_energy_multiplier = 0.38
+	var mud_pad := StandardMaterial3D.new()
+	mud_pad.albedo_color = Color(0.38, 0.28, 0.16)
+	mud_pad.roughness = 0.85
+	mud_pad.emission_enabled = elemental_mud
+	if mud_pad.emission_enabled:
+		mud_pad.emission = Color(0.45, 0.32, 0.12)
+		mud_pad.emission_energy_multiplier = 0.2
 	var outsole := StandardMaterial3D.new()
 	outsole.albedo_color = Color(0.12, 0.12, 0.14)
 	outsole.roughness = 0.85
@@ -698,9 +770,13 @@ func _attach_shoes(
 	)
 	leg.add_child(chevron)
 	chevron.position = Vector3(0, -leg_len + 0.09, 0.12 * shoe_scale)
-	# Grip tread bars / roller wheels / hover pads under the outsole.
-	var tread_count := 5 if (tempo or parkour or roller_quad or hover_bounce) else (
-		4 if (rail or power or kinetic or trick or roller_inline or roller_hover or hover_glide or hover_boost or hover_precision) else 3
+	# Grip tread bars / roller wheels / hover pads / elemental soles under the outsole.
+	var tread_count := 5 if (tempo or parkour or roller_quad or hover_bounce or elemental_mud or elemental_sand) else (
+		4 if (
+			rail or power or kinetic or trick or roller_inline or roller_hover
+			or hover_glide or hover_boost or hover_precision
+			or elemental_wet or elemental_dive or elemental_magma or elemental_frost
+		) else 3
 	)
 	for i in range(tread_count):
 		var tread_mat: Material = dark
@@ -714,25 +790,37 @@ func _attach_shoes(
 			tread_mat = spike
 		elif trick:
 			tread_mat = upper
+		elif elemental_wet or elemental_dive:
+			tread_mat = hydro
+		elif elemental_sand:
+			tread_mat = sand_pad
+		elif elemental_magma:
+			tread_mat = magma_plate
+		elif elemental_frost:
+			tread_mat = frost_pad
+		elif elemental_mud:
+			tread_mat = mud_pad
 		elif native_hover:
 			tread_mat = hover_pad
 		elif native_roller:
 			tread_mat = wheel
-		var use_wheelish := native_roller and not native_hover
+		var use_wheelish := native_roller and not native_hover and not native_elemental
 		var tread := _mesh_box(
 			Vector3(
-				0.14 * ws * shoe_scale if native_hover else (0.05 * ws * shoe_scale if use_wheelish else 0.13 * ws * shoe_scale),
-				0.02 * shoe_scale if native_hover else (0.05 * shoe_scale if use_wheelish else 0.025 * shoe_scale),
-				0.04 * shoe_scale if native_hover else (0.05 * shoe_scale if use_wheelish else 0.035 * shoe_scale)
+				0.14 * ws * shoe_scale if (native_hover or native_elemental) else (0.05 * ws * shoe_scale if use_wheelish else 0.13 * ws * shoe_scale),
+				0.02 * shoe_scale if (native_hover or elemental_wet or elemental_frost) else (
+					0.03 * shoe_scale if native_elemental else (0.05 * shoe_scale if use_wheelish else 0.025 * shoe_scale)
+				),
+				0.04 * shoe_scale if (native_hover or native_elemental) else (0.05 * shoe_scale if use_wheelish else 0.035 * shoe_scale)
 			),
 			Vector3.ZERO,
 			tread_mat
 		)
 		leg.add_child(tread)
-		var z_spread := 0.055 if (native_street or native_roller or native_hover) else 0.07
+		var z_spread := 0.055 if (native_street or native_roller or native_hover or native_elemental) else 0.07
 		tread.position = Vector3(
 			side * (0.06 * ws * shoe_scale if use_wheelish else 0.0),
-			-leg_len - (0.05 if native_hover else 0.058),
+			-leg_len - (0.05 if (native_hover or native_elemental) else 0.058),
 			(float(i) - float(tread_count - 1) * 0.5) * z_spread * shoe_scale
 		)
 		if native_roller and roller_quad:
@@ -1042,6 +1130,130 @@ func _attach_shoes(
 		)
 		leg.add_child(cuff_p)
 		cuff_p.position = Vector3(0.0, -leg_len + 0.09, -0.06 * shoe_scale)
+	elif elemental_wet:
+		## Tidefin side fins — water theme VFX only; collision grounded.
+		var fin_w := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.1 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			hydro
+		)
+		leg.add_child(fin_w)
+		fin_w.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.04, 0.02 * shoe_scale)
+		var cuff_w := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.08 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(cuff_w)
+		cuff_w.position = Vector3(0.0, -leg_len + 0.09, -0.04 * shoe_scale)
+	elif elemental_dive:
+		## Kelpjet sub canopy + rear thruster nubs (grounded).
+		var canopy := _mesh_box(
+			Vector3(0.16 * ws * shoe_scale, 0.09 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(canopy)
+		canopy.position = Vector3(0.0, -leg_len + 0.08, 0.0)
+		var jet_k := _mesh_box(
+			Vector3(0.05 * ws * shoe_scale, 0.06 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			hydro
+		)
+		leg.add_child(jet_k)
+		jet_k.position = Vector3(side * 0.08 * ws * shoe_scale, -leg_len + 0.02, -0.14 * shoe_scale)
+		var kelp := _mesh_box(
+			Vector3(0.03 * ws * shoe_scale, 0.12 * shoe_scale, 0.05 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(kelp)
+		kelp.position = Vector3(side * 0.11 * ws * shoe_scale, -leg_len + 0.05, -0.06 * shoe_scale)
+	elif elemental_sand:
+		## Sandstorm skim skirt + dune wing.
+		var skirt_s := _mesh_box(
+			Vector3(0.22 * ws * shoe_scale, 0.03 * shoe_scale, 0.2 * shoe_scale),
+			Vector3.ZERO,
+			sand_pad
+		)
+		leg.add_child(skirt_s)
+		skirt_s.position = Vector3(0.0, -leg_len - 0.02, 0.02 * shoe_scale)
+		var wing_s := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.1 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(wing_s)
+		wing_s.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.04, -0.06 * shoe_scale)
+	elif elemental_magma:
+		## Magma heat plates + ember heel block (affinity/VFX; never phase colliders).
+		var plate_m := _mesh_box(
+			Vector3(0.07 * ws * shoe_scale, 0.14 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			magma_plate
+		)
+		leg.add_child(plate_m)
+		plate_m.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.04, -0.08 * shoe_scale)
+		var ember := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.08 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(ember)
+		ember.position = Vector3(0.0, -leg_len + 0.02, -0.12 * shoe_scale)
+		var cuff_m := _mesh_box(
+			Vector3(0.13 * ws * shoe_scale, 0.08 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			iron
+		)
+		leg.add_child(cuff_m)
+		cuff_m.position = Vector3(0.0, -leg_len + 0.1, -0.02 * shoe_scale)
+	elif elemental_frost:
+		## Snowglobe galosh bulb + ice cuff.
+		var bulb_f := _mesh_box(
+			Vector3(0.16 * ws * shoe_scale, 0.11 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			frost_pad
+		)
+		leg.add_child(bulb_f)
+		bulb_f.position = Vector3(0.0, -leg_len + 0.02, -0.06 * shoe_scale)
+		var cuff_f := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.09 * shoe_scale, 0.09 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(cuff_f)
+		cuff_f.position = Vector3(0.0, -leg_len + 0.1, -0.02 * shoe_scale)
+		var crystal := _mesh_box(
+			Vector3(0.03 * ws * shoe_scale, 0.1 * shoe_scale, 0.03 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(crystal)
+		crystal.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.06, 0.02 * shoe_scale)
+	elif elemental_mud:
+		## Mud Monster tall wader cuff + chunky heel clod.
+		var wader := _mesh_box(
+			Vector3(0.15 * ws * shoe_scale, 0.16 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(wader)
+		wader.position = Vector3(0.0, -leg_len + 0.08, -0.04 * shoe_scale)
+		var clod := _mesh_box(
+			Vector3(0.18 * ws * shoe_scale, 0.06 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			mud_pad
+		)
+		leg.add_child(clod)
+		clod.position = Vector3(0.0, -leg_len - 0.02, 0.0)
+		var strap := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.12 * shoe_scale, 0.04 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(strap)
+		strap.position = Vector3(side * 0.09 * ws * shoe_scale, -leg_len + 0.1, -0.02 * shoe_scale)
 	if is_left:
 		_shoe_l = sole
 		_heel_l = heel
