@@ -472,30 +472,36 @@ func _attach_shoes(
 	var ranch_grip := arch == "endurance"
 	## Prism Apex cornering — razor railfins in Ghost Violet.
 	var prism_rail := arch == "cornering"
-	if ranch_grip or prism_rail:
+	## Emberkeep uphill — Harborclimb Irons with Kinetic Orange plates.
+	var ember_iron := arch == "uphill"
+	if ranch_grip or prism_rail or ember_iron:
 		shoe_scale *= 1.18
+	if ember_iron:
+		shoe_scale *= 1.08 ## Blockier iron silhouette for forge ash.
 	# Kinetic Sole stack: outsole / midsole yellow / kinetic upper / tread bars.
 	var midsole := StandardMaterial3D.new()
 	midsole.albedo_color = Color(0.96, 0.77, 0.09) # Midsole Yellow
 	midsole.roughness = 0.45
-	midsole.emission_enabled = arch == "all_terrain" or ranch_grip or prism_rail
+	midsole.emission_enabled = arch == "all_terrain" or ranch_grip or prism_rail or ember_iron
 	if midsole.emission_enabled:
 		midsole.emission = Color(0.96, 0.77, 0.09)
-		midsole.emission_energy_multiplier = 0.3 if (ranch_grip or prism_rail) else 0.22
+		midsole.emission_energy_multiplier = 0.32 if ember_iron else (0.3 if (ranch_grip or prism_rail) else 0.22)
 	var upper := StandardMaterial3D.new()
-	## Prefer Kinetic Orange for Dash Reed; Mira Lane sky+grip; Solen Pike violet.
+	## Prefer Kinetic Orange for Dash Reed; Mira sky+grip; Solen violet; Bolt iron clay.
 	if arch == "all_terrain":
 		upper.albedo_color = Color(1.0, 0.42, 0.24)
 	elif ranch_grip:
 		upper.albedo_color = Color(0.45, 0.75, 0.98)
 	elif prism_rail:
 		upper.albedo_color = Color(0.65, 0.45, 0.98) # Ghost Violet
+	elif ember_iron:
+		upper.albedo_color = Color(0.64, 0.44, 0.28) # Clay iron plate
 	else:
 		upper.albedo_color = self.accent_color
-	upper.roughness = 0.38
+	upper.roughness = 0.38 if not ember_iron else 0.55
 	upper.emission_enabled = true
-	upper.emission = upper.albedo_color
-	upper.emission_energy_multiplier = 0.4 if prism_rail else (0.35 if ranch_grip else 0.28)
+	upper.emission = Color(1.0, 0.42, 0.24) if ember_iron else upper.albedo_color
+	upper.emission_energy_multiplier = 0.38 if ember_iron else (0.4 if prism_rail else (0.35 if ranch_grip else 0.28))
 	var outsole := StandardMaterial3D.new()
 	outsole.albedo_color = Color(0.12, 0.12, 0.14)
 	outsole.roughness = 0.85
@@ -513,6 +519,14 @@ func _attach_shoes(
 	if railfin.emission_enabled:
 		railfin.emission = Color(0.18, 0.9, 0.95)
 		railfin.emission_energy_multiplier = 0.45
+	var iron := StandardMaterial3D.new()
+	iron.albedo_color = Color(1.0, 0.42, 0.24) # Kinetic Orange plates
+	iron.roughness = 0.4
+	iron.metallic = 0.55
+	iron.emission_enabled = ember_iron
+	if iron.emission_enabled:
+		iron.emission = Color(1.0, 0.42, 0.24)
+		iron.emission_energy_multiplier = 0.42
 	# Toe / sole body (forward +Z).
 	var sole := _mesh_box(
 		Vector3(0.15 * ws * shoe_scale, 0.05 * shoe_scale, 0.3 * shoe_scale),
@@ -549,24 +563,26 @@ func _attach_shoes(
 	leg.add_child(chevron)
 	chevron.position = Vector3(0, -leg_len + 0.09, 0.12 * shoe_scale)
 	# Grip tread bars under the outsole (loud Grip Green on ranch endurance).
-	var tread_count := 5 if ranch_grip else (4 if prism_rail else 3)
+	var tread_count := 5 if ranch_grip else (4 if (prism_rail or ember_iron) else 3)
 	for i in range(tread_count):
 		var tread_mat: Material = dark
 		if ranch_grip:
 			tread_mat = grip
 		elif prism_rail:
 			tread_mat = railfin
+		elif ember_iron:
+			tread_mat = iron
 		var tread := _mesh_box(
 			Vector3(0.13 * ws * shoe_scale, 0.025 * shoe_scale, 0.035 * shoe_scale),
 			Vector3.ZERO,
 			tread_mat
 		)
 		leg.add_child(tread)
-		var z_spread := 0.055 if (ranch_grip or prism_rail) else 0.07
+		var z_spread := 0.055 if (ranch_grip or prism_rail or ember_iron) else 0.07
 		tread.position = Vector3(
 			0, -leg_len - 0.058, (float(i) - float(tread_count - 1) * 0.5) * z_spread * shoe_scale
 		)
-	# Heel block (rear) with flare for Dash Reed / wind cup for Mira / railfins for Solen.
+	# Heel block (rear) with flare for Dash Reed / wind cup for Mira / railfins / irons.
 	var heel := _mesh_box(
 		Vector3(0.13 * ws * shoe_scale, 0.1 * shoe_scale, 0.11 * shoe_scale),
 		Vector3.ZERO,
@@ -607,6 +623,22 @@ func _attach_shoes(
 		)
 		leg.add_child(fin2)
 		fin2.position = Vector3(side * 0.11 * ws * shoe_scale, -leg_len + 0.02, -0.12 * shoe_scale)
+	elif ember_iron:
+		## Blocky Harborclimb iron heel plates — forge ash silhouette.
+		var plate := _mesh_box(
+			Vector3(0.06 * ws * shoe_scale, 0.14 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			iron
+		)
+		leg.add_child(plate)
+		plate.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.04, -0.1 * shoe_scale)
+		var cuff := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.08 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			iron
+		)
+		leg.add_child(cuff)
+		cuff.position = Vector3(0.0, -leg_len + 0.1, -0.02 * shoe_scale)
 	if is_left:
 		_shoe_l = sole
 		_heel_l = heel

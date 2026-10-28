@@ -164,6 +164,17 @@ func _build_environment() -> void:
 		environment.glow_enabled = true
 		environment.glow_intensity = 0.55
 		environment.glow_bloom = 0.2
+	elif theme == "ember_fortress":
+		## Volcanic keep — ash haze, forge glow, readable courtyard.
+		environment.ambient_light_color = Color(0.85, 0.45, 0.35)
+		environment.ambient_light_energy = 0.82
+		environment.fog_enabled = true
+		environment.fog_light_color = Color(0.55, 0.22, 0.14)
+		environment.fog_density = 0.0042
+		environment.fog_aerial_perspective = 0.4
+		environment.glow_enabled = true
+		environment.glow_intensity = 0.48
+		environment.glow_bloom = 0.18
 	world_environment.environment = environment
 	add_child(world_environment)
 
@@ -212,6 +223,24 @@ func _build_environment() -> void:
 		violet.light_color = Color(0.65, 0.45, 0.98)
 		violet.omni_range = 70.0
 		add_child(violet)
+	elif theme == "ember_fortress":
+		sun.rotation_degrees = Vector3(-42.0, -55.0, 0.0)
+		sun.light_energy = 1.15
+		sun.light_color = Color(1.0, 0.55, 0.35)
+		var fill := OmniLight3D.new()
+		fill.name = "EmberFill"
+		fill.position = Vector3(0.0, 12.0, 0.0)
+		fill.light_energy = 3.6
+		fill.light_color = Color(1.0, 0.42, 0.18)
+		fill.omni_range = 100.0
+		add_child(fill)
+		var forge := OmniLight3D.new()
+		forge.name = "ForgeGlow"
+		forge.position = Vector3(8.0, 4.0, -6.0)
+		forge.light_energy = 2.8
+		forge.light_color = Color(1.0, 0.28, 0.08)
+		forge.omni_range = 45.0
+		add_child(forge)
 	add_child(sun)
 
 
@@ -284,6 +313,15 @@ func _add_track_segment(
 		track_mat.emission_enabled = true
 		track_mat.emission = track_mat.albedo_color * 0.55
 		track_mat.emission_energy_multiplier = 0.45
+	elif theme == "ember_fortress":
+		## Basalt courtyard — warm soot + ember specular.
+		track_mat = track_mat.duplicate()
+		track_mat.roughness = 0.72
+		track_mat.metallic = 0.18
+		track_mat.albedo_color = track_mat.albedo_color.lerp(Color(0.28, 0.18, 0.16), 0.3)
+		track_mat.emission_enabled = true
+		track_mat.emission = Color(0.55, 0.18, 0.06)
+		track_mat.emission_energy_multiplier = 0.18
 	visual.material_override = track_mat
 	body.add_child(visual)
 
@@ -954,18 +992,126 @@ func _build_prism_scenery(parent: Node3D) -> void:
 
 
 func _build_ember_scenery(parent: Node3D) -> void:
+	## Kinetic Sole fortress: basalt floor, keep towers, forge vents, ash hazard,
+	## courtyard gate. forge_vent_cut stays clear of keep collision.
 	_add_visual_box(
-		parent, Vector3(0.0, -3.0, 0.0), Vector3(155.0, 0.35, 155.0), Color(0.82, 0.16, 0.05), true
+		parent,
+		Vector3(0.0, -0.95, 0.0),
+		Vector3(165.0, 0.28, 165.0),
+		_color("backdrop_color", Color(0.42, 0.12, 0.1))
 	)
-	for position in [Vector3(-18, 6, 0), Vector3(18, 6, 0), Vector3(0, 6, -18), Vector3(0, 6, 18)]:
-		_add_visual_box(parent, position, Vector3(5.5, 12.0, 5.5), Color(0.16, 0.15, 0.18))
+	## Magma undercroft glow under the loop.
+	_add_visual_cylinder(parent, Vector3(0.0, -1.35, 0.0), 48.0, 0.35, Color(0.9, 0.22, 0.05), true)
+	_add_visual_cylinder(parent, Vector3(4.0, -1.1, -4.0), 18.0, 0.22, Color(1.0, 0.42, 0.12), true)
+	## Basalt keep towers with collision — outer landmarks.
+	var tower_spots := [
+		Vector3(-30, 6, 22), Vector3(28, 6, 18), Vector3(30, 6, -24),
+		Vector3(-8, 7, -36), Vector3(-34, 6, -8), Vector3(12, 6, 34)
+	]
+	for i in tower_spots.size():
+		var pos: Vector3 = tower_spots[i]
+		_add_visual_box(parent, pos, Vector3(6.0, 12.0, 6.0), Color(0.16, 0.14, 0.16))
 		_add_visual_box(
 			parent,
-			position + Vector3(0, 6.4, 0),
-			Vector3(7.0, 1.0, 7.0),
-			_color("accent_color", Color.ORANGE),
+			pos + Vector3(0.0, 6.5, 0.0),
+			Vector3(7.4, 1.1, 7.4),
+			_color("accent_color", Color(1.0, 0.44, 0.26)),
 			true
 		)
+		_add_visual_box(parent, pos + Vector3(0.0, 3.2, 3.2), Vector3(2.4, 2.8, 0.5), Color(0.08, 0.07, 0.08))
+		var body := StaticBody3D.new()
+		body.name = "EmberTower%d" % i
+		body.collision_layer = 1
+		body.collision_mask = 0
+		body.position = pos
+		parent.add_child(body)
+		var shape := BoxShape3D.new()
+		shape.size = Vector3(6.0, 12.0, 6.0)
+		var col := CollisionShape3D.new()
+		col.shape = shape
+		body.add_child(col)
+	## Central keep landmark — frames the courtyard, offset from forge_vent_cut.
+	var keep := Node3D.new()
+	keep.name = "EmberkeepCitadel"
+	keep.position = Vector3(16.0, 0.0, 28.0)
+	parent.add_child(keep)
+	_add_visual_box(keep, Vector3(0.0, 5.5, 0.0), Vector3(14.0, 11.0, 12.0), Color(0.14, 0.12, 0.13))
+	_add_visual_box(keep, Vector3(0.0, 11.4, 0.0), Vector3(16.0, 1.2, 14.0), Color(0.22, 0.16, 0.14))
+	_add_visual_box(keep, Vector3(0.0, 7.0, 6.2), Vector3(5.0, 5.5, 0.45), Color(0.08, 0.06, 0.06))
+	_add_visual_box(keep, Vector3(0.0, 12.8, 0.0), Vector3(4.0, 3.5, 4.0), Color(1.0, 0.35, 0.12), true)
+	var keep_body := StaticBody3D.new()
+	keep_body.name = "CitadelCollision"
+	keep_body.collision_layer = 1
+	keep_body.collision_mask = 0
+	keep_body.position = Vector3(0.0, 5.5, 0.0)
+	keep.add_child(keep_body)
+	var keep_shape := BoxShape3D.new()
+	keep_shape.size = Vector3(14.0, 11.0, 12.0)
+	var keep_col := CollisionShape3D.new()
+	keep_col.shape = keep_shape
+	keep_body.add_child(keep_col)
+	## Forge vents along the shortcut sides — visual hazard, off the chord.
+	if _course_points.size() > 8:
+		var entry: Vector3 = _course_points[3]
+		var exitp: Vector3 = _course_points[8]
+		var mid := entry.lerp(exitp, 0.5)
+		var dir := exitp - entry
+		dir.y = 0.0
+		var side := Vector3(-dir.z, 0.0, dir.x).normalized() if dir.length_squared() > 0.01 else Vector3.RIGHT
+		for s in [-1.0, 1.0]:
+			var vent_pos := mid + side * (10.5 * s) + Vector3(0.0, 1.4, 0.0)
+			_add_visual_cylinder(parent, vent_pos, 1.6, 2.8, Color(0.25, 0.18, 0.16))
+			_add_visual_cylinder(
+				parent, vent_pos + Vector3(0.0, 2.2, 0.0), 1.1, 1.6, Color(1.0, 0.35, 0.08), true
+			)
+	## Hot ash hazard read near authored hot_ash terrain (point 7).
+	var ash_pt := _course_points[7] if _course_points.size() > 7 else Vector3(-27, 0, -51)
+	_add_visual_box(
+		parent, ash_pt + Vector3(0.0, -0.32, 0.0), Vector3(13.0, 0.28, 14.0), Color(0.35, 0.26, 0.22)
+	)
+	_add_visual_box(
+		parent, ash_pt + Vector3(2.5, -0.18, -2.0), Vector3(6.5, 0.2, 5.5), Color(0.28, 0.2, 0.16)
+	)
+	## Courtyard speed-lane arch at point 11.
+	if _course_points.size() > 11:
+		var gate_xf := _transform_at_point(11, 0.0)
+		var gate := Node3D.new()
+		gate.name = "EmberCourtyardGate"
+		gate.transform = gate_xf
+		parent.add_child(gate)
+		_add_visual_box(gate, Vector3(-5.0, 3.4, 0.0), Vector3(1.0, 6.8, 1.0), Color(0.18, 0.15, 0.15))
+		_add_visual_box(gate, Vector3(5.0, 3.4, 0.0), Vector3(1.0, 6.8, 1.0), Color(0.18, 0.15, 0.15))
+		_add_visual_box(gate, Vector3(0.0, 6.8, 0.0), Vector3(11.5, 0.7, 1.2), Color(1.0, 0.42, 0.24), true)
+		_add_visual_box(gate, Vector3(0.0, 6.0, 0.35), Vector3(9.5, 0.25, 0.35), Color(0.96, 0.77, 0.09), true)
+	## Start arch — Kinetic Orange + Midsole Yellow.
+	var start := _course_points[0] if not _course_points.is_empty() else Vector3.ZERO
+	_add_visual_box(parent, start + Vector3(-5.5, 3.2, 0.0), Vector3(1.0, 6.4, 1.0), Color(0.18, 0.15, 0.15))
+	_add_visual_box(parent, start + Vector3(5.5, 3.2, 0.0), Vector3(1.0, 6.4, 1.0), Color(0.18, 0.15, 0.15))
+	_add_visual_box(parent, start + Vector3(0.0, 6.4, 0.0), Vector3(12.0, 0.7, 1.2), Color(1.0, 0.42, 0.24), true)
+	_add_visual_box(parent, start + Vector3(0.0, 5.6, 0.35), Vector3(10.0, 0.25, 0.35), Color(0.96, 0.77, 0.09), true)
+	## Ember / ash particles over the magma basin.
+	var embers := GPUParticles3D.new()
+	embers.name = "EmberAsh"
+	embers.position = Vector3(0.0, 3.0, 0.0)
+	embers.amount = 48
+	embers.lifetime = 3.8
+	embers.visibility_aabb = AABB(Vector3(-45, -5, -45), Vector3(90, 35, 90))
+	var ember_mat := ParticleProcessMaterial.new()
+	ember_mat.direction = Vector3(0.05, 1.0, 0.1)
+	ember_mat.spread = 35.0
+	ember_mat.initial_velocity_min = 0.5
+	ember_mat.initial_velocity_max = 2.4
+	ember_mat.gravity = Vector3(0.0, 0.2, 0.0)
+	ember_mat.scale_min = 0.1
+	ember_mat.scale_max = 0.35
+	ember_mat.color = Color(1.0, 0.45, 0.12, 0.55)
+	embers.process_material = ember_mat
+	var ember_mesh := SphereMesh.new()
+	ember_mesh.radius = 0.22
+	ember_mesh.height = 0.44
+	embers.draw_pass_1 = ember_mesh
+	embers.emitting = true
+	parent.add_child(embers)
 
 
 func _build_harbor_scenery(parent: Node3D) -> void:

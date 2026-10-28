@@ -30,4 +30,5 @@ Footwear is the machine. The runner is the vehicle. Energetic, athletic, tactile
 - Course 1: Verdant Cascade Circuit (`cascade_garden`) — Dash Reed (`all_terrain`) with Reedline Circlers Kinetic Sole stack
 - Course 2: Cloverwind Ranch (`windy_ranch`) — Mira Lane (`endurance`) with Lanewind Tempo Flats Kinetic Sole stack (Grip Green mud tread)
 - Course 3: Prism Apex (`prism_void`) — Solen Pike (`cornering`) with Pikeapex Railfins Kinetic Sole stack (Ghost Violet / Boost Cyan)
-- Remaining Sole Surge / Stride Circuit courses: not yet at this bar
+- Course 4: Emberkeep Gauntlet (`ember_fortress`) — Bolt Harbor (`uphill`) with Harborclimb Irons Kinetic Sole stack (Kinetic Orange plates)
+- Remaining Stride Circuit courses: not yet at this bar

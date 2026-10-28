@@ -242,6 +242,11 @@ jobs:
               echo "=== KineticSolePrismCapture markers ==="
               grep -E "KINETIC_SOLE_|CAPTURED|CAPTURE_FAILED|black_retry" tmp/godot-KineticSolePrismCapture.log || true
             fi
+            run_step KineticSoleEmberkeepCapture xvfb-run -a "$GODOT" --path "$ROOT" --script res://tests/KineticSoleEmberkeepCapture.gd
+            if [[ -f artifacts/kinetic_sole_emberkeep/CAPTURE_RUN.json ]]; then
+              echo "=== KineticSoleEmberkeepCapture markers ==="
+              grep -E "KINETIC_SOLE_|CAPTURED|CAPTURE_FAILED|black_retry" tmp/godot-KineticSoleEmberkeepCapture.log || true
+            fi
             # Retired smokes must hard-fail (exit != 0) if invoked
             set +e
             "$GODOT" --headless --path "$ROOT" --script res://tests/AlphaProductStateTest.gd > tmp/godot-AlphaRetired.log 2>&1
@@ -280,6 +285,14 @@ jobs:
         with:
           name: kinetic-sole-prism-solen
           path: artifacts/kinetic_sole_prism/
+          if-no-files-found: warn
+
+      - name: Upload Kinetic Sole Emberkeep capture
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kinetic-sole-emberkeep-bolt
+          path: artifacts/kinetic_sole_emberkeep/
           if-no-files-found: warn
 
       - name: Checkout BeatLink room contract

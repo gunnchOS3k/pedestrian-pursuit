@@ -16,8 +16,11 @@ func _run() -> void:
 	await _exercise_course("verdant_cascade_circuit", failures)
 	await _exercise_course("cloverwind_ranch", failures)
 	await _exercise_course("prism_apex", failures)
+	await _exercise_course("emberkeep_gauntlet", failures)
 	if failures.is_empty():
-		print("COURSE_BUILD_SURFACE_PASS verdant_cascade_circuit cloverwind_ranch prism_apex")
+		print(
+			"COURSE_BUILD_SURFACE_PASS verdant_cascade_circuit cloverwind_ranch prism_apex emberkeep_gauntlet"
+		)
 		quit(0)
 		return
 	for failure in failures:
@@ -53,6 +56,12 @@ func _exercise_course(track_id: String, failures: PackedStringArray) -> void:
 			failures.append("prism missing PrismApexSpire landmark")
 		if scenery == null or scenery.get_node_or_null("PrismBoostGate2") == null:
 			failures.append("prism missing PrismBoostGate2 landmark")
+	elif track_id == "emberkeep_gauntlet":
+		var scenery := course.get_node_or_null("Scenery")
+		if scenery == null or scenery.get_node_or_null("EmberkeepCitadel") == null:
+			failures.append("emberkeep missing EmberkeepCitadel landmark")
+		if scenery == null or scenery.get_node_or_null("EmberCourtyardGate") == null:
+			failures.append("emberkeep missing EmberCourtyardGate landmark")
 	course.queue_free()
 
 

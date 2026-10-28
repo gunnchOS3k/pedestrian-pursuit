@@ -338,12 +338,14 @@ func _ensure_runner_chip(player: Node, course_data: Dictionary) -> void:
 	if player != null and player.has_meta("runner_display_name"):
 		name = str(player.get_meta("runner_display_name"))
 	var theme := str(course_data.get("theme", ""))
-	## Ranch = Grip Green; prism = Ghost Violet; cascade = Kinetic Orange.
+	## Ranch = Grip Green; prism = Ghost Violet; ember = Kinetic Orange; cascade default.
 	var chip_color := Color(1.0, 0.42, 0.24)
 	if theme == "windy_ranch":
 		chip_color = Color(0.24, 0.86, 0.52)
 	elif theme == "prism_void":
 		chip_color = Color(0.65, 0.45, 0.98)
+	elif theme == "ember_fortress":
+		chip_color = Color(1.0, 0.42, 0.24)
 	chip.add_theme_color_override("font_color", chip_color)
 	chip.text = "KINETIC SOLE  ·  %s" % name
 
