@@ -232,10 +232,10 @@ func _run() -> void:
 
 
 func _publish_host_appearance(dir: String, player: Node) -> String:
-	var AppearanceSyncScript = load("res://scripts/data/AppearanceSync.gd")
-	var CreatedRacerStoreScript = load("res://scripts/data/CreatedRacerStore.gd")
-	var WardrobeCatalogScript = load("res://scripts/data/WardrobeCatalog.gd")
-	var racer := CreatedRacerStoreScript.create_racer("Host Studio Racer")
+	const AppearanceSyncScript = preload("res://scripts/data/AppearanceSync.gd")
+	const CreatedRacerStoreScript = preload("res://scripts/data/CreatedRacerStore.gd")
+	const WardrobeCatalogScript = preload("res://scripts/data/WardrobeCatalog.gd")
+	var racer: Dictionary = CreatedRacerStoreScript.create_racer("Host Studio Racer")
 	racer["appearance"]["skin_tone"] = "rich_brown"
 	racer["appearance"]["hair_style"] = "locs_shoulder"
 	racer["appearance"]["facial_hair"] = "stubble"
@@ -258,17 +258,17 @@ func _publish_host_appearance(dir: String, player: Node) -> String:
 			var visual = player.get_node_or_null("RacerVisual")
 			if visual != null and visual.has_method("apply_profile") and visual.get("profile") != null:
 				visual.apply_profile(visual.get("profile"))
-	return AppearanceSyncScript.fingerprint(payload)
+	return str(AppearanceSyncScript.fingerprint(payload))
 
 
 func _apply_guest_appearance(dir: String, scene: Node, guest: Node) -> bool:
-	var AppearanceSyncScript = load("res://scripts/data/AppearanceSync.gd")
+	const AppearanceSyncScript = preload("res://scripts/data/AppearanceSync.gd")
 	var payload: Dictionary = AppearanceSyncScript.read_payload(dir.path_join("sync/guest_appearance.json"))
 	if payload.is_empty() or guest == null or scene == null:
 		return false
 	if scene.has_method("apply_peer_appearance_payload"):
 		return bool(scene.apply_peer_appearance_payload(guest, payload))
-	return AppearanceSyncScript.apply_to_visual(guest.get_node_or_null("RacerVisual"), payload)
+	return bool(AppearanceSyncScript.apply_to_visual(guest.get_node_or_null("RacerVisual"), payload))
 
 
 func _write_snapshot(dir: String, race_manager: Node, guest: Node, flags: Dictionary) -> void:

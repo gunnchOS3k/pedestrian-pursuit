@@ -94,10 +94,10 @@ func _run() -> void:
 
 func _write_guest_appearance(dir: String) -> void:
 	## Guest cosmetic identity for host to apply on Player2Racer.
-	var AppearanceSyncScript = load("res://scripts/data/AppearanceSync.gd")
-	var CreatedRacerStoreScript = load("res://scripts/data/CreatedRacerStore.gd")
-	var WardrobeCatalogScript = load("res://scripts/data/WardrobeCatalog.gd")
-	var racer := CreatedRacerStoreScript.create_racer("Guest Studio Racer")
+	const AppearanceSyncScript = preload("res://scripts/data/AppearanceSync.gd")
+	const CreatedRacerStoreScript = preload("res://scripts/data/CreatedRacerStore.gd")
+	const WardrobeCatalogScript = preload("res://scripts/data/WardrobeCatalog.gd")
+	var racer: Dictionary = CreatedRacerStoreScript.create_racer("Guest Studio Racer")
 	racer["appearance"]["skin_tone"] = "deep_cool"
 	racer["appearance"]["hair_style"] = "box_braids"
 	racer["appearance"]["assistive"] = "forearm_sleeve_vis"
