@@ -3,8 +3,8 @@
 	"affects_stats": false,
 	"art_acceptance": {
 		"final_art_approved": 0,
-		"final_art_candidate": 8,
-		"final_art_pending": 42,
+		"final_art_candidate": 41,
+		"final_art_pending": 9,
 		"playable_runtime": 50,
 		"total": 50
 	},
@@ -12,6 +12,6 @@
 	"footwear_vehicle_id": "reedline_circlers",
 	"human_commercial_art_gate": false,
 	"outfit_id": "metro_pulse_default",
-	"racer_id": "created_1793199125",
+	"racer_id": "created_1793203955",
 	"wardrobe_root_present": true
 }

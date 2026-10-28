@@ -475,16 +475,34 @@ def _validate_wardrobe(root: Path) -> list[str]:
     if not isinstance(slots, list) or "footwear_vehicle" not in slots or "top" not in slots:
         errors.append(f"{path}: wardrobe slots incomplete")
     garments = doc.get("garments")
-    if not isinstance(garments, list) or len(garments) < 6:
-        errors.append(f"{path}: need integrated + pending garments")
+    if not isinstance(garments, list) or len(garments) < 20:
+        errors.append(f"{path}: need multi-family integrated + pending garments")
         return errors
     integrated = [g for g in garments if isinstance(g, dict) and g.get("art_status") == "integrated_mesh_v1"]
     pending = [g for g in garments if isinstance(g, dict) and g.get("art_status") == "catalog_art_pending"]
-    if len(integrated) < 5:
-        errors.append(f"{path}: Metro Pulse needs ≥5 integrated_mesh_v1 garments")
+    if len(integrated) < 30:
+        errors.append(f"{path}: need ≥30 integrated_mesh_v1 garments across families")
     if len(pending) < 1:
         errors.append(f"{path}: need honest catalog_art_pending entries")
+    families = {
+        str(f.get("id"))
+        for f in doc.get("families", [])
+        if isinstance(f, dict)
+    }
+    for need in (
+        "metro_pulse",
+        "harbor_linen",
+        "neon_trackside",
+        "quiet_plaza",
+        "midnight_atelier",
+        "myth_circuit",
+        "orbit_signal",
+    ):
+        if need not in families:
+            errors.append(f"{path}: missing wardrobe family {need}")
     presets = doc.get("presets")
+    if not isinstance(presets, list) or len(presets) < 5:
+        errors.append(f"{path}: need ≥5 complete outfit presets")
     if not isinstance(presets, list) or not any(
         isinstance(p, dict) and p.get("id") == "metro_pulse_default" for p in presets
     ):

@@ -37,12 +37,14 @@ func _run() -> void:
 		print("GAME_SESSION_RACE_FAIL guest view is missing")
 		quit(1)
 		return
+	_write_guest_appearance(dir)
 	_write_json(dir.path_join("sync/guest_ready.json"), {
 		"source": "guest-process",
 		"pid": OS.get_process_id(),
 	})
 	var points: Array = []
 	var frames := 0
+	var host_fp_seen := ""
 	var deadline := Time.get_ticks_msec() + WAIT_MSEC
 	while Time.get_ticks_msec() < deadline:
 		if points.is_empty():
@@ -52,6 +54,8 @@ func _run() -> void:
 				points = loaded
 				_build_cum(points)
 		var snap := _read_json(dir.path_join("sync/snapshot.json"))
+		if host_fp_seen.is_empty():
+			host_fp_seen = str(snap.get("hostAppearanceFingerprint", ""))
 		var position: Array = snap.get("guestPosition", [])
 		if position.size() == 3 and not points.is_empty():
 			var world := Vector3(float(position[0]), float(position[1]), float(position[2]))
@@ -76,13 +80,39 @@ func _run() -> void:
 			if bool(snap.get("finished", false)) or int(snap.get("raceState", -1)) >= 3:
 				break
 		await physics_frame
-	_report(dir, frames, false)
+	_report(dir, frames, false, host_fp_seen)
 	print("GAME_SESSION_ROLE=guest")
 	print("GAME_SESSION_COURSE=%s" % COURSE_ID)
 	print("GAME_SESSION_GUEST_INPUT_FRAMES=%d" % frames)
 	print("HOST_SECRET_IN_GUEST_STATE=false")
 	print("GAME_SESSION_COURSE_AI_IS_GUEST=false")
+	if not host_fp_seen.is_empty():
+		print("PEER_SEES_HOST_APPEARANCE=true")
+		print("HOST_APPEARANCE_FINGERPRINT=%s" % host_fp_seen)
 	quit(0 if frames > 30 else 1)
+
+
+func _write_guest_appearance(dir: String) -> void:
+	## Guest cosmetic identity for host to apply on Player2Racer.
+	var AppearanceSyncScript = load("res://scripts/data/AppearanceSync.gd")
+	var CreatedRacerStoreScript = load("res://scripts/data/CreatedRacerStore.gd")
+	var WardrobeCatalogScript = load("res://scripts/data/WardrobeCatalog.gd")
+	var racer := CreatedRacerStoreScript.create_racer("Guest Studio Racer")
+	racer["appearance"]["skin_tone"] = "deep_cool"
+	racer["appearance"]["hair_style"] = "box_braids"
+	racer["appearance"]["assistive"] = "forearm_sleeve_vis"
+	racer["outfit_id"] = "neon_trackside_default"
+	var preset: Dictionary = WardrobeCatalogScript.preset("neon_trackside_default")
+	var slots: Dictionary = preset.get("slots", {})
+	CreatedRacerStoreScript.save_outfit("neon_trackside_default", slots, true)
+	racer["footwear_vehicle_id"] = str(slots.get("footwear_vehicle", "quillspike_launchers"))
+	CreatedRacerStoreScript.update_racer(racer)
+	var payload: Dictionary = AppearanceSyncScript.pack_from_created_racer(racer, slots)
+	AppearanceSyncScript.write_payload(dir.path_join("sync/guest_appearance.json"), payload)
+	_write_json(dir.path_join("sync/guest_appearance_fingerprint.json"), {
+		"fingerprint": AppearanceSyncScript.fingerprint(payload),
+		"source": "guest-process",
+	})
 
 
 func _build_cum(points: Array) -> void:
@@ -207,7 +237,7 @@ func _steer_cmd(points: Array, pos: Vector3, forward: Vector3, speed: float) -> 
 	}
 
 
-func _report(dir: String, frames: int, secret_seen: bool) -> void:
+func _report(dir: String, frames: int, secret_seen: bool, host_fp: String = "") -> void:
 	if dir.is_empty():
 		return
 	_write_json(dir.path_join("guest_report.json"), {
@@ -218,6 +248,8 @@ func _report(dir: String, frames: int, secret_seen: bool) -> void:
 		"courseAiIsGuest": false,
 		"progressM": _progress_m,
 		"pathLengthM": _path_length_m,
+		"hostAppearanceFingerprint": host_fp,
+		"peerSeesHostAppearance": not host_fp.is_empty(),
 	})
 
 

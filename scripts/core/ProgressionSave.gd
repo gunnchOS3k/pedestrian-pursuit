@@ -152,8 +152,17 @@ func complete_challenge(challenge_id: String, reward_xp: int = 50) -> void:
 	}
 	add_xp(reward_xp)
 	unlock("challenge:%s" % challenge_id)
+	## Real gameplay event → career garage mode unlock (challenge tier vehicles).
+	unlock("unlock_mode:challenge")
 	_ach_set_flag("challenge:%s" % challenge_id, true)
 	_ach_event("challenge_complete")
+
+
+func on_achievement_unlocked(achievement_id: String) -> void:
+	## Called from AchievementRuntime when a real condition unlocks.
+	unlock("achievement:%s" % achievement_id)
+	unlock("unlock_mode:achievement")
+	save()
 
 
 func mark_tutorial_done() -> void:

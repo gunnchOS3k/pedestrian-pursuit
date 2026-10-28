@@ -85,3 +85,19 @@ static func family_art_status(family_id: String) -> String:
 		if typeof(fam) == TYPE_DICTIONARY and str(fam.get("id", "")) == family_id:
 			return str(fam.get("art_status", "catalog_art_pending"))
 	return "catalog_art_pending"
+
+
+static func family_garment_counts() -> Dictionary:
+	var out := {}
+	for g in garments():
+		var fam := str(g.get("family_id", ""))
+		out[fam] = int(out.get(fam, 0)) + 1
+	return out
+
+
+static func integrated_garment_count() -> int:
+	var n := 0
+	for g in garments():
+		if str(g.get("art_status", "")) == "integrated_mesh_v1":
+			n += 1
+	return n

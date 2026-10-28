@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "display_name": "Global Wardrobe Catalog",
   "slots": [
     "base_underlayer",
@@ -15,25 +15,79 @@
     "footwear_vehicle",
     "trail_expression"
   ],
-  "note": "Outfit pieces are cosmetic unless an approved gameplay system says otherwise. Footwear vehicle owns handling/stats. No gender-locked clothing. Original assets only.",
+  "note": "Outfit pieces are cosmetic unless an approved gameplay system says otherwise. Footwear vehicle owns handling/stats. No gender-locked clothing. Original assets only. Families are original fiction \u2014 not one-costume-per-nation stereotypes.",
   "families": [
     {
       "id": "metro_pulse",
       "display_name": "Metro Pulse",
       "art_status": "integrated_mesh_v1",
-      "note": "First integrated garment family with real Godot mesh recipes across key slots."
+      "category": "athletic",
+      "provenance": "Original street-athletic silhouette family.",
+      "note": "Integrated mesh recipes across key slots."
     },
     {
       "id": "harbor_linen",
       "display_name": "Harbor Linen",
-      "art_status": "catalog_art_pending",
-      "note": "Catalog entries only — mesh art pending."
+      "art_status": "integrated_mesh_v1",
+      "category": "everyday",
+      "provenance": "Original soft everyday layering \u2014 not regional costume.",
+      "note": "Integrated mesh v1."
     },
     {
       "id": "neon_trackside",
       "display_name": "Neon Trackside",
+      "art_status": "integrated_mesh_v1",
+      "category": "street",
+      "provenance": "Original night-circuit athletic wear.",
+      "note": "Integrated mesh v1."
+    },
+    {
+      "id": "quiet_plaza",
+      "display_name": "Quiet Plaza",
+      "art_status": "integrated_mesh_v1",
+      "category": "modest",
+      "provenance": "Original modest coverage silhouettes \u2014 personal presentation, not nation coding.",
+      "note": "Integrated mesh v1."
+    },
+    {
+      "id": "midnight_atelier",
+      "display_name": "Midnight Atelier",
+      "art_status": "integrated_mesh_v1",
+      "category": "formal",
+      "provenance": "Original formal race-night layering.",
+      "note": "Integrated mesh v1."
+    },
+    {
+      "id": "myth_circuit",
+      "display_name": "Myth Circuit",
+      "art_status": "integrated_mesh_v1",
+      "category": "fantasy",
+      "provenance": "Original fantasy-athletic fiction; no third-party IP.",
+      "note": "Integrated mesh v1."
+    },
+    {
+      "id": "orbit_signal",
+      "display_name": "Orbit Signal",
+      "art_status": "integrated_mesh_v1",
+      "category": "sci_fi",
+      "provenance": "Original soft sci-fi race kit.",
+      "note": "Integrated mesh v1."
+    },
+    {
+      "id": "crosswind_kiln",
+      "display_name": "Crosswind Kiln",
       "art_status": "catalog_art_pending",
-      "note": "Catalog entries only — mesh art pending."
+      "category": "culturally_informed",
+      "provenance": "Catalog placeholders for culturally-informed original pieces \u2014 meshes pending; never nation-costume stereotypes.",
+      "note": "Honest art-pending."
+    },
+    {
+      "id": "archive_loom",
+      "display_name": "Archive Loom",
+      "art_status": "catalog_art_pending",
+      "category": "everyday",
+      "provenance": "Broader everyday catalog stubs.",
+      "note": "Honest art-pending."
     }
   ],
   "garments": [
@@ -44,8 +98,12 @@
       "display_name": "Metro Pulse Base Layer",
       "art_status": "integrated_mesh_v1",
       "mesh_recipe": "fitted_undersuit",
-      "colors": { "primary": "#1B2430", "accent": "#F4C430" },
-      "cosmetic_only": true
+      "colors": {
+        "primary": "#1B2430",
+        "accent": "#F4C430"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
     },
     {
       "id": "metro_pulse_top",
@@ -54,8 +112,12 @@
       "display_name": "Metro Pulse Race Top",
       "art_status": "integrated_mesh_v1",
       "mesh_recipe": "cropped_shell",
-      "colors": { "primary": "#2EC4B6", "accent": "#FF6A3D" },
-      "cosmetic_only": true
+      "colors": {
+        "primary": "#2EC4B6",
+        "accent": "#FF6A3D"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
     },
     {
       "id": "metro_pulse_bottom",
@@ -64,8 +126,12 @@
       "display_name": "Metro Pulse Track Pants",
       "art_status": "integrated_mesh_v1",
       "mesh_recipe": "tapered_pants",
-      "colors": { "primary": "#121820", "accent": "#2EC4B6" },
-      "cosmetic_only": true
+      "colors": {
+        "primary": "#121820",
+        "accent": "#2EC4B6"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
     },
     {
       "id": "metro_pulse_outer",
@@ -74,8 +140,12 @@
       "display_name": "Metro Pulse Windshell",
       "art_status": "integrated_mesh_v1",
       "mesh_recipe": "open_windshell",
-      "colors": { "primary": "#FF6A3D", "accent": "#1B2430" },
-      "cosmetic_only": true
+      "colors": {
+        "primary": "#FF6A3D",
+        "accent": "#1B2430"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
     },
     {
       "id": "metro_pulse_headband",
@@ -84,8 +154,12 @@
       "display_name": "Metro Pulse Headband",
       "art_status": "integrated_mesh_v1",
       "mesh_recipe": "headband",
-      "colors": { "primary": "#F4C430", "accent": "#1B2430" },
-      "cosmetic_only": true
+      "colors": {
+        "primary": "#F4C430",
+        "accent": "#1B2430"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
     },
     {
       "id": "metro_pulse_bag",
@@ -94,28 +168,558 @@
       "display_name": "Metro Pulse Hip Pack",
       "art_status": "integrated_mesh_v1",
       "mesh_recipe": "hip_pack",
-      "colors": { "primary": "#1B2430", "accent": "#2EC4B6" },
-      "cosmetic_only": true
+      "colors": {
+        "primary": "#1B2430",
+        "accent": "#2EC4B6"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "metro_pulse_specs",
+      "family_id": "metro_pulse",
+      "slot": "eyewear",
+      "display_name": "Metro Pulse Specs",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "race_visor",
+      "colors": {
+        "primary": "#111111",
+        "accent": "#2EC4B6"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "metro_pulse_trail",
+      "family_id": "metro_pulse",
+      "slot": "trail_expression",
+      "display_name": "Metro Pulse Ember Trail",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "trail_ember",
+      "colors": {
+        "primary": "#FF6A3D",
+        "accent": "#F4C430"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "harbor_linen_base",
+      "family_id": "harbor_linen",
+      "slot": "base_underlayer",
+      "display_name": "Harbor Soft Base",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "fitted_undersuit",
+      "colors": {
+        "primary": "#F3EDE3",
+        "accent": "#6B7C6A"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
     },
     {
       "id": "harbor_linen_top",
       "family_id": "harbor_linen",
       "slot": "top",
-      "display_name": "Harbor Linen Tee",
-      "art_status": "catalog_art_pending",
-      "mesh_recipe": "",
-      "colors": { "primary": "#E8DFD0", "accent": "#6B7C6A" },
-      "cosmetic_only": true
+      "display_name": "Harbor Linen Overshirt",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "relaxed_overshirt",
+      "colors": {
+        "primary": "#E8DFD0",
+        "accent": "#6B7C6A"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
     },
     {
-      "id": "neon_trackside_outer",
+      "id": "harbor_linen_bottom",
+      "family_id": "harbor_linen",
+      "slot": "bottom",
+      "display_name": "Harbor Soft Trousers",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "wide_soft_pants",
+      "colors": {
+        "primary": "#D9CFC0",
+        "accent": "#4F5D4E"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "harbor_linen_outer",
+      "family_id": "harbor_linen",
+      "slot": "outerwear",
+      "display_name": "Harbor Drape Coat",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "open_drape",
+      "colors": {
+        "primary": "#C4B7A4",
+        "accent": "#6B7C6A"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "harbor_linen_scarf",
+      "family_id": "harbor_linen",
+      "slot": "jewelry_accessories",
+      "display_name": "Harbor Soft Scarf",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "soft_scarf",
+      "colors": {
+        "primary": "#6B7C6A",
+        "accent": "#E8DFD0"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "harbor_linen_bag",
+      "family_id": "harbor_linen",
+      "slot": "bags",
+      "display_name": "Harbor Cross Sling",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "cross_sling",
+      "colors": {
+        "primary": "#8A7A66",
+        "accent": "#E8DFD0"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "neon_track_base",
+      "family_id": "neon_trackside",
+      "slot": "base_underlayer",
+      "display_name": "Neon Compression Base",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "fitted_undersuit",
+      "colors": {
+        "primary": "#12081C",
+        "accent": "#B8FF3D"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "neon_track_top",
+      "family_id": "neon_trackside",
+      "slot": "top",
+      "display_name": "Neon Circuit Crop",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "cropped_shell",
+      "colors": {
+        "primary": "#B8FF3D",
+        "accent": "#FF2BD6"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "neon_track_bottom",
+      "family_id": "neon_trackside",
+      "slot": "bottom",
+      "display_name": "Neon Track Tights",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "tapered_pants",
+      "colors": {
+        "primary": "#1A1028",
+        "accent": "#B8FF3D"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "neon_track_outer",
       "family_id": "neon_trackside",
       "slot": "outerwear",
       "display_name": "Neon Trackside Jacket",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "panel_jacket",
+      "colors": {
+        "primary": "#201030",
+        "accent": "#B8FF3D"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "neon_track_visor",
+      "family_id": "neon_trackside",
+      "slot": "eyewear",
+      "display_name": "Neon Night Visor",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "race_visor",
+      "colors": {
+        "primary": "#111111",
+        "accent": "#FF2BD6"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "neon_track_trail",
+      "family_id": "neon_trackside",
+      "slot": "trail_expression",
+      "display_name": "Neon Signal Trail",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "trail_signal",
+      "colors": {
+        "primary": "#B8FF3D",
+        "accent": "#FF2BD6"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "quiet_plaza_base",
+      "family_id": "quiet_plaza",
+      "slot": "base_underlayer",
+      "display_name": "Quiet Plaza Base",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "fitted_undersuit",
+      "colors": {
+        "primary": "#2A3038",
+        "accent": "#A8B4C0"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "quiet_plaza_full",
+      "family_id": "quiet_plaza",
+      "slot": "full_body",
+      "display_name": "Quiet Plaza Longline",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "longline_robe",
+      "colors": {
+        "primary": "#3A4450",
+        "accent": "#C9D2DA"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "quiet_plaza_outer",
+      "family_id": "quiet_plaza",
+      "slot": "outerwear",
+      "display_name": "Quiet Plaza Wrap",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "modest_wrap",
+      "colors": {
+        "primary": "#4A5562",
+        "accent": "#D7DEE5"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "quiet_plaza_head",
+      "family_id": "quiet_plaza",
+      "slot": "headwear",
+      "display_name": "Quiet Plaza Soft Wrap",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "soft_headwrap",
+      "colors": {
+        "primary": "#C9D2DA",
+        "accent": "#3A4450"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "quiet_plaza_bottom",
+      "family_id": "quiet_plaza",
+      "slot": "bottom",
+      "display_name": "Quiet Plaza Soft Pants",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "wide_soft_pants",
+      "colors": {
+        "primary": "#2F3842",
+        "accent": "#A8B4C0"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "midnight_base",
+      "family_id": "midnight_atelier",
+      "slot": "base_underlayer",
+      "display_name": "Midnight Formal Base",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "fitted_undersuit",
+      "colors": {
+        "primary": "#10131A",
+        "accent": "#C9A86A"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "midnight_top",
+      "family_id": "midnight_atelier",
+      "slot": "top",
+      "display_name": "Midnight Lapel Shell",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "formal_lapel",
+      "colors": {
+        "primary": "#171B24",
+        "accent": "#C9A86A"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "midnight_bottom",
+      "family_id": "midnight_atelier",
+      "slot": "bottom",
+      "display_name": "Midnight Tailored Trousers",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "tapered_pants",
+      "colors": {
+        "primary": "#0E1118",
+        "accent": "#8A7350"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "midnight_outer",
+      "family_id": "midnight_atelier",
+      "slot": "outerwear",
+      "display_name": "Midnight Atelier Coat",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "formal_coat",
+      "colors": {
+        "primary": "#1B2030",
+        "accent": "#C9A86A"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "midnight_pin",
+      "family_id": "midnight_atelier",
+      "slot": "jewelry_accessories",
+      "display_name": "Midnight Crest Pin",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "crest_pin",
+      "colors": {
+        "primary": "#C9A86A",
+        "accent": "#171B24"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "myth_base",
+      "family_id": "myth_circuit",
+      "slot": "base_underlayer",
+      "display_name": "Myth Weave Base",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "fitted_undersuit",
+      "colors": {
+        "primary": "#2B1A3A",
+        "accent": "#E0B44F"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "myth_top",
+      "family_id": "myth_circuit",
+      "slot": "top",
+      "display_name": "Myth Mantle Vest",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "mantle_vest",
+      "colors": {
+        "primary": "#4A2E6A",
+        "accent": "#E0B44F"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "myth_bottom",
+      "family_id": "myth_circuit",
+      "slot": "bottom",
+      "display_name": "Myth Runner Greaves",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "tapered_pants",
+      "colors": {
+        "primary": "#1E1428",
+        "accent": "#A67C2E"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "myth_outer",
+      "family_id": "myth_circuit",
+      "slot": "outerwear",
+      "display_name": "Myth Circuit Capelet",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "short_capelet",
+      "colors": {
+        "primary": "#6B3FA0",
+        "accent": "#E0B44F"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "myth_trail",
+      "family_id": "myth_circuit",
+      "slot": "trail_expression",
+      "display_name": "Myth Ember Trail",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "trail_ember",
+      "colors": {
+        "primary": "#E0B44F",
+        "accent": "#6B3FA0"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "orbit_base",
+      "family_id": "orbit_signal",
+      "slot": "base_underlayer",
+      "display_name": "Orbit Softsuit Base",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "fitted_undersuit",
+      "colors": {
+        "primary": "#0D1B24",
+        "accent": "#4DE1FF"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "orbit_top",
+      "family_id": "orbit_signal",
+      "slot": "top",
+      "display_name": "Orbit Signal Shell",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "hard_shell_panel",
+      "colors": {
+        "primary": "#14303C",
+        "accent": "#4DE1FF"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "orbit_bottom",
+      "family_id": "orbit_signal",
+      "slot": "bottom",
+      "display_name": "Orbit Flex Pants",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "tapered_pants",
+      "colors": {
+        "primary": "#0A141A",
+        "accent": "#2A8FA3"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "orbit_outer",
+      "family_id": "orbit_signal",
+      "slot": "outerwear",
+      "display_name": "Orbit Signal Mantle",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "panel_jacket",
+      "colors": {
+        "primary": "#1A3A48",
+        "accent": "#7AF0FF"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "orbit_visor",
+      "family_id": "orbit_signal",
+      "slot": "eyewear",
+      "display_name": "Orbit HUD Visor",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "race_visor",
+      "colors": {
+        "primary": "#0A1014",
+        "accent": "#4DE1FF"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "orbit_trail",
+      "family_id": "orbit_signal",
+      "slot": "trail_expression",
+      "display_name": "Orbit Signal Trail",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "trail_signal",
+      "colors": {
+        "primary": "#4DE1FF",
+        "accent": "#7AF0FF"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "crosswind_top",
+      "family_id": "crosswind_kiln",
+      "slot": "top",
+      "display_name": "Crosswind Studio Top",
       "art_status": "catalog_art_pending",
       "mesh_recipe": "",
-      "colors": { "primary": "#B8FF3D", "accent": "#201030" },
-      "cosmetic_only": true
+      "colors": {
+        "primary": "#C47A4A",
+        "accent": "#2E1C12"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "crosswind_wrap",
+      "family_id": "crosswind_kiln",
+      "slot": "outerwear",
+      "display_name": "Crosswind Studio Wrap",
+      "art_status": "catalog_art_pending",
+      "mesh_recipe": "",
+      "colors": {
+        "primary": "#8B5A3C",
+        "accent": "#F0D7C0"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "archive_tee",
+      "family_id": "archive_loom",
+      "slot": "top",
+      "display_name": "Archive Loom Tee",
+      "art_status": "catalog_art_pending",
+      "mesh_recipe": "",
+      "colors": {
+        "primary": "#EFE7DA",
+        "accent": "#5A6B7A"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "archive_cardigan",
+      "family_id": "archive_loom",
+      "slot": "outerwear",
+      "display_name": "Archive Loom Cardigan",
+      "art_status": "catalog_art_pending",
+      "mesh_recipe": "",
+      "colors": {
+        "primary": "#D7CBB8",
+        "accent": "#6E7F8C"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
     }
   ],
   "presets": [
@@ -130,8 +734,90 @@
         "outerwear": "metro_pulse_outer",
         "headwear": "metro_pulse_headband",
         "bags": "metro_pulse_bag",
-        "footwear_vehicle": "reedline_circlers",
-        "trail_expression": ""
+        "eyewear": "metro_pulse_specs",
+        "trail_expression": "metro_pulse_trail",
+        "footwear_vehicle": "reedline_circlers"
+      }
+    },
+    {
+      "id": "harbor_linen_default",
+      "display_name": "Harbor Linen Complete",
+      "family_id": "harbor_linen",
+      "slots": {
+        "base_underlayer": "harbor_linen_base",
+        "top": "harbor_linen_top",
+        "bottom": "harbor_linen_bottom",
+        "outerwear": "harbor_linen_outer",
+        "jewelry_accessories": "harbor_linen_scarf",
+        "bags": "harbor_linen_bag",
+        "footwear_vehicle": "lanewind_tempo_flats"
+      }
+    },
+    {
+      "id": "neon_trackside_default",
+      "display_name": "Neon Trackside Complete",
+      "family_id": "neon_trackside",
+      "slots": {
+        "base_underlayer": "neon_track_base",
+        "top": "neon_track_top",
+        "bottom": "neon_track_bottom",
+        "outerwear": "neon_track_outer",
+        "eyewear": "neon_track_visor",
+        "trail_expression": "neon_track_trail",
+        "footwear_vehicle": "quillspike_launchers"
+      }
+    },
+    {
+      "id": "quiet_plaza_default",
+      "display_name": "Quiet Plaza Complete",
+      "family_id": "quiet_plaza",
+      "slots": {
+        "base_underlayer": "quiet_plaza_base",
+        "full_body": "quiet_plaza_full",
+        "bottom": "quiet_plaza_bottom",
+        "outerwear": "quiet_plaza_outer",
+        "headwear": "quiet_plaza_head",
+        "footwear_vehicle": "cloudsole_striders"
+      }
+    },
+    {
+      "id": "midnight_atelier_default",
+      "display_name": "Midnight Atelier Complete",
+      "family_id": "midnight_atelier",
+      "slots": {
+        "base_underlayer": "midnight_base",
+        "top": "midnight_top",
+        "bottom": "midnight_bottom",
+        "outerwear": "midnight_outer",
+        "jewelry_accessories": "midnight_pin",
+        "footwear_vehicle": "iron_derby_blitz"
+      }
+    },
+    {
+      "id": "myth_circuit_default",
+      "display_name": "Myth Circuit Complete",
+      "family_id": "myth_circuit",
+      "slots": {
+        "base_underlayer": "myth_base",
+        "top": "myth_top",
+        "bottom": "myth_bottom",
+        "outerwear": "myth_outer",
+        "trail_expression": "myth_trail",
+        "footwear_vehicle": "meteor_heeljets"
+      }
+    },
+    {
+      "id": "orbit_signal_default",
+      "display_name": "Orbit Signal Complete",
+      "family_id": "orbit_signal",
+      "slots": {
+        "base_underlayer": "orbit_base",
+        "top": "orbit_top",
+        "bottom": "orbit_bottom",
+        "outerwear": "orbit_outer",
+        "eyewear": "orbit_visor",
+        "trail_expression": "orbit_trail",
+        "footwear_vehicle": "anti_gravity_platforms"
       }
     }
   ]

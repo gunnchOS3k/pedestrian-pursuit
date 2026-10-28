@@ -17,6 +17,8 @@ class ArtAcceptanceTests(unittest.TestCase):
         self.assertFalse(doc.get("human_commercial_art_gate", True))
         self.assertFalse(doc.get("HUMAN_FUN_APPROVAL", True))
         self.assertFalse(doc.get("HUMAN_COURSE_APPROVAL", True))
+        self.assertFalse(doc.get("RC2_READY", True))
+        self.assertFalse(doc.get("V1_0_0_RELEASE_AUTHORIZED", True))
         vehicles = doc["vehicles"]
         self.assertEqual(len(vehicles), 50)
         pending = 0
@@ -55,11 +57,23 @@ class ArtAcceptanceTests(unittest.TestCase):
         integrated = [
             g for g in cat["garments"] if g.get("art_status") == "integrated_mesh_v1"
         ]
-        self.assertGreaterEqual(len(integrated), 5)
+        self.assertGreaterEqual(len(integrated), 30)
         pending = [
             g for g in cat["garments"] if g.get("art_status") == "catalog_art_pending"
         ]
         self.assertGreaterEqual(len(pending), 1)
+        families = {f["id"] for f in cat["families"]}
+        for need in (
+            "metro_pulse",
+            "harbor_linen",
+            "neon_trackside",
+            "quiet_plaza",
+            "midnight_atelier",
+            "myth_circuit",
+            "orbit_signal",
+        ):
+            self.assertIn(need, families)
+        self.assertGreaterEqual(len(cat["presets"]), 5)
         preset = next(p for p in cat["presets"] if p["id"] == "metro_pulse_default")
         for key in ("base_underlayer", "top", "bottom", "outerwear"):
             self.assertIn(key, preset["slots"])

@@ -62,7 +62,7 @@ func _build_ui() -> void:
 	_status = Label.new()
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_status.text = "Outfit cosmetic · footwear vehicle owns handling · Metro Pulse integrated"
+	_status.text = "Outfit cosmetic · footwear owns handling · multi-family integrated meshes · art-pending families stay honest"
 	root.add_child(_status)
 
 	var cols := HBoxContainer.new()

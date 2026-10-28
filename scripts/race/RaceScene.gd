@@ -144,6 +144,9 @@ func _ready() -> void:
 		ai_racer.movement_enabled = false
 
 	_setup_time_trial_ghost()
+	## Visual budget hooks for crowded fields (LOD only — 8p not claimed complete).
+	apply_field_visual_budget(racers.size())
+	_try_apply_session_peer_appearance(local_p2)
 
 	# Time Trial product design: single-lap mastery/ghost run (not accept_force_laps).
 	# Documented in docs/engineering_wave010/CANONICAL_GAMEPLAY_MAP.md (TIME_TRIAL_LAP_COUNT=1).
@@ -323,10 +326,27 @@ func _apply_created_racer_cosmetics(racer: Node, visual: Node, profile) -> void:
 	## Optional created-racer path — cosmetic only; collision/stats unchanged.
 	if racer == null or visual == null:
 		return
+	## Peer-synced appearance payload (multiplayer) takes precedence when stamped.
+	if racer.has_meta("appearance_payload"):
+		var AppearanceSyncScript = load("res://scripts/data/AppearanceSync.gd")
+		var payload: Dictionary = racer.get_meta("appearance_payload")
+		if AppearanceSyncScript.apply_to_visual(visual, payload):
+			if profile != null:
+				profile.display_name = str(payload.get("display_name", profile.display_name))
+			racer.set_meta("created_racer_id", str(payload.get("racer_id", "")))
+			racer.set_meta("runner_display_name", str(payload.get("display_name", "")))
+			racer.set_meta("outfit_id", str(payload.get("outfit_id", "")))
+			visual.set_meta("created_racer_id", str(payload.get("racer_id", "")))
+			visual.set_meta("outfit_id", str(payload.get("outfit_id", "")))
+			var foot_peer := str(payload.get("footwear_vehicle_id", ""))
+			if not foot_peer.is_empty() and "shoe_id" in racer:
+				racer.shoe_id = foot_peer
+			return
 	if not GameManager.has_meta("created_racer_id"):
 		return
 	var CreatedRacerStoreScript = load("res://scripts/data/CreatedRacerStore.gd")
 	var WardrobeCatalogScript = load("res://scripts/data/WardrobeCatalog.gd")
+	var AppearanceSyncScript = load("res://scripts/data/AppearanceSync.gd")
 	var active: Dictionary = CreatedRacerStoreScript.get_active()
 	if active.is_empty():
 		return
@@ -336,19 +356,75 @@ func _apply_created_racer_cosmetics(racer: Node, visual: Node, profile) -> void:
 		profile.display_name = str(active.get("display_name", profile.display_name))
 	racer.set_meta("created_racer_id", str(active.get("id", "")))
 	racer.set_meta("runner_display_name", str(active.get("display_name", "")))
-	if visual.has_method("apply_avatar_appearance"):
-		visual.apply_avatar_appearance(active.get("appearance", {}), false)
 	var outfit_id := str(active.get("outfit_id", "metro_pulse_default"))
+	racer.set_meta("outfit_id", outfit_id)
 	var outfit: Dictionary = CreatedRacerStoreScript.get_outfit(outfit_id)
 	var slots: Dictionary = outfit.get("slots", {})
 	if slots.is_empty():
 		var preset: Dictionary = WardrobeCatalogScript.preset(outfit_id)
 		slots = preset.get("slots", {})
-	if visual.has_method("apply_wardrobe_outfit") and not slots.is_empty():
-		visual.apply_wardrobe_outfit(slots, false)
+	var payload: Dictionary = AppearanceSyncScript.pack_from_created_racer(active, slots)
+	AppearanceSyncScript.apply_to_visual(visual, payload)
+	visual.set_meta("created_racer_id", str(active.get("id", "")))
+	visual.set_meta("outfit_id", outfit_id)
 	var foot := str(active.get("footwear_vehicle_id", ""))
 	if not foot.is_empty() and "shoe_id" in racer:
 		racer.shoe_id = foot
+	## Publish local appearance for peer sync when a session dir is present.
+	var session_dir := OS.get_environment("GAME_SESSION_DIR").strip_edges()
+	if not session_dir.is_empty():
+		var role := "host"
+		if "local_player_index" in racer and int(racer.local_player_index) == 1:
+			role = "guest"
+		AppearanceSyncScript.write_payload(session_dir.path_join("sync/%s_appearance.json" % role), payload)
+
+
+func apply_peer_appearance_payload(racer: Node, payload: Dictionary) -> bool:
+	## Apply a peer cosmetic payload mid-session (multiplayer sync).
+	if racer == null or payload.is_empty():
+		return false
+	racer.set_meta("appearance_payload", payload)
+	var visual = racer.get_node_or_null("RacerVisual")
+	var AppearanceSyncScript = load("res://scripts/data/AppearanceSync.gd")
+	var ok := AppearanceSyncScript.apply_to_visual(visual, payload)
+	if visual != null and visual.has_method("apply_profile") and visual.get("profile") != null:
+		## Rebuild after stamping cosmetics so peer sees correct outfit.
+		var profile = visual.get("profile")
+		profile.display_name = str(payload.get("display_name", profile.display_name))
+		visual.apply_profile(profile)
+	racer.set_meta("created_racer_id", str(payload.get("racer_id", "")))
+	racer.set_meta("runner_display_name", str(payload.get("display_name", "")))
+	racer.set_meta("outfit_id", str(payload.get("outfit_id", "")))
+	if visual != null:
+		visual.set_meta("created_racer_id", str(payload.get("racer_id", "")))
+		visual.set_meta("outfit_id", str(payload.get("outfit_id", "")))
+	return ok
+
+
+func apply_field_visual_budget(racer_count: int) -> void:
+	## Eight-racer visual budget hooks — LOD reduction only; does not claim 8p complete.
+	var lod := 0
+	if racer_count >= 8:
+		lod = 2
+	elif racer_count >= 5:
+		lod = 1
+	for child in get_children():
+		var visual = child.get_node_or_null("RacerVisual") if child != null else null
+		if visual != null and visual.has_method("set_visual_lod"):
+			visual.set_visual_lod(lod)
+
+
+func _try_apply_session_peer_appearance(guest_racer: Node) -> void:
+	## Independent clients: host applies guest cosmetic payload when present.
+	var session_dir := OS.get_environment("GAME_SESSION_DIR").strip_edges()
+	if session_dir.is_empty() or guest_racer == null:
+		return
+	var AppearanceSyncScript = load("res://scripts/data/AppearanceSync.gd")
+	var guest_payload: Dictionary = AppearanceSyncScript.read_payload(
+		session_dir.path_join("sync/guest_appearance.json")
+	)
+	if not guest_payload.is_empty():
+		apply_peer_appearance_payload(guest_racer, guest_payload)
 
 
 func _apply_vehicle_presentation(racer: Node, visual: Node) -> void:

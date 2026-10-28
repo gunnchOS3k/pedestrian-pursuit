@@ -99,6 +99,9 @@ func _run() -> void:
 	if not guest_ready:
 		_fail(dir, session, "guest process did not attach")
 		return
+	## Apply guest cosmetic payload so peer outfit is visible on Player2Racer.
+	var guest_appearance_ok := _apply_guest_appearance(dir, scene, guest)
+	var host_appearance_fp := _publish_host_appearance(dir, player)
 	var countdown_finished := false
 	var countdown_deadline := Time.get_ticks_msec() + COUNTDOWN_WAIT_MSEC
 	while Time.get_ticks_msec() < countdown_deadline:
@@ -195,8 +198,16 @@ func _run() -> void:
 		"guestMaxLateral": guest_max_lateral,
 		"guestLastProgress": guest_last_progress,
 		"ecosystemReturn": "ready",
+		"guestAppearanceApplied": guest_appearance_ok,
+		"hostAppearanceFingerprint": host_appearance_fp,
+		"appearanceSync": guest_appearance_ok and not host_appearance_fp.is_empty(),
 	}
 	_write_json(dir.path_join("result.json"), result)
+	_write_json(dir.path_join("artifacts_appearance_sync.json"), {
+		"guestAppearanceApplied": guest_appearance_ok,
+		"hostAppearanceFingerprint": host_appearance_fp,
+		"appearanceSync": bool(result.get("appearanceSync", false)),
+	})
 	print("GAME_SESSION_ROLE=host")
 	print("GAME_SESSION_GUEST_SEAT=Player2Racer")
 	print("GAME_SESSION_COURSE_AI_IS_GUEST=false")
@@ -212,10 +223,52 @@ func _run() -> void:
 	print("GAME_SESSION_GUEST_MAX_LATERAL=%.3f" % guest_max_lateral)
 	print("GAME_SESSION_GUEST_PROGRESS=%.3f" % guest_last_progress)
 	print("GAME_SESSION_BOTH_FINISHED=%s" % str(both).to_lower())
+	print("APPEARANCE_SYNC=%s" % str(bool(result.get("appearanceSync", false))).to_lower())
+	print("GUEST_APPEARANCE_APPLIED=%s" % str(guest_appearance_ok).to_lower())
 	print("ECOSYSTEM_RETURN=ready")
 	if scene != null and is_instance_valid(scene):
 		scene.queue_free()
 	quit(0 if both else 1)
+
+
+func _publish_host_appearance(dir: String, player: Node) -> String:
+	var AppearanceSyncScript = load("res://scripts/data/AppearanceSync.gd")
+	var CreatedRacerStoreScript = load("res://scripts/data/CreatedRacerStore.gd")
+	var WardrobeCatalogScript = load("res://scripts/data/WardrobeCatalog.gd")
+	var racer := CreatedRacerStoreScript.create_racer("Host Studio Racer")
+	racer["appearance"]["skin_tone"] = "rich_brown"
+	racer["appearance"]["hair_style"] = "locs_shoulder"
+	racer["appearance"]["facial_hair"] = "stubble"
+	racer["appearance"]["assistive"] = "leg_brace_vis"
+	racer["outfit_id"] = "harbor_linen_default"
+	var preset: Dictionary = WardrobeCatalogScript.preset("harbor_linen_default")
+	var slots: Dictionary = preset.get("slots", {})
+	CreatedRacerStoreScript.save_outfit("harbor_linen_default", slots, true)
+	racer["footwear_vehicle_id"] = str(slots.get("footwear_vehicle", "lanewind_tempo_flats"))
+	CreatedRacerStoreScript.update_racer(racer)
+	var payload: Dictionary = AppearanceSyncScript.pack_from_created_racer(racer, slots)
+	AppearanceSyncScript.write_payload(dir.path_join("sync/host_appearance.json"), payload)
+	if player != null and is_instance_valid(player):
+		player.set_meta("appearance_payload", payload)
+		var scene := player.get_parent()
+		if scene != null and scene.has_method("apply_peer_appearance_payload"):
+			scene.apply_peer_appearance_payload(player, payload)
+		elif player.get_node_or_null("RacerVisual") != null:
+			AppearanceSyncScript.apply_to_visual(player.get_node_or_null("RacerVisual"), payload)
+			var visual = player.get_node_or_null("RacerVisual")
+			if visual != null and visual.has_method("apply_profile") and visual.get("profile") != null:
+				visual.apply_profile(visual.get("profile"))
+	return AppearanceSyncScript.fingerprint(payload)
+
+
+func _apply_guest_appearance(dir: String, scene: Node, guest: Node) -> bool:
+	var AppearanceSyncScript = load("res://scripts/data/AppearanceSync.gd")
+	var payload: Dictionary = AppearanceSyncScript.read_payload(dir.path_join("sync/guest_appearance.json"))
+	if payload.is_empty() or guest == null or scene == null:
+		return false
+	if scene.has_method("apply_peer_appearance_payload"):
+		return bool(scene.apply_peer_appearance_payload(guest, payload))
+	return AppearanceSyncScript.apply_to_visual(guest.get_node_or_null("RacerVisual"), payload)
 
 
 func _write_snapshot(dir: String, race_manager: Node, guest: Node, flags: Dictionary) -> void:
@@ -233,6 +286,20 @@ func _write_snapshot(dir: String, race_manager: Node, guest: Node, flags: Dictio
 	var state := -1
 	if race_manager != null and is_instance_valid(race_manager):
 		state = int(race_manager.get("state"))
+	var host_fp := ""
+	var guest_fp := ""
+	var scene_node := race_manager.get_parent() if race_manager != null else null
+	if scene_node != null:
+		var host_racer := scene_node.get_node_or_null("PlayerRacer")
+		var guest_racer := scene_node.get_node_or_null("Player2Racer")
+		if host_racer != null:
+			var hv = host_racer.get_node_or_null("RacerVisual")
+			if hv != null and hv.has_method("cosmetic_fingerprint"):
+				host_fp = str(hv.cosmetic_fingerprint())
+		if guest_racer != null:
+			var gv = guest_racer.get_node_or_null("RacerVisual")
+			if gv != null and gv.has_method("cosmetic_fingerprint"):
+				guest_fp = str(gv.cosmetic_fingerprint())
 	_write_json(dir.path_join("sync/snapshot.json"), {
 		"raceState": state,
 		"finished": bool(flags.get("results", false)),
@@ -241,6 +308,8 @@ func _write_snapshot(dir: String, race_manager: Node, guest: Node, flags: Dictio
 		"guestSpeed": speed,
 		"hostPid": OS.get_process_id(),
 		"pathStart": _path_start(race_manager),
+		"hostAppearanceFingerprint": host_fp,
+		"guestAppearanceFingerprint": guest_fp,
 	})
 
 
