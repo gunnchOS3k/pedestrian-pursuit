@@ -507,7 +507,7 @@ func _attach_shoes(
 ) -> void:
 	var side := -1.0 if is_left else 1.0
 	var march := _shoe_archetype()
-	## Street Legends + legacy runner maps — distinct silhouettes, shared mesh stack.
+	## Street Legends + Roller Revolution — distinct silhouettes, shared mesh stack.
 	var balanced := march == "street_balanced"
 	var sprint := march == "street_sprint"
 	var parkour := march == "street_parkour"
@@ -516,21 +516,35 @@ func _attach_shoes(
 	var trick := march == "street_trick"
 	var rail := march == "street_rail"
 	var kinetic := march == "street_kinetic"
+	var roller_inline := march == "roller_inline"
+	var roller_quad := march == "roller_quad"
+	var roller_hover := march == "roller_hoverish"
 	var native_street := balanced or sprint or parkour or tempo or power or trick or rail or kinetic
-	if tempo or rail or power or sprint or trick or kinetic or parkour:
+	var native_roller := roller_inline or roller_quad or roller_hover
+	if tempo or rail or power or sprint or trick or kinetic or parkour or native_roller:
 		shoe_scale *= 1.14
 	if power:
 		shoe_scale *= 1.08 ## Blockier iron silhouette for forge ash.
 	if sprint:
 		shoe_scale *= 0.96 ## Low spike profile.
+	if roller_quad:
+		shoe_scale *= 1.06
+	if roller_hover:
+		shoe_scale *= 1.04
+	if vehicle_id == "treadfall_blades":
+		shoe_scale *= 0.98
+	elif vehicle_id == "iron_derby_blitz":
+		shoe_scale *= 1.1
 	# Kinetic Sole stack: outsole / midsole yellow / kinetic upper / tread bars.
 	var midsole := StandardMaterial3D.new()
 	midsole.albedo_color = Color(0.96, 0.77, 0.09) # Midsole Yellow
 	midsole.roughness = 0.45
-	midsole.emission_enabled = native_street
+	midsole.emission_enabled = native_street or native_roller
 	if midsole.emission_enabled:
 		midsole.emission = Color(0.96, 0.77, 0.09)
-		midsole.emission_energy_multiplier = 0.34 if (power or kinetic) else (0.3 if (tempo or rail) else 0.22)
+		midsole.emission_energy_multiplier = (
+			0.34 if (power or kinetic or roller_hover) else (0.3 if (tempo or rail or roller_inline) else 0.22)
+		)
 	var upper := StandardMaterial3D.new()
 	if balanced:
 		upper.albedo_color = Color(1.0, 0.42, 0.24) # Kinetic Orange Circlers
@@ -548,14 +562,35 @@ func _attach_shoes(
 		upper.albedo_color = Color(0.58, 0.85, 0.18) # Kaleido lime
 	elif kinetic:
 		upper.albedo_color = Color(0.13, 0.72, 0.81) # Volt cyan
+	elif vehicle_id == "slipstream_inlines":
+		upper.albedo_color = Color(0.2, 0.78, 0.95) # Slipstream cyan
+	elif vehicle_id == "heelspin_quads":
+		upper.albedo_color = Color(0.95, 0.35, 0.55) # Heelspin magenta
+	elif vehicle_id == "velvet_rollers":
+		upper.albedo_color = Color(0.55, 0.28, 0.72) # Velvet plum
+	elif vehicle_id == "iron_derby_blitz":
+		upper.albedo_color = Color(0.45, 0.48, 0.52) # Derby steel
+	elif vehicle_id == "scissorblade_skates":
+		upper.albedo_color = Color(0.85, 0.9, 0.95) # Blade silver
+	elif vehicle_id == "orbitwheel_heels":
+		upper.albedo_color = Color(0.35, 0.85, 0.7) # Orbit mint
+	elif vehicle_id == "treadfall_blades":
+		upper.albedo_color = Color(0.95, 0.55, 0.15) # Treadfall amber
 	else:
 		upper.albedo_color = self.accent_color
 	upper.roughness = 0.38 if not power else 0.55
 	upper.emission_enabled = true
 	upper.emission = Color(1.0, 0.42, 0.24) if power else upper.albedo_color
 	upper.emission_energy_multiplier = (
-		0.42 if kinetic else (0.38 if power else (0.4 if rail else (0.35 if tempo else 0.28)))
+		0.42 if (kinetic or roller_hover) else (0.38 if power else (0.4 if rail else (0.35 if (tempo or roller_inline) else 0.28)))
 	)
+	var wheel := StandardMaterial3D.new()
+	wheel.albedo_color = Color(0.08, 0.08, 0.1)
+	wheel.roughness = 0.7
+	wheel.emission_enabled = roller_hover
+	if wheel.emission_enabled:
+		wheel.emission = Color(0.35, 0.85, 0.7)
+		wheel.emission_energy_multiplier = 0.35
 	var outsole := StandardMaterial3D.new()
 	outsole.albedo_color = Color(0.12, 0.12, 0.14)
 	outsole.roughness = 0.85
@@ -621,8 +656,8 @@ func _attach_shoes(
 	)
 	leg.add_child(chevron)
 	chevron.position = Vector3(0, -leg_len + 0.09, 0.12 * shoe_scale)
-	# Grip tread bars under the outsole.
-	var tread_count := 5 if (tempo or parkour) else (4 if (rail or power or kinetic or trick) else 3)
+	# Grip tread bars / roller wheels under the outsole.
+	var tread_count := 5 if (tempo or parkour or roller_quad) else (4 if (rail or power or kinetic or trick or roller_inline or roller_hover) else 3)
 	for i in range(tread_count):
 		var tread_mat: Material = dark
 		if tempo or parkour:
@@ -635,16 +670,35 @@ func _attach_shoes(
 			tread_mat = spike
 		elif trick:
 			tread_mat = upper
+		elif native_roller:
+			tread_mat = wheel
 		var tread := _mesh_box(
-			Vector3(0.13 * ws * shoe_scale, 0.025 * shoe_scale, 0.035 * shoe_scale),
+			Vector3(0.13 * ws * shoe_scale if not native_roller else 0.05 * ws * shoe_scale,
+				0.025 * shoe_scale if not native_roller else 0.05 * shoe_scale,
+				0.035 * shoe_scale if not native_roller else 0.05 * shoe_scale),
 			Vector3.ZERO,
 			tread_mat
 		)
 		leg.add_child(tread)
-		var z_spread := 0.055 if native_street else 0.07
+		var z_spread := 0.055 if (native_street or native_roller) else 0.07
 		tread.position = Vector3(
-			0, -leg_len - 0.058, (float(i) - float(tread_count - 1) * 0.5) * z_spread * shoe_scale
+			side * (0.06 * ws * shoe_scale if native_roller else 0.0),
+			-leg_len - 0.058,
+			(float(i) - float(tread_count - 1) * 0.5) * z_spread * shoe_scale
 		)
+		if native_roller and roller_quad:
+			## Second wheel column for quads.
+			var tread2 := _mesh_box(
+				Vector3(0.05 * ws * shoe_scale, 0.05 * shoe_scale, 0.05 * shoe_scale),
+				Vector3.ZERO,
+				wheel
+			)
+			leg.add_child(tread2)
+			tread2.position = Vector3(
+				side * (-0.06 * ws * shoe_scale),
+				-leg_len - 0.058,
+				(float(i) - float(tread_count - 1) * 0.5) * z_spread * shoe_scale
+			)
 	# Heel block (rear) with family-specific silhouette props.
 	var heel := _mesh_box(
 		Vector3(0.13 * ws * shoe_scale, 0.1 * shoe_scale, 0.11 * shoe_scale),
@@ -757,6 +811,86 @@ func _attach_shoes(
 		)
 		leg.add_child(ring2)
 		ring2.position = Vector3(0.0, -leg_len + 0.12, -0.08 * shoe_scale)
+	elif roller_inline:
+		## Inline chassis + ankle cuff; per-ID blade/fin read.
+		var chassis := _mesh_box(
+			Vector3(0.08 * ws * shoe_scale, 0.04 * shoe_scale, 0.28 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(chassis)
+		chassis.position = Vector3(0.0, -leg_len - 0.02, 0.02 * shoe_scale)
+		var cuff_i := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.1 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			midsole if vehicle_id != "iron_derby_blitz" else iron
+		)
+		leg.add_child(cuff_i)
+		cuff_i.position = Vector3(0.0, -leg_len + 0.08, -0.06 * shoe_scale)
+		if vehicle_id == "scissorblade_skates":
+			var blade := _mesh_box(
+				Vector3(0.02 * ws * shoe_scale, 0.06 * shoe_scale, 0.22 * shoe_scale),
+				Vector3.ZERO,
+				spike
+			)
+			leg.add_child(blade)
+			blade.position = Vector3(side * 0.09 * ws * shoe_scale, -leg_len - 0.02, 0.04 * shoe_scale)
+		elif vehicle_id == "treadfall_blades":
+			var rake := _mesh_box(
+				Vector3(0.03 * ws * shoe_scale, 0.05 * shoe_scale, 0.18 * shoe_scale),
+				Vector3.ZERO,
+				upper
+			)
+			leg.add_child(rake)
+			rake.position = Vector3(side * 0.08 * ws * shoe_scale, -leg_len + 0.02, -0.1 * shoe_scale)
+		elif vehicle_id == "slipstream_inlines":
+			var stream := _mesh_box(
+				Vector3(0.025 * ws * shoe_scale, 0.08 * shoe_scale, 0.14 * shoe_scale),
+				Vector3.ZERO,
+				railfin
+			)
+			leg.add_child(stream)
+			stream.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.04, 0.0)
+	elif roller_quad:
+		## Quad boot block + heel brake pad.
+		var boot := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.1 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(boot)
+		boot.position = Vector3(0.0, -leg_len + 0.04, -0.02 * shoe_scale)
+		var brake := _mesh_box(
+			Vector3(0.08 * ws * shoe_scale, 0.05 * shoe_scale, 0.06 * shoe_scale),
+			Vector3.ZERO,
+			midsole if vehicle_id == "velvet_rollers" else iron
+		)
+		leg.add_child(brake)
+		brake.position = Vector3(0.0, -leg_len - 0.02, -0.14 * shoe_scale)
+		if vehicle_id == "heelspin_quads":
+			var spin := _mesh_box(
+				Vector3(0.04 * ws * shoe_scale, 0.12 * shoe_scale, 0.04 * shoe_scale),
+				Vector3.ZERO,
+				upper
+			)
+			leg.add_child(spin)
+			spin.position = Vector3(side * 0.11 * ws * shoe_scale, -leg_len + 0.06, -0.08 * shoe_scale)
+	elif roller_hover:
+		## Mag-orbit heel disc (grounded collision; VFX-only hover read).
+		var disc := _mesh_box(
+			Vector3(0.18 * ws * shoe_scale, 0.03 * shoe_scale, 0.18 * shoe_scale),
+			Vector3.ZERO,
+			wheel
+		)
+		leg.add_child(disc)
+		disc.position = Vector3(0.0, -leg_len - 0.01, -0.04 * shoe_scale)
+		var orbit := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.04 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(orbit)
+		orbit.position = Vector3(0.0, -leg_len + 0.08, -0.04 * shoe_scale)
 	if is_left:
 		_shoe_l = sole
 		_heel_l = heel

@@ -2,7 +2,7 @@ class_name ShoeData
 extends RefCounted
 
 ## Loads shoe / Kinetic Sole vehicle JSON with material / surface affinities.
-## Legacy four IDs remain for challenge + Beta contracts; Street Legends are race-native.
+## Legacy four IDs remain for challenge + Beta contracts; playable garage IDs are race-native.
 
 const VehicleCatalogScript = preload("res://scripts/data/VehicleCatalog.gd")
 
@@ -42,11 +42,12 @@ static func legacy_ids() -> Array[String]:
 
 
 static func street_legend_ids() -> Array[String]:
+	## Backward-compatible alias — returns all playable garage vehicles.
 	return VehicleCatalogScript.playable_ids()
 
 
 static func all_ids() -> Array[String]:
-	## Race-ready footwear pool: legacy challenge set + Street Legends (native).
+	## Race-ready footwear pool: legacy challenge set + playable garage vehicles.
 	var out: Array[String] = []
 	for id in LEGACY_IDS:
 		out.append(id)
@@ -57,8 +58,8 @@ static func all_ids() -> Array[String]:
 
 
 static func race_selectable_ids() -> Array[String]:
-	## Menu race picker prefers Street Legends; stubs are garage-preview only.
-	var playable := street_legend_ids()
+	## Menu race picker: playable garage vehicles; stubs are preview-only.
+	var playable := VehicleCatalogScript.playable_ids()
 	if playable.is_empty():
 		return legacy_ids()
 	return playable

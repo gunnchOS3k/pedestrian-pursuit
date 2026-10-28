@@ -285,7 +285,7 @@ def validate_project(root: Path) -> list[str]:
 
 
 def _validate_vehicle_registry(root: Path) -> list[str]:
-    """Kinetic Sole garage: exactly 50 IDs, ≥8 playable Street Legends, truthful stubs."""
+    """Kinetic Sole garage: exactly 50 IDs, ≥15 playable (Street+Roller), truthful stubs."""
     errors: list[str] = []
     path = root / "data/vehicles/vehicle_registry.json"
     reg = _read_json(path, errors)
@@ -343,8 +343,8 @@ def _validate_vehicle_registry(root: Path) -> list[str]:
             errors.append(f"{path}: {vid} collision_contract must mention grounded collision/checkpoints")
     if len(ids) != len(set(ids)):
         errors.append(f"{path}: duplicate vehicle ids")
-    if playable < 8:
-        errors.append(f"{path}: need ≥8 playable Street Legends, found {playable}")
+    if playable < 15:
+        errors.append(f"{path}: need ≥15 playable (Street+Roller), found {playable}")
     if stub + playable != len(vehicles):
         errors.append(f"{path}: playable/stub accounting mismatch")
     if int(reg.get("vehicle_count", -1)) != 50:
@@ -354,6 +354,26 @@ def _validate_vehicle_registry(root: Path) -> list[str]:
         errors.append(f"{path}: Street Legends family must have 8 vehicles")
     if not all(bool(v.get("playable")) for v in street):
         errors.append(f"{path}: all Street Legends must be playable")
+    rollers = [v for v in vehicles if isinstance(v, dict) and v.get("family_id") == "roller_revolution"]
+    if len(rollers) != 7:
+        errors.append(f"{path}: Roller Revolution family must have 7 vehicles")
+    if not all(bool(v.get("playable")) for v in rollers):
+        errors.append(f"{path}: all Roller Revolution vehicles must be playable")
+    roller_fps: set[tuple] = set()
+    for v in rollers:
+        fp = (
+            float(v.get("top_speed_modifier", 0)),
+            float(v.get("acceleration_modifier", 0)),
+            float(v.get("handling_modifier", 0)),
+            float(v.get("drift_modifier", 0)),
+            float(v.get("jump_modifier", 0)),
+            float(v.get("boost_modifier", 0)),
+            float(v.get("stomp_modifier", 0)),
+            str(v.get("material_family", "")),
+        )
+        if fp in roller_fps:
+            errors.append(f"{path}: duplicate Roller Revolution fingerprint for {v.get('id')}")
+        roller_fps.add(fp)
     return errors
 
 
