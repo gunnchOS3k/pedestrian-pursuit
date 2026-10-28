@@ -329,7 +329,10 @@ func save_cup_progress() -> void:
 		is_cup_active() and not has_next_cup_race() and round_recorded
 	)
 	cfg.set_value("meta", "saved_at", Time.get_datetime_string_from_system())
-	cfg.set_value("meta", "save_version", 3)
+	## v4: championship catalog expanded to 8 cups / 32 tracks; legacy v3 resumes still load.
+	cfg.set_value("meta", "save_version", 4)
+	cfg.set_value("meta", "championship_cups", 8)
+	cfg.set_value("meta", "championship_tracks", 32)
 	cfg.save("user://cup_progress.cfg")
 	# Mirror selection into progression save for RC migration continuity.
 	var prog := _progression()

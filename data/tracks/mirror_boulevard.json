@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "id": "mirror_boulevard",
+  "display_name": "Mirror Boulevard",
+  "lap_count": 3,
+  "difficulty": "beginner",
+  "theme": "neon_night",
+  "description": "Reflective boulevard with mirrored arches. Championship stub \u2014 launchable legitimate lap; geometry/art still pending polish.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_stub_raceable",
+  "final_track_art_status": "track_art_pending",
+  "human_track_art_approved": false,
+  "lane_width": 14.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#2A1838",
+  "accent_color": "#FF4AD6",
+  "sky_color": "#100818",
+  "backdrop_color": "#201028",
+  "path_points": [
+    [
+      60.74,
+      1.9,
+      2.0
+    ],
+    [
+      50.38,
+      0.91,
+      29.13
+    ],
+    [
+      25.16,
+      -1.14,
+      45.24
+    ],
+    [
+      -4.44,
+      -1.86,
+      48.13
+    ],
+    [
+      -32.64,
+      -0.4,
+      38.64
+    ],
+    [
+      -51.89,
+      1.52,
+      16.36
+    ],
+    [
+      -52.09,
+      1.67,
+      -12.41
+    ],
+    [
+      -32.89,
+      -0.14,
+      -34.9
+    ],
+    [
+      -4.46,
+      -1.78,
+      -44.23
+    ],
+    [
+      25.04,
+      -1.34,
+      -41.0
+    ],
+    [
+      50.08,
+      0.67,
+      -24.96
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 1,
+      "size": [
+        6,
+        12
+      ],
+      "speed_bonus": 1.15
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 3,
+      "size": [
+        8,
+        10
+      ],
+      "speed_mult": 0.85
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 5,
+      "bounce_force": 11.0,
+      "forward_boost": 3.5
+    }
+  ],
+  "item_boxes": [
+    2,
+    5,
+    7
+  ],
+  "boost_pickups": [
+    1,
+    6
+  ],
+  "rail_segments": [
+    2
+  ],
+  "shortcut_routes": [
+    {
+      "id": "mirror_boulevard_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 5,
+      "risk": "medium",
+      "ai_preference": 0.35,
+      "description": "Risk cut across the infield; miss and hit slow terrain."
+    }
+  ],
+  "landmarks": [
+    "mirror_boulevard_marker"
+  ],
+  "elevation_profile": "stub_rise",
+  "bank_bias": 0.04,
+  "geometry_note": "Honest pending geometry \u2014 raceable closed loop, not commercial finished art."
+}

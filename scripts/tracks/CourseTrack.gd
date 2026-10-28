@@ -277,6 +277,14 @@ func _add_track_segment(
 	parent.add_child(body)
 	body.global_position = (start_point + end_point) * 0.5 + Vector3(0.0, -0.3, 0.0)
 	body.look_at(end_point + Vector3(0.0, -0.3, 0.0), Vector3.UP)
+	## Bank / ramp pitch from authored elevation — presentation + collision, not teleport.
+	var rise := end_point.y - start_point.y
+	var flat_len := Vector2(end_point.x - start_point.x, end_point.z - start_point.z).length()
+	if flat_len > 0.5:
+		body.rotation.x += atan2(rise, flat_len)
+	var bank := float(_data.get("bank_bias", 0.0))
+	if absf(bank) > 0.001:
+		body.rotation.z += bank * sin(float(index) * 0.7)
 
 	var surface_size := Vector3(_lane_width, 0.6, length + _lane_width * 0.4)
 	var shape := BoxShape3D.new()
@@ -322,6 +330,11 @@ func _add_track_segment(
 		track_mat.emission_enabled = true
 		track_mat.emission = Color(0.55, 0.18, 0.06)
 		track_mat.emission_energy_multiplier = 0.18
+	elif theme in ["sneaker_city", "metro_pulse", "crosswalk_canyon", "transit_spiral"]:
+		track_mat = track_mat.duplicate()
+		track_mat.roughness = 0.5
+		track_mat.metallic = 0.12
+		track_mat.albedo_color = track_mat.albedo_color.lerp(Color(0.22, 0.24, 0.28), 0.2)
 	visual.material_override = track_mat
 	body.add_child(visual)
 
@@ -635,6 +648,8 @@ func _build_scenery() -> void:
 			_build_ridge_scenery(scenery)
 		"mesa_mirage":
 			_build_mesa_scenery(scenery)
+		"sneaker_city", "metro_pulse", "crosswalk_canyon", "transit_spiral":
+			_build_metro_scenery(scenery)
 		_:
 			_add_visual_box(
 				scenery,
@@ -642,6 +657,40 @@ func _build_scenery() -> void:
 				Vector3(140.0, 0.2, 140.0),
 				_color("backdrop_color", Color.DARK_GREEN)
 			)
+			_build_landmark_markers(scenery)
+
+
+func _build_metro_scenery(parent: Node3D) -> void:
+	## Metro Motion landmarks — original procedural props, not third-party IP.
+	_add_visual_box(
+		parent,
+		Vector3(0.0, -0.75, 0.0),
+		Vector3(160.0, 0.2, 160.0),
+		_color("backdrop_color", Color(0.15, 0.16, 0.2))
+	)
+	var accent := _color("accent_color", Color(0.2, 0.8, 0.7))
+	for i in range(6):
+		var ang := float(i) * TAU / 6.0
+		var pos := Vector3(cos(ang) * 38.0, 4.0, sin(ang) * 34.0)
+		_add_visual_box(parent, pos, Vector3(3.2, 10.0, 3.2), accent.darkened(0.25))
+		_add_visual_box(parent, pos + Vector3(0, 6.5, 0), Vector3(6.0, 1.2, 1.2), accent)
+	## Start billboard / station arch.
+	_add_visual_box(parent, Vector3(0.0, 5.5, 42.0), Vector3(18.0, 1.2, 1.4), accent)
+	_add_visual_box(parent, Vector3(-8.0, 2.5, 42.0), Vector3(1.2, 6.0, 1.2), Color(0.2, 0.22, 0.28))
+	_add_visual_box(parent, Vector3(8.0, 2.5, 42.0), Vector3(1.2, 6.0, 1.2), Color(0.2, 0.22, 0.28))
+	_build_landmark_markers(parent)
+
+
+func _build_landmark_markers(parent: Node3D) -> void:
+	## Data-authored landmark ids → simple readable props near the racing line.
+	var landmarks: Array = _data.get("landmarks", [])
+	if landmarks.is_empty() or _course_points.is_empty():
+		return
+	var accent := _color("accent_color", Color.WHITE)
+	for i in range(mini(landmarks.size(), _course_points.size())):
+		var p: Vector3 = _course_points[i]
+		var marker := Vector3(p.x * 1.15, p.y + 3.5, p.z * 1.15)
+		_add_visual_box(parent, marker, Vector3(2.0, 4.0, 2.0), accent.lightened(0.15))
 
 
 func _build_cascade_scenery(parent: Node3D) -> void:

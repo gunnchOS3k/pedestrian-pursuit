@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "id": "kinetic_coast_cup",
+  "display_name": "Kinetic Coast Cup",
+  "description": "Sea-breeze foot-racing along cliffs, boardwalks, and tidal bridges. Tracks registered and launchable; geometry marked honest-pending beyond Cups 1\u20133 production batch.",
+  "cup_index": 4,
+  "track_ids": [
+    "saltline_boardwalk",
+    "cliffside_draft",
+    "tidal_bridge_run",
+    "seaglass_switchback"
+  ],
+  "points_by_position": [
+    10,
+    7,
+    5,
+    3,
+    2,
+    1
+  ]
+}

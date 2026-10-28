@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "id": "afterglow_overpass",
+  "display_name": "Afterglow Overpass",
+  "lap_count": 3,
+  "difficulty": "beginner",
+  "theme": "neon_night",
+  "description": "Overpass climb with afterglow banks. Championship stub \u2014 launchable legitimate lap; geometry/art still pending polish.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_stub_raceable",
+  "final_track_art_status": "track_art_pending",
+  "human_track_art_approved": false,
+  "lane_width": 14.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#2A1838",
+  "accent_color": "#FF4AD6",
+  "sky_color": "#100818",
+  "backdrop_color": "#201028",
+  "path_points": [
+    [
+      65.22,
+      2.09,
+      4.0
+    ],
+    [
+      54.38,
+      0.22,
+      25.62
+    ],
+    [
+      31.06,
+      -1.87,
+      39.42
+    ],
+    [
+      3.0,
+      -2.09,
+      44.65
+    ],
+    [
+      -26.33,
+      -0.22,
+      41.03
+    ],
+    [
+      -50.59,
+      1.87,
+      26.55
+    ],
+    [
+      -59.22,
+      2.09,
+      4.0
+    ],
+    [
+      -48.38,
+      0.22,
+      -17.62
+    ],
+    [
+      -25.06,
+      -1.87,
+      -31.42
+    ],
+    [
+      3.0,
+      -2.09,
+      -36.65
+    ],
+    [
+      32.33,
+      -0.22,
+      -33.03
+    ],
+    [
+      56.59,
+      1.87,
+      -18.55
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 1,
+      "size": [
+        6,
+        12
+      ],
+      "speed_bonus": 1.15
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 4,
+      "size": [
+        8,
+        10
+      ],
+      "speed_mult": 0.85
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 6,
+      "bounce_force": 11.0,
+      "forward_boost": 3.5
+    }
+  ],
+  "item_boxes": [
+    2,
+    6,
+    8
+  ],
+  "boost_pickups": [
+    1,
+    7
+  ],
+  "rail_segments": [
+    3
+  ],
+  "shortcut_routes": [
+    {
+      "id": "afterglow_overpass_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 6,
+      "risk": "medium",
+      "ai_preference": 0.35,
+      "description": "Risk cut across the infield; miss and hit slow terrain."
+    }
+  ],
+  "landmarks": [
+    "afterglow_overpass_marker"
+  ],
+  "elevation_profile": "stub_rise",
+  "bank_bias": 0.04,
+  "geometry_note": "Honest pending geometry \u2014 raceable closed loop, not commercial finished art."
+}

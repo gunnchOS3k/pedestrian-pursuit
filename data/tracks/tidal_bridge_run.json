@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "id": "tidal_bridge_run",
+  "display_name": "Tidal Bridge Run",
+  "lap_count": 3,
+  "difficulty": "beginner",
+  "theme": "kinetic_coast",
+  "description": "Bridge hop circuit over tidal flats. Championship stub \u2014 launchable legitimate lap; geometry/art still pending polish.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_stub_raceable",
+  "final_track_art_status": "track_art_pending",
+  "human_track_art_approved": false,
+  "lane_width": 14.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#3A6A7A",
+  "accent_color": "#7EE0F2",
+  "sky_color": "#8EC8E8",
+  "backdrop_color": "#2F5A6A",
+  "path_points": [
+    [
+      60.93,
+      1.94,
+      4.0
+    ],
+    [
+      52.91,
+      2.04,
+      26.12
+    ],
+    [
+      29.08,
+      0.11,
+      40.48
+    ],
+    [
+      0.0,
+      -1.94,
+      43.88
+    ],
+    [
+      -27.45,
+      -2.04,
+      38.43
+    ],
+    [
+      -50.09,
+      -0.11,
+      24.94
+    ],
+    [
+      -60.93,
+      1.94,
+      4.0
+    ],
+    [
+      -52.91,
+      2.04,
+      -18.12
+    ],
+    [
+      -29.08,
+      0.11,
+      -32.48
+    ],
+    [
+      -0.0,
+      -1.94,
+      -35.88
+    ],
+    [
+      27.45,
+      -2.04,
+      -30.43
+    ],
+    [
+      50.09,
+      -0.11,
+      -16.94
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 1,
+      "size": [
+        6,
+        12
+      ],
+      "speed_bonus": 1.15
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 4,
+      "size": [
+        8,
+        10
+      ],
+      "speed_mult": 0.85
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 6,
+      "bounce_force": 11.0,
+      "forward_boost": 3.5
+    }
+  ],
+  "item_boxes": [
+    2,
+    6,
+    8
+  ],
+  "boost_pickups": [
+    1,
+    7
+  ],
+  "rail_segments": [
+    3
+  ],
+  "shortcut_routes": [
+    {
+      "id": "tidal_bridge_run_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 6,
+      "risk": "medium",
+      "ai_preference": 0.35,
+      "description": "Risk cut across the infield; miss and hit slow terrain."
+    }
+  ],
+  "landmarks": [
+    "tidal_bridge_run_marker"
+  ],
+  "elevation_profile": "stub_rise",
+  "bank_bias": 0.04,
+  "geometry_note": "Honest pending geometry \u2014 raceable closed loop, not commercial finished art."
+}

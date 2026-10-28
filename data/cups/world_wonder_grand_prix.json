@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "id": "world_wonder_grand_prix",
+  "display_name": "World Wonder Grand Prix",
+  "description": "Championship finale across original wonder landmarks \u2014 not nation costumes. Tracks registered and launchable; geometry marked honest-pending beyond Cups 1\u20133 production batch.",
+  "cup_index": 8,
+  "track_ids": [
+    "cascade_colossus",
+    "aurora_amphitheater",
+    "origami_orchard",
+    "horizon_crown_finale"
+  ],
+  "points_by_position": [
+    10,
+    7,
+    5,
+    3,
+    2,
+    1
+  ]
+}

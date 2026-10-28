@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "id": "saltline_boardwalk",
+  "display_name": "Saltline Boardwalk",
+  "lap_count": 3,
+  "difficulty": "beginner",
+  "theme": "kinetic_coast",
+  "description": "Boardwalk oval with salt spray banks. Championship stub \u2014 launchable legitimate lap; geometry/art still pending polish.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_stub_raceable",
+  "final_track_art_status": "track_art_pending",
+  "human_track_art_approved": false,
+  "lane_width": 14.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#3A6A7A",
+  "accent_color": "#7EE0F2",
+  "sky_color": "#8EC8E8",
+  "backdrop_color": "#2F5A6A",
+  "path_points": [
+    [
+      50.0,
+      0.0,
+      0.0
+    ],
+    [
+      41.99,
+      1.43,
+      27.46
+    ],
+    [
+      15.81,
+      0.88,
+      43.8
+    ],
+    [
+      -15.09,
+      -0.88,
+      41.79
+    ],
+    [
+      -38.91,
+      -1.43,
+      25.44
+    ],
+    [
+      -50.0,
+      -0.0,
+      0.0
+    ],
+    [
+      -41.99,
+      1.43,
+      -27.46
+    ],
+    [
+      -15.81,
+      0.88,
+      -43.8
+    ],
+    [
+      15.09,
+      -0.88,
+      -41.79
+    ],
+    [
+      38.91,
+      -1.43,
+      -25.44
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 1,
+      "size": [
+        6,
+        12
+      ],
+      "speed_bonus": 1.15
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 3,
+      "size": [
+        8,
+        10
+      ],
+      "speed_mult": 0.85
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 5,
+      "bounce_force": 11.0,
+      "forward_boost": 3.5
+    }
+  ],
+  "item_boxes": [
+    2,
+    5,
+    6
+  ],
+  "boost_pickups": [
+    1,
+    6
+  ],
+  "rail_segments": [
+    2
+  ],
+  "shortcut_routes": [
+    {
+      "id": "saltline_boardwalk_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 5,
+      "risk": "medium",
+      "ai_preference": 0.35,
+      "description": "Risk cut across the infield; miss and hit slow terrain."
+    }
+  ],
+  "landmarks": [
+    "saltline_boardwalk_marker"
+  ],
+  "elevation_profile": "stub_rise",
+  "bank_bias": 0.04,
+  "geometry_note": "Honest pending geometry \u2014 raceable closed loop, not commercial finished art."
+}

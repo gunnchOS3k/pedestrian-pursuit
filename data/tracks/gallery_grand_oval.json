@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "id": "gallery_grand_oval",
+  "display_name": "Gallery Grand Oval",
+  "lap_count": 3,
+  "difficulty": "beginner",
+  "theme": "archive_relay",
+  "description": "Gallery oval under skylight banks. Championship stub \u2014 launchable legitimate lap; geometry/art still pending polish.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_stub_raceable",
+  "final_track_art_status": "track_art_pending",
+  "human_track_art_approved": false,
+  "lane_width": 14.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#5A4A3A",
+  "accent_color": "#E0C090",
+  "sky_color": "#D8C8A8",
+  "backdrop_color": "#4A3A2A",
+  "path_points": [
+    [
+      67.23,
+      -1.74,
+      4.0
+    ],
+    [
+      58.83,
+      -2.17,
+      24.28
+    ],
+    [
+      39.16,
+      -0.43,
+      40.82
+    ],
+    [
+      9.0,
+      1.74,
+      48.95
+    ],
+    [
+      -23.23,
+      2.17,
+      43.35
+    ],
+    [
+      -44.42,
+      0.43,
+      25.74
+    ],
+    [
+      -49.23,
+      -1.74,
+      4.0
+    ],
+    [
+      -40.83,
+      -2.17,
+      -16.28
+    ],
+    [
+      -21.16,
+      -0.43,
+      -32.82
+    ],
+    [
+      9.0,
+      1.74,
+      -40.95
+    ],
+    [
+      41.23,
+      2.17,
+      -35.35
+    ],
+    [
+      62.42,
+      0.43,
+      -17.74
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 1,
+      "size": [
+        6,
+        12
+      ],
+      "speed_bonus": 1.15
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 4,
+      "size": [
+        8,
+        10
+      ],
+      "speed_mult": 0.85
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 6,
+      "bounce_force": 11.0,
+      "forward_boost": 3.5
+    }
+  ],
+  "item_boxes": [
+    2,
+    6,
+    8
+  ],
+  "boost_pickups": [
+    1,
+    7
+  ],
+  "rail_segments": [
+    3
+  ],
+  "shortcut_routes": [
+    {
+      "id": "gallery_grand_oval_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 6,
+      "risk": "medium",
+      "ai_preference": 0.35,
+      "description": "Risk cut across the infield; miss and hit slow terrain."
+    }
+  ],
+  "landmarks": [
+    "gallery_grand_oval_marker"
+  ],
+  "elevation_profile": "stub_rise",
+  "bank_bias": 0.04,
+  "geometry_note": "Honest pending geometry \u2014 raceable closed loop, not commercial finished art."
+}

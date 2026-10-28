@@ -5,8 +5,11 @@
   "lap_count": 3,
   "difficulty": "beginner",
   "theme": "harbor_glass",
-  "description": "A glassy pier loop with tide flats, a pier-jump shortcut, and wide runoff for newcomers.",
+  "description": "Glassy pier loop with tide flats, pier-jump shortcut, and wide runoff.",
   "art_status": "LAUNCH_PROCEDURAL_FINAL",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
   "lane_width": 14.0,
   "guard_rails": true,
   "has_shortcut": true,
@@ -16,64 +19,74 @@
   "backdrop_color": "#2F5A6A",
   "path_points": [
     [
-      0,
-      0,
-      48
+      57.31,
+      1.09,
+      0.0
     ],
     [
-      28,
-      0,
-      52
+      53.37,
+      2.7,
+      21.11
     ],
     [
-      52,
-      0,
-      36
+      36.62,
+      2.27,
+      37.71
     ],
     [
-      58,
-      0,
-      8
+      12.5,
+      0.14,
+      44.98
     ],
     [
-      50,
-      0,
-      -24
+      -11.9,
+      -2.1,
+      42.83
     ],
     [
-      28,
-      0,
-      -46
+      -32.85,
+      -2.76,
+      33.84
     ],
     [
-      0,
-      0,
-      -40
+      -49.01,
+      -1.34,
+      19.39
     ],
     [
-      -26,
-      0,
-      -50
+      -57.31,
+      1.09,
+      0.0
     ],
     [
-      -52,
-      0,
-      -28
+      -53.37,
+      2.7,
+      -21.11
     ],
     [
-      -56,
-      0,
-      4
+      -36.62,
+      2.27,
+      -37.71
     ],
     [
-      -44,
-      0,
-      32
+      -12.5,
+      0.14,
+      -44.98
     ],
     [
-      -20,
-      0,
-      46
+      11.9,
+      -2.1,
+      -42.83
+    ],
+    [
+      32.85,
+      -2.76,
+      -33.84
+    ],
+    [
+      49.01,
+      -1.34,
+      -19.39
     ]
   ],
   "checkpoint_points": [
@@ -82,16 +95,8 @@
     4,
     6,
     8,
-    10
-  ],
-  "shortcut_routes": [
-    {
-      "id": "pier_cut",
-      "entry_point_index": 2,
-      "exit_point_index": 5,
-      "risk": "medium",
-      "description": "Jump the pier gap for a shorter line; miss and hit tide flats."
-    }
+    10,
+    12
   ],
   "speed_lanes": [
     {
@@ -100,55 +105,53 @@
         6,
         12
       ],
-      "speed_bonus": 1.18
+      "speed_bonus": 1.15
     }
   ],
   "terrain_zones": [
     {
-      "point_index": 7,
+      "point_index": 4,
       "size": [
-        12,
-        14
+        8,
+        10
       ],
-      "terrain_name": "tide_flats",
-      "speed_multiplier": 0.82,
-      "handling_multiplier": 0.9,
-      "color": "#5BA3B8"
+      "speed_mult": 0.85
     }
   ],
   "bounce_pads": [
     {
-      "point_index": 3,
-      "size": [
-        6,
-        6
-      ],
-      "bounce_force": 12.0,
-      "forward_boost": 5.5
+      "point_index": 7,
+      "bounce_force": 11.0,
+      "forward_boost": 3.5
     }
   ],
   "item_boxes": [
-    1,
-    4,
-    8,
-    11
+    2,
+    7,
+    9
   ],
   "boost_pickups": [
-    2,
-    6,
-    10
+    1,
+    8
   ],
   "rail_segments": [
-    9,
-    10
+    3
   ],
-  "digital_completion": {
-    "route_graph": true,
-    "ai_path": true,
-    "collision": true,
-    "checkpoints": true,
-    "shortcuts": true,
-    "rails": true,
-    "visual_final": false
-  }
+  "shortcut_routes": [
+    {
+      "id": "tideglass_harbor_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 7,
+      "risk": "medium",
+      "ai_preference": 0.35,
+      "description": "Risk cut across the infield; miss and hit slow terrain."
+    }
+  ],
+  "landmarks": [
+    "pier_arch",
+    "tide_posts",
+    "glass_shed"
+  ],
+  "elevation_profile": "pier_steps",
+  "bank_bias": 0.07
 }

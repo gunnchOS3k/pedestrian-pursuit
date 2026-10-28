@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "id": "antenna_ascent",
+  "display_name": "Antenna Ascent",
+  "lap_count": 3,
+  "difficulty": "beginner",
+  "theme": "skyline_relay",
+  "description": "Antenna ascent with banked helipad turn. Championship stub \u2014 launchable legitimate lap; geometry/art still pending polish.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_stub_raceable",
+  "final_track_art_status": "track_art_pending",
+  "human_track_art_approved": false,
+  "lane_width": 14.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#4A5868",
+  "accent_color": "#C9E4FF",
+  "sky_color": "#A0C0E0",
+  "backdrop_color": "#3A4858",
+  "path_points": [
+    [
+      66.51,
+      0.32,
+      4.0
+    ],
+    [
+      55.51,
+      -1.81,
+      24.01
+    ],
+    [
+      34.33,
+      -2.13,
+      38.35
+    ],
+    [
+      6.0,
+      -0.32,
+      45.64
+    ],
+    [
+      -25.42,
+      1.81,
+      42.09
+    ],
+    [
+      -48.85,
+      2.13,
+      26.17
+    ],
+    [
+      -54.51,
+      0.32,
+      4.0
+    ],
+    [
+      -43.51,
+      -1.81,
+      -16.01
+    ],
+    [
+      -22.33,
+      -2.13,
+      -30.35
+    ],
+    [
+      6.0,
+      -0.32,
+      -37.64
+    ],
+    [
+      37.42,
+      1.81,
+      -34.09
+    ],
+    [
+      60.85,
+      2.13,
+      -18.17
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 1,
+      "size": [
+        6,
+        12
+      ],
+      "speed_bonus": 1.15
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 4,
+      "size": [
+        8,
+        10
+      ],
+      "speed_mult": 0.85
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 6,
+      "bounce_force": 11.0,
+      "forward_boost": 3.5
+    }
+  ],
+  "item_boxes": [
+    2,
+    6,
+    8
+  ],
+  "boost_pickups": [
+    1,
+    7
+  ],
+  "rail_segments": [
+    3
+  ],
+  "shortcut_routes": [
+    {
+      "id": "antenna_ascent_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 6,
+      "risk": "medium",
+      "ai_preference": 0.35,
+      "description": "Risk cut across the infield; miss and hit slow terrain."
+    }
+  ],
+  "landmarks": [
+    "antenna_ascent_marker"
+  ],
+  "elevation_profile": "stub_rise",
+  "bank_bias": 0.04,
+  "geometry_note": "Honest pending geometry \u2014 raceable closed loop, not commercial finished art."
+}

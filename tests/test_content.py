@@ -17,6 +17,7 @@ class WaveEAlphaContentTests(unittest.TestCase):
         self.assertEqual(validate_project(ROOT), [])
 
     def test_two_cups_eight_unique_tracks(self) -> None:
+        ## Legacy launch pair still present with 8 unique IDs.
         cups = []
         track_ids: list[str] = []
         for cup_id in ("sole_surge_cup", "stride_circuit_cup"):
@@ -25,6 +26,23 @@ class WaveEAlphaContentTests(unittest.TestCase):
             track_ids.extend(cup["track_ids"])
         self.assertEqual(len(cups), 2)
         self.assertEqual(len(set(track_ids)), 8)
+
+    def test_championship_eight_cups_thirty_two_tracks(self) -> None:
+        from validate_content import KNOWN_CUPS, CHAMPIONSHIP_TRACK_TARGET
+
+        track_ids: list[str] = []
+        self.assertEqual(len(KNOWN_CUPS), 8)
+        for cup_id in KNOWN_CUPS:
+            cup = json.loads((ROOT / f"data/cups/{cup_id}.json").read_text(encoding="utf-8"))
+            self.assertEqual(len(cup["track_ids"]), 4)
+            track_ids.extend(cup["track_ids"])
+        self.assertEqual(len(set(track_ids)), CHAMPIONSHIP_TRACK_TARGET)
+        metro = json.loads((ROOT / "data/cups/metro_motion_cup.json").read_text(encoding="utf-8"))
+        self.assertIn("sneaker_city_sprintway", metro["track_ids"])
+        art = json.loads((ROOT / "data/art/track_art_acceptance.json").read_text(encoding="utf-8"))
+        self.assertFalse(art.get("HUMAN_FUN_APPROVAL", True))
+        self.assertFalse(art.get("V1_0_0_RELEASE_AUTHORIZED", True))
+        self.assertEqual(len(art["tracks"]), 32)
 
     def test_cup_orders_are_intentional(self) -> None:
         sole = json.loads((ROOT / "data/cups/sole_surge_cup.json").read_text(encoding="utf-8"))

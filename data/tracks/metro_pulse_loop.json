@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "id": "metro_pulse_loop",
+  "display_name": "Metro Pulse Loop",
+  "lap_count": 3,
+  "difficulty": "intermediate",
+  "theme": "metro_pulse",
+  "description": "Transit-ring circuit under elevated rails with pulse lights, platform shortcuts, and station landmarks.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_raceable",
+  "final_track_art_status": "track_art_pending",
+  "human_track_art_approved": false,
+  "lane_width": 13.5,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#1B2430",
+  "accent_color": "#2EC4B6",
+  "sky_color": "#203040",
+  "backdrop_color": "#121820",
+  "path_points": [
+    [
+      59.31,
+      3.13,
+      0.0
+    ],
+    [
+      55.86,
+      3.97,
+      16.83
+    ],
+    [
+      41.31,
+      2.49,
+      30.04
+    ],
+    [
+      20.81,
+      -0.46,
+      36.53
+    ],
+    [
+      0.0,
+      -3.13,
+      36.87
+    ],
+    [
+      -18.96,
+      -3.97,
+      33.28
+    ],
+    [
+      -36.47,
+      -2.49,
+      26.53
+    ],
+    [
+      -51.39,
+      0.46,
+      15.48
+    ],
+    [
+      -59.31,
+      3.13,
+      0.0
+    ],
+    [
+      -55.86,
+      3.97,
+      -16.83
+    ],
+    [
+      -41.31,
+      2.49,
+      -30.04
+    ],
+    [
+      -20.81,
+      -0.46,
+      -36.53
+    ],
+    [
+      -0.0,
+      -3.13,
+      -36.87
+    ],
+    [
+      18.96,
+      -3.97,
+      -33.28
+    ],
+    [
+      36.47,
+      -2.49,
+      -26.53
+    ],
+    [
+      51.39,
+      0.46,
+      -15.48
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 1,
+      "size": [
+        6,
+        12
+      ],
+      "speed_bonus": 1.15
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 5,
+      "size": [
+        8,
+        10
+      ],
+      "speed_mult": 0.85
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 8,
+      "bounce_force": 11.0,
+      "forward_boost": 3.5
+    }
+  ],
+  "item_boxes": [
+    2,
+    8,
+    10
+  ],
+  "boost_pickups": [
+    1,
+    9
+  ],
+  "rail_segments": [
+    4
+  ],
+  "shortcut_routes": [
+    {
+      "id": "metro_pulse_loop_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 8,
+      "risk": "medium",
+      "ai_preference": 0.35,
+      "description": "Risk cut across the infield; miss and hit slow terrain."
+    }
+  ],
+  "landmarks": [
+    "elevated_rail",
+    "pulse_station",
+    "platform_cut"
+  ],
+  "elevation_profile": "metro_ramps",
+  "bank_bias": 0.11
+}

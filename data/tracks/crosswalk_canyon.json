@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "id": "crosswalk_canyon",
+  "display_name": "Crosswalk Canyon",
+  "lap_count": 3,
+  "difficulty": "intermediate",
+  "theme": "crosswalk_canyon",
+  "description": "Deep street canyon of zebra crossings, signal towers, and a mid-block alley shortcut.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_raceable",
+  "final_track_art_status": "track_art_pending",
+  "human_track_art_approved": false,
+  "lane_width": 13.5,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#4A4A52",
+  "accent_color": "#F4C430",
+  "sky_color": "#8898A8",
+  "backdrop_color": "#3A3A44",
+  "path_points": [
+    [
+      49.21,
+      2.99,
+      0.0
+    ],
+    [
+      43.41,
+      2.03,
+      22.72
+    ],
+    [
+      28.37,
+      -0.46,
+      38.67
+    ],
+    [
+      9.61,
+      -2.6,
+      45.78
+    ],
+    [
+      -9.57,
+      -2.79,
+      45.58
+    ],
+    [
+      -28.1,
+      -0.87,
+      38.3
+    ],
+    [
+      -43.09,
+      1.7,
+      22.55
+    ],
+    [
+      -49.21,
+      2.99,
+      0.0
+    ],
+    [
+      -43.41,
+      2.03,
+      -22.72
+    ],
+    [
+      -28.37,
+      -0.46,
+      -38.67
+    ],
+    [
+      -9.61,
+      -2.6,
+      -45.78
+    ],
+    [
+      9.57,
+      -2.79,
+      -45.58
+    ],
+    [
+      28.1,
+      -0.87,
+      -38.3
+    ],
+    [
+      43.09,
+      1.7,
+      -22.55
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 1,
+      "size": [
+        6,
+        12
+      ],
+      "speed_bonus": 1.15
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 4,
+      "size": [
+        8,
+        10
+      ],
+      "speed_mult": 0.85
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 7,
+      "bounce_force": 11.0,
+      "forward_boost": 3.5
+    }
+  ],
+  "item_boxes": [
+    2,
+    7,
+    9
+  ],
+  "boost_pickups": [
+    1,
+    8
+  ],
+  "rail_segments": [
+    3
+  ],
+  "shortcut_routes": [
+    {
+      "id": "crosswalk_canyon_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 7,
+      "risk": "medium",
+      "ai_preference": 0.35,
+      "description": "Risk cut across the infield; miss and hit slow terrain."
+    }
+  ],
+  "landmarks": [
+    "signal_tower",
+    "zebra_bridge",
+    "alley_gate"
+  ],
+  "elevation_profile": "canyon_dip",
+  "bank_bias": 0.09
+}

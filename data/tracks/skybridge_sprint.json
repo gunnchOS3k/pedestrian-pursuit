@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "id": "skybridge_sprint",
+  "display_name": "Skybridge Sprint",
+  "lap_count": 3,
+  "difficulty": "beginner",
+  "theme": "skyline_relay",
+  "description": "Skybridge sprint between towers. Championship stub \u2014 launchable legitimate lap; geometry/art still pending polish.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_stub_raceable",
+  "final_track_art_status": "track_art_pending",
+  "human_track_art_approved": false,
+  "lane_width": 14.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#4A5868",
+  "accent_color": "#C9E4FF",
+  "sky_color": "#A0C0E0",
+  "backdrop_color": "#3A4858",
+  "path_points": [
+    [
+      63.68,
+      1.14,
+      2.0
+    ],
+    [
+      51.98,
+      -0.91,
+      27.33
+    ],
+    [
+      28.1,
+      -1.9,
+      43.48
+    ],
+    [
+      -1.83,
+      -0.66,
+      48.68
+    ],
+    [
+      -31.97,
+      1.34,
+      39.56
+    ],
+    [
+      -50.25,
+      1.78,
+      16.16
+    ],
+    [
+      -47.92,
+      0.13,
+      -11.57
+    ],
+    [
+      -29.06,
+      -1.67,
+      -32.68
+    ],
+    [
+      -1.65,
+      -1.52,
+      -43.61
+    ],
+    [
+      29.51,
+      0.41,
+      -42.13
+    ],
+    [
+      55.41,
+      1.86,
+      -25.22
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 1,
+      "size": [
+        6,
+        12
+      ],
+      "speed_bonus": 1.15
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 3,
+      "size": [
+        8,
+        10
+      ],
+      "speed_mult": 0.85
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 5,
+      "bounce_force": 11.0,
+      "forward_boost": 3.5
+    }
+  ],
+  "item_boxes": [
+    2,
+    5,
+    7
+  ],
+  "boost_pickups": [
+    1,
+    6
+  ],
+  "rail_segments": [
+    2
+  ],
+  "shortcut_routes": [
+    {
+      "id": "skybridge_sprint_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 5,
+      "risk": "medium",
+      "ai_preference": 0.35,
+      "description": "Risk cut across the infield; miss and hit slow terrain."
+    }
+  ],
+  "landmarks": [
+    "skybridge_sprint_marker"
+  ],
+  "elevation_profile": "stub_rise",
+  "bank_bias": 0.04,
+  "geometry_note": "Honest pending geometry \u2014 raceable closed loop, not commercial finished art."
+}

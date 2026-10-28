@@ -228,6 +228,7 @@ jobs:
             run_step GarageProgressionTest "$GODOT" --headless --path "$ROOT" --script res://tests/GarageProgressionTest.gd
             run_step CreatorWardrobeRaceFlowTest "$GODOT" --headless --path "$ROOT" --script res://tests/CreatorWardrobeRaceFlowTest.gd
             run_step AppearanceMultiplayerSyncTest "$GODOT" --headless --path "$ROOT" --script res://tests/AppearanceMultiplayerSyncTest.gd
+            run_step ChampionshipCatalogTest "$GODOT" --headless --path "$ROOT" --script res://tests/ChampionshipCatalogTest.gd
             run_step BetaProductStateTest "$GODOT" --headless --path "$ROOT" --script res://tests/BetaProductStateTest.gd
             run_step FullProductDepthTest "$GODOT" --headless --path "$ROOT" --script res://tests/FullProductDepthTest.gd
             run_step AchievementRuntimeTest "$GODOT" --headless --path "$ROOT" --script res://tests/AchievementRuntimeTest.gd

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate launch catalog: ≥2 cups, 8 unique courses, shoes, items, device roles."""
+"""Validate championship catalog: 8 cups × 4 = 32 raceable courses, shoes, items, device roles."""
 
 from __future__ import annotations
 
@@ -14,7 +14,32 @@ SAFE_ID = re.compile(r"^[a-z0-9_]+$")
 HEX_COLOR = re.compile(r"^#[0-9A-Fa-f]{6}$")
 CUP_TRACK_COUNT = 4
 LAUNCH_TRACK_TARGET = 8
-KNOWN_CUPS = ("sole_surge_cup", "stride_circuit_cup")
+CHAMPIONSHIP_TRACK_TARGET = 32
+CHAMPIONSHIP_CUP_TARGET = 8
+KNOWN_CUPS = (
+    "sole_surge_cup",
+    "stride_circuit_cup",
+    "metro_motion_cup",
+    "kinetic_coast_cup",
+    "neon_night_cup",
+    "skyline_relay_cup",
+    "archive_relay_cup",
+    "world_wonder_grand_prix",
+)
+LAUNCH_TRACKS = (
+    "verdant_cascade_circuit",
+    "cloverwind_ranch",
+    "prism_apex",
+    "emberkeep_gauntlet",
+    "tideglass_harbor",
+    "neon_switchyard",
+    "cloudstep_ridge",
+    "mirage_mesa",
+)
+RACEABLE_ART = (
+    "LAUNCH_PROCEDURAL_FINAL",
+    "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+)
 FEATURE_COLLECTIONS = ("speed_lanes", "terrain_zones", "bounce_pads")
 INDEX_COLLECTIONS = ("item_boxes", "boost_pickups", "rail_segments")
 EXPECTED_SHOES = ("starter_soles", "speed_sneakers", "grip_soles", "bounce_boots")
@@ -166,10 +191,19 @@ def validate_project(root: Path) -> list[str]:
             _validate_track(path, track, errors)
 
     unique_tracks = sorted(set(all_track_ids))
+    if len(KNOWN_CUPS) != CHAMPIONSHIP_CUP_TARGET:
+        errors.append(f"championship needs {CHAMPIONSHIP_CUP_TARGET} cups, got {len(KNOWN_CUPS)}")
+    if len(unique_tracks) != CHAMPIONSHIP_TRACK_TARGET:
+        errors.append(
+            f"championship catalog has {len(unique_tracks)} unique cup tracks; need {CHAMPIONSHIP_TRACK_TARGET}"
+        )
     if len(unique_tracks) < LAUNCH_TRACK_TARGET:
         errors.append(
             f"launch catalog has {len(unique_tracks)} unique cup tracks; need ≥{LAUNCH_TRACK_TARGET}"
         )
+    for launch_id in LAUNCH_TRACKS:
+        if launch_id not in unique_tracks:
+            errors.append(f"missing preserved launch track {launch_id}")
 
     for shoe_id in EXPECTED_SHOES:
         shoe_path = root / f"data/shoes/{shoe_id}.json"
@@ -212,8 +246,8 @@ def validate_project(root: Path) -> list[str]:
     art = _read_json(art_inv, errors)
     if art and art.get("status") != "LAUNCH_PROCEDURAL_FINAL":
         errors.append(f"{art_inv}: status must be LAUNCH_PROCEDURAL_FINAL for digital RC")
-    if art and len(art.get("tracks", [])) != 8:
-        errors.append(f"{art_inv}: need 8 launch tracks")
+    if art and len(art.get("tracks", [])) < 8:
+        errors.append(f"{art_inv}: need ≥8 launch inventory tracks")
     provenance = root / "data/art/provenance.json"
     prov = _read_json(provenance, errors)
     if prov and int(prov.get("counts", {}).get("racers", 0)) < 8:
@@ -235,24 +269,34 @@ def validate_project(root: Path) -> list[str]:
     for profile_id in ("keyboard_default", "gamepad_default", "touch_assist", "local_mp_split"):
         if not (root / f"data/input_profiles/{profile_id}.json").exists():
             errors.append(f"missing input profile {profile_id}")
-    # No launch greybox tags on the eight cup courses.
-    launch_tracks = (
-        "verdant_cascade_circuit",
-        "cloverwind_ranch",
-        "prism_apex",
-        "emberkeep_gauntlet",
-        "tideglass_harbor",
-        "neon_switchyard",
-        "cloudstep_ridge",
-        "mirage_mesa",
-    )
-    for track_id in launch_tracks:
+    # Cups 1–2 launch eight remain LAUNCH_PROCEDURAL_FINAL; championship tracks are raceable procedural.
+    for track_id in LAUNCH_TRACKS:
         track_path = root / f"data/tracks/{track_id}.json"
         track = _read_json(track_path, errors)
         if track and track.get("art_status") == "REQUIRES_ART_PRODUCTION":
             errors.append(f"{track_path}: launch art_status must not remain REQUIRES_ART_PRODUCTION")
         if track and track.get("art_status") != "LAUNCH_PROCEDURAL_FINAL":
             errors.append(f"{track_path}: expected LAUNCH_PROCEDURAL_FINAL")
+    for track_id in unique_tracks:
+        track_path = root / f"data/tracks/{track_id}.json"
+        track = _read_json(track_path, errors)
+        if not track:
+            continue
+        if track.get("art_status") not in RACEABLE_ART:
+            errors.append(f"{track_path}: art_status must be raceable procedural ({track.get('art_status')})")
+        if track.get("art_status") == "REQUIRES_ART_PRODUCTION":
+            errors.append(f"{track_path}: greybox REQUIRES_ART_PRODUCTION not allowed in championship")
+        if bool(track.get("human_track_art_approved", False)):
+            errors.append(f"{track_path}: human track art must stay unapproved")
+    track_art_path = root / "data/art/track_art_acceptance.json"
+    track_art = _read_json(track_art_path, errors)
+    if track_art:
+        if track_art.get("HUMAN_FUN_APPROVAL") or track_art.get("HUMAN_COURSE_APPROVAL"):
+            errors.append(f"{track_art_path}: human approvals must stay false")
+        if track_art.get("RC2_READY") or track_art.get("V1_0_0_RELEASE_AUTHORIZED"):
+            errors.append(f"{track_art_path}: RC2/V1 must stay false")
+        if len(track_art.get("tracks", [])) != CHAMPIONSHIP_TRACK_TARGET:
+            errors.append(f"{track_art_path}: need {CHAMPIONSHIP_TRACK_TARGET} track art entries")
 
     grammar = root / "data/mechanics/foot_racing_grammar.json"
     gram = _read_json(grammar, errors)
@@ -552,7 +596,7 @@ def main() -> int:
             print(f"- {error}", file=sys.stderr)
         return 1
     print(
-        "Validated Beta/Digital-RC catalog: 2 cups, 8 unique courses, "
+        "Validated championship catalog: 8 cups, 32 unique courses, "
         "4 legacy footwear + 50-vehicle Kinetic Sole garage, 6 items, 8 runners w/ stats, "
         "grammar, challenges, art inventory."
     )

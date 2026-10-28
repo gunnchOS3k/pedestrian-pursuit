@@ -3,80 +3,90 @@
   "id": "prism_apex",
   "display_name": "Prism Apex",
   "lap_count": 3,
-  "difficulty": "advanced",
+  "difficulty": "intermediate",
   "theme": "prism_void",
-  "description": "A luminous orbital ribbon with alternating color sectors, sparse guard rails, and precision boost gates.",
+  "description": "Void ribbon climbs through luminous spires with glossy asphalt and risky prism cuts.",
   "art_status": "LAUNCH_PROCEDURAL_FINAL",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "lane_width": 14.0,
+  "guard_rails": true,
   "has_shortcut": true,
-  "lane_width": 12.5,
-  "guard_rails": false,
-  "track_color": "#4E5FD0",
-  "accent_color": "#76F7FF",
-  "sky_color": "#080B24",
-  "backdrop_color": "#11163C",
-  "segment_colors": [
-    "#EE5F9B",
-    "#F3A84D",
-    "#E7E866",
-    "#5FE5A2",
-    "#4BC7ED",
-    "#A47AEF"
-  ],
+  "track_color": "#3A3A68",
+  "accent_color": "#7AF0FF",
+  "sky_color": "#1A1535",
+  "backdrop_color": "#2A2050",
   "path_points": [
     [
-      0,
-      0,
-      40
+      50.68,
+      5.13,
+      0.0
     ],
     [
-      29,
-      0,
-      45
+      45.49,
+      4.75,
+      18.26
     ],
     [
-      54,
-      0,
-      24
+      30.19,
+      0.8,
+      31.55
     ],
     [
-      46,
-      0,
-      -8
+      10.24,
+      -3.75,
+      37.4
     ],
     [
-      57,
-      0,
-      -34
+      -10.04,
+      -5.48,
+      36.66
     ],
     [
-      23,
-      0,
-      -48
+      -28.92,
+      -3.08,
+      30.22
     ],
     [
-      -8,
-      0,
-      -37
+      -44.02,
+      1.64,
+      17.67
     ],
     [
-      -39,
-      0,
-      -48
+      -50.68,
+      5.13,
+      0.0
     ],
     [
-      -57,
-      0,
-      -18
+      -45.49,
+      4.75,
+      -18.26
     ],
     [
-      -45,
-      0,
-      14
+      -30.19,
+      0.8,
+      -31.55
     ],
     [
-      -20,
-      0,
-      35
+      -10.24,
+      -3.75,
+      -37.4
+    ],
+    [
+      10.04,
+      -5.48,
+      -36.66
+    ],
+    [
+      28.92,
+      -3.08,
+      -30.22
+    ],
+    [
+      44.02,
+      1.64,
+      -17.67
     ]
   ],
   "checkpoint_points": [
@@ -85,86 +95,63 @@
     4,
     6,
     8,
-    10
+    10,
+    12
   ],
   "speed_lanes": [
     {
-      "point_index": 2,
+      "point_index": 1,
       "size": [
-        5,
-        11
+        6,
+        12
       ],
-      "speed_bonus": 1.28
-    },
-    {
-      "point_index": 9,
-      "size": [
-        5,
-        11
-      ],
-      "speed_bonus": 1.28
+      "speed_bonus": 1.15
     }
   ],
   "terrain_zones": [
     {
-      "point_index": 5,
+      "point_index": 4,
       "size": [
         8,
         10
       ],
-      "terrain_name": "neon",
-      "speed_multiplier": 1.05,
-      "handling_multiplier": 0.9,
-      "color": "#A5F3FC"
+      "speed_mult": 0.85
     }
   ],
   "bounce_pads": [
     {
-      "point_index": 5,
-      "size": [
-        5,
-        5
-      ],
-      "bounce_force": 10.0,
-      "forward_boost": 7.0
+      "point_index": 7,
+      "bounce_force": 11.0,
+      "forward_boost": 3.5
     }
   ],
   "item_boxes": [
-    1,
-    4,
-    7,
-    10
-  ],
-  "boost_pickups": [
-    3,
-    8
-  ],
-  "shortcut_routes": [
-    {
-      "id": "ribbon_cut",
-      "entry_point_index": 2,
-      "exit_point_index": 6,
-      "risk": "narrow",
-      "ai_preference": 0.55
-    }
-  ],
-  "rail_segments": [
-    1,
-    4,
+    2,
     7,
     9
   ],
-  "exploit_notes": [
-    "Ribbon cut is Ace-preferred; Rookie stays outer for recovery room."
+  "boost_pickups": [
+    1,
+    8
   ],
-  "digital_completion": {
-    "route_graph": true,
-    "ai_path": true,
-    "collision": true,
-    "checkpoints": true,
-    "shortcuts": true,
-    "rails": true,
-    "visual_final": true,
-    "kinetic_sole_pass": "prism_solen_pike_v1"
-  }
+  "rail_segments": [
+    3
+  ],
+  "shortcut_routes": [
+    {
+      "id": "prism_apex_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 7,
+      "risk": "medium",
+      "ai_preference": 0.35,
+      "description": "Risk cut across the infield; miss and hit slow terrain."
+    }
+  ],
+  "landmarks": [
+    "prism_spires",
+    "void_gate",
+    "luminous_ribbon"
+  ],
+  "elevation_profile": "void_climb",
+  "bank_bias": 0.12
 }

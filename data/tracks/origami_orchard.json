@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "id": "origami_orchard",
+  "display_name": "Origami Orchard",
+  "lap_count": 3,
+  "difficulty": "beginner",
+  "theme": "world_wonder",
+  "description": "Origami orchard lanes with paper-kite arches. Championship stub \u2014 launchable legitimate lap; geometry/art still pending polish.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_stub_raceable",
+  "final_track_art_status": "track_art_pending",
+  "human_track_art_approved": false,
+  "lane_width": 14.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#3A4058",
+  "accent_color": "#F4D35E",
+  "sky_color": "#6A88C0",
+  "backdrop_color": "#2A3048",
+  "path_points": [
+    [
+      70.43,
+      -2.21,
+      4.0
+    ],
+    [
+      64.94,
+      -0.54,
+      24.71
+    ],
+    [
+      44.35,
+      1.67,
+      41.96
+    ],
+    [
+      12.0,
+      2.21,
+      48.42
+    ],
+    [
+      -19.43,
+      0.54,
+      40.88
+    ],
+    [
+      -39.36,
+      -1.67,
+      24.09
+    ],
+    [
+      -46.43,
+      -2.21,
+      4.0
+    ],
+    [
+      -40.94,
+      -0.54,
+      -16.71
+    ],
+    [
+      -20.35,
+      1.67,
+      -33.96
+    ],
+    [
+      12.0,
+      2.21,
+      -40.42
+    ],
+    [
+      43.43,
+      0.54,
+      -32.88
+    ],
+    [
+      63.36,
+      -1.67,
+      -16.09
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 1,
+      "size": [
+        6,
+        12
+      ],
+      "speed_bonus": 1.15
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 4,
+      "size": [
+        8,
+        10
+      ],
+      "speed_mult": 0.85
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 6,
+      "bounce_force": 11.0,
+      "forward_boost": 3.5
+    }
+  ],
+  "item_boxes": [
+    2,
+    6,
+    8
+  ],
+  "boost_pickups": [
+    1,
+    7
+  ],
+  "rail_segments": [
+    3
+  ],
+  "shortcut_routes": [
+    {
+      "id": "origami_orchard_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 6,
+      "risk": "medium",
+      "ai_preference": 0.35,
+      "description": "Risk cut across the infield; miss and hit slow terrain."
+    }
+  ],
+  "landmarks": [
+    "origami_orchard_marker"
+  ],
+  "elevation_profile": "stub_rise",
+  "bank_bias": 0.04,
+  "geometry_note": "Honest pending geometry \u2014 raceable closed loop, not commercial finished art."
+}
