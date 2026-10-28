@@ -285,7 +285,7 @@ def validate_project(root: Path) -> list[str]:
 
 
 def _validate_vehicle_registry(root: Path) -> list[str]:
-    """Kinetic Sole garage: exactly 50 IDs, ≥28 playable (Street+Roller+Hover+Elemental), truthful stubs."""
+    """Kinetic Sole garage: exactly 50 IDs, ≥34 playable (Street+Roller+Hover+Elemental+Ridiculous), truthful stubs."""
     errors: list[str] = []
     path = root / "data/vehicles/vehicle_registry.json"
     reg = _read_json(path, errors)
@@ -343,8 +343,8 @@ def _validate_vehicle_registry(root: Path) -> list[str]:
             errors.append(f"{path}: {vid} collision_contract must mention grounded collision/checkpoints")
     if len(ids) != len(set(ids)):
         errors.append(f"{path}: duplicate vehicle ids")
-    if playable < 28:
-        errors.append(f"{path}: need ≥28 playable (Street+Roller+Hover+Elemental), found {playable}")
+    if playable < 34:
+        errors.append(f"{path}: need ≥34 playable (Street+Roller+Hover+Elemental+Ridiculous), found {playable}")
     if stub + playable != len(vehicles):
         errors.append(f"{path}: playable/stub accounting mismatch")
     if int(reg.get("vehicle_count", -1)) != 50:
@@ -358,6 +358,7 @@ def _validate_vehicle_registry(root: Path) -> list[str]:
         ("roller_revolution", "Roller Revolution", 7),
         ("hover_couture", "Hover Couture / Spaceflight", 7),
         ("elemental_amphibious", "Elemental / Amphibious", 6),
+        ("beautifully_ridiculous", "Beautifully Ridiculous", 6),
     ):
         family = [v for v in vehicles if isinstance(v, dict) and v.get("family_id") == family_id]
         if len(family) != expect:
@@ -366,7 +367,7 @@ def _validate_vehicle_registry(root: Path) -> list[str]:
             errors.append(f"{path}: all {label} vehicles must be playable")
         fps: set[tuple] = set()
         for v in family:
-            if family_id in ("hover_couture", "elemental_amphibious"):
+            if family_id in ("hover_couture", "elemental_amphibious", "beautifully_ridiculous"):
                 contract = str(v.get("collision_contract", "")).lower()
                 if "grounded" not in contract and "checkpoint" not in contract:
                     errors.append(f"{path}: {family_id} {v.get('id')} missing grounded collision contract")

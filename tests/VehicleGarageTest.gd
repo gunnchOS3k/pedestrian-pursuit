@@ -1,6 +1,6 @@
 extends SceneTree
 
-## Headless: 50-vehicle registry, Street+Roller+Hover+Elemental playable, six items intact.
+## Headless: 50-vehicle registry, Street+Roller+Hover+Elemental+Ridiculous playable, six items intact.
 
 const VehicleCatalogScript = preload("res://scripts/data/VehicleCatalog.gd")
 const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
@@ -14,14 +14,16 @@ func _init() -> void:
 	if ids.size() != 50:
 		failures.append("registry size %d != 50" % ids.size())
 	var playable := VehicleCatalogScript.playable_ids()
-	if playable.size() != 28:
-		failures.append("playable size %d != 28" % playable.size())
+	if playable.size() != 34:
+		failures.append("playable size %d != 34" % playable.size())
 	var stubs := VehicleCatalogScript.stub_ids()
-	if stubs.size() != 22:
-		failures.append("stub size %d != 22" % stubs.size())
-	for family_id in ["street_legends", "roller_revolution", "hover_couture", "elemental_amphibious"]:
+	if stubs.size() != 16:
+		failures.append("stub size %d != 16" % stubs.size())
+	for family_id in ["street_legends", "roller_revolution", "hover_couture", "elemental_amphibious", "beautifully_ridiculous"]:
 		var family := VehicleCatalogScript.vehicles_in_family(family_id)
-		var expect := 8 if family_id == "street_legends" else (6 if family_id == "elemental_amphibious" else 7)
+		var expect := 8 if family_id == "street_legends" else (
+			6 if family_id in ["elemental_amphibious", "beautifully_ridiculous"] else 7
+		)
 		if family.size() != expect:
 			failures.append("%s size %d != %d" % [family_id, family.size(), expect])
 		for entry in family:
@@ -29,8 +31,8 @@ func _init() -> void:
 				failures.append("%s not playable: %s" % [family_id, str(entry.get("id", ""))])
 			if str(entry.get("art_status", "")) != "native_v1":
 				failures.append("%s art not native_v1: %s" % [family_id, str(entry.get("id", ""))])
-	## Hover/space and elemental themes must keep grounded collision contracts.
-	for family_id in ["hover_couture", "elemental_amphibious"]:
+	## Themed soles must keep grounded collision contracts.
+	for family_id in ["hover_couture", "elemental_amphibious", "beautifully_ridiculous"]:
 		var themed := VehicleCatalogScript.vehicles_in_family(family_id)
 		var fps: Dictionary = {}
 		for hv in themed:
@@ -71,8 +73,8 @@ func _init() -> void:
 		if bool(entry.get("playable", true)):
 			failures.append("stub marked playable: %s" % vid)
 	var race_ids := ShoeDataScript.race_selectable_ids()
-	if race_ids.size() != 28:
-		failures.append("race_selectable_ids %d != 28" % race_ids.size())
+	if race_ids.size() != 34:
+		failures.append("race_selectable_ids %d != 34" % race_ids.size())
 	## Signature shoes for eight roster runners.
 	var runners := [
 		"dash_reed", "nova_quill", "sierra_flux", "mira_lane",
@@ -96,7 +98,7 @@ func _init() -> void:
 			failures.append("legacy shoe missing %s" % lid)
 
 	if failures.is_empty():
-		print("VehicleGarageTest PASS — 50 IDs, 28 playable (Street+Roller+Hover+Elemental), 22 stubs, 6 items.")
+		print("VehicleGarageTest PASS — 50 IDs, 34 playable (Street+Roller+Hover+Elemental+Ridiculous), 16 stubs, 6 items.")
 		quit(0)
 	else:
 		print("VehicleGarageTest FAIL:")

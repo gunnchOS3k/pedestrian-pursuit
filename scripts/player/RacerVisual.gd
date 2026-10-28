@@ -530,6 +530,12 @@ func _attach_shoes(
 	var elemental_magma := march == "elemental_magma"
 	var elemental_frost := march == "elemental_frost"
 	var elemental_mud := march == "elemental_mud"
+	var ridiculous_boost := march == "ridiculous_boost"
+	var ridiculous_stomp := march == "ridiculous_stomp"
+	var ridiculous_reach := march == "ridiculous_reach"
+	var ridiculous_caffeine := march == "ridiculous_caffeine"
+	var ridiculous_drift := march == "ridiculous_drift"
+	var ridiculous_trick := march == "ridiculous_trick"
 	var native_street := balanced or sprint or parkour or tempo or power or trick or rail or kinetic
 	var native_roller := roller_inline or roller_quad or roller_hover
 	var native_hover := hover_glide or hover_boost or hover_bounce or hover_precision
@@ -537,7 +543,11 @@ func _attach_shoes(
 		elemental_wet or elemental_dive or elemental_sand
 		or elemental_magma or elemental_frost or elemental_mud
 	)
-	if tempo or rail or power or sprint or trick or kinetic or parkour or native_roller or native_hover or native_elemental:
+	var native_ridiculous := (
+		ridiculous_boost or ridiculous_stomp or ridiculous_reach
+		or ridiculous_caffeine or ridiculous_drift or ridiculous_trick
+	)
+	if tempo or rail or power or sprint or trick or kinetic or parkour or native_roller or native_hover or native_elemental or native_ridiculous:
 		shoe_scale *= 1.14
 	if power:
 		shoe_scale *= 1.08 ## Blockier iron silhouette for forge ash.
@@ -557,6 +567,14 @@ func _attach_shoes(
 		shoe_scale *= 1.08
 	if elemental_frost:
 		shoe_scale *= 1.05
+	if ridiculous_stomp:
+		shoe_scale *= 1.18
+	if ridiculous_reach:
+		shoe_scale *= 1.2
+	if ridiculous_drift:
+		shoe_scale *= 1.1
+	if ridiculous_boost or ridiculous_caffeine:
+		shoe_scale *= 1.04
 	if vehicle_id == "treadfall_blades":
 		shoe_scale *= 0.98
 	elif vehicle_id == "iron_derby_blitz":
@@ -569,17 +587,21 @@ func _attach_shoes(
 		shoe_scale *= 1.06
 	elif vehicle_id == "tidefin_runners":
 		shoe_scale *= 0.98
+	elif vehicle_id == "bubblegum_stilts":
+		shoe_scale *= 1.08
+	elif vehicle_id == "banana_boomerang_cleats":
+		shoe_scale *= 0.97
 	# Kinetic Sole stack: outsole / midsole yellow / kinetic upper / tread bars.
 	var midsole := StandardMaterial3D.new()
 	midsole.albedo_color = Color(0.96, 0.77, 0.09) # Midsole Yellow
 	midsole.roughness = 0.45
-	midsole.emission_enabled = native_street or native_roller or native_hover or native_elemental
+	midsole.emission_enabled = native_street or native_roller or native_hover or native_elemental or native_ridiculous
 	if midsole.emission_enabled:
 		midsole.emission = Color(0.96, 0.77, 0.09)
 		midsole.emission_energy_multiplier = (
-			0.36 if (hover_boost or hover_bounce or elemental_magma) else (
-				0.34 if (power or kinetic or roller_hover or hover_glide or elemental_dive) else (
-					0.3 if (tempo or rail or roller_inline or hover_precision or elemental_wet or elemental_frost) else 0.22
+			0.36 if (hover_boost or hover_bounce or elemental_magma or ridiculous_boost or ridiculous_caffeine) else (
+				0.34 if (power or kinetic or roller_hover or hover_glide or elemental_dive or ridiculous_trick) else (
+					0.3 if (tempo or rail or roller_inline or hover_precision or elemental_wet or elemental_frost or ridiculous_reach) else 0.22
 				)
 			)
 		)
@@ -640,17 +662,29 @@ func _attach_shoes(
 		upper.albedo_color = Color(0.78, 0.92, 0.98) # Frost ice
 	elif vehicle_id == "mud_monster_waders":
 		upper.albedo_color = Color(0.42, 0.32, 0.18) # Mud ochre
+	elif vehicle_id == "slipper_rockets":
+		upper.albedo_color = Color(0.95, 0.55, 0.75) # Fuzzy pink slipper
+	elif vehicle_id == "pancake_stompers":
+		upper.albedo_color = Color(0.92, 0.7, 0.35) # Pancake batter
+	elif vehicle_id == "bubblegum_stilts":
+		upper.albedo_color = Color(0.98, 0.45, 0.78) # Bubblegum pink
+	elif vehicle_id == "espresso_jet_socks":
+		upper.albedo_color = Color(0.35, 0.2, 0.12) # Espresso brown
+	elif vehicle_id == "sofa_surfers":
+		upper.albedo_color = Color(0.55, 0.65, 0.85) # Sofa denim
+	elif vehicle_id == "banana_boomerang_cleats":
+		upper.albedo_color = Color(0.98, 0.88, 0.2) # Banana yellow
 	else:
 		upper.albedo_color = self.accent_color
-	upper.roughness = 0.38 if not (power or elemental_mud or elemental_magma) else 0.55
+	upper.roughness = 0.38 if not (power or elemental_mud or elemental_magma or ridiculous_stomp or ridiculous_drift) else 0.55
 	upper.emission_enabled = true
 	upper.emission = Color(1.0, 0.42, 0.24) if power else upper.albedo_color
 	upper.emission_energy_multiplier = (
-		0.45 if (hover_boost or elemental_magma) else (
-			0.42 if (kinetic or roller_hover or hover_bounce or elemental_dive) else (
+		0.45 if (hover_boost or elemental_magma or ridiculous_caffeine) else (
+			0.42 if (kinetic or roller_hover or hover_bounce or elemental_dive or ridiculous_boost) else (
 				0.38 if power else (
-					0.4 if (rail or hover_precision or elemental_frost) else (
-						0.35 if (tempo or roller_inline or hover_glide or elemental_wet) else 0.28
+					0.4 if (rail or hover_precision or elemental_frost or ridiculous_trick) else (
+						0.35 if (tempo or roller_inline or hover_glide or elemental_wet or ridiculous_reach) else 0.28
 					)
 				)
 			)
@@ -705,6 +739,41 @@ func _attach_shoes(
 	if mud_pad.emission_enabled:
 		mud_pad.emission = Color(0.45, 0.32, 0.12)
 		mud_pad.emission_energy_multiplier = 0.2
+	var joke_jet := StandardMaterial3D.new()
+	joke_jet.albedo_color = Color(1.0, 0.55, 0.75)
+	joke_jet.roughness = 0.35
+	joke_jet.emission_enabled = ridiculous_boost or ridiculous_caffeine
+	if joke_jet.emission_enabled:
+		joke_jet.emission = Color(1.0, 0.45, 0.2) if ridiculous_caffeine else Color(1.0, 0.6, 0.85)
+		joke_jet.emission_energy_multiplier = 0.45 if ridiculous_caffeine else 0.4
+	var pancake_mat := StandardMaterial3D.new()
+	pancake_mat.albedo_color = Color(0.9, 0.68, 0.32)
+	pancake_mat.roughness = 0.7
+	pancake_mat.emission_enabled = ridiculous_stomp
+	if pancake_mat.emission_enabled:
+		pancake_mat.emission = Color(0.95, 0.55, 0.15)
+		pancake_mat.emission_energy_multiplier = 0.25
+	var gum_mat := StandardMaterial3D.new()
+	gum_mat.albedo_color = Color(0.98, 0.5, 0.82)
+	gum_mat.roughness = 0.3
+	gum_mat.emission_enabled = ridiculous_reach
+	if gum_mat.emission_enabled:
+		gum_mat.emission = Color(1.0, 0.4, 0.75)
+		gum_mat.emission_energy_multiplier = 0.35
+	var sofa_mat := StandardMaterial3D.new()
+	sofa_mat.albedo_color = Color(0.5, 0.6, 0.8)
+	sofa_mat.roughness = 0.75
+	sofa_mat.emission_enabled = ridiculous_drift
+	if sofa_mat.emission_enabled:
+		sofa_mat.emission = Color(0.45, 0.55, 0.85)
+		sofa_mat.emission_energy_multiplier = 0.22
+	var banana_mat := StandardMaterial3D.new()
+	banana_mat.albedo_color = Color(0.98, 0.88, 0.2)
+	banana_mat.roughness = 0.4
+	banana_mat.emission_enabled = ridiculous_trick
+	if banana_mat.emission_enabled:
+		banana_mat.emission = Color(1.0, 0.85, 0.15)
+		banana_mat.emission_energy_multiplier = 0.32
 	var outsole := StandardMaterial3D.new()
 	outsole.albedo_color = Color(0.12, 0.12, 0.14)
 	outsole.roughness = 0.85
@@ -770,12 +839,13 @@ func _attach_shoes(
 	)
 	leg.add_child(chevron)
 	chevron.position = Vector3(0, -leg_len + 0.09, 0.12 * shoe_scale)
-	# Grip tread bars / roller wheels / hover pads / elemental soles under the outsole.
-	var tread_count := 5 if (tempo or parkour or roller_quad or hover_bounce or elemental_mud or elemental_sand) else (
+	# Grip tread bars / roller wheels / hover pads / elemental / ridiculous soles under the outsole.
+	var tread_count := 5 if (tempo or parkour or roller_quad or hover_bounce or elemental_mud or elemental_sand or ridiculous_stomp or ridiculous_drift) else (
 		4 if (
 			rail or power or kinetic or trick or roller_inline or roller_hover
 			or hover_glide or hover_boost or hover_precision
 			or elemental_wet or elemental_dive or elemental_magma or elemental_frost
+			or ridiculous_boost or ridiculous_caffeine or ridiculous_reach or ridiculous_trick
 		) else 3
 	)
 	for i in range(tread_count):
@@ -800,27 +870,37 @@ func _attach_shoes(
 			tread_mat = frost_pad
 		elif elemental_mud:
 			tread_mat = mud_pad
+		elif ridiculous_boost or ridiculous_caffeine:
+			tread_mat = joke_jet
+		elif ridiculous_stomp:
+			tread_mat = pancake_mat
+		elif ridiculous_reach:
+			tread_mat = gum_mat
+		elif ridiculous_drift:
+			tread_mat = sofa_mat
+		elif ridiculous_trick:
+			tread_mat = banana_mat
 		elif native_hover:
 			tread_mat = hover_pad
 		elif native_roller:
 			tread_mat = wheel
-		var use_wheelish := native_roller and not native_hover and not native_elemental
+		var use_wheelish := native_roller and not native_hover and not native_elemental and not native_ridiculous
 		var tread := _mesh_box(
 			Vector3(
-				0.14 * ws * shoe_scale if (native_hover or native_elemental) else (0.05 * ws * shoe_scale if use_wheelish else 0.13 * ws * shoe_scale),
-				0.02 * shoe_scale if (native_hover or elemental_wet or elemental_frost) else (
-					0.03 * shoe_scale if native_elemental else (0.05 * shoe_scale if use_wheelish else 0.025 * shoe_scale)
+				0.14 * ws * shoe_scale if (native_hover or native_elemental or native_ridiculous) else (0.05 * ws * shoe_scale if use_wheelish else 0.13 * ws * shoe_scale),
+				0.02 * shoe_scale if (native_hover or elemental_wet or elemental_frost or ridiculous_reach) else (
+					0.03 * shoe_scale if (native_elemental or native_ridiculous) else (0.05 * shoe_scale if use_wheelish else 0.025 * shoe_scale)
 				),
-				0.04 * shoe_scale if (native_hover or native_elemental) else (0.05 * shoe_scale if use_wheelish else 0.035 * shoe_scale)
+				0.04 * shoe_scale if (native_hover or native_elemental or native_ridiculous) else (0.05 * shoe_scale if use_wheelish else 0.035 * shoe_scale)
 			),
 			Vector3.ZERO,
 			tread_mat
 		)
 		leg.add_child(tread)
-		var z_spread := 0.055 if (native_street or native_roller or native_hover or native_elemental) else 0.07
+		var z_spread := 0.055 if (native_street or native_roller or native_hover or native_elemental or native_ridiculous) else 0.07
 		tread.position = Vector3(
 			side * (0.06 * ws * shoe_scale if use_wheelish else 0.0),
-			-leg_len - (0.05 if (native_hover or native_elemental) else 0.058),
+			-leg_len - (0.05 if (native_hover or native_elemental or native_ridiculous) else 0.058),
 			(float(i) - float(tread_count - 1) * 0.5) * z_spread * shoe_scale
 		)
 		if native_roller and roller_quad:
@@ -1254,6 +1334,144 @@ func _attach_shoes(
 		)
 		leg.add_child(strap)
 		strap.position = Vector3(side * 0.09 * ws * shoe_scale, -leg_len + 0.1, -0.02 * shoe_scale)
+	elif ridiculous_boost:
+		## Slipper Rockets — fuzzy cuff + rear rocket nozzles (VFX; grounded).
+		var fuzzy := _mesh_box(
+			Vector3(0.16 * ws * shoe_scale, 0.1 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(fuzzy)
+		fuzzy.position = Vector3(0.0, -leg_len + 0.06, -0.02 * shoe_scale)
+		var nozzle := _mesh_box(
+			Vector3(0.05 * ws * shoe_scale, 0.06 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			joke_jet
+		)
+		leg.add_child(nozzle)
+		nozzle.position = Vector3(side * 0.08 * ws * shoe_scale, -leg_len + 0.02, -0.16 * shoe_scale)
+		var flame_s := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.04 * shoe_scale, 0.07 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(flame_s)
+		flame_s.position = Vector3(side * 0.08 * ws * shoe_scale, -leg_len - 0.01, -0.22 * shoe_scale)
+	elif ridiculous_stomp:
+		## Pancake stack plates — syrup-heavy stomp silhouette.
+		var cake := _mesh_box(
+			Vector3(0.2 * ws * shoe_scale, 0.05 * shoe_scale, 0.18 * shoe_scale),
+			Vector3.ZERO,
+			pancake_mat
+		)
+		leg.add_child(cake)
+		cake.position = Vector3(0.0, -leg_len + 0.02, 0.0)
+		var cake2 := _mesh_box(
+			Vector3(0.18 * ws * shoe_scale, 0.045 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(cake2)
+		cake2.position = Vector3(0.0, -leg_len + 0.07, 0.0)
+		var syrup := _mesh_box(
+			Vector3(0.08 * ws * shoe_scale, 0.1 * shoe_scale, 0.05 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(syrup)
+		syrup.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.04, -0.1 * shoe_scale)
+	elif ridiculous_reach:
+		## Bubblegum stilts — tall shaft + gum bubble cuff.
+		var shaft := _mesh_box(
+			Vector3(0.08 * ws * shoe_scale, 0.22 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			gum_mat
+		)
+		leg.add_child(shaft)
+		shaft.position = Vector3(0.0, -leg_len + 0.12, -0.04 * shoe_scale)
+		var bubble := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.1 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(bubble)
+		bubble.position = Vector3(0.0, -leg_len + 0.02, 0.02 * shoe_scale)
+		var stick := _mesh_box(
+			Vector3(0.03 * ws * shoe_scale, 0.08 * shoe_scale, 0.03 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(stick)
+		stick.position = Vector3(side * 0.09 * ws * shoe_scale, -leg_len + 0.08, 0.0)
+	elif ridiculous_caffeine:
+		## Espresso Jet Socks — slim sock shaft + dual espresso thrusters.
+		var sock := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.14 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(sock)
+		sock.position = Vector3(0.0, -leg_len + 0.08, -0.02 * shoe_scale)
+		var jet_e := _mesh_box(
+			Vector3(0.045 * ws * shoe_scale, 0.055 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			joke_jet
+		)
+		leg.add_child(jet_e)
+		jet_e.position = Vector3(side * 0.08 * ws * shoe_scale, -leg_len + 0.01, -0.14 * shoe_scale)
+		var crema := _mesh_box(
+			Vector3(0.1 * ws * shoe_scale, 0.04 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(crema)
+		crema.position = Vector3(0.0, -leg_len + 0.14, -0.02 * shoe_scale)
+	elif ridiculous_drift:
+		## Sofa Surfers — cushion block + armrest wing.
+		var cushion := _mesh_box(
+			Vector3(0.2 * ws * shoe_scale, 0.1 * shoe_scale, 0.18 * shoe_scale),
+			Vector3.ZERO,
+			sofa_mat
+		)
+		leg.add_child(cushion)
+		cushion.position = Vector3(0.0, -leg_len + 0.02, 0.0)
+		var armrest := _mesh_box(
+			Vector3(0.05 * ws * shoe_scale, 0.12 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(armrest)
+		armrest.position = Vector3(side * 0.11 * ws * shoe_scale, -leg_len + 0.06, -0.04 * shoe_scale)
+		var pillow := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.06 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(pillow)
+		pillow.position = Vector3(0.0, -leg_len + 0.1, -0.08 * shoe_scale)
+	elif ridiculous_trick:
+		## Banana Boomerang Cleats — curved peel wing + cleat nubs.
+		var peel := _mesh_box(
+			Vector3(0.05 * ws * shoe_scale, 0.08 * shoe_scale, 0.2 * shoe_scale),
+			Vector3.ZERO,
+			banana_mat
+		)
+		leg.add_child(peel)
+		peel.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.04, 0.02 * shoe_scale)
+		var peel2 := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.06 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(peel2)
+		peel2.position = Vector3(side * -0.06 * ws * shoe_scale, -leg_len + 0.02, -0.08 * shoe_scale)
+		var cleat := _mesh_box(
+			Vector3(0.03 * ws * shoe_scale, 0.05 * shoe_scale, 0.03 * shoe_scale),
+			Vector3.ZERO,
+			spike
+		)
+		leg.add_child(cleat)
+		cleat.position = Vector3(side * 0.05 * ws * shoe_scale, -leg_len - 0.05, 0.08 * shoe_scale)
 	if is_left:
 		_shoe_l = sole
 		_heel_l = heel
