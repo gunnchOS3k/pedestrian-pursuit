@@ -33,6 +33,13 @@ func _initialize() -> void:
 
 func _observe_plan() -> Dictionary:
 	var mode := OS.get_environment("RACE_OBSERVE_MODE").strip_edges()
+	var track_filter := OS.get_environment("RACE_OBSERVE_TRACK").strip_edges()
+	if not track_filter.is_empty():
+		return {
+			"mode": "single",
+			"courses": PackedStringArray([track_filter]),
+			"stop_after": 1,
+		}
 	if mode == "solo":
 		return {
 			"mode": "solo",
@@ -84,9 +91,9 @@ func _observe_course(gm: Node, input: Node, packed: PackedScene, track_id: Strin
 		gm.accept_test_mode = false
 	if "accept_force_laps" in gm:
 		gm.accept_force_laps = 0
-	## Stable Kinetic Sole default for observe — Street Legend balanced, not a random stub.
+	## Proven observe footwear — matches last green Gate 1 shoe default.
 	if "selected_shoe_id" in gm:
-		gm.selected_shoe_id = "reedline_circlers"
+		gm.selected_shoe_id = "starter_soles"
 	_release_gameplay_input(input)
 	var course := _load_course_file(track_id)
 	var expected_laps := int(course.get("lap_count", -1))
@@ -95,9 +102,6 @@ func _observe_course(gm: Node, input: Node, packed: PackedScene, track_id: Strin
 		_print_course(track_id, false, expected_laps, -1, -1, false, 0, false, false, false, false, "course file missing lap count or display name")
 		return
 	gm.start_quick_race(track_id)
-	## Observe acceptance is player-path evidence; keep a light AI field for interference noise.
-	if "ai_field_size" in gm:
-		gm.ai_field_size = 1
 	if str(gm.get("selected_track_id")) != track_id:
 		_print_course(track_id, false, expected_laps, int(gm.get("total_laps")), -1, false, 0, false, false, false, false, "quick race did not select %s" % track_id)
 		return

@@ -60,9 +60,12 @@ func apply_profile(p: RunnerProfile) -> void:
 	_rebuild()
 
 
-func set_vehicle_id(id: String) -> void:
+func set_vehicle_id(id: String, rebuild: bool = true) -> void:
+	## Set footwear vehicle before/with profile so RaceScene only rebuilds once.
+	if vehicle_id == id:
+		return
 	vehicle_id = id
-	if profile != null:
+	if rebuild and profile != null:
 		_rebuild()
 
 

@@ -694,7 +694,8 @@ func _sync_preview_vehicle() -> void:
 		return
 	var shoe_id := str(GameManager.selected_shoe_id)
 	if _preview_visual.has_method("set_vehicle_id"):
-		_preview_visual.set_vehicle_id(shoe_id)
+		## Menu preview can rebuild — profile already applied.
+		_preview_visual.set_vehicle_id(shoe_id, true)
 
 
 func _selected_track_id() -> String:

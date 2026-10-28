@@ -311,9 +311,10 @@ func _assign_profile(racer: Node, profile) -> void:
 	racer.set_meta("runner_profile_id", profile.id)
 	racer.set_meta("runner_display_name", profile.display_name)
 	var visual = racer.get_node_or_null("RacerVisual")
-	if visual != null and visual.has_method("apply_profile"):
-		visual.apply_profile(profile)
 	_apply_vehicle_presentation(racer, visual)
+	if visual != null and visual.has_method("apply_profile"):
+		## Vehicle id already stamped without rebuild — single mesh rebuild here.
+		visual.apply_profile(profile)
 	_wire_racer_visual_hooks(racer, visual)
 
 
@@ -333,7 +334,7 @@ func _apply_vehicle_presentation(racer: Node, visual: Node) -> void:
 	var shoe := ShoeDataScript.load_by_id(shoe_id)
 	racer.set_meta("handling_feedback", float(shoe.get("handling_modifier", 1.0)))
 	if visual != null and visual.has_method("set_vehicle_id"):
-		visual.set_vehicle_id(shoe_id)
+		visual.set_vehicle_id(shoe_id, false)
 
 
 func _wire_racer_visual_hooks(racer: Node, visual: Node) -> void:
