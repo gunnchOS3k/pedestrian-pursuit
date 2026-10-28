@@ -3,80 +3,90 @@
   "id": "origami_orchard",
   "display_name": "Origami Orchard",
   "lap_count": 3,
-  "difficulty": "beginner",
-  "theme": "world_wonder",
-  "description": "Origami orchard lanes with paper-kite arches. Championship stub \u2014 launchable legitimate lap; geometry/art still pending polish.",
+  "difficulty": "intermediate",
+  "theme": "origami_orchard",
+  "description": "Folded orchard switchbacks among paper-tree spires and crease rails \u2014 original wonder grove.",
   "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-  "geometry_status": "championship_stub_raceable",
+  "geometry_status": "championship_raceable",
   "final_track_art_status": "track_art_pending",
   "human_track_art_approved": false,
-  "lane_width": 14.0,
+  "lane_width": 13.5,
   "guard_rails": true,
   "has_shortcut": true,
-  "track_color": "#3A4058",
-  "accent_color": "#F4D35E",
-  "sky_color": "#6A88C0",
-  "backdrop_color": "#2A3048",
+  "track_color": "#3A5840",
+  "accent_color": "#C8E8A0",
+  "sky_color": "#6A9870",
+  "backdrop_color": "#243828",
   "path_points": [
     [
-      70.43,
-      -2.21,
-      4.0
+      53.82,
+      0.5,
+      0.0
     ],
     [
-      64.94,
-      -0.54,
-      24.71
+      45.84,
+      1.86,
+      13.56
     ],
     [
-      44.35,
-      1.67,
-      41.96
+      27.6,
+      2.07,
+      27.35
     ],
     [
-      12.0,
-      2.21,
-      48.42
+      8.67,
+      0.89,
+      37.03
     ],
     [
-      -19.43,
-      0.54,
-      40.88
+      -8.67,
+      -0.89,
+      37.03
     ],
     [
-      -39.36,
-      -1.67,
-      24.09
+      -27.6,
+      -2.07,
+      27.35
     ],
     [
-      -46.43,
-      -2.21,
-      4.0
+      -45.84,
+      -1.86,
+      13.56
     ],
     [
-      -40.94,
-      -0.54,
-      -16.71
+      -53.82,
+      -0.5,
+      0.0
     ],
     [
-      -20.35,
-      1.67,
-      -33.96
+      -45.84,
+      0.96,
+      -13.56
     ],
     [
-      12.0,
-      2.21,
-      -40.42
+      -27.6,
+      1.44,
+      -27.35
     ],
     [
-      43.43,
-      0.54,
-      -32.88
+      -8.67,
+      0.67,
+      -37.03
     ],
     [
-      63.36,
-      -1.67,
-      -16.09
+      8.67,
+      -0.67,
+      -37.03
+    ],
+    [
+      27.6,
+      -1.44,
+      -27.35
+    ],
+    [
+      45.84,
+      -0.96,
+      -13.56
     ]
   ],
   "checkpoint_points": [
@@ -85,31 +95,32 @@
     4,
     6,
     8,
-    10
+    10,
+    12
   ],
   "speed_lanes": [
     {
-      "point_index": 1,
+      "point_index": 12,
       "size": [
-        6,
-        12
+        5,
+        11
       ],
-      "speed_bonus": 1.15
+      "speed_bonus": 1.17
     }
   ],
   "terrain_zones": [
     {
       "point_index": 4,
       "size": [
-        8,
-        10
+        7,
+        9
       ],
-      "speed_mult": 0.85
+      "speed_mult": 0.79
     }
   ],
   "bounce_pads": [
     {
-      "point_index": 6,
+      "point_index": 7,
       "bounce_force": 11.0,
       "forward_boost": 3.5
     }
@@ -117,29 +128,32 @@
   "item_boxes": [
     2,
     6,
-    8
+    10
   ],
   "boost_pickups": [
     1,
-    7
+    9
   ],
   "rail_segments": [
-    3
+    3,
+    9
   ],
   "shortcut_routes": [
     {
       "id": "origami_orchard_cut",
       "entry_point_index": 2,
-      "exit_point_index": 6,
-      "risk": "medium",
-      "ai_preference": 0.35,
-      "description": "Risk cut across the infield; miss and hit slow terrain."
+      "exit_point_index": 8,
+      "risk": "high",
+      "ai_preference": 0.28,
+      "description": "Crease cut between folds \u2014 root collision if you miss."
     }
   ],
   "landmarks": [
-    "origami_orchard_marker"
+    "paper_spire",
+    "crease_gate",
+    "grove_lantern"
   ],
-  "elevation_profile": "stub_rise",
-  "bank_bias": 0.04,
-  "geometry_note": "Honest pending geometry \u2014 raceable closed loop, not commercial finished art."
+  "elevation_profile": "orchard_folds",
+  "bank_bias": 0.11,
+  "geometry_note": "World Wonder Grand Prix production batch \u2014 original wonder landmarks (not nation costumes); track art still pending."
 }

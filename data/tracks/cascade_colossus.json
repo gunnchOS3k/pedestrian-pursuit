@@ -4,69 +4,79 @@
   "display_name": "Cascade Colossus",
   "lap_count": 3,
   "difficulty": "beginner",
-  "theme": "world_wonder",
-  "description": "Colossal cascade plaza with fountain islands. Championship stub \u2014 launchable legitimate lap; geometry/art still pending polish.",
+  "theme": "cascade_colossus",
+  "description": "Original cascade-colossus circuit with terrace falls, mist columns, and a cliff-ledge cut \u2014 wonder landmark, not a nation costume.",
   "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-  "geometry_status": "championship_stub_raceable",
+  "geometry_status": "championship_raceable",
   "final_track_art_status": "track_art_pending",
   "human_track_art_approved": false,
-  "lane_width": 14.0,
+  "lane_width": 13.5,
   "guard_rails": true,
   "has_shortcut": true,
-  "track_color": "#3A4058",
-  "accent_color": "#F4D35E",
-  "sky_color": "#6A88C0",
-  "backdrop_color": "#2A3048",
+  "track_color": "#2A5A6A",
+  "accent_color": "#7EE8F0",
+  "sky_color": "#6AB0C8",
+  "backdrop_color": "#1A3A48",
   "path_points": [
     [
-      64.37,
-      -1.14,
+      50.0,
+      0.4,
       0.0
     ],
     [
-      54.19,
-      -1.28,
-      25.55
+      43.3,
+      1.6,
+      18.0
     ],
     [
-      28.84,
-      0.34,
-      43.19
+      25.0,
+      1.46,
+      31.18
     ],
     [
-      -5.35,
-      1.49,
-      44.5
+      0.0,
+      0.0,
+      36.0
     ],
     [
-      -32.36,
-      0.58,
-      26.86
+      -25.0,
+      -1.46,
+      31.18
     ],
     [
-      -40.37,
-      -1.14,
+      -43.3,
+      -1.6,
+      18.0
+    ],
+    [
+      -50.0,
+      -0.4,
       0.0
     ],
     [
-      -30.19,
-      -1.28,
-      -25.55
+      -43.3,
+      0.91,
+      -18.0
     ],
     [
-      -4.84,
-      0.34,
-      -43.19
+      -25.0,
+      1.06,
+      -31.18
     ],
     [
-      29.35,
-      1.49,
-      -44.5
+      -0.0,
+      0.0,
+      -36.0
     ],
     [
-      56.36,
-      0.58,
-      -26.86
+      25.0,
+      -1.06,
+      -31.18
+    ],
+    [
+      43.3,
+      -0.91,
+      -18.0
     ]
   ],
   "checkpoint_points": [
@@ -74,7 +84,8 @@
     2,
     4,
     6,
-    8
+    8,
+    10
   ],
   "speed_lanes": [
     {
@@ -83,52 +94,55 @@
         6,
         12
       ],
-      "speed_bonus": 1.15
+      "speed_bonus": 1.16
     }
   ],
   "terrain_zones": [
     {
-      "point_index": 3,
+      "point_index": 5,
       "size": [
         8,
         10
       ],
-      "speed_mult": 0.85
+      "speed_mult": 0.83
     }
   ],
   "bounce_pads": [
     {
-      "point_index": 5,
-      "bounce_force": 11.0,
-      "forward_boost": 3.5
+      "point_index": 9,
+      "bounce_force": 10.5,
+      "forward_boost": 3.2
     }
   ],
   "item_boxes": [
     2,
-    5,
-    6
+    6,
+    10
   ],
   "boost_pickups": [
     1,
-    6
+    8
   ],
   "rail_segments": [
-    2
+    3,
+    8
   ],
   "shortcut_routes": [
     {
       "id": "cascade_colossus_cut",
       "entry_point_index": 2,
-      "exit_point_index": 5,
+      "exit_point_index": 7,
       "risk": "medium",
-      "ai_preference": 0.35,
-      "description": "Risk cut across the infield; miss and hit slow terrain."
+      "ai_preference": 0.33,
+      "description": "Ledge cut behind the falls \u2014 wet grit if you miss."
     }
   ],
   "landmarks": [
-    "cascade_colossus_marker"
+    "colossus_falls",
+    "mist_column",
+    "terrace_arch"
   ],
-  "elevation_profile": "stub_rise",
-  "bank_bias": 0.04,
-  "geometry_note": "Honest pending geometry \u2014 raceable closed loop, not commercial finished art."
+  "elevation_profile": "cascade_terraces",
+  "bank_bias": 0.08,
+  "geometry_note": "World Wonder Grand Prix production batch \u2014 original wonder landmarks (not nation costumes); track art still pending."
 }

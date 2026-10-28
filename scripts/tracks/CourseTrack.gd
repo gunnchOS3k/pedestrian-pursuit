@@ -375,6 +375,12 @@ func _add_track_segment(
 		track_mat.roughness = 0.32
 		track_mat.metallic = 0.08
 		track_mat.albedo_color = track_mat.albedo_color.lerp(Color(0.55, 0.52, 0.48), 0.28)
+	elif theme in ["cascade_colossus", "aurora_amphitheater", "origami_orchard", "horizon_crown_finale", "world_wonder"]:
+		## Wonder landmark deck — polished stone with accent sheen.
+		track_mat = track_mat.duplicate()
+		track_mat.roughness = 0.42
+		track_mat.metallic = 0.15
+		track_mat.albedo_color = track_mat.albedo_color.lerp(Color(0.28, 0.34, 0.4), 0.22)
 	visual.material_override = track_mat
 	## Visual bank only — do not roll the StaticBody (Gate AI lines stay lap-safe).
 	var bank := float(_data.get("bank_bias", 0.0))
@@ -704,6 +710,8 @@ func _build_scenery() -> void:
 			_build_skyline_scenery(scenery)
 		"marble_foyer_loop", "stack_corridor", "gallery_grand_oval", "vault_gate_gauntlet", "archive_relay":
 			_build_archive_scenery(scenery)
+		"cascade_colossus", "aurora_amphitheater", "origami_orchard", "horizon_crown_finale", "world_wonder":
+			_build_wonder_scenery(scenery)
 		_:
 			_add_visual_box(
 				scenery,
@@ -712,6 +720,57 @@ func _build_scenery() -> void:
 				_color("backdrop_color", Color.DARK_GREEN)
 			)
 			_build_landmark_markers(scenery)
+
+
+func _build_wonder_scenery(parent: Node3D) -> void:
+	## World Wonder Grand Prix — original wonder landmarks (not nation costumes).
+	var theme := str(_data.get("theme", "world_wonder"))
+	var accent := _color("accent_color", Color(0.55, 0.85, 0.95))
+	_add_visual_box(
+		parent,
+		Vector3(0.0, -0.9, 0.0),
+		Vector3(175.0, 0.3, 175.0),
+		_color("backdrop_color", Color(0.16, 0.22, 0.28))
+	)
+	_add_visual_cylinder(parent, Vector3(0.0, -0.58, 0.0), 36.0, 0.18, Color(0.25, 0.4, 0.48), true)
+	match theme:
+		"cascade_colossus":
+			_add_named_coast_prop(parent, "ColossusFalls", Vector3(0.0, 0.0, -40.0), accent)
+			for i in range(4):
+				var x := -9.0 + float(i) * 6.0
+				_add_visual_box(parent, Vector3(x, 6.0, -40.0), Vector3(2.5, 12.0, 2.0), Color(0.35, 0.55, 0.65), true)
+			_add_named_coast_prop(parent, "TerraceArch", Vector3(0.0, 0.0, 38.0), accent)
+			_add_visual_box(parent, Vector3(-10.0, 4.0, 38.0), Vector3(1.5, 8.0, 1.5), Color(0.45, 0.5, 0.52))
+			_add_visual_box(parent, Vector3(10.0, 4.0, 38.0), Vector3(1.5, 8.0, 1.5), Color(0.45, 0.5, 0.52))
+			_add_visual_box(parent, Vector3(0.0, 8.2, 38.0), Vector3(22.0, 1.1, 1.5), accent, true)
+			_add_coast_hazard_rock(parent, "MistRock", Vector3(5.0, 0.9, 5.0), Vector3(4.0, 2.2, 3.5))
+		"aurora_amphitheater":
+			_add_named_coast_prop(parent, "AuroraRim", Vector3(0.0, 0.0, 0.0), accent)
+			_add_visual_cylinder(parent, Vector3(0.0, 8.0, 0.0), 28.0, 0.8, accent, true)
+			_add_named_coast_prop(parent, "StagePylon", Vector3(0.0, 0.0, -36.0), Color(0.55, 0.6, 0.75))
+			_add_visual_box(parent, Vector3(0.0, 5.0, -36.0), Vector3(4.0, 10.0, 4.0), Color(0.4, 0.45, 0.6))
+			_add_coast_hazard_rock(parent, "BowlSeat", Vector3(-6.0, 0.8, 6.0), Vector3(4.5, 1.8, 3.5))
+		"origami_orchard":
+			_add_named_coast_prop(parent, "PaperSpire", Vector3(0.0, 0.0, 0.0), accent)
+			_add_visual_box(parent, Vector3(0.0, 7.0, 0.0), Vector3(3.0, 14.0, 3.0), Color(0.75, 0.85, 0.55), true)
+			_add_named_coast_prop(parent, "CreaseGate", Vector3(38.0, 0.0, 0.0), Color(0.6, 0.75, 0.45))
+			_add_visual_box(parent, Vector3(38.0, 4.5, -5.0), Vector3(1.2, 9.0, 1.2), Color(0.5, 0.65, 0.4))
+			_add_visual_box(parent, Vector3(38.0, 4.5, 5.0), Vector3(1.2, 9.0, 1.2), Color(0.5, 0.65, 0.4))
+			_add_visual_box(parent, Vector3(38.0, 9.2, 0.0), Vector3(1.4, 1.0, 12.0), accent, true)
+			_add_coast_hazard_rock(parent, "RootBundle", Vector3(-8.0, 0.85, 5.0), Vector3(3.8, 2.0, 3.8))
+		"horizon_crown_finale":
+			_add_named_coast_prop(parent, "CrownArchNorth", Vector3(0.0, 0.0, 32.0), accent)
+			_add_visual_box(parent, Vector3(-12.0, 5.0, 32.0), Vector3(1.8, 10.0, 1.8), Color(0.55, 0.5, 0.35))
+			_add_visual_box(parent, Vector3(12.0, 5.0, 32.0), Vector3(1.8, 10.0, 1.8), Color(0.55, 0.5, 0.35))
+			_add_visual_box(parent, Vector3(0.0, 10.2, 32.0), Vector3(26.0, 1.3, 1.6), accent, true)
+			_add_named_coast_prop(parent, "CrownArchSouth", Vector3(0.0, 0.0, -32.0), accent)
+			_add_visual_box(parent, Vector3(-12.0, 5.0, -32.0), Vector3(1.8, 10.0, 1.8), Color(0.55, 0.5, 0.35))
+			_add_visual_box(parent, Vector3(12.0, 5.0, -32.0), Vector3(1.8, 10.0, 1.8), Color(0.55, 0.5, 0.35))
+			_add_visual_box(parent, Vector3(0.0, 10.2, -32.0), Vector3(26.0, 1.3, 1.6), accent, true)
+			_add_coast_hazard_rock(parent, "FinalePillar", Vector3(5.0, 1.1, 5.0), Vector3(4.0, 3.0, 4.0))
+		_:
+			_add_named_coast_prop(parent, "WonderMarker", Vector3(0.0, 0.0, 36.0), accent)
+	_build_landmark_markers(parent)
 
 
 func _build_archive_scenery(parent: Node3D) -> void:

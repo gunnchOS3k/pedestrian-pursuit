@@ -48,6 +48,7 @@ func _run() -> void:
 		"lantern_corridor",
 		"rooftop_ribbon",
 		"marble_foyer_loop",
+		"cascade_colossus",
 		"horizon_crown_finale",
 	]:
 		var data := TrackCatalogScript.load_track(sample)
@@ -244,6 +245,57 @@ func _run() -> void:
 			elif tid == "vault_gate_gauntlet" and archive_scenery.get_node_or_null("VaultArch") == null:
 				failures.append("vault missing VaultArch")
 		archive_course.queue_free()
+	## Cup 8 World Wonder Grand Prix: four distinct championship_raceable courses.
+	var wonder := TrackCatalogScript.load_cup("world_wonder_grand_prix")
+	var wonder_ids: Array = wonder.get("track_ids", [])
+	if wonder_ids.size() != 4:
+		failures.append("world_wonder size")
+	for tid in ["cascade_colossus", "aurora_amphitheater", "origami_orchard", "horizon_crown_finale"]:
+		if tid not in wonder_ids:
+			failures.append("world_wonder missing %s" % tid)
+		var wd := TrackCatalogScript.load_track(tid)
+		if str(wd.get("geometry_status", "")) != "championship_raceable":
+			failures.append("%s not championship_raceable" % tid)
+		if str(wd.get("final_track_art_status", "")) != "track_art_pending":
+			failures.append("%s art must stay pending" % tid)
+		var wonder_has_y := false
+		for p in wd.get("path_points", []):
+			if typeof(p) == TYPE_ARRAY and p.size() == 3 and absf(float(p[1])) > 0.1:
+				wonder_has_y = true
+				break
+		if not wonder_has_y:
+			failures.append("%s missing elevation" % tid)
+		if (wd.get("landmarks", []) as Array).size() < 2:
+			failures.append("%s needs distinct landmarks" % tid)
+		var wonder_course: Node = CourseTrackScript.new()
+		root.add_child(wonder_course)
+		wonder_course.configure(wd)
+		if not wonder_course.build():
+			failures.append("build wonder %s" % tid)
+		else:
+			var wonder_scenery := wonder_course.get_node_or_null("Scenery")
+			if wonder_scenery == null:
+				failures.append("%s missing Scenery" % tid)
+			elif tid == "cascade_colossus" and wonder_scenery.get_node_or_null("ColossusFalls") == null:
+				failures.append("cascade missing ColossusFalls")
+			elif tid == "aurora_amphitheater" and wonder_scenery.get_node_or_null("AuroraRim") == null:
+				failures.append("aurora missing AuroraRim")
+			elif tid == "origami_orchard" and wonder_scenery.get_node_or_null("PaperSpire") == null:
+				failures.append("origami missing PaperSpire")
+			elif tid == "horizon_crown_finale" and wonder_scenery.get_node_or_null("CrownArchNorth") == null:
+				failures.append("horizon missing CrownArchNorth")
+		wonder_course.queue_free()
+	## All 32 tracks must be non-stub championship geometry.
+	var stub_left := 0
+	for tid_all in TrackCatalogScript.list_all_track_ids():
+		var gd := TrackCatalogScript.load_track(str(tid_all))
+		var gs := str(gd.get("geometry_status", ""))
+		if gs == "championship_stub_raceable":
+			stub_left += 1
+		elif gs not in ["championship_raceable", "championship_upgraded"]:
+			failures.append("%s unexpected geometry %s" % [tid_all, gs])
+	if stub_left != 0:
+		failures.append("stub tracks remaining %d" % stub_left)
 	var art := TrackArtAcceptanceScript.counts()
 	if int(art.get("raceable", 0)) != 32:
 		failures.append("track art raceable %s" % str(art.get("raceable")))

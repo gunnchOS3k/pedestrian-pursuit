@@ -236,7 +236,7 @@
     {
       "id": "cascade_colossus",
       "runtime_status": "raceable",
-      "geometry_status": "championship_stub_raceable",
+      "geometry_status": "championship_raceable",
       "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
       "final_track_art_status": "track_art_pending",
       "human_track_art_approved": false
@@ -244,7 +244,7 @@
     {
       "id": "aurora_amphitheater",
       "runtime_status": "raceable",
-      "geometry_status": "championship_stub_raceable",
+      "geometry_status": "championship_raceable",
       "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
       "final_track_art_status": "track_art_pending",
       "human_track_art_approved": false
@@ -252,7 +252,7 @@
     {
       "id": "origami_orchard",
       "runtime_status": "raceable",
-      "geometry_status": "championship_stub_raceable",
+      "geometry_status": "championship_raceable",
       "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
       "final_track_art_status": "track_art_pending",
       "human_track_art_approved": false
@@ -260,7 +260,7 @@
     {
       "id": "horizon_crown_finale",
       "runtime_status": "raceable",
-      "geometry_status": "championship_stub_raceable",
+      "geometry_status": "championship_raceable",
       "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
       "final_track_art_status": "track_art_pending",
       "human_track_art_approved": false

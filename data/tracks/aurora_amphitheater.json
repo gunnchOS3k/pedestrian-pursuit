@@ -3,75 +3,90 @@
   "id": "aurora_amphitheater",
   "display_name": "Aurora Amphitheater",
   "lap_count": 3,
-  "difficulty": "beginner",
-  "theme": "world_wonder",
-  "description": "Aurora amphitheater banks under polar light. Championship stub \u2014 launchable legitimate lap; geometry/art still pending polish.",
+  "difficulty": "intermediate",
+  "theme": "aurora_amphitheater",
+  "description": "Aurora bowl amphitheater with luminous rim gates and a stage-chord cut \u2014 original wonder venue.",
   "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-  "geometry_status": "championship_stub_raceable",
+  "geometry_status": "championship_raceable",
   "final_track_art_status": "track_art_pending",
   "human_track_art_approved": false,
-  "lane_width": 14.0,
+  "lane_width": 13.5,
   "guard_rails": true,
   "has_shortcut": true,
-  "track_color": "#3A4058",
-  "accent_color": "#F4D35E",
-  "sky_color": "#6A88C0",
-  "backdrop_color": "#2A3048",
+  "track_color": "#1A2848",
+  "accent_color": "#A8C8FF",
+  "sky_color": "#3A5080",
+  "backdrop_color": "#101828",
   "path_points": [
     [
-      67.17,
-      -1.86,
-      2.0
+      41.28,
+      0.83,
+      0.0
     ],
     [
-      59.33,
-      -1.14,
-      27.18
+      37.79,
+      1.55,
+      18.22
     ],
     [
-      36.67,
-      0.91,
-      46.71
+      27.32,
+      1.97,
+      32.84
     ],
     [
-      3.33,
-      1.89,
-      51.88
+      10.35,
+      1.98,
+      40.95
     ],
     [
-      -26.64,
-      0.66,
-      38.91
-    ],
-    [
-      -41.68,
-      -1.35,
-      15.04
-    ],
-    [
-      -41.05,
-      -1.78,
-      -10.89
-    ],
-    [
-      -25.85,
-      -0.13,
-      -34.15
-    ],
-    [
-      3.38,
+      -10.68,
       1.67,
-      -47.6
+      40.95
     ],
     [
-      37.06,
-      1.52,
-      -43.41
+      -29.93,
+      1.29,
+      32.84
     ],
     [
-      60.27,
-      -0.41,
-      -23.67
+      -43.25,
+      1.0,
+      18.22
+    ],
+    [
+      -48.0,
+      0.83,
+      0.0
+    ],
+    [
+      -43.25,
+      1.55,
+      -18.22
+    ],
+    [
+      -29.93,
+      1.97,
+      -32.84
+    ],
+    [
+      -10.68,
+      1.98,
+      -40.95
+    ],
+    [
+      10.35,
+      1.67,
+      -40.95
+    ],
+    [
+      27.32,
+      1.29,
+      -32.84
+    ],
+    [
+      37.79,
+      1.0,
+      -18.22
     ]
   ],
   "checkpoint_points": [
@@ -80,61 +95,65 @@
     4,
     6,
     8,
-    10
+    10,
+    12
   ],
   "speed_lanes": [
     {
-      "point_index": 1,
+      "point_index": 0,
       "size": [
         6,
-        12
+        14
       ],
-      "speed_bonus": 1.15
+      "speed_bonus": 1.2
     }
   ],
   "terrain_zones": [
     {
-      "point_index": 3,
+      "point_index": 6,
       "size": [
         8,
         10
       ],
-      "speed_mult": 0.85
+      "speed_mult": 0.8
     }
   ],
   "bounce_pads": [
     {
-      "point_index": 5,
-      "bounce_force": 11.0,
-      "forward_boost": 3.5
+      "point_index": 11,
+      "bounce_force": 11.5,
+      "forward_boost": 3.8
     }
   ],
   "item_boxes": [
     2,
-    5,
-    7
+    7,
+    11
   ],
   "boost_pickups": [
     1,
-    6
+    8
   ],
   "rail_segments": [
-    2
+    4,
+    10
   ],
   "shortcut_routes": [
     {
       "id": "aurora_amphitheater_cut",
-      "entry_point_index": 2,
-      "exit_point_index": 5,
+      "entry_point_index": 3,
+      "exit_point_index": 9,
       "risk": "medium",
-      "ai_preference": 0.35,
-      "description": "Risk cut across the infield; miss and hit slow terrain."
+      "ai_preference": 0.3,
+      "description": "Stage chord across the bowl \u2014 miss into soft sand."
     }
   ],
   "landmarks": [
-    "aurora_amphitheater_marker"
+    "aurora_rim",
+    "stage_pylon",
+    "bowl_beacon"
   ],
-  "elevation_profile": "stub_rise",
-  "bank_bias": 0.04,
-  "geometry_note": "Honest pending geometry \u2014 raceable closed loop, not commercial finished art."
+  "elevation_profile": "amphitheater_bowl",
+  "bank_bias": 0.1,
+  "geometry_note": "World Wonder Grand Prix production batch \u2014 original wonder landmarks (not nation costumes); track art still pending."
 }
