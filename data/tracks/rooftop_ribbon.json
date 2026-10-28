@@ -4,69 +4,79 @@
   "display_name": "Rooftop Ribbon",
   "lap_count": 3,
   "difficulty": "beginner",
-  "theme": "skyline_relay",
-  "description": "Rooftop ribbon with HVAC chicanes. Championship stub \u2014 launchable legitimate lap; geometry/art still pending polish.",
+  "theme": "rooftop_ribbon",
+  "description": "Rooftop ribbon circuit across HVAC islands with a AC-unit cut and billboard arches.",
   "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-  "geometry_status": "championship_stub_raceable",
+  "geometry_status": "championship_raceable",
   "final_track_art_status": "track_art_pending",
   "human_track_art_approved": false,
-  "lane_width": 14.0,
+  "lane_width": 13.5,
   "guard_rails": true,
   "has_shortcut": true,
-  "track_color": "#4A5868",
-  "accent_color": "#C9E4FF",
-  "sky_color": "#A0C0E0",
-  "backdrop_color": "#3A4858",
+  "track_color": "#3A4458",
+  "accent_color": "#A8D4FF",
+  "sky_color": "#6A90B8",
+  "backdrop_color": "#2A3448",
   "path_points": [
     [
-      59.89,
-      1.36,
+      50.0,
+      0.4,
       0.0
     ],
     [
-      47.88,
-      -0.17,
-      26.33
+      43.3,
+      1.52,
+      16.0
     ],
     [
-      21.44,
-      -1.47,
-      41.12
+      25.0,
+      1.37,
+      27.71
     ],
     [
-      -9.75,
-      -0.74,
-      41.96
+      0.0,
+      0.0,
+      32.0
     ],
     [
-      -37.21,
-      1.02,
-      27.17
+      -25.0,
+      -1.37,
+      27.71
     ],
     [
-      -47.89,
-      1.36,
+      -43.3,
+      -1.52,
+      16.0
+    ],
+    [
+      -50.0,
+      -0.4,
       0.0
     ],
     [
-      -35.88,
-      -0.17,
-      -26.33
+      -43.3,
+      0.82,
+      -16.0
     ],
     [
-      -9.44,
-      -1.47,
-      -41.12
+      -25.0,
+      0.97,
+      -27.71
     ],
     [
-      21.75,
-      -0.74,
-      -41.96
+      -0.0,
+      0.0,
+      -32.0
     ],
     [
-      49.21,
-      1.02,
-      -27.17
+      25.0,
+      -0.97,
+      -27.71
+    ],
+    [
+      43.3,
+      -0.82,
+      -16.0
     ]
   ],
   "checkpoint_points": [
@@ -74,7 +84,8 @@
     2,
     4,
     6,
-    8
+    8,
+    10
   ],
   "speed_lanes": [
     {
@@ -83,52 +94,55 @@
         6,
         12
       ],
-      "speed_bonus": 1.15
+      "speed_bonus": 1.17
     }
   ],
   "terrain_zones": [
     {
-      "point_index": 3,
+      "point_index": 5,
       "size": [
         8,
         10
       ],
-      "speed_mult": 0.85
+      "speed_mult": 0.84
     }
   ],
   "bounce_pads": [
     {
-      "point_index": 5,
-      "bounce_force": 11.0,
-      "forward_boost": 3.5
+      "point_index": 9,
+      "bounce_force": 10.5,
+      "forward_boost": 3.3
     }
   ],
   "item_boxes": [
     2,
-    5,
-    6
+    6,
+    10
   ],
   "boost_pickups": [
     1,
-    6
+    8
   ],
   "rail_segments": [
-    2
+    3,
+    8
   ],
   "shortcut_routes": [
     {
       "id": "rooftop_ribbon_cut",
       "entry_point_index": 2,
-      "exit_point_index": 5,
+      "exit_point_index": 7,
       "risk": "medium",
-      "ai_preference": 0.35,
-      "description": "Risk cut across the infield; miss and hit slow terrain."
+      "ai_preference": 0.34,
+      "description": "Cut past the HVAC island \u2014 grit slows if you miss."
     }
   ],
   "landmarks": [
-    "rooftop_ribbon_marker"
+    "hvac_island",
+    "billboard_arch",
+    "roof_vent_row"
   ],
-  "elevation_profile": "stub_rise",
-  "bank_bias": 0.04,
-  "geometry_note": "Honest pending geometry \u2014 raceable closed loop, not commercial finished art."
+  "elevation_profile": "ribbon_rolls",
+  "bank_bias": 0.08,
+  "geometry_note": "Skyline Relay production batch \u2014 distinct raceable geometry; track art still pending (not commercial)."
 }

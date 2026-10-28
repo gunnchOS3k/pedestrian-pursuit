@@ -3,80 +3,90 @@
   "id": "antenna_ascent",
   "display_name": "Antenna Ascent",
   "lap_count": 3,
-  "difficulty": "beginner",
-  "theme": "skyline_relay",
-  "description": "Antenna ascent with banked helipad turn. Championship stub \u2014 launchable legitimate lap; geometry/art still pending polish.",
+  "difficulty": "intermediate",
+  "theme": "antenna_ascent",
+  "description": "Climbing antenna farm circuit with mast landmarks, updraft pads, and a ledge shortcut.",
   "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-  "geometry_status": "championship_stub_raceable",
+  "geometry_status": "championship_raceable",
   "final_track_art_status": "track_art_pending",
   "human_track_art_approved": false,
-  "lane_width": 14.0,
+  "lane_width": 13.5,
   "guard_rails": true,
   "has_shortcut": true,
-  "track_color": "#4A5868",
-  "accent_color": "#C9E4FF",
-  "sky_color": "#A0C0E0",
-  "backdrop_color": "#3A4858",
+  "track_color": "#354050",
+  "accent_color": "#FFB24A",
+  "sky_color": "#5A7088",
+  "backdrop_color": "#243040",
   "path_points": [
     [
-      66.51,
-      0.32,
-      4.0
+      46.0,
+      1.25,
+      0.0
     ],
     [
-      55.51,
-      -1.81,
-      24.01
+      38.21,
+      1.97,
+      17.36
     ],
     [
-      34.33,
-      -2.13,
-      38.35
+      24.64,
+      2.28,
+      31.27
     ],
     [
-      6.0,
-      -0.32,
-      45.64
+      8.44,
+      2.14,
+      39.0
     ],
     [
-      -25.42,
-      1.81,
-      42.09
+      -8.44,
+      1.79,
+      39.0
     ],
     [
-      -48.85,
-      2.13,
-      26.17
+      -24.64,
+      1.47,
+      31.27
     ],
     [
-      -54.51,
-      0.32,
-      4.0
+      -38.21,
+      1.33,
+      17.36
     ],
     [
-      -43.51,
-      -1.81,
-      -16.01
+      -46.0,
+      1.25,
+      0.0
     ],
     [
-      -22.33,
-      -2.13,
-      -30.35
+      -41.44,
+      1.04,
+      -17.36
     ],
     [
-      6.0,
-      -0.32,
-      -37.64
+      -28.68,
+      0.6,
+      -31.27
     ],
     [
-      37.42,
-      1.81,
-      -34.09
+      -10.24,
+      0.05,
+      -39.0
     ],
     [
-      60.85,
-      2.13,
-      -18.17
+      10.24,
+      -0.31,
+      -39.0
+    ],
+    [
+      28.68,
+      -0.21,
+      -31.27
+    ],
+    [
+      41.44,
+      0.39,
+      -17.36
     ]
   ],
   "checkpoint_points": [
@@ -85,61 +95,65 @@
     4,
     6,
     8,
-    10
+    10,
+    12
   ],
   "speed_lanes": [
     {
       "point_index": 1,
       "size": [
         6,
-        12
+        13
       ],
-      "speed_bonus": 1.15
+      "speed_bonus": 1.2
     }
   ],
   "terrain_zones": [
     {
-      "point_index": 4,
+      "point_index": 6,
       "size": [
         8,
         10
       ],
-      "speed_mult": 0.85
+      "speed_mult": 0.8
     }
   ],
   "bounce_pads": [
     {
-      "point_index": 6,
-      "bounce_force": 11.0,
-      "forward_boost": 3.5
+      "point_index": 11,
+      "bounce_force": 12.5,
+      "forward_boost": 4.2
     }
   ],
   "item_boxes": [
     2,
-    6,
-    8
+    7,
+    11
   ],
   "boost_pickups": [
     1,
-    7
+    8
   ],
   "rail_segments": [
-    3
+    4,
+    10
   ],
   "shortcut_routes": [
     {
       "id": "antenna_ascent_cut",
-      "entry_point_index": 2,
-      "exit_point_index": 6,
-      "risk": "medium",
-      "ai_preference": 0.35,
-      "description": "Risk cut across the infield; miss and hit slow terrain."
+      "entry_point_index": 3,
+      "exit_point_index": 9,
+      "risk": "high",
+      "ai_preference": 0.27,
+      "description": "Ledge cut beside the dish array \u2014 drop into grit if you miss."
     }
   ],
   "landmarks": [
-    "antenna_ascent_marker"
+    "antenna_mast",
+    "dish_array",
+    "ascent_beacon"
   ],
-  "elevation_profile": "stub_rise",
-  "bank_bias": 0.04,
-  "geometry_note": "Honest pending geometry \u2014 raceable closed loop, not commercial finished art."
+  "elevation_profile": "antenna_climb",
+  "bank_bias": 0.11,
+  "geometry_note": "Skyline Relay production batch \u2014 distinct raceable geometry; track art still pending (not commercial)."
 }

@@ -46,6 +46,7 @@ func _run() -> void:
 		"metro_pulse_loop",
 		"saltline_boardwalk",
 		"lantern_corridor",
+		"rooftop_ribbon",
 		"horizon_crown_finale",
 	]:
 		var data := TrackCatalogScript.load_track(sample)
@@ -160,6 +161,46 @@ func _run() -> void:
 			elif tid == "signal_storm_yard" and neon_scenery.get_node_or_null("SignalGantry") == null:
 				failures.append("signal missing SignalGantry")
 		neon_course.queue_free()
+	## Cup 6 Skyline Relay: four distinct championship_raceable courses.
+	var sky := TrackCatalogScript.load_cup("skyline_relay_cup")
+	var sky_ids: Array = sky.get("track_ids", [])
+	if sky_ids.size() != 4:
+		failures.append("skyline_relay size")
+	for tid in ["rooftop_ribbon", "skybridge_sprint", "antenna_ascent", "cloud_deck_circuit"]:
+		if tid not in sky_ids:
+			failures.append("skyline_relay missing %s" % tid)
+		var sd := TrackCatalogScript.load_track(tid)
+		if str(sd.get("geometry_status", "")) != "championship_raceable":
+			failures.append("%s not championship_raceable" % tid)
+		if str(sd.get("final_track_art_status", "")) != "track_art_pending":
+			failures.append("%s art must stay pending" % tid)
+		var sky_has_y := false
+		for p in sd.get("path_points", []):
+			if typeof(p) == TYPE_ARRAY and p.size() == 3 and absf(float(p[1])) > 0.1:
+				sky_has_y = true
+				break
+		if not sky_has_y:
+			failures.append("%s missing elevation" % tid)
+		if (sd.get("landmarks", []) as Array).size() < 2:
+			failures.append("%s needs distinct landmarks" % tid)
+		var sky_course: Node = CourseTrackScript.new()
+		root.add_child(sky_course)
+		sky_course.configure(sd)
+		if not sky_course.build():
+			failures.append("build skyline %s" % tid)
+		else:
+			var sky_scenery := sky_course.get_node_or_null("Scenery")
+			if sky_scenery == null:
+				failures.append("%s missing Scenery" % tid)
+			elif tid == "rooftop_ribbon" and sky_scenery.get_node_or_null("BillboardArch") == null:
+				failures.append("rooftop missing BillboardArch")
+			elif tid == "skybridge_sprint" and sky_scenery.get_node_or_null("BridgeTowerA") == null:
+				failures.append("skybridge missing BridgeTowerA")
+			elif tid == "antenna_ascent" and sky_scenery.get_node_or_null("AntennaMast") == null:
+				failures.append("antenna missing AntennaMast")
+			elif tid == "cloud_deck_circuit" and sky_scenery.get_node_or_null("ObsSpire") == null:
+				failures.append("cloud_deck missing ObsSpire")
+		sky_course.queue_free()
 	var art := TrackArtAcceptanceScript.counts()
 	if int(art.get("raceable", 0)) != 32:
 		failures.append("track art raceable %s" % str(art.get("raceable")))

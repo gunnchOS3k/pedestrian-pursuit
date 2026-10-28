@@ -3,70 +3,90 @@
   "id": "cloud_deck_circuit",
   "display_name": "Cloud Deck Circuit",
   "lap_count": 3,
-  "difficulty": "beginner",
-  "theme": "skyline_relay",
-  "description": "High cloud deck circuit with glass rails. Championship stub \u2014 launchable legitimate lap; geometry/art still pending polish.",
+  "difficulty": "advanced",
+  "theme": "cloud_deck_circuit",
+  "description": "Cloud-deck switchbacks above the fog line with observation spires and a mist canyon cut.",
   "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-  "geometry_status": "championship_stub_raceable",
+  "geometry_status": "championship_raceable",
   "final_track_art_status": "track_art_pending",
   "human_track_art_approved": false,
-  "lane_width": 14.0,
+  "lane_width": 13.5,
   "guard_rails": true,
   "has_shortcut": true,
-  "track_color": "#4A5868",
-  "accent_color": "#C9E4FF",
-  "sky_color": "#A0C0E0",
-  "backdrop_color": "#3A4858",
+  "track_color": "#3E4A5C",
+  "accent_color": "#C8E8FF",
+  "sky_color": "#7A98B8",
+  "backdrop_color": "#2C3648",
   "path_points": [
     [
-      56.72,
+      52.2,
+      0.55,
+      0.0
+    ],
+    [
+      44.59,
+      1.98,
+      14.05
+    ],
+    [
+      27.06,
+      2.2,
+      28.09
+    ],
+    [
+      8.57,
+      0.95,
+      37.81
+    ],
+    [
+      -8.57,
       -0.95,
-      6.0
+      37.81
     ],
     [
-      45.13,
-      -2.7,
-      30.6
+      -27.06,
+      -2.2,
+      28.09
     ],
     [
-      21.77,
-      -0.72,
-      48.0
+      -44.59,
+      -1.98,
+      14.05
     ],
     [
-      -11.01,
-      2.25,
-      51.3
+      -52.2,
+      -0.55,
+      0.0
     ],
     [
-      -38.37,
-      2.11,
-      33.9
+      -44.59,
+      0.99,
+      -14.05
     ],
     [
-      -44.72,
-      -0.95,
-      6.0
+      -27.06,
+      1.51,
+      -28.09
     ],
     [
-      -33.13,
-      -2.7,
-      -18.6
+      -8.57,
+      0.7,
+      -37.81
     ],
     [
-      -9.77,
-      -0.72,
-      -36.0
+      8.57,
+      -0.7,
+      -37.81
     ],
     [
-      23.01,
-      2.25,
-      -39.3
+      27.06,
+      -1.51,
+      -28.09
     ],
     [
-      50.37,
-      2.11,
-      -21.9
+      44.59,
+      -0.99,
+      -14.05
     ]
   ],
   "checkpoint_points": [
@@ -74,61 +94,66 @@
     2,
     4,
     6,
-    8
+    8,
+    10,
+    12
   ],
   "speed_lanes": [
     {
-      "point_index": 1,
+      "point_index": 12,
       "size": [
-        6,
-        12
+        5,
+        10
       ],
-      "speed_bonus": 1.15
+      "speed_bonus": 1.18
     }
   ],
   "terrain_zones": [
     {
-      "point_index": 3,
+      "point_index": 4,
       "size": [
-        8,
-        10
+        7,
+        9
       ],
-      "speed_mult": 0.85
+      "speed_mult": 0.78
     }
   ],
   "bounce_pads": [
     {
-      "point_index": 5,
+      "point_index": 7,
       "bounce_force": 11.0,
-      "forward_boost": 3.5
+      "forward_boost": 3.6
     }
   ],
   "item_boxes": [
     2,
-    5,
-    6
+    6,
+    10
   ],
   "boost_pickups": [
     1,
-    6
+    9
   ],
   "rail_segments": [
-    2
+    3,
+    9
   ],
   "shortcut_routes": [
     {
       "id": "cloud_deck_circuit_cut",
       "entry_point_index": 2,
-      "exit_point_index": 5,
-      "risk": "medium",
-      "ai_preference": 0.35,
-      "description": "Risk cut across the infield; miss and hit slow terrain."
+      "exit_point_index": 8,
+      "risk": "high",
+      "ai_preference": 0.28,
+      "description": "Mist canyon cut between hairpins \u2014 fog grit if you miss."
     }
   ],
   "landmarks": [
-    "cloud_deck_circuit_marker"
+    "obs_spire",
+    "cloud_rail",
+    "deck_beacon"
   ],
-  "elevation_profile": "stub_rise",
-  "bank_bias": 0.04,
-  "geometry_note": "Honest pending geometry \u2014 raceable closed loop, not commercial finished art."
+  "elevation_profile": "cloud_steps",
+  "bank_bias": 0.12,
+  "geometry_note": "Skyline Relay production batch \u2014 distinct raceable geometry; track art still pending (not commercial)."
 }

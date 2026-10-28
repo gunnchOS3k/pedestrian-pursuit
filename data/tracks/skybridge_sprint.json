@@ -3,75 +3,80 @@
   "id": "skybridge_sprint",
   "display_name": "Skybridge Sprint",
   "lap_count": 3,
-  "difficulty": "beginner",
-  "theme": "skyline_relay",
-  "description": "Skybridge sprint between towers. Championship stub \u2014 launchable legitimate lap; geometry/art still pending polish.",
+  "difficulty": "intermediate",
+  "theme": "skybridge_sprint",
+  "description": "Twin skybridge spans with draft straights, cable towers, and an under-bridge chord cut.",
   "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-  "geometry_status": "championship_stub_raceable",
+  "geometry_status": "championship_raceable",
   "final_track_art_status": "track_art_pending",
   "human_track_art_approved": false,
-  "lane_width": 14.0,
+  "lane_width": 13.5,
   "guard_rails": true,
   "has_shortcut": true,
-  "track_color": "#4A5868",
-  "accent_color": "#C9E4FF",
-  "sky_color": "#A0C0E0",
-  "backdrop_color": "#3A4858",
+  "track_color": "#2E3A4A",
+  "accent_color": "#7CF0E0",
+  "sky_color": "#4A6888",
+  "backdrop_color": "#1E2834",
   "path_points": [
     [
-      63.68,
-      1.14,
-      2.0
+      56.0,
+      0.0,
+      0.0
     ],
     [
-      51.98,
-      -0.91,
-      27.33
+      48.0,
+      0.31,
+      18.0
     ],
     [
-      28.1,
-      -1.9,
-      43.48
+      22.0,
+      1.91,
+      24.0
     ],
     [
-      -1.83,
-      -0.66,
-      48.68
+      0.0,
+      1.91,
+      24.0
     ],
     [
-      -31.97,
-      1.34,
-      39.56
+      -22.0,
+      0.0,
+      24.0
     ],
     [
-      -50.25,
-      1.78,
-      16.16
+      -48.0,
+      -0.26,
+      18.0
     ],
     [
-      -47.92,
-      0.13,
-      -11.57
+      -56.0,
+      -0.44,
+      0.0
     ],
     [
-      -29.06,
-      -1.67,
-      -32.68
+      -48.0,
+      -0.39,
+      -18.0
     ],
     [
-      -1.65,
-      -1.52,
-      -43.61
+      -22.0,
+      1.69,
+      -24.0
     ],
     [
-      29.51,
-      0.41,
-      -42.13
+      0.0,
+      1.69,
+      -24.0
     ],
     [
-      55.41,
-      1.86,
-      -25.22
+      22.0,
+      0.0,
+      -24.0
+    ],
+    [
+      48.0,
+      0.42,
+      -18.0
     ]
   ],
   "checkpoint_points": [
@@ -84,57 +89,60 @@
   ],
   "speed_lanes": [
     {
-      "point_index": 1,
+      "point_index": 0,
       "size": [
         6,
-        12
+        16
       ],
-      "speed_bonus": 1.15
+      "speed_bonus": 1.22
     }
   ],
   "terrain_zones": [
     {
-      "point_index": 3,
+      "point_index": 5,
       "size": [
         8,
-        10
+        11
       ],
-      "speed_mult": 0.85
+      "speed_mult": 0.82
     }
   ],
   "bounce_pads": [
     {
-      "point_index": 5,
-      "bounce_force": 11.0,
-      "forward_boost": 3.5
+      "point_index": 3,
+      "bounce_force": 12.0,
+      "forward_boost": 4.0
     }
   ],
   "item_boxes": [
-    2,
+    1,
     5,
-    7
+    9
   ],
   "boost_pickups": [
-    1,
-    6
+    0,
+    7
   ],
   "rail_segments": [
-    2
+    2,
+    8
   ],
   "shortcut_routes": [
     {
       "id": "skybridge_sprint_cut",
       "entry_point_index": 2,
-      "exit_point_index": 5,
-      "risk": "medium",
-      "ai_preference": 0.35,
-      "description": "Risk cut across the infield; miss and hit slow terrain."
+      "exit_point_index": 8,
+      "risk": "high",
+      "ai_preference": 0.29,
+      "description": "Under-bridge cut \u2014 miss and hit scaffolding."
     }
   ],
   "landmarks": [
-    "skybridge_sprint_marker"
+    "bridge_tower_a",
+    "bridge_tower_b",
+    "cable_gantry"
   ],
-  "elevation_profile": "stub_rise",
-  "bank_bias": 0.04,
-  "geometry_note": "Honest pending geometry \u2014 raceable closed loop, not commercial finished art."
+  "elevation_profile": "bridge_spans",
+  "bank_bias": 0.1,
+  "geometry_note": "Skyline Relay production batch \u2014 distinct raceable geometry; track art still pending (not commercial)."
 }

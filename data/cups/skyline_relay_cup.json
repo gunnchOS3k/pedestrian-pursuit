@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "skyline_relay_cup",
   "display_name": "Skyline Relay Cup",
-  "description": "Rooftop and skybridge relays across the city skyline. Tracks registered and launchable; geometry marked honest-pending beyond Cups 1\u20133 production batch.",
+  "description": "Rooftop and skybridge relays across the city skyline. Cup 6 production batch \u2014 four distinct raceable courses; track art still pending.",
   "cup_index": 6,
   "track_ids": [
     "rooftop_ribbon",

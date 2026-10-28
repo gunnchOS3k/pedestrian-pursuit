@@ -172,7 +172,7 @@
     {
       "id": "rooftop_ribbon",
       "runtime_status": "raceable",
-      "geometry_status": "championship_stub_raceable",
+      "geometry_status": "championship_raceable",
       "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
       "final_track_art_status": "track_art_pending",
       "human_track_art_approved": false
@@ -180,7 +180,7 @@
     {
       "id": "skybridge_sprint",
       "runtime_status": "raceable",
-      "geometry_status": "championship_stub_raceable",
+      "geometry_status": "championship_raceable",
       "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
       "final_track_art_status": "track_art_pending",
       "human_track_art_approved": false
@@ -188,7 +188,7 @@
     {
       "id": "antenna_ascent",
       "runtime_status": "raceable",
-      "geometry_status": "championship_stub_raceable",
+      "geometry_status": "championship_raceable",
       "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
       "final_track_art_status": "track_art_pending",
       "human_track_art_approved": false
@@ -196,7 +196,7 @@
     {
       "id": "cloud_deck_circuit",
       "runtime_status": "raceable",
-      "geometry_status": "championship_stub_raceable",
+      "geometry_status": "championship_raceable",
       "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
       "final_track_art_status": "track_art_pending",
       "human_track_art_approved": false

@@ -4,8 +4,8 @@
   "raceable": 32,
   "geometry": {
     "championship_upgraded": 8,
-    "championship_raceable": 12,
-    "championship_stub_raceable": 12
+    "championship_raceable": 16,
+    "championship_stub_raceable": 8
   },
   "final_track_art": {
     "track_art_candidate": 8,
@@ -17,8 +17,9 @@
     "cup_3_metro_motion_raceable": 4,
     "cup_4_kinetic_coast_raceable": 4,
     "cup_5_neon_night_raceable": 4,
-    "cups_6_8_stub_raceable": 12
+    "cup_6_skyline_relay_raceable": 4,
+    "cups_7_8_stub_raceable": 8
   },
-  "next_cup_batch": "skyline_relay_cup (Cup 6) elevation/banks/landmarks polish",
+  "next_cup_batch": "archive_relay_cup (Cup 7) elevation/banks/landmarks polish",
   "not_v1": true
 }
