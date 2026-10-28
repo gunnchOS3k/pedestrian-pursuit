@@ -72,33 +72,40 @@ class WaveEAlphaContentTests(unittest.TestCase):
         self.assertEqual(len(ids), len(set(ids)))
         playable = [v for v in vehicles if v.get("playable")]
         stubs = [v for v in vehicles if not v.get("playable")]
-        self.assertEqual(len(playable), 15)
-        self.assertEqual(len(stubs), 35)
+        self.assertEqual(len(playable), 22)
+        self.assertEqual(len(stubs), 28)
         street = [v for v in vehicles if v.get("family_id") == "street_legends"]
         self.assertEqual(len(street), 8)
         for v in street:
             self.assertTrue(v["playable"])
             self.assertEqual(v["art_status"], "native_v1")
             self.assertTrue((ROOT / f"data/shoes/{v['id']}.json").exists())
-        rollers = [v for v in vehicles if v.get("family_id") == "roller_revolution"]
-        self.assertEqual(len(rollers), 7)
-        fingerprints = set()
-        for v in rollers:
-            self.assertTrue(v["playable"])
-            self.assertEqual(v["art_status"], "native_v1")
-            self.assertTrue((ROOT / f"data/shoes/{v['id']}.json").exists())
-            fp = (
-                v["top_speed_modifier"],
-                v["acceleration_modifier"],
-                v["handling_modifier"],
-                v["drift_modifier"],
-                v["jump_modifier"],
-                v["boost_modifier"],
-                v["stomp_modifier"],
-                v["material_family"],
-            )
-            self.assertNotIn(fp, fingerprints)
-            fingerprints.add(fp)
+        for family_id, expect in (
+            ("roller_revolution", 7),
+            ("hover_couture", 7),
+        ):
+            family = [v for v in vehicles if v.get("family_id") == family_id]
+            self.assertEqual(len(family), expect)
+            fingerprints = set()
+            for v in family:
+                self.assertTrue(v["playable"])
+                self.assertEqual(v["art_status"], "native_v1")
+                self.assertTrue((ROOT / f"data/shoes/{v['id']}.json").exists())
+                if family_id == "hover_couture":
+                    contract = str(v.get("collision_contract", "")).lower()
+                    self.assertTrue("grounded" in contract or "checkpoint" in contract)
+                fp = (
+                    v["top_speed_modifier"],
+                    v["acceleration_modifier"],
+                    v["handling_modifier"],
+                    v["drift_modifier"],
+                    v["jump_modifier"],
+                    v["boost_modifier"],
+                    v["stomp_modifier"],
+                    v["material_family"],
+                )
+                self.assertNotIn(fp, fingerprints)
+                fingerprints.add(fp)
         for v in stubs:
             self.assertEqual(v["art_status"], "stub_not_final")
         expected_items = {

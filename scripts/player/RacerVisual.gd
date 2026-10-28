@@ -507,7 +507,8 @@ func _attach_shoes(
 ) -> void:
 	var side := -1.0 if is_left else 1.0
 	var march := _shoe_archetype()
-	## Street Legends + Roller Revolution — distinct silhouettes, shared mesh stack.
+	## Street + Roller + Hover Couture — distinct silhouettes, shared mesh stack.
+	## Hover/space reads are VFX only; race collision stays grounded.
 	var balanced := march == "street_balanced"
 	var sprint := march == "street_sprint"
 	var parkour := march == "street_parkour"
@@ -519,9 +520,14 @@ func _attach_shoes(
 	var roller_inline := march == "roller_inline"
 	var roller_quad := march == "roller_quad"
 	var roller_hover := march == "roller_hoverish"
+	var hover_glide := march == "hover_glide"
+	var hover_boost := march == "hover_boost"
+	var hover_bounce := march == "hover_bounce"
+	var hover_precision := march == "hover_precision"
 	var native_street := balanced or sprint or parkour or tempo or power or trick or rail or kinetic
 	var native_roller := roller_inline or roller_quad or roller_hover
-	if tempo or rail or power or sprint or trick or kinetic or parkour or native_roller:
+	var native_hover := hover_glide or hover_boost or hover_bounce or hover_precision
+	if tempo or rail or power or sprint or trick or kinetic or parkour or native_roller or native_hover:
 		shoe_scale *= 1.14
 	if power:
 		shoe_scale *= 1.08 ## Blockier iron silhouette for forge ash.
@@ -531,19 +537,31 @@ func _attach_shoes(
 		shoe_scale *= 1.06
 	if roller_hover:
 		shoe_scale *= 1.04
+	if hover_bounce:
+		shoe_scale *= 1.12
+	if hover_boost:
+		shoe_scale *= 1.05
 	if vehicle_id == "treadfall_blades":
 		shoe_scale *= 0.98
 	elif vehicle_id == "iron_derby_blitz":
 		shoe_scale *= 1.1
+	elif vehicle_id == "anti_gravity_platforms":
+		shoe_scale *= 1.15
+	elif vehicle_id == "starglass_pointe":
+		shoe_scale *= 0.92
 	# Kinetic Sole stack: outsole / midsole yellow / kinetic upper / tread bars.
 	var midsole := StandardMaterial3D.new()
 	midsole.albedo_color = Color(0.96, 0.77, 0.09) # Midsole Yellow
 	midsole.roughness = 0.45
-	midsole.emission_enabled = native_street or native_roller
+	midsole.emission_enabled = native_street or native_roller or native_hover
 	if midsole.emission_enabled:
 		midsole.emission = Color(0.96, 0.77, 0.09)
 		midsole.emission_energy_multiplier = (
-			0.34 if (power or kinetic or roller_hover) else (0.3 if (tempo or rail or roller_inline) else 0.22)
+			0.36 if (hover_boost or hover_bounce) else (
+				0.34 if (power or kinetic or roller_hover or hover_glide) else (
+					0.3 if (tempo or rail or roller_inline or hover_precision) else 0.22
+				)
+			)
 		)
 	var upper := StandardMaterial3D.new()
 	if balanced:
@@ -576,21 +594,45 @@ func _attach_shoes(
 		upper.albedo_color = Color(0.35, 0.85, 0.7) # Orbit mint
 	elif vehicle_id == "treadfall_blades":
 		upper.albedo_color = Color(0.95, 0.55, 0.15) # Treadfall amber
+	elif vehicle_id == "cloudsole_striders":
+		upper.albedo_color = Color(0.78, 0.88, 1.0) # Cloud white-blue
+	elif vehicle_id == "nebula_skippers":
+		upper.albedo_color = Color(0.55, 0.35, 0.95) # Nebula violet
+	elif vehicle_id == "ufo_loafers":
+		upper.albedo_color = Color(0.7, 0.85, 0.45) # Saucer olive
+	elif vehicle_id == "meteor_heeljets":
+		upper.albedo_color = Color(1.0, 0.45, 0.2) # Meteor ember
+	elif vehicle_id == "anti_gravity_platforms":
+		upper.albedo_color = Color(0.55, 0.9, 0.95) # Anti-G cyan
+	elif vehicle_id == "moonbounce_booties":
+		upper.albedo_color = Color(0.9, 0.9, 0.85) # Moon foam
+	elif vehicle_id == "starglass_pointe":
+		upper.albedo_color = Color(0.85, 0.75, 1.0) # Starglass lilac
 	else:
 		upper.albedo_color = self.accent_color
 	upper.roughness = 0.38 if not power else 0.55
 	upper.emission_enabled = true
 	upper.emission = Color(1.0, 0.42, 0.24) if power else upper.albedo_color
 	upper.emission_energy_multiplier = (
-		0.42 if (kinetic or roller_hover) else (0.38 if power else (0.4 if rail else (0.35 if (tempo or roller_inline) else 0.28)))
+		0.45 if hover_boost else (
+			0.42 if (kinetic or roller_hover or hover_bounce) else (
+				0.38 if power else (0.4 if (rail or hover_precision) else (0.35 if (tempo or roller_inline or hover_glide) else 0.28))
+			)
+		)
 	)
 	var wheel := StandardMaterial3D.new()
 	wheel.albedo_color = Color(0.08, 0.08, 0.1)
 	wheel.roughness = 0.7
-	wheel.emission_enabled = roller_hover
+	wheel.emission_enabled = roller_hover or native_hover
 	if wheel.emission_enabled:
-		wheel.emission = Color(0.35, 0.85, 0.7)
-		wheel.emission_energy_multiplier = 0.35
+		wheel.emission = Color(0.55, 0.85, 1.0) if native_hover else Color(0.35, 0.85, 0.7)
+		wheel.emission_energy_multiplier = 0.4 if native_hover else 0.35
+	var hover_pad := StandardMaterial3D.new()
+	hover_pad.albedo_color = Color(0.65, 0.85, 1.0)
+	hover_pad.roughness = 0.25
+	hover_pad.emission_enabled = true
+	hover_pad.emission = Color(0.45, 0.75, 1.0)
+	hover_pad.emission_energy_multiplier = 0.4
 	var outsole := StandardMaterial3D.new()
 	outsole.albedo_color = Color(0.12, 0.12, 0.14)
 	outsole.roughness = 0.85
@@ -656,8 +698,10 @@ func _attach_shoes(
 	)
 	leg.add_child(chevron)
 	chevron.position = Vector3(0, -leg_len + 0.09, 0.12 * shoe_scale)
-	# Grip tread bars / roller wheels under the outsole.
-	var tread_count := 5 if (tempo or parkour or roller_quad) else (4 if (rail or power or kinetic or trick or roller_inline or roller_hover) else 3)
+	# Grip tread bars / roller wheels / hover pads under the outsole.
+	var tread_count := 5 if (tempo or parkour or roller_quad or hover_bounce) else (
+		4 if (rail or power or kinetic or trick or roller_inline or roller_hover or hover_glide or hover_boost or hover_precision) else 3
+	)
 	for i in range(tread_count):
 		var tread_mat: Material = dark
 		if tempo or parkour:
@@ -670,20 +714,25 @@ func _attach_shoes(
 			tread_mat = spike
 		elif trick:
 			tread_mat = upper
+		elif native_hover:
+			tread_mat = hover_pad
 		elif native_roller:
 			tread_mat = wheel
+		var use_wheelish := native_roller and not native_hover
 		var tread := _mesh_box(
-			Vector3(0.13 * ws * shoe_scale if not native_roller else 0.05 * ws * shoe_scale,
-				0.025 * shoe_scale if not native_roller else 0.05 * shoe_scale,
-				0.035 * shoe_scale if not native_roller else 0.05 * shoe_scale),
+			Vector3(
+				0.14 * ws * shoe_scale if native_hover else (0.05 * ws * shoe_scale if use_wheelish else 0.13 * ws * shoe_scale),
+				0.02 * shoe_scale if native_hover else (0.05 * shoe_scale if use_wheelish else 0.025 * shoe_scale),
+				0.04 * shoe_scale if native_hover else (0.05 * shoe_scale if use_wheelish else 0.035 * shoe_scale)
+			),
 			Vector3.ZERO,
 			tread_mat
 		)
 		leg.add_child(tread)
-		var z_spread := 0.055 if (native_street or native_roller) else 0.07
+		var z_spread := 0.055 if (native_street or native_roller or native_hover) else 0.07
 		tread.position = Vector3(
-			side * (0.06 * ws * shoe_scale if native_roller else 0.0),
-			-leg_len - 0.058,
+			side * (0.06 * ws * shoe_scale if use_wheelish else 0.0),
+			-leg_len - (0.05 if native_hover else 0.058),
 			(float(i) - float(tread_count - 1) * 0.5) * z_spread * shoe_scale
 		)
 		if native_roller and roller_quad:
@@ -891,6 +940,108 @@ func _attach_shoes(
 		)
 		leg.add_child(orbit)
 		orbit.position = Vector3(0.0, -leg_len + 0.08, -0.04 * shoe_scale)
+	elif hover_glide:
+		## Glide skirt + ankle ring — grounded pad silhouette (no phase-through).
+		var skirt := _mesh_box(
+			Vector3(0.2 * ws * shoe_scale, 0.025 * shoe_scale, 0.22 * shoe_scale),
+			Vector3.ZERO,
+			hover_pad
+		)
+		leg.add_child(skirt)
+		skirt.position = Vector3(0.0, -leg_len - 0.02, 0.02 * shoe_scale)
+		var ring_g := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.05 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(ring_g)
+		ring_g.position = Vector3(0.0, -leg_len + 0.07, -0.04 * shoe_scale)
+		if vehicle_id == "ufo_loafers":
+			var dome := _mesh_box(
+				Vector3(0.16 * ws * shoe_scale, 0.08 * shoe_scale, 0.16 * shoe_scale),
+				Vector3.ZERO,
+				midsole
+			)
+			leg.add_child(dome)
+			dome.position = Vector3(0.0, -leg_len + 0.1, 0.0)
+		elif vehicle_id == "anti_gravity_platforms":
+			var plate_g := _mesh_box(
+				Vector3(0.24 * ws * shoe_scale, 0.03 * shoe_scale, 0.18 * shoe_scale),
+				Vector3.ZERO,
+				hover_pad
+			)
+			leg.add_child(plate_g)
+			plate_g.position = Vector3(0.0, -leg_len - 0.04, 0.0)
+		elif vehicle_id == "nebula_skippers":
+			var trail := _mesh_box(
+				Vector3(0.04 * ws * shoe_scale, 0.1 * shoe_scale, 0.12 * shoe_scale),
+				Vector3.ZERO,
+				upper
+			)
+			leg.add_child(trail)
+			trail.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.05, -0.08 * shoe_scale)
+	elif hover_boost:
+		## Meteor heeljets — dual rear thruster cones (VFX; collision grounded).
+		var jet_l := _mesh_box(
+			Vector3(0.05 * ws * shoe_scale, 0.08 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(jet_l)
+		jet_l.position = Vector3(side * 0.07 * ws * shoe_scale, -leg_len + 0.02, -0.14 * shoe_scale)
+		var jet_flame := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.04 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(jet_flame)
+		jet_flame.position = Vector3(side * 0.07 * ws * shoe_scale, -leg_len - 0.02, -0.2 * shoe_scale)
+		var cuff_j := _mesh_box(
+			Vector3(0.13 * ws * shoe_scale, 0.1 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(cuff_j)
+		cuff_j.position = Vector3(0.0, -leg_len + 0.1, -0.02 * shoe_scale)
+	elif hover_bounce:
+		## Moonbounce foam heel bulb.
+		var bulb := _mesh_box(
+			Vector3(0.16 * ws * shoe_scale, 0.12 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(bulb)
+		bulb.position = Vector3(0.0, -leg_len + 0.02, -0.08 * shoe_scale)
+		var foam := _mesh_box(
+			Vector3(0.18 * ws * shoe_scale, 0.04 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			hover_pad
+		)
+		leg.add_child(foam)
+		foam.position = Vector3(0.0, -leg_len - 0.03, 0.0)
+	elif hover_precision:
+		## Starglass pointe blade + slim ankle cuff.
+		var pointe := _mesh_box(
+			Vector3(0.06 * ws * shoe_scale, 0.05 * shoe_scale, 0.26 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(pointe)
+		pointe.position = Vector3(0.0, -leg_len - 0.01, 0.06 * shoe_scale)
+		var glass := _mesh_box(
+			Vector3(0.03 * ws * shoe_scale, 0.12 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			hover_pad
+		)
+		leg.add_child(glass)
+		glass.position = Vector3(side * 0.09 * ws * shoe_scale, -leg_len + 0.05, -0.02 * shoe_scale)
+		var cuff_p := _mesh_box(
+			Vector3(0.1 * ws * shoe_scale, 0.08 * shoe_scale, 0.07 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(cuff_p)
+		cuff_p.position = Vector3(0.0, -leg_len + 0.09, -0.06 * shoe_scale)
 	if is_left:
 		_shoe_l = sole
 		_heel_l = heel

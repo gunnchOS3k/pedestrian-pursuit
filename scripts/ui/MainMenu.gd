@@ -54,7 +54,7 @@ func _ready() -> void:
 		"DIGITAL RC READY  •  8 COURSES  •  2 CUPS  •  8 RACERS  •  %d/%d VEHICLES"
 		% [int(garage_counts.get("playable", 8)), int(garage_counts.get("total", 50))]
 	)
-	$VBox/Subtitle.text = "Kinetic Sole garage — Street + Roller race-ready; stubs flagged not-final"
+	$VBox/Subtitle.text = "Kinetic Sole garage — Street + Roller + Hover race-ready; stubs flagged not-final"
 	_apply_launch_presentation()
 	var audio := get_node_or_null("/root/AudioDirector")
 	if audio and audio.has_method("play_menu_music"):
