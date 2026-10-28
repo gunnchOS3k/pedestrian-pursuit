@@ -4,69 +4,79 @@
   "display_name": "Lantern Corridor",
   "lap_count": 3,
   "difficulty": "beginner",
-  "theme": "neon_night",
-  "description": "Lantern-lit corridor with night-market cuts. Championship stub \u2014 launchable legitimate lap; geometry/art still pending polish.",
+  "theme": "lantern_corridor",
+  "description": "Night-market alley oval under hanging lantern canopies with a risky stall-cut shortcut.",
   "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-  "geometry_status": "championship_stub_raceable",
+  "geometry_status": "championship_raceable",
   "final_track_art_status": "track_art_pending",
   "human_track_art_approved": false,
-  "lane_width": 14.0,
+  "lane_width": 13.5,
   "guard_rails": true,
   "has_shortcut": true,
-  "track_color": "#2A1838",
-  "accent_color": "#FF4AD6",
-  "sky_color": "#100818",
-  "backdrop_color": "#201028",
+  "track_color": "#2A2038",
+  "accent_color": "#FF8A3D",
+  "sky_color": "#1A1428",
+  "backdrop_color": "#16101F",
   "path_points": [
     [
-      55.72,
-      1.26,
+      28.0,
+      0.35,
       0.0
     ],
     [
-      45.54,
-      1.16,
-      27.88
-    ],
-    [
-      18.53,
-      -0.54,
-      43.11
-    ],
-    [
-      -12.13,
-      -1.5,
-      42.0
-    ],
-    [
-      -37.84,
-      -0.38,
-      26.76
-    ],
-    [
-      -49.72,
+      24.25,
       1.26,
+      26.0
+    ],
+    [
+      14.0,
+      1.13,
+      45.03
+    ],
+    [
+      0.0,
+      0.0,
+      52.0
+    ],
+    [
+      -14.0,
+      -1.13,
+      45.03
+    ],
+    [
+      -24.25,
+      -1.26,
+      26.0
+    ],
+    [
+      -28.0,
+      -0.35,
       0.0
     ],
     [
-      -39.54,
-      1.16,
-      -27.88
+      -24.25,
+      0.65,
+      -26.0
     ],
     [
-      -12.53,
-      -0.54,
-      -43.11
+      -14.0,
+      0.78,
+      -45.03
     ],
     [
-      18.13,
-      -1.5,
-      -42.0
+      -0.0,
+      0.0,
+      -52.0
     ],
     [
-      43.84,
-      -0.38,
-      -26.76
+      14.0,
+      -0.78,
+      -45.03
+    ],
+    [
+      24.25,
+      -0.65,
+      -26.0
     ]
   ],
   "checkpoint_points": [
@@ -74,61 +84,65 @@
     2,
     4,
     6,
-    8
+    8,
+    10
   ],
   "speed_lanes": [
     {
       "point_index": 1,
       "size": [
-        6,
-        12
+        5,
+        11
       ],
-      "speed_bonus": 1.15
+      "speed_bonus": 1.16
     }
   ],
   "terrain_zones": [
     {
-      "point_index": 3,
+      "point_index": 5,
       "size": [
-        8,
-        10
+        7,
+        9
       ],
-      "speed_mult": 0.85
+      "speed_mult": 0.82
     }
   ],
   "bounce_pads": [
     {
-      "point_index": 5,
-      "bounce_force": 11.0,
-      "forward_boost": 3.5
+      "point_index": 9,
+      "bounce_force": 10.5,
+      "forward_boost": 3.2
     }
   ],
   "item_boxes": [
     2,
-    5,
-    6
+    6,
+    10
   ],
   "boost_pickups": [
     1,
-    6
+    8
   ],
   "rail_segments": [
-    2
+    3,
+    8
   ],
   "shortcut_routes": [
     {
       "id": "lantern_corridor_cut",
       "entry_point_index": 2,
-      "exit_point_index": 5,
+      "exit_point_index": 7,
       "risk": "medium",
-      "ai_preference": 0.35,
-      "description": "Risk cut across the infield; miss and hit slow terrain."
+      "ai_preference": 0.33,
+      "description": "Cut through the stall row \u2014 slow crates if you miss."
     }
   ],
   "landmarks": [
-    "lantern_corridor_marker"
+    "lantern_canopy",
+    "stall_row",
+    "paper_arch"
   ],
-  "elevation_profile": "stub_rise",
-  "bank_bias": 0.04,
-  "geometry_note": "Honest pending geometry \u2014 raceable closed loop, not commercial finished art."
+  "elevation_profile": "lantern_rise",
+  "bank_bias": 0.08,
+  "geometry_note": "Neon Night production batch \u2014 distinct raceable geometry; track art still pending (not commercial)."
 }

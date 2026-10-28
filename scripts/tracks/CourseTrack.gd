@@ -354,6 +354,15 @@ func _add_track_segment(
 		track_mat.roughness = 0.78
 		track_mat.metallic = 0.05
 		track_mat.albedo_color = track_mat.albedo_color.lerp(Color(0.35, 0.48, 0.5), 0.22)
+	elif theme in ["lantern_corridor", "mirror_boulevard", "afterglow_overpass", "signal_storm_yard", "neon_night"]:
+		## Night asphalt with wet neon specular.
+		track_mat = track_mat.duplicate()
+		track_mat.roughness = 0.38
+		track_mat.metallic = 0.22
+		track_mat.albedo_color = track_mat.albedo_color.lerp(Color(0.14, 0.12, 0.2), 0.28)
+		track_mat.emission_enabled = true
+		track_mat.emission = _color("accent_color", Color(1.0, 0.4, 0.7)) * 0.18
+		track_mat.emission_energy_multiplier = 0.35
 	visual.material_override = track_mat
 	## Visual bank only — do not roll the StaticBody (Gate AI lines stay lap-safe).
 	var bank := float(_data.get("bank_bias", 0.0))
@@ -677,6 +686,8 @@ func _build_scenery() -> void:
 			_build_metro_scenery(scenery)
 		"saltline_boardwalk", "cliffside_draft", "tidal_bridge_run", "seaglass_switchback", "kinetic_coast":
 			_build_coast_scenery(scenery)
+		"lantern_corridor", "mirror_boulevard", "afterglow_overpass", "signal_storm_yard", "neon_night":
+			_build_neon_night_scenery(scenery)
 		_:
 			_add_visual_box(
 				scenery,
@@ -685,6 +696,63 @@ func _build_scenery() -> void:
 				_color("backdrop_color", Color.DARK_GREEN)
 			)
 			_build_landmark_markers(scenery)
+
+
+func _build_neon_night_scenery(parent: Node3D) -> void:
+	## Neon Night Cup — night-market / boulevard props + off-line collision hazards.
+	var theme := str(_data.get("theme", "neon_night"))
+	var accent := _color("accent_color", Color(1.0, 0.45, 0.75))
+	_add_visual_box(
+		parent,
+		Vector3(0.0, -0.85, 0.0),
+		Vector3(170.0, 0.25, 170.0),
+		_color("backdrop_color", Color(0.08, 0.07, 0.12))
+	)
+	## Dark plaza disk under the loop.
+	_add_visual_cylinder(parent, Vector3(0.0, -0.58, 0.0), 34.0, 0.18, Color(0.12, 0.1, 0.18), true)
+	match theme:
+		"lantern_corridor":
+			_add_named_coast_prop(parent, "LanternCanopy", Vector3(0.0, 0.0, 44.0), accent)
+			_add_visual_box(parent, Vector3(-7.0, 4.0, 44.0), Vector3(1.0, 8.0, 1.0), Color(0.35, 0.22, 0.14))
+			_add_visual_box(parent, Vector3(7.0, 4.0, 44.0), Vector3(1.0, 8.0, 1.0), Color(0.35, 0.22, 0.14))
+			_add_visual_box(parent, Vector3(0.0, 8.2, 44.0), Vector3(16.0, 0.9, 1.2), accent, true)
+			for i in range(5):
+				var z := -30.0 + float(i) * 15.0
+				_add_visual_sphere(parent, Vector3(-16.0, 5.5, z), 0.85, accent, true)
+				_add_visual_sphere(parent, Vector3(16.0, 5.5, z), 0.85, accent.lightened(0.15), true)
+			_add_named_coast_prop(parent, "StallRow", Vector3(-22.0, 0.0, 0.0), Color(0.45, 0.28, 0.18))
+			_add_coast_hazard_rock(parent, "MarketCrate", Vector3(5.0, 0.7, 4.0), Vector3(3.5, 1.8, 3.0))
+		"mirror_boulevard":
+			_add_named_coast_prop(parent, "MirrorGateA", Vector3(42.0, 0.0, 0.0), accent)
+			_add_visual_box(parent, Vector3(42.0, 4.5, -6.0), Vector3(1.2, 9.0, 1.2), Color(0.55, 0.7, 0.85), true)
+			_add_visual_box(parent, Vector3(42.0, 4.5, 6.0), Vector3(1.2, 9.0, 1.2), Color(0.55, 0.7, 0.85), true)
+			_add_visual_box(parent, Vector3(42.0, 9.2, 0.0), Vector3(1.4, 1.0, 14.0), accent, true)
+			_add_named_coast_prop(parent, "MirrorGateB", Vector3(-42.0, 0.0, 0.0), accent)
+			_add_visual_box(parent, Vector3(-42.0, 4.5, -6.0), Vector3(1.2, 9.0, 1.2), Color(0.55, 0.7, 0.85), true)
+			_add_visual_box(parent, Vector3(-42.0, 4.5, 6.0), Vector3(1.2, 9.0, 1.2), Color(0.55, 0.7, 0.85), true)
+			_add_visual_box(parent, Vector3(-42.0, 9.2, 0.0), Vector3(1.4, 1.0, 14.0), accent, true)
+			_add_coast_hazard_rock(parent, "GlassPlanter", Vector3(0.0, 0.9, 6.0), Vector3(4.5, 2.2, 4.0))
+		"afterglow_overpass":
+			_add_named_coast_prop(parent, "OverpassNorth", Vector3(0.0, 0.0, 34.0), accent)
+			_add_visual_box(parent, Vector3(-11.0, 3.0, 34.0), Vector3(1.5, 6.0, 1.5), Color(0.3, 0.28, 0.35))
+			_add_visual_box(parent, Vector3(11.0, 3.0, 34.0), Vector3(1.5, 6.0, 1.5), Color(0.3, 0.28, 0.35))
+			_add_visual_box(parent, Vector3(0.0, 6.2, 34.0), Vector3(24.0, 1.1, 1.6), accent, true)
+			_add_named_coast_prop(parent, "OverpassSouth", Vector3(0.0, 0.0, -34.0), accent)
+			_add_visual_box(parent, Vector3(-11.0, 3.0, -34.0), Vector3(1.5, 6.0, 1.5), Color(0.3, 0.28, 0.35))
+			_add_visual_box(parent, Vector3(11.0, 3.0, -34.0), Vector3(1.5, 6.0, 1.5), Color(0.3, 0.28, 0.35))
+			_add_visual_box(parent, Vector3(0.0, 6.2, -34.0), Vector3(24.0, 1.1, 1.6), accent, true)
+			_add_coast_hazard_rock(parent, "AfterglowPillar", Vector3(6.0, 1.1, 5.0), Vector3(3.8, 3.0, 3.8))
+		"signal_storm_yard":
+			_add_named_coast_prop(parent, "SignalGantry", Vector3(0.0, 0.0, 38.0), accent)
+			_add_visual_box(parent, Vector3(-10.0, 5.0, 38.0), Vector3(1.3, 10.0, 1.3), Color(0.4, 0.42, 0.45))
+			_add_visual_box(parent, Vector3(10.0, 5.0, 38.0), Vector3(1.3, 10.0, 1.3), Color(0.4, 0.42, 0.45))
+			_add_visual_box(parent, Vector3(0.0, 10.2, 38.0), Vector3(22.0, 0.9, 1.4), accent, true)
+			_add_named_coast_prop(parent, "StormTower", Vector3(-36.0, 0.0, 0.0), Color(0.55, 0.55, 0.5))
+			_add_visual_box(parent, Vector3(-36.0, 7.0, 0.0), Vector3(4.0, 14.0, 4.0), Color(0.35, 0.36, 0.38))
+			_add_coast_hazard_rock(parent, "YardCrateStack", Vector3(4.0, 0.85, -5.0), Vector3(4.2, 2.4, 3.6))
+		_:
+			_add_named_coast_prop(parent, "NeonMarker", Vector3(0.0, 0.0, 36.0), accent)
+	_build_landmark_markers(parent)
 
 
 func _build_coast_scenery(parent: Node3D) -> void:

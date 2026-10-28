@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "neon_night_cup",
   "display_name": "Neon Night Cup",
-  "description": "After-hours city racing under neon canopies and night markets. Tracks registered and launchable; geometry marked honest-pending beyond Cups 1\u20133 production batch.",
+  "description": "After-hours city racing under neon canopies and night markets. Cup 5 production batch \u2014 four distinct raceable courses; track art still pending.",
   "cup_index": 5,
   "track_ids": [
     "lantern_corridor",
