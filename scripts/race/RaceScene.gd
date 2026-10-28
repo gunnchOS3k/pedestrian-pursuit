@@ -4,6 +4,9 @@ const _RunnerProfile = preload("res://scripts/data/RunnerProfile.gd")
 const CrashWatchdogScript = preload("res://scripts/rc/CrashWatchdog.gd")
 const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
 const VehicleCatalogScript = preload("res://scripts/data/VehicleCatalog.gd")
+const AppearanceSyncScript = preload("res://scripts/data/AppearanceSync.gd")
+const CreatedRacerStoreScript = preload("res://scripts/data/CreatedRacerStore.gd")
+const WardrobeCatalogScript = preload("res://scripts/data/WardrobeCatalog.gd")
 
 ## Wires together track, racers, race manager, HUD, and results.
 ## Assigns named character-life profiles so every racer reads as a person.
@@ -328,7 +331,6 @@ func _apply_created_racer_cosmetics(racer: Node, visual: Node, profile) -> void:
 		return
 	## Peer-synced appearance payload (multiplayer) takes precedence when stamped.
 	if racer.has_meta("appearance_payload"):
-		var AppearanceSyncScript = load("res://scripts/data/AppearanceSync.gd")
 		var payload: Dictionary = racer.get_meta("appearance_payload")
 		if AppearanceSyncScript.apply_to_visual(visual, payload):
 			if profile != null:
@@ -344,9 +346,6 @@ func _apply_created_racer_cosmetics(racer: Node, visual: Node, profile) -> void:
 			return
 	if not GameManager.has_meta("created_racer_id"):
 		return
-	var CreatedRacerStoreScript = load("res://scripts/data/CreatedRacerStore.gd")
-	var WardrobeCatalogScript = load("res://scripts/data/WardrobeCatalog.gd")
-	var AppearanceSyncScript = load("res://scripts/data/AppearanceSync.gd")
 	var active: Dictionary = CreatedRacerStoreScript.get_active()
 	if active.is_empty():
 		return
@@ -363,8 +362,8 @@ func _apply_created_racer_cosmetics(racer: Node, visual: Node, profile) -> void:
 	if slots.is_empty():
 		var preset: Dictionary = WardrobeCatalogScript.preset(outfit_id)
 		slots = preset.get("slots", {})
-	var payload: Dictionary = AppearanceSyncScript.pack_from_created_racer(active, slots)
-	AppearanceSyncScript.apply_to_visual(visual, payload)
+	var packed: Dictionary = AppearanceSyncScript.pack_from_created_racer(active, slots)
+	AppearanceSyncScript.apply_to_visual(visual, packed)
 	visual.set_meta("created_racer_id", str(active.get("id", "")))
 	visual.set_meta("outfit_id", outfit_id)
 	var foot := str(active.get("footwear_vehicle_id", ""))
@@ -376,7 +375,7 @@ func _apply_created_racer_cosmetics(racer: Node, visual: Node, profile) -> void:
 		var role := "host"
 		if "local_player_index" in racer and int(racer.local_player_index) == 1:
 			role = "guest"
-		AppearanceSyncScript.write_payload(session_dir.path_join("sync/%s_appearance.json" % role), payload)
+		AppearanceSyncScript.write_payload(session_dir.path_join("sync/%s_appearance.json" % role), packed)
 
 
 func apply_peer_appearance_payload(racer: Node, payload: Dictionary) -> bool:
@@ -385,13 +384,12 @@ func apply_peer_appearance_payload(racer: Node, payload: Dictionary) -> bool:
 		return false
 	racer.set_meta("appearance_payload", payload)
 	var visual = racer.get_node_or_null("RacerVisual")
-	var AppearanceSyncScript = load("res://scripts/data/AppearanceSync.gd")
-	var ok := AppearanceSyncScript.apply_to_visual(visual, payload)
+	var ok: bool = AppearanceSyncScript.apply_to_visual(visual, payload)
 	if visual != null and visual.has_method("apply_profile") and visual.get("profile") != null:
 		## Rebuild after stamping cosmetics so peer sees correct outfit.
-		var profile = visual.get("profile")
-		profile.display_name = str(payload.get("display_name", profile.display_name))
-		visual.apply_profile(profile)
+		var p = visual.get("profile")
+		p.display_name = str(payload.get("display_name", p.display_name))
+		visual.apply_profile(p)
 	racer.set_meta("created_racer_id", str(payload.get("racer_id", "")))
 	racer.set_meta("runner_display_name", str(payload.get("display_name", "")))
 	racer.set_meta("outfit_id", str(payload.get("outfit_id", "")))
@@ -419,7 +417,6 @@ func _try_apply_session_peer_appearance(guest_racer: Node) -> void:
 	var session_dir := OS.get_environment("GAME_SESSION_DIR").strip_edges()
 	if session_dir.is_empty() or guest_racer == null:
 		return
-	var AppearanceSyncScript = load("res://scripts/data/AppearanceSync.gd")
 	var guest_payload: Dictionary = AppearanceSyncScript.read_payload(
 		session_dir.path_join("sync/guest_appearance.json")
 	)

@@ -714,8 +714,8 @@ func _attach_garment_mesh(g: Dictionary, hs: float, ws: float) -> void:
 
 func cosmetic_fingerprint() -> String:
 	## Peer-verifiable cosmetic identity (appearance + outfit + footwear).
-	var AppearanceSyncScript = load("res://scripts/data/AppearanceSync.gd")
-	return AppearanceSyncScript.fingerprint({
+	const AppearanceSyncScript = preload("res://scripts/data/AppearanceSync.gd")
+	return str(AppearanceSyncScript.fingerprint({
 		"schema_version": 1,
 		"racer_id": str(get_meta("created_racer_id")) if has_meta("created_racer_id") else "",
 		"display_name": profile.display_name if profile else "",
@@ -723,7 +723,7 @@ func cosmetic_fingerprint() -> String:
 		"outfit_id": str(get_meta("outfit_id")) if has_meta("outfit_id") else "",
 		"outfit_slots": wardrobe_outfit_slots,
 		"footwear_vehicle_id": vehicle_id,
-	})
+	}))
 
 
 func _add_modular_hair(style: String, head_r: float, hair_mat: Material, dark: Material, hs: float) -> void:

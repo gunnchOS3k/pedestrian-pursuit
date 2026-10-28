@@ -20,7 +20,7 @@
 		"orbit_signal": 6,
 		"quiet_plaza": 5
 	},
-	"fingerprint": "1|created_1793203964|Sync Studio|deep_warm|cornrows|running_blade_vis|orbit_signal_default|base_underlayer=orbit_base,bottom=orbit_bottom,eyewear=orbit_visor,footwear_vehicle=anti_gravity_platforms,outerwear=orbit_outer,top=orbit_top,trail_expression=orbit_trail|anti_gravity_platforms",
+	"fingerprint": "1|created_1793204244|Sync Studio|deep_warm|cornrows|running_blade_vis|orbit_signal_default|base_underlayer=orbit_base,bottom=orbit_bottom,eyewear=orbit_visor,footwear_vehicle=anti_gravity_platforms,outerwear=orbit_outer,top=orbit_top,trail_expression=orbit_trail|anti_gravity_platforms",
 	"flow": "create_customize_save_reopen_peer_apply_edit",
 	"integrated_presets": 6,
 	"lod_hooks": true,
