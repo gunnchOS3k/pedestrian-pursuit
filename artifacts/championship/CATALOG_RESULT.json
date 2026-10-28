@@ -4,8 +4,8 @@
   "raceable": 32,
   "geometry": {
     "championship_upgraded": 8,
-    "championship_raceable": 16,
-    "championship_stub_raceable": 8
+    "championship_raceable": 20,
+    "championship_stub_raceable": 4
   },
   "final_track_art": {
     "track_art_candidate": 8,
@@ -18,8 +18,10 @@
     "cup_4_kinetic_coast_raceable": 4,
     "cup_5_neon_night_raceable": 4,
     "cup_6_skyline_relay_raceable": 4,
-    "cups_7_8_stub_raceable": 8
+    "cup_7_archive_relay_raceable": 4,
+    "cup_8_stub_raceable": 4
   },
-  "next_cup_batch": "archive_relay_cup (Cup 7) elevation/banks/landmarks polish",
+  "next_cup_batch": "world_wonder_grand_prix (Cup 8) elevation/banks/landmarks polish",
+  "archive_relay_tribute": "original gunnchOS Archive of Life homage — fictional exhibition theming only, no scientific claims",
   "not_v1": true
 }

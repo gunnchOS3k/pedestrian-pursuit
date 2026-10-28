@@ -369,6 +369,12 @@ func _add_track_segment(
 		track_mat.roughness = 0.55
 		track_mat.metallic = 0.28
 		track_mat.albedo_color = track_mat.albedo_color.lerp(Color(0.32, 0.36, 0.42), 0.25)
+	elif theme in ["marble_foyer_loop", "stack_corridor", "gallery_grand_oval", "vault_gate_gauntlet", "archive_relay"]:
+		## Polished marble / exhibition court read (tribute set dressing).
+		track_mat = track_mat.duplicate()
+		track_mat.roughness = 0.32
+		track_mat.metallic = 0.08
+		track_mat.albedo_color = track_mat.albedo_color.lerp(Color(0.55, 0.52, 0.48), 0.28)
 	visual.material_override = track_mat
 	## Visual bank only — do not roll the StaticBody (Gate AI lines stay lap-safe).
 	var bank := float(_data.get("bank_bias", 0.0))
@@ -696,6 +702,8 @@ func _build_scenery() -> void:
 			_build_neon_night_scenery(scenery)
 		"rooftop_ribbon", "skybridge_sprint", "antenna_ascent", "cloud_deck_circuit", "skyline_relay":
 			_build_skyline_scenery(scenery)
+		"marble_foyer_loop", "stack_corridor", "gallery_grand_oval", "vault_gate_gauntlet", "archive_relay":
+			_build_archive_scenery(scenery)
 		_:
 			_add_visual_box(
 				scenery,
@@ -704,6 +712,56 @@ func _build_scenery() -> void:
 				_color("backdrop_color", Color.DARK_GREEN)
 			)
 			_build_landmark_markers(scenery)
+
+
+func _build_archive_scenery(parent: Node3D) -> void:
+	## Archive Relay Cup — original gunnchOS Archive of Life tribute exhibition props.
+	## Fictional gallery set dressing only; no fabricated scientific claims.
+	var theme := str(_data.get("theme", "archive_relay"))
+	var accent := _color("accent_color", Color(0.85, 0.75, 0.55))
+	_add_visual_box(
+		parent,
+		Vector3(0.0, -0.88, 0.0),
+		Vector3(170.0, 0.28, 170.0),
+		_color("backdrop_color", Color(0.22, 0.2, 0.24))
+	)
+	_add_visual_cylinder(parent, Vector3(0.0, -0.58, 0.0), 32.0, 0.16, Color(0.45, 0.42, 0.4), false)
+	match theme:
+		"marble_foyer_loop":
+			_add_named_coast_prop(parent, "FoyerArch", Vector3(0.0, 0.0, 38.0), accent)
+			_add_visual_box(parent, Vector3(-10.0, 4.0, 38.0), Vector3(1.6, 8.0, 1.6), Color(0.7, 0.68, 0.62))
+			_add_visual_box(parent, Vector3(10.0, 4.0, 38.0), Vector3(1.6, 8.0, 1.6), Color(0.7, 0.68, 0.62))
+			_add_visual_box(parent, Vector3(0.0, 8.2, 38.0), Vector3(22.0, 1.2, 1.6), accent)
+			_add_named_coast_prop(parent, "MarblePlinth", Vector3(-28.0, 0.0, 4.0), Color(0.75, 0.72, 0.68))
+			_add_visual_box(parent, Vector3(-28.0, 1.5, 4.0), Vector3(5.0, 3.0, 5.0), Color(0.72, 0.7, 0.66))
+			_add_coast_hazard_rock(parent, "RotundaPlinth", Vector3(5.0, 0.8, 5.0), Vector3(4.0, 2.2, 4.0))
+		"stack_corridor":
+			_add_named_coast_prop(parent, "ShelfRowA", Vector3(-18.0, 0.0, 0.0), Color(0.45, 0.35, 0.25))
+			for i in range(4):
+				var z := -24.0 + float(i) * 16.0
+				_add_visual_box(parent, Vector3(-18.0, 3.5, z), Vector3(2.5, 7.0, 10.0), Color(0.42, 0.32, 0.22))
+			_add_named_coast_prop(parent, "ShelfRowB", Vector3(18.0, 0.0, 0.0), Color(0.45, 0.35, 0.25))
+			for i in range(4):
+				var z2 := -24.0 + float(i) * 16.0
+				_add_visual_box(parent, Vector3(18.0, 3.5, z2), Vector3(2.5, 7.0, 10.0), Color(0.42, 0.32, 0.22))
+			_add_coast_hazard_rock(parent, "CrateStack", Vector3(4.0, 0.85, 3.0), Vector3(3.5, 2.0, 3.2))
+		"gallery_grand_oval":
+			_add_named_coast_prop(parent, "SkylightBank", Vector3(0.0, 0.0, 0.0), accent)
+			_add_visual_box(parent, Vector3(0.0, 10.0, 0.0), Vector3(28.0, 0.6, 18.0), Color(0.7, 0.85, 0.95), true)
+			_add_named_coast_prop(parent, "FramePylon", Vector3(40.0, 0.0, 0.0), Color(0.55, 0.5, 0.42))
+			_add_visual_box(parent, Vector3(40.0, 5.0, 0.0), Vector3(2.2, 10.0, 2.2), Color(0.5, 0.48, 0.42))
+			_add_coast_hazard_rock(parent, "GalleryBench", Vector3(-6.0, 0.7, 6.0), Vector3(5.0, 1.6, 2.4))
+		"vault_gate_gauntlet":
+			_add_named_coast_prop(parent, "VaultArch", Vector3(0.0, 0.0, 40.0), accent)
+			_add_visual_box(parent, Vector3(-9.0, 4.5, 40.0), Vector3(1.8, 9.0, 1.8), Color(0.35, 0.36, 0.4))
+			_add_visual_box(parent, Vector3(9.0, 4.5, 40.0), Vector3(1.8, 9.0, 1.8), Color(0.35, 0.36, 0.4))
+			_add_visual_box(parent, Vector3(0.0, 9.2, 40.0), Vector3(20.0, 1.2, 1.6), accent)
+			_add_named_coast_prop(parent, "SealDoor", Vector3(-36.0, 0.0, 0.0), Color(0.4, 0.38, 0.35))
+			_add_visual_box(parent, Vector3(-36.0, 4.0, 0.0), Vector3(1.5, 8.0, 10.0), Color(0.32, 0.3, 0.28))
+			_add_coast_hazard_rock(parent, "VaultBarrier", Vector3(5.0, 1.0, -4.0), Vector3(4.2, 2.6, 3.5))
+		_:
+			_add_named_coast_prop(parent, "ArchiveMarker", Vector3(0.0, 0.0, 36.0), accent)
+	_build_landmark_markers(parent)
 
 
 func _build_skyline_scenery(parent: Node3D) -> void:

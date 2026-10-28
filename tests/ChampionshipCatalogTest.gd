@@ -47,6 +47,7 @@ func _run() -> void:
 		"saltline_boardwalk",
 		"lantern_corridor",
 		"rooftop_ribbon",
+		"marble_foyer_loop",
 		"horizon_crown_finale",
 	]:
 		var data := TrackCatalogScript.load_track(sample)
@@ -201,6 +202,48 @@ func _run() -> void:
 			elif tid == "cloud_deck_circuit" and sky_scenery.get_node_or_null("ObsSpire") == null:
 				failures.append("cloud_deck missing ObsSpire")
 		sky_course.queue_free()
+	## Cup 7 Archive Relay: four distinct championship_raceable tribute courses.
+	var archive := TrackCatalogScript.load_cup("archive_relay_cup")
+	var archive_ids: Array = archive.get("track_ids", [])
+	if archive_ids.size() != 4:
+		failures.append("archive_relay size")
+	for tid in ["marble_foyer_loop", "stack_corridor", "gallery_grand_oval", "vault_gate_gauntlet"]:
+		if tid not in archive_ids:
+			failures.append("archive_relay missing %s" % tid)
+		var ad := TrackCatalogScript.load_track(tid)
+		if str(ad.get("geometry_status", "")) != "championship_raceable":
+			failures.append("%s not championship_raceable" % tid)
+		if str(ad.get("final_track_art_status", "")) != "track_art_pending":
+			failures.append("%s art must stay pending" % tid)
+		if str(ad.get("tribute_note", "")).is_empty():
+			failures.append("%s missing tribute honesty note" % tid)
+		var archive_has_y := false
+		for p in ad.get("path_points", []):
+			if typeof(p) == TYPE_ARRAY and p.size() == 3 and absf(float(p[1])) > 0.1:
+				archive_has_y = true
+				break
+		if not archive_has_y:
+			failures.append("%s missing elevation" % tid)
+		if (ad.get("landmarks", []) as Array).size() < 2:
+			failures.append("%s needs distinct landmarks" % tid)
+		var archive_course: Node = CourseTrackScript.new()
+		root.add_child(archive_course)
+		archive_course.configure(ad)
+		if not archive_course.build():
+			failures.append("build archive %s" % tid)
+		else:
+			var archive_scenery := archive_course.get_node_or_null("Scenery")
+			if archive_scenery == null:
+				failures.append("%s missing Scenery" % tid)
+			elif tid == "marble_foyer_loop" and archive_scenery.get_node_or_null("FoyerArch") == null:
+				failures.append("foyer missing FoyerArch")
+			elif tid == "stack_corridor" and archive_scenery.get_node_or_null("ShelfRowA") == null:
+				failures.append("stack missing ShelfRowA")
+			elif tid == "gallery_grand_oval" and archive_scenery.get_node_or_null("SkylightBank") == null:
+				failures.append("gallery missing SkylightBank")
+			elif tid == "vault_gate_gauntlet" and archive_scenery.get_node_or_null("VaultArch") == null:
+				failures.append("vault missing VaultArch")
+		archive_course.queue_free()
 	var art := TrackArtAcceptanceScript.counts()
 	if int(art.get("raceable", 0)) != 32:
 		failures.append("track art raceable %s" % str(art.get("raceable")))
