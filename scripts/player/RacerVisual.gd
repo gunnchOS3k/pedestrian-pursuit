@@ -543,6 +543,15 @@ func _attach_shoes(
 	var crossover_circuit := march == "crossover_circuit"
 	var crossover_portal := march == "crossover_portal"
 	var crossover_gyro := march == "crossover_gyro"
+	var tribute_ember := march == "tribute_ember"
+	var tribute_bastion := march == "tribute_bastion"
+	var tribute_volt := march == "tribute_volt"
+	var tribute_gale := march == "tribute_gale"
+	var tribute_azure := march == "tribute_azure"
+	var tribute_orbit := march == "tribute_orbit"
+	var tribute_echo := march == "tribute_echo"
+	var tribute_null := march == "tribute_null"
+	var tribute_radiant := march == "tribute_radiant"
 	var native_street := balanced or sprint or parkour or tempo or power or trick or rail or kinetic
 	var native_roller := roller_inline or roller_quad or roller_hover
 	var native_hover := hover_glide or hover_boost or hover_bounce or hover_precision
@@ -558,7 +567,11 @@ func _attach_shoes(
 		crossover_soft or crossover_heavy or crossover_tap or crossover_bass
 		or crossover_circuit or crossover_portal or crossover_gyro
 	)
-	if tempo or rail or power or sprint or trick or kinetic or parkour or native_roller or native_hover or native_elemental or native_ridiculous or native_crossover:
+	var native_tribute := (
+		tribute_ember or tribute_bastion or tribute_volt or tribute_gale or tribute_azure
+		or tribute_orbit or tribute_echo or tribute_null or tribute_radiant
+	)
+	if tempo or rail or power or sprint or trick or kinetic or parkour or native_roller or native_hover or native_elemental or native_ridiculous or native_crossover or native_tribute:
 		shoe_scale *= 1.14
 	if power:
 		shoe_scale *= 1.08 ## Blockier iron silhouette for forge ash.
@@ -594,6 +607,14 @@ func _attach_shoes(
 		shoe_scale *= 1.05
 	if crossover_gyro:
 		shoe_scale *= 1.04
+	if tribute_bastion or tribute_azure:
+		shoe_scale *= 1.12
+	if tribute_volt or tribute_radiant:
+		shoe_scale *= 1.06
+	if tribute_gale:
+		shoe_scale *= 1.04
+	if tribute_orbit or tribute_echo:
+		shoe_scale *= 1.05
 	if vehicle_id == "treadfall_blades":
 		shoe_scale *= 0.98
 	elif vehicle_id == "iron_derby_blitz":
@@ -614,17 +635,21 @@ func _attach_shoes(
 		shoe_scale *= 1.02
 	elif vehicle_id == "waike_circuit_clogs":
 		shoe_scale *= 1.06
+	elif vehicle_id == "nullstep":
+		shoe_scale *= 0.98
+	elif vehicle_id == "cinderstride":
+		shoe_scale *= 1.03
 	# Kinetic Sole stack: outsole / midsole yellow / kinetic upper / tread bars.
 	var midsole := StandardMaterial3D.new()
 	midsole.albedo_color = Color(0.96, 0.77, 0.09) # Midsole Yellow
 	midsole.roughness = 0.45
-	midsole.emission_enabled = native_street or native_roller or native_hover or native_elemental or native_ridiculous or native_crossover
+	midsole.emission_enabled = native_street or native_roller or native_hover or native_elemental or native_ridiculous or native_crossover or native_tribute
 	if midsole.emission_enabled:
 		midsole.emission = Color(0.96, 0.77, 0.09)
 		midsole.emission_energy_multiplier = (
-			0.36 if (hover_boost or hover_bounce or elemental_magma or ridiculous_boost or ridiculous_caffeine or crossover_circuit or crossover_bass) else (
-				0.34 if (power or kinetic or roller_hover or hover_glide or elemental_dive or ridiculous_trick or crossover_portal or crossover_tap) else (
-					0.3 if (tempo or rail or roller_inline or hover_precision or elemental_wet or elemental_frost or ridiculous_reach or crossover_gyro or crossover_soft) else 0.22
+			0.36 if (hover_boost or hover_bounce or elemental_magma or ridiculous_boost or ridiculous_caffeine or crossover_circuit or crossover_bass or tribute_ember or tribute_volt or tribute_radiant) else (
+				0.34 if (power or kinetic or roller_hover or hover_glide or elemental_dive or ridiculous_trick or crossover_portal or crossover_tap or tribute_orbit or tribute_echo) else (
+					0.3 if (tempo or rail or roller_inline or hover_precision or elemental_wet or elemental_frost or ridiculous_reach or crossover_gyro or crossover_soft or tribute_gale or tribute_azure) else 0.22
 				)
 			)
 		)
@@ -711,17 +736,35 @@ func _attach_shoes(
 		upper.albedo_color = Color(0.75, 0.4, 0.95) # MLV portal violet
 	elif vehicle_id == "edge_io_gyrowraps":
 		upper.albedo_color = Color(0.25, 0.85, 0.55) # Edge I/O lime
+	elif vehicle_id == "cinderstride":
+		upper.albedo_color = Color(0.95, 0.35, 0.15) # Cinder ember
+	elif vehicle_id == "bastion_stomp":
+		upper.albedo_color = Color(0.55, 0.52, 0.48) # Bastion steel
+	elif vehicle_id == "voltstep_coils":
+		upper.albedo_color = Color(0.95, 0.85, 0.15) # Volt gold
+	elif vehicle_id == "galeleaf_gliders":
+		upper.albedo_color = Color(0.35, 0.85, 0.45) # Galeleaf green
+	elif vehicle_id == "azure_bastions":
+		upper.albedo_color = Color(0.25, 0.55, 0.95) # Azure blue
+	elif vehicle_id == "orbitwalkers":
+		upper.albedo_color = Color(0.65, 0.7, 0.95) # Orbit silver-blue
+	elif vehicle_id == "phase_echoes":
+		upper.albedo_color = Color(0.55, 0.85, 0.95) # Echo cyan
+	elif vehicle_id == "nullstep":
+		upper.albedo_color = Color(0.18, 0.18, 0.22) # Null matte
+	elif vehicle_id == "radiant_order":
+		upper.albedo_color = Color(0.98, 0.92, 0.55) # Radiant gold
 	else:
 		upper.albedo_color = self.accent_color
-	upper.roughness = 0.38 if not (power or elemental_mud or elemental_magma or ridiculous_stomp or ridiculous_drift or crossover_heavy) else 0.55
+	upper.roughness = 0.38 if not (power or elemental_mud or elemental_magma or ridiculous_stomp or ridiculous_drift or crossover_heavy or tribute_bastion or tribute_null) else 0.55
 	upper.emission_enabled = true
 	upper.emission = Color(1.0, 0.42, 0.24) if power else upper.albedo_color
 	upper.emission_energy_multiplier = (
-		0.45 if (hover_boost or elemental_magma or ridiculous_caffeine or crossover_bass) else (
-			0.42 if (kinetic or roller_hover or hover_bounce or elemental_dive or ridiculous_boost or crossover_circuit or crossover_portal) else (
+		0.45 if (hover_boost or elemental_magma or ridiculous_caffeine or crossover_bass or tribute_ember or tribute_radiant) else (
+			0.42 if (kinetic or roller_hover or hover_bounce or elemental_dive or ridiculous_boost or crossover_circuit or crossover_portal or tribute_volt or tribute_orbit) else (
 				0.38 if power else (
-					0.4 if (rail or hover_precision or elemental_frost or ridiculous_trick or crossover_tap or crossover_gyro) else (
-						0.35 if (tempo or roller_inline or hover_glide or elemental_wet or ridiculous_reach or crossover_soft) else 0.28
+					0.4 if (rail or hover_precision or elemental_frost or ridiculous_trick or crossover_tap or crossover_gyro or tribute_echo or tribute_gale) else (
+						0.35 if (tempo or roller_inline or hover_glide or elemental_wet or ridiculous_reach or crossover_soft or tribute_azure) else 0.28
 					)
 				)
 			)
@@ -861,6 +904,71 @@ func _attach_shoes(
 	if gyro_mat.emission_enabled:
 		gyro_mat.emission = Color(0.25, 0.95, 0.55)
 		gyro_mat.emission_energy_multiplier = 0.38
+	var ember_mat := StandardMaterial3D.new()
+	ember_mat.albedo_color = Color(0.95, 0.4, 0.12)
+	ember_mat.roughness = 0.4
+	ember_mat.emission_enabled = tribute_ember
+	if ember_mat.emission_enabled:
+		ember_mat.emission = Color(1.0, 0.35, 0.08)
+		ember_mat.emission_energy_multiplier = 0.45
+	var bastion_mat := StandardMaterial3D.new()
+	bastion_mat.albedo_color = Color(0.5, 0.48, 0.45)
+	bastion_mat.roughness = 0.55
+	bastion_mat.metallic = 0.5
+	bastion_mat.emission_enabled = tribute_bastion
+	if bastion_mat.emission_enabled:
+		bastion_mat.emission = Color(0.7, 0.65, 0.55)
+		bastion_mat.emission_energy_multiplier = 0.25
+	var volt_mat := StandardMaterial3D.new()
+	volt_mat.albedo_color = Color(0.95, 0.85, 0.15)
+	volt_mat.roughness = 0.3
+	volt_mat.emission_enabled = tribute_volt
+	if volt_mat.emission_enabled:
+		volt_mat.emission = Color(1.0, 0.9, 0.2)
+		volt_mat.emission_energy_multiplier = 0.48
+	var gale_mat := StandardMaterial3D.new()
+	gale_mat.albedo_color = Color(0.35, 0.85, 0.45)
+	gale_mat.roughness = 0.35
+	gale_mat.emission_enabled = tribute_gale
+	if gale_mat.emission_enabled:
+		gale_mat.emission = Color(0.4, 0.95, 0.5)
+		gale_mat.emission_energy_multiplier = 0.35
+	var azure_mat := StandardMaterial3D.new()
+	azure_mat.albedo_color = Color(0.25, 0.55, 0.95)
+	azure_mat.roughness = 0.4
+	azure_mat.metallic = 0.45
+	azure_mat.emission_enabled = tribute_azure
+	if azure_mat.emission_enabled:
+		azure_mat.emission = Color(0.3, 0.6, 1.0)
+		azure_mat.emission_energy_multiplier = 0.35
+	var orbit_mat := StandardMaterial3D.new()
+	orbit_mat.albedo_color = Color(0.65, 0.7, 0.95)
+	orbit_mat.roughness = 0.28
+	orbit_mat.emission_enabled = tribute_orbit
+	if orbit_mat.emission_enabled:
+		orbit_mat.emission = Color(0.7, 0.75, 1.0)
+		orbit_mat.emission_energy_multiplier = 0.4
+	var echo_mat := StandardMaterial3D.new()
+	echo_mat.albedo_color = Color(0.55, 0.85, 0.95)
+	echo_mat.roughness = 0.22
+	echo_mat.emission_enabled = tribute_echo
+	if echo_mat.emission_enabled:
+		echo_mat.emission = Color(0.5, 0.9, 1.0)
+		echo_mat.emission_energy_multiplier = 0.42
+	var null_mat := StandardMaterial3D.new()
+	null_mat.albedo_color = Color(0.12, 0.12, 0.16)
+	null_mat.roughness = 0.9
+	null_mat.emission_enabled = tribute_null
+	if null_mat.emission_enabled:
+		null_mat.emission = Color(0.25, 0.25, 0.35)
+		null_mat.emission_energy_multiplier = 0.18
+	var radiant_mat := StandardMaterial3D.new()
+	radiant_mat.albedo_color = Color(0.98, 0.9, 0.45)
+	radiant_mat.roughness = 0.3
+	radiant_mat.emission_enabled = tribute_radiant
+	if radiant_mat.emission_enabled:
+		radiant_mat.emission = Color(1.0, 0.95, 0.55)
+		radiant_mat.emission_energy_multiplier = 0.45
 	var outsole := StandardMaterial3D.new()
 	outsole.albedo_color = Color(0.12, 0.12, 0.14)
 	outsole.roughness = 0.85
@@ -926,14 +1034,15 @@ func _attach_shoes(
 	)
 	leg.add_child(chevron)
 	chevron.position = Vector3(0, -leg_len + 0.09, 0.12 * shoe_scale)
-	# Grip tread bars / roller wheels / hover pads / elemental / ridiculous / crossover soles under the outsole.
-	var tread_count := 5 if (tempo or parkour or roller_quad or hover_bounce or elemental_mud or elemental_sand or ridiculous_stomp or ridiculous_drift or crossover_heavy or crossover_gyro) else (
+	# Grip tread bars / roller / hover / elemental / ridiculous / crossover / tribute soles under the outsole.
+	var tread_count := 5 if (tempo or parkour or roller_quad or hover_bounce or elemental_mud or elemental_sand or ridiculous_stomp or ridiculous_drift or crossover_heavy or crossover_gyro or tribute_bastion or tribute_azure) else (
 		4 if (
 			rail or power or kinetic or trick or roller_inline or roller_hover
 			or hover_glide or hover_boost or hover_precision
 			or elemental_wet or elemental_dive or elemental_magma or elemental_frost
 			or ridiculous_boost or ridiculous_caffeine or ridiculous_reach or ridiculous_trick
 			or crossover_soft or crossover_tap or crossover_bass or crossover_circuit or crossover_portal
+			or tribute_ember or tribute_volt or tribute_gale or tribute_orbit or tribute_echo or tribute_null or tribute_radiant
 		) else 3
 	)
 	for i in range(tread_count):
@@ -982,27 +1091,45 @@ func _attach_shoes(
 			tread_mat = portal_mat
 		elif crossover_gyro:
 			tread_mat = gyro_mat
+		elif tribute_ember:
+			tread_mat = ember_mat
+		elif tribute_bastion:
+			tread_mat = bastion_mat
+		elif tribute_volt:
+			tread_mat = volt_mat
+		elif tribute_gale:
+			tread_mat = gale_mat
+		elif tribute_azure:
+			tread_mat = azure_mat
+		elif tribute_orbit:
+			tread_mat = orbit_mat
+		elif tribute_echo:
+			tread_mat = echo_mat
+		elif tribute_null:
+			tread_mat = null_mat
+		elif tribute_radiant:
+			tread_mat = radiant_mat
 		elif native_hover:
 			tread_mat = hover_pad
 		elif native_roller:
 			tread_mat = wheel
-		var use_wheelish := native_roller and not native_hover and not native_elemental and not native_ridiculous and not native_crossover
+		var use_wheelish := native_roller and not native_hover and not native_elemental and not native_ridiculous and not native_crossover and not native_tribute
 		var tread := _mesh_box(
 			Vector3(
-				0.14 * ws * shoe_scale if (native_hover or native_elemental or native_ridiculous or native_crossover) else (0.05 * ws * shoe_scale if use_wheelish else 0.13 * ws * shoe_scale),
-				0.02 * shoe_scale if (native_hover or elemental_wet or elemental_frost or ridiculous_reach or crossover_soft or crossover_portal) else (
-					0.03 * shoe_scale if (native_elemental or native_ridiculous or native_crossover) else (0.05 * shoe_scale if use_wheelish else 0.025 * shoe_scale)
+				0.14 * ws * shoe_scale if (native_hover or native_elemental or native_ridiculous or native_crossover or native_tribute) else (0.05 * ws * shoe_scale if use_wheelish else 0.13 * ws * shoe_scale),
+				0.02 * shoe_scale if (native_hover or elemental_wet or elemental_frost or ridiculous_reach or crossover_soft or crossover_portal or tribute_echo or tribute_gale) else (
+					0.03 * shoe_scale if (native_elemental or native_ridiculous or native_crossover or native_tribute) else (0.05 * shoe_scale if use_wheelish else 0.025 * shoe_scale)
 				),
-				0.04 * shoe_scale if (native_hover or native_elemental or native_ridiculous or native_crossover) else (0.05 * shoe_scale if use_wheelish else 0.035 * shoe_scale)
+				0.04 * shoe_scale if (native_hover or native_elemental or native_ridiculous or native_crossover or native_tribute) else (0.05 * shoe_scale if use_wheelish else 0.035 * shoe_scale)
 			),
 			Vector3.ZERO,
 			tread_mat
 		)
 		leg.add_child(tread)
-		var z_spread := 0.055 if (native_street or native_roller or native_hover or native_elemental or native_ridiculous or native_crossover) else 0.07
+		var z_spread := 0.055 if (native_street or native_roller or native_hover or native_elemental or native_ridiculous or native_crossover or native_tribute) else 0.07
 		tread.position = Vector3(
 			side * (0.06 * ws * shoe_scale if use_wheelish else 0.0),
-			-leg_len - (0.05 if (native_hover or native_elemental or native_ridiculous or native_crossover) else 0.058),
+			-leg_len - (0.05 if (native_hover or native_elemental or native_ridiculous or native_crossover or native_tribute) else 0.058),
 			(float(i) - float(tread_count - 1) * 0.5) * z_spread * shoe_scale
 		)
 		if native_roller and roller_quad:
@@ -1728,6 +1855,171 @@ func _attach_shoes(
 		)
 		leg.add_child(hub)
 		hub.position = Vector3(0.0, -leg_len + 0.06, -0.04 * shoe_scale)
+	elif tribute_ember:
+		## Cinderstride — ember fins (original Pedestrian procedural sole).
+		var ember_fin := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.12 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			ember_mat
+		)
+		leg.add_child(ember_fin)
+		ember_fin.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.05, -0.04 * shoe_scale)
+		var cuff_e := _mesh_box(
+			Vector3(0.13 * ws * shoe_scale, 0.09 * shoe_scale, 0.09 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(cuff_e)
+		cuff_e.position = Vector3(0.0, -leg_len + 0.09, -0.02 * shoe_scale)
+	elif tribute_bastion:
+		## Bastion Stomp — heavy side plates + heel block.
+		var plate_b := _mesh_box(
+			Vector3(0.07 * ws * shoe_scale, 0.15 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			bastion_mat
+		)
+		leg.add_child(plate_b)
+		plate_b.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.04, -0.08 * shoe_scale)
+		var heel_b := _mesh_box(
+			Vector3(0.16 * ws * shoe_scale, 0.1 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(heel_b)
+		heel_b.position = Vector3(0.0, -leg_len + 0.02, -0.1 * shoe_scale)
+	elif tribute_volt:
+		## Voltstep Coils — coil rings + spark cuff.
+		var coil := _mesh_box(
+			Vector3(0.15 * ws * shoe_scale, 0.03 * shoe_scale, 0.15 * shoe_scale),
+			Vector3.ZERO,
+			volt_mat
+		)
+		leg.add_child(coil)
+		coil.position = Vector3(0.0, -leg_len + 0.08, -0.04 * shoe_scale)
+		var coil2 := _mesh_box(
+			Vector3(0.11 * ws * shoe_scale, 0.025 * shoe_scale, 0.11 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(coil2)
+		coil2.position = Vector3(0.0, -leg_len + 0.12, -0.04 * shoe_scale)
+		var spark := _mesh_box(
+			Vector3(0.03 * ws * shoe_scale, 0.1 * shoe_scale, 0.04 * shoe_scale),
+			Vector3.ZERO,
+			volt_mat
+		)
+		leg.add_child(spark)
+		spark.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.05, 0.02 * shoe_scale)
+	elif tribute_gale:
+		## Galeleaf Gliders — leaf wing + slim ankle.
+		var leaf_g := _mesh_box(
+			Vector3(0.05 * ws * shoe_scale, 0.12 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			gale_mat
+		)
+		leg.add_child(leaf_g)
+		leaf_g.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.05, 0.0)
+		var ankle_g := _mesh_box(
+			Vector3(0.11 * ws * shoe_scale, 0.08 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(ankle_g)
+		ankle_g.position = Vector3(0.0, -leg_len + 0.09, -0.04 * shoe_scale)
+	elif tribute_azure:
+		## Azure Bastions — blue brace plates (distinct from Bastion Stomp).
+		var brace := _mesh_box(
+			Vector3(0.06 * ws * shoe_scale, 0.14 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			azure_mat
+		)
+		leg.add_child(brace)
+		brace.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.05, -0.04 * shoe_scale)
+		var cuff_a := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.08 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(cuff_a)
+		cuff_a.position = Vector3(0.0, -leg_len + 0.1, -0.02 * shoe_scale)
+		var toe_a := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.04 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			azure_mat
+		)
+		leg.add_child(toe_a)
+		toe_a.position = Vector3(0.0, -leg_len - 0.01, 0.12 * shoe_scale)
+	elif tribute_orbit:
+		## Orbitwalkers — dual heel rings (VFX; grounded collision).
+		var ring_o := _mesh_box(
+			Vector3(0.16 * ws * shoe_scale, 0.03 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			orbit_mat
+		)
+		leg.add_child(ring_o)
+		ring_o.position = Vector3(0.0, -leg_len + 0.07, -0.06 * shoe_scale)
+		var ring_o2 := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.025 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(ring_o2)
+		ring_o2.position = Vector3(0.0, -leg_len + 0.11, -0.06 * shoe_scale)
+	elif tribute_echo:
+		## Phase Echoes — veil fins; NEVER phase-through colliders.
+		var veil := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.12 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			echo_mat
+		)
+		leg.add_child(veil)
+		veil.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.05, -0.06 * shoe_scale)
+		var echo_trail := _mesh_box(
+			Vector3(0.03 * ws * shoe_scale, 0.08 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(echo_trail)
+		echo_trail.position = Vector3(side * -0.05 * ws * shoe_scale, -leg_len + 0.03, -0.12 * shoe_scale)
+	elif tribute_null:
+		## Nullstep — matte void block + thin rail.
+		var void_b := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.1 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			null_mat
+		)
+		leg.add_child(void_b)
+		void_b.position = Vector3(0.0, -leg_len + 0.04, -0.02 * shoe_scale)
+		var rail_n := _mesh_box(
+			Vector3(0.02 * ws * shoe_scale, 0.08 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(rail_n)
+		rail_n.position = Vector3(side * 0.09 * ws * shoe_scale, -leg_len + 0.04, 0.0)
+	elif tribute_radiant:
+		## Radiant Order — crest plate + radiant heel flare.
+		var crest := _mesh_box(
+			Vector3(0.08 * ws * shoe_scale, 0.12 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			radiant_mat
+		)
+		leg.add_child(crest)
+		crest.position = Vector3(0.0, -leg_len + 0.1, 0.02 * shoe_scale)
+		var flare_r := _mesh_box(
+			Vector3(0.05 * ws * shoe_scale, 0.1 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(flare_r)
+		flare_r.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.05, -0.08 * shoe_scale)
+		var heel_r := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.08 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			radiant_mat
+		)
+		leg.add_child(heel_r)
+		heel_r.position = Vector3(0.0, -leg_len + 0.02, -0.1 * shoe_scale)
 	if is_left:
 		_shoe_l = sole
 		_heel_l = heel

@@ -285,7 +285,7 @@ def validate_project(root: Path) -> list[str]:
 
 
 def _validate_vehicle_registry(root: Path) -> list[str]:
-    """Kinetic Sole garage: exactly 50 IDs, ≥41 playable (Street through Crossover), Anime stubs truthful."""
+    """Kinetic Sole garage: exactly 50 playable IDs; tribute art may be procedural_final_for_garage."""
     errors: list[str] = []
     path = root / "data/vehicles/vehicle_registry.json"
     reg = _read_json(path, errors)
@@ -300,6 +300,7 @@ def _validate_vehicle_registry(root: Path) -> list[str]:
     ids: list[str] = []
     playable = 0
     stub = 0
+    playable_art = {"native_v1", "procedural_final_for_garage"}
     required_fields = (
         "id",
         "display_name",
@@ -326,8 +327,11 @@ def _validate_vehicle_registry(root: Path) -> list[str]:
         ids.append(vid)
         if bool(entry.get("playable", False)):
             playable += 1
-            if str(entry.get("art_status", "")) != "native_v1":
-                errors.append(f"{path}: playable {vid} must use art_status native_v1")
+            art = str(entry.get("art_status", ""))
+            if art not in playable_art:
+                errors.append(f"{path}: playable {vid} art_status must be one of {sorted(playable_art)}")
+            if art == "stub_not_final":
+                errors.append(f"{path}: playable {vid} must not remain stub_not_final")
             shoe_path = root / f"data/shoes/{vid}.json"
             if not shoe_path.exists():
                 errors.append(f"{path}: playable {vid} missing shoe JSON {shoe_path.name}")
@@ -343,12 +347,18 @@ def _validate_vehicle_registry(root: Path) -> list[str]:
             errors.append(f"{path}: {vid} collision_contract must mention grounded collision/checkpoints")
     if len(ids) != len(set(ids)):
         errors.append(f"{path}: duplicate vehicle ids")
-    if playable < 41:
-        errors.append(f"{path}: need ≥41 playable (Street through Crossover), found {playable}")
+    if playable != 50:
+        errors.append(f"{path}: need exactly 50 playable Kinetic Sole vehicles, found {playable}")
+    if stub != 0:
+        errors.append(f"{path}: need 0 stubs, found {stub}")
     if stub + playable != len(vehicles):
         errors.append(f"{path}: playable/stub accounting mismatch")
     if int(reg.get("vehicle_count", -1)) != 50:
         errors.append(f"{path}: vehicle_count must be 50")
+    if int(reg.get("playable_count", -1)) != 50:
+        errors.append(f"{path}: playable_count must be 50")
+    if int(reg.get("stub_count", -1)) != 0:
+        errors.append(f"{path}: stub_count must be 0")
     street = [v for v in vehicles if isinstance(v, dict) and v.get("family_id") == "street_legends"]
     if len(street) != 8:
         errors.append(f"{path}: Street Legends family must have 8 vehicles")
@@ -360,6 +370,7 @@ def _validate_vehicle_registry(root: Path) -> list[str]:
         ("elemental_amphibious", "Elemental / Amphibious", 6),
         ("beautifully_ridiculous", "Beautifully Ridiculous", 6),
         ("gunnchos_crossover", "gunnchOS3k Crossover", 7),
+        ("anime_aggressors", "Anime Aggressors Footwear (Pedestrian tribute)", 9),
     ):
         family = [v for v in vehicles if isinstance(v, dict) and v.get("family_id") == family_id]
         if len(family) != expect:
@@ -373,10 +384,19 @@ def _validate_vehicle_registry(root: Path) -> list[str]:
                 "elemental_amphibious",
                 "beautifully_ridiculous",
                 "gunnchos_crossover",
+                "anime_aggressors",
             ):
                 contract = str(v.get("collision_contract", "")).lower()
                 if "grounded" not in contract and "checkpoint" not in contract:
                     errors.append(f"{path}: {family_id} {v.get('id')} missing grounded collision contract")
+            if family_id == "anime_aggressors":
+                if str(v.get("art_status", "")) != "procedural_final_for_garage":
+                    errors.append(
+                        f"{path}: tribute {v.get('id')} must use art_status procedural_final_for_garage"
+                    )
+                arch = str(v.get("movement_archetype", ""))
+                if not arch.startswith("tribute_"):
+                    errors.append(f"{path}: tribute {v.get('id')} archetype must be tribute_* (got {arch})")
             fp = (
                 float(v.get("top_speed_modifier", 0)),
                 float(v.get("acceleration_modifier", 0)),
@@ -390,13 +410,6 @@ def _validate_vehicle_registry(root: Path) -> list[str]:
             if fp in fps:
                 errors.append(f"{path}: duplicate {label} fingerprint for {v.get('id')}")
             fps.add(fp)
-    anime = [v for v in vehicles if isinstance(v, dict) and v.get("family_id") == "anime_aggressors"]
-    if len(anime) != 9:
-        errors.append(f"{path}: Anime Aggressors footwear must have 9 stub vehicles")
-    if any(bool(v.get("playable")) for v in anime):
-        errors.append(f"{path}: Anime Aggressors footwear must remain stub_not_final / not playable")
-    if any(str(v.get("art_status", "")) != "stub_not_final" for v in anime):
-        errors.append(f"{path}: Anime Aggressors footwear must flag art_status stub_not_final")
     return errors
 
 

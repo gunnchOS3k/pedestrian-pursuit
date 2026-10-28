@@ -72,8 +72,10 @@ class WaveEAlphaContentTests(unittest.TestCase):
         self.assertEqual(len(ids), len(set(ids)))
         playable = [v for v in vehicles if v.get("playable")]
         stubs = [v for v in vehicles if not v.get("playable")]
-        self.assertEqual(len(playable), 41)
-        self.assertEqual(len(stubs), 9)
+        self.assertEqual(len(playable), 50)
+        self.assertEqual(len(stubs), 0)
+        self.assertEqual(reg.get("playable_count"), 50)
+        self.assertEqual(reg.get("stub_count"), 0)
         street = [v for v in vehicles if v.get("family_id") == "street_legends"]
         self.assertEqual(len(street), 8)
         for v in street:
@@ -86,19 +88,25 @@ class WaveEAlphaContentTests(unittest.TestCase):
             ("elemental_amphibious", 6),
             ("beautifully_ridiculous", 6),
             ("gunnchos_crossover", 7),
+            ("anime_aggressors", 9),
         ):
             family = [v for v in vehicles if v.get("family_id") == family_id]
             self.assertEqual(len(family), expect)
             fingerprints = set()
             for v in family:
                 self.assertTrue(v["playable"])
-                self.assertEqual(v["art_status"], "native_v1")
+                if family_id == "anime_aggressors":
+                    self.assertEqual(v["art_status"], "procedural_final_for_garage")
+                    self.assertTrue(str(v["movement_archetype"]).startswith("tribute_"))
+                else:
+                    self.assertEqual(v["art_status"], "native_v1")
                 self.assertTrue((ROOT / f"data/shoes/{v['id']}.json").exists())
                 if family_id in (
                     "hover_couture",
                     "elemental_amphibious",
                     "beautifully_ridiculous",
                     "gunnchos_crossover",
+                    "anime_aggressors",
                 ):
                     contract = str(v.get("collision_contract", "")).lower()
                     self.assertTrue("grounded" in contract or "checkpoint" in contract)
@@ -114,14 +122,6 @@ class WaveEAlphaContentTests(unittest.TestCase):
                 )
                 self.assertNotIn(fp, fingerprints)
                 fingerprints.add(fp)
-        anime = [v for v in vehicles if v.get("family_id") == "anime_aggressors"]
-        self.assertEqual(len(anime), 9)
-        for v in anime:
-            self.assertFalse(v["playable"])
-            self.assertEqual(v["art_status"], "stub_not_final")
-        for v in stubs:
-            self.assertEqual(v["art_status"], "stub_not_final")
-            self.assertEqual(v["family_id"], "anime_aggressors")
         expected_items = {
             "turbo_toes",
             "lace_trap",
