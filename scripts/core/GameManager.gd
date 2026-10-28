@@ -9,7 +9,7 @@ enum RaceMode { SINGLE, CUP, TIME_TRIAL, PRACTICE, LOCAL_MP, TUTORIAL, CHALLENGE
 var current_race_mode: RaceMode = RaceMode.SINGLE
 var selected_racer_id: String = "dash_reed"
 var selected_runner_id: String = "dash_reed"
-var selected_shoe_id: String = "starter_soles"
+var selected_shoe_id: String = "reedline_circlers"
 var selected_track_id: String = "verdant_cascade_circuit"
 var selected_cup_id: String = "sole_surge_cup"
 var selected_challenge_id: String = ""

@@ -62,6 +62,37 @@ class WaveEAlphaContentTests(unittest.TestCase):
             self.assertIn("material_family", data)
             self.assertGreaterEqual(len(data.get("surface_affinities", {})), 6)
 
+    def test_kinetic_sole_vehicle_garage_fifty(self) -> None:
+        reg_path = ROOT / "data/vehicles/vehicle_registry.json"
+        self.assertTrue(reg_path.exists(), "vehicle_registry.json missing")
+        reg = json.loads(reg_path.read_text(encoding="utf-8"))
+        vehicles = reg["vehicles"]
+        self.assertEqual(len(vehicles), 50)
+        ids = [v["id"] for v in vehicles]
+        self.assertEqual(len(ids), len(set(ids)))
+        playable = [v for v in vehicles if v.get("playable")]
+        stubs = [v for v in vehicles if not v.get("playable")]
+        self.assertEqual(len(playable), 8)
+        self.assertEqual(len(stubs), 42)
+        street = [v for v in vehicles if v.get("family_id") == "street_legends"]
+        self.assertEqual(len(street), 8)
+        for v in street:
+            self.assertTrue(v["playable"])
+            self.assertEqual(v["art_status"], "native_v1")
+            self.assertTrue((ROOT / f"data/shoes/{v['id']}.json").exists())
+        for v in stubs:
+            self.assertEqual(v["art_status"], "stub_not_final")
+        expected_items = {
+            "turbo_toes",
+            "lace_trap",
+            "sole_shield",
+            "pulse_horn",
+            "magnet_lace",
+            "bounce_bubble",
+        }
+        found_items = {p.stem for p in (ROOT / "data/items").glob("*.json")}
+        self.assertTrue(expected_items.issubset(found_items))
+
     def test_runners_have_gameplay_stats(self) -> None:
         roster = json.loads((ROOT / "data/racers/runner_roster.json").read_text(encoding="utf-8"))
         self.assertGreaterEqual(len(roster["runners"]), 8)

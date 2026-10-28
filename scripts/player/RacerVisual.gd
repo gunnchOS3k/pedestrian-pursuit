@@ -6,11 +6,13 @@ extends Node3D
 ## Limbs are Node3D joint pivots; meshes hang along the limb axis.
 
 const RunnerProfileScript = preload("res://scripts/data/RunnerProfile.gd")
+const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
 
 @export var body_color: Color = Color(1.0, 0.82, 0.35, 1.0)
 @export var accent_color: Color = Color(1.0, 0.35, 0.2, 1.0)
 @export var is_ai: bool = false
 @export var runner_id: String = "dash_reed"
+@export var vehicle_id: String = "reedline_circlers"
 
 var profile: RunnerProfile
 var _torso: MeshInstance3D
@@ -56,6 +58,40 @@ func apply_profile(p: RunnerProfile) -> void:
 	body_color = p.body_color
 	accent_color = p.accent_color
 	_rebuild()
+
+
+func set_vehicle_id(id: String) -> void:
+	vehicle_id = id
+	if profile != null:
+		_rebuild()
+
+
+func _shoe_archetype() -> String:
+	if not vehicle_id.is_empty():
+		var arch := ShoeDataScript.movement_archetype(vehicle_id)
+		if not arch.is_empty():
+			return arch
+	## Fallback: map runner archetype → street movement archetype.
+	var runner_arch := profile.archetype if profile else "all_terrain"
+	match runner_arch:
+		"all_terrain":
+			return "street_balanced"
+		"sprinter":
+			return "street_sprint"
+		"parkour":
+			return "street_parkour"
+		"endurance":
+			return "street_tempo"
+		"uphill":
+			return "street_power"
+		"trick":
+			return "street_trick"
+		"cornering":
+			return "street_rail"
+		"kinetic":
+			return "street_kinetic"
+		_:
+			return "street_balanced"
 
 
 func set_menu_preview(enabled: bool) -> void:
@@ -467,55 +503,70 @@ func _attach_shoes(
 	accent: Material, dark: Material
 ) -> void:
 	var side := -1.0 if is_left else 1.0
-	var arch := profile.archetype if profile else "all_terrain"
-	## Ranch / mud courses need a louder footwear silhouette (Grip Green).
-	var ranch_grip := arch == "endurance"
-	## Prism Apex cornering — razor railfins in Ghost Violet.
-	var prism_rail := arch == "cornering"
-	## Emberkeep uphill — Harborclimb Irons with Kinetic Orange plates.
-	var ember_iron := arch == "uphill"
-	if ranch_grip or prism_rail or ember_iron:
-		shoe_scale *= 1.18
-	if ember_iron:
+	var march := _shoe_archetype()
+	## Street Legends + legacy runner maps — distinct silhouettes, shared mesh stack.
+	var balanced := march == "street_balanced"
+	var sprint := march == "street_sprint"
+	var parkour := march == "street_parkour"
+	var tempo := march == "street_tempo"
+	var power := march == "street_power"
+	var trick := march == "street_trick"
+	var rail := march == "street_rail"
+	var kinetic := march == "street_kinetic"
+	var native_street := balanced or sprint or parkour or tempo or power or trick or rail or kinetic
+	if tempo or rail or power or sprint or trick or kinetic or parkour:
+		shoe_scale *= 1.14
+	if power:
 		shoe_scale *= 1.08 ## Blockier iron silhouette for forge ash.
+	if sprint:
+		shoe_scale *= 0.96 ## Low spike profile.
 	# Kinetic Sole stack: outsole / midsole yellow / kinetic upper / tread bars.
 	var midsole := StandardMaterial3D.new()
 	midsole.albedo_color = Color(0.96, 0.77, 0.09) # Midsole Yellow
 	midsole.roughness = 0.45
-	midsole.emission_enabled = arch == "all_terrain" or ranch_grip or prism_rail or ember_iron
+	midsole.emission_enabled = native_street
 	if midsole.emission_enabled:
 		midsole.emission = Color(0.96, 0.77, 0.09)
-		midsole.emission_energy_multiplier = 0.32 if ember_iron else (0.3 if (ranch_grip or prism_rail) else 0.22)
+		midsole.emission_energy_multiplier = 0.34 if (power or kinetic) else (0.3 if (tempo or rail) else 0.22)
 	var upper := StandardMaterial3D.new()
-	## Prefer Kinetic Orange for Dash Reed; Mira sky+grip; Solen violet; Bolt iron clay.
-	if arch == "all_terrain":
-		upper.albedo_color = Color(1.0, 0.42, 0.24)
-	elif ranch_grip:
-		upper.albedo_color = Color(0.45, 0.75, 0.98)
-	elif prism_rail:
+	if balanced:
+		upper.albedo_color = Color(1.0, 0.42, 0.24) # Kinetic Orange Circlers
+	elif sprint:
+		upper.albedo_color = Color(1.0, 0.42, 0.36) # Quillspike coral
+	elif parkour:
+		upper.albedo_color = Color(0.18, 0.77, 0.71) # Fluxgrip teal
+	elif tempo:
+		upper.albedo_color = Color(0.45, 0.75, 0.98) # Lanewind sky
+	elif rail:
 		upper.albedo_color = Color(0.65, 0.45, 0.98) # Ghost Violet
-	elif ember_iron:
+	elif power:
 		upper.albedo_color = Color(0.64, 0.44, 0.28) # Clay iron plate
+	elif trick:
+		upper.albedo_color = Color(0.58, 0.85, 0.18) # Kaleido lime
+	elif kinetic:
+		upper.albedo_color = Color(0.13, 0.72, 0.81) # Volt cyan
 	else:
 		upper.albedo_color = self.accent_color
-	upper.roughness = 0.38 if not ember_iron else 0.55
+	upper.roughness = 0.38 if not power else 0.55
 	upper.emission_enabled = true
-	upper.emission = Color(1.0, 0.42, 0.24) if ember_iron else upper.albedo_color
-	upper.emission_energy_multiplier = 0.38 if ember_iron else (0.4 if prism_rail else (0.35 if ranch_grip else 0.28))
+	upper.emission = Color(1.0, 0.42, 0.24) if power else upper.albedo_color
+	upper.emission_energy_multiplier = (
+		0.42 if kinetic else (0.38 if power else (0.4 if rail else (0.35 if tempo else 0.28)))
+	)
 	var outsole := StandardMaterial3D.new()
 	outsole.albedo_color = Color(0.12, 0.12, 0.14)
 	outsole.roughness = 0.85
 	var grip := StandardMaterial3D.new()
 	grip.albedo_color = Color(0.24, 0.86, 0.52) # Grip Green
 	grip.roughness = 0.55
-	grip.emission_enabled = ranch_grip
+	grip.emission_enabled = tempo or parkour
 	if grip.emission_enabled:
 		grip.emission = Color(0.24, 0.86, 0.52)
 		grip.emission_energy_multiplier = 0.4
 	var railfin := StandardMaterial3D.new()
 	railfin.albedo_color = Color(0.18, 0.9, 0.95) # Boost Cyan
 	railfin.roughness = 0.35
-	railfin.emission_enabled = prism_rail
+	railfin.emission_enabled = rail or kinetic
 	if railfin.emission_enabled:
 		railfin.emission = Color(0.18, 0.9, 0.95)
 		railfin.emission_energy_multiplier = 0.45
@@ -523,20 +574,25 @@ func _attach_shoes(
 	iron.albedo_color = Color(1.0, 0.42, 0.24) # Kinetic Orange plates
 	iron.roughness = 0.4
 	iron.metallic = 0.55
-	iron.emission_enabled = ember_iron
+	iron.emission_enabled = power
 	if iron.emission_enabled:
 		iron.emission = Color(1.0, 0.42, 0.24)
 		iron.emission_energy_multiplier = 0.42
+	var spike := StandardMaterial3D.new()
+	spike.albedo_color = Color(0.12, 0.12, 0.14)
+	spike.metallic = 0.7
+	spike.roughness = 0.3
 	# Toe / sole body (forward +Z).
+	var sole_len := 0.34 if sprint else (0.28 if parkour else 0.3)
 	var sole := _mesh_box(
-		Vector3(0.15 * ws * shoe_scale, 0.05 * shoe_scale, 0.3 * shoe_scale),
+		Vector3(0.15 * ws * shoe_scale, 0.05 * shoe_scale, sole_len * shoe_scale),
 		Vector3.ZERO,
 		outsole
 	)
 	leg.add_child(sole)
 	sole.position = Vector3(0, -leg_len - 0.035, 0.06 * shoe_scale)
 	var mid := _mesh_box(
-		Vector3(0.145 * ws * shoe_scale, 0.045 * shoe_scale, 0.28 * shoe_scale),
+		Vector3(0.145 * ws * shoe_scale, 0.045 * shoe_scale, (sole_len - 0.02) * shoe_scale),
 		Vector3.ZERO,
 		midsole
 	)
@@ -562,27 +618,31 @@ func _attach_shoes(
 	)
 	leg.add_child(chevron)
 	chevron.position = Vector3(0, -leg_len + 0.09, 0.12 * shoe_scale)
-	# Grip tread bars under the outsole (loud Grip Green on ranch endurance).
-	var tread_count := 5 if ranch_grip else (4 if (prism_rail or ember_iron) else 3)
+	# Grip tread bars under the outsole.
+	var tread_count := 5 if (tempo or parkour) else (4 if (rail or power or kinetic or trick) else 3)
 	for i in range(tread_count):
 		var tread_mat: Material = dark
-		if ranch_grip:
+		if tempo or parkour:
 			tread_mat = grip
-		elif prism_rail:
+		elif rail or kinetic:
 			tread_mat = railfin
-		elif ember_iron:
+		elif power:
 			tread_mat = iron
+		elif sprint:
+			tread_mat = spike
+		elif trick:
+			tread_mat = upper
 		var tread := _mesh_box(
 			Vector3(0.13 * ws * shoe_scale, 0.025 * shoe_scale, 0.035 * shoe_scale),
 			Vector3.ZERO,
 			tread_mat
 		)
 		leg.add_child(tread)
-		var z_spread := 0.055 if (ranch_grip or prism_rail or ember_iron) else 0.07
+		var z_spread := 0.055 if native_street else 0.07
 		tread.position = Vector3(
 			0, -leg_len - 0.058, (float(i) - float(tread_count - 1) * 0.5) * z_spread * shoe_scale
 		)
-	# Heel block (rear) with flare for Dash Reed / wind cup for Mira / railfins / irons.
+	# Heel block (rear) with family-specific silhouette props.
 	var heel := _mesh_box(
 		Vector3(0.13 * ws * shoe_scale, 0.1 * shoe_scale, 0.11 * shoe_scale),
 		Vector3.ZERO,
@@ -590,7 +650,7 @@ func _attach_shoes(
 	)
 	leg.add_child(heel)
 	heel.position = Vector3(0, -leg_len - 0.01, -0.11 * shoe_scale)
-	if arch == "all_terrain":
+	if balanced:
 		var flare := _mesh_box(
 			Vector3(0.04 * ws * shoe_scale, 0.12 * shoe_scale, 0.05 * shoe_scale),
 			Vector3.ZERO,
@@ -598,7 +658,30 @@ func _attach_shoes(
 		)
 		leg.add_child(flare)
 		flare.position = Vector3(side * 0.08 * ws * shoe_scale, -leg_len + 0.04, -0.12 * shoe_scale)
-	elif ranch_grip:
+	elif sprint:
+		## Quillspike launch plates — forward spike rake.
+		for si in range(3):
+			var spike_mesh := _mesh_box(
+				Vector3(0.02 * ws * shoe_scale, 0.06 * shoe_scale, 0.04 * shoe_scale),
+				Vector3.ZERO,
+				spike
+			)
+			leg.add_child(spike_mesh)
+			spike_mesh.position = Vector3(
+				side * 0.04 * ws * shoe_scale,
+				-leg_len - 0.07,
+				(0.02 + float(si) * 0.05) * shoe_scale
+			)
+	elif parkour:
+		## Fluxgrip sticky sidewall cups.
+		var cup := _mesh_box(
+			Vector3(0.05 * ws * shoe_scale, 0.12 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			grip
+		)
+		leg.add_child(cup)
+		cup.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.04, 0.02 * shoe_scale)
+	elif tempo:
 		## Slim wind-cup heel wing — silhouette reads at chase distance.
 		var wing := _mesh_box(
 			Vector3(0.035 * ws * shoe_scale, 0.1 * shoe_scale, 0.12 * shoe_scale),
@@ -607,7 +690,7 @@ func _attach_shoes(
 		)
 		leg.add_child(wing)
 		wing.position = Vector3(side * 0.09 * ws * shoe_scale, -leg_len + 0.03, -0.08 * shoe_scale)
-	elif prism_rail:
+	elif rail:
 		## Razor railfin — Boost Cyan blade for Prism Apex cornering read.
 		var fin := _mesh_box(
 			Vector3(0.03 * ws * shoe_scale, 0.14 * shoe_scale, 0.16 * shoe_scale),
@@ -623,7 +706,7 @@ func _attach_shoes(
 		)
 		leg.add_child(fin2)
 		fin2.position = Vector3(side * 0.11 * ws * shoe_scale, -leg_len + 0.02, -0.12 * shoe_scale)
-	elif ember_iron:
+	elif power:
 		## Blocky Harborclimb iron heel plates — forge ash silhouette.
 		var plate := _mesh_box(
 			Vector3(0.06 * ws * shoe_scale, 0.14 * shoe_scale, 0.12 * shoe_scale),
@@ -639,6 +722,38 @@ func _attach_shoes(
 		)
 		leg.add_child(cuff)
 		cuff.position = Vector3(0.0, -leg_len + 0.1, -0.02 * shoe_scale)
+	elif trick:
+		## Rivenspin kaleido heel wings — loud offset fins.
+		var wing_a := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.12 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(wing_a)
+		wing_a.position = Vector3(side * 0.11 * ws * shoe_scale, -leg_len + 0.05, -0.06 * shoe_scale)
+		var wing_b := _mesh_box(
+			Vector3(0.03 * ws * shoe_scale, 0.08 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(wing_b)
+		wing_b.position = Vector3(side * -0.05 * ws * shoe_scale, -leg_len + 0.02, -0.1 * shoe_scale)
+	elif kinetic:
+		## Voltcirc coreloop heel rings (emissive torus approximation).
+		var ring := _mesh_box(
+			Vector3(0.16 * ws * shoe_scale, 0.03 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			railfin
+		)
+		leg.add_child(ring)
+		ring.position = Vector3(0.0, -leg_len + 0.08, -0.08 * shoe_scale)
+		var ring2 := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.025 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(ring2)
+		ring2.position = Vector3(0.0, -leg_len + 0.12, -0.08 * shoe_scale)
 	if is_left:
 		_shoe_l = sole
 		_heel_l = heel

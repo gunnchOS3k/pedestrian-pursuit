@@ -3,6 +3,7 @@ const _TrackCatalog = preload("res://scripts/data/TrackCatalog.gd")
 const _RunnerProfile = preload("res://scripts/data/RunnerProfile.gd")
 const CrashWatchdogScript = preload("res://scripts/rc/CrashWatchdog.gd")
 const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
+const VehicleCatalogScript = preload("res://scripts/data/VehicleCatalog.gd")
 
 ## Wires together track, racers, race manager, HUD, and results.
 ## Assigns named character-life profiles so every racer reads as a person.
@@ -39,7 +40,13 @@ func _ready() -> void:
 	player.global_transform = start_xf
 	var player_profile = _pick_player_profile()
 	if "shoe_id" in player:
-		player.shoe_id = GameManager.selected_shoe_id
+		var chosen := str(GameManager.selected_shoe_id)
+		if not ShoeDataScript.is_playable(chosen):
+			chosen = VehicleCatalogScript.signature_vehicle_for_runner(str(player_profile.id))
+			if chosen.is_empty():
+				chosen = "reedline_circlers"
+			GameManager.selected_shoe_id = chosen
+		player.shoe_id = chosen
 	if "racer_id" in player:
 		player.racer_id = str(player_profile.id)
 	GameManager.selected_runner_id = str(player_profile.id)
@@ -98,14 +105,16 @@ func _ready() -> void:
 		elif i == 0 and ai_racer.get_parent() == null:
 			pass
 		var profile = _pick_ai_profile(i + 1)
-		_assign_profile(ai, profile)
-		_assigned_profiles.append(profile)
 		if "racer_id" in ai:
 			ai.racer_id = str(profile.id)
 		if "shoe_id" in ai:
-			# AI field rotates footwear so material affinities show in pack races.
-			var shoe_ids := ShoeDataScript.all_ids()
+			# AI field rotates Street Legends so garage vehicles show in pack races.
+			var shoe_ids := ShoeDataScript.race_selectable_ids()
+			if shoe_ids.is_empty():
+				shoe_ids = ShoeDataScript.all_ids()
 			ai.shoe_id = shoe_ids[(i + 1) % shoe_ids.size()]
+		_assign_profile(ai, profile)
+		_assigned_profiles.append(profile)
 		var offset: Vector3 = ai_offsets[mini(i, ai_offsets.size() - 1)]
 		var ai_start := start_xf.translated_local(offset)
 		ai.global_transform = ai_start
@@ -301,7 +310,27 @@ func _assign_profile(racer: Node, profile) -> void:
 	var visual = racer.get_node_or_null("RacerVisual")
 	if visual != null and visual.has_method("apply_profile"):
 		visual.apply_profile(profile)
+	_apply_vehicle_presentation(racer, visual)
 	_wire_racer_visual_hooks(racer, visual)
+
+
+func _apply_vehicle_presentation(racer: Node, visual: Node) -> void:
+	if racer == null:
+		return
+	var shoe_id := ""
+	if "shoe_id" in racer:
+		shoe_id = str(racer.shoe_id)
+	if shoe_id.is_empty():
+		shoe_id = str(GameManager.selected_shoe_id)
+	racer.set_meta("vehicle_id", shoe_id)
+	racer.set_meta("movement_archetype", ShoeDataScript.movement_archetype(shoe_id))
+	racer.set_meta("vehicle_art_status", VehicleCatalogScript.art_status(shoe_id))
+	racer.set_meta("vehicle_playable", ShoeDataScript.is_playable(shoe_id))
+	## Handling feedback cue — archetype scalar for HUD / camera lean (hitbox unchanged).
+	var shoe := ShoeDataScript.load_by_id(shoe_id)
+	racer.set_meta("handling_feedback", float(shoe.get("handling_modifier", 1.0)))
+	if visual != null and visual.has_method("set_vehicle_id"):
+		visual.set_vehicle_id(shoe_id)
 
 
 func _wire_racer_visual_hooks(racer: Node, visual: Node) -> void:

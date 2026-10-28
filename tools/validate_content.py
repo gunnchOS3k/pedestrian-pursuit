@@ -183,6 +183,8 @@ def validate_project(root: Path) -> list[str]:
             if not isinstance(affinities, dict) or len(affinities) < 6:
                 errors.append(f"{shoe_path}: surface_affinities must cover launch surfaces")
 
+    errors.extend(_validate_vehicle_registry(root))
+
     expected_runners = (
         "dash_reed",
         "nova_quill",
@@ -282,6 +284,79 @@ def validate_project(root: Path) -> list[str]:
     return errors
 
 
+def _validate_vehicle_registry(root: Path) -> list[str]:
+    """Kinetic Sole garage: exactly 50 IDs, ≥8 playable Street Legends, truthful stubs."""
+    errors: list[str] = []
+    path = root / "data/vehicles/vehicle_registry.json"
+    reg = _read_json(path, errors)
+    if not reg:
+        return errors
+    vehicles = reg.get("vehicles")
+    if not isinstance(vehicles, list):
+        errors.append(f"{path}: vehicles must be a list")
+        return errors
+    if len(vehicles) != 50:
+        errors.append(f"{path}: expected 50 vehicles, found {len(vehicles)}")
+    ids: list[str] = []
+    playable = 0
+    stub = 0
+    required_fields = (
+        "id",
+        "display_name",
+        "family_id",
+        "movement_archetype",
+        "playable",
+        "art_status",
+        "top_speed_modifier",
+        "acceleration_modifier",
+        "handling_modifier",
+        "surface_affinities",
+        "collision_contract",
+    )
+    for entry in vehicles:
+        if not isinstance(entry, dict):
+            errors.append(f"{path}: vehicle entry must be an object")
+            continue
+        for key in required_fields:
+            if key not in entry:
+                errors.append(f"{path}: vehicle missing {key}")
+        vid = str(entry.get("id", ""))
+        if not SAFE_ID.match(vid):
+            errors.append(f"{path}: invalid vehicle id {vid!r}")
+        ids.append(vid)
+        if bool(entry.get("playable", False)):
+            playable += 1
+            if str(entry.get("art_status", "")) != "native_v1":
+                errors.append(f"{path}: playable {vid} must use art_status native_v1")
+            shoe_path = root / f"data/shoes/{vid}.json"
+            if not shoe_path.exists():
+                errors.append(f"{path}: playable {vid} missing shoe JSON {shoe_path.name}")
+        else:
+            stub += 1
+            if str(entry.get("art_status", "")) != "stub_not_final":
+                errors.append(f"{path}: stub {vid} must flag art_status stub_not_final")
+        affinities = entry.get("surface_affinities")
+        if not isinstance(affinities, dict) or len(affinities) < 6:
+            errors.append(f"{path}: {vid} surface_affinities incomplete")
+        contract = str(entry.get("collision_contract", "")).lower()
+        if "checkpoint" not in contract and "collision" not in contract:
+            errors.append(f"{path}: {vid} collision_contract must mention grounded collision/checkpoints")
+    if len(ids) != len(set(ids)):
+        errors.append(f"{path}: duplicate vehicle ids")
+    if playable < 8:
+        errors.append(f"{path}: need ≥8 playable Street Legends, found {playable}")
+    if stub + playable != len(vehicles):
+        errors.append(f"{path}: playable/stub accounting mismatch")
+    if int(reg.get("vehicle_count", -1)) != 50:
+        errors.append(f"{path}: vehicle_count must be 50")
+    street = [v for v in vehicles if isinstance(v, dict) and v.get("family_id") == "street_legends"]
+    if len(street) != 8:
+        errors.append(f"{path}: Street Legends family must have 8 vehicles")
+    if not all(bool(v.get("playable")) for v in street):
+        errors.append(f"{path}: all Street Legends must be playable")
+    return errors
+
+
 def _validate_device_roles(root: Path) -> list[str]:
     errors: list[str] = []
     catalog_path = root / "device_ux/profiles/device_roles.json"
@@ -325,7 +400,8 @@ def main() -> int:
         return 1
     print(
         "Validated Beta/Digital-RC catalog: 2 cups, 8 unique courses, "
-        "4 footwear w/ materials, 6 items, 8 runners w/ stats, grammar, challenges, art inventory."
+        "4 legacy footwear + 50-vehicle Kinetic Sole garage, 6 items, 8 runners w/ stats, "
+        "grammar, challenges, art inventory."
     )
     return 0
 

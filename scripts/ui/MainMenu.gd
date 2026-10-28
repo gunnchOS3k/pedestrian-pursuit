@@ -3,7 +3,9 @@ const _TrackCatalog = preload("res://scripts/data/TrackCatalog.gd")
 const _RunnerProfile = preload("res://scripts/data/RunnerProfile.gd")
 const _RacerVisualScript = preload("res://scripts/player/RacerVisual.gd")
 const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
+const VehicleCatalogScript = preload("res://scripts/data/VehicleCatalog.gd")
 const LaunchArtCatalogScript = preload("res://scripts/ui/LaunchArtCatalog.gd")
+const VehicleGaragePanelScript = preload("res://scripts/ui/garage/VehicleGaragePanel.gd")
 
 ## Main menu — Quick Race, Cup, Time Trial, Local MP entry points (Alpha).
 
@@ -43,11 +45,16 @@ func _ready() -> void:
 	_ensure_howto_button()
 	_ensure_feedback_button()
 	_ensure_cup_and_shoe_pickers()
+	_ensure_garage_button()
 	_load_content()
 	_populate_device_picker()
 	_sync_a11y_toggles()
-	$VBox/CupLabel.text = "DIGITAL RC READY  •  8 COURSES  •  2 CUPS  •  8 RACERS"
-	$VBox/Subtitle.text = "Launch roster + footwear + items + audio — procedural-final presentation"
+	var garage_counts := VehicleCatalogScript.counts()
+	$VBox/CupLabel.text = (
+		"DIGITAL RC READY  •  8 COURSES  •  2 CUPS  •  8 RACERS  •  %d/%d VEHICLES"
+		% [int(garage_counts.get("playable", 8)), int(garage_counts.get("total", 50))]
+	)
+	$VBox/Subtitle.text = "Kinetic Sole garage — Street Legends race-ready; stubs flagged not-final"
 	_apply_launch_presentation()
 	var audio := get_node_or_null("/root/AudioDirector")
 	if audio and audio.has_method("play_menu_music"):
@@ -291,6 +298,47 @@ func _ensure_cup_and_shoe_pickers() -> void:
 		_shoe_picker.item_selected.connect(_on_shoe_selected)
 	else:
 		_shoe_picker = vbox.get_node("ShoePicker")
+
+
+func _ensure_garage_button() -> void:
+	var vbox: VBoxContainer = $VBox
+	if vbox.get_node_or_null("GarageButton") != null:
+		var existing := vbox.get_node("GarageButton") as Button
+		if existing and not existing.pressed.is_connected(_on_open_garage):
+			existing.pressed.connect(_on_open_garage)
+		return
+	var btn := Button.new()
+	btn.name = "GarageButton"
+	btn.text = "Open Kinetic Sole Garage (50)"
+	btn.custom_minimum_size = Vector2(0, 44)
+	vbox.add_child(btn)
+	var shoe := vbox.get_node_or_null("ShoePicker")
+	if shoe != null:
+		vbox.move_child(btn, shoe.get_index() + 1)
+	btn.pressed.connect(_on_open_garage)
+
+
+func _on_open_garage() -> void:
+	if get_node_or_null("VehicleGaragePanel") != null:
+		return
+	var panel := Control.new()
+	panel.name = "VehicleGaragePanel"
+	panel.set_script(VehicleGaragePanelScript)
+	panel.set_anchors_preset(Control.PRESET_FULL_RECT)
+	add_child(panel)
+	if panel.has_signal("vehicle_selected"):
+		panel.vehicle_selected.connect(_on_garage_vehicle_selected)
+	if panel.has_signal("closed"):
+		panel.closed.connect(func (): _populate_shoe_picker())
+
+
+func _on_garage_vehicle_selected(vehicle_id: String) -> void:
+	if vehicle_id.is_empty() or not ShoeDataScript.is_playable(vehicle_id):
+		return
+	GameManager.selected_shoe_id = vehicle_id
+	_populate_shoe_picker()
+	_refresh_footwear_stage()
+	_sync_preview_vehicle()
 
 
 func _ensure_settings_ui() -> void:
@@ -538,11 +586,19 @@ func _populate_shoe_picker() -> void:
 		return
 	_shoe_picker.clear()
 	var preferred := str(GameManager.selected_shoe_id)
+	if preferred.is_empty() or not ShoeDataScript.is_playable(preferred):
+		preferred = "reedline_circlers"
+		GameManager.selected_shoe_id = preferred
 	var select_index := 0
-	for i in ShoeDataScript.all_ids().size():
-		var shoe_id := str(ShoeDataScript.all_ids()[i])
+	var ids := ShoeDataScript.race_selectable_ids()
+	for i in ids.size():
+		var shoe_id := str(ids[i])
 		var shoe := ShoeDataScript.load_by_id(shoe_id)
-		_shoe_picker.add_item(str(shoe.get("display_name", shoe_id)))
+		var label := str(shoe.get("display_name", shoe_id))
+		var art := str(shoe.get("art_status", "native_v1"))
+		if art != "native_v1" and art != "":
+			label = "%s [%s]" % [label, art]
+		_shoe_picker.add_item(label)
 		_shoe_picker.set_item_metadata(i, shoe_id)
 		if shoe_id == preferred:
 			select_index = i
@@ -602,6 +658,7 @@ func _on_shoe_selected(index: int) -> void:
 		return
 	GameManager.selected_shoe_id = str(_shoe_picker.get_item_metadata(index))
 	_refresh_footwear_stage()
+	_sync_preview_vehicle()
 	var audio := get_node_or_null("/root/AudioDirector")
 	if audio and audio.has_method("play_ui"):
 		audio.play_ui("select")
@@ -612,6 +669,10 @@ func _on_runner_selected(index: int) -> void:
 		return
 	var p = _roster[index]
 	GameManager.selected_runner_id = str(p.id)
+	var signature := VehicleCatalogScript.signature_vehicle_for_runner(str(p.id))
+	if not signature.is_empty() and ShoeDataScript.is_playable(signature):
+		GameManager.selected_shoe_id = signature
+		_populate_shoe_picker()
 	runner_info_label.text = (
 		"%s  •  %s\nShoes: %s\n%s"
 		% [
@@ -625,6 +686,15 @@ func _on_runner_selected(index: int) -> void:
 		_preview_visual.apply_profile(p)
 		if _preview_visual.has_method("set_menu_preview"):
 			_preview_visual.set_menu_preview(true)
+		_sync_preview_vehicle()
+
+
+func _sync_preview_vehicle() -> void:
+	if _preview_visual == null:
+		return
+	var shoe_id := str(GameManager.selected_shoe_id)
+	if _preview_visual.has_method("set_vehicle_id"):
+		_preview_visual.set_vehicle_id(shoe_id)
 
 
 func _selected_track_id() -> String:
