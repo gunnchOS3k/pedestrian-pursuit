@@ -3,155 +3,175 @@
   "id": "cloudstep_ridge",
   "display_name": "Cloudstep Ridge",
   "lap_count": 3,
-  "difficulty": "intermediate",
+  "difficulty": "advanced",
   "theme": "ridge_cloud",
-  "description": "High ridge climb with cloud gates, ledge rails, and airy bounce pads.",
+  "description": "Ridge shelves with elevation impulses, mist slowdowns, and a cliffside bounce shortcut.",
   "art_status": "LAUNCH_PROCEDURAL_FINAL",
-  "geometry_status": "championship_upgraded",
-  "final_track_art_status": "track_art_candidate",
-  "human_track_art_approved": false,
-  "lane_width": 14.0,
+  "lane_width": 13.0,
   "guard_rails": true,
   "has_shortcut": true,
-  "track_color": "#6A7A88",
-  "accent_color": "#E8F0FF",
+  "track_color": "#7A8A92",
+  "accent_color": "#E8F4FF",
   "sky_color": "#A8C8E8",
   "backdrop_color": "#5A7080",
   "path_points": [
     [
-      51.69,
+      0.0,
       3.67,
-      0.0
+      44.0
     ],
     [
-      47.74,
+      26.0,
       6.48,
-      21.15
+      50.0
     ],
     [
-      32.44,
-      4.41,
-      37.43
+      48.0,
+      2.81,
+      32.0
     ],
     [
-      11.03,
-      -0.98,
-      44.44
+      42.0,
+      -3.67,
+      2.0
     ],
     [
-      -10.55,
-      -5.63,
-      42.51
+      54.0,
+      -6.48,
+      -22.0
     ],
     [
-      -29.43,
-      -6.05,
-      33.96
+      32.0,
+      -2.81,
+      -44.0
     ],
     [
-      -44.26,
-      -1.91,
-      19.61
-    ],
-    [
-      -51.69,
+      2.0,
       3.67,
-      0.0
+      -36.0
     ],
     [
-      -47.74,
+      -24.0,
       6.48,
-      -21.15
+      -48.0
     ],
     [
-      -32.44,
-      4.41,
-      -37.43
+      -50.0,
+      2.81,
+      -26.0
     ],
     [
-      -11.03,
-      -0.98,
-      -44.44
+      -42.0,
+      -3.67,
+      2.0
     ],
     [
-      10.55,
-      -5.63,
-      -42.51
+      -50.0,
+      -6.48,
+      28.0
     ],
     [
-      29.43,
-      -6.05,
-      -33.96
-    ],
-    [
-      44.26,
-      -1.91,
-      -19.61
+      -22.0,
+      -2.81,
+      44.0
     ]
   ],
   "checkpoint_points": [
     0,
     2,
-    4,
+    3,
     6,
     8,
-    10,
-    12
+    10
+  ],
+  "shortcut_routes": [
+    {
+      "id": "cliff_bounce",
+      "entry_point_index": 3,
+      "exit_point_index": 6,
+      "risk": "high",
+      "description": "Chain two bounce pads across the ridge cut; fall recovery is slow."
+    }
   ],
   "speed_lanes": [
     {
-      "point_index": 1,
+      "point_index": 11,
       "size": [
-        6,
-        12
+        5,
+        11
       ],
-      "speed_bonus": 1.15
+      "speed_bonus": 1.22
     }
   ],
   "terrain_zones": [
     {
-      "point_index": 4,
+      "point_index": 7,
       "size": [
-        8,
-        10
+        11,
+        12
       ],
-      "speed_mult": 0.85
+      "terrain_name": "ridge_mist",
+      "speed_multiplier": 0.8,
+      "handling_multiplier": 0.88,
+      "color": "#C8D8E8"
     }
   ],
   "bounce_pads": [
     {
-      "point_index": 7,
-      "bounce_force": 11.0,
-      "forward_boost": 3.5
+      "point_index": 3,
+      "size": [
+        5,
+        5
+      ],
+      "bounce_force": 14.0,
+      "forward_boost": 6.0
+    },
+    {
+      "point_index": 5,
+      "size": [
+        5,
+        5
+      ],
+      "bounce_force": 13.0,
+      "forward_boost": 5.5
     }
   ],
   "item_boxes": [
-    2,
-    7,
-    9
+    1,
+    4,
+    8,
+    10
   ],
   "boost_pickups": [
-    1,
-    8
+    2,
+    6,
+    9
   ],
   "rail_segments": [
-    3
+    2,
+    5,
+    8
   ],
-  "shortcut_routes": [
-    {
-      "id": "cloudstep_ridge_cut",
-      "entry_point_index": 2,
-      "exit_point_index": 7,
-      "risk": "medium",
-      "ai_preference": 0.35,
-      "description": "Risk cut across the infield; miss and hit slow terrain."
-    }
+  "exploit_notes": [
+    "Ridge shelves are grindable; Bounce Boots favor vertical recoveries."
   ],
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": false
+  },
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "elevation_profile": "ridge_climb",
+  "bank_bias": 0.14,
   "landmarks": [
     "ridge_cairn",
     "cloud_gate",
     "ledge_rails"
-  ],
-  "elevation_profile": "ridge_climb",
-  "bank_bias": 0.14
+  ]
 }

@@ -275,8 +275,10 @@ func _add_track_segment(
 	body.collision_layer = 1
 	body.collision_mask = 0
 	parent.add_child(body)
-	body.global_position = (start_point + end_point) * 0.5 + Vector3(0.0, -0.3, 0.0)
-	body.look_at(end_point + Vector3(0.0, -0.3, 0.0), Vector3.UP)
+	var mid := (start_point + end_point) * 0.5 + Vector3(0.0, -0.3, 0.0)
+	var look_target := end_point + Vector3(0.0, -0.3, 0.0)
+	## Tree-safe orientation — look_at() fails when CourseTrack is not yet inside the scene tree.
+	body.transform = Transform3D(Basis.looking_at(look_target - mid, Vector3.UP), mid)
 	## Bank / ramp pitch from authored elevation — presentation + collision, not teleport.
 	var rise := end_point.y - start_point.y
 	var flat_len := Vector2(end_point.x - start_point.x, end_point.z - start_point.z).length()
@@ -557,10 +559,12 @@ func _add_shortcut_floor(parent: Node3D, start_point: Vector3, end_point: Vector
 	body.collision_layer = 1
 	body.collision_mask = 0
 	parent.add_child(body)
-	body.global_position = (flat_start + flat_end) * 0.5 + Vector3(0.0, -0.3, 0.0)
+	var mid := (flat_start + flat_end) * 0.5 + Vector3(0.0, -0.3, 0.0)
 	var look_target := flat_end + Vector3(0.0, -0.3, 0.0)
-	if body.global_position.distance_squared_to(look_target) > 0.04:
-		body.look_at(look_target, Vector3.UP)
+	if mid.distance_squared_to(look_target) > 0.04:
+		body.transform = Transform3D(Basis.looking_at(look_target - mid, Vector3.UP), mid)
+	else:
+		body.position = mid
 	var width := _lane_width * 0.55
 	var surface_size := Vector3(width, 0.6, length)
 	var shape := BoxShape3D.new()

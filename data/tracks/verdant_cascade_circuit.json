@@ -7,76 +7,58 @@
   "theme": "cascade_garden",
   "description": "A broad riverside loop with misty cascade columns, shallow runoff, and forgiving boost lines.",
   "art_status": "LAUNCH_PROCEDURAL_FINAL",
-  "geometry_status": "championship_upgraded",
-  "final_track_art_status": "track_art_candidate",
-  "human_track_art_approved": false,
-  "lane_width": 14.0,
-  "guard_rails": true,
   "has_shortcut": true,
+  "lane_width": 15.0,
+  "guard_rails": true,
   "track_color": "#5A7461",
   "accent_color": "#6EE7C2",
   "sky_color": "#79C7E3",
   "backdrop_color": "#2F754A",
   "path_points": [
     [
-      52.62,
+      0.0,
       0.7,
-      0.0
+      34.0
     ],
     [
-      47.6,
-      3.32,
-      23.25
+      24.0,
+      3.5,
+      36.0
     ],
     [
-      27.17,
-      2.62,
-      39.82
+      44.0,
+      0.52,
+      20.0
+    ],
+    [
+      48.0,
+      -3.32,
+      -8.0
+    ],
+    [
+      30.0,
+      -1.67,
+      -34.0
     ],
     [
       0.0,
-      -0.7,
-      43.48
+      2.74,
+      -42.0
     ],
     [
-      -24.52,
-      -3.32,
-      35.94
-    ],
-    [
-      -43.01,
-      -2.62,
-      21.01
-    ],
-    [
-      -52.62,
-      0.7,
-      0.0
-    ],
-    [
-      -47.6,
-      3.32,
-      -23.25
-    ],
-    [
-      -27.17,
+      -28.0,
       2.62,
-      -39.82
+      -31.0
     ],
     [
-      -0.0,
-      -0.7,
-      -43.48
+      -46.0,
+      -1.83,
+      -4.0
     ],
     [
-      24.52,
-      -3.32,
-      -35.94
-    ],
-    [
-      43.01,
-      -2.62,
-      -21.01
+      -35.0,
+      -3.26,
+      25.0
     ]
   ],
   "checkpoint_points": [
@@ -84,63 +66,85 @@
     2,
     4,
     6,
-    8,
-    10
+    8
   ],
   "speed_lanes": [
     {
       "point_index": 1,
       "size": [
         6,
-        12
+        13
       ],
-      "speed_bonus": 1.15
+      "speed_bonus": 1.2
     }
   ],
   "terrain_zones": [
     {
-      "point_index": 4,
+      "point_index": 5,
       "size": [
-        8,
-        10
+        12,
+        13
       ],
-      "speed_mult": 0.85
+      "terrain_name": "cascade_runoff",
+      "speed_multiplier": 0.84,
+      "handling_multiplier": 0.92,
+      "color": "#4FC3E0"
     }
   ],
   "bounce_pads": [
     {
-      "point_index": 6,
-      "bounce_force": 11.0,
-      "forward_boost": 3.5
+      "point_index": 7,
+      "size": [
+        6,
+        6
+      ],
+      "bounce_force": 11.5,
+      "forward_boost": 4.5
     }
   ],
   "item_boxes": [
-    2,
-    6,
-    8
-  ],
-  "boost_pickups": [
     1,
+    4,
     7
   ],
-  "rail_segments": [
-    3
+  "boost_pickups": [
+    2,
+    6
   ],
   "shortcut_routes": [
     {
-      "id": "verdant_cascade_circuit_cut",
+      "id": "cascade_inner_cut",
       "entry_point_index": 2,
-      "exit_point_index": 6,
-      "risk": "medium",
-      "ai_preference": 0.35,
-      "description": "Risk cut across the infield; miss and hit slow terrain."
+      "exit_point_index": 5,
+      "risk": "wet_runoff",
+      "ai_preference": 0.35
     }
   ],
+  "rail_segments": [
+    3,
+    6
+  ],
+  "exploit_notes": [
+    "Do not clip through cascade columns; guard rails block off-course wall runs."
+  ],
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "kinetic_sole_pass": "verdant_dash_reed_v1"
+  },
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "elevation_profile": "cascade_rise",
+  "bank_bias": 0.08,
   "landmarks": [
     "mist_columns",
     "start_arch",
     "river_bank"
-  ],
-  "elevation_profile": "cascade_rise",
-  "bank_bias": 0.08
+  ]
 }

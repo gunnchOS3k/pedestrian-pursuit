@@ -7,7 +7,11 @@ const TrackArtAcceptanceScript = preload("res://scripts/data/TrackArtAcceptance.
 const CourseTrackScript = preload("res://scripts/tracks/CourseTrack.gd")
 
 
-func _init() -> void:
+func _initialize() -> void:
+	call_deferred("_run")
+
+
+func _run() -> void:
 	var failures: PackedStringArray = []
 	var cups := TrackCatalogScript.list_cup_ids()
 	if cups.size() != 8:
@@ -47,8 +51,8 @@ func _init() -> void:
 			failures.append("load %s" % sample)
 			continue
 		var course: Node = CourseTrackScript.new()
-		course.configure(data)
 		root.add_child(course)
+		course.configure(data)
 		if not course.build():
 			failures.append("build %s" % sample)
 		elif course.get_race_path() == null:

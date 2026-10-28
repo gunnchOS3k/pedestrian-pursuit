@@ -3,90 +3,77 @@
   "id": "mirage_mesa",
   "display_name": "Mirage Mesa",
   "lap_count": 3,
-  "difficulty": "beginner",
+  "difficulty": "expert",
   "theme": "mesa_mirage",
-  "description": "Desert mesa drafting loop with mirage spires and dune-side rails.",
+  "description": "Sun-baked mesa banks, sand traps, a hidden wash shortcut, and long drafting straights.",
   "art_status": "LAUNCH_PROCEDURAL_FINAL",
-  "geometry_status": "championship_upgraded",
-  "final_track_art_status": "track_art_candidate",
-  "human_track_art_approved": false,
-  "lane_width": 14.0,
+  "lane_width": 15.0,
   "guard_rails": true,
   "has_shortcut": true,
-  "track_color": "#8A6A40",
-  "accent_color": "#FFC14A",
-  "sky_color": "#E8C888",
-  "backdrop_color": "#A87840",
+  "track_color": "#C48A4A",
+  "accent_color": "#FFB347",
+  "sky_color": "#F0C878",
+  "backdrop_color": "#A86830",
   "path_points": [
     [
-      63.55,
+      0.0,
       3.74,
-      0.0
+      50.0
     ],
     [
-      56.48,
-      2.84,
-      21.76
+      32.0,
+      2.43,
+      46.0
     ],
     [
-      37.29,
-      -0.2,
-      37.41
+      56.0,
+      -1.31,
+      22.0
     ],
     [
-      12.7,
-      -3.09,
-      44.51
+      48.0,
+      -3.74,
+      -12.0
     ],
     [
-      -12.58,
-      -3.65,
-      44.1
+      58.0,
+      -2.43,
+      -38.0
     ],
     [
-      -36.55,
-      -1.46,
-      36.66
+      24.0,
+      1.31,
+      -52.0
     ],
     [
-      -55.62,
-      1.83,
-      21.43
-    ],
-    [
-      -63.55,
+      -8.0,
       3.74,
-      0.0
+      -42.0
     ],
     [
-      -56.48,
-      2.84,
-      -21.76
+      -36.0,
+      2.43,
+      -50.0
     ],
     [
-      -37.29,
-      -0.2,
-      -37.41
+      -58.0,
+      -1.31,
+      -20.0
     ],
     [
-      -12.7,
-      -3.09,
-      -44.51
+      -48.0,
+      -3.74,
+      12.0
     ],
     [
-      12.58,
-      -3.65,
-      -44.1
+      -56.0,
+      -2.43,
+      38.0
     ],
     [
-      36.55,
-      -1.46,
-      -36.66
-    ],
-    [
-      55.62,
-      1.83,
-      -21.43
+      -24.0,
+      1.31,
+      48.0
     ]
   ],
   "checkpoint_points": [
@@ -95,63 +82,91 @@
     4,
     6,
     8,
-    10,
-    12
+    10
+  ],
+  "shortcut_routes": [
+    {
+      "id": "dry_wash",
+      "entry_point_index": 1,
+      "exit_point_index": 4,
+      "risk": "medium",
+      "description": "Cut through the dry wash; sand slows anyone who overshoots."
+    }
   ],
   "speed_lanes": [
     {
-      "point_index": 1,
+      "point_index": 0,
+      "size": [
+        6,
+        14
+      ],
+      "speed_bonus": 1.26
+    },
+    {
+      "point_index": 9,
       "size": [
         6,
         12
       ],
-      "speed_bonus": 1.15
+      "speed_bonus": 1.2
     }
   ],
   "terrain_zones": [
     {
-      "point_index": 4,
+      "point_index": 5,
       "size": [
-        8,
-        10
+        13,
+        14
       ],
-      "speed_mult": 0.85
+      "terrain_name": "mesa_sand",
+      "speed_multiplier": 0.72,
+      "handling_multiplier": 0.75,
+      "color": "#D2B48C"
     }
   ],
   "bounce_pads": [
     {
       "point_index": 7,
-      "bounce_force": 11.0,
-      "forward_boost": 3.5
+      "size": [
+        6,
+        6
+      ],
+      "bounce_force": 12.5,
+      "forward_boost": 5.0
     }
   ],
   "item_boxes": [
     2,
-    7,
-    9
+    5,
+    8,
+    11
   ],
   "boost_pickups": [
     1,
-    8
+    4,
+    10
   ],
   "rail_segments": [
+    2,
     3
   ],
-  "shortcut_routes": [
-    {
-      "id": "mirage_mesa_cut",
-      "entry_point_index": 2,
-      "exit_point_index": 7,
-      "risk": "medium",
-      "ai_preference": 0.35,
-      "description": "Risk cut across the infield; miss and hit slow terrain."
-    }
-  ],
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": false
+  },
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "elevation_profile": "mesa_steps",
+  "bank_bias": 0.08,
   "landmarks": [
     "mesa_arch",
     "mirage_spire",
     "dune_rails"
-  ],
-  "elevation_profile": "mesa_steps",
-  "bank_bias": 0.08
+  ]
 }
