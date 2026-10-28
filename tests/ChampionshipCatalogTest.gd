@@ -60,8 +60,14 @@ func _run() -> void:
 		elif course.get_checkpoints().size() < 4:
 			failures.append("checkpoints %s" % sample)
 		course.queue_free()
-	## Elevation present on Cups 1–3 production batch.
-	for tid in ["prism_apex", "transit_spiral", "sneaker_city_sprintway"]:
+	## Cups 1–2: banked/landmark upgrade on lap-safe flat racing lines.
+	var prism := TrackCatalogScript.load_track("prism_apex")
+	if absf(float(prism.get("bank_bias", 0.0))) < 0.05:
+		failures.append("prism_apex missing bank upgrade")
+	if (prism.get("landmarks", []) as Array).is_empty():
+		failures.append("prism_apex missing landmarks")
+	## Cup 3 Metro Motion: authored path elevation on raceable geometry.
+	for tid in ["transit_spiral", "sneaker_city_sprintway"]:
 		var d := TrackCatalogScript.load_track(tid)
 		var has_y := false
 		for p in d.get("path_points", []):

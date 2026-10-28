@@ -276,9 +276,12 @@ func _add_track_segment(
 	body.collision_mask = 0
 	parent.add_child(body)
 	var mid := (start_point + end_point) * 0.5 + Vector3(0.0, -0.3, 0.0)
-	var look_target := end_point + Vector3(0.0, -0.3, 0.0)
+	## Flatten look target so pitch is applied once via atan2 (avoids look_at + pitch double-count).
+	var flat_dir := Vector3(end_point.x - mid.x, 0.0, end_point.z - mid.z)
+	if flat_dir.length_squared() < 0.0001:
+		flat_dir = Vector3(0.0, 0.0, -1.0)
 	## Tree-safe orientation — look_at() fails when CourseTrack is not yet inside the scene tree.
-	body.transform = Transform3D(Basis.looking_at(look_target - mid, Vector3.UP), mid)
+	body.transform = Transform3D(Basis.looking_at(flat_dir, Vector3.UP), mid)
 	## Bank / ramp pitch from authored elevation — presentation + collision, not teleport.
 	var rise := end_point.y - start_point.y
 	var flat_len := Vector2(end_point.x - start_point.x, end_point.z - start_point.z).length()
