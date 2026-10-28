@@ -276,20 +276,28 @@ func _add_track_segment(
 	body.collision_mask = 0
 	parent.add_child(body)
 	var mid := (start_point + end_point) * 0.5 + Vector3(0.0, -0.3, 0.0)
-	## Flatten look target so pitch is applied once via atan2 (avoids look_at + pitch double-count).
-	var flat_dir := Vector3(end_point.x - mid.x, 0.0, end_point.z - mid.z)
-	if flat_dir.length_squared() < 0.0001:
-		flat_dir = Vector3(0.0, 0.0, -1.0)
-	## Tree-safe orientation — look_at() fails when CourseTrack is not yet inside the scene tree.
-	body.transform = Transform3D(Basis.looking_at(flat_dir, Vector3.UP), mid)
-	## Bank / ramp pitch from authored elevation — presentation + collision, not teleport.
+	var look_target := end_point + Vector3(0.0, -0.3, 0.0)
+	## Prefer look_at when in-tree (race scenes). Fall back when CourseTrack builds off-tree.
+	if body.is_inside_tree():
+		body.global_position = mid
+		if body.global_position.distance_squared_to(look_target) > 0.04:
+			body.look_at(look_target, Vector3.UP)
+	else:
+		var flat_dir := Vector3(look_target.x - mid.x, 0.0, look_target.z - mid.z)
+		if flat_dir.length_squared() < 0.0001:
+			flat_dir = Vector3(0.0, 0.0, -1.0)
+		body.transform = Transform3D(Basis.looking_at(flat_dir, Vector3.UP), mid)
+	## Pitch collision for authored elevation only (no bank roll on collider — keeps Gate AI lines).
 	var rise := end_point.y - start_point.y
 	var flat_len := Vector2(end_point.x - start_point.x, end_point.z - start_point.z).length()
-	if flat_len > 0.5:
+	if flat_len > 0.5 and absf(rise) > 0.05:
+		## Flatten look then pitch once so look_at elevation is not double-counted.
+		var flat_end := Vector3(end_point.x, mid.y, end_point.z)
+		if body.is_inside_tree():
+			body.global_position = mid
+			if body.global_position.distance_squared_to(flat_end) > 0.04:
+				body.look_at(flat_end, Vector3.UP)
 		body.rotation.x += atan2(rise, flat_len)
-	var bank := float(_data.get("bank_bias", 0.0))
-	if absf(bank) > 0.001:
-		body.rotation.z += bank * sin(float(index) * 0.7)
 
 	var surface_size := Vector3(_lane_width, 0.6, length + _lane_width * 0.4)
 	var shape := BoxShape3D.new()
@@ -341,6 +349,10 @@ func _add_track_segment(
 		track_mat.metallic = 0.12
 		track_mat.albedo_color = track_mat.albedo_color.lerp(Color(0.22, 0.24, 0.28), 0.2)
 	visual.material_override = track_mat
+	## Visual bank only — do not roll the StaticBody (Gate AI lines stay lap-safe).
+	var bank := float(_data.get("bank_bias", 0.0))
+	if absf(bank) > 0.001:
+		visual.rotation.z = bank * sin(float(index) * 0.7)
 	body.add_child(visual)
 
 	if bool(_data.get("guard_rails", false)):

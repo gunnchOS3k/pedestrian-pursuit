@@ -60,12 +60,14 @@ func _run() -> void:
 		elif course.get_checkpoints().size() < 4:
 			failures.append("checkpoints %s" % sample)
 		course.queue_free()
-	## Cups 1–2: banked/landmark upgrade on lap-safe flat racing lines.
+	## Cups 1–2: championship_upgraded with landmarks; collision stays lap-safe.
 	var prism := TrackCatalogScript.load_track("prism_apex")
-	if absf(float(prism.get("bank_bias", 0.0))) < 0.05:
-		failures.append("prism_apex missing bank upgrade")
+	if str(prism.get("geometry_status", "")) != "championship_upgraded":
+		failures.append("prism_apex not championship_upgraded")
 	if (prism.get("landmarks", []) as Array).is_empty():
 		failures.append("prism_apex missing landmarks")
+	if absf(float(prism.get("bank_bias", 0.0))) < 0.05:
+		failures.append("prism_apex missing bank metadata")
 	## Cup 3 Metro Motion: authored path elevation on raceable geometry.
 	for tid in ["transit_spiral", "sneaker_city_sprintway"]:
 		var d := TrackCatalogScript.load_track(tid)
