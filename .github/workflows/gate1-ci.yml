@@ -148,7 +148,8 @@ jobs:
 
   godot-headless-no-false-green:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    ## Four Kinetic Sole captures + suite + two-client; keep headroom above 25m cancel.
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
 

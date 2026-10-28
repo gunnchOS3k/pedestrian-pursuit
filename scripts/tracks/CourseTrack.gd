@@ -1058,8 +1058,9 @@ func _build_ember_scenery(parent: Node3D) -> void:
 		var dir := exitp - entry
 		dir.y = 0.0
 		var side := Vector3(-dir.z, 0.0, dir.x).normalized() if dir.length_squared() > 0.01 else Vector3.RIGHT
-		for s in [-1.0, 1.0]:
-			var vent_pos := mid + side * (10.5 * s) + Vector3(0.0, 1.4, 0.0)
+		var vent_sides: Array[float] = [-1.0, 1.0]
+		for s in vent_sides:
+			var vent_pos: Vector3 = mid + side * (10.5 * s) + Vector3(0.0, 1.4, 0.0)
 			_add_visual_cylinder(parent, vent_pos, 1.6, 2.8, Color(0.25, 0.18, 0.16))
 			_add_visual_cylinder(
 				parent, vent_pos + Vector3(0.0, 2.2, 0.0), 1.1, 1.6, Color(1.0, 0.35, 0.08), true
