@@ -4,13 +4,13 @@
   "display_name": "Saltline Boardwalk",
   "lap_count": 3,
   "difficulty": "beginner",
-  "theme": "kinetic_coast",
-  "description": "Boardwalk oval with salt spray banks. Championship stub \u2014 launchable legitimate lap; geometry/art still pending polish.",
+  "theme": "saltline_boardwalk",
+  "description": "Seaside boardwalk oval with salt-spray banks, pier arches, and a risky infield dune cut.",
   "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-  "geometry_status": "championship_stub_raceable",
+  "geometry_status": "championship_raceable",
   "final_track_art_status": "track_art_pending",
   "human_track_art_approved": false,
-  "lane_width": 14.0,
+  "lane_width": 13.5,
   "guard_rails": true,
   "has_shortcut": true,
   "track_color": "#3A6A7A",
@@ -19,54 +19,64 @@
   "backdrop_color": "#2F5A6A",
   "path_points": [
     [
-      50.0,
+      54.0,
+      0.23,
+      0.0
+    ],
+    [
+      46.77,
+      1.09,
+      15.0
+    ],
+    [
+      27.0,
+      0.86,
+      25.98
+    ],
+    [
       0.0,
+      -0.23,
+      30.0
+    ],
+    [
+      -27.0,
+      -1.09,
+      25.98
+    ],
+    [
+      -46.77,
+      -0.86,
+      15.0
+    ],
+    [
+      -54.0,
+      0.23,
       0.0
     ],
     [
-      41.99,
-      1.43,
-      27.46
+      -46.77,
+      1.09,
+      -15.0
     ],
     [
-      15.81,
-      0.88,
-      43.8
+      -27.0,
+      0.86,
+      -25.98
     ],
     [
-      -15.09,
-      -0.88,
-      41.79
-    ],
-    [
-      -38.91,
-      -1.43,
-      25.44
-    ],
-    [
-      -50.0,
       -0.0,
-      0.0
+      -0.23,
+      -30.0
     ],
     [
-      -41.99,
-      1.43,
-      -27.46
+      27.0,
+      -1.09,
+      -25.98
     ],
     [
-      -15.81,
-      0.88,
-      -43.8
-    ],
-    [
-      15.09,
-      -0.88,
-      -41.79
-    ],
-    [
-      38.91,
-      -1.43,
-      -25.44
+      46.77,
+      -0.86,
+      -15.0
     ]
   ],
   "checkpoint_points": [
@@ -74,7 +84,8 @@
     2,
     4,
     6,
-    8
+    8,
+    10
   ],
   "speed_lanes": [
     {
@@ -83,52 +94,55 @@
         6,
         12
       ],
-      "speed_bonus": 1.15
+      "speed_bonus": 1.18
     }
   ],
   "terrain_zones": [
     {
-      "point_index": 3,
+      "point_index": 4,
       "size": [
         8,
         10
       ],
-      "speed_mult": 0.85
+      "speed_mult": 0.82
     }
   ],
   "bounce_pads": [
     {
-      "point_index": 5,
-      "bounce_force": 11.0,
-      "forward_boost": 3.5
+      "point_index": 8,
+      "bounce_force": 10.5,
+      "forward_boost": 3.2
     }
   ],
   "item_boxes": [
     2,
-    5,
-    6
+    6,
+    9
   ],
   "boost_pickups": [
     1,
-    6
+    7
   ],
   "rail_segments": [
-    2
+    3,
+    9
   ],
   "shortcut_routes": [
     {
       "id": "saltline_boardwalk_cut",
       "entry_point_index": 2,
-      "exit_point_index": 5,
+      "exit_point_index": 7,
       "risk": "medium",
-      "ai_preference": 0.35,
-      "description": "Risk cut across the infield; miss and hit slow terrain."
+      "ai_preference": 0.32,
+      "description": "Cut under the pier through soft dune sand."
     }
   ],
   "landmarks": [
-    "saltline_boardwalk_marker"
+    "pier_arch",
+    "salt_spray_posts",
+    "boardwalk_shed"
   ],
-  "elevation_profile": "stub_rise",
-  "bank_bias": 0.04,
-  "geometry_note": "Honest pending geometry \u2014 raceable closed loop, not commercial finished art."
+  "elevation_profile": "boardwalk_rolls",
+  "bank_bias": 0.07,
+  "geometry_note": "Kinetic Coast production batch \u2014 distinct raceable geometry; track art still pending (not commercial)."
 }

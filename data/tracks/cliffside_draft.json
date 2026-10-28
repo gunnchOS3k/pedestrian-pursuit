@@ -3,75 +3,90 @@
   "id": "cliffside_draft",
   "display_name": "Cliffside Draft",
   "lap_count": 3,
-  "difficulty": "beginner",
-  "theme": "kinetic_coast",
-  "description": "Cliff edge drafting loop with wind gates. Championship stub \u2014 launchable legitimate lap; geometry/art still pending polish.",
+  "difficulty": "intermediate",
+  "theme": "cliffside_draft",
+  "description": "Cliff-shelf circuit with wind-draft straights, updraft pads, and a ledge shortcut above the spray.",
   "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-  "geometry_status": "championship_stub_raceable",
+  "geometry_status": "championship_raceable",
   "final_track_art_status": "track_art_pending",
   "human_track_art_approved": false,
-  "lane_width": 14.0,
+  "lane_width": 13.5,
   "guard_rails": true,
   "has_shortcut": true,
-  "track_color": "#3A6A7A",
-  "accent_color": "#7EE0F2",
-  "sky_color": "#8EC8E8",
-  "backdrop_color": "#2F5A6A",
+  "track_color": "#4A5560",
+  "accent_color": "#F0C27A",
+  "sky_color": "#6A90B0",
+  "backdrop_color": "#2A3540",
   "path_points": [
     [
-      55.29,
-      0.91,
-      2.0
+      48.0,
+      1.35,
+      0.0
     ],
     [
-      47.69,
-      1.9,
-      29.24
+      39.49,
+      1.96,
+      16.49
     ],
     [
-      22.82,
-      0.66,
-      46.42
+      25.25,
+      2.19,
+      29.71
     ],
     [
-      -7.41,
-      -1.34,
-      47.83
+      8.6,
+      2.06,
+      37.05
     ],
     [
-      -33.71,
-      -1.78,
-      36.58
+      -8.6,
+      1.75,
+      37.05
     ],
     [
-      -51.63,
-      -0.14,
-      15.48
+      -25.25,
+      1.51,
+      29.71
     ],
     [
-      -54.09,
-      1.67,
-      -12.12
+      -39.49,
+      1.41,
+      16.49
     ],
     [
-      -36.78,
-      1.52,
-      -35.73
+      -48.0,
+      1.35,
+      0.0
     ],
     [
-      -7.6,
-      -0.4,
-      -45.01
+      -43.25,
+      1.14,
+      -16.49
     ],
     [
-      21.34,
-      -1.86,
-      -39.53
+      -29.93,
+      0.72,
+      -29.71
     ],
     [
-      44.07,
-      -1.14,
-      -23.17
+      -10.68,
+      0.21,
+      -37.05
+    ],
+    [
+      10.68,
+      -0.09,
+      -37.05
+    ],
+    [
+      29.93,
+      0.03,
+      -29.71
+    ],
+    [
+      43.25,
+      0.59,
+      -16.49
     ]
   ],
   "checkpoint_points": [
@@ -80,61 +95,65 @@
     4,
     6,
     8,
-    10
+    10,
+    12
   ],
   "speed_lanes": [
     {
       "point_index": 1,
       "size": [
         6,
-        12
+        14
       ],
-      "speed_bonus": 1.15
+      "speed_bonus": 1.22
     }
   ],
   "terrain_zones": [
     {
-      "point_index": 3,
+      "point_index": 6,
       "size": [
-        8,
-        10
+        9,
+        11
       ],
-      "speed_mult": 0.85
+      "speed_mult": 0.8
     }
   ],
   "bounce_pads": [
     {
-      "point_index": 5,
-      "bounce_force": 11.0,
-      "forward_boost": 3.5
+      "point_index": 11,
+      "bounce_force": 12.0,
+      "forward_boost": 4.0
     }
   ],
   "item_boxes": [
     2,
-    5,
-    7
+    7,
+    11
   ],
   "boost_pickups": [
     1,
-    6
+    8
   ],
   "rail_segments": [
-    2
+    4,
+    10
   ],
   "shortcut_routes": [
     {
       "id": "cliffside_draft_cut",
-      "entry_point_index": 2,
-      "exit_point_index": 5,
-      "risk": "medium",
-      "ai_preference": 0.35,
-      "description": "Risk cut across the infield; miss and hit slow terrain."
+      "entry_point_index": 3,
+      "exit_point_index": 9,
+      "risk": "high",
+      "ai_preference": 0.28,
+      "description": "Ledge draft cut \u2014 miss and drop into slow spray."
     }
   ],
   "landmarks": [
-    "cliffside_draft_marker"
+    "cliff_cairn",
+    "draft_gantry",
+    "ledge_rails"
   ],
-  "elevation_profile": "stub_rise",
-  "bank_bias": 0.04,
-  "geometry_note": "Honest pending geometry \u2014 raceable closed loop, not commercial finished art."
+  "elevation_profile": "cliff_updraft",
+  "bank_bias": 0.1,
+  "geometry_note": "Kinetic Coast production batch \u2014 distinct raceable geometry; track art still pending (not commercial)."
 }

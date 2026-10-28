@@ -348,6 +348,12 @@ func _add_track_segment(
 		track_mat.roughness = 0.5
 		track_mat.metallic = 0.12
 		track_mat.albedo_color = track_mat.albedo_color.lerp(Color(0.22, 0.24, 0.28), 0.2)
+	elif theme in ["saltline_boardwalk", "cliffside_draft", "tidal_bridge_run", "seaglass_switchback", "kinetic_coast"]:
+		## Weathered coastal asphalt / boardwalk plank read.
+		track_mat = track_mat.duplicate()
+		track_mat.roughness = 0.78
+		track_mat.metallic = 0.05
+		track_mat.albedo_color = track_mat.albedo_color.lerp(Color(0.35, 0.48, 0.5), 0.22)
 	visual.material_override = track_mat
 	## Visual bank only — do not roll the StaticBody (Gate AI lines stay lap-safe).
 	var bank := float(_data.get("bank_bias", 0.0))
@@ -669,6 +675,8 @@ func _build_scenery() -> void:
 			_build_mesa_scenery(scenery)
 		"sneaker_city", "metro_pulse", "crosswalk_canyon", "transit_spiral":
 			_build_metro_scenery(scenery)
+		"saltline_boardwalk", "cliffside_draft", "tidal_bridge_run", "seaglass_switchback", "kinetic_coast":
+			_build_coast_scenery(scenery)
 		_:
 			_add_visual_box(
 				scenery,
@@ -677,6 +685,83 @@ func _build_scenery() -> void:
 				_color("backdrop_color", Color.DARK_GREEN)
 			)
 			_build_landmark_markers(scenery)
+
+
+func _build_coast_scenery(parent: Node3D) -> void:
+	## Kinetic Coast Cup — distinct seaside props + off-line collision hazards.
+	var theme := str(_data.get("theme", "kinetic_coast"))
+	var accent := _color("accent_color", Color(0.45, 0.85, 0.9))
+	_add_visual_box(
+		parent,
+		Vector3(0.0, -0.82, 0.0),
+		Vector3(170.0, 0.25, 170.0),
+		_color("backdrop_color", Color(0.2, 0.38, 0.42))
+	)
+	## Water basin under the loop (visual).
+	_add_visual_cylinder(parent, Vector3(0.0, -0.55, 0.0), 36.0, 0.2, Color(0.15, 0.48, 0.62), true)
+	_add_visual_cylinder(parent, Vector3(6.0, -0.48, -8.0), 14.0, 0.14, Color(0.28, 0.7, 0.78), true)
+	match theme:
+		"saltline_boardwalk":
+			_add_named_coast_prop(parent, "PierArch", Vector3(0.0, 0.0, 38.0), accent)
+			_add_visual_box(parent, Vector3(-9.0, 3.0, 38.0), Vector3(1.2, 6.0, 1.2), Color(0.45, 0.32, 0.2))
+			_add_visual_box(parent, Vector3(9.0, 3.0, 38.0), Vector3(1.2, 6.0, 1.2), Color(0.45, 0.32, 0.2))
+			_add_visual_box(parent, Vector3(0.0, 6.2, 38.0), Vector3(20.0, 1.1, 1.4), accent, true)
+			_add_named_coast_prop(parent, "BoardwalkShed", Vector3(-28.0, 0.0, 8.0), Color(0.5, 0.36, 0.22))
+			_add_coast_hazard_rock(parent, "SaltSprayRock", Vector3(8.0, 0.8, 6.0), Vector3(4.5, 2.2, 3.5))
+		"cliffside_draft":
+			_add_named_coast_prop(parent, "CliffCairn", Vector3(0.0, 0.0, -42.0), Color(0.55, 0.5, 0.42))
+			_add_visual_box(parent, Vector3(0.0, 5.0, -42.0), Vector3(3.2, 10.0, 3.2), Color(0.48, 0.44, 0.38))
+			_add_visual_box(parent, Vector3(0.0, 11.0, -42.0), Vector3(5.0, 1.4, 5.0), accent)
+			_add_named_coast_prop(parent, "DraftGantry", Vector3(34.0, 0.0, 0.0), accent)
+			_add_visual_box(parent, Vector3(34.0, 7.0, 0.0), Vector3(14.0, 0.8, 1.2), accent, true)
+			_add_coast_hazard_rock(parent, "CliffFaceRock", Vector3(-6.0, 1.2, -10.0), Vector3(5.0, 3.5, 4.0))
+		"tidal_bridge_run":
+			_add_named_coast_prop(parent, "NorthBridge", Vector3(0.0, 0.0, 32.0), accent)
+			_add_visual_box(parent, Vector3(-10.0, 2.5, 32.0), Vector3(1.4, 5.0, 1.4), Color(0.35, 0.4, 0.45))
+			_add_visual_box(parent, Vector3(10.0, 2.5, 32.0), Vector3(1.4, 5.0, 1.4), Color(0.35, 0.4, 0.45))
+			_add_visual_box(parent, Vector3(0.0, 5.4, 32.0), Vector3(22.0, 1.0, 1.6), accent, true)
+			_add_named_coast_prop(parent, "SouthBridge", Vector3(0.0, 0.0, -32.0), accent)
+			_add_visual_box(parent, Vector3(-10.0, 2.5, -32.0), Vector3(1.4, 5.0, 1.4), Color(0.35, 0.4, 0.45))
+			_add_visual_box(parent, Vector3(10.0, 2.5, -32.0), Vector3(1.4, 5.0, 1.4), Color(0.35, 0.4, 0.45))
+			_add_visual_box(parent, Vector3(0.0, 5.4, -32.0), Vector3(22.0, 1.0, 1.6), accent, true)
+			_add_coast_hazard_rock(parent, "TideBoulder", Vector3(5.0, 1.0, 7.0), Vector3(5.5, 2.6, 4.5))
+		"seaglass_switchback":
+			_add_named_coast_prop(parent, "SeaglassSpire", Vector3(0.0, 0.0, 0.0), accent)
+			_add_visual_cylinder(parent, Vector3(0.0, 6.0, 0.0), 2.2, 12.0, accent, true)
+			_add_named_coast_prop(parent, "HairpinBeacon", Vector3(40.0, 0.0, 0.0), Color(0.9, 0.85, 0.55))
+			_add_visual_box(parent, Vector3(40.0, 4.5, 0.0), Vector3(2.0, 9.0, 2.0), Color(0.55, 0.6, 0.58))
+			_add_coast_hazard_rock(parent, "ShardPile", Vector3(-12.0, 0.9, 8.0), Vector3(4.0, 2.0, 4.0))
+		_:
+			_add_named_coast_prop(parent, "CoastMarker", Vector3(0.0, 0.0, 36.0), accent)
+	_build_landmark_markers(parent)
+
+
+func _add_named_coast_prop(parent: Node3D, prop_name: String, position: Vector3, color: Color) -> void:
+	var root := Node3D.new()
+	root.name = prop_name
+	root.position = position
+	parent.add_child(root)
+	_add_visual_box(root, Vector3(0.0, 1.2, 0.0), Vector3(2.4, 2.4, 2.4), color)
+
+
+func _add_coast_hazard_rock(parent: Node3D, rock_name: String, position: Vector3, size: Vector3) -> void:
+	## Real collision hazard parked off the racing chord (infield / cliff face).
+	var root := Node3D.new()
+	root.name = rock_name
+	root.position = position
+	parent.add_child(root)
+	_add_visual_box(root, Vector3(0.0, size.y * 0.5, 0.0), size, Color(0.42, 0.4, 0.36))
+	var body := StaticBody3D.new()
+	body.name = "%sCollision" % rock_name
+	body.collision_layer = 1
+	body.collision_mask = 0
+	body.position = Vector3(0.0, size.y * 0.5, 0.0)
+	root.add_child(body)
+	var shape := BoxShape3D.new()
+	shape.size = size
+	var col := CollisionShape3D.new()
+	col.shape = shape
+	body.add_child(col)
 
 
 func _build_metro_scenery(parent: Node3D) -> void:

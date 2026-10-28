@@ -44,6 +44,7 @@ func _run() -> void:
 	for sample in [
 		"verdant_cascade_circuit",
 		"metro_pulse_loop",
+		"saltline_boardwalk",
 		"horizon_crown_finale",
 	]:
 		var data := TrackCatalogScript.load_track(sample)
@@ -78,6 +79,46 @@ func _run() -> void:
 				break
 		if not has_y:
 			failures.append("%s missing elevation" % tid)
+	## Cup 4 Kinetic Coast: four distinct championship_raceable courses.
+	var coast := TrackCatalogScript.load_cup("kinetic_coast_cup")
+	var coast_ids: Array = coast.get("track_ids", [])
+	if coast_ids.size() != 4:
+		failures.append("kinetic_coast size")
+	for tid in ["saltline_boardwalk", "cliffside_draft", "tidal_bridge_run", "seaglass_switchback"]:
+		if tid not in coast_ids:
+			failures.append("kinetic_coast missing %s" % tid)
+		var cd := TrackCatalogScript.load_track(tid)
+		if str(cd.get("geometry_status", "")) != "championship_raceable":
+			failures.append("%s not championship_raceable" % tid)
+		if str(cd.get("final_track_art_status", "")) != "track_art_pending":
+			failures.append("%s art must stay pending" % tid)
+		var coast_has_y := false
+		for p in cd.get("path_points", []):
+			if typeof(p) == TYPE_ARRAY and p.size() == 3 and absf(float(p[1])) > 0.1:
+				coast_has_y = true
+				break
+		if not coast_has_y:
+			failures.append("%s missing elevation" % tid)
+		if (cd.get("landmarks", []) as Array).size() < 2:
+			failures.append("%s needs distinct landmarks" % tid)
+		var coast_course: Node = CourseTrackScript.new()
+		root.add_child(coast_course)
+		coast_course.configure(cd)
+		if not coast_course.build():
+			failures.append("build coast %s" % tid)
+		else:
+			var scenery := coast_course.get_node_or_null("Scenery")
+			if scenery == null:
+				failures.append("%s missing Scenery" % tid)
+			elif tid == "saltline_boardwalk" and scenery.get_node_or_null("PierArch") == null:
+				failures.append("saltline missing PierArch")
+			elif tid == "cliffside_draft" and scenery.get_node_or_null("CliffCairn") == null:
+				failures.append("cliffside missing CliffCairn")
+			elif tid == "tidal_bridge_run" and scenery.get_node_or_null("NorthBridge") == null:
+				failures.append("tidal missing NorthBridge")
+			elif tid == "seaglass_switchback" and scenery.get_node_or_null("SeaglassSpire") == null:
+				failures.append("seaglass missing SeaglassSpire")
+		coast_course.queue_free()
 	var art := TrackArtAcceptanceScript.counts()
 	if int(art.get("raceable", 0)) != 32:
 		failures.append("track art raceable %s" % str(art.get("raceable")))

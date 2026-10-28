@@ -3,70 +3,90 @@
   "id": "seaglass_switchback",
   "display_name": "Seaglass Switchback",
   "lap_count": 3,
-  "difficulty": "beginner",
-  "theme": "kinetic_coast",
-  "description": "Seaglass switchbacks with shore rails. Championship stub \u2014 launchable legitimate lap; geometry/art still pending polish.",
+  "difficulty": "advanced",
+  "theme": "seaglass_switchback",
+  "description": "Tight seaglass switchbacks with banked hairpins, glass-shard rails, and a risky canyon cut.",
   "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-  "geometry_status": "championship_stub_raceable",
+  "geometry_status": "championship_raceable",
   "final_track_art_status": "track_art_pending",
   "human_track_art_approved": false,
-  "lane_width": 14.0,
+  "lane_width": 13.5,
   "guard_rails": true,
   "has_shortcut": true,
-  "track_color": "#3A6A7A",
-  "accent_color": "#7EE0F2",
-  "sky_color": "#8EC8E8",
-  "backdrop_color": "#2F5A6A",
+  "track_color": "#3E6B6A",
+  "accent_color": "#A8F0E0",
+  "sky_color": "#6CB8C8",
+  "backdrop_color": "#244848",
   "path_points": [
     [
-      53.49,
-      2.69,
-      6.0
+      54.28,
+      0.5,
+      0.0
     ],
     [
-      41.51,
-      1.01,
-      33.15
+      46.1,
+      1.94,
+      13.65
     ],
     [
-      14.62,
-      -2.07,
-      46.5
+      27.53,
+      2.16,
+      27.29
     ],
     [
-      -14.53,
-      -2.29,
-      46.26
+      8.58,
+      0.94,
+      36.73
     ],
     [
-      -41.13,
-      0.65,
-      32.9
+      -8.58,
+      -0.94,
+      36.73
     ],
     [
-      -53.49,
-      2.69,
-      6.0
+      -27.53,
+      -2.16,
+      27.29
     ],
     [
-      -41.51,
-      1.01,
-      -21.15
+      -46.1,
+      -1.94,
+      13.65
     ],
     [
-      -14.62,
-      -2.07,
-      -34.5
+      -54.28,
+      -0.5,
+      0.0
     ],
     [
-      14.53,
-      -2.29,
-      -34.26
+      -46.1,
+      1.03,
+      -13.65
     ],
     [
-      41.13,
-      0.65,
-      -20.9
+      -27.53,
+      1.54,
+      -27.29
+    ],
+    [
+      -8.58,
+      0.71,
+      -36.73
+    ],
+    [
+      8.58,
+      -0.71,
+      -36.73
+    ],
+    [
+      27.53,
+      -1.54,
+      -27.29
+    ],
+    [
+      46.1,
+      -1.03,
+      -13.65
     ]
   ],
   "checkpoint_points": [
@@ -74,61 +94,66 @@
     2,
     4,
     6,
-    8
+    8,
+    10,
+    12
   ],
   "speed_lanes": [
     {
-      "point_index": 1,
+      "point_index": 12,
       "size": [
-        6,
-        12
+        5,
+        10
       ],
-      "speed_bonus": 1.15
+      "speed_bonus": 1.16
     }
   ],
   "terrain_zones": [
     {
-      "point_index": 3,
+      "point_index": 4,
       "size": [
-        8,
-        10
+        7,
+        9
       ],
-      "speed_mult": 0.85
+      "speed_mult": 0.78
     }
   ],
   "bounce_pads": [
     {
-      "point_index": 5,
+      "point_index": 7,
       "bounce_force": 11.0,
       "forward_boost": 3.5
     }
   ],
   "item_boxes": [
     2,
-    5,
-    6
+    6,
+    10
   ],
   "boost_pickups": [
     1,
-    6
+    9
   ],
   "rail_segments": [
-    2
+    3,
+    9
   ],
   "shortcut_routes": [
     {
       "id": "seaglass_switchback_cut",
       "entry_point_index": 2,
-      "exit_point_index": 5,
-      "risk": "medium",
-      "ai_preference": 0.35,
-      "description": "Risk cut across the infield; miss and hit slow terrain."
+      "exit_point_index": 8,
+      "risk": "high",
+      "ai_preference": 0.3,
+      "description": "Canyon cut between hairpins \u2014 glass terrain if you miss."
     }
   ],
   "landmarks": [
-    "seaglass_switchback_marker"
+    "seaglass_spire",
+    "hairpin_beacon",
+    "shard_rails"
   ],
-  "elevation_profile": "stub_rise",
-  "bank_bias": 0.04,
-  "geometry_note": "Honest pending geometry \u2014 raceable closed loop, not commercial finished art."
+  "elevation_profile": "switchback_steps",
+  "bank_bias": 0.12,
+  "geometry_note": "Kinetic Coast production batch \u2014 distinct raceable geometry; track art still pending (not commercial)."
 }
