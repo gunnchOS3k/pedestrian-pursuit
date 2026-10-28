@@ -536,6 +536,13 @@ func _attach_shoes(
 	var ridiculous_caffeine := march == "ridiculous_caffeine"
 	var ridiculous_drift := march == "ridiculous_drift"
 	var ridiculous_trick := march == "ridiculous_trick"
+	var crossover_soft := march == "crossover_soft"
+	var crossover_heavy := march == "crossover_heavy"
+	var crossover_tap := march == "crossover_tap"
+	var crossover_bass := march == "crossover_bass"
+	var crossover_circuit := march == "crossover_circuit"
+	var crossover_portal := march == "crossover_portal"
+	var crossover_gyro := march == "crossover_gyro"
 	var native_street := balanced or sprint or parkour or tempo or power or trick or rail or kinetic
 	var native_roller := roller_inline or roller_quad or roller_hover
 	var native_hover := hover_glide or hover_boost or hover_bounce or hover_precision
@@ -547,7 +554,11 @@ func _attach_shoes(
 		ridiculous_boost or ridiculous_stomp or ridiculous_reach
 		or ridiculous_caffeine or ridiculous_drift or ridiculous_trick
 	)
-	if tempo or rail or power or sprint or trick or kinetic or parkour or native_roller or native_hover or native_elemental or native_ridiculous:
+	var native_crossover := (
+		crossover_soft or crossover_heavy or crossover_tap or crossover_bass
+		or crossover_circuit or crossover_portal or crossover_gyro
+	)
+	if tempo or rail or power or sprint or trick or kinetic or parkour or native_roller or native_hover or native_elemental or native_ridiculous or native_crossover:
 		shoe_scale *= 1.14
 	if power:
 		shoe_scale *= 1.08 ## Blockier iron silhouette for forge ash.
@@ -575,6 +586,14 @@ func _attach_shoes(
 		shoe_scale *= 1.1
 	if ridiculous_boost or ridiculous_caffeine:
 		shoe_scale *= 1.04
+	if crossover_heavy:
+		shoe_scale *= 1.12
+	if crossover_bass:
+		shoe_scale *= 1.08
+	if crossover_portal:
+		shoe_scale *= 1.05
+	if crossover_gyro:
+		shoe_scale *= 1.04
 	if vehicle_id == "treadfall_blades":
 		shoe_scale *= 0.98
 	elif vehicle_id == "iron_derby_blitz":
@@ -591,17 +610,21 @@ func _attach_shoes(
 		shoe_scale *= 1.08
 	elif vehicle_id == "banana_boomerang_cleats":
 		shoe_scale *= 0.97
+	elif vehicle_id == "lifeling_lopers":
+		shoe_scale *= 1.02
+	elif vehicle_id == "waike_circuit_clogs":
+		shoe_scale *= 1.06
 	# Kinetic Sole stack: outsole / midsole yellow / kinetic upper / tread bars.
 	var midsole := StandardMaterial3D.new()
 	midsole.albedo_color = Color(0.96, 0.77, 0.09) # Midsole Yellow
 	midsole.roughness = 0.45
-	midsole.emission_enabled = native_street or native_roller or native_hover or native_elemental or native_ridiculous
+	midsole.emission_enabled = native_street or native_roller or native_hover or native_elemental or native_ridiculous or native_crossover
 	if midsole.emission_enabled:
 		midsole.emission = Color(0.96, 0.77, 0.09)
 		midsole.emission_energy_multiplier = (
-			0.36 if (hover_boost or hover_bounce or elemental_magma or ridiculous_boost or ridiculous_caffeine) else (
-				0.34 if (power or kinetic or roller_hover or hover_glide or elemental_dive or ridiculous_trick) else (
-					0.3 if (tempo or rail or roller_inline or hover_precision or elemental_wet or elemental_frost or ridiculous_reach) else 0.22
+			0.36 if (hover_boost or hover_bounce or elemental_magma or ridiculous_boost or ridiculous_caffeine or crossover_circuit or crossover_bass) else (
+				0.34 if (power or kinetic or roller_hover or hover_glide or elemental_dive or ridiculous_trick or crossover_portal or crossover_tap) else (
+					0.3 if (tempo or rail or roller_inline or hover_precision or elemental_wet or elemental_frost or ridiculous_reach or crossover_gyro or crossover_soft) else 0.22
 				)
 			)
 		)
@@ -674,17 +697,31 @@ func _attach_shoes(
 		upper.albedo_color = Color(0.55, 0.65, 0.85) # Sofa denim
 	elif vehicle_id == "banana_boomerang_cleats":
 		upper.albedo_color = Color(0.98, 0.88, 0.2) # Banana yellow
+	elif vehicle_id == "lifeling_lopers":
+		upper.albedo_color = Color(0.45, 0.82, 0.55) # Lifeling leaf
+	elif vehicle_id == "fossil_footsteps":
+		upper.albedo_color = Color(0.62, 0.48, 0.32) # Fossil sandstone
+	elif vehicle_id == "beatlink_tapstep_oxfords":
+		upper.albedo_color = Color(0.2, 0.22, 0.28) # Tap oxford charcoal
+	elif vehicle_id == "beatlink_bassline_boots":
+		upper.albedo_color = Color(0.55, 0.18, 0.65) # Bassline violet
+	elif vehicle_id == "waike_circuit_clogs":
+		upper.albedo_color = Color(0.15, 0.75, 0.7) # WAIKE circuit teal
+	elif vehicle_id == "mlv_portal_pumps":
+		upper.albedo_color = Color(0.75, 0.4, 0.95) # MLV portal violet
+	elif vehicle_id == "edge_io_gyrowraps":
+		upper.albedo_color = Color(0.25, 0.85, 0.55) # Edge I/O lime
 	else:
 		upper.albedo_color = self.accent_color
-	upper.roughness = 0.38 if not (power or elemental_mud or elemental_magma or ridiculous_stomp or ridiculous_drift) else 0.55
+	upper.roughness = 0.38 if not (power or elemental_mud or elemental_magma or ridiculous_stomp or ridiculous_drift or crossover_heavy) else 0.55
 	upper.emission_enabled = true
 	upper.emission = Color(1.0, 0.42, 0.24) if power else upper.albedo_color
 	upper.emission_energy_multiplier = (
-		0.45 if (hover_boost or elemental_magma or ridiculous_caffeine) else (
-			0.42 if (kinetic or roller_hover or hover_bounce or elemental_dive or ridiculous_boost) else (
+		0.45 if (hover_boost or elemental_magma or ridiculous_caffeine or crossover_bass) else (
+			0.42 if (kinetic or roller_hover or hover_bounce or elemental_dive or ridiculous_boost or crossover_circuit or crossover_portal) else (
 				0.38 if power else (
-					0.4 if (rail or hover_precision or elemental_frost or ridiculous_trick) else (
-						0.35 if (tempo or roller_inline or hover_glide or elemental_wet or ridiculous_reach) else 0.28
+					0.4 if (rail or hover_precision or elemental_frost or ridiculous_trick or crossover_tap or crossover_gyro) else (
+						0.35 if (tempo or roller_inline or hover_glide or elemental_wet or ridiculous_reach or crossover_soft) else 0.28
 					)
 				)
 			)
@@ -774,6 +811,56 @@ func _attach_shoes(
 	if banana_mat.emission_enabled:
 		banana_mat.emission = Color(1.0, 0.85, 0.15)
 		banana_mat.emission_energy_multiplier = 0.32
+	var life_mat := StandardMaterial3D.new()
+	life_mat.albedo_color = Color(0.4, 0.8, 0.5)
+	life_mat.roughness = 0.45
+	life_mat.emission_enabled = crossover_soft
+	if life_mat.emission_enabled:
+		life_mat.emission = Color(0.35, 0.85, 0.45)
+		life_mat.emission_energy_multiplier = 0.3
+	var fossil_mat := StandardMaterial3D.new()
+	fossil_mat.albedo_color = Color(0.58, 0.45, 0.3)
+	fossil_mat.roughness = 0.8
+	fossil_mat.emission_enabled = crossover_heavy
+	if fossil_mat.emission_enabled:
+		fossil_mat.emission = Color(0.7, 0.5, 0.25)
+		fossil_mat.emission_energy_multiplier = 0.22
+	var tap_mat := StandardMaterial3D.new()
+	tap_mat.albedo_color = Color(0.85, 0.75, 0.45)
+	tap_mat.roughness = 0.35
+	tap_mat.metallic = 0.4
+	tap_mat.emission_enabled = crossover_tap
+	if tap_mat.emission_enabled:
+		tap_mat.emission = Color(0.95, 0.8, 0.35)
+		tap_mat.emission_energy_multiplier = 0.35
+	var bass_mat := StandardMaterial3D.new()
+	bass_mat.albedo_color = Color(0.5, 0.15, 0.6)
+	bass_mat.roughness = 0.4
+	bass_mat.emission_enabled = crossover_bass
+	if bass_mat.emission_enabled:
+		bass_mat.emission = Color(0.7, 0.25, 0.9)
+		bass_mat.emission_energy_multiplier = 0.42
+	var circuit_mat := StandardMaterial3D.new()
+	circuit_mat.albedo_color = Color(0.12, 0.8, 0.75)
+	circuit_mat.roughness = 0.3
+	circuit_mat.emission_enabled = crossover_circuit
+	if circuit_mat.emission_enabled:
+		circuit_mat.emission = Color(0.1, 0.9, 0.85)
+		circuit_mat.emission_energy_multiplier = 0.4
+	var portal_mat := StandardMaterial3D.new()
+	portal_mat.albedo_color = Color(0.7, 0.35, 0.95)
+	portal_mat.roughness = 0.25
+	portal_mat.emission_enabled = crossover_portal
+	if portal_mat.emission_enabled:
+		portal_mat.emission = Color(0.8, 0.4, 1.0)
+		portal_mat.emission_energy_multiplier = 0.45
+	var gyro_mat := StandardMaterial3D.new()
+	gyro_mat.albedo_color = Color(0.2, 0.85, 0.5)
+	gyro_mat.roughness = 0.35
+	gyro_mat.emission_enabled = crossover_gyro
+	if gyro_mat.emission_enabled:
+		gyro_mat.emission = Color(0.25, 0.95, 0.55)
+		gyro_mat.emission_energy_multiplier = 0.38
 	var outsole := StandardMaterial3D.new()
 	outsole.albedo_color = Color(0.12, 0.12, 0.14)
 	outsole.roughness = 0.85
@@ -839,13 +926,14 @@ func _attach_shoes(
 	)
 	leg.add_child(chevron)
 	chevron.position = Vector3(0, -leg_len + 0.09, 0.12 * shoe_scale)
-	# Grip tread bars / roller wheels / hover pads / elemental / ridiculous soles under the outsole.
-	var tread_count := 5 if (tempo or parkour or roller_quad or hover_bounce or elemental_mud or elemental_sand or ridiculous_stomp or ridiculous_drift) else (
+	# Grip tread bars / roller wheels / hover pads / elemental / ridiculous / crossover soles under the outsole.
+	var tread_count := 5 if (tempo or parkour or roller_quad or hover_bounce or elemental_mud or elemental_sand or ridiculous_stomp or ridiculous_drift or crossover_heavy or crossover_gyro) else (
 		4 if (
 			rail or power or kinetic or trick or roller_inline or roller_hover
 			or hover_glide or hover_boost or hover_precision
 			or elemental_wet or elemental_dive or elemental_magma or elemental_frost
 			or ridiculous_boost or ridiculous_caffeine or ridiculous_reach or ridiculous_trick
+			or crossover_soft or crossover_tap or crossover_bass or crossover_circuit or crossover_portal
 		) else 3
 	)
 	for i in range(tread_count):
@@ -880,27 +968,41 @@ func _attach_shoes(
 			tread_mat = sofa_mat
 		elif ridiculous_trick:
 			tread_mat = banana_mat
+		elif crossover_soft:
+			tread_mat = life_mat
+		elif crossover_heavy:
+			tread_mat = fossil_mat
+		elif crossover_tap:
+			tread_mat = tap_mat
+		elif crossover_bass:
+			tread_mat = bass_mat
+		elif crossover_circuit:
+			tread_mat = circuit_mat
+		elif crossover_portal:
+			tread_mat = portal_mat
+		elif crossover_gyro:
+			tread_mat = gyro_mat
 		elif native_hover:
 			tread_mat = hover_pad
 		elif native_roller:
 			tread_mat = wheel
-		var use_wheelish := native_roller and not native_hover and not native_elemental and not native_ridiculous
+		var use_wheelish := native_roller and not native_hover and not native_elemental and not native_ridiculous and not native_crossover
 		var tread := _mesh_box(
 			Vector3(
-				0.14 * ws * shoe_scale if (native_hover or native_elemental or native_ridiculous) else (0.05 * ws * shoe_scale if use_wheelish else 0.13 * ws * shoe_scale),
-				0.02 * shoe_scale if (native_hover or elemental_wet or elemental_frost or ridiculous_reach) else (
-					0.03 * shoe_scale if (native_elemental or native_ridiculous) else (0.05 * shoe_scale if use_wheelish else 0.025 * shoe_scale)
+				0.14 * ws * shoe_scale if (native_hover or native_elemental or native_ridiculous or native_crossover) else (0.05 * ws * shoe_scale if use_wheelish else 0.13 * ws * shoe_scale),
+				0.02 * shoe_scale if (native_hover or elemental_wet or elemental_frost or ridiculous_reach or crossover_soft or crossover_portal) else (
+					0.03 * shoe_scale if (native_elemental or native_ridiculous or native_crossover) else (0.05 * shoe_scale if use_wheelish else 0.025 * shoe_scale)
 				),
-				0.04 * shoe_scale if (native_hover or native_elemental or native_ridiculous) else (0.05 * shoe_scale if use_wheelish else 0.035 * shoe_scale)
+				0.04 * shoe_scale if (native_hover or native_elemental or native_ridiculous or native_crossover) else (0.05 * shoe_scale if use_wheelish else 0.035 * shoe_scale)
 			),
 			Vector3.ZERO,
 			tread_mat
 		)
 		leg.add_child(tread)
-		var z_spread := 0.055 if (native_street or native_roller or native_hover or native_elemental or native_ridiculous) else 0.07
+		var z_spread := 0.055 if (native_street or native_roller or native_hover or native_elemental or native_ridiculous or native_crossover) else 0.07
 		tread.position = Vector3(
 			side * (0.06 * ws * shoe_scale if use_wheelish else 0.0),
-			-leg_len - (0.05 if (native_hover or native_elemental or native_ridiculous) else 0.058),
+			-leg_len - (0.05 if (native_hover or native_elemental or native_ridiculous or native_crossover) else 0.058),
 			(float(i) - float(tread_count - 1) * 0.5) * z_spread * shoe_scale
 		)
 		if native_roller and roller_quad:
@@ -1472,6 +1574,160 @@ func _attach_shoes(
 		)
 		leg.add_child(cleat)
 		cleat.position = Vector3(side * 0.05 * ws * shoe_scale, -leg_len - 0.05, 0.08 * shoe_scale)
+	elif crossover_soft:
+		## Lifeling Lopers — soft leaf cuff + archive loop (original tribute).
+		var leaf := _mesh_box(
+			Vector3(0.05 * ws * shoe_scale, 0.12 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			life_mat
+		)
+		leg.add_child(leaf)
+		leaf.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.05, 0.0)
+		var loop_l := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.04 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(loop_l)
+		loop_l.position = Vector3(0.0, -leg_len + 0.1, -0.04 * shoe_scale)
+	elif crossover_heavy:
+		## Fossil Footsteps — sediment plates + chunky heel.
+		var plate_f := _mesh_box(
+			Vector3(0.08 * ws * shoe_scale, 0.14 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			fossil_mat
+		)
+		leg.add_child(plate_f)
+		plate_f.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.04, -0.08 * shoe_scale)
+		var heel_f := _mesh_box(
+			Vector3(0.16 * ws * shoe_scale, 0.1 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(heel_f)
+		heel_f.position = Vector3(0.0, -leg_len + 0.02, -0.1 * shoe_scale)
+		var ridge := _mesh_box(
+			Vector3(0.18 * ws * shoe_scale, 0.03 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(ridge)
+		ridge.position = Vector3(0.0, -leg_len + 0.1, -0.04 * shoe_scale)
+	elif crossover_tap:
+		## BeatLink Tapstep Oxfords — slim oxford cuff + brass tap plate.
+		var oxford := _mesh_box(
+			Vector3(0.13 * ws * shoe_scale, 0.1 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(oxford)
+		oxford.position = Vector3(0.0, -leg_len + 0.06, -0.02 * shoe_scale)
+		var tap_plate := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.025 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			tap_mat
+		)
+		leg.add_child(tap_plate)
+		tap_plate.position = Vector3(0.0, -leg_len - 0.02, 0.08 * shoe_scale)
+		var lace := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.08 * shoe_scale, 0.03 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(lace)
+		lace.position = Vector3(side * 0.08 * ws * shoe_scale, -leg_len + 0.08, 0.02 * shoe_scale)
+	elif crossover_bass:
+		## BeatLink Bassline Boots — tall boot shaft + bass woofer heel.
+		var boot_b := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.16 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(boot_b)
+		boot_b.position = Vector3(0.0, -leg_len + 0.08, -0.04 * shoe_scale)
+		var woofer := _mesh_box(
+			Vector3(0.16 * ws * shoe_scale, 0.05 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			bass_mat
+		)
+		leg.add_child(woofer)
+		woofer.position = Vector3(0.0, -leg_len - 0.01, -0.08 * shoe_scale)
+		var cone := _mesh_box(
+			Vector3(0.1 * ws * shoe_scale, 0.04 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(cone)
+		cone.position = Vector3(0.0, -leg_len + 0.04, -0.08 * shoe_scale)
+	elif crossover_circuit:
+		## WAIKE Circuit Clogs — clog block + circuit trace fin.
+		var clog := _mesh_box(
+			Vector3(0.18 * ws * shoe_scale, 0.08 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(clog)
+		clog.position = Vector3(0.0, -leg_len + 0.02, 0.0)
+		var trace := _mesh_box(
+			Vector3(0.03 * ws * shoe_scale, 0.1 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			circuit_mat
+		)
+		leg.add_child(trace)
+		trace.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.05, -0.02 * shoe_scale)
+		var chip := _mesh_box(
+			Vector3(0.08 * ws * shoe_scale, 0.04 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(chip)
+		chip.position = Vector3(0.0, -leg_len + 0.1, -0.04 * shoe_scale)
+	elif crossover_portal:
+		## 3k MLV Portal Pumps — portal ring heel (VFX; never phase colliders).
+		var ring_p := _mesh_box(
+			Vector3(0.16 * ws * shoe_scale, 0.03 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			portal_mat
+		)
+		leg.add_child(ring_p)
+		ring_p.position = Vector3(0.0, -leg_len + 0.08, -0.06 * shoe_scale)
+		var ring_p2 := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.025 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(ring_p2)
+		ring_p2.position = Vector3(0.0, -leg_len + 0.12, -0.06 * shoe_scale)
+		var pump := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.08 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(pump)
+		pump.position = Vector3(0.0, -leg_len + 0.02, 0.02 * shoe_scale)
+	elif crossover_gyro:
+		## Edge I/O Gyrowraps — wrap straps + gyro disc.
+		var wrap := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.14 * shoe_scale, 0.18 * shoe_scale),
+			Vector3.ZERO,
+			gyro_mat
+		)
+		leg.add_child(wrap)
+		wrap.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.05, 0.0)
+		var disc_g := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.03 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(disc_g)
+		disc_g.position = Vector3(0.0, -leg_len - 0.01, -0.04 * shoe_scale)
+		var hub := _mesh_box(
+			Vector3(0.08 * ws * shoe_scale, 0.05 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(hub)
+		hub.position = Vector3(0.0, -leg_len + 0.06, -0.04 * shoe_scale)
 	if is_left:
 		_shoe_l = sole
 		_heel_l = heel

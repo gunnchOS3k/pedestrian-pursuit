@@ -285,7 +285,7 @@ def validate_project(root: Path) -> list[str]:
 
 
 def _validate_vehicle_registry(root: Path) -> list[str]:
-    """Kinetic Sole garage: exactly 50 IDs, ≥34 playable (Street+Roller+Hover+Elemental+Ridiculous), truthful stubs."""
+    """Kinetic Sole garage: exactly 50 IDs, ≥41 playable (Street through Crossover), Anime stubs truthful."""
     errors: list[str] = []
     path = root / "data/vehicles/vehicle_registry.json"
     reg = _read_json(path, errors)
@@ -343,8 +343,8 @@ def _validate_vehicle_registry(root: Path) -> list[str]:
             errors.append(f"{path}: {vid} collision_contract must mention grounded collision/checkpoints")
     if len(ids) != len(set(ids)):
         errors.append(f"{path}: duplicate vehicle ids")
-    if playable < 34:
-        errors.append(f"{path}: need ≥34 playable (Street+Roller+Hover+Elemental+Ridiculous), found {playable}")
+    if playable < 41:
+        errors.append(f"{path}: need ≥41 playable (Street through Crossover), found {playable}")
     if stub + playable != len(vehicles):
         errors.append(f"{path}: playable/stub accounting mismatch")
     if int(reg.get("vehicle_count", -1)) != 50:
@@ -359,6 +359,7 @@ def _validate_vehicle_registry(root: Path) -> list[str]:
         ("hover_couture", "Hover Couture / Spaceflight", 7),
         ("elemental_amphibious", "Elemental / Amphibious", 6),
         ("beautifully_ridiculous", "Beautifully Ridiculous", 6),
+        ("gunnchos_crossover", "gunnchOS3k Crossover", 7),
     ):
         family = [v for v in vehicles if isinstance(v, dict) and v.get("family_id") == family_id]
         if len(family) != expect:
@@ -367,7 +368,12 @@ def _validate_vehicle_registry(root: Path) -> list[str]:
             errors.append(f"{path}: all {label} vehicles must be playable")
         fps: set[tuple] = set()
         for v in family:
-            if family_id in ("hover_couture", "elemental_amphibious", "beautifully_ridiculous"):
+            if family_id in (
+                "hover_couture",
+                "elemental_amphibious",
+                "beautifully_ridiculous",
+                "gunnchos_crossover",
+            ):
                 contract = str(v.get("collision_contract", "")).lower()
                 if "grounded" not in contract and "checkpoint" not in contract:
                     errors.append(f"{path}: {family_id} {v.get('id')} missing grounded collision contract")
@@ -384,6 +390,13 @@ def _validate_vehicle_registry(root: Path) -> list[str]:
             if fp in fps:
                 errors.append(f"{path}: duplicate {label} fingerprint for {v.get('id')}")
             fps.add(fp)
+    anime = [v for v in vehicles if isinstance(v, dict) and v.get("family_id") == "anime_aggressors"]
+    if len(anime) != 9:
+        errors.append(f"{path}: Anime Aggressors footwear must have 9 stub vehicles")
+    if any(bool(v.get("playable")) for v in anime):
+        errors.append(f"{path}: Anime Aggressors footwear must remain stub_not_final / not playable")
+    if any(str(v.get("art_status", "")) != "stub_not_final" for v in anime):
+        errors.append(f"{path}: Anime Aggressors footwear must flag art_status stub_not_final")
     return errors
 
 
