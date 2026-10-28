@@ -108,11 +108,14 @@ func _ready() -> void:
 		if "racer_id" in ai:
 			ai.racer_id = str(profile.id)
 		if "shoe_id" in ai:
-			# AI field rotates Street Legends so garage vehicles show in pack races.
-			var shoe_ids := ShoeDataScript.race_selectable_ids()
-			if shoe_ids.is_empty():
-				shoe_ids = ShoeDataScript.all_ids()
-			ai.shoe_id = shoe_ids[(i + 1) % shoe_ids.size()]
+			# Pair each AI with their signature Street Legend footwear (not random extremes).
+			var sig := VehicleCatalogScript.signature_vehicle_for_runner(str(profile.id))
+			if sig.is_empty() or not ShoeDataScript.is_playable(sig):
+				var shoe_ids := ShoeDataScript.race_selectable_ids()
+				if shoe_ids.is_empty():
+					shoe_ids = ShoeDataScript.all_ids()
+				sig = shoe_ids[(i + 1) % shoe_ids.size()]
+			ai.shoe_id = sig
 		_assign_profile(ai, profile)
 		_assigned_profiles.append(profile)
 		var offset: Vector3 = ai_offsets[mini(i, ai_offsets.size() - 1)]
