@@ -33,5 +33,6 @@
   "signature_runner_id": "juno_spark",
   "ai_notes": "Voltstep Coils \u2014 coil-boost snap; original Pedestrian sole, no Anime meshes.",
   "description": "Voltstep Coils \u2014 original Pedestrian Kinetic Sole tribute design (procedural garage art; not sourced from Anime Aggressors assets).",
-  "collision_contract": "Always grounded race collision; tribute themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through. Original Pedestrian procedural art only; no Anime meshes/textures."
+  "collision_contract": "Always grounded race collision; tribute themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through. Original Pedestrian procedural art only; no Anime meshes/textures.",
+  "unlock_mode": "challenge"
 }

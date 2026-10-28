@@ -311,11 +311,44 @@ func _assign_profile(racer: Node, profile) -> void:
 	racer.set_meta("runner_profile_id", profile.id)
 	racer.set_meta("runner_display_name", profile.display_name)
 	var visual = racer.get_node_or_null("RacerVisual")
+	_apply_created_racer_cosmetics(racer, visual, profile)
 	_apply_vehicle_presentation(racer, visual)
 	if visual != null and visual.has_method("apply_profile"):
 		## Vehicle id already stamped without rebuild — single mesh rebuild here.
 		visual.apply_profile(profile)
 	_wire_racer_visual_hooks(racer, visual)
+
+
+func _apply_created_racer_cosmetics(racer: Node, visual: Node, profile) -> void:
+	## Optional created-racer path — cosmetic only; collision/stats unchanged.
+	if racer == null or visual == null:
+		return
+	if not GameManager.has_meta("created_racer_id"):
+		return
+	var CreatedRacerStoreScript = load("res://scripts/data/CreatedRacerStore.gd")
+	var WardrobeCatalogScript = load("res://scripts/data/WardrobeCatalog.gd")
+	var active: Dictionary = CreatedRacerStoreScript.get_active()
+	if active.is_empty():
+		return
+	if str(active.get("id", "")) != str(GameManager.get_meta("created_racer_id")):
+		return
+	if profile != null:
+		profile.display_name = str(active.get("display_name", profile.display_name))
+	racer.set_meta("created_racer_id", str(active.get("id", "")))
+	racer.set_meta("runner_display_name", str(active.get("display_name", "")))
+	if visual.has_method("apply_avatar_appearance"):
+		visual.apply_avatar_appearance(active.get("appearance", {}), false)
+	var outfit_id := str(active.get("outfit_id", "metro_pulse_default"))
+	var outfit: Dictionary = CreatedRacerStoreScript.get_outfit(outfit_id)
+	var slots: Dictionary = outfit.get("slots", {})
+	if slots.is_empty():
+		var preset: Dictionary = WardrobeCatalogScript.preset(outfit_id)
+		slots = preset.get("slots", {})
+	if visual.has_method("apply_wardrobe_outfit") and not slots.is_empty():
+		visual.apply_wardrobe_outfit(slots, false)
+	var foot := str(active.get("footwear_vehicle_id", ""))
+	if not foot.is_empty() and "shoe_id" in racer:
+		racer.shoe_id = foot
 
 
 func _apply_vehicle_presentation(racer: Node, visual: Node) -> void:

@@ -5,12 +5,15 @@ extends SceneTree
 const VehicleCatalogScript = preload("res://scripts/data/VehicleCatalog.gd")
 const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
 const ItemDataScript = preload("res://scripts/data/ItemData.gd")
+const GarageProgressionScript = preload("res://scripts/data/GarageProgression.gd")
 
 const PLAYABLE_ART := ["native_v1", "procedural_final_for_garage"]
 
 
 func _init() -> void:
 	var failures: PackedStringArray = []
+	## CI/test harness unlocks all race-capable vehicles without claiming career unlocks.
+	GarageProgressionScript.set_test_unlock_all(true)
 	VehicleCatalogScript.load_registry(true)
 	var ids := VehicleCatalogScript.all_ids()
 	if ids.size() != 50:

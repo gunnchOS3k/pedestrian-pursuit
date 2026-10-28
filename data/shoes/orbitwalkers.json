@@ -33,5 +33,6 @@
   "signature_runner_id": "orion_vell",
   "ai_notes": "Orbitwalkers \u2014 heel-ring orbit read; affinity/VFX only, never phase colliders.",
   "description": "Orbitwalkers \u2014 original Pedestrian Kinetic Sole tribute design (procedural garage art; not sourced from Anime Aggressors assets).",
-  "collision_contract": "Always grounded race collision; tribute themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through. Original Pedestrian procedural art only; no Anime meshes/textures."
+  "collision_contract": "Always grounded race collision; tribute themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through. Original Pedestrian procedural art only; no Anime meshes/textures.",
+  "unlock_mode": "achievement"
 }

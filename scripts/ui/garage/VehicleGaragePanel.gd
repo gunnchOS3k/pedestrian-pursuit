@@ -4,6 +4,8 @@ extends Control
 
 const VehicleCatalogScript = preload("res://scripts/data/VehicleCatalog.gd")
 const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
+const GarageProgressionScript = preload("res://scripts/data/GarageProgression.gd")
+const ArtAcceptanceScript = preload("res://scripts/data/ArtAcceptance.gd")
 
 signal vehicle_selected(vehicle_id: String)
 signal closed()
@@ -52,11 +54,19 @@ func _build_ui() -> void:
 	root.add_child(title)
 
 	var counts := VehicleCatalogScript.counts()
+	var art := ArtAcceptanceScript.counts()
+	var unlocked := GarageProgressionScript.player_selectable_ids().size()
 	_status = Label.new()
 	_status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_status.text = (
-		"%d registered  •  %d Street Legends playable  •  %d stub (art not final)"
-		% [int(counts.get("total", 50)), int(counts.get("playable", 8)), int(counts.get("stub", 42))]
+		"%d race-capable  •  %d player-unlocked  •  final-art pending %d / candidate %d  •  commercial art NOT approved"
+		% [
+			int(counts.get("playable", 50)),
+			unlocked,
+			int(art.get("final_art_pending", 0)),
+			int(art.get("final_art_candidate", 0)),
+		]
 	)
 	root.add_child(_status)
 
@@ -145,15 +155,19 @@ func _on_family_selected(index: int) -> void:
 	var vehicles := VehicleCatalogScript.vehicles_in_family(_current_family)
 	for v in vehicles:
 		var playable := bool(v.get("playable", false))
-		var art := str(v.get("art_status", "stub_not_final"))
-		var tag := "PLAYABLE" if playable else "STUB"
-		if art == "stub_not_final" and not playable:
-			tag = "STUB · art not final"
-		var label := "%s  [%s]" % [str(v.get("display_name", v.get("id"))), tag]
+		var vid := str(v.get("id", ""))
+		var unlocked := GarageProgressionScript.is_unlocked_for_player(vid)
+		var final_art := ArtAcceptanceScript.final_art_status(vid)
+		var tag := "UNLOCKED" if unlocked else "LOCKED"
+		if playable and not unlocked:
+			tag = "LOCKED · %s" % GarageProgressionScript.unlock_mode(vid)
+		elif playable:
+			tag = "UNLOCKED · %s" % final_art
+		var label := "%s  [%s]" % [str(v.get("display_name", vid)), tag]
 		var idx := _vehicle_list.item_count
 		_vehicle_list.add_item(label)
-		_vehicle_list.set_item_metadata(idx, str(v.get("id", "")))
-		if not playable:
+		_vehicle_list.set_item_metadata(idx, vid)
+		if not unlocked:
 			_vehicle_list.set_item_custom_fg_color(idx, Color(0.7, 0.72, 0.78))
 	if _vehicle_list.item_count > 0:
 		_vehicle_list.select(0)
@@ -166,8 +180,14 @@ func _on_vehicle_row_selected(index: int) -> void:
 	_selected_id = str(_vehicle_list.get_item_metadata(index))
 	_show_detail(_selected_id)
 	var playable := VehicleCatalogScript.is_playable(_selected_id)
-	_select_btn.disabled = not playable
-	_select_btn.text = "Select for Race" if playable else "Stub — not race-final"
+	var unlocked := GarageProgressionScript.is_unlocked_for_player(_selected_id)
+	_select_btn.disabled = not (playable and unlocked)
+	if playable and unlocked:
+		_select_btn.text = "Select for Race"
+	elif playable:
+		_select_btn.text = "Locked — progress to unlock"
+	else:
+		_select_btn.text = "Not race-capable"
 
 
 func _show_detail(vehicle_id: String) -> void:
@@ -180,14 +200,29 @@ func _show_detail(vehicle_id: String) -> void:
 	var unlock_raw: Variant = v.get("unlock", {})
 	if typeof(unlock_raw) == TYPE_DICTIONARY:
 		unlock = unlock_raw
+	var art_acc := ArtAcceptanceScript.by_id(vehicle_id)
 	_detail.clear()
 	_detail.append_text("[b]%s[/b]\n" % str(v.get("display_name", vehicle_id)))
 	_detail.append_text("ID: [code]%s[/code]\n" % vehicle_id)
 	_detail.append_text("Family: %s\n" % str(v.get("family_name", "")))
 	_detail.append_text("Archetype: %s\n" % str(v.get("movement_archetype", "")))
 	_detail.append_text(
-		"Art: %s  •  Playable: %s\n"
-		% [str(v.get("art_status", "")), "yes" if playable else "no (stub)"]
+		"Runtime: %s  •  Mesh art: %s\n"
+		% [str(art_acc.get("runtime_status", "")), str(v.get("art_status", ""))]
+	)
+	_detail.append_text(
+		"Final-art acceptance: %s  •  Commercial approved: %s\n"
+		% [
+			str(art_acc.get("final_art_status", "final_art_pending")),
+			"yes" if bool(art_acc.get("human_commercial_art_approved", false)) else "NO",
+		]
+	)
+	_detail.append_text(
+		"Player unlocked: %s  •  Race-capable: %s\n"
+		% [
+			"yes" if GarageProgressionScript.is_unlocked_for_player(vehicle_id) else "no",
+			"yes" if playable else "no",
+		]
 	)
 	_detail.append_text(
 		"Stats  top %.2f  accel %.2f  hand %.2f  drift %.2f  jump %.2f  boost %.2f\n"
@@ -212,6 +247,8 @@ func _show_detail(vehicle_id: String) -> void:
 
 func _on_select_pressed() -> void:
 	if _selected_id.is_empty() or not VehicleCatalogScript.is_playable(_selected_id):
+		return
+	if not GarageProgressionScript.is_unlocked_for_player(_selected_id):
 		return
 	vehicle_selected.emit(_selected_id)
 	_on_close_pressed()

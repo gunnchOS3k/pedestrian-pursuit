@@ -1,0 +1,467 @@
+{
+  "schema_version": 1,
+  "id": "kinetic_sole_final_art_acceptance",
+  "display_name": "Kinetic Sole Final-Art Acceptance",
+  "human_commercial_art_gate": false,
+  "HUMAN_FUN_APPROVAL": false,
+  "HUMAN_COURSE_APPROVAL": false,
+  "RC2_READY": false,
+  "V1_0_0_RELEASE_AUTHORIZED": false,
+  "note": "Runtime playability is separate from final commercial art acceptance. Procedural/garage meshes never silently satisfy human-approved commercial art.",
+  "counts": {
+    "final_art_candidate": 8,
+    "final_art_pending": 42
+  },
+  "vehicles": [
+    {
+      "id": "reedline_circlers",
+      "family_id": "street_legends",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_candidate",
+      "human_commercial_art_approved": false,
+      "notes": "Native procedural presentation for Street Legends; still not HUMAN commercial-art approved."
+    },
+    {
+      "id": "quillspike_launchers",
+      "family_id": "street_legends",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_candidate",
+      "human_commercial_art_approved": false,
+      "notes": "Native procedural presentation for Street Legends; still not HUMAN commercial-art approved."
+    },
+    {
+      "id": "fluxgrip_wallhikers",
+      "family_id": "street_legends",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_candidate",
+      "human_commercial_art_approved": false,
+      "notes": "Native procedural presentation for Street Legends; still not HUMAN commercial-art approved."
+    },
+    {
+      "id": "lanewind_tempo_flats",
+      "family_id": "street_legends",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_candidate",
+      "human_commercial_art_approved": false,
+      "notes": "Native procedural presentation for Street Legends; still not HUMAN commercial-art approved."
+    },
+    {
+      "id": "harborclimb_irons",
+      "family_id": "street_legends",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_candidate",
+      "human_commercial_art_approved": false,
+      "notes": "Native procedural presentation for Street Legends; still not HUMAN commercial-art approved."
+    },
+    {
+      "id": "rivenspin_kaleidos",
+      "family_id": "street_legends",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_candidate",
+      "human_commercial_art_approved": false,
+      "notes": "Native procedural presentation for Street Legends; still not HUMAN commercial-art approved."
+    },
+    {
+      "id": "pikeapex_railfins",
+      "family_id": "street_legends",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_candidate",
+      "human_commercial_art_approved": false,
+      "notes": "Native procedural presentation for Street Legends; still not HUMAN commercial-art approved."
+    },
+    {
+      "id": "voltcirc_coreloops",
+      "family_id": "street_legends",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_candidate",
+      "human_commercial_art_approved": false,
+      "notes": "Native procedural presentation for Street Legends; still not HUMAN commercial-art approved."
+    },
+    {
+      "id": "slipstream_inlines",
+      "family_id": "roller_revolution",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "heelspin_quads",
+      "family_id": "roller_revolution",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "velvet_rollers",
+      "family_id": "roller_revolution",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "iron_derby_blitz",
+      "family_id": "roller_revolution",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "scissorblade_skates",
+      "family_id": "roller_revolution",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "orbitwheel_heels",
+      "family_id": "roller_revolution",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "treadfall_blades",
+      "family_id": "roller_revolution",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "cloudsole_striders",
+      "family_id": "hover_couture",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "nebula_skippers",
+      "family_id": "hover_couture",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "ufo_loafers",
+      "family_id": "hover_couture",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "meteor_heeljets",
+      "family_id": "hover_couture",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "anti_gravity_platforms",
+      "family_id": "hover_couture",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "moonbounce_booties",
+      "family_id": "hover_couture",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "starglass_pointe",
+      "family_id": "hover_couture",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "tidefin_runners",
+      "family_id": "elemental_amphibious",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "kelpjet_submariners",
+      "family_id": "elemental_amphibious",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "sandstorm_skimmers",
+      "family_id": "elemental_amphibious",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "magma_treaders",
+      "family_id": "elemental_amphibious",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "snowglobe_galoshes",
+      "family_id": "elemental_amphibious",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "mud_monster_waders",
+      "family_id": "elemental_amphibious",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "slipper_rockets",
+      "family_id": "beautifully_ridiculous",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "pancake_stompers",
+      "family_id": "beautifully_ridiculous",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "bubblegum_stilts",
+      "family_id": "beautifully_ridiculous",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "espresso_jet_socks",
+      "family_id": "beautifully_ridiculous",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "sofa_surfers",
+      "family_id": "beautifully_ridiculous",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "banana_boomerang_cleats",
+      "family_id": "beautifully_ridiculous",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "cinderstride",
+      "family_id": "anime_aggressors",
+      "runtime_status": "playable_runtime",
+      "art_status": "procedural_final_for_garage",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Procedural garage tribute mesh \u2014 not human-approved commercial art."
+    },
+    {
+      "id": "bastion_stomp",
+      "family_id": "anime_aggressors",
+      "runtime_status": "playable_runtime",
+      "art_status": "procedural_final_for_garage",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Procedural garage tribute mesh \u2014 not human-approved commercial art."
+    },
+    {
+      "id": "voltstep_coils",
+      "family_id": "anime_aggressors",
+      "runtime_status": "playable_runtime",
+      "art_status": "procedural_final_for_garage",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Procedural garage tribute mesh \u2014 not human-approved commercial art."
+    },
+    {
+      "id": "galeleaf_gliders",
+      "family_id": "anime_aggressors",
+      "runtime_status": "playable_runtime",
+      "art_status": "procedural_final_for_garage",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Procedural garage tribute mesh \u2014 not human-approved commercial art."
+    },
+    {
+      "id": "azure_bastions",
+      "family_id": "anime_aggressors",
+      "runtime_status": "playable_runtime",
+      "art_status": "procedural_final_for_garage",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Procedural garage tribute mesh \u2014 not human-approved commercial art."
+    },
+    {
+      "id": "orbitwalkers",
+      "family_id": "anime_aggressors",
+      "runtime_status": "playable_runtime",
+      "art_status": "procedural_final_for_garage",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Procedural garage tribute mesh \u2014 not human-approved commercial art."
+    },
+    {
+      "id": "phase_echoes",
+      "family_id": "anime_aggressors",
+      "runtime_status": "playable_runtime",
+      "art_status": "procedural_final_for_garage",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Procedural garage tribute mesh \u2014 not human-approved commercial art."
+    },
+    {
+      "id": "nullstep",
+      "family_id": "anime_aggressors",
+      "runtime_status": "playable_runtime",
+      "art_status": "procedural_final_for_garage",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Procedural garage tribute mesh \u2014 not human-approved commercial art."
+    },
+    {
+      "id": "radiant_order",
+      "family_id": "anime_aggressors",
+      "runtime_status": "playable_runtime",
+      "art_status": "procedural_final_for_garage",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Procedural garage tribute mesh \u2014 not human-approved commercial art."
+    },
+    {
+      "id": "lifeling_lopers",
+      "family_id": "gunnchos_crossover",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "fossil_footsteps",
+      "family_id": "gunnchos_crossover",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "beatlink_tapstep_oxfords",
+      "family_id": "gunnchos_crossover",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "beatlink_bassline_boots",
+      "family_id": "gunnchos_crossover",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "waike_circuit_clogs",
+      "family_id": "gunnchos_crossover",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "mlv_portal_pumps",
+      "family_id": "gunnchos_crossover",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    },
+    {
+      "id": "edge_io_gyrowraps",
+      "family_id": "gunnchos_crossover",
+      "runtime_status": "playable_runtime",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_pending",
+      "human_commercial_art_approved": false,
+      "notes": "Native_v1 procedural/garage presentation \u2014 not commercial finished art."
+    }
+  ]
+}

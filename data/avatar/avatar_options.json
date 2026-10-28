@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "note": "Cosmetic options only. No gameplay stats or collision changes. Clothing not gender-locked.",
+  "skin_tones": ["deep_cool", "deep_warm", "rich_brown", "warm_medium", "golden_medium", "light_warm", "light_cool", "porcelain"],
+  "undertones": ["neutral", "warm", "cool", "olive"],
+  "face_shapes": ["oval", "round", "square", "heart", "diamond"],
+  "hair_styles": [
+    "short_fade",
+    "locs_shoulder",
+    "box_braids",
+    "cornrows",
+    "twists",
+    "protective_bun",
+    "afro_crown",
+    "long_waves",
+    "buzz",
+    "hijab_wrap",
+    "bald"
+  ],
+  "facial_hair": ["none", "mustache", "goatee", "full_beard", "stubble"],
+  "makeup": ["none", "soft_liner", "bold_lip", "race_stripe"],
+  "scars": ["none", "cheek_thin", "brow_nick"],
+  "birthmarks": ["none", "cheek_dot", "temple_patch"],
+  "head_coverings": ["none", "cap", "beanie", "hijab_wrap", "durag", "headband"],
+  "assistive": ["none", "forearm_sleeve_vis", "leg_brace_vis", "running_blade_vis"],
+  "expressions": ["neutral", "focused", "bright", "fierce", "calm"]
+}

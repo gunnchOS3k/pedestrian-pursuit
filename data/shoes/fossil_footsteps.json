@@ -33,5 +33,6 @@
   "signature_runner_id": "",
   "ai_notes": "Fossil Footsteps \u2014 heavy sediment stomp plates; collision stays solid.",
   "description": "Fossil Footsteps \u2014 Kinetic Sole vehicle in the gunnchOS3k Crossover family (original tribute).",
-  "collision_contract": "Always grounded race collision; crossover tribute themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through. Original designs only."
+  "collision_contract": "Always grounded race collision; crossover tribute themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through. Original designs only.",
+  "unlock_mode": "crossover"
 }

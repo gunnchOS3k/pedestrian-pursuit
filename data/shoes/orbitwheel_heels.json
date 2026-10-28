@@ -33,5 +33,6 @@
   "signature_runner_id": "",
   "ai_notes": "Orbit heels \u2014 mag-wheel bounce/boost read; still grounded collision.",
   "description": "Orbitwheel Heels \u2014 Kinetic Sole vehicle in the Roller Revolution family.",
-  "collision_contract": "Always grounded race collision; hover/water/phase themes are affinity/VFX only \u2014 checkpoints never skipped."
+  "collision_contract": "Always grounded race collision; hover/water/phase themes are affinity/VFX only \u2014 checkpoints never skipped.",
+  "unlock_mode": "cup"
 }

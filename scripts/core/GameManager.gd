@@ -337,6 +337,7 @@ func save_cup_progress() -> void:
 		prog.first_run_complete = true
 		if prog.has_method("unlock"):
 			prog.unlock("mode:cup")
+			prog.unlock("unlock_mode:cup")
 		if prog.has_method("save"):
 			prog.save()
 

@@ -33,5 +33,6 @@
   "signature_runner_id": "",
   "ai_notes": "Scissor blades \u2014 rail-biased inline with balanced mid stats.",
   "description": "Scissorblade Skates \u2014 Kinetic Sole vehicle in the Roller Revolution family.",
-  "collision_contract": "Always grounded race collision; hover/water/phase themes are affinity/VFX only \u2014 checkpoints never skipped."
+  "collision_contract": "Always grounded race collision; hover/water/phase themes are affinity/VFX only \u2014 checkpoints never skipped.",
+  "unlock_mode": "cup"
 }

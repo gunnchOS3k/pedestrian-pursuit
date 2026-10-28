@@ -33,5 +33,6 @@
   "signature_runner_id": "",
   "ai_notes": "Kelpjet burst dive \u2014 runoff boost; collision stays grounded.",
   "description": "Kelpjet Submariners \u2014 Kinetic Sole vehicle in the Elemental / Amphibious family.",
-  "collision_contract": "Always grounded race collision; water/mud/magma/frost themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through."
+  "collision_contract": "Always grounded race collision; water/mud/magma/frost themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through.",
+  "unlock_mode": "cup"
 }

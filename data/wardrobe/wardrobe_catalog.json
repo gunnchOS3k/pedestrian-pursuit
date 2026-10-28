@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "display_name": "Global Wardrobe Catalog",
+  "slots": [
+    "base_underlayer",
+    "top",
+    "bottom",
+    "full_body",
+    "outerwear",
+    "headwear",
+    "hair",
+    "eyewear",
+    "jewelry_accessories",
+    "bags",
+    "footwear_vehicle",
+    "trail_expression"
+  ],
+  "note": "Outfit pieces are cosmetic unless an approved gameplay system says otherwise. Footwear vehicle owns handling/stats. No gender-locked clothing. Original assets only.",
+  "families": [
+    {
+      "id": "metro_pulse",
+      "display_name": "Metro Pulse",
+      "art_status": "integrated_mesh_v1",
+      "note": "First integrated garment family with real Godot mesh recipes across key slots."
+    },
+    {
+      "id": "harbor_linen",
+      "display_name": "Harbor Linen",
+      "art_status": "catalog_art_pending",
+      "note": "Catalog entries only — mesh art pending."
+    },
+    {
+      "id": "neon_trackside",
+      "display_name": "Neon Trackside",
+      "art_status": "catalog_art_pending",
+      "note": "Catalog entries only — mesh art pending."
+    }
+  ],
+  "garments": [
+    {
+      "id": "metro_pulse_base",
+      "family_id": "metro_pulse",
+      "slot": "base_underlayer",
+      "display_name": "Metro Pulse Base Layer",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "fitted_undersuit",
+      "colors": { "primary": "#1B2430", "accent": "#F4C430" },
+      "cosmetic_only": true
+    },
+    {
+      "id": "metro_pulse_top",
+      "family_id": "metro_pulse",
+      "slot": "top",
+      "display_name": "Metro Pulse Race Top",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "cropped_shell",
+      "colors": { "primary": "#2EC4B6", "accent": "#FF6A3D" },
+      "cosmetic_only": true
+    },
+    {
+      "id": "metro_pulse_bottom",
+      "family_id": "metro_pulse",
+      "slot": "bottom",
+      "display_name": "Metro Pulse Track Pants",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "tapered_pants",
+      "colors": { "primary": "#121820", "accent": "#2EC4B6" },
+      "cosmetic_only": true
+    },
+    {
+      "id": "metro_pulse_outer",
+      "family_id": "metro_pulse",
+      "slot": "outerwear",
+      "display_name": "Metro Pulse Windshell",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "open_windshell",
+      "colors": { "primary": "#FF6A3D", "accent": "#1B2430" },
+      "cosmetic_only": true
+    },
+    {
+      "id": "metro_pulse_headband",
+      "family_id": "metro_pulse",
+      "slot": "headwear",
+      "display_name": "Metro Pulse Headband",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "headband",
+      "colors": { "primary": "#F4C430", "accent": "#1B2430" },
+      "cosmetic_only": true
+    },
+    {
+      "id": "metro_pulse_bag",
+      "family_id": "metro_pulse",
+      "slot": "bags",
+      "display_name": "Metro Pulse Hip Pack",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "hip_pack",
+      "colors": { "primary": "#1B2430", "accent": "#2EC4B6" },
+      "cosmetic_only": true
+    },
+    {
+      "id": "harbor_linen_top",
+      "family_id": "harbor_linen",
+      "slot": "top",
+      "display_name": "Harbor Linen Tee",
+      "art_status": "catalog_art_pending",
+      "mesh_recipe": "",
+      "colors": { "primary": "#E8DFD0", "accent": "#6B7C6A" },
+      "cosmetic_only": true
+    },
+    {
+      "id": "neon_trackside_outer",
+      "family_id": "neon_trackside",
+      "slot": "outerwear",
+      "display_name": "Neon Trackside Jacket",
+      "art_status": "catalog_art_pending",
+      "mesh_recipe": "",
+      "colors": { "primary": "#B8FF3D", "accent": "#201030" },
+      "cosmetic_only": true
+    }
+  ],
+  "presets": [
+    {
+      "id": "metro_pulse_default",
+      "display_name": "Metro Pulse Complete",
+      "family_id": "metro_pulse",
+      "slots": {
+        "base_underlayer": "metro_pulse_base",
+        "top": "metro_pulse_top",
+        "bottom": "metro_pulse_bottom",
+        "outerwear": "metro_pulse_outer",
+        "headwear": "metro_pulse_headband",
+        "bags": "metro_pulse_bag",
+        "footwear_vehicle": "reedline_circlers",
+        "trail_expression": ""
+      }
+    }
+  ]
+}

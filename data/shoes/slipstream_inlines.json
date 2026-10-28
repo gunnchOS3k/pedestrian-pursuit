@@ -33,5 +33,6 @@
   "signature_runner_id": "",
   "ai_notes": "Long-frame inline \u2014 asphalt top-end with soft-ground caution.",
   "description": "Slipstream Inlines \u2014 Kinetic Sole vehicle in the Roller Revolution family.",
-  "collision_contract": "Always grounded race collision; hover/water/phase themes are affinity/VFX only \u2014 checkpoints never skipped."
+  "collision_contract": "Always grounded race collision; hover/water/phase themes are affinity/VFX only \u2014 checkpoints never skipped.",
+  "unlock_mode": "starter"
 }

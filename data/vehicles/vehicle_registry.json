@@ -57,7 +57,7 @@
       "signature_runner_id": "dash_reed",
       "unlock": {
         "mode": "starter",
-        "note": "Street Legends launch garage"
+        "note": "Street Legends / early garage starter"
       },
       "top_speed_modifier": 1.0,
       "acceleration_modifier": 1.0,
@@ -99,7 +99,7 @@
       "signature_runner_id": "nova_quill",
       "unlock": {
         "mode": "starter",
-        "note": "Street Legends launch garage"
+        "note": "Street Legends / early garage starter"
       },
       "top_speed_modifier": 1.12,
       "acceleration_modifier": 1.08,
@@ -141,7 +141,7 @@
       "signature_runner_id": "sierra_flux",
       "unlock": {
         "mode": "starter",
-        "note": "Street Legends launch garage"
+        "note": "Street Legends / early garage starter"
       },
       "top_speed_modifier": 0.98,
       "acceleration_modifier": 1.05,
@@ -183,7 +183,7 @@
       "signature_runner_id": "mira_lane",
       "unlock": {
         "mode": "starter",
-        "note": "Street Legends launch garage"
+        "note": "Street Legends / early garage starter"
       },
       "top_speed_modifier": 1.02,
       "acceleration_modifier": 0.96,
@@ -225,7 +225,7 @@
       "signature_runner_id": "bolt_harbor",
       "unlock": {
         "mode": "starter",
-        "note": "Street Legends launch garage"
+        "note": "Street Legends / early garage starter"
       },
       "top_speed_modifier": 0.96,
       "acceleration_modifier": 0.92,
@@ -267,7 +267,7 @@
       "signature_runner_id": "zig_riven",
       "unlock": {
         "mode": "starter",
-        "note": "Street Legends launch garage"
+        "note": "Street Legends / early garage starter"
       },
       "top_speed_modifier": 0.98,
       "acceleration_modifier": 1.1,
@@ -309,7 +309,7 @@
       "signature_runner_id": "solen_pike",
       "unlock": {
         "mode": "starter",
-        "note": "Street Legends launch garage"
+        "note": "Street Legends / early garage starter"
       },
       "top_speed_modifier": 1.04,
       "acceleration_modifier": 1.0,
@@ -351,7 +351,7 @@
       "signature_runner_id": "kai_volt",
       "unlock": {
         "mode": "starter",
-        "note": "Street Legends launch garage"
+        "note": "Street Legends / early garage starter"
       },
       "top_speed_modifier": 1.06,
       "acceleration_modifier": 1.04,
@@ -393,7 +393,7 @@
       "signature_runner_id": "",
       "unlock": {
         "mode": "starter",
-        "note": "Roller Revolution launch garage"
+        "note": "Street Legends / early garage starter"
       },
       "top_speed_modifier": 1.1,
       "acceleration_modifier": 1.02,
@@ -436,7 +436,7 @@
       "signature_runner_id": "",
       "unlock": {
         "mode": "starter",
-        "note": "Roller Revolution launch garage"
+        "note": "Street Legends / early garage starter"
       },
       "top_speed_modifier": 0.98,
       "acceleration_modifier": 1.12,
@@ -478,8 +478,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Roller Revolution launch garage"
+        "mode": "cup",
+        "note": "Unlock via cup placement"
       },
       "top_speed_modifier": 1.02,
       "acceleration_modifier": 1.05,
@@ -521,8 +521,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Roller Revolution launch garage"
+        "mode": "cup",
+        "note": "Unlock via cup placement"
       },
       "top_speed_modifier": 1.06,
       "acceleration_modifier": 0.96,
@@ -564,8 +564,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Roller Revolution launch garage"
+        "mode": "cup",
+        "note": "Unlock via cup placement"
       },
       "top_speed_modifier": 1.07,
       "acceleration_modifier": 1.08,
@@ -607,8 +607,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Roller Revolution launch garage"
+        "mode": "cup",
+        "note": "Unlock via cup placement"
       },
       "top_speed_modifier": 1.04,
       "acceleration_modifier": 1.0,
@@ -650,8 +650,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Roller Revolution launch garage"
+        "mode": "cup",
+        "note": "Unlock via cup placement"
       },
       "top_speed_modifier": 1.12,
       "acceleration_modifier": 0.98,
@@ -694,7 +694,7 @@
       "signature_runner_id": "",
       "unlock": {
         "mode": "starter",
-        "note": "Hover Couture / Spaceflight launch garage"
+        "note": "Street Legends / early garage starter"
       },
       "top_speed_modifier": 1.04,
       "acceleration_modifier": 0.98,
@@ -736,8 +736,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Hover Couture / Spaceflight launch garage"
+        "mode": "cup",
+        "note": "Unlock via cup placement"
       },
       "top_speed_modifier": 1.06,
       "acceleration_modifier": 1.02,
@@ -779,8 +779,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Hover Couture / Spaceflight launch garage"
+        "mode": "cup",
+        "note": "Unlock via cup placement"
       },
       "top_speed_modifier": 1.02,
       "acceleration_modifier": 0.95,
@@ -822,8 +822,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Hover Couture / Spaceflight launch garage"
+        "mode": "challenge",
+        "note": "Unlock via launch challenge clear"
       },
       "top_speed_modifier": 1.1,
       "acceleration_modifier": 1.0,
@@ -865,8 +865,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Hover Couture / Spaceflight launch garage"
+        "mode": "challenge",
+        "note": "Unlock via launch challenge clear"
       },
       "top_speed_modifier": 0.98,
       "acceleration_modifier": 0.92,
@@ -908,8 +908,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Hover Couture / Spaceflight launch garage"
+        "mode": "challenge",
+        "note": "Unlock via launch challenge clear"
       },
       "top_speed_modifier": 0.94,
       "acceleration_modifier": 1.0,
@@ -951,8 +951,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Hover Couture / Spaceflight launch garage"
+        "mode": "challenge",
+        "note": "Unlock via launch challenge clear"
       },
       "top_speed_modifier": 1.0,
       "acceleration_modifier": 0.98,
@@ -994,8 +994,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Elemental / Amphibious launch garage"
+        "mode": "cup",
+        "note": "Unlock via cup placement"
       },
       "top_speed_modifier": 1.02,
       "acceleration_modifier": 1.04,
@@ -1037,8 +1037,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Elemental / Amphibious launch garage"
+        "mode": "cup",
+        "note": "Unlock via cup placement"
       },
       "top_speed_modifier": 0.96,
       "acceleration_modifier": 1.08,
@@ -1080,8 +1080,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Elemental / Amphibious launch garage"
+        "mode": "challenge",
+        "note": "Unlock via launch challenge clear"
       },
       "top_speed_modifier": 1.05,
       "acceleration_modifier": 0.98,
@@ -1123,8 +1123,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Elemental / Amphibious launch garage"
+        "mode": "challenge",
+        "note": "Unlock via launch challenge clear"
       },
       "top_speed_modifier": 1.0,
       "acceleration_modifier": 0.92,
@@ -1166,8 +1166,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Elemental / Amphibious launch garage"
+        "mode": "challenge",
+        "note": "Unlock via launch challenge clear"
       },
       "top_speed_modifier": 0.94,
       "acceleration_modifier": 1.06,
@@ -1209,8 +1209,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Elemental / Amphibious launch garage"
+        "mode": "challenge",
+        "note": "Unlock via launch challenge clear"
       },
       "top_speed_modifier": 0.9,
       "acceleration_modifier": 0.94,
@@ -1252,8 +1252,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Beautifully Ridiculous launch garage"
+        "mode": "challenge",
+        "note": "Unlock via launch challenge clear"
       },
       "top_speed_modifier": 1.08,
       "acceleration_modifier": 1.18,
@@ -1295,8 +1295,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Beautifully Ridiculous launch garage"
+        "mode": "challenge",
+        "note": "Unlock via launch challenge clear"
       },
       "top_speed_modifier": 0.88,
       "acceleration_modifier": 0.9,
@@ -1338,8 +1338,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Beautifully Ridiculous launch garage"
+        "mode": "achievement",
+        "note": "Unlock via achievement"
       },
       "top_speed_modifier": 0.9,
       "acceleration_modifier": 0.96,
@@ -1381,8 +1381,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Beautifully Ridiculous launch garage"
+        "mode": "achievement",
+        "note": "Unlock via achievement"
       },
       "top_speed_modifier": 1.12,
       "acceleration_modifier": 1.22,
@@ -1424,8 +1424,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Beautifully Ridiculous launch garage"
+        "mode": "achievement",
+        "note": "Unlock via achievement"
       },
       "top_speed_modifier": 0.94,
       "acceleration_modifier": 0.9,
@@ -1467,8 +1467,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "Beautifully Ridiculous launch garage"
+        "mode": "achievement",
+        "note": "Unlock via achievement"
       },
       "top_speed_modifier": 1.02,
       "acceleration_modifier": 1.1,
@@ -1510,8 +1510,8 @@
       "art_status": "procedural_final_for_garage",
       "signature_runner_id": "ember_vale",
       "unlock": {
-        "mode": "starter",
-        "note": "Original Pedestrian tribute sole \u2014 procedural garage art; not Anime IP assets"
+        "mode": "challenge",
+        "note": "Unlock via launch challenge clear"
       },
       "top_speed_modifier": 1.06,
       "acceleration_modifier": 1.08,
@@ -1553,8 +1553,8 @@
       "art_status": "procedural_final_for_garage",
       "signature_runner_id": "rook_ironside",
       "unlock": {
-        "mode": "starter",
-        "note": "Original Pedestrian tribute sole \u2014 procedural garage art; not Anime IP assets"
+        "mode": "challenge",
+        "note": "Unlock via launch challenge clear"
       },
       "top_speed_modifier": 0.92,
       "acceleration_modifier": 0.9,
@@ -1596,8 +1596,8 @@
       "art_status": "procedural_final_for_garage",
       "signature_runner_id": "juno_spark",
       "unlock": {
-        "mode": "starter",
-        "note": "Original Pedestrian tribute sole \u2014 procedural garage art; not Anime IP assets"
+        "mode": "challenge",
+        "note": "Unlock via launch challenge clear"
       },
       "top_speed_modifier": 1.1,
       "acceleration_modifier": 1.14,
@@ -1639,8 +1639,8 @@
       "art_status": "procedural_final_for_garage",
       "signature_runner_id": "kaia_windrow",
       "unlock": {
-        "mode": "starter",
-        "note": "Original Pedestrian tribute sole \u2014 procedural garage art; not Anime IP assets"
+        "mode": "achievement",
+        "note": "Unlock via achievement"
       },
       "top_speed_modifier": 1.02,
       "acceleration_modifier": 1.06,
@@ -1682,8 +1682,8 @@
       "art_status": "procedural_final_for_garage",
       "signature_runner_id": "nix_calder",
       "unlock": {
-        "mode": "starter",
-        "note": "Original Pedestrian tribute sole \u2014 procedural garage art; not Anime IP assets"
+        "mode": "achievement",
+        "note": "Unlock via achievement"
       },
       "top_speed_modifier": 0.95,
       "acceleration_modifier": 0.94,
@@ -1725,8 +1725,8 @@
       "art_status": "procedural_final_for_garage",
       "signature_runner_id": "orion_vell",
       "unlock": {
-        "mode": "starter",
-        "note": "Original Pedestrian tribute sole \u2014 procedural garage art; not Anime IP assets"
+        "mode": "achievement",
+        "note": "Unlock via achievement"
       },
       "top_speed_modifier": 1.04,
       "acceleration_modifier": 1.0,
@@ -1768,8 +1768,8 @@
       "art_status": "procedural_final_for_garage",
       "signature_runner_id": "vesper_nyx",
       "unlock": {
-        "mode": "starter",
-        "note": "Original Pedestrian tribute sole \u2014 procedural garage art; not Anime IP assets"
+        "mode": "crossover",
+        "note": "Unlock via crossover career flag"
       },
       "top_speed_modifier": 1.0,
       "acceleration_modifier": 1.06,
@@ -1811,8 +1811,8 @@
       "art_status": "procedural_final_for_garage",
       "signature_runner_id": "yin",
       "unlock": {
-        "mode": "starter",
-        "note": "Original Pedestrian tribute sole \u2014 procedural garage art; not Anime IP assets"
+        "mode": "crossover",
+        "note": "Unlock via crossover career flag"
       },
       "top_speed_modifier": 0.98,
       "acceleration_modifier": 1.02,
@@ -1854,8 +1854,8 @@
       "art_status": "procedural_final_for_garage",
       "signature_runner_id": "yang",
       "unlock": {
-        "mode": "starter",
-        "note": "Original Pedestrian tribute sole \u2014 procedural garage art; not Anime IP assets"
+        "mode": "crossover",
+        "note": "Unlock via crossover career flag"
       },
       "top_speed_modifier": 1.08,
       "acceleration_modifier": 1.05,
@@ -1897,8 +1897,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "gunnchOS3k Crossover launch garage \u2014 original tribute designs"
+        "mode": "crossover",
+        "note": "Unlock via crossover career flag"
       },
       "top_speed_modifier": 0.98,
       "acceleration_modifier": 1.06,
@@ -1940,8 +1940,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "gunnchOS3k Crossover launch garage \u2014 original tribute designs"
+        "mode": "crossover",
+        "note": "Unlock via crossover career flag"
       },
       "top_speed_modifier": 0.92,
       "acceleration_modifier": 0.88,
@@ -1983,8 +1983,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "gunnchOS3k Crossover launch garage \u2014 original tribute designs"
+        "mode": "crossover",
+        "note": "Unlock via crossover career flag"
       },
       "top_speed_modifier": 1.04,
       "acceleration_modifier": 1.1,
@@ -2026,8 +2026,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "gunnchOS3k Crossover launch garage \u2014 original tribute designs"
+        "mode": "crossover",
+        "note": "Unlock via crossover career flag"
       },
       "top_speed_modifier": 1.0,
       "acceleration_modifier": 1.02,
@@ -2069,8 +2069,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "gunnchOS3k Crossover launch garage \u2014 original tribute designs"
+        "mode": "crossover",
+        "note": "Unlock via crossover career flag"
       },
       "top_speed_modifier": 1.06,
       "acceleration_modifier": 1.08,
@@ -2112,8 +2112,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "gunnchOS3k Crossover launch garage \u2014 original tribute designs"
+        "mode": "crossover",
+        "note": "Unlock via crossover career flag"
       },
       "top_speed_modifier": 1.02,
       "acceleration_modifier": 1.04,
@@ -2155,8 +2155,8 @@
       "art_status": "native_v1",
       "signature_runner_id": "",
       "unlock": {
-        "mode": "starter",
-        "note": "gunnchOS3k Crossover launch garage \u2014 original tribute designs"
+        "mode": "crossover",
+        "note": "Unlock via crossover career flag"
       },
       "top_speed_modifier": 0.96,
       "acceleration_modifier": 1.0,
@@ -2187,5 +2187,6 @@
       "description": "Edge I/O Gyrowraps \u2014 Kinetic Sole vehicle in the gunnchOS3k Crossover family (original tribute).",
       "ai_notes": "Edge I/O Gyrowraps \u2014 gyro-rail wrap handling; original tribute, grounded."
     }
-  ]
+  ],
+  "progression_note": "playable=true means race-capable; unlock.mode gates player-facing garage selection. CI/test harness may unlock all."
 }

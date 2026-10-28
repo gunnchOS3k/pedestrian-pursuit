@@ -184,6 +184,8 @@ def validate_project(root: Path) -> list[str]:
                 errors.append(f"{shoe_path}: surface_affinities must cover launch surfaces")
 
     errors.extend(_validate_vehicle_registry(root))
+    errors.extend(_validate_art_acceptance(root))
+    errors.extend(_validate_wardrobe(root))
 
     expected_runners = (
         "dash_reed",
@@ -410,6 +412,83 @@ def _validate_vehicle_registry(root: Path) -> list[str]:
             if fp in fps:
                 errors.append(f"{path}: duplicate {label} fingerprint for {v.get('id')}")
             fps.add(fp)
+    modes: dict[str, int] = {}
+    for v in vehicles:
+        if not isinstance(v, dict):
+            continue
+        unlock = v.get("unlock") if isinstance(v.get("unlock"), dict) else {}
+        mode = str(unlock.get("mode", "starter"))
+        modes[mode] = modes.get(mode, 0) + 1
+    if modes.get("starter", 0) >= 50:
+        errors.append(f"{path}: unlock modes must not leave all 50 as starter")
+    for need in ("cup", "challenge", "achievement", "crossover"):
+        if modes.get(need, 0) < 1:
+            errors.append(f"{path}: missing unlock mode {need}")
+    return errors
+
+
+def _validate_art_acceptance(root: Path) -> list[str]:
+    errors: list[str] = []
+    path = root / "data/art/vehicle_art_acceptance.json"
+    doc = _read_json(path, errors)
+    if not doc:
+        return errors
+    if doc.get("human_commercial_art_gate") is not False:
+        errors.append(f"{path}: human_commercial_art_gate must be false")
+    if doc.get("HUMAN_FUN_APPROVAL") is not False:
+        errors.append(f"{path}: HUMAN_FUN_APPROVAL must remain false")
+    if doc.get("HUMAN_COURSE_APPROVAL") is not False:
+        errors.append(f"{path}: HUMAN_COURSE_APPROVAL must remain false")
+    vehicles = doc.get("vehicles")
+    if not isinstance(vehicles, list) or len(vehicles) != 50:
+        errors.append(f"{path}: expected 50 art-acceptance entries")
+        return errors
+    pending = 0
+    candidate = 0
+    for entry in vehicles:
+        if not isinstance(entry, dict):
+            errors.append(f"{path}: entry must be object")
+            continue
+        if entry.get("runtime_status") != "playable_runtime":
+            errors.append(f"{path}: {entry.get('id')} runtime_status must be playable_runtime")
+        fas = str(entry.get("final_art_status", ""))
+        if fas not in ("final_art_pending", "final_art_candidate"):
+            errors.append(f"{path}: {entry.get('id')} invalid final_art_status {fas}")
+        if entry.get("human_commercial_art_approved"):
+            errors.append(f"{path}: {entry.get('id')} must not claim commercial art approval")
+        if fas == "final_art_pending":
+            pending += 1
+        elif fas == "final_art_candidate":
+            candidate += 1
+    if pending < 1 or candidate < 1:
+        errors.append(f"{path}: need both pending and candidate classifications")
+    return errors
+
+
+def _validate_wardrobe(root: Path) -> list[str]:
+    errors: list[str] = []
+    path = root / "data/wardrobe/wardrobe_catalog.json"
+    doc = _read_json(path, errors)
+    if not doc:
+        return errors
+    slots = doc.get("slots")
+    if not isinstance(slots, list) or "footwear_vehicle" not in slots or "top" not in slots:
+        errors.append(f"{path}: wardrobe slots incomplete")
+    garments = doc.get("garments")
+    if not isinstance(garments, list) or len(garments) < 6:
+        errors.append(f"{path}: need integrated + pending garments")
+        return errors
+    integrated = [g for g in garments if isinstance(g, dict) and g.get("art_status") == "integrated_mesh_v1"]
+    pending = [g for g in garments if isinstance(g, dict) and g.get("art_status") == "catalog_art_pending"]
+    if len(integrated) < 5:
+        errors.append(f"{path}: Metro Pulse needs ≥5 integrated_mesh_v1 garments")
+    if len(pending) < 1:
+        errors.append(f"{path}: need honest catalog_art_pending entries")
+    presets = doc.get("presets")
+    if not isinstance(presets, list) or not any(
+        isinstance(p, dict) and p.get("id") == "metro_pulse_default" for p in presets
+    ):
+        errors.append(f"{path}: metro_pulse_default preset required")
     return errors
 
 

@@ -6,6 +6,10 @@ const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
 const VehicleCatalogScript = preload("res://scripts/data/VehicleCatalog.gd")
 const LaunchArtCatalogScript = preload("res://scripts/ui/LaunchArtCatalog.gd")
 const VehicleGaragePanelScript = preload("res://scripts/ui/garage/VehicleGaragePanel.gd")
+const FashionStudioPanelScript = preload("res://scripts/ui/fashion/FashionStudioPanel.gd")
+const CharacterCreatorPanelScript = preload("res://scripts/ui/fashion/CharacterCreatorPanel.gd")
+const ArtAcceptanceScript = preload("res://scripts/data/ArtAcceptance.gd")
+const GarageProgressionScript = preload("res://scripts/data/GarageProgression.gd")
 
 ## Main menu — Quick Race, Cup, Time Trial, Local MP entry points (Alpha).
 
@@ -46,15 +50,20 @@ func _ready() -> void:
 	_ensure_feedback_button()
 	_ensure_cup_and_shoe_pickers()
 	_ensure_garage_button()
+	_ensure_creator_fashion_buttons()
 	_load_content()
 	_populate_device_picker()
 	_sync_a11y_toggles()
 	var garage_counts := VehicleCatalogScript.counts()
+	var art_counts := ArtAcceptanceScript.counts()
 	$VBox/CupLabel.text = (
 		"DIGITAL RC READY  •  8 COURSES  •  2 CUPS  •  8 RACERS  •  %d/%d VEHICLES"
 		% [int(garage_counts.get("playable", 8)), int(garage_counts.get("total", 50))]
 	)
-	$VBox/Subtitle.text = "Kinetic Sole garage — all 50 soles race-ready (tribute art is procedural garage-final)"
+	$VBox/Subtitle.text = (
+		"50 race-capable · final-art pending %d / candidate %d · commercial art NOT approved"
+		% [int(art_counts.get("final_art_pending", 0)), int(art_counts.get("final_art_candidate", 0))]
+	)
 	_apply_launch_presentation()
 	var audio := get_node_or_null("/root/AudioDirector")
 	if audio and audio.has_method("play_menu_music"):
@@ -332,8 +341,66 @@ func _on_open_garage() -> void:
 		panel.closed.connect(func (): _populate_shoe_picker())
 
 
+func _ensure_creator_fashion_buttons() -> void:
+	var vbox: VBoxContainer = $VBox
+	if vbox.get_node_or_null("CreateRacerButton") == null:
+		var create_btn := Button.new()
+		create_btn.name = "CreateRacerButton"
+		create_btn.text = "Create Your Racer"
+		create_btn.custom_minimum_size = Vector2(0, 40)
+		vbox.add_child(create_btn)
+		var garage := vbox.get_node_or_null("GarageButton")
+		if garage != null:
+			vbox.move_child(create_btn, garage.get_index() + 1)
+		create_btn.pressed.connect(_on_open_creator)
+	else:
+		var existing_c := vbox.get_node("CreateRacerButton") as Button
+		if existing_c and not existing_c.pressed.is_connected(_on_open_creator):
+			existing_c.pressed.connect(_on_open_creator)
+	if vbox.get_node_or_null("FashionStudioButton") == null:
+		var fashion_btn := Button.new()
+		fashion_btn.name = "FashionStudioButton"
+		fashion_btn.text = "Fashion Studio"
+		fashion_btn.custom_minimum_size = Vector2(0, 40)
+		vbox.add_child(fashion_btn)
+		var create := vbox.get_node_or_null("CreateRacerButton")
+		if create != null:
+			vbox.move_child(fashion_btn, create.get_index() + 1)
+		fashion_btn.pressed.connect(_on_open_fashion)
+	else:
+		var existing_f := vbox.get_node_or_null("FashionStudioButton") as Button
+		if existing_f and not existing_f.pressed.is_connected(_on_open_fashion):
+			existing_f.pressed.connect(_on_open_fashion)
+
+
+func _on_open_creator() -> void:
+	if get_node_or_null("CharacterCreatorPanel") != null:
+		return
+	var panel := Control.new()
+	panel.name = "CharacterCreatorPanel"
+	panel.set_script(CharacterCreatorPanelScript)
+	panel.set_anchors_preset(Control.PRESET_FULL_RECT)
+	add_child(panel)
+	if panel.has_signal("closed"):
+		panel.closed.connect(func (): _sync_preview_vehicle())
+
+
+func _on_open_fashion() -> void:
+	if get_node_or_null("FashionStudioPanel") != null:
+		return
+	var panel := Control.new()
+	panel.name = "FashionStudioPanel"
+	panel.set_script(FashionStudioPanelScript)
+	panel.set_anchors_preset(Control.PRESET_FULL_RECT)
+	add_child(panel)
+	if panel.has_signal("closed"):
+		panel.closed.connect(func (): _sync_preview_vehicle())
+
+
 func _on_garage_vehicle_selected(vehicle_id: String) -> void:
 	if vehicle_id.is_empty() or not ShoeDataScript.is_playable(vehicle_id):
+		return
+	if not GarageProgressionScript.is_unlocked_for_player(vehicle_id):
 		return
 	GameManager.selected_shoe_id = vehicle_id
 	_populate_shoe_picker()

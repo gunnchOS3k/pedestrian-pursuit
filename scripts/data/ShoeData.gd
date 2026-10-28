@@ -5,6 +5,7 @@ extends RefCounted
 ## Legacy four IDs remain for challenge + Beta contracts; playable garage IDs are race-native.
 
 const VehicleCatalogScript = preload("res://scripts/data/VehicleCatalog.gd")
+const GarageProgressionScript = preload("res://scripts/data/GarageProgression.gd")
 
 const LEGACY_IDS: Array[String] = [
 	"starter_soles",
@@ -58,8 +59,10 @@ static func all_ids() -> Array[String]:
 
 
 static func race_selectable_ids() -> Array[String]:
-	## Menu race picker: playable garage vehicles; stubs are preview-only.
-	var playable := VehicleCatalogScript.playable_ids()
+	## Menu race picker: player-unlocked garage vehicles (CI may unlock all via GarageProgression).
+	var playable: Array[String] = GarageProgressionScript.player_selectable_ids()
+	if playable.is_empty():
+		playable = VehicleCatalogScript.playable_ids()
 	if playable.is_empty():
 		return legacy_ids()
 	return playable

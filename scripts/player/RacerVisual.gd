@@ -7,6 +7,8 @@ extends Node3D
 
 const RunnerProfileScript = preload("res://scripts/data/RunnerProfile.gd")
 const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
+const AvatarAppearanceScript = preload("res://scripts/data/AvatarAppearance.gd")
+const WardrobeCatalogScript = preload("res://scripts/data/WardrobeCatalog.gd")
 
 @export var body_color: Color = Color(1.0, 0.82, 0.35, 1.0)
 @export var accent_color: Color = Color(1.0, 0.35, 0.2, 1.0)
@@ -15,6 +17,9 @@ const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
 @export var vehicle_id: String = "reedline_circlers"
 
 var profile: RunnerProfile
+## Modular cosmetic layers (do not affect collision/stats). Procedural body remains fallback.
+var avatar_appearance: Dictionary = {}
+var wardrobe_outfit_slots: Dictionary = {}
 var _torso: MeshInstance3D
 var _head: Node3D
 var _leg_l: Node3D
@@ -32,6 +37,7 @@ var _backpack: MeshInstance3D
 var _accent_fx: MeshInstance3D
 var _name_label: Label3D
 var _speed_trail: GPUParticles3D
+var _wardrobe_root: Node3D
 var _phase: float = 0.0
 var _parent_body: CharacterBody3D
 var _emotion_t: float = 0.0
@@ -58,6 +64,23 @@ func apply_profile(p: RunnerProfile) -> void:
 	body_color = p.body_color
 	accent_color = p.accent_color
 	_rebuild()
+
+
+func apply_avatar_appearance(data: Dictionary, rebuild: bool = true) -> void:
+	## Cosmetic modular avatar path. Keeps procedural figure as base mesh fallback.
+	avatar_appearance = data.duplicate(true)
+	if rebuild and profile != null:
+		_rebuild()
+
+
+func apply_wardrobe_outfit(slots: Dictionary, rebuild: bool = true) -> void:
+	## Cosmetic wardrobe overlays. Footwear vehicle id still owns handling via set_vehicle_id.
+	wardrobe_outfit_slots = slots.duplicate(true)
+	var foot := str(slots.get("footwear_vehicle", ""))
+	if not foot.is_empty():
+		set_vehicle_id(foot, false)
+	if rebuild and profile != null:
+		_rebuild()
 
 
 func set_vehicle_id(id: String, rebuild: bool = true) -> void:
@@ -166,17 +189,30 @@ func _rebuild() -> void:
 	_accent_fx = null
 	_name_label = null
 	_speed_trail = null
+	_wardrobe_root = null
 	_build_figure()
+	_apply_modular_cosmetics()
 
 
 func _build_figure() -> void:
 	var hs := profile.height_scale if profile else 1.0
 	var ws := profile.width_scale if profile else 1.0
 	var ls := profile.leg_scale if profile else 1.0
+	## Modular appearance may override presentation scales only (never collision shapes).
+	if not avatar_appearance.is_empty():
+		hs = clampf(float(avatar_appearance.get("height_scale", hs)), 0.85, 1.2)
+		ws = clampf(float(avatar_appearance.get("width_scale", ws)), 0.85, 1.2)
+		ls = clampf(float(avatar_appearance.get("leg_scale", ls)), 0.85, 1.2)
 	var arch := profile.archetype if profile else "all_terrain"
 
 	var skin := StandardMaterial3D.new()
-	skin.albedo_color = Color(0.92, 0.72, 0.58).lerp(body_color.lightened(0.35), 0.25)
+	if not avatar_appearance.is_empty():
+		skin.albedo_color = AvatarAppearanceScript.skin_color(
+			str(avatar_appearance.get("skin_tone", "warm_medium")),
+			str(avatar_appearance.get("undertone", "neutral"))
+		)
+	else:
+		skin.albedo_color = Color(0.92, 0.72, 0.58).lerp(body_color.lightened(0.35), 0.25)
 	skin.roughness = 0.65
 	var shirt := StandardMaterial3D.new()
 	shirt.albedo_color = body_color
@@ -195,7 +231,10 @@ func _build_figure() -> void:
 	dark.albedo_color = accent_color.darkened(0.4)
 	dark.roughness = 0.55
 	var hair_mat := StandardMaterial3D.new()
-	hair_mat.albedo_color = body_color.darkened(0.45).lerp(accent_color.darkened(0.2), 0.35)
+	if not avatar_appearance.is_empty() and avatar_appearance.has("hair_color"):
+		hair_mat.albedo_color = Color.html(str(avatar_appearance.get("hair_color", "#2A1A12")))
+	else:
+		hair_mat.albedo_color = body_color.darkened(0.45).lerp(accent_color.darkened(0.2), 0.35)
 	hair_mat.roughness = 0.7
 	var eye_mat := StandardMaterial3D.new()
 	eye_mat.albedo_color = Color(0.08, 0.08, 0.1)
@@ -325,8 +364,11 @@ func _build_figure() -> void:
 	skull.position = Vector3(0, head_r * 0.85, 0)
 	_add_face(_head, head_r, eye_mat, mouth_mat)
 
-	# Hair / headwear per archetype (parented to head).
-	_add_hair_for_archetype(arch, head_r, hair_mat, accent, dark, hs)
+	# Hair / headwear — modular style overrides archetype fallback when present.
+	if not avatar_appearance.is_empty() and str(avatar_appearance.get("hair_style", "")) != "":
+		_add_modular_hair(str(avatar_appearance.get("hair_style", "short_fade")), head_r, hair_mat, dark, hs)
+	else:
+		_add_hair_for_archetype(arch, head_r, hair_mat, accent, dark, hs)
 
 	# Arms — shoulder pivots, cylinders hang down, hands at ends.
 	_arm_l = _make_limb(self, Vector3(-shoulder_spread, shoulder_y, 0), arm_len, arm_r, skin, true)
@@ -372,6 +414,137 @@ func _build_figure() -> void:
 	trail_mesh.height = 0.24
 	_speed_trail.draw_pass_1 = trail_mesh
 	add_child(_speed_trail)
+
+
+func _apply_modular_cosmetics() -> void:
+	## Wardrobe overlays only. Never changes CharacterBody3D collision or MovementStats.
+	if wardrobe_outfit_slots.is_empty():
+		return
+	if _torso == null or _head == null:
+		return
+	_wardrobe_root = Node3D.new()
+	_wardrobe_root.name = "WardrobeRoot"
+	add_child(_wardrobe_root)
+	var hs := profile.height_scale if profile else 1.0
+	var ws := profile.width_scale if profile else 1.0
+	if not avatar_appearance.is_empty():
+		hs = clampf(float(avatar_appearance.get("height_scale", hs)), 0.85, 1.2)
+		ws = clampf(float(avatar_appearance.get("width_scale", ws)), 0.85, 1.2)
+	for slot in wardrobe_outfit_slots.keys():
+		var gid := str(wardrobe_outfit_slots.get(slot, ""))
+		if gid.is_empty() or slot == "footwear_vehicle":
+			continue
+		var g := WardrobeCatalogScript.garment_by_id(gid)
+		if g.is_empty():
+			continue
+		if str(g.get("art_status", "")) != "integrated_mesh_v1":
+			continue ## art-pending catalog entries stay honest — no fake mesh claim
+		_attach_garment_mesh(g, hs, ws)
+	## Assistive visual option (cosmetic).
+	if not avatar_appearance.is_empty():
+		var assist := str(avatar_appearance.get("assistive", "none"))
+		if assist != "none" and assist != "":
+			var brace_mat := StandardMaterial3D.new()
+			brace_mat.albedo_color = Color(0.75, 0.78, 0.82)
+			brace_mat.metallic = 0.55
+			brace_mat.roughness = 0.35
+			var brace := _mesh_box(Vector3(0.08 * ws, 0.22 * hs, 0.06), Vector3.ZERO, brace_mat)
+			_wardrobe_root.add_child(brace)
+			brace.position = Vector3(0.16 * ws, _rest_torso_y - 0.15 * hs, 0.02)
+
+
+func _attach_garment_mesh(g: Dictionary, hs: float, ws: float) -> void:
+	var colors: Dictionary = g.get("colors", {})
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = Color.html(str(colors.get("primary", "#2EC4B6")))
+	mat.roughness = 0.45
+	var accent := StandardMaterial3D.new()
+	accent.albedo_color = Color.html(str(colors.get("accent", "#FF6A3D")))
+	accent.roughness = 0.4
+	var recipe := str(g.get("mesh_recipe", ""))
+	var mesh: MeshInstance3D = null
+	match recipe:
+		"fitted_undersuit":
+			mesh = _mesh_capsule(0.175 * ws, 0.5 * hs, Vector3(0, _rest_torso_y, 0.01), mat)
+		"cropped_shell":
+			mesh = _mesh_capsule(0.19 * ws, 0.28 * hs, Vector3(0, _rest_torso_y + 0.08 * hs, -0.02), mat)
+		"tapered_pants":
+			mesh = _mesh_capsule(0.16 * ws, 0.34 * hs, Vector3(0, _rest_torso_y - 0.28 * hs, 0.0), mat)
+		"open_windshell":
+			mesh = _mesh_capsule(0.21 * ws, 0.42 * hs, Vector3(0, _rest_torso_y + 0.02 * hs, -0.04), mat)
+			var wing := _mesh_box(Vector3(0.08 * ws, 0.28 * hs, 0.04), Vector3.ZERO, accent)
+			_wardrobe_root.add_child(wing)
+			wing.position = Vector3(0.14 * ws, _rest_torso_y, -0.08)
+		"headband":
+			mesh = _mesh_box(Vector3(0.28 * ws, 0.05 * hs, 0.22 * ws), Vector3.ZERO, mat)
+			if _head != null:
+				_head.add_child(mesh)
+				mesh.position = Vector3(0, 0.22 * hs, 0.02)
+				return
+		"hip_pack":
+			mesh = _mesh_box(Vector3(0.16 * ws, 0.1 * hs, 0.08), Vector3.ZERO, mat)
+			_wardrobe_root.add_child(mesh)
+			mesh.position = Vector3(0.14 * ws, _rest_torso_y - 0.2 * hs, -0.06)
+			return
+		_:
+			return
+	if mesh != null:
+		_wardrobe_root.add_child(mesh)
+
+
+func _add_modular_hair(style: String, head_r: float, hair_mat: Material, dark: Material, hs: float) -> void:
+	## Protective styles and coverings — original procedural meshes only.
+	match style:
+		"locs_shoulder":
+			_hair = _mesh_sphere(head_r * 0.55, Vector3(0, head_r * 1.4, -0.05), hair_mat)
+			_head.add_child(_hair)
+			for i in range(5):
+				var loc := _mesh_capsule(head_r * 0.08, head_r * 1.5, Vector3.ZERO, hair_mat)
+				_head.add_child(loc)
+				loc.position = Vector3((-0.12 + float(i) * 0.06) * hs, head_r * 0.7, -head_r * 0.9)
+				loc.rotation.x = 0.7
+		"box_braids":
+			_hair = _mesh_sphere(head_r * 0.65, Vector3(0, head_r * 1.45, -0.05), hair_mat)
+			_head.add_child(_hair)
+			for i in range(6):
+				var braid := _mesh_capsule(head_r * 0.06, head_r * 1.7, Vector3.ZERO, hair_mat)
+				_head.add_child(braid)
+				braid.position = Vector3((-0.14 + float(i) * 0.055), head_r * 0.65, -head_r * 0.85)
+				braid.rotation.x = 0.85
+		"cornrows":
+			_hair = _mesh_box(Vector3(head_r * 1.2, head_r * 0.12, head_r * 1.0), Vector3.ZERO, hair_mat)
+			_head.add_child(_hair)
+			_hair.position = Vector3(0, head_r * 1.4, -0.05)
+			for i in range(4):
+				var row := _mesh_box(Vector3(head_r * 0.08, head_r * 0.08, head_r * 1.1), Vector3.ZERO, hair_mat)
+				_head.add_child(row)
+				row.position = Vector3((-0.12 + float(i) * 0.08), head_r * 1.35, -head_r * 0.1)
+		"twists":
+			_hair = _mesh_sphere(head_r * 0.5, Vector3(0, head_r * 1.4, -0.04), hair_mat)
+			_head.add_child(_hair)
+			for i in range(4):
+				var tw := _mesh_capsule(head_r * 0.07, head_r * 1.2, Vector3.ZERO, hair_mat)
+				_head.add_child(tw)
+				tw.position = Vector3((-0.1 + float(i) * 0.07), head_r * 0.8, -head_r * 0.8)
+				tw.rotation.x = 0.6
+		"protective_bun":
+			_hair = _mesh_sphere(head_r * 0.7, Vector3(0, head_r * 1.7, -head_r * 0.2), hair_mat)
+			_head.add_child(_hair)
+		"afro_crown":
+			_hair = _mesh_sphere(head_r * 1.15, Vector3(0, head_r * 1.35, -0.05), hair_mat)
+			_head.add_child(_hair)
+		"long_waves":
+			_hair = _mesh_capsule(head_r * 0.55, head_r * 1.8, Vector3(0, head_r * 0.4, -head_r * 0.7), hair_mat)
+			_head.add_child(_hair)
+		"buzz", "bald":
+			_hair = null
+		"hijab_wrap", "durag":
+			_hair = _mesh_capsule(head_r * 1.05, head_r * 1.1, Vector3(0, head_r * 0.9, -0.05), dark)
+			_head.add_child(_hair)
+		_:
+			_hair = _mesh_box(Vector3(head_r * 1.3, head_r * 0.35, head_r * 1.1), Vector3.ZERO, hair_mat)
+			_head.add_child(_hair)
+			_hair.position = Vector3(0, head_r * 1.5, -0.05)
 
 
 func _add_face(head: Node3D, head_r: float, eye_mat: Material, mouth_mat: Material) -> void:

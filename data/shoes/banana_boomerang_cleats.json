@@ -33,5 +33,6 @@
   "signature_runner_id": "",
   "ai_notes": "Banana Boomerang Cleats \u2014 peel-trick arcs; collision intact.",
   "description": "Banana Boomerang Cleats \u2014 Kinetic Sole vehicle in the Beautifully Ridiculous family.",
-  "collision_contract": "Always grounded race collision; joke/prop themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through."
+  "collision_contract": "Always grounded race collision; joke/prop themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through.",
+  "unlock_mode": "achievement"
 }

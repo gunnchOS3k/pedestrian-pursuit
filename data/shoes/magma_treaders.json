@@ -33,5 +33,6 @@
   "signature_runner_id": "",
   "ai_notes": "Magma tread \u2014 ash/metal heat plates; stomps hard, still grounded.",
   "description": "Magma Treaders \u2014 Kinetic Sole vehicle in the Elemental / Amphibious family.",
-  "collision_contract": "Always grounded race collision; water/mud/magma/frost themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through."
+  "collision_contract": "Always grounded race collision; water/mud/magma/frost themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through.",
+  "unlock_mode": "challenge"
 }

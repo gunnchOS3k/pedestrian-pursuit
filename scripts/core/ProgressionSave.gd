@@ -3,7 +3,7 @@ extends Node
 ## Career progression + unlock surfacing (digital Beta).
 
 const SAVE_PATH := "user://pp_progression.cfg"
-const SAVE_VERSION := 2
+const SAVE_VERSION := 3
 
 var xp: int = 0
 var level: int = 1
@@ -13,6 +13,7 @@ var trophies: PackedStringArray = PackedStringArray()
 var time_trial_pbs: Dictionary = {}
 var tutorial_completed: bool = false
 var first_run_complete: bool = false
+var unlocked_vehicles: Dictionary = {} ## genuine player vehicle unlocks (separate from registry playable)
 
 
 func _ready() -> void:
@@ -36,6 +37,7 @@ func load_or_migrate() -> void:
 	time_trial_pbs = cfg.get_value("career", "tt_pbs", {})
 	tutorial_completed = bool(cfg.get_value("career", "tutorial_completed", false))
 	first_run_complete = bool(cfg.get_value("career", "first_run_complete", false))
+	unlocked_vehicles = cfg.get_value("career", "unlocked_vehicles", {})
 	if version < SAVE_VERSION:
 		_migrate_from(version)
 		save()
@@ -49,7 +51,9 @@ func _seed_defaults() -> void:
 		"mode:cup": true,
 		"mode:time_trial": true,
 		"mode:tutorial": true,
+		"unlock_mode:starter": true,
 	}
+	unlocked_vehicles = {}
 	xp = 0
 	level = 1
 
@@ -67,6 +71,12 @@ func _migrate_from(version: int) -> void:
 		unlocked["mode:progression"] = true
 		unlocked["mode:local_mp"] = true
 		unlocked["mode:ghost"] = true
+	if version < 3:
+		## Separate developer/test unlock-all from genuine player progression.
+		## Do NOT auto-grant all 50 vehicles — starters remain freely available via unlock.mode.
+		unlocked["unlock_mode:starter"] = true
+		if typeof(unlocked_vehicles) != TYPE_DICTIONARY:
+			unlocked_vehicles = {}
 
 
 func save() -> void:
@@ -81,6 +91,7 @@ func save() -> void:
 	cfg.set_value("career", "tt_pbs", time_trial_pbs)
 	cfg.set_value("career", "tutorial_completed", tutorial_completed)
 	cfg.set_value("career", "first_run_complete", first_run_complete)
+	cfg.set_value("career", "unlocked_vehicles", unlocked_vehicles)
 	cfg.save(SAVE_PATH)
 
 
@@ -91,6 +102,29 @@ func is_unlocked(key: String) -> bool:
 func unlock(key: String) -> void:
 	unlocked[key] = true
 	save()
+
+
+func unlock_vehicle(vehicle_id: String) -> void:
+	unlocked_vehicles[vehicle_id] = true
+	unlocked["vehicle:%s" % vehicle_id] = true
+	save()
+
+
+func is_vehicle_unlocked(vehicle_id: String) -> bool:
+	if bool(unlocked_vehicles.get(vehicle_id, false)):
+		return true
+	if bool(unlocked.get("vehicle:%s" % vehicle_id, false)):
+		return true
+	## Mode-wide unlocks (cup/challenge/achievement/crossover career flags).
+	var VehicleCatalogScript = load("res://scripts/data/VehicleCatalog.gd")
+	var entry: Dictionary = VehicleCatalogScript.by_id(vehicle_id)
+	var mode := "starter"
+	var unlock_data: Variant = entry.get("unlock", {})
+	if typeof(unlock_data) == TYPE_DICTIONARY:
+		mode = str(unlock_data.get("mode", "starter"))
+	if mode == "starter":
+		return true
+	return bool(unlocked.get("unlock_mode:%s" % mode, false))
 
 
 func add_xp(amount: int) -> void:

@@ -33,5 +33,6 @@
   "signature_runner_id": "",
   "ai_notes": "3k MLV Portal Pumps \u2014 portal-ring heel read; affinity/VFX only, never phase colliders.",
   "description": "3k MLV Portal Pumps \u2014 Kinetic Sole vehicle in the gunnchOS3k Crossover family (original tribute).",
-  "collision_contract": "Always grounded race collision; crossover tribute themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through. Original designs only."
+  "collision_contract": "Always grounded race collision; crossover tribute themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through. Original designs only.",
+  "unlock_mode": "crossover"
 }
