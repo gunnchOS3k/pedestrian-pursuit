@@ -201,11 +201,17 @@ function publish() {
 }
 
 function startGodot(root, script) {
-  return spawn(
-    'xvfb-run',
-    ['-a', 'godot', '--headless', '--path', root, '--rendering-driver', 'opengl3', '--script', script],
-    { stdio: 'inherit', env: process.env },
-  );
+  // Prefer explicit headless display. On Darwin, CI-style xvfb is unavailable;
+  // tools/bin/xvfb-run (local shim) or PATH xvfb-run on Ubuntu both work.
+  // Keep opengl3 so macOS does not take the Metal/MoltenVK crash path.
+  const args = [
+    '--headless',
+    '--display-driver', 'headless',
+    '--rendering-driver', 'opengl3',
+    '--path', root,
+    '--script', script,
+  ];
+  return spawn('xvfb-run', ['-a', 'godot', ...args], { stdio: 'inherit', env: process.env });
 }
 
 function waitFor(child) {

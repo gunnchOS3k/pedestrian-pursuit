@@ -19,9 +19,11 @@ func _run() -> void:
 	await _exercise_course("emberkeep_gauntlet", failures)
 	await _exercise_course("sneaker_city_sprintway", failures)
 	await _exercise_course("metro_pulse_loop", failures)
+	await _exercise_course("saltline_boardwalk", failures)
+	await _exercise_course("cliffside_draft", failures)
 	if failures.is_empty():
 		print(
-			"COURSE_BUILD_SURFACE_PASS verdant_cascade_circuit cloverwind_ranch prism_apex emberkeep_gauntlet sneaker_city_sprintway metro_pulse_loop"
+			"COURSE_BUILD_SURFACE_PASS verdant_cascade_circuit cloverwind_ranch prism_apex emberkeep_gauntlet sneaker_city_sprintway metro_pulse_loop saltline_boardwalk cliffside_draft"
 		)
 		quit(0)
 		return
@@ -76,6 +78,22 @@ func _exercise_course(track_id: String, failures: PackedStringArray) -> void:
 			failures.append("metro_pulse missing PulseStation landmark")
 		if scenery == null or scenery.get_node_or_null("PlatformCrate") == null:
 			failures.append("metro_pulse missing PlatformCrate hazard")
+	elif track_id == "saltline_boardwalk":
+		var scenery := course.get_node_or_null("Scenery")
+		if scenery == null or scenery.get_node_or_null("PierArch") == null:
+			failures.append("saltline missing PierArch landmark")
+		if scenery == null or scenery.get_node_or_null("SaltSprayRock") == null:
+			failures.append("saltline missing SaltSprayRock hazard")
+		if course.get_node_or_null("CoastFill") == null:
+			failures.append("saltline missing CoastFill lighting")
+	elif track_id == "cliffside_draft":
+		var scenery := course.get_node_or_null("Scenery")
+		if scenery == null or scenery.get_node_or_null("CliffCairn") == null:
+			failures.append("cliffside missing CliffCairn landmark")
+		if scenery == null or scenery.get_node_or_null("CliffFaceRock") == null:
+			failures.append("cliffside missing CliffFaceRock hazard")
+		if course.get_node_or_null("CoastFill") == null:
+			failures.append("cliffside missing CoastFill lighting")
 	course.queue_free()
 
 

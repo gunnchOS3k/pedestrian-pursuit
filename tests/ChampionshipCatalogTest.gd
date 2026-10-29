@@ -113,19 +113,31 @@ func _run() -> void:
 			if metro_course.get_node_or_null("MetroFill") == null:
 				failures.append("%s missing MetroFill lighting" % tid)
 		metro_course.queue_free()
-	## Cup 4 Kinetic Coast: four distinct championship_raceable courses.
+	## Cup 4 Kinetic Coast: elevation + distinct scenery; art may be candidate (not commercial).
 	var coast := TrackCatalogScript.load_cup("kinetic_coast_cup")
 	var coast_ids: Array = coast.get("track_ids", [])
 	if coast_ids.size() != 4:
 		failures.append("kinetic_coast size")
+	var coast_landmarks := {
+		"saltline_boardwalk": "PierArch",
+		"cliffside_draft": "CliffCairn",
+		"tidal_bridge_run": "NorthBridge",
+		"seaglass_switchback": "SeaglassSpire",
+	}
 	for tid in ["saltline_boardwalk", "cliffside_draft", "tidal_bridge_run", "seaglass_switchback"]:
 		if tid not in coast_ids:
 			failures.append("kinetic_coast missing %s" % tid)
 		var cd := TrackCatalogScript.load_track(tid)
-		if str(cd.get("geometry_status", "")) != "championship_raceable":
-			failures.append("%s not championship_raceable" % tid)
-		if str(cd.get("final_track_art_status", "")) != "track_art_pending":
-			failures.append("%s art must stay pending" % tid)
+		var coast_gs := str(cd.get("geometry_status", ""))
+		if coast_gs not in ["championship_upgraded", "championship_raceable"]:
+			failures.append("%s unexpected geometry %s" % [tid, coast_gs])
+		var coast_fas := str(cd.get("final_track_art_status", ""))
+		if coast_fas not in ["track_art_candidate", "track_art_pending"]:
+			failures.append("%s unexpected art status %s" % [tid, coast_fas])
+		if bool(cd.get("human_track_art_approved", false)):
+			failures.append("%s commercial art must stay false" % tid)
+		if str(cd.get("camera_identity", "")) != "coast_chase":
+			failures.append("%s missing coast camera identity" % tid)
 		var coast_has_y := false
 		for p in cd.get("path_points", []):
 			if typeof(p) == TYPE_ARRAY and p.size() == 3 and absf(float(p[1])) > 0.1:
@@ -142,16 +154,15 @@ func _run() -> void:
 			failures.append("build coast %s" % tid)
 		else:
 			var scenery := coast_course.get_node_or_null("Scenery")
+			var want_coast := str(coast_landmarks.get(tid, ""))
 			if scenery == null:
 				failures.append("%s missing Scenery" % tid)
-			elif tid == "saltline_boardwalk" and scenery.get_node_or_null("PierArch") == null:
-				failures.append("saltline missing PierArch")
-			elif tid == "cliffside_draft" and scenery.get_node_or_null("CliffCairn") == null:
-				failures.append("cliffside missing CliffCairn")
-			elif tid == "tidal_bridge_run" and scenery.get_node_or_null("NorthBridge") == null:
-				failures.append("tidal missing NorthBridge")
-			elif tid == "seaglass_switchback" and scenery.get_node_or_null("SeaglassSpire") == null:
-				failures.append("seaglass missing SeaglassSpire")
+			elif want_coast != "" and scenery.get_node_or_null(want_coast) == null:
+				failures.append("%s missing %s" % [tid, want_coast])
+			if coast_course.get_node_or_null("WorldEnvironment") == null:
+				failures.append("%s missing WorldEnvironment lighting" % tid)
+			if coast_course.get_node_or_null("CoastFill") == null:
+				failures.append("%s missing CoastFill lighting" % tid)
 		coast_course.queue_free()
 	## Cup 5 Neon Night: four distinct championship_raceable courses.
 	var neon := TrackCatalogScript.load_cup("neon_night_cup")

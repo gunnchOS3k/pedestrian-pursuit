@@ -1,0 +1,24 @@
+{
+  "schema": "pp_independent_two_process/v1",
+  "INDEPENDENT_CLIENTS_RACED": false,
+  "local_darwin_attempt": {
+    "status": "blocked",
+    "godot_version": "4.7.1.stable.official",
+    "symptom": "SIGSEGV in mvk::SPIRVToMSLConverter at process start even with --rendering-method gl_compatibility --rendering-driver opengl3",
+    "log": "artifacts/independent_two_process/TWO_PROCESS_RACE.log",
+    "beatlink_contract_present": true,
+    "xvfb": "tools/bin/xvfb-run Darwin shim (CI uses real xvfb-run)"
+  },
+  "exact_head_ci_gate1": {
+    "sha": "3716bfdc6608d248a9e9d20cc868de6cae82a41f",
+    "url": "https://github.com/gunnchOS3k/pedestrian-pursuit/actions/runs/40806837123",
+    "status": "success",
+    "note": "Gate 1 godot-headless-no-false-green includes Checkout BeatLink + tools/run_game_session_race.sh two-process race with corrected lap honesty"
+  },
+  "honesty": {
+    "HUMAN_FUN_APPROVAL": false,
+    "HUMAN_COURSE_APPROVAL": false,
+    "fabricated": false
+  },
+  "generated_at": "2026-10-29T03:02:30Z"
+}

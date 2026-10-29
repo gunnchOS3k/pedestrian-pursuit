@@ -2,7 +2,7 @@
   "schema": "pp_audio_bank_manifest/v1",
   "status": "PROCEDURAL_FINAL",
   "license": "ORIGINAL_INTERNAL",
-  "count": 52,
+  "count": 60,
   "files": [
     {
       "id": "music.menu_theme",
@@ -263,6 +263,46 @@
       "id": "ambience.transit_spiral",
       "path": "assets/audio/ambience/transit_spiral.wav",
       "sha256": "70be3fd18e1efa2495ae80ad8681ac4b212402f9260e3c461376a3b4e52f8181"
+    },
+    {
+      "id": "music.race.saltline_boardwalk",
+      "path": "assets/audio/music/saltline_boardwalk_race.wav",
+      "sha256": "2e940365aa1629a5cd7dedc65db772b8424163fbccce425fcd54a15fe4b58b02"
+    },
+    {
+      "id": "ambience.saltline_boardwalk",
+      "path": "assets/audio/ambience/saltline_boardwalk.wav",
+      "sha256": "b7baca2be903313840ae89662d4333196940ccbed7b25dc8382a25e22dbc34a9"
+    },
+    {
+      "id": "music.race.cliffside_draft",
+      "path": "assets/audio/music/cliffside_draft_race.wav",
+      "sha256": "db1f7a6f6d8391586f0c0164f3e1d5bf21a445c52bae1b7c44122c925ae0ed23"
+    },
+    {
+      "id": "ambience.cliffside_draft",
+      "path": "assets/audio/ambience/cliffside_draft.wav",
+      "sha256": "3a84997031b3b3e4bead8698e53318df606ea7d46b98ad4349a845100647c5d7"
+    },
+    {
+      "id": "music.race.tidal_bridge_run",
+      "path": "assets/audio/music/tidal_bridge_run_race.wav",
+      "sha256": "d102af2e94a623131bdf3bcdc2a6aba2ce87f96ce4e5f4361fc3ef6e5a793e48"
+    },
+    {
+      "id": "ambience.tidal_bridge_run",
+      "path": "assets/audio/ambience/tidal_bridge_run.wav",
+      "sha256": "c7b56477860ba1ea92d07a6f9d95963ba906acc35beb28e6d2ffbc1259af4ab6"
+    },
+    {
+      "id": "music.race.seaglass_switchback",
+      "path": "assets/audio/music/seaglass_switchback_race.wav",
+      "sha256": "9ddf3cc0d415f0fa4e65e6969c26886661f3d30450017c9d28e4980ffd6c9d6a"
+    },
+    {
+      "id": "ambience.seaglass_switchback",
+      "path": "assets/audio/ambience/seaglass_switchback.wav",
+      "sha256": "d6b7a3f19694e4e2453f15c086a4da00bf64bdd3edc296b595ca8ea27da25c8c"
     }
   ]
 }

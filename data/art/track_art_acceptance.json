@@ -108,33 +108,33 @@
     {
       "id": "saltline_boardwalk",
       "runtime_status": "raceable",
-      "geometry_status": "championship_raceable",
+      "geometry_status": "championship_upgraded",
       "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-      "final_track_art_status": "track_art_pending",
+      "final_track_art_status": "track_art_candidate",
       "human_track_art_approved": false
     },
     {
       "id": "cliffside_draft",
       "runtime_status": "raceable",
-      "geometry_status": "championship_raceable",
+      "geometry_status": "championship_upgraded",
       "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-      "final_track_art_status": "track_art_pending",
+      "final_track_art_status": "track_art_candidate",
       "human_track_art_approved": false
     },
     {
       "id": "tidal_bridge_run",
       "runtime_status": "raceable",
-      "geometry_status": "championship_raceable",
+      "geometry_status": "championship_upgraded",
       "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-      "final_track_art_status": "track_art_pending",
+      "final_track_art_status": "track_art_candidate",
       "human_track_art_approved": false
     },
     {
       "id": "seaglass_switchback",
       "runtime_status": "raceable",
-      "geometry_status": "championship_raceable",
+      "geometry_status": "championship_upgraded",
       "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-      "final_track_art_status": "track_art_pending",
+      "final_track_art_status": "track_art_candidate",
       "human_track_art_approved": false
     },
     {
@@ -267,8 +267,8 @@
     }
   ],
   "counts": {
-    "final_track_art_candidate": 8,
-    "final_track_art_pending": 24,
+    "final_track_art_candidate": 16,
+    "final_track_art_pending": 16,
     "raceable": 32
   }
 }

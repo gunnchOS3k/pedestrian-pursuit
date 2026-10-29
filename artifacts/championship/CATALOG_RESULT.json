@@ -3,26 +3,26 @@
   "tracks": 32,
   "raceable": 32,
   "geometry": {
-    "championship_upgraded": 8,
-    "championship_raceable": 24,
+    "championship_upgraded": 16,
+    "championship_raceable": 16,
     "championship_stub_raceable": 0
   },
   "final_track_art": {
-    "track_art_candidate": 8,
-    "track_art_pending": 24
+    "track_art_candidate": 16,
+    "track_art_pending": 16
   },
   "human_approvals_false": true,
   "production_batch": {
     "cups_1_2_upgraded": 8,
-    "cup_3_metro_motion_raceable": 4,
-    "cup_4_kinetic_coast_raceable": 4,
+    "cup_3_metro_motion_upgraded_candidates": 4,
+    "cup_4_kinetic_coast_upgraded_candidates": 4,
     "cup_5_neon_night_raceable": 4,
     "cup_6_skyline_relay_raceable": 4,
     "cup_7_archive_relay_raceable": 4,
     "cup_8_world_wonder_raceable": 4,
     "stubs_remaining": 0
   },
-  "next_cup_batch": "none — all 8 cups championship geometry complete",
-  "remaining_gaps": "track_art_pending 24/32; commercial final-art approvals 0; 8p commercial polish not claimed",
+  "next_cup_batch": "neon_night_cup toward track_art_candidate with NeonFill env/collision/audio",
+  "remaining_gaps": "track_art_pending 16/32; commercial final-art approvals 0; 8p commercial polish not claimed",
   "not_v1": true
 }

@@ -7,8 +7,8 @@
   "theme": "seaglass_switchback",
   "description": "Tight seaglass switchbacks with banked hairpins, glass-shard rails, and a risky canyon cut.",
   "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-  "geometry_status": "championship_raceable",
-  "final_track_art_status": "track_art_pending",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
   "human_track_art_approved": false,
   "lane_width": 13.5,
   "guard_rails": true,
@@ -162,6 +162,21 @@
   ],
   "elevation_profile": "switchback_steps",
   "bank_bias": 0.12,
-  "geometry_note": "Kinetic Coast production batch \u2014 distinct raceable geometry; track art still pending (not commercial).",
-  "camera_identity": "coast_chase"
+  "geometry_note": "Kinetic Coast upgraded batch \u2014 real env/collision/audio candidates; not commercial final art.",
+  "camera_identity": "coast_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "Coast collision hazards are off-line rocks; do not claim human commercial art approval."
+  ]
 }
