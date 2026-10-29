@@ -482,7 +482,7 @@
         "headless line-steer \u2260 human fun proof"
       ],
       "severity": "high",
-      "sha": "4641ba0ace87004b878eac27f44e4b6a045ea58e",
+      "sha": "8da5e1b6e2af047369bcfad9c1a7dfb4a50b2e20",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
       "notes": "Cups 4\u20138 observer/gate expanded; lane/bounce capped; high-span elevation softened to [0.6,2.4]; postsoft cups4\u20138 20/20 RESULTS_PATH."
