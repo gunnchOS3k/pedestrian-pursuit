@@ -14,7 +14,7 @@
   "phase_summary": {
     "cursor_complete": {
       "status": "in_progress",
-      "notes": "Digital depth advancing; Cursor Complete not claimed. Cups 3\u20138 camera already deepened prior tip \u2014 this pass binds RTM + env landmark sculpting."
+      "notes": "Cups 1\u20138 headless full-race RESULTS_PATH local; COURSE_ACCEPTED/HUMAN/RC2/V1 false; Cursor Complete not claimed."
     },
     "codex_independently_verified": {
       "status": "not_started"
@@ -448,8 +448,8 @@
     {
       "req_id": "PP-RTM-15",
       "owner": "eng/cursor-packet-s3-cups-20261029",
-      "expected_behavior": "Cups 1\u20132 genuine full-race RESULTS_PATH; Cup 3 Metro Motion four-track full-race RESULTS_PATH via RACE_OBSERVE_MODE=cup3; cups 4\u20138 env elevated but full-race observer matrix still open.",
-      "verification_method": "verdant_race_acceptance_gate launch + cup3 suites; ChampionshipCatalogTest",
+      "expected_behavior": "Cups 1\u20138 genuine full-race RESULTS_PATH via RACE_OBSERVE_MODE launch/cup3/cup4\u2013cup8/cups4-8; COURSE_ACCEPTED remains false.",
+      "verification_method": "verdant_race_acceptance_gate launch + cup3 + cups4-8 suites; ChampionshipCatalogTest",
       "layers": [
         2,
         4,
@@ -463,27 +463,29 @@
       "automated_evidence": [
         "artifacts/quality_review/EIGHT_CUP_RACING_CAMERA_QUALITY.md",
         "tmp/observe-cup3-all.log",
-        "tmp/cup3-gate-report.txt"
+        "tmp/cup3-gate-report.txt",
+        "tmp/postsoft/observe-cups4-8-all.log",
+        "tmp/postsoft/cups4-8-gate-report.txt"
       ],
       "native_physical": {
         "status": "partial",
         "platforms": [
           "macos-godot-4.5-headless"
         ],
-        "notes": "Cup 3 Metro (sneaker_city/metro_pulse/crosswalk_canyon/transit_spiral) RESULTS_PATH=true under headless line-steer. COURSE_ACCEPTED remains false. Cups 4\u20138 full-race observer not yet expanded."
+        "notes": "Cups 3\u20138 (Metro+Kinetic+Neon+Skyline+Archive+Wonder = 24 tracks with cups1-2 launch separate) RESULTS_PATH=true under headless line-steer after path-Y/lane/bounce + elevation soften for cups4\u20138. COURSE_ACCEPTED remains false. HUMAN/RC2/V1 false."
       },
       "art_status": "wip",
       "limitations": [
         "COURSE_ACCEPTED false (human)",
         "candidate env \u2260 finished art",
-        "Cups 4\u20138 multi-track full-race CI matrix still open",
-        "HUMAN/RC2/V1 false"
+        "HUMAN/RC2/V1 false",
+        "headless line-steer \u2260 human fun proof"
       ],
       "severity": "high",
-      "sha": "c3e20ba5068b54d7387ce9077498e528c32a78a1",
+      "sha": "1e03916b4e471005c0de446ef70f72a312abd372",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
-      "notes": "Path Y lifted above void floor; metro lanes widened; bounce softened; cup3 observer/gate added. Cups 4\u20138 remain next."
+      "notes": "Cups 4\u20138 observer/gate expanded; lane/bounce capped; high-span elevation softened to [0.6,2.4]; postsoft cups4\u20138 20/20 RESULTS_PATH."
     }
   ]
 }
