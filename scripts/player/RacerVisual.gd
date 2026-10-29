@@ -37,6 +37,7 @@ var _backpack: MeshInstance3D
 var _accent_fx: MeshInstance3D
 var _name_label: Label3D
 var _speed_trail: GPUParticles3D
+var _sole_contact: GPUParticles3D
 var _wardrobe_root: Node3D
 var _phase: float = 0.0
 var _parent_body: CharacterBody3D
@@ -150,6 +151,8 @@ func set_boosting(active: bool) -> void:
 	_boosting = active
 	if _speed_trail != null:
 		_speed_trail.emitting = active
+	if _sole_contact != null:
+		_sole_contact.emitting = active
 	if active and profile:
 		set_pose_state(str(profile.boost_style), 0.35)
 	elif active:
@@ -201,6 +204,7 @@ func _rebuild() -> void:
 	_accent_fx = null
 	_name_label = null
 	_speed_trail = null
+	_sole_contact = null
 	_wardrobe_root = null
 	_build_figure()
 	_apply_modular_cosmetics()
@@ -404,7 +408,7 @@ func _build_figure() -> void:
 	_name_label.outline_modulate = Color(0, 0, 0, 0.8)
 	_name_label.outline_size = 4
 	add_child(_name_label)
-	## Footwear-forward speed trail — Kinetic Sole boost readability.
+	## Footwear-forward speed trail — tinted by material_family / archetype for chase-cam ID.
 	_speed_trail = GPUParticles3D.new()
 	_speed_trail.name = "KineticSoleTrail"
 	_speed_trail.position = Vector3(0.0, 0.2, 0.35)
@@ -419,7 +423,7 @@ func _build_figure() -> void:
 	trail_mat.gravity = Vector3(0.0, 0.4, 0.0)
 	trail_mat.scale_min = 0.08
 	trail_mat.scale_max = 0.22
-	trail_mat.color = Color(1.0, 0.42, 0.24, 0.75) if arch == "all_terrain" else accent_color
+	trail_mat.color = _footwear_trail_color(accent_color, arch)
 	_speed_trail.process_material = trail_mat
 	var trail_mesh := SphereMesh.new()
 	trail_mesh.radius = 0.12
@@ -432,6 +436,54 @@ func _build_figure() -> void:
 	elif visual_lod == 1:
 		_speed_trail.amount = mini(maxi(_speed_trail.amount, 1), 8)
 	add_child(_speed_trail)
+	## Secondary sole contact spark — denser for sticky/plate families at gameplay FOV.
+	_sole_contact = null
+	if visual_lod < 2 and not vehicle_id.is_empty():
+		_sole_contact = GPUParticles3D.new()
+		_sole_contact.name = "KineticSoleContact"
+		_sole_contact.position = Vector3(0.0, 0.05, 0.2)
+		_sole_contact.amount = 12
+		_sole_contact.lifetime = 0.28
+		_sole_contact.emitting = false
+		var contact_mat := ParticleProcessMaterial.new()
+		contact_mat.direction = Vector3(0.0, 0.6, 0.4)
+		contact_mat.spread = 28.0
+		contact_mat.initial_velocity_min = 0.6
+		contact_mat.initial_velocity_max = 2.2
+		contact_mat.gravity = Vector3(0.0, -1.2, 0.0)
+		contact_mat.scale_min = 0.04
+		contact_mat.scale_max = 0.12
+		contact_mat.color = trail_mat.color.lightened(0.15)
+		_sole_contact.process_material = contact_mat
+		var spark := BoxMesh.new()
+		spark.size = Vector3(0.08, 0.08, 0.08)
+		_sole_contact.draw_pass_1 = spark
+		add_child(_sole_contact)
+
+
+func _footwear_trail_color(fallback: Color, runner_arch: String) -> Color:
+	## Chase-cam readable trail tint from Kinetic Sole material_family / archetype.
+	var family := ShoeDataScript.material_family(vehicle_id) if not vehicle_id.is_empty() else ""
+	var march := _shoe_archetype()
+	if family.find("magma") >= 0 or family.find("cinder") >= 0 or march == "elemental_magma" or march == "tribute_ember":
+		return Color(1.0, 0.38, 0.12, 0.8)
+	if family.find("frost") >= 0 or family.find("azure") >= 0 or march == "elemental_frost" or march == "tribute_azure":
+		return Color(0.55, 0.85, 1.0, 0.78)
+	if family.find("volt") >= 0 or family.find("kinetic") >= 0 or march == "street_kinetic" or march == "tribute_volt":
+		return Color(0.25, 0.95, 0.9, 0.8)
+	if family.find("rail") >= 0 or march == "street_rail" or march == "tribute_orbit":
+		return Color(0.72, 0.48, 1.0, 0.78)
+	if family.find("mud") >= 0 or family.find("sand") >= 0 or march == "elemental_mud" or march == "elemental_sand":
+		return Color(0.72, 0.52, 0.28, 0.75)
+	if family.find("kelp") >= 0 or family.find("tide") >= 0 or march == "elemental_wet" or march == "elemental_dive":
+		return Color(0.25, 0.75, 0.85, 0.78)
+	if family.find("neon") >= 0 or family.find("bass") >= 0 or march.begins_with("crossover_"):
+		return Color(1.0, 0.35, 0.75, 0.8)
+	if family.find("null") >= 0 or march == "tribute_null":
+		return Color(0.55, 0.55, 0.62, 0.7)
+	if runner_arch == "all_terrain":
+		return Color(1.0, 0.42, 0.24, 0.75)
+	return Color(fallback.r, fallback.g, fallback.b, 0.75)
 
 
 func _apply_modular_cosmetics() -> void:

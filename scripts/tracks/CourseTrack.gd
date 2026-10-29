@@ -175,6 +175,50 @@ func _build_environment() -> void:
 		environment.glow_enabled = true
 		environment.glow_intensity = 0.48
 		environment.glow_bloom = 0.18
+	elif theme == "harbor_glass":
+		## Tideglass harbor — cool marine fill, wet specular fog.
+		environment.ambient_light_color = Color(0.72, 0.86, 0.92)
+		environment.ambient_light_energy = 0.94
+		environment.fog_enabled = true
+		environment.fog_light_color = Color(0.55, 0.75, 0.85)
+		environment.fog_density = 0.0034
+		environment.fog_aerial_perspective = 0.3
+		environment.glow_enabled = true
+		environment.glow_intensity = 0.3
+		environment.glow_bloom = 0.1
+	elif theme == "neon_yard":
+		## Neon switchyard — dusk violet with readable signal bloom.
+		environment.ambient_light_color = Color(0.4, 0.32, 0.55)
+		environment.ambient_light_energy = 0.74
+		environment.fog_enabled = true
+		environment.fog_light_color = Color(0.28, 0.18, 0.42)
+		environment.fog_density = 0.0038
+		environment.fog_aerial_perspective = 0.4
+		environment.glow_enabled = true
+		environment.glow_intensity = 0.58
+		environment.glow_bloom = 0.2
+	elif theme == "ridge_cloud":
+		## Cloudstep ridge — thin high-altitude air, cool deck fill.
+		environment.ambient_light_color = Color(0.78, 0.84, 0.95)
+		environment.ambient_light_energy = 1.0
+		environment.fog_enabled = true
+		environment.fog_light_color = Color(0.7, 0.78, 0.9)
+		environment.fog_density = 0.0024
+		environment.fog_aerial_perspective = 0.38
+		environment.glow_enabled = true
+		environment.glow_intensity = 0.28
+		environment.glow_bloom = 0.09
+	elif theme == "mesa_mirage":
+		## Mirage mesa — warm desert haze, long readable shadows.
+		environment.ambient_light_color = Color(0.95, 0.82, 0.65)
+		environment.ambient_light_energy = 1.05
+		environment.fog_enabled = true
+		environment.fog_light_color = Color(0.9, 0.7, 0.45)
+		environment.fog_density = 0.003
+		environment.fog_aerial_perspective = 0.28
+		environment.glow_enabled = true
+		environment.glow_intensity = 0.26
+		environment.glow_bloom = 0.08
 	elif theme in ["sneaker_city", "metro_pulse", "crosswalk_canyon", "transit_spiral"]:
 		## Metro Motion — cool dusk street fill with readable neon accents.
 		environment.ambient_light_color = Color(0.55, 0.62, 0.78)
@@ -307,6 +351,57 @@ func _build_environment() -> void:
 		forge.light_color = Color(1.0, 0.28, 0.08)
 		forge.omni_range = 45.0
 		add_child(forge)
+	elif theme == "harbor_glass":
+		sun.rotation_degrees = Vector3(-52.0, 28.0, 0.0)
+		sun.light_energy = 1.4
+		sun.light_color = Color(0.95, 0.98, 1.0)
+		var fill := OmniLight3D.new()
+		fill.name = "HarborFill"
+		fill.position = Vector3(0.0, 12.0, 0.0)
+		fill.light_energy = 2.3
+		fill.light_color = Color(0.45, 0.8, 0.95)
+		fill.omni_range = 100.0
+		add_child(fill)
+	elif theme == "neon_yard":
+		sun.rotation_degrees = Vector3(-30.0, 12.0, 0.0)
+		sun.light_energy = 0.58
+		sun.light_color = Color(0.55, 0.48, 0.85)
+		var fill := OmniLight3D.new()
+		fill.name = "NeonYardFill"
+		fill.position = Vector3(0.0, 10.0, 0.0)
+		fill.light_energy = 3.2
+		fill.light_color = _color("accent_color", Color(1.0, 0.35, 0.75))
+		fill.omni_range = 105.0
+		add_child(fill)
+		var bounce := OmniLight3D.new()
+		bounce.name = "NeonYardBounce"
+		bounce.position = Vector3(-8.0, 3.5, 6.0)
+		bounce.light_energy = 1.6
+		bounce.light_color = Color(0.35, 0.75, 1.0)
+		bounce.omni_range = 50.0
+		add_child(bounce)
+	elif theme == "ridge_cloud":
+		sun.rotation_degrees = Vector3(-60.0, -18.0, 0.0)
+		sun.light_energy = 1.5
+		sun.light_color = Color(0.92, 0.96, 1.0)
+		var fill := OmniLight3D.new()
+		fill.name = "RidgeFill"
+		fill.position = Vector3(0.0, 15.0, 0.0)
+		fill.light_energy = 2.2
+		fill.light_color = Color(0.7, 0.82, 0.98)
+		fill.omni_range = 110.0
+		add_child(fill)
+	elif theme == "mesa_mirage":
+		sun.rotation_degrees = Vector3(-55.0, 48.0, 0.0)
+		sun.light_energy = 1.55
+		sun.light_color = Color(1.0, 0.9, 0.7)
+		var fill := OmniLight3D.new()
+		fill.name = "MesaFill"
+		fill.position = Vector3(0.0, 14.0, 0.0)
+		fill.light_energy = 2.1
+		fill.light_color = Color(1.0, 0.72, 0.4)
+		fill.omni_range = 105.0
+		add_child(fill)
 	elif theme in ["sneaker_city", "metro_pulse", "crosswalk_canyon", "transit_spiral"]:
 		sun.rotation_degrees = Vector3(-40.0, -50.0, 0.0)
 		sun.light_energy = 1.05
@@ -483,6 +578,33 @@ func _add_track_segment(
 		track_mat.emission_enabled = true
 		track_mat.emission = Color(0.55, 0.18, 0.06)
 		track_mat.emission_energy_multiplier = 0.18
+	elif theme == "harbor_glass":
+		## Wet pier deck — cool specular boardwalk read.
+		track_mat = track_mat.duplicate()
+		track_mat.roughness = 0.48
+		track_mat.metallic = 0.1
+		track_mat.albedo_color = track_mat.albedo_color.lerp(Color(0.3, 0.42, 0.48), 0.24)
+	elif theme == "neon_yard":
+		## Switchyard asphalt — wet night specular with accent bloom.
+		track_mat = track_mat.duplicate()
+		track_mat.roughness = 0.36
+		track_mat.metallic = 0.2
+		track_mat.albedo_color = track_mat.albedo_color.lerp(Color(0.12, 0.1, 0.18), 0.3)
+		track_mat.emission_enabled = true
+		track_mat.emission = _color("accent_color", Color(1.0, 0.35, 0.75)) * 0.16
+		track_mat.emission_energy_multiplier = 0.32
+	elif theme == "ridge_cloud":
+		## Cloud ridge membrane — cool metallic deck.
+		track_mat = track_mat.duplicate()
+		track_mat.roughness = 0.52
+		track_mat.metallic = 0.26
+		track_mat.albedo_color = track_mat.albedo_color.lerp(Color(0.36, 0.4, 0.48), 0.22)
+	elif theme == "mesa_mirage":
+		## Sandstone mesa path — dusty warm grit.
+		track_mat = track_mat.duplicate()
+		track_mat.roughness = 0.88
+		track_mat.metallic = 0.02
+		track_mat.albedo_color = track_mat.albedo_color.lerp(Color(0.62, 0.42, 0.24), 0.28)
 	elif theme in ["sneaker_city", "metro_pulse", "crosswalk_canyon", "transit_spiral"]:
 		track_mat = track_mat.duplicate()
 		track_mat.roughness = 0.5
@@ -1201,15 +1323,71 @@ func _build_metro_scenery(parent: Node3D) -> void:
 
 
 func _build_landmark_markers(parent: Node3D) -> void:
-	## Data-authored landmark ids → simple readable props near the racing line.
+	## Data-authored landmark ids → distinct racing-camera props (not identical palette boxes).
 	var landmarks: Array = _data.get("landmarks", [])
 	if landmarks.is_empty() or _course_points.is_empty():
 		return
 	var accent := _color("accent_color", Color.WHITE)
 	for i in range(mini(landmarks.size(), _course_points.size())):
+		var landmark_id := str(landmarks[i])
+		if landmark_id.is_empty():
+			continue
+		## Skip if scenery already authored a same-named node (avoid double props).
+		if parent.get_node_or_null(_landmark_node_name(landmark_id)) != null:
+			continue
 		var p: Vector3 = _course_points[i]
-		var marker := Vector3(p.x * 1.15, p.y + 3.5, p.z * 1.15)
-		_add_visual_box(parent, marker, Vector3(2.0, 4.0, 2.0), accent.lightened(0.15))
+		var root := Node3D.new()
+		root.name = _landmark_node_name(landmark_id)
+		root.position = Vector3(p.x * 1.18, p.y, p.z * 1.18)
+		parent.add_child(root)
+		_sculpt_landmark(root, landmark_id, accent)
+
+
+func _landmark_node_name(landmark_id: String) -> String:
+	var parts := landmark_id.split("_")
+	var out := ""
+	for part in parts:
+		if part.is_empty():
+			continue
+		out += part.capitalize()
+	return out if not out.is_empty() else "Landmark"
+
+
+func _sculpt_landmark(root: Node3D, landmark_id: String, accent: Color) -> void:
+	## Distinct silhouettes so chase-cam reads course identity, not a box field.
+	match landmark_id:
+		"mist_columns", "tide_posts", "ledge_rails", "dune_rails":
+			for n in range(3):
+				_add_visual_cylinder(
+					root,
+					Vector3(float(n - 1) * 2.2, 3.2, 0.0),
+					0.55,
+					6.4,
+					accent.lightened(0.08),
+					true
+				)
+		"start_arch", "pier_arch", "mesa_arch", "cloud_gate", "void_gate":
+			_add_visual_box(root, Vector3(-4.5, 3.0, 0.0), Vector3(1.0, 6.0, 1.0), Color(0.35, 0.35, 0.4))
+			_add_visual_box(root, Vector3(4.5, 3.0, 0.0), Vector3(1.0, 6.0, 1.0), Color(0.35, 0.35, 0.4))
+			_add_visual_box(root, Vector3(0.0, 6.2, 0.0), Vector3(10.0, 0.7, 1.1), accent, true)
+		"river_bank", "fence_line", "basalt_walls":
+			_add_visual_box(root, Vector3(0.0, 1.2, 0.0), Vector3(10.0, 2.4, 1.6), accent.darkened(0.25))
+			_add_visual_box(root, Vector3(0.0, 2.6, 0.4), Vector3(8.0, 0.35, 0.45), accent, true)
+		"barn_silhouette", "glass_shed", "switch_tower":
+			_add_visual_box(root, Vector3(0.0, 2.4, 0.0), Vector3(6.5, 4.8, 5.0), accent.darkened(0.2))
+			_add_visual_box(root, Vector3(0.0, 5.2, 0.0), Vector3(7.2, 0.8, 5.6), accent.lightened(0.1))
+		"windmill", "ridge_cairn", "mirage_spire", "prism_spires":
+			_add_visual_cylinder(root, Vector3(0.0, 4.5, 0.0), 1.1, 9.0, accent, true)
+			_add_visual_sphere(root, Vector3(0.0, 9.4, 0.0), 1.6, accent.lightened(0.2), true)
+		"forge_towers", "signal_gantry":
+			_add_visual_box(root, Vector3(-3.0, 4.0, 0.0), Vector3(1.4, 8.0, 1.4), Color(0.3, 0.3, 0.32))
+			_add_visual_box(root, Vector3(3.0, 4.0, 0.0), Vector3(1.4, 8.0, 1.4), Color(0.3, 0.3, 0.32))
+			_add_visual_box(root, Vector3(0.0, 8.2, 0.0), Vector3(8.0, 0.7, 1.2), accent, true)
+		"ember_braziers", "neon_hoops", "luminous_ribbon":
+			_add_visual_cylinder(root, Vector3(0.0, 1.2, 0.0), 1.4, 2.4, Color(0.25, 0.22, 0.2))
+			_add_visual_sphere(root, Vector3(0.0, 3.0, 0.0), 1.3, accent, true)
+		_:
+			_add_visual_box(root, Vector3(0.0, 2.5, 0.0), Vector3(2.2, 5.0, 2.2), accent.lightened(0.12))
 
 
 func _build_cascade_scenery(parent: Node3D) -> void:
@@ -1306,7 +1484,7 @@ func _build_cascade_scenery(parent: Node3D) -> void:
 	mist.draw_pass_1 = mist_mesh
 	mist.emitting = true
 	parent.add_child(mist)
-
+	_build_landmark_markers(parent)
 
 
 func _build_ranch_scenery(parent: Node3D) -> void:
@@ -1433,6 +1611,7 @@ func _build_ranch_scenery(parent: Node3D) -> void:
 	dust.draw_pass_1 = dust_mesh
 	dust.emitting = true
 	parent.add_child(dust)
+	_build_landmark_markers(parent)
 
 
 func _build_prism_scenery(parent: Node3D) -> void:
@@ -1557,6 +1736,7 @@ func _build_prism_scenery(parent: Node3D) -> void:
 	shards.draw_pass_1 = shard_mesh
 	shards.emitting = true
 	parent.add_child(shards)
+	_build_landmark_markers(parent)
 
 
 func _build_ember_scenery(parent: Node3D) -> void:
@@ -1681,17 +1861,26 @@ func _build_ember_scenery(parent: Node3D) -> void:
 	embers.draw_pass_1 = ember_mesh
 	embers.emitting = true
 	parent.add_child(embers)
+	_build_landmark_markers(parent)
 
 
 func _build_harbor_scenery(parent: Node3D) -> void:
-	## Procedural-final launch harbor presentation.
+	## Tideglass Harbor — pier arch, tide posts, glass shed, off-line collision.
+	var accent := _color("accent_color", Color(0.45, 0.85, 0.95))
 	_add_visual_box(
 		parent,
 		Vector3(0.0, -0.78, 0.0),
 		Vector3(150.0, 0.18, 150.0),
 		_color("backdrop_color", Color(0.2, 0.35, 0.42))
 	)
+	_add_visual_cylinder(parent, Vector3(0.0, -0.5, 0.0), 34.0, 0.2, Color(0.18, 0.55, 0.7), true)
 	_add_visual_box(parent, Vector3(0, -0.4, 0), Vector3(90.0, 0.2, 90.0), Color(0.25, 0.55, 0.7), true)
+	_add_named_coast_prop(parent, "PierArch", Vector3(0.0, 0.0, 38.0), accent)
+	_add_visual_box(parent, Vector3(-9.0, 3.0, 38.0), Vector3(1.2, 6.0, 1.2), Color(0.45, 0.35, 0.25))
+	_add_visual_box(parent, Vector3(9.0, 3.0, 38.0), Vector3(1.2, 6.0, 1.2), Color(0.45, 0.35, 0.25))
+	_add_visual_box(parent, Vector3(0.0, 6.2, 38.0), Vector3(20.0, 1.0, 1.4), accent, true)
+	_add_named_coast_prop(parent, "GlassShed", Vector3(-26.0, 0.0, 8.0), Color(0.7, 0.85, 0.9))
+	_add_visual_box(parent, Vector3(-26.0, 2.2, 8.0), Vector3(10.0, 4.4, 6.0), Color(0.55, 0.7, 0.78), true)
 	for i in range(8):
 		var a := float(i) * 0.785
 		_add_visual_cylinder(
@@ -1704,54 +1893,132 @@ func _build_harbor_scenery(parent: Node3D) -> void:
 	for position in [Vector3(-20, 2, 10), Vector3(22, 2, -8), Vector3(8, 2, 24), Vector3(-12, 2, -18)]:
 		_add_visual_box(parent, position, Vector3(8.0, 1.2, 2.0), Color(0.55, 0.4, 0.28))
 		_add_visual_box(parent, position + Vector3(0, 1.4, 0), Vector3(1.0, 2.8, 1.0), Color(0.7, 0.72, 0.75))
+	_add_coast_hazard_rock(parent, "TideBoulder", Vector3(6.0, 0.9, 5.0), Vector3(4.2, 2.2, 3.6))
+	var spray := GPUParticles3D.new()
+	spray.name = "HarborSpray"
+	spray.position = Vector3(0.0, 2.0, 0.0)
+	spray.amount = 36
+	spray.lifetime = 2.8
+	spray.visibility_aabb = AABB(Vector3(-40, -4, -40), Vector3(80, 28, 80))
+	var spray_mat := ParticleProcessMaterial.new()
+	spray_mat.direction = Vector3(0.1, 1.0, 0.05)
+	spray_mat.spread = 30.0
+	spray_mat.initial_velocity_min = 0.4
+	spray_mat.initial_velocity_max = 1.8
+	spray_mat.gravity = Vector3(0.0, 0.12, 0.0)
+	spray_mat.scale_min = 0.2
+	spray_mat.scale_max = 0.55
+	spray_mat.color = Color(0.75, 0.9, 0.98, 0.35)
+	spray.process_material = spray_mat
+	var spray_mesh := SphereMesh.new()
+	spray_mesh.radius = 0.28
+	spray_mesh.height = 0.56
+	spray.draw_pass_1 = spray_mesh
+	spray.emitting = true
+	parent.add_child(spray)
+	_build_landmark_markers(parent)
 
 
 func _build_neon_scenery(parent: Node3D) -> void:
-	## Procedural-final launch neon yard presentation.
+	## Neon Switchyard — signal gantry, switch tower, neon hoops, off-line crates.
+	var accent := _color("accent_color", Color(1.0, 0.35, 0.75))
 	_add_visual_box(
 		parent, Vector3(0.0, -0.78, 0.0), Vector3(140.0, 0.18, 140.0), Color(0.08, 0.09, 0.12)
 	)
+	_add_visual_cylinder(parent, Vector3(0.0, -0.55, 0.0), 30.0, 0.16, Color(0.12, 0.1, 0.18), true)
+	_add_named_coast_prop(parent, "SignalGantry", Vector3(0.0, 0.0, 36.0), accent)
+	_add_visual_box(parent, Vector3(-10.0, 5.0, 36.0), Vector3(1.3, 10.0, 1.3), Color(0.35, 0.36, 0.4))
+	_add_visual_box(parent, Vector3(10.0, 5.0, 36.0), Vector3(1.3, 10.0, 1.3), Color(0.35, 0.36, 0.4))
+	_add_visual_box(parent, Vector3(0.0, 10.2, 36.0), Vector3(22.0, 0.9, 1.4), accent, true)
+	_add_named_coast_prop(parent, "SwitchTower", Vector3(-32.0, 0.0, 0.0), Color(0.45, 0.42, 0.5))
+	_add_visual_box(parent, Vector3(-32.0, 6.0, 0.0), Vector3(5.0, 12.0, 5.0), Color(0.28, 0.26, 0.32))
+	_add_visual_box(parent, Vector3(-32.0, 12.5, 0.0), Vector3(6.5, 1.0, 6.5), accent, true)
 	for position in [Vector3(-16, 4, 0), Vector3(16, 4, 0), Vector3(0, 5, -20), Vector3(0, 5, 20), Vector3(-22, 3, 16), Vector3(22, 3, -16)]:
 		_add_visual_box(
-			parent, position, Vector3(1.2, 8.0, 1.2), _color("accent_color", Color.MAGENTA), true
+			parent, position, Vector3(1.2, 8.0, 1.2), accent, true
 		)
 		_add_visual_box(
 			parent,
 			position + Vector3(0, 4.2, 0),
 			Vector3(6.0, 0.35, 0.35),
-			_color("accent_color", Color.CYAN),
+			Color(0.25, 0.85, 0.95),
 			true
 		)
+	_add_coast_hazard_rock(parent, "YardCrate", Vector3(5.0, 0.85, 4.0), Vector3(3.8, 2.0, 3.2))
+	_build_landmark_markers(parent)
 
 
 func _build_ridge_scenery(parent: Node3D) -> void:
-	## Procedural-final launch ridge presentation.
+	## Cloudstep Ridge — cairn, cloud gate, ledge rails, off-line rock.
+	var accent := _color("accent_color", Color(0.7, 0.85, 1.0))
 	_add_visual_box(
 		parent,
 		Vector3(0.0, -0.78, 0.0),
 		Vector3(150.0, 0.18, 150.0),
 		_color("backdrop_color", Color(0.35, 0.42, 0.48))
 	)
+	_add_visual_cylinder(parent, Vector3(0.0, -0.55, 0.0), 32.0, 0.18, Color(0.55, 0.65, 0.78), true)
+	_add_named_coast_prop(parent, "RidgeCairn", Vector3(0.0, 0.0, -40.0), Color(0.55, 0.58, 0.62))
+	_add_visual_box(parent, Vector3(0.0, 5.0, -40.0), Vector3(3.2, 10.0, 3.2), Color(0.5, 0.52, 0.56))
+	_add_visual_box(parent, Vector3(0.0, 10.8, -40.0), Vector3(5.5, 1.2, 5.5), accent, true)
+	_add_named_coast_prop(parent, "CloudGate", Vector3(0.0, 0.0, 36.0), accent)
+	_add_visual_box(parent, Vector3(-9.0, 4.0, 36.0), Vector3(1.4, 8.0, 1.4), Color(0.45, 0.5, 0.58))
+	_add_visual_box(parent, Vector3(9.0, 4.0, 36.0), Vector3(1.4, 8.0, 1.4), Color(0.45, 0.5, 0.58))
+	_add_visual_box(parent, Vector3(0.0, 8.2, 36.0), Vector3(20.0, 1.0, 1.4), accent, true)
 	for position in [Vector3(-24, 3, -10), Vector3(20, 4, 12), Vector3(4, 5, -22), Vector3(-8, 6, 18), Vector3(28, 3, 6)]:
 		_add_visual_box(parent, position, Vector3(14.0, 2.0, 6.0), Color(0.55, 0.58, 0.62))
 		_add_visual_box(
 			parent, position + Vector3(0, 2.2, 0), Vector3(10.0, 0.35, 4.0), Color(0.7, 0.78, 0.85), true
 		)
+	_add_coast_hazard_rock(parent, "LedgeRock", Vector3(-6.0, 1.0, 6.0), Vector3(4.5, 2.6, 3.8))
+	_build_landmark_markers(parent)
 
 
 func _build_mesa_scenery(parent: Node3D) -> void:
-	## Procedural-final launch mesa presentation.
+	## Mirage Mesa — sandstone arch, mirage spire, dune rails, off-line boulder.
+	var accent := _color("accent_color", Color(1.0, 0.72, 0.35))
 	_add_visual_box(
 		parent,
 		Vector3(0.0, -0.78, 0.0),
 		Vector3(160.0, 0.18, 160.0),
 		_color("backdrop_color", Color(0.65, 0.4, 0.2))
 	)
+	_add_visual_cylinder(parent, Vector3(0.0, -0.55, 0.0), 34.0, 0.16, Color(0.78, 0.55, 0.3), false)
+	_add_named_coast_prop(parent, "MesaArch", Vector3(0.0, 0.0, 36.0), accent)
+	_add_visual_box(parent, Vector3(-10.0, 4.0, 36.0), Vector3(1.6, 8.0, 1.6), Color(0.7, 0.48, 0.28))
+	_add_visual_box(parent, Vector3(10.0, 4.0, 36.0), Vector3(1.6, 8.0, 1.6), Color(0.7, 0.48, 0.28))
+	_add_visual_box(parent, Vector3(0.0, 8.2, 36.0), Vector3(22.0, 1.1, 1.5), accent, true)
+	_add_named_coast_prop(parent, "MirageSpire", Vector3(0.0, 0.0, -38.0), Color(0.95, 0.7, 0.4))
+	_add_visual_cylinder(parent, Vector3(0.0, 7.0, -38.0), 2.4, 14.0, accent, true)
 	for position in [Vector3(-28, 4, 8), Vector3(26, 5, -14), Vector3(0, 6, 28), Vector3(-14, 3, -24), Vector3(18, 4, 20)]:
 		_add_visual_box(parent, position, Vector3(10.0, 8.0, 10.0), Color(0.72, 0.48, 0.28))
 		_add_visual_cylinder(
 			parent, position + Vector3(0, 5.0, 0), 3.5, 1.2, Color(0.85, 0.55, 0.3), true
 		)
+	_add_coast_hazard_rock(parent, "DuneBoulder", Vector3(5.0, 1.0, 5.0), Vector3(4.5, 2.4, 4.0))
+	var heat := GPUParticles3D.new()
+	heat.name = "MesaHeat"
+	heat.position = Vector3(0.0, 3.0, 0.0)
+	heat.amount = 28
+	heat.lifetime = 3.5
+	heat.visibility_aabb = AABB(Vector3(-40, -4, -40), Vector3(80, 28, 80))
+	var heat_mat := ParticleProcessMaterial.new()
+	heat_mat.direction = Vector3(0.0, 1.0, 0.0)
+	heat_mat.spread = 25.0
+	heat_mat.initial_velocity_min = 0.3
+	heat_mat.initial_velocity_max = 1.4
+	heat_mat.gravity = Vector3(0.0, 0.08, 0.0)
+	heat_mat.scale_min = 0.25
+	heat_mat.scale_max = 0.7
+	heat_mat.color = Color(1.0, 0.85, 0.55, 0.22)
+	heat.process_material = heat_mat
+	var heat_mesh := SphereMesh.new()
+	heat_mesh.radius = 0.32
+	heat_mesh.height = 0.64
+	heat.draw_pass_1 = heat_mesh
+	heat.emitting = true
+	parent.add_child(heat)
+	_build_landmark_markers(parent)
 
 
 func _build_start_marker() -> void:

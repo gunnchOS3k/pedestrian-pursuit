@@ -163,7 +163,10 @@
     "shortcuts": true,
     "rails": true,
     "visual_final": true,
-    "kinetic_sole_pass": "emberkeep_bolt_harbor_v1"
+    "kinetic_sole_pass": "emberkeep_bolt_harbor_v1",
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
   },
   "geometry_status": "championship_upgraded",
   "final_track_art_status": "track_art_candidate",
@@ -174,5 +177,6 @@
     "forge_towers",
     "basalt_walls",
     "ember_braziers"
-  ]
+  ],
+  "camera_identity": "ember_chase"
 }

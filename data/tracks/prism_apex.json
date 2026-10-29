@@ -165,7 +165,10 @@
     "shortcuts": true,
     "rails": true,
     "visual_final": true,
-    "kinetic_sole_pass": "prism_solen_pike_v1"
+    "kinetic_sole_pass": "prism_solen_pike_v1",
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
   },
   "geometry_status": "championship_upgraded",
   "final_track_art_status": "track_art_candidate",
@@ -176,5 +179,6 @@
     "prism_spires",
     "void_gate",
     "luminous_ribbon"
-  ]
+  ],
+  "camera_identity": "prism_chase"
 }

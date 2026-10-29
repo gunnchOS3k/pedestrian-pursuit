@@ -65,7 +65,7 @@ func _run() -> void:
 		elif course.get_checkpoints().size() < 4:
 			failures.append("checkpoints %s" % sample)
 		course.queue_free()
-	## Cups 1–2: championship_upgraded with landmarks; collision stays lap-safe.
+	## Cups 1–2: championship_upgraded with landmarks + chase cameras; collision stays lap-safe.
 	var prism := TrackCatalogScript.load_track("prism_apex")
 	if str(prism.get("geometry_status", "")) != "championship_upgraded":
 		failures.append("prism_apex not championship_upgraded")
@@ -73,6 +73,40 @@ func _run() -> void:
 		failures.append("prism_apex missing landmarks")
 	if absf(float(prism.get("bank_bias", 0.0))) < 0.05:
 		failures.append("prism_apex missing bank metadata")
+	var sole_stride_cams := {
+		"verdant_cascade_circuit": "cascade_chase",
+		"cloverwind_ranch": "ranch_chase",
+		"prism_apex": "prism_chase",
+		"emberkeep_gauntlet": "ember_chase",
+		"tideglass_harbor": "harbor_chase",
+		"neon_switchyard": "neon_yard_chase",
+		"cloudstep_ridge": "ridge_chase",
+		"mirage_mesa": "mesa_chase",
+	}
+	var sole_stride_fill := {
+		"verdant_cascade_circuit": "CascadeFill",
+		"cloverwind_ranch": "RanchFill",
+		"prism_apex": "PrismFill",
+		"emberkeep_gauntlet": "EmberFill",
+		"tideglass_harbor": "HarborFill",
+		"neon_switchyard": "NeonYardFill",
+		"cloudstep_ridge": "RidgeFill",
+		"mirage_mesa": "MesaFill",
+	}
+	for tid in sole_stride_cams.keys():
+		var ss := TrackCatalogScript.load_track(str(tid))
+		if str(ss.get("camera_identity", "")) != str(sole_stride_cams[tid]):
+			failures.append("%s missing camera %s" % [tid, sole_stride_cams[tid]])
+		if bool(ss.get("human_track_art_approved", false)):
+			failures.append("%s commercial art leak" % tid)
+		var ss_course: Node = CourseTrackScript.new()
+		root.add_child(ss_course)
+		ss_course.configure(ss)
+		if not ss_course.build():
+			failures.append("build sole/stride %s" % tid)
+		elif ss_course.get_node_or_null(str(sole_stride_fill[tid])) == null:
+			failures.append("%s missing %s lighting" % [tid, sole_stride_fill[tid]])
+		ss_course.queue_free()
 	## Cup 3 Metro Motion: elevation + distinct scenery; art may be candidate (not commercial).
 	var metro_landmarks := {
 		"sneaker_city_sprintway": "BillboardArch",

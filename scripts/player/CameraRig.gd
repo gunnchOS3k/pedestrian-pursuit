@@ -44,6 +44,62 @@ func set_boosting(active: bool) -> void:
 func apply_course_identity(identity: String) -> void:
 	## Per-course chase personality without changing collision or lap rules.
 	match str(identity):
+		"cascade_chase":
+			base_fov = 70.0
+			max_fov = 90.0
+			base_spring_length = 7.4
+			max_spring_length = 11.8
+			base_look_ahead = 2.3
+			max_look_ahead = 6.2
+		"ranch_chase":
+			base_fov = 72.0
+			max_fov = 91.0
+			base_spring_length = 7.8
+			max_spring_length = 12.4
+			base_look_ahead = 2.5
+			max_look_ahead = 6.8
+		"prism_chase":
+			base_fov = 69.0
+			max_fov = 93.0
+			base_spring_length = 7.0
+			max_spring_length = 11.2
+			base_look_ahead = 2.2
+			max_look_ahead = 6.0
+		"ember_chase":
+			base_fov = 68.0
+			max_fov = 92.0
+			base_spring_length = 7.2
+			max_spring_length = 11.6
+			base_look_ahead = 2.1
+			max_look_ahead = 5.9
+		"harbor_chase":
+			base_fov = 71.0
+			max_fov = 90.0
+			base_spring_length = 7.9
+			max_spring_length = 12.6
+			base_look_ahead = 2.55
+			max_look_ahead = 6.9
+		"neon_yard_chase":
+			base_fov = 67.0
+			max_fov = 93.0
+			base_spring_length = 6.9
+			max_spring_length = 11.1
+			base_look_ahead = 2.0
+			max_look_ahead = 5.7
+		"ridge_chase":
+			base_fov = 73.0
+			max_fov = 95.0
+			base_spring_length = 8.2
+			max_spring_length = 13.0
+			base_look_ahead = 2.7
+			max_look_ahead = 7.2
+		"mesa_chase":
+			base_fov = 72.0
+			max_fov = 92.0
+			base_spring_length = 8.0
+			max_spring_length = 12.7
+			base_look_ahead = 2.6
+			max_look_ahead = 7.0
 		"metro_chase":
 			base_fov = 70.0
 			max_fov = 92.0

@@ -17,6 +17,10 @@ func _run() -> void:
 	await _exercise_course("cloverwind_ranch", failures)
 	await _exercise_course("prism_apex", failures)
 	await _exercise_course("emberkeep_gauntlet", failures)
+	await _exercise_course("tideglass_harbor", failures)
+	await _exercise_course("neon_switchyard", failures)
+	await _exercise_course("cloudstep_ridge", failures)
+	await _exercise_course("mirage_mesa", failures)
 	await _exercise_course("sneaker_city_sprintway", failures)
 	await _exercise_course("metro_pulse_loop", failures)
 	await _exercise_course("saltline_boardwalk", failures)
@@ -27,7 +31,7 @@ func _run() -> void:
 	await _exercise_course("cascade_colossus", failures)
 	if failures.is_empty():
 		print(
-			"COURSE_BUILD_SURFACE_PASS verdant_cascade_circuit cloverwind_ranch prism_apex emberkeep_gauntlet sneaker_city_sprintway metro_pulse_loop saltline_boardwalk cliffside_draft lantern_corridor rooftop_ribbon marble_foyer_loop cascade_colossus"
+			"COURSE_BUILD_SURFACE_PASS verdant+stride+metro+coast+neon+skyline+archive+wonder samples"
 		)
 		quit(0)
 		return
@@ -70,6 +74,38 @@ func _exercise_course(track_id: String, failures: PackedStringArray) -> void:
 			failures.append("emberkeep missing EmberkeepCitadel landmark")
 		if scenery == null or scenery.get_node_or_null("EmberCourtyardGate") == null:
 			failures.append("emberkeep missing EmberCourtyardGate landmark")
+	elif track_id == "tideglass_harbor":
+		var scenery := course.get_node_or_null("Scenery")
+		if scenery == null or scenery.get_node_or_null("PierArch") == null:
+			failures.append("tideglass missing PierArch landmark")
+		if scenery == null or scenery.get_node_or_null("TideBoulder") == null:
+			failures.append("tideglass missing TideBoulder hazard")
+		if course.get_node_or_null("HarborFill") == null:
+			failures.append("tideglass missing HarborFill lighting")
+	elif track_id == "neon_switchyard":
+		var scenery := course.get_node_or_null("Scenery")
+		if scenery == null or scenery.get_node_or_null("SignalGantry") == null:
+			failures.append("neon_switchyard missing SignalGantry landmark")
+		if scenery == null or scenery.get_node_or_null("YardCrate") == null:
+			failures.append("neon_switchyard missing YardCrate hazard")
+		if course.get_node_or_null("NeonYardFill") == null:
+			failures.append("neon_switchyard missing NeonYardFill lighting")
+	elif track_id == "cloudstep_ridge":
+		var scenery := course.get_node_or_null("Scenery")
+		if scenery == null or scenery.get_node_or_null("RidgeCairn") == null:
+			failures.append("cloudstep missing RidgeCairn landmark")
+		if scenery == null or scenery.get_node_or_null("LedgeRock") == null:
+			failures.append("cloudstep missing LedgeRock hazard")
+		if course.get_node_or_null("RidgeFill") == null:
+			failures.append("cloudstep missing RidgeFill lighting")
+	elif track_id == "mirage_mesa":
+		var scenery := course.get_node_or_null("Scenery")
+		if scenery == null or scenery.get_node_or_null("MesaArch") == null:
+			failures.append("mirage missing MesaArch landmark")
+		if scenery == null or scenery.get_node_or_null("DuneBoulder") == null:
+			failures.append("mirage missing DuneBoulder hazard")
+		if course.get_node_or_null("MesaFill") == null:
+			failures.append("mirage missing MesaFill lighting")
 	elif track_id == "sneaker_city_sprintway":
 		var scenery := course.get_node_or_null("Scenery")
 		if scenery == null or scenery.get_node_or_null("BillboardArch") == null:

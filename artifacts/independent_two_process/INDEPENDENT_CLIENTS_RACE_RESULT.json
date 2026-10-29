@@ -22,11 +22,11 @@
     "note": "Do not claim Mac MoltenVK/Metal race pass. Headless opengl3 local pass strengthens Darwin packaging; Linux Gate1 remains primary CI evidence."
   },
   "exact_head_ci_gate1": {
-    "prior_tip_sha": "fe7606d628cdda96b8d13da296724a76de7d85a7",
-    "url": "https://github.com/gunnchOS3k/pedestrian-pursuit/actions/runs/40809953663",
-    "status": "success",
-    "windows_pilot_url": "https://github.com/gunnchOS3k/pedestrian-pursuit/actions/runs/40809953507",
-    "note": "Prior tip Gate1/Windows PASS. New tip CI pending after FF-push."
+    "prior_tip_sha": "c397c22f2950810b225c3ce947ff1deb8e1033e5",
+    "gate1_run_id": "40821812719",
+    "windows_run_id": "40821812722",
+    "status": "pass_reported_by_owner",
+    "note": "Owner-reported Gate1/Windows PASS on tip c397c22. Local Darwin MoltenVK still false; new tip CI pending after FF-push."
   },
   "partylink_capacity": {
     "min_human_seats": 2,
@@ -46,5 +46,5 @@
     "fabricated": false,
     "moltenvk_metal_pass": false
   },
-  "generated_at": "2026-10-29T05:05:55Z"
+  "generated_at": "2026-10-29T14:36:00Z"
 }

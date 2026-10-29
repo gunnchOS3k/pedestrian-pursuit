@@ -141,7 +141,10 @@
     "shortcuts": true,
     "rails": true,
     "visual_final": true,
-    "kinetic_sole_pass": "cloverwind_mira_lane_v1"
+    "kinetic_sole_pass": "cloverwind_mira_lane_v1",
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
   },
   "geometry_status": "championship_upgraded",
   "final_track_art_status": "track_art_candidate",
@@ -152,5 +155,6 @@
     "barn_silhouette",
     "windmill",
     "fence_line"
-  ]
+  ],
+  "camera_identity": "ranch_chase"
 }

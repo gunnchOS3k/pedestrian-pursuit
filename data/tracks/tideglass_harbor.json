@@ -149,7 +149,10 @@
     "checkpoints": true,
     "shortcuts": true,
     "rails": true,
-    "visual_final": false
+    "visual_final": false,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
   },
   "geometry_status": "championship_upgraded",
   "final_track_art_status": "track_art_candidate",
@@ -160,5 +163,6 @@
     "pier_arch",
     "tide_posts",
     "glass_shed"
-  ]
+  ],
+  "camera_identity": "harbor_chase"
 }
