@@ -52,7 +52,7 @@
         "candidate \u2260 finished / human-approved"
       ],
       "severity": "high",
-      "sha": "1f49555a3ffb7d73a5c8b6f26c86aa6a07d5a2c1",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
       "notes": "No catalog rebuild this pass."
@@ -84,7 +84,7 @@
         "Human course fun not claimed"
       ],
       "severity": "high",
-      "sha": "1f49555a3ffb7d73a5c8b6f26c86aa6a07d5a2c1",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress"
     },
@@ -114,7 +114,7 @@
         "Shared archetypes \u2014 not unique physics per vehicle"
       ],
       "severity": "medium",
-      "sha": "1f49555a3ffb7d73a5c8b6f26c86aa6a07d5a2c1",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress"
     },
@@ -143,7 +143,7 @@
         "Digital save path only"
       ],
       "severity": "high",
-      "sha": "1f49555a3ffb7d73a5c8b6f26c86aa6a07d5a2c1",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress"
     },
@@ -174,7 +174,7 @@
         "Footwear vehicle owns handling"
       ],
       "severity": "medium",
-      "sha": "1f49555a3ffb7d73a5c8b6f26c86aa6a07d5a2c1",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress"
     },
@@ -209,7 +209,7 @@
         "Not physical 8-human PartyLink"
       ],
       "severity": "blocker",
-      "sha": "1f49555a3ffb7d73a5c8b6f26c86aa6a07d5a2c1",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
       "notes": "Keep 2-client vs 8-human physical vs Mac Metal/MoltenVK distinct."
@@ -241,7 +241,7 @@
         "BeatLink sibling remains 2 humans"
       ],
       "severity": "high",
-      "sha": "1f49555a3ffb7d73a5c8b6f26c86aa6a07d5a2c1",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress"
     },
@@ -270,7 +270,7 @@
         "Do not invent participants"
       ],
       "severity": "blocker",
-      "sha": "1f49555a3ffb7d73a5c8b6f26c86aa6a07d5a2c1",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
       "independent_review_status": "not_started",
       "cursor_complete_status": "not_started"
     },
@@ -299,7 +299,7 @@
         "Distinct from 2-client headless GL"
       ],
       "severity": "blocker",
-      "sha": "1f49555a3ffb7d73a5c8b6f26c86aa6a07d5a2c1",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
       "independent_review_status": "not_started",
       "cursor_complete_status": "not_started"
     },
@@ -325,7 +325,7 @@
         "Not WCAG certification"
       ],
       "severity": "medium",
-      "sha": "1f49555a3ffb7d73a5c8b6f26c86aa6a07d5a2c1",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress"
     },
@@ -358,7 +358,7 @@
         "Owner eight-cup camera sign-off pending"
       ],
       "severity": "high",
-      "sha": "1f49555a3ffb7d73a5c8b6f26c86aa6a07d5a2c1",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress"
     },
@@ -387,7 +387,7 @@
         "visual_lod budgets 8-racer fields; does not claim 8p physical"
       ],
       "severity": "medium",
-      "sha": "1f49555a3ffb7d73a5c8b6f26c86aa6a07d5a2c1",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress"
     },
@@ -413,7 +413,7 @@
         "CURSOR_COMPLETE false"
       ],
       "severity": "medium",
-      "sha": "1f49555a3ffb7d73a5c8b6f26c86aa6a07d5a2c1",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
       "independent_review_status": "not_started",
       "cursor_complete_status": "not_started"
     },
@@ -441,7 +441,7 @@
         "Prefer FF merge when owner approves"
       ],
       "severity": "blocker",
-      "sha": "1f49555a3ffb7d73a5c8b6f26c86aa6a07d5a2c1",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
       "independent_review_status": "not_started",
       "cursor_complete_status": "not_started"
     },
@@ -477,7 +477,7 @@
         "Cups 3\u20138 multi-track full-race CI matrix still open"
       ],
       "severity": "high",
-      "sha": "1f49555a3ffb7d73a5c8b6f26c86aa6a07d5a2c1",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
       "notes": "Non-repeated: landmark silhouette sculpt + RTM PVS bind; camera identities/accents already present."
