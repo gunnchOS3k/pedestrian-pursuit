@@ -480,7 +480,7 @@
         "HUMAN/RC2/V1 false"
       ],
       "severity": "high",
-      "sha": "PENDING_TIP",
+      "sha": "c3e20ba5068b54d7387ce9077498e528c32a78a1",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
       "notes": "Path Y lifted above void floor; metro lanes widened; bounce softened; cup3 observer/gate added. Cups 4\u20138 remain next."
