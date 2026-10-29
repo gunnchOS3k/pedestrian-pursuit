@@ -104,14 +104,18 @@
         7,
         9
       ],
-      "speed_mult": 0.8
+      "speed_multiplier": 0.8
     }
   ],
   "bounce_pads": [
     {
       "point_index": 9,
       "bounce_force": 10.5,
-      "forward_boost": 3.2
+      "forward_boost": 3.2,
+      "size": [
+        5,
+        5
+      ]
     }
   ],
   "item_boxes": [
@@ -145,5 +149,6 @@
   "elevation_profile": "stack_aisle",
   "bank_bias": 0.09,
   "geometry_note": "Archive Relay production batch \u2014 original gunnchOS tribute exhibition geometry; not a scientific claim. Track art still pending.",
-  "tribute_note": "Archive of Life crossover is fictional exhibition theming only \u2014 original gunnchOS tribute, no fabricated research claims."
+  "tribute_note": "Archive of Life crossover is fictional exhibition theming only \u2014 original gunnchOS tribute, no fabricated research claims.",
+  "camera_identity": "archive_chase"
 }

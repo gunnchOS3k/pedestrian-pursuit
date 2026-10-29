@@ -175,6 +175,72 @@ func _build_environment() -> void:
 		environment.glow_enabled = true
 		environment.glow_intensity = 0.48
 		environment.glow_bloom = 0.18
+	elif theme in ["sneaker_city", "metro_pulse", "crosswalk_canyon", "transit_spiral"]:
+		## Metro Motion — cool dusk street fill with readable neon accents.
+		environment.ambient_light_color = Color(0.55, 0.62, 0.78)
+		environment.ambient_light_energy = 0.88
+		environment.fog_enabled = true
+		environment.fog_light_color = Color(0.35, 0.42, 0.55)
+		environment.fog_density = 0.0032
+		environment.fog_aerial_perspective = 0.3
+		environment.glow_enabled = true
+		environment.glow_intensity = 0.4
+		environment.glow_bloom = 0.14
+	elif theme in ["saltline_boardwalk", "cliffside_draft", "tidal_bridge_run", "seaglass_switchback", "kinetic_coast"]:
+		## Kinetic Coast — bright marine haze, salt air read.
+		environment.ambient_light_color = Color(0.82, 0.9, 0.95)
+		environment.ambient_light_energy = 0.96
+		environment.fog_enabled = true
+		environment.fog_light_color = Color(0.7, 0.85, 0.9)
+		environment.fog_density = 0.003
+		environment.fog_aerial_perspective = 0.28
+		environment.glow_enabled = true
+		environment.glow_intensity = 0.28
+		environment.glow_bloom = 0.1
+	elif theme in ["lantern_corridor", "mirror_boulevard", "afterglow_overpass", "signal_storm_yard", "neon_night"]:
+		## Neon Night — deep violet dusk + wet bloom.
+		environment.ambient_light_color = Color(0.35, 0.28, 0.55)
+		environment.ambient_light_energy = 0.72
+		environment.fog_enabled = true
+		environment.fog_light_color = Color(0.25, 0.15, 0.4)
+		environment.fog_density = 0.004
+		environment.fog_aerial_perspective = 0.42
+		environment.glow_enabled = true
+		environment.glow_intensity = 0.62
+		environment.glow_bloom = 0.22
+	elif theme in ["rooftop_ribbon", "skybridge_sprint", "antenna_ascent", "cloud_deck_circuit", "skyline_relay"]:
+		## Skyline Relay — high clear air, cool metallic fill.
+		environment.ambient_light_color = Color(0.75, 0.82, 0.95)
+		environment.ambient_light_energy = 1.02
+		environment.fog_enabled = true
+		environment.fog_light_color = Color(0.65, 0.75, 0.9)
+		environment.fog_density = 0.0022
+		environment.fog_aerial_perspective = 0.35
+		environment.glow_enabled = true
+		environment.glow_intensity = 0.3
+		environment.glow_bloom = 0.1
+	elif theme in ["marble_foyer_loop", "stack_corridor", "gallery_grand_oval", "vault_gate_gauntlet", "archive_relay"]:
+		## Archive Relay — museum tungsten + soft gallery fill.
+		environment.ambient_light_color = Color(0.9, 0.86, 0.78)
+		environment.ambient_light_energy = 0.9
+		environment.fog_enabled = true
+		environment.fog_light_color = Color(0.75, 0.7, 0.6)
+		environment.fog_density = 0.0025
+		environment.fog_aerial_perspective = 0.2
+		environment.glow_enabled = true
+		environment.glow_intensity = 0.2
+		environment.glow_bloom = 0.06
+	elif theme in ["cascade_colossus", "aurora_amphitheater", "origami_orchard", "horizon_crown_finale", "world_wonder"]:
+		## World Wonder — grand daylight with soft horizon haze.
+		environment.ambient_light_color = Color(0.88, 0.92, 0.98)
+		environment.ambient_light_energy = 1.05
+		environment.fog_enabled = true
+		environment.fog_light_color = Color(0.7, 0.8, 0.9)
+		environment.fog_density = 0.0028
+		environment.fog_aerial_perspective = 0.32
+		environment.glow_enabled = true
+		environment.glow_intensity = 0.32
+		environment.glow_bloom = 0.12
 	world_environment.environment = environment
 	add_child(world_environment)
 
@@ -241,6 +307,39 @@ func _build_environment() -> void:
 		forge.light_color = Color(1.0, 0.28, 0.08)
 		forge.omni_range = 45.0
 		add_child(forge)
+	elif theme in ["sneaker_city", "metro_pulse", "crosswalk_canyon", "transit_spiral"]:
+		sun.rotation_degrees = Vector3(-40.0, -50.0, 0.0)
+		sun.light_energy = 1.05
+		sun.light_color = Color(0.85, 0.9, 1.0)
+		var fill := OmniLight3D.new()
+		fill.name = "MetroFill"
+		fill.position = Vector3(0.0, 14.0, 0.0)
+		fill.light_energy = 2.6
+		fill.light_color = _color("accent_color", Color(0.2, 0.8, 0.7))
+		fill.omni_range = 95.0
+		add_child(fill)
+	elif theme in ["saltline_boardwalk", "cliffside_draft", "tidal_bridge_run", "seaglass_switchback", "kinetic_coast"]:
+		sun.rotation_degrees = Vector3(-55.0, 30.0, 0.0)
+		sun.light_energy = 1.45
+		sun.light_color = Color(1.0, 0.96, 0.88)
+		var fill := OmniLight3D.new()
+		fill.name = "CoastFill"
+		fill.position = Vector3(0.0, 12.0, 0.0)
+		fill.light_energy = 2.2
+		fill.light_color = Color(0.55, 0.85, 0.95)
+		fill.omni_range = 100.0
+		add_child(fill)
+	elif theme in ["lantern_corridor", "mirror_boulevard", "afterglow_overpass", "signal_storm_yard", "neon_night"]:
+		sun.rotation_degrees = Vector3(-28.0, 15.0, 0.0)
+		sun.light_energy = 0.55
+		sun.light_color = Color(0.55, 0.45, 0.85)
+		var fill := OmniLight3D.new()
+		fill.name = "NeonFill"
+		fill.position = Vector3(0.0, 10.0, 0.0)
+		fill.light_energy = 3.4
+		fill.light_color = _color("accent_color", Color(1.0, 0.45, 0.75))
+		fill.omni_range = 105.0
+		add_child(fill)
 	add_child(sun)
 
 
@@ -1007,23 +1106,56 @@ func _add_coast_hazard_rock(parent: Node3D, rock_name: String, position: Vector3
 
 
 func _build_metro_scenery(parent: Node3D) -> void:
-	## Metro Motion landmarks — original procedural props, not third-party IP.
+	## Metro Motion — distinct downtown props + off-line collision hazards.
+	var theme := str(_data.get("theme", "sneaker_city"))
+	var accent := _color("accent_color", Color(0.2, 0.8, 0.7))
 	_add_visual_box(
 		parent,
 		Vector3(0.0, -0.75, 0.0),
 		Vector3(160.0, 0.2, 160.0),
 		_color("backdrop_color", Color(0.15, 0.16, 0.2))
 	)
-	var accent := _color("accent_color", Color(0.2, 0.8, 0.7))
+	_add_visual_cylinder(parent, Vector3(0.0, -0.55, 0.0), 30.0, 0.16, Color(0.22, 0.24, 0.28), false)
 	for i in range(6):
 		var ang := float(i) * TAU / 6.0
 		var pos := Vector3(cos(ang) * 38.0, 4.0, sin(ang) * 34.0)
 		_add_visual_box(parent, pos, Vector3(3.2, 10.0, 3.2), accent.darkened(0.25))
-		_add_visual_box(parent, pos + Vector3(0, 6.5, 0), Vector3(6.0, 1.2, 1.2), accent)
-	## Start billboard / station arch.
-	_add_visual_box(parent, Vector3(0.0, 5.5, 42.0), Vector3(18.0, 1.2, 1.4), accent)
-	_add_visual_box(parent, Vector3(-8.0, 2.5, 42.0), Vector3(1.2, 6.0, 1.2), Color(0.2, 0.22, 0.28))
-	_add_visual_box(parent, Vector3(8.0, 2.5, 42.0), Vector3(1.2, 6.0, 1.2), Color(0.2, 0.22, 0.28))
+		_add_visual_box(parent, pos + Vector3(0, 6.5, 0), Vector3(6.0, 1.2, 1.2), accent, true)
+	match theme:
+		"sneaker_city":
+			_add_named_coast_prop(parent, "BillboardArch", Vector3(0.0, 0.0, 42.0), accent)
+			_add_visual_box(parent, Vector3(-8.0, 2.5, 42.0), Vector3(1.2, 6.0, 1.2), Color(0.2, 0.22, 0.28))
+			_add_visual_box(parent, Vector3(8.0, 2.5, 42.0), Vector3(1.2, 6.0, 1.2), Color(0.2, 0.22, 0.28))
+			_add_visual_box(parent, Vector3(0.0, 5.5, 42.0), Vector3(18.0, 1.2, 1.4), accent, true)
+			_add_named_coast_prop(parent, "StorefrontRow", Vector3(-26.0, 0.0, 8.0), Color(0.35, 0.2, 0.28))
+			_add_visual_box(parent, Vector3(-26.0, 2.2, 8.0), Vector3(14.0, 4.4, 3.0), Color(0.28, 0.18, 0.22))
+			_add_coast_hazard_rock(parent, "CrosswalkPlanter", Vector3(5.0, 0.75, 5.0), Vector3(3.8, 1.8, 3.2))
+		"metro_pulse":
+			_add_named_coast_prop(parent, "PulseStation", Vector3(0.0, 0.0, 40.0), accent)
+			_add_visual_box(parent, Vector3(-10.0, 3.0, 40.0), Vector3(1.4, 6.0, 1.4), Color(0.25, 0.3, 0.35))
+			_add_visual_box(parent, Vector3(10.0, 3.0, 40.0), Vector3(1.4, 6.0, 1.4), Color(0.25, 0.3, 0.35))
+			_add_visual_box(parent, Vector3(0.0, 6.2, 40.0), Vector3(22.0, 1.0, 1.5), accent, true)
+			_add_named_coast_prop(parent, "ElevatedRail", Vector3(-32.0, 0.0, 0.0), Color(0.4, 0.45, 0.5))
+			_add_visual_box(parent, Vector3(-32.0, 5.5, 0.0), Vector3(4.0, 1.0, 28.0), Color(0.35, 0.4, 0.45))
+			_add_coast_hazard_rock(parent, "PlatformCrate", Vector3(4.5, 0.85, -4.0), Vector3(4.0, 2.2, 3.5))
+		"crosswalk_canyon":
+			_add_named_coast_prop(parent, "CanyonSignal", Vector3(0.0, 0.0, -38.0), accent)
+			_add_visual_box(parent, Vector3(0.0, 5.0, -38.0), Vector3(2.4, 10.0, 2.4), Color(0.3, 0.32, 0.36))
+			_add_visual_box(parent, Vector3(0.0, 10.5, -38.0), Vector3(8.0, 1.0, 1.2), accent, true)
+			_add_named_coast_prop(parent, "MedianBarrier", Vector3(28.0, 0.0, 0.0), Color(0.55, 0.55, 0.5))
+			_add_visual_box(parent, Vector3(28.0, 1.2, 0.0), Vector3(2.0, 2.4, 16.0), Color(0.5, 0.5, 0.45))
+			_add_coast_hazard_rock(parent, "SignalBase", Vector3(-6.0, 0.9, 6.0), Vector3(3.5, 2.0, 3.5))
+		"transit_spiral":
+			_add_named_coast_prop(parent, "SpiralTower", Vector3(0.0, 0.0, 0.0), accent)
+			_add_visual_cylinder(parent, Vector3(0.0, 7.0, 0.0), 3.0, 14.0, Color(0.35, 0.4, 0.48), true)
+			_add_named_coast_prop(parent, "TransitGate", Vector3(36.0, 0.0, 0.0), accent)
+			_add_visual_box(parent, Vector3(36.0, 4.5, -5.0), Vector3(1.3, 9.0, 1.3), Color(0.3, 0.35, 0.4))
+			_add_visual_box(parent, Vector3(36.0, 4.5, 5.0), Vector3(1.3, 9.0, 1.3), Color(0.3, 0.35, 0.4))
+			_add_visual_box(parent, Vector3(36.0, 9.2, 0.0), Vector3(1.5, 1.0, 12.0), accent, true)
+			_add_coast_hazard_rock(parent, "SpiralPlinth", Vector3(5.0, 0.85, 5.0), Vector3(4.0, 2.2, 4.0))
+		_:
+			_add_named_coast_prop(parent, "MetroMarker", Vector3(0.0, 0.0, 42.0), accent)
+			_add_visual_box(parent, Vector3(0.0, 5.5, 42.0), Vector3(18.0, 1.2, 1.4), accent, true)
 	_build_landmark_markers(parent)
 
 

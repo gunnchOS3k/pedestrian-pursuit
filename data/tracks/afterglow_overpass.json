@@ -104,14 +104,18 @@
         8,
         11
       ],
-      "speed_mult": 0.83
+      "speed_multiplier": 0.83
     }
   ],
   "bounce_pads": [
     {
       "point_index": 3,
       "bounce_force": 12.0,
-      "forward_boost": 4.0
+      "forward_boost": 4.0,
+      "size": [
+        5,
+        5
+      ]
     }
   ],
   "item_boxes": [
@@ -144,5 +148,6 @@
   ],
   "elevation_profile": "overpass_spans",
   "bank_bias": 0.11,
-  "geometry_note": "Neon Night production batch \u2014 distinct raceable geometry; track art still pending (not commercial)."
+  "geometry_note": "Neon Night production batch \u2014 distinct raceable geometry; track art still pending (not commercial).",
+  "camera_identity": "neon_chase"
 }

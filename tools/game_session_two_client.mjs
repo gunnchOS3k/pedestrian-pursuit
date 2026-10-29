@@ -88,8 +88,21 @@ function publish() {
   const produced = JSON.parse(readFileSync(resultPath(), 'utf8'));
   const guestReport = JSON.parse(readFileSync(join(dir, 'guest_report.json'), 'utf8'));
   const guestView = readFileSync(join(dir, 'guest_view.json'), 'utf8');
+  const laps = produced.lapsCompleted || {};
+  const hostLaps = Number(laps.host || 0);
+  const guestLaps = Number(laps.guest || 0);
+  const expectedLaps = Number(produced.expectedLaps || 0);
+  const lapsEqual = hostLaps === guestLaps && produced.lapsEqual !== false;
+  const lapsComplete = expectedLaps > 0
+    ? (hostLaps === expectedLaps && guestLaps === expectedLaps)
+    : (hostLaps > 0 && guestLaps > 0 && lapsEqual);
+  const bothHumansFinished = produced.hostFinished === true && produced.guestFinished === true;
+  // Reject false-green: results with disagreeing lap counts (e.g. host 2 / guest 3).
   const independent = (
     produced.bothFinished === true
+    && bothHumansFinished
+    && lapsEqual
+    && lapsComplete
     && produced.courseAiIsGuest === false
     && produced.guestSeat === 'Player2Racer'
     && produced.guestControl === 'guest-process'
@@ -104,11 +117,19 @@ function publish() {
   if (!independent) {
     console.log(`INDEPENDENT_CLIENTS_RACED=false ${JSON.stringify({
       bothFinished: produced.bothFinished,
-      failReason: produced.failReason || '',
+      failReason: produced.failReason || (
+        !lapsEqual
+          ? `lap counts disagree host=${hostLaps} guest=${guestLaps} expected=${expectedLaps}`
+          : (!lapsComplete ? `finished laps incomplete host=${hostLaps} guest=${guestLaps} expected=${expectedLaps}` : '')
+      ),
       guestSeat: produced.guestSeat || '',
       guestControl: produced.guestControl || '',
       courseAiIsGuest: produced.courseAiIsGuest,
+      expectedLaps,
       lapsCompleted: produced.lapsCompleted || null,
+      lapsEqual,
+      hostFinished: produced.hostFinished || false,
+      guestFinished: produced.guestFinished || false,
       checkpointCrossings: produced.checkpointCrossings || null,
       drivenMsec: produced.drivenMsec || 0,
       guestCommands: produced.guestCommands || 0,

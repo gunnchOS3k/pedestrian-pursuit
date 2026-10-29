@@ -115,14 +115,21 @@
         7,
         9
       ],
-      "speed_mult": 0.78
+      "speed_multiplier": 0.78,
+      "terrain_name": "glass_shard",
+      "handling_multiplier": 0.86,
+      "color": "#508878"
     }
   ],
   "bounce_pads": [
     {
       "point_index": 7,
       "bounce_force": 11.0,
-      "forward_boost": 3.5
+      "forward_boost": 3.5,
+      "size": [
+        5,
+        5
+      ]
     }
   ],
   "item_boxes": [
@@ -155,5 +162,6 @@
   ],
   "elevation_profile": "switchback_steps",
   "bank_bias": 0.12,
-  "geometry_note": "Kinetic Coast production batch \u2014 distinct raceable geometry; track art still pending (not commercial)."
+  "geometry_note": "Kinetic Coast production batch \u2014 distinct raceable geometry; track art still pending (not commercial).",
+  "camera_identity": "coast_chase"
 }

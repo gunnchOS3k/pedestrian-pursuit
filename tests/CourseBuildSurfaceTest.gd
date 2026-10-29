@@ -17,9 +17,11 @@ func _run() -> void:
 	await _exercise_course("cloverwind_ranch", failures)
 	await _exercise_course("prism_apex", failures)
 	await _exercise_course("emberkeep_gauntlet", failures)
+	await _exercise_course("sneaker_city_sprintway", failures)
+	await _exercise_course("metro_pulse_loop", failures)
 	if failures.is_empty():
 		print(
-			"COURSE_BUILD_SURFACE_PASS verdant_cascade_circuit cloverwind_ranch prism_apex emberkeep_gauntlet"
+			"COURSE_BUILD_SURFACE_PASS verdant_cascade_circuit cloverwind_ranch prism_apex emberkeep_gauntlet sneaker_city_sprintway metro_pulse_loop"
 		)
 		quit(0)
 		return
@@ -62,6 +64,18 @@ func _exercise_course(track_id: String, failures: PackedStringArray) -> void:
 			failures.append("emberkeep missing EmberkeepCitadel landmark")
 		if scenery == null or scenery.get_node_or_null("EmberCourtyardGate") == null:
 			failures.append("emberkeep missing EmberCourtyardGate landmark")
+	elif track_id == "sneaker_city_sprintway":
+		var scenery := course.get_node_or_null("Scenery")
+		if scenery == null or scenery.get_node_or_null("BillboardArch") == null:
+			failures.append("sneaker_city missing BillboardArch landmark")
+		if scenery == null or scenery.get_node_or_null("CrosswalkPlanter") == null:
+			failures.append("sneaker_city missing CrosswalkPlanter hazard")
+	elif track_id == "metro_pulse_loop":
+		var scenery := course.get_node_or_null("Scenery")
+		if scenery == null or scenery.get_node_or_null("PulseStation") == null:
+			failures.append("metro_pulse missing PulseStation landmark")
+		if scenery == null or scenery.get_node_or_null("PlatformCrate") == null:
+			failures.append("metro_pulse missing PlatformCrate hazard")
 	course.queue_free()
 
 

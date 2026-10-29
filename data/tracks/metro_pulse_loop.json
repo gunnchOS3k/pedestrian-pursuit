@@ -7,8 +7,8 @@
   "theme": "metro_pulse",
   "description": "Transit-ring circuit under elevated rails with pulse lights, platform shortcuts, and station landmarks.",
   "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-  "geometry_status": "championship_raceable",
-  "final_track_art_status": "track_art_pending",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
   "human_track_art_approved": false,
   "lane_width": 13.5,
   "guard_rails": true,
@@ -126,14 +126,21 @@
         8,
         10
       ],
-      "speed_mult": 0.85
+      "speed_multiplier": 0.85,
+      "terrain_name": "platform_grime",
+      "handling_multiplier": 0.9,
+      "color": "#3A4850"
     }
   ],
   "bounce_pads": [
     {
       "point_index": 8,
       "bounce_force": 11.0,
-      "forward_boost": 3.5
+      "forward_boost": 3.5,
+      "size": [
+        5,
+        5
+      ]
     }
   ],
   "item_boxes": [
@@ -164,5 +171,21 @@
     "platform_cut"
   ],
   "elevation_profile": "metro_ramps",
-  "bank_bias": 0.11
+  "bank_bias": 0.11,
+  "camera_identity": "metro_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "Shortcut floors are collision-backed; do not claim human commercial art approval."
+  ]
 }

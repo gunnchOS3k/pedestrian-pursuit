@@ -2,7 +2,7 @@
   "schema": "pp_audio_bank_manifest/v1",
   "status": "PROCEDURAL_FINAL",
   "license": "ORIGINAL_INTERNAL",
-  "count": 44,
+  "count": 52,
   "files": [
     {
       "id": "music.menu_theme",
@@ -223,6 +223,46 @@
       "id": "ui.countdown",
       "path": "assets/audio/ui/countdown.wav",
       "sha256": "63180f185a8535e9aee67007398efd658c57fc7068d76bd052ec3e29d40011f1"
+    },
+    {
+      "id": "music.race.sneaker_city_sprintway",
+      "path": "assets/audio/music/sneaker_city_sprintway_race.wav",
+      "sha256": "f6d18bb1809396c8253958afa752edb7e1446a60b1992c903a501c015696414d"
+    },
+    {
+      "id": "ambience.sneaker_city_sprintway",
+      "path": "assets/audio/ambience/sneaker_city_sprintway.wav",
+      "sha256": "70be3fd18e1efa2495ae80ad8681ac4b212402f9260e3c461376a3b4e52f8181"
+    },
+    {
+      "id": "music.race.metro_pulse_loop",
+      "path": "assets/audio/music/metro_pulse_loop_race.wav",
+      "sha256": "f6d18bb1809396c8253958afa752edb7e1446a60b1992c903a501c015696414d"
+    },
+    {
+      "id": "ambience.metro_pulse_loop",
+      "path": "assets/audio/ambience/metro_pulse_loop.wav",
+      "sha256": "70be3fd18e1efa2495ae80ad8681ac4b212402f9260e3c461376a3b4e52f8181"
+    },
+    {
+      "id": "music.race.crosswalk_canyon",
+      "path": "assets/audio/music/crosswalk_canyon_race.wav",
+      "sha256": "f6d18bb1809396c8253958afa752edb7e1446a60b1992c903a501c015696414d"
+    },
+    {
+      "id": "ambience.crosswalk_canyon",
+      "path": "assets/audio/ambience/crosswalk_canyon.wav",
+      "sha256": "70be3fd18e1efa2495ae80ad8681ac4b212402f9260e3c461376a3b4e52f8181"
+    },
+    {
+      "id": "music.race.transit_spiral",
+      "path": "assets/audio/music/transit_spiral_race.wav",
+      "sha256": "f6d18bb1809396c8253958afa752edb7e1446a60b1992c903a501c015696414d"
+    },
+    {
+      "id": "ambience.transit_spiral",
+      "path": "assets/audio/ambience/transit_spiral.wav",
+      "sha256": "70be3fd18e1efa2495ae80ad8681ac4b212402f9260e3c461376a3b4e52f8181"
     }
   ]
 }

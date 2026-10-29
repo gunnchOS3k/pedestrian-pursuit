@@ -76,33 +76,33 @@
     {
       "id": "sneaker_city_sprintway",
       "runtime_status": "raceable",
-      "geometry_status": "championship_raceable",
+      "geometry_status": "championship_upgraded",
       "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-      "final_track_art_status": "track_art_pending",
+      "final_track_art_status": "track_art_candidate",
       "human_track_art_approved": false
     },
     {
       "id": "metro_pulse_loop",
       "runtime_status": "raceable",
-      "geometry_status": "championship_raceable",
+      "geometry_status": "championship_upgraded",
       "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-      "final_track_art_status": "track_art_pending",
+      "final_track_art_status": "track_art_candidate",
       "human_track_art_approved": false
     },
     {
       "id": "crosswalk_canyon",
       "runtime_status": "raceable",
-      "geometry_status": "championship_raceable",
+      "geometry_status": "championship_upgraded",
       "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-      "final_track_art_status": "track_art_pending",
+      "final_track_art_status": "track_art_candidate",
       "human_track_art_approved": false
     },
     {
       "id": "transit_spiral",
       "runtime_status": "raceable",
-      "geometry_status": "championship_raceable",
+      "geometry_status": "championship_upgraded",
       "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-      "final_track_art_status": "track_art_pending",
+      "final_track_art_status": "track_art_candidate",
       "human_track_art_approved": false
     },
     {

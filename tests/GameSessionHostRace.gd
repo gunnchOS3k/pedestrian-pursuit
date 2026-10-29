@@ -6,7 +6,8 @@ extends SceneTree
 const COURSE_ID := "verdant_cascade_circuit"
 const ENTER_FRAMES := 180
 const COUNTDOWN_WAIT_MSEC := 8000
-const DRIVE_BOUND_MSEC := 150000
+## Both humans must complete equal course laps; bound allows honest finish only.
+const DRIVE_BOUND_MSEC := 240000
 const GUEST_WAIT_MSEC := 45000
 
 
@@ -145,27 +146,61 @@ func _run() -> void:
 			var panel := scene.get_node_or_null("ResultsScreen/Panel")
 			if panel != null and bool(panel.get("visible")):
 				flags["results"] = true
-			if bool(flags["results"]) and _laps(lap_manager, player) >= 1 and _laps(lap_manager, guest) >= 1 and int(counts["host"]) >= 1 and int(counts["guest"]) >= 1 and guest_commands > 20:
+			var host_lap_now := _laps(lap_manager, player)
+			var guest_lap_now := _laps(lap_manager, guest)
+			var host_done := _finished(lap_manager, player)
+			var guest_done := _finished(lap_manager, guest)
+			## Honest completion: both humans finished with equal course laps.
+			## Disagreeing lap counts (e.g. host 2 / guest 3) must not pass.
+			if (
+				bool(flags["results"])
+				and host_done
+				and guest_done
+				and host_lap_now == expected_laps
+				and guest_lap_now == expected_laps
+				and host_lap_now == guest_lap_now
+				and int(counts["host"]) >= 1
+				and int(counts["guest"]) >= 1
+				and guest_commands > 20
+			):
 				break
 		driven_msec = Time.get_ticks_msec() - started
 		_release_input(input)
 	_write_snapshot(dir, race_manager, guest, flags)
 	var host_laps := _laps(lap_manager, player)
 	var guest_laps := _laps(lap_manager, guest)
+	var host_finished := _finished(lap_manager, player)
+	var guest_finished := _finished(lap_manager, guest)
 	var host_checks := int(counts["host"])
 	var guest_checks := int(counts["guest"])
 	var results_path := bool(flags["results"])
+	var laps_equal := host_laps == guest_laps
+	var laps_complete := host_laps == expected_laps and guest_laps == expected_laps
 	var both := (
 		guest_ready
 		and guest_commands > 20
 		and results_path
-		and host_laps >= 1
-		and guest_laps >= 1
+		and host_finished
+		and guest_finished
+		and laps_equal
+		and laps_complete
 		and host_checks >= 1
 		and guest_checks >= 1
 		and driven_msec >= 1
 		and driven_msec <= DRIVE_BOUND_MSEC
 	)
+	var fail_reason := ""
+	if not both:
+		if results_path and not laps_equal:
+			fail_reason = "lap counts disagree host=%d guest=%d expected=%d" % [host_laps, guest_laps, expected_laps]
+		elif results_path and (not laps_complete or not host_finished or not guest_finished):
+			fail_reason = "finished laps incomplete host=%d guest=%d expected=%d host_finished=%s guest_finished=%s" % [
+				host_laps, guest_laps, expected_laps, str(host_finished).to_lower(), str(guest_finished).to_lower()
+			]
+		elif not results_path:
+			fail_reason = "results path not observed"
+		else:
+			fail_reason = "independent race evidence incomplete"
 	var finish: Array = [str(session["hostId"]), str(session["memberId"])]
 	if guest_laps > host_laps:
 		finish = [str(session["memberId"]), str(session["hostId"])]
@@ -175,16 +210,24 @@ func _run() -> void:
 		"courseId": COURSE_ID,
 		"hostMemberId": str(session["hostId"]),
 		"guestMemberId": str(session["memberId"]),
+		"expectedLaps": expected_laps,
 		"lapsCompleted": {"host": host_laps, "guest": guest_laps},
+		"lapsEqual": laps_equal,
+		"hostFinished": host_finished,
+		"guestFinished": guest_finished,
 		"checkpointCrossings": {"host": host_checks, "guest": guest_checks},
 		"drivenMsec": driven_msec,
 		"finishOrder": finish,
 		"bothFinished": both,
+		"failReason": fail_reason,
 		"producedBy": "pedestrian-pursuit-race-runtime",
 		"sourceLog": {
 			"resultsPath": results_path,
-			"hostLapCompleted": host_laps >= 1,
-			"guestLapCompleted": guest_laps >= 1,
+			"hostLapCompleted": host_laps >= expected_laps,
+			"guestLapCompleted": guest_laps >= expected_laps,
+			"lapsEqual": laps_equal,
+			"hostFinished": host_finished,
+			"guestFinished": guest_finished,
 			"hostCheckpoint": host_checks >= 1,
 			"guestCheckpoint": guest_checks >= 1,
 		},
@@ -213,8 +256,12 @@ func _run() -> void:
 	print("GAME_SESSION_COURSE_AI_IS_GUEST=false")
 	print("GAME_SESSION_COURSE=%s" % COURSE_ID)
 	print("GAME_SESSION_RESULTS_PATH=%s" % str(results_path).to_lower())
+	print("GAME_SESSION_EXPECTED_LAPS=%d" % expected_laps)
 	print("GAME_SESSION_HOST_LAPS=%d" % host_laps)
 	print("GAME_SESSION_GUEST_LAPS=%d" % guest_laps)
+	print("GAME_SESSION_LAPS_EQUAL=%s" % str(laps_equal).to_lower())
+	print("GAME_SESSION_HOST_FINISHED=%s" % str(host_finished).to_lower())
+	print("GAME_SESSION_GUEST_FINISHED=%s" % str(guest_finished).to_lower())
 	print("GAME_SESSION_HOST_CHECKS=%d" % host_checks)
 	print("GAME_SESSION_GUEST_CHECKS=%d" % guest_checks)
 	print("GAME_SESSION_DRIVEN_MSEC=%d" % driven_msec)
@@ -223,6 +270,8 @@ func _run() -> void:
 	print("GAME_SESSION_GUEST_MAX_LATERAL=%.3f" % guest_max_lateral)
 	print("GAME_SESSION_GUEST_PROGRESS=%.3f" % guest_last_progress)
 	print("GAME_SESSION_BOTH_FINISHED=%s" % str(both).to_lower())
+	if not fail_reason.is_empty():
+		print("GAME_SESSION_RACE_FAIL %s" % fail_reason)
 	print("APPEARANCE_SYNC=%s" % str(bool(result.get("appearanceSync", false))).to_lower())
 	print("GUEST_APPEARANCE_APPLIED=%s" % str(guest_appearance_ok).to_lower())
 	print("ECOSYSTEM_RETURN=ready")
@@ -390,6 +439,14 @@ func _laps(lap_manager: Node, racer: Node) -> int:
 	if lap_manager.has_method("get_lap"):
 		return int(lap_manager.get_lap(racer))
 	return 0
+
+
+func _finished(lap_manager: Node, racer: Node) -> bool:
+	if lap_manager == null or racer == null or not is_instance_valid(racer):
+		return false
+	if lap_manager.has_method("is_finished"):
+		return bool(lap_manager.is_finished(racer))
+	return false
 
 
 func _attach_line_steer(player: Node, track: Node) -> Node:

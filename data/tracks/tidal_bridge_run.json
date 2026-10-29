@@ -104,14 +104,21 @@
         8,
         12
       ],
-      "speed_mult": 0.84
+      "speed_multiplier": 0.84,
+      "terrain_name": "wet_deck",
+      "handling_multiplier": 0.9,
+      "color": "#3A7080"
     }
   ],
   "bounce_pads": [
     {
       "point_index": 3,
       "bounce_force": 11.5,
-      "forward_boost": 3.8
+      "forward_boost": 3.8,
+      "size": [
+        5,
+        5
+      ]
     }
   ],
   "item_boxes": [
@@ -144,5 +151,6 @@
   ],
   "elevation_profile": "bridge_spans",
   "bank_bias": 0.09,
-  "geometry_note": "Kinetic Coast production batch \u2014 distinct raceable geometry; track art still pending (not commercial)."
+  "geometry_note": "Kinetic Coast production batch \u2014 distinct raceable geometry; track art still pending (not commercial).",
+  "camera_identity": "coast_chase"
 }

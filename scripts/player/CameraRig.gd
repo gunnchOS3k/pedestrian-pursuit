@@ -41,6 +41,59 @@ func set_boosting(active: bool) -> void:
 	_boosting = active
 
 
+func apply_course_identity(identity: String) -> void:
+	## Per-course chase personality without changing collision or lap rules.
+	match str(identity):
+		"metro_chase":
+			base_fov = 70.0
+			max_fov = 92.0
+			base_spring_length = 7.2
+			max_spring_length = 11.4
+			base_look_ahead = 2.4
+			max_look_ahead = 6.6
+		"coast_chase":
+			base_fov = 72.0
+			max_fov = 90.0
+			base_spring_length = 8.0
+			max_spring_length = 12.8
+			base_look_ahead = 2.6
+			max_look_ahead = 7.0
+		"neon_chase":
+			base_fov = 68.0
+			max_fov = 94.0
+			base_spring_length = 6.8
+			max_spring_length = 11.0
+			base_look_ahead = 2.0
+			max_look_ahead = 5.8
+		"skyline_chase":
+			base_fov = 74.0
+			max_fov = 96.0
+			base_spring_length = 8.4
+			max_spring_length = 13.2
+			base_look_ahead = 2.8
+			max_look_ahead = 7.4
+		"archive_chase":
+			base_fov = 66.0
+			max_fov = 86.0
+			base_spring_length = 7.4
+			max_spring_length = 11.6
+			base_look_ahead = 2.1
+			max_look_ahead = 5.6
+		"wonder_chase":
+			base_fov = 73.0
+			max_fov = 95.0
+			base_spring_length = 8.2
+			max_spring_length = 13.0
+			base_look_ahead = 2.7
+			max_look_ahead = 7.2
+		_:
+			pass
+	spring_length = base_spring_length
+	look_ahead = base_look_ahead
+	if _camera != null:
+		_camera.fov = base_fov
+
+
 func add_shake(strength: float) -> void:
 	var allowed := GameManager.camera_shake_enabled
 	var a11y := _accessibility()

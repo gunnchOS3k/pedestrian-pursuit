@@ -73,8 +73,14 @@ func _run() -> void:
 		failures.append("prism_apex missing landmarks")
 	if absf(float(prism.get("bank_bias", 0.0))) < 0.05:
 		failures.append("prism_apex missing bank metadata")
-	## Cup 3 Metro Motion: authored path elevation on raceable geometry.
-	for tid in ["transit_spiral", "sneaker_city_sprintway"]:
+	## Cup 3 Metro Motion: elevation + distinct scenery; art may be candidate (not commercial).
+	var metro_landmarks := {
+		"sneaker_city_sprintway": "BillboardArch",
+		"metro_pulse_loop": "PulseStation",
+		"crosswalk_canyon": "CanyonSignal",
+		"transit_spiral": "SpiralTower",
+	}
+	for tid in ["sneaker_city_sprintway", "metro_pulse_loop", "crosswalk_canyon", "transit_spiral"]:
 		var d := TrackCatalogScript.load_track(tid)
 		var has_y := false
 		for p in d.get("path_points", []):
@@ -83,6 +89,30 @@ func _run() -> void:
 				break
 		if not has_y:
 			failures.append("%s missing elevation" % tid)
+		var fas := str(d.get("final_track_art_status", ""))
+		if fas not in ["track_art_candidate", "track_art_pending"]:
+			failures.append("%s unexpected art status %s" % [tid, fas])
+		if bool(d.get("human_track_art_approved", false)):
+			failures.append("%s commercial art must stay false" % tid)
+		if str(d.get("camera_identity", "")) != "metro_chase":
+			failures.append("%s missing metro camera identity" % tid)
+		var metro_course: Node = CourseTrackScript.new()
+		root.add_child(metro_course)
+		metro_course.configure(d)
+		if not metro_course.build():
+			failures.append("build metro %s" % tid)
+		else:
+			var metro_scenery := metro_course.get_node_or_null("Scenery")
+			var want := str(metro_landmarks.get(tid, ""))
+			if metro_scenery == null:
+				failures.append("%s missing Scenery" % tid)
+			elif want != "" and metro_scenery.get_node_or_null(want) == null:
+				failures.append("%s missing %s" % [tid, want])
+			if metro_course.get_node_or_null("WorldEnvironment") == null:
+				failures.append("%s missing WorldEnvironment lighting" % tid)
+			if metro_course.get_node_or_null("MetroFill") == null:
+				failures.append("%s missing MetroFill lighting" % tid)
+		metro_course.queue_free()
 	## Cup 4 Kinetic Coast: four distinct championship_raceable courses.
 	var coast := TrackCatalogScript.load_cup("kinetic_coast_cup")
 	var coast_ids: Array = coast.get("track_ids", [])

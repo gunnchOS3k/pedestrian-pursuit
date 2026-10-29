@@ -104,14 +104,18 @@
         8,
         11
       ],
-      "speed_mult": 0.82
+      "speed_multiplier": 0.82
     }
   ],
   "bounce_pads": [
     {
       "point_index": 3,
       "bounce_force": 12.0,
-      "forward_boost": 4.0
+      "forward_boost": 4.0,
+      "size": [
+        5,
+        5
+      ]
     }
   ],
   "item_boxes": [
@@ -144,5 +148,6 @@
   ],
   "elevation_profile": "bridge_spans",
   "bank_bias": 0.1,
-  "geometry_note": "Skyline Relay production batch \u2014 distinct raceable geometry; track art still pending (not commercial)."
+  "geometry_note": "Skyline Relay production batch \u2014 distinct raceable geometry; track art still pending (not commercial).",
+  "camera_identity": "skyline_chase"
 }

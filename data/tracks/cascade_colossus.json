@@ -104,14 +104,18 @@
         8,
         10
       ],
-      "speed_mult": 0.83
+      "speed_multiplier": 0.83
     }
   ],
   "bounce_pads": [
     {
       "point_index": 9,
       "bounce_force": 10.5,
-      "forward_boost": 3.2
+      "forward_boost": 3.2,
+      "size": [
+        5,
+        5
+      ]
     }
   ],
   "item_boxes": [
@@ -144,5 +148,6 @@
   ],
   "elevation_profile": "cascade_terraces",
   "bank_bias": 0.08,
-  "geometry_note": "World Wonder Grand Prix production batch \u2014 original wonder landmarks (not nation costumes); track art still pending."
+  "geometry_note": "World Wonder Grand Prix production batch \u2014 original wonder landmarks (not nation costumes); track art still pending.",
+  "camera_identity": "wonder_chase"
 }

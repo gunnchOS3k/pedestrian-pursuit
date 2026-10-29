@@ -38,6 +38,8 @@ func _ready() -> void:
 	_roster = _RunnerProfile.load_roster()
 	race_manager.add_to_group("race_manager")
 	camera_rig.set_target(player)
+	if camera_rig != null and camera_rig.has_method("apply_course_identity"):
+		camera_rig.apply_course_identity(str(course_data.get("camera_identity", "")))
 	var checkpoints: Array = track.get_checkpoints()
 	var start_xf: Transform3D = track.get_start_transform()
 	player.global_transform = start_xf
