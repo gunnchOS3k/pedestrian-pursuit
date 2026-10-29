@@ -412,17 +412,18 @@ func _build_figure() -> void:
 	_speed_trail = GPUParticles3D.new()
 	_speed_trail.name = "KineticSoleTrail"
 	_speed_trail.position = Vector3(0.0, 0.2, 0.35)
-	_speed_trail.amount = 28
-	_speed_trail.lifetime = 0.45
+	var trail_profile := _footwear_trail_profile(arch)
+	_speed_trail.amount = int(trail_profile.get("amount", 28))
+	_speed_trail.lifetime = float(trail_profile.get("lifetime", 0.45))
 	_speed_trail.emitting = false
 	var trail_mat := ParticleProcessMaterial.new()
 	trail_mat.direction = Vector3(0.0, 0.2, 1.0)
-	trail_mat.spread = 12.0
-	trail_mat.initial_velocity_min = 1.5
-	trail_mat.initial_velocity_max = 4.0
+	trail_mat.spread = float(trail_profile.get("spread", 12.0))
+	trail_mat.initial_velocity_min = float(trail_profile.get("vmin", 1.5))
+	trail_mat.initial_velocity_max = float(trail_profile.get("vmax", 4.0))
 	trail_mat.gravity = Vector3(0.0, 0.4, 0.0)
-	trail_mat.scale_min = 0.08
-	trail_mat.scale_max = 0.22
+	trail_mat.scale_min = float(trail_profile.get("smin", 0.08))
+	trail_mat.scale_max = float(trail_profile.get("smax", 0.22))
 	trail_mat.color = _footwear_trail_color(accent_color, arch)
 	_speed_trail.process_material = trail_mat
 	var trail_mesh := SphereMesh.new()
@@ -481,9 +482,73 @@ func _footwear_trail_color(fallback: Color, runner_arch: String) -> Color:
 		return Color(1.0, 0.35, 0.75, 0.8)
 	if family.find("null") >= 0 or march == "tribute_null":
 		return Color(0.55, 0.55, 0.62, 0.7)
+	if family.find("hover") >= 0 or march.begins_with("hover_"):
+		return Color(0.65, 0.85, 1.0, 0.78)
+	if family.find("roller") >= 0 or march.begins_with("roller_"):
+		return Color(0.95, 0.45, 0.65, 0.78)
 	if runner_arch == "all_terrain":
 		return Color(1.0, 0.42, 0.24, 0.75)
 	return Color(fallback.r, fallback.g, fallback.b, 0.75)
+
+
+func _footwear_trail_profile(runner_arch: String) -> Dictionary:
+	## Per-family trail density for wardrobe/chase-cam ID — not commercial final VFX.
+	var family := ShoeDataScript.material_family(vehicle_id) if not vehicle_id.is_empty() else ""
+	var march := _shoe_archetype()
+	var profile := {
+		"amount": 28,
+		"lifetime": 0.45,
+		"spread": 12.0,
+		"vmin": 1.5,
+		"vmax": 4.0,
+		"smin": 0.08,
+		"smax": 0.22,
+	}
+	if family.find("magma") >= 0 or march == "elemental_magma" or march == "tribute_ember":
+		profile["amount"] = 36
+		profile["spread"] = 18.0
+		profile["lifetime"] = 0.38
+		profile["smax"] = 0.28
+	elif family.find("frost") >= 0 or march == "elemental_frost" or march == "tribute_azure":
+		profile["amount"] = 32
+		profile["spread"] = 10.0
+		profile["lifetime"] = 0.52
+		profile["smin"] = 0.06
+	elif family.find("volt") >= 0 or march == "street_kinetic" or march == "tribute_volt":
+		profile["amount"] = 34
+		profile["spread"] = 8.0
+		profile["vmax"] = 5.2
+	elif family.find("rail") >= 0 or march == "street_rail":
+		profile["amount"] = 24
+		profile["spread"] = 6.0
+		profile["lifetime"] = 0.4
+	elif family.find("mud") >= 0 or family.find("sand") >= 0 or march == "elemental_mud" or march == "elemental_sand":
+		profile["amount"] = 30
+		profile["spread"] = 20.0
+		profile["vmin"] = 0.8
+		profile["vmax"] = 2.6
+		profile["smax"] = 0.3
+	elif family.find("kelp") >= 0 or family.find("tide") >= 0 or march == "elemental_wet" or march == "elemental_dive":
+		profile["amount"] = 26
+		profile["lifetime"] = 0.55
+		profile["spread"] = 14.0
+	elif family.find("neon") >= 0 or march.begins_with("crossover_"):
+		profile["amount"] = 38
+		profile["spread"] = 16.0
+		profile["vmax"] = 4.8
+	elif family.find("hover") >= 0 or march.begins_with("hover_"):
+		profile["amount"] = 22
+		profile["spread"] = 9.0
+		profile["lifetime"] = 0.5
+		profile["smin"] = 0.1
+	elif family.find("roller") >= 0 or march.begins_with("roller_"):
+		profile["amount"] = 30
+		profile["spread"] = 11.0
+		profile["vmax"] = 4.4
+	elif runner_arch == "all_terrain":
+		profile["amount"] = 30
+		profile["spread"] = 13.0
+	return profile
 
 
 func _apply_modular_cosmetics() -> void:
@@ -2479,6 +2544,22 @@ func _attach_shoes(
 		)
 		leg.add_child(heel_r)
 		heel_r.position = Vector3(0.0, -leg_len + 0.02, -0.1 * shoe_scale)
+	## Wardrobe/chase-cam family stripe — readable at gameplay FOV; not commercial sole art.
+	if visual_lod < 2 and not vehicle_id.is_empty():
+		var stripe_mat := StandardMaterial3D.new()
+		var stripe_col := _footwear_trail_color(self.accent_color, profile.archetype if profile else "all_terrain")
+		stripe_mat.albedo_color = Color(stripe_col.r, stripe_col.g, stripe_col.b, 1.0)
+		stripe_mat.emission_enabled = true
+		stripe_mat.emission = stripe_mat.albedo_color
+		stripe_mat.emission_energy_multiplier = 0.35
+		stripe_mat.roughness = 0.4
+		var stripe := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.03 * shoe_scale, 0.18 * shoe_scale),
+			Vector3.ZERO,
+			stripe_mat
+		)
+		leg.add_child(stripe)
+		stripe.position = Vector3(side * 0.08 * ws * shoe_scale, -leg_len + 0.07, 0.02 * shoe_scale)
 	if is_left:
 		_shoe_l = sole
 		_heel_l = heel

@@ -172,7 +172,7 @@
   ],
   "elevation_profile": "metro_ramps",
   "bank_bias": 0.11,
-  "camera_identity": "metro_chase",
+  "camera_identity": "metro_pulse_chase",
   "digital_completion": {
     "route_graph": true,
     "ai_path": true,

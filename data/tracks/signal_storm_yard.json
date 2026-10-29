@@ -163,7 +163,7 @@
   "elevation_profile": "signal_spikes",
   "bank_bias": 0.12,
   "geometry_note": "Neon Night upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. signal gantry / yard crates.",
-  "camera_identity": "neon_chase",
+  "camera_identity": "signal_storm_chase",
   "digital_completion": {
     "route_graph": true,
     "ai_path": true,

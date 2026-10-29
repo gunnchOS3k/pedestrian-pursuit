@@ -7,7 +7,9 @@
 | Item | Value |
 | --- | --- |
 | PR | #46 `lane-b/course-build-fix` |
-| Tip (at plan authoring) | recover against remote tip; verify with `git rev-parse HEAD` |
+| Tip (at plan authoring) | recover against remote tip; verify with `git rev-parse HEAD` (post cups 3–8 chase deepen) |
+| RTM | `artifacts/quality_review/REQUIREMENTS_TO_EVIDENCE_MATRIX.md` (plan-only companion) |
+| Owner package | `artifacts/quality_review/OWNER_PLAYABLE_REVIEW_PACKAGE.json` |
 | Base | `main` (do not retarget) |
 | Policy | recover latest; preserve newer; never reset/clean/force-push/merge |
 

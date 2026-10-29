@@ -152,7 +152,7 @@
   "elevation_profile": "ribbon_rolls",
   "bank_bias": 0.08,
   "geometry_note": "Skyline Relay upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. billboard arch / HVAC / vents.",
-  "camera_identity": "skyline_chase",
+  "camera_identity": "rooftop_chase",
   "digital_completion": {
     "route_graph": true,
     "ai_path": true,

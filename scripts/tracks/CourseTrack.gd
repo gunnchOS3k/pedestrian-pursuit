@@ -413,6 +413,7 @@ func _build_environment() -> void:
 		fill.light_color = _color("accent_color", Color(0.2, 0.8, 0.7))
 		fill.omni_range = 95.0
 		add_child(fill)
+		_add_cup_track_accent_fill(theme)
 	elif theme in ["saltline_boardwalk", "cliffside_draft", "tidal_bridge_run", "seaglass_switchback", "kinetic_coast"]:
 		sun.rotation_degrees = Vector3(-55.0, 30.0, 0.0)
 		sun.light_energy = 1.45
@@ -424,6 +425,7 @@ func _build_environment() -> void:
 		fill.light_color = Color(0.55, 0.85, 0.95)
 		fill.omni_range = 100.0
 		add_child(fill)
+		_add_cup_track_accent_fill(theme)
 	elif theme in ["lantern_corridor", "mirror_boulevard", "afterglow_overpass", "signal_storm_yard", "neon_night"]:
 		sun.rotation_degrees = Vector3(-28.0, 15.0, 0.0)
 		sun.light_energy = 0.55
@@ -443,6 +445,7 @@ func _build_environment() -> void:
 		bounce.light_color = Color(0.45, 0.55, 1.0)
 		bounce.omni_range = 55.0
 		add_child(bounce)
+		_add_cup_track_accent_fill(theme)
 	elif theme in ["rooftop_ribbon", "skybridge_sprint", "antenna_ascent", "cloud_deck_circuit", "skyline_relay"]:
 		sun.rotation_degrees = Vector3(-62.0, -20.0, 0.0)
 		sun.light_energy = 1.55
@@ -454,6 +457,7 @@ func _build_environment() -> void:
 		fill.light_color = _color("accent_color", Color(0.65, 0.85, 1.0))
 		fill.omni_range = 110.0
 		add_child(fill)
+		_add_cup_track_accent_fill(theme)
 	elif theme in ["marble_foyer_loop", "stack_corridor", "gallery_grand_oval", "vault_gate_gauntlet", "archive_relay"]:
 		sun.rotation_degrees = Vector3(-38.0, 48.0, 0.0)
 		sun.light_energy = 1.05
@@ -465,6 +469,7 @@ func _build_environment() -> void:
 		fill.light_color = Color(1.0, 0.88, 0.65)
 		fill.omni_range = 95.0
 		add_child(fill)
+		_add_cup_track_accent_fill(theme)
 	elif theme in ["cascade_colossus", "aurora_amphitheater", "origami_orchard", "horizon_crown_finale", "world_wonder"]:
 		sun.rotation_degrees = Vector3(-50.0, 25.0, 0.0)
 		sun.light_energy = 1.5
@@ -476,7 +481,162 @@ func _build_environment() -> void:
 		fill.light_color = _color("accent_color", Color(0.55, 0.85, 0.95))
 		fill.omni_range = 115.0
 		add_child(fill)
+		_add_cup_track_accent_fill(theme)
 	add_child(sun)
+
+
+func _add_cup_track_accent_fill(theme: String) -> void:
+	## Per-track secondary accent for cups 3–8 racing-camera readability.
+	## Cup-level MetroFill/CoastFill/… remain; accents do not claim final art.
+	var accent := OmniLight3D.new()
+	match theme:
+		"sneaker_city":
+			accent.name = "SneakerCityAccent"
+			accent.position = Vector3(6.0, 5.0, 8.0)
+			accent.light_energy = 1.7
+			accent.light_color = Color(1.0, 0.55, 0.25)
+			accent.omni_range = 48.0
+		"metro_pulse":
+			accent.name = "MetroPulseAccent"
+			accent.position = Vector3(-7.0, 4.5, 4.0)
+			accent.light_energy = 1.9
+			accent.light_color = Color(0.25, 0.95, 0.85)
+			accent.omni_range = 50.0
+		"crosswalk_canyon":
+			accent.name = "CrosswalkAccent"
+			accent.position = Vector3(4.0, 6.0, -6.0)
+			accent.light_energy = 1.6
+			accent.light_color = Color(0.95, 0.85, 0.35)
+			accent.omni_range = 52.0
+		"transit_spiral":
+			accent.name = "TransitSpiralAccent"
+			accent.position = Vector3(-5.0, 7.0, 2.0)
+			accent.light_energy = 1.8
+			accent.light_color = Color(0.45, 0.65, 1.0)
+			accent.omni_range = 55.0
+		"saltline_boardwalk":
+			accent.name = "SaltlineAccent"
+			accent.position = Vector3(8.0, 3.5, 6.0)
+			accent.light_energy = 1.5
+			accent.light_color = Color(0.95, 0.9, 0.55)
+			accent.omni_range = 46.0
+		"cliffside_draft":
+			accent.name = "CliffsideAccent"
+			accent.position = Vector3(-9.0, 8.0, -4.0)
+			accent.light_energy = 1.7
+			accent.light_color = Color(0.7, 0.85, 1.0)
+			accent.omni_range = 60.0
+		"tidal_bridge_run":
+			accent.name = "TidalAccent"
+			accent.position = Vector3(5.0, 4.0, -8.0)
+			accent.light_energy = 1.55
+			accent.light_color = Color(0.35, 0.8, 0.95)
+			accent.omni_range = 50.0
+		"seaglass_switchback":
+			accent.name = "SeaglassAccent"
+			accent.position = Vector3(-4.0, 3.5, 7.0)
+			accent.light_energy = 1.65
+			accent.light_color = Color(0.45, 0.95, 0.75)
+			accent.omni_range = 48.0
+		"lantern_corridor":
+			accent.name = "LanternAccent"
+			accent.position = Vector3(3.0, 4.0, 5.0)
+			accent.light_energy = 2.1
+			accent.light_color = Color(1.0, 0.55, 0.2)
+			accent.omni_range = 42.0
+		"mirror_boulevard":
+			accent.name = "MirrorAccent"
+			accent.position = Vector3(-6.0, 3.0, -3.0)
+			accent.light_energy = 2.0
+			accent.light_color = Color(0.85, 0.55, 1.0)
+			accent.omni_range = 45.0
+		"afterglow_overpass":
+			accent.name = "AfterglowAccent"
+			accent.position = Vector3(7.0, 5.5, 0.0)
+			accent.light_energy = 1.9
+			accent.light_color = Color(1.0, 0.35, 0.55)
+			accent.omni_range = 50.0
+		"signal_storm_yard":
+			accent.name = "SignalStormAccent"
+			accent.position = Vector3(-3.0, 6.0, 6.0)
+			accent.light_energy = 2.2
+			accent.light_color = Color(0.35, 0.95, 1.0)
+			accent.omni_range = 52.0
+		"rooftop_ribbon":
+			accent.name = "RooftopAccent"
+			accent.position = Vector3(5.0, 9.0, 4.0)
+			accent.light_energy = 1.6
+			accent.light_color = Color(1.0, 0.75, 0.4)
+			accent.omni_range = 55.0
+		"skybridge_sprint":
+			accent.name = "SkybridgeAccent"
+			accent.position = Vector3(-8.0, 7.0, -5.0)
+			accent.light_energy = 1.7
+			accent.light_color = Color(0.55, 0.8, 1.0)
+			accent.omni_range = 58.0
+		"antenna_ascent":
+			accent.name = "AntennaAccent"
+			accent.position = Vector3(2.0, 11.0, 0.0)
+			accent.light_energy = 1.85
+			accent.light_color = Color(0.9, 0.95, 1.0)
+			accent.omni_range = 62.0
+		"cloud_deck_circuit":
+			accent.name = "CloudDeckAccent"
+			accent.position = Vector3(-4.0, 10.0, 6.0)
+			accent.light_energy = 1.5
+			accent.light_color = Color(0.75, 0.88, 1.0)
+			accent.omni_range = 65.0
+		"marble_foyer_loop":
+			accent.name = "FoyerAccent"
+			accent.position = Vector3(4.0, 5.0, 3.0)
+			accent.light_energy = 1.55
+			accent.light_color = Color(1.0, 0.92, 0.7)
+			accent.omni_range = 44.0
+		"stack_corridor":
+			accent.name = "StackAccent"
+			accent.position = Vector3(-5.0, 4.0, -4.0)
+			accent.light_energy = 1.4
+			accent.light_color = Color(0.85, 0.7, 0.45)
+			accent.omni_range = 40.0
+		"gallery_grand_oval":
+			accent.name = "GalleryAccent"
+			accent.position = Vector3(0.0, 8.0, 0.0)
+			accent.light_energy = 1.7
+			accent.light_color = Color(0.95, 0.88, 0.75)
+			accent.omni_range = 55.0
+		"vault_gate_gauntlet":
+			accent.name = "VaultAccent"
+			accent.position = Vector3(6.0, 3.5, -6.0)
+			accent.light_energy = 1.6
+			accent.light_color = Color(0.75, 0.85, 1.0)
+			accent.omni_range = 42.0
+		"cascade_colossus":
+			accent.name = "ColossusAccent"
+			accent.position = Vector3(-6.0, 6.0, 8.0)
+			accent.light_energy = 1.75
+			accent.light_color = Color(0.45, 0.9, 1.0)
+			accent.omni_range = 58.0
+		"aurora_amphitheater":
+			accent.name = "AuroraAccent"
+			accent.position = Vector3(5.0, 7.0, -5.0)
+			accent.light_energy = 1.9
+			accent.light_color = Color(0.55, 0.75, 1.0)
+			accent.omni_range = 60.0
+		"origami_orchard":
+			accent.name = "OrigamiAccent"
+			accent.position = Vector3(-3.0, 4.5, 5.0)
+			accent.light_energy = 1.55
+			accent.light_color = Color(0.85, 0.95, 0.45)
+			accent.omni_range = 48.0
+		"horizon_crown_finale":
+			accent.name = "CrownAccent"
+			accent.position = Vector3(0.0, 9.0, -8.0)
+			accent.light_energy = 1.85
+			accent.light_color = Color(1.0, 0.85, 0.45)
+			accent.omni_range = 64.0
+		_:
+			return
+	add_child(accent)
 
 
 func _build_race_path() -> void:

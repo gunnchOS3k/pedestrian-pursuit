@@ -172,7 +172,7 @@
   ],
   "elevation_profile": "city_steps",
   "bank_bias": 0.06,
-  "camera_identity": "metro_chase",
+  "camera_identity": "sneaker_city_chase",
   "digital_completion": {
     "route_graph": true,
     "ai_path": true,

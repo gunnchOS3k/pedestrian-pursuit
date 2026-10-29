@@ -152,7 +152,7 @@
   "elevation_profile": "cascade_terraces",
   "bank_bias": 0.08,
   "geometry_note": "World Wonder upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. colossus falls / terrace arch.",
-  "camera_identity": "wonder_chase",
+  "camera_identity": "colossus_chase",
   "digital_completion": {
     "route_graph": true,
     "ai_path": true,

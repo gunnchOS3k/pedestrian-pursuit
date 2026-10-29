@@ -163,7 +163,7 @@
   "elevation_profile": "cliff_updraft",
   "bank_bias": 0.1,
   "geometry_note": "Kinetic Coast upgraded batch \u2014 real env/collision/audio candidates; not commercial final art.",
-  "camera_identity": "coast_chase",
+  "camera_identity": "cliffside_chase",
   "digital_completion": {
     "route_graph": true,
     "ai_path": true,

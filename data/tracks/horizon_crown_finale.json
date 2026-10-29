@@ -152,7 +152,7 @@
   "elevation_profile": "crown_spans",
   "bank_bias": 0.12,
   "geometry_note": "World Wonder upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. crown arches / finale pillars.",
-  "camera_identity": "wonder_chase",
+  "camera_identity": "crown_chase",
   "digital_completion": {
     "route_graph": true,
     "ai_path": true,

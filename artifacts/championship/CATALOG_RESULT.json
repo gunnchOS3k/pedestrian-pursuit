@@ -12,7 +12,7 @@
     "track_art_pending": 0
   },
   "human_approvals_false": true,
-  "racing_camera_quality_pass": "procedural_deepened_sole_stride_lighting_landmarks_chase",
+  "racing_camera_quality_pass": "procedural_deepened_cups_1_8_per_track_chase_accent",
   "production_batch": {
     "cups_1_2_upgraded": 8,
     "cup_3_metro_motion_upgraded_candidates": 4,
@@ -23,8 +23,9 @@
     "cup_8_world_wonder_upgraded_candidates": 4,
     "stubs_remaining": 0
   },
+  "catalog_rebuild_this_pass": false,
   "next_cup_batch": "human course/fun/art review still required; commercial approvals remain false",
-  "remaining_gaps": "commercial final-art approvals 0; physical 8p human party + Mac MoltenVK still blocked; HUMAN_FUN/COURSE false",
+  "remaining_gaps": "commercial final-art approvals 0; physical 8p human party + Mac MoltenVK still blocked; HUMAN_FUN/COURSE false; Cursor Complete not claimed",
   "not_v1": true,
   "HUMAN_FUN_APPROVAL": false,
   "HUMAN_COURSE_APPROVAL": false,

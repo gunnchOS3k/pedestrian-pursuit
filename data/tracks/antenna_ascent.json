@@ -163,7 +163,7 @@
   "elevation_profile": "antenna_climb",
   "bank_bias": 0.11,
   "geometry_note": "Skyline Relay upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. antenna mast / dish / mast base.",
-  "camera_identity": "skyline_chase",
+  "camera_identity": "antenna_chase",
   "digital_completion": {
     "route_graph": true,
     "ai_path": true,

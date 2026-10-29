@@ -172,7 +172,7 @@
   ],
   "elevation_profile": "spiral_climb",
   "bank_bias": 0.15,
-  "camera_identity": "metro_chase",
+  "camera_identity": "transit_chase",
   "digital_completion": {
     "route_graph": true,
     "ai_path": true,

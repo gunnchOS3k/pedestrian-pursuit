@@ -100,48 +100,174 @@ func apply_course_identity(identity: String) -> void:
 			max_spring_length = 12.7
 			base_look_ahead = 2.6
 			max_look_ahead = 7.0
-		"metro_chase":
+		"metro_chase", "sneaker_city_chase":
 			base_fov = 70.0
 			max_fov = 92.0
 			base_spring_length = 7.2
 			max_spring_length = 11.4
 			base_look_ahead = 2.4
 			max_look_ahead = 6.6
-		"coast_chase":
+		"metro_pulse_chase":
+			base_fov = 69.0
+			max_fov = 93.0
+			base_spring_length = 7.0
+			max_spring_length = 11.2
+			base_look_ahead = 2.35
+			max_look_ahead = 6.4
+		"crosswalk_chase":
+			base_fov = 71.0
+			max_fov = 91.0
+			base_spring_length = 7.4
+			max_spring_length = 11.8
+			base_look_ahead = 2.5
+			max_look_ahead = 6.8
+		"transit_chase":
+			base_fov = 68.0
+			max_fov = 94.0
+			base_spring_length = 6.9
+			max_spring_length = 11.0
+			base_look_ahead = 2.2
+			max_look_ahead = 6.2
+		"coast_chase", "saltline_chase":
 			base_fov = 72.0
 			max_fov = 90.0
 			base_spring_length = 8.0
 			max_spring_length = 12.8
 			base_look_ahead = 2.6
 			max_look_ahead = 7.0
-		"neon_chase":
+		"cliffside_chase":
+			base_fov = 74.0
+			max_fov = 94.0
+			base_spring_length = 8.3
+			max_spring_length = 13.1
+			base_look_ahead = 2.75
+			max_look_ahead = 7.3
+		"tidal_chase":
+			base_fov = 71.0
+			max_fov = 91.0
+			base_spring_length = 7.9
+			max_spring_length = 12.5
+			base_look_ahead = 2.55
+			max_look_ahead = 6.9
+		"seaglass_chase":
+			base_fov = 73.0
+			max_fov = 92.0
+			base_spring_length = 8.1
+			max_spring_length = 12.9
+			base_look_ahead = 2.65
+			max_look_ahead = 7.1
+		"neon_chase", "lantern_chase":
 			base_fov = 68.0
 			max_fov = 94.0
 			base_spring_length = 6.8
 			max_spring_length = 11.0
 			base_look_ahead = 2.0
 			max_look_ahead = 5.8
-		"skyline_chase":
+		"mirror_chase":
+			base_fov = 67.0
+			max_fov = 95.0
+			base_spring_length = 6.6
+			max_spring_length = 10.8
+			base_look_ahead = 1.95
+			max_look_ahead = 5.6
+		"afterglow_chase":
+			base_fov = 69.0
+			max_fov = 93.0
+			base_spring_length = 7.0
+			max_spring_length = 11.3
+			base_look_ahead = 2.15
+			max_look_ahead = 6.0
+		"signal_storm_chase":
+			base_fov = 66.0
+			max_fov = 96.0
+			base_spring_length = 6.5
+			max_spring_length = 10.6
+			base_look_ahead = 1.9
+			max_look_ahead = 5.5
+		"skyline_chase", "rooftop_chase":
 			base_fov = 74.0
 			max_fov = 96.0
 			base_spring_length = 8.4
 			max_spring_length = 13.2
 			base_look_ahead = 2.8
 			max_look_ahead = 7.4
-		"archive_chase":
-			base_fov = 66.0
-			max_fov = 86.0
-			base_spring_length = 7.4
-			max_spring_length = 11.6
-			base_look_ahead = 2.1
-			max_look_ahead = 5.6
-		"wonder_chase":
+		"skybridge_chase":
+			base_fov = 75.0
+			max_fov = 97.0
+			base_spring_length = 8.6
+			max_spring_length = 13.5
+			base_look_ahead = 2.9
+			max_look_ahead = 7.6
+		"antenna_chase":
 			base_fov = 73.0
 			max_fov = 95.0
 			base_spring_length = 8.2
 			max_spring_length = 13.0
 			base_look_ahead = 2.7
 			max_look_ahead = 7.2
+		"cloud_deck_chase":
+			base_fov = 76.0
+			max_fov = 98.0
+			base_spring_length = 8.8
+			max_spring_length = 13.8
+			base_look_ahead = 3.0
+			max_look_ahead = 7.8
+		"archive_chase", "foyer_chase":
+			base_fov = 66.0
+			max_fov = 86.0
+			base_spring_length = 7.4
+			max_spring_length = 11.6
+			base_look_ahead = 2.1
+			max_look_ahead = 5.6
+		"stack_chase":
+			base_fov = 65.0
+			max_fov = 85.0
+			base_spring_length = 7.1
+			max_spring_length = 11.2
+			base_look_ahead = 2.0
+			max_look_ahead = 5.4
+		"gallery_chase":
+			base_fov = 67.0
+			max_fov = 88.0
+			base_spring_length = 7.6
+			max_spring_length = 12.0
+			base_look_ahead = 2.25
+			max_look_ahead = 5.9
+		"vault_chase":
+			base_fov = 64.0
+			max_fov = 84.0
+			base_spring_length = 6.9
+			max_spring_length = 10.9
+			base_look_ahead = 1.95
+			max_look_ahead = 5.3
+		"wonder_chase", "colossus_chase":
+			base_fov = 73.0
+			max_fov = 95.0
+			base_spring_length = 8.2
+			max_spring_length = 13.0
+			base_look_ahead = 2.7
+			max_look_ahead = 7.2
+		"aurora_chase":
+			base_fov = 72.0
+			max_fov = 94.0
+			base_spring_length = 8.0
+			max_spring_length = 12.7
+			base_look_ahead = 2.6
+			max_look_ahead = 7.0
+		"origami_chase":
+			base_fov = 71.0
+			max_fov = 93.0
+			base_spring_length = 7.8
+			max_spring_length = 12.4
+			base_look_ahead = 2.5
+			max_look_ahead = 6.8
+		"crown_chase":
+			base_fov = 75.0
+			max_fov = 97.0
+			base_spring_length = 8.5
+			max_spring_length = 13.4
+			base_look_ahead = 2.85
+			max_look_ahead = 7.5
 		_:
 			pass
 	spring_length = base_spring_length

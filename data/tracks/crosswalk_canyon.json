@@ -161,7 +161,7 @@
   ],
   "elevation_profile": "canyon_dip",
   "bank_bias": 0.09,
-  "camera_identity": "metro_chase",
+  "camera_identity": "crosswalk_chase",
   "digital_completion": {
     "route_graph": true,
     "ai_path": true,

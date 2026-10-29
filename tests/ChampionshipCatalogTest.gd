@@ -107,12 +107,24 @@ func _run() -> void:
 		elif ss_course.get_node_or_null(str(sole_stride_fill[tid])) == null:
 			failures.append("%s missing %s lighting" % [tid, sole_stride_fill[tid]])
 		ss_course.queue_free()
-	## Cup 3 Metro Motion: elevation + distinct scenery; art may be candidate (not commercial).
+	## Cup 3 Metro Motion: per-track chase + accent; art may be candidate (not commercial).
 	var metro_landmarks := {
 		"sneaker_city_sprintway": "BillboardArch",
 		"metro_pulse_loop": "PulseStation",
 		"crosswalk_canyon": "CanyonSignal",
 		"transit_spiral": "SpiralTower",
+	}
+	var metro_cams := {
+		"sneaker_city_sprintway": "sneaker_city_chase",
+		"metro_pulse_loop": "metro_pulse_chase",
+		"crosswalk_canyon": "crosswalk_chase",
+		"transit_spiral": "transit_chase",
+	}
+	var metro_accents := {
+		"sneaker_city_sprintway": "SneakerCityAccent",
+		"metro_pulse_loop": "MetroPulseAccent",
+		"crosswalk_canyon": "CrosswalkAccent",
+		"transit_spiral": "TransitSpiralAccent",
 	}
 	for tid in ["sneaker_city_sprintway", "metro_pulse_loop", "crosswalk_canyon", "transit_spiral"]:
 		var d := TrackCatalogScript.load_track(tid)
@@ -128,8 +140,8 @@ func _run() -> void:
 			failures.append("%s unexpected art status %s" % [tid, fas])
 		if bool(d.get("human_track_art_approved", false)):
 			failures.append("%s commercial art must stay false" % tid)
-		if str(d.get("camera_identity", "")) != "metro_chase":
-			failures.append("%s missing metro camera identity" % tid)
+		if str(d.get("camera_identity", "")) != str(metro_cams[tid]):
+			failures.append("%s missing camera %s" % [tid, metro_cams[tid]])
 		var metro_course: Node = CourseTrackScript.new()
 		root.add_child(metro_course)
 		metro_course.configure(d)
@@ -146,6 +158,8 @@ func _run() -> void:
 				failures.append("%s missing WorldEnvironment lighting" % tid)
 			if metro_course.get_node_or_null("MetroFill") == null:
 				failures.append("%s missing MetroFill lighting" % tid)
+			if metro_course.get_node_or_null(str(metro_accents[tid])) == null:
+				failures.append("%s missing %s accent" % [tid, metro_accents[tid]])
 		metro_course.queue_free()
 	## Cup 4 Kinetic Coast: elevation + distinct scenery; art may be candidate (not commercial).
 	var coast := TrackCatalogScript.load_cup("kinetic_coast_cup")
@@ -157,6 +171,18 @@ func _run() -> void:
 		"cliffside_draft": "CliffCairn",
 		"tidal_bridge_run": "NorthBridge",
 		"seaglass_switchback": "SeaglassSpire",
+	}
+	var coast_cams := {
+		"saltline_boardwalk": "saltline_chase",
+		"cliffside_draft": "cliffside_chase",
+		"tidal_bridge_run": "tidal_chase",
+		"seaglass_switchback": "seaglass_chase",
+	}
+	var coast_accents := {
+		"saltline_boardwalk": "SaltlineAccent",
+		"cliffside_draft": "CliffsideAccent",
+		"tidal_bridge_run": "TidalAccent",
+		"seaglass_switchback": "SeaglassAccent",
 	}
 	for tid in ["saltline_boardwalk", "cliffside_draft", "tidal_bridge_run", "seaglass_switchback"]:
 		if tid not in coast_ids:
@@ -170,8 +196,8 @@ func _run() -> void:
 			failures.append("%s unexpected art status %s" % [tid, coast_fas])
 		if bool(cd.get("human_track_art_approved", false)):
 			failures.append("%s commercial art must stay false" % tid)
-		if str(cd.get("camera_identity", "")) != "coast_chase":
-			failures.append("%s missing coast camera identity" % tid)
+		if str(cd.get("camera_identity", "")) != str(coast_cams[tid]):
+			failures.append("%s missing camera %s" % [tid, coast_cams[tid]])
 		var coast_has_y := false
 		for p in cd.get("path_points", []):
 			if typeof(p) == TYPE_ARRAY and p.size() == 3 and absf(float(p[1])) > 0.1:
@@ -197,6 +223,8 @@ func _run() -> void:
 				failures.append("%s missing WorldEnvironment lighting" % tid)
 			if coast_course.get_node_or_null("CoastFill") == null:
 				failures.append("%s missing CoastFill lighting" % tid)
+			if coast_course.get_node_or_null(str(coast_accents[tid])) == null:
+				failures.append("%s missing %s accent" % [tid, coast_accents[tid]])
 		coast_course.queue_free()
 	## Cup 5 Neon Night: upgraded candidates with NeonFill env/collision/audio.
 	var neon := TrackCatalogScript.load_cup("neon_night_cup")
@@ -209,6 +237,18 @@ func _run() -> void:
 		"afterglow_overpass": "OverpassNorth",
 		"signal_storm_yard": "SignalGantry",
 	}
+	var neon_cams := {
+		"lantern_corridor": "lantern_chase",
+		"mirror_boulevard": "mirror_chase",
+		"afterglow_overpass": "afterglow_chase",
+		"signal_storm_yard": "signal_storm_chase",
+	}
+	var neon_accents := {
+		"lantern_corridor": "LanternAccent",
+		"mirror_boulevard": "MirrorAccent",
+		"afterglow_overpass": "AfterglowAccent",
+		"signal_storm_yard": "SignalStormAccent",
+	}
 	for tid in ["lantern_corridor", "mirror_boulevard", "afterglow_overpass", "signal_storm_yard"]:
 		if tid not in neon_ids:
 			failures.append("neon_night missing %s" % tid)
@@ -219,8 +259,8 @@ func _run() -> void:
 			failures.append("%s art must be candidate" % tid)
 		if bool(nd.get("human_track_art_approved", false)):
 			failures.append("%s commercial art must stay false" % tid)
-		if str(nd.get("camera_identity", "")) != "neon_chase":
-			failures.append("%s missing neon camera identity" % tid)
+		if str(nd.get("camera_identity", "")) != str(neon_cams[tid]):
+			failures.append("%s missing camera %s" % [tid, neon_cams[tid]])
 		var neon_has_y := false
 		for p in nd.get("path_points", []):
 			if typeof(p) == TYPE_ARRAY and p.size() == 3 and absf(float(p[1])) > 0.1:
@@ -246,6 +286,8 @@ func _run() -> void:
 				failures.append("%s missing WorldEnvironment lighting" % tid)
 			if neon_course.get_node_or_null("NeonFill") == null:
 				failures.append("%s missing NeonFill lighting" % tid)
+			if neon_course.get_node_or_null(str(neon_accents[tid])) == null:
+				failures.append("%s missing %s accent" % [tid, neon_accents[tid]])
 		neon_course.queue_free()
 	## Cup 6 Skyline Relay: upgraded candidates with SkylineFill.
 	var sky := TrackCatalogScript.load_cup("skyline_relay_cup")
@@ -258,6 +300,18 @@ func _run() -> void:
 		"antenna_ascent": "AntennaMast",
 		"cloud_deck_circuit": "ObsSpire",
 	}
+	var sky_cams := {
+		"rooftop_ribbon": "rooftop_chase",
+		"skybridge_sprint": "skybridge_chase",
+		"antenna_ascent": "antenna_chase",
+		"cloud_deck_circuit": "cloud_deck_chase",
+	}
+	var sky_accents := {
+		"rooftop_ribbon": "RooftopAccent",
+		"skybridge_sprint": "SkybridgeAccent",
+		"antenna_ascent": "AntennaAccent",
+		"cloud_deck_circuit": "CloudDeckAccent",
+	}
 	for tid in ["rooftop_ribbon", "skybridge_sprint", "antenna_ascent", "cloud_deck_circuit"]:
 		if tid not in sky_ids:
 			failures.append("skyline_relay missing %s" % tid)
@@ -268,8 +322,8 @@ func _run() -> void:
 			failures.append("%s art must be candidate" % tid)
 		if bool(sd.get("human_track_art_approved", false)):
 			failures.append("%s commercial art must stay false" % tid)
-		if str(sd.get("camera_identity", "")) != "skyline_chase":
-			failures.append("%s missing skyline camera identity" % tid)
+		if str(sd.get("camera_identity", "")) != str(sky_cams[tid]):
+			failures.append("%s missing camera %s" % [tid, sky_cams[tid]])
 		var sky_has_y := false
 		for p in sd.get("path_points", []):
 			if typeof(p) == TYPE_ARRAY and p.size() == 3 and absf(float(p[1])) > 0.1:
@@ -295,6 +349,8 @@ func _run() -> void:
 				failures.append("%s missing WorldEnvironment lighting" % tid)
 			if sky_course.get_node_or_null("SkylineFill") == null:
 				failures.append("%s missing SkylineFill lighting" % tid)
+			if sky_course.get_node_or_null(str(sky_accents[tid])) == null:
+				failures.append("%s missing %s accent" % [tid, sky_accents[tid]])
 		sky_course.queue_free()
 	## Cup 7 Archive Relay: upgraded tribute candidates with ArchiveFill.
 	var archive := TrackCatalogScript.load_cup("archive_relay_cup")
@@ -306,6 +362,18 @@ func _run() -> void:
 		"stack_corridor": "ShelfRowA",
 		"gallery_grand_oval": "SkylightBank",
 		"vault_gate_gauntlet": "VaultArch",
+	}
+	var archive_cams := {
+		"marble_foyer_loop": "foyer_chase",
+		"stack_corridor": "stack_chase",
+		"gallery_grand_oval": "gallery_chase",
+		"vault_gate_gauntlet": "vault_chase",
+	}
+	var archive_accents := {
+		"marble_foyer_loop": "FoyerAccent",
+		"stack_corridor": "StackAccent",
+		"gallery_grand_oval": "GalleryAccent",
+		"vault_gate_gauntlet": "VaultAccent",
 	}
 	for tid in ["marble_foyer_loop", "stack_corridor", "gallery_grand_oval", "vault_gate_gauntlet"]:
 		if tid not in archive_ids:
@@ -319,8 +387,8 @@ func _run() -> void:
 			failures.append("%s commercial art must stay false" % tid)
 		if str(ad.get("tribute_note", "")).is_empty():
 			failures.append("%s missing tribute honesty note" % tid)
-		if str(ad.get("camera_identity", "")) != "archive_chase":
-			failures.append("%s missing archive camera identity" % tid)
+		if str(ad.get("camera_identity", "")) != str(archive_cams[tid]):
+			failures.append("%s missing camera %s" % [tid, archive_cams[tid]])
 		var archive_has_y := false
 		for p in ad.get("path_points", []):
 			if typeof(p) == TYPE_ARRAY and p.size() == 3 and absf(float(p[1])) > 0.1:
@@ -346,6 +414,8 @@ func _run() -> void:
 				failures.append("%s missing WorldEnvironment lighting" % tid)
 			if archive_course.get_node_or_null("ArchiveFill") == null:
 				failures.append("%s missing ArchiveFill lighting" % tid)
+			if archive_course.get_node_or_null(str(archive_accents[tid])) == null:
+				failures.append("%s missing %s accent" % [tid, archive_accents[tid]])
 		archive_course.queue_free()
 	## Cup 8 World Wonder Grand Prix: upgraded candidates with WonderFill.
 	var wonder := TrackCatalogScript.load_cup("world_wonder_grand_prix")
@@ -358,6 +428,18 @@ func _run() -> void:
 		"origami_orchard": "PaperSpire",
 		"horizon_crown_finale": "CrownArchNorth",
 	}
+	var wonder_cams := {
+		"cascade_colossus": "colossus_chase",
+		"aurora_amphitheater": "aurora_chase",
+		"origami_orchard": "origami_chase",
+		"horizon_crown_finale": "crown_chase",
+	}
+	var wonder_accents := {
+		"cascade_colossus": "ColossusAccent",
+		"aurora_amphitheater": "AuroraAccent",
+		"origami_orchard": "OrigamiAccent",
+		"horizon_crown_finale": "CrownAccent",
+	}
 	for tid in ["cascade_colossus", "aurora_amphitheater", "origami_orchard", "horizon_crown_finale"]:
 		if tid not in wonder_ids:
 			failures.append("world_wonder missing %s" % tid)
@@ -368,8 +450,8 @@ func _run() -> void:
 			failures.append("%s art must be candidate" % tid)
 		if bool(wd.get("human_track_art_approved", false)):
 			failures.append("%s commercial art must stay false" % tid)
-		if str(wd.get("camera_identity", "")) != "wonder_chase":
-			failures.append("%s missing wonder camera identity" % tid)
+		if str(wd.get("camera_identity", "")) != str(wonder_cams[tid]):
+			failures.append("%s missing camera %s" % [tid, wonder_cams[tid]])
 		var wonder_has_y := false
 		for p in wd.get("path_points", []):
 			if typeof(p) == TYPE_ARRAY and p.size() == 3 and absf(float(p[1])) > 0.1:
@@ -395,6 +477,8 @@ func _run() -> void:
 				failures.append("%s missing WorldEnvironment lighting" % tid)
 			if wonder_course.get_node_or_null("WonderFill") == null:
 				failures.append("%s missing WonderFill lighting" % tid)
+			if wonder_course.get_node_or_null(str(wonder_accents[tid])) == null:
+				failures.append("%s missing %s accent" % [tid, wonder_accents[tid]])
 		wonder_course.queue_free()
 	## All 32 tracks must be championship_upgraded (no stubs / no pending-only raceable).
 	var stub_left := 0

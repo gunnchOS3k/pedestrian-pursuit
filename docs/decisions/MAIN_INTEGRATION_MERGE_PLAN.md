@@ -1,5 +1,9 @@
 # Main-integration merge PLAN (pointer)
 
-Canonical plan (owner approval required; do not merge/retarget from this doc alone):
+**Plan only — do not merge, retarget, force-push, or reset.**
 
-[`artifacts/main_integration/MAIN_INTEGRATION_MERGE_PLAN.md`](../../artifacts/main_integration/MAIN_INTEGRATION_MERGE_PLAN.md)
+Canonical plan: `artifacts/main_integration/MAIN_INTEGRATION_MERGE_PLAN.md`  
+RTM: `artifacts/quality_review/REQUIREMENTS_TO_EVIDENCE_MATRIX.md`  
+Owner package: `artifacts/quality_review/OWNER_PLAYABLE_REVIEW_PACKAGE.json`
+
+Honesty: HUMAN_FUN / HUMAN_COURSE / RC2 / V1 remain **false**.

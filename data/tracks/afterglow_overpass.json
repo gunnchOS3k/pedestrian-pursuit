@@ -152,7 +152,7 @@
   "elevation_profile": "overpass_spans",
   "bank_bias": 0.11,
   "geometry_note": "Neon Night upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. overpass spans / afterglow pillars.",
-  "camera_identity": "neon_chase",
+  "camera_identity": "afterglow_chase",
   "digital_completion": {
     "route_graph": true,
     "ai_path": true,

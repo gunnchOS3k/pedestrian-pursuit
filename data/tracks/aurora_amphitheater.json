@@ -163,7 +163,7 @@
   "elevation_profile": "amphitheater_bowl",
   "bank_bias": 0.1,
   "geometry_note": "World Wonder upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. aurora rim / stage pylon / bowl seats.",
-  "camera_identity": "wonder_chase",
+  "camera_identity": "aurora_chase",
   "digital_completion": {
     "route_graph": true,
     "ai_path": true,

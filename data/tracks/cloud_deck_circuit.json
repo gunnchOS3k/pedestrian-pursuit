@@ -163,7 +163,7 @@
   "elevation_profile": "cloud_steps",
   "bank_bias": 0.12,
   "geometry_note": "Skyline Relay upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. obs spire / deck beacon / mist pylons.",
-  "camera_identity": "skyline_chase",
+  "camera_identity": "cloud_deck_chase",
   "digital_completion": {
     "route_graph": true,
     "ai_path": true,

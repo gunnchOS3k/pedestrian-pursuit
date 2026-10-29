@@ -1,0 +1,53 @@
+{
+  "schema": "gunnchos.pedestrian.owner_playable_review_package.v1",
+  "product": "pedestrian-pursuit",
+  "pr": 46,
+  "branch": "lane-b/course-build-fix",
+  "generated_at_utc": "2026-10-29T19:00:00Z",
+  "tip_policy": "recover against remote tip; stamp with git rev-parse HEAD at review time",
+  "CURSOR_COMPLETE": false,
+  "HUMAN_FUN_APPROVAL": false,
+  "HUMAN_COURSE_APPROVAL": false,
+  "RC2_READY": false,
+  "V1_0_0_RELEASE_AUTHORIZED": false,
+  "track_art_candidate_count": 32,
+  "track_art_human_approved_count": 0,
+  "candidate_ne_human_approved": true,
+  "inventory": {
+    "cups": 8,
+    "tracks": 32,
+    "vehicles_playable": 50,
+    "wardrobe_garments": 55
+  },
+  "quality_delivered_this_pass": {
+    "rtm": "artifacts/quality_review/REQUIREMENTS_TO_EVIDENCE_MATRIX.md",
+    "eight_cup_racing_camera": "artifacts/quality_review/EIGHT_CUP_RACING_CAMERA_QUALITY.md",
+    "cups_3_8_per_track_chase": true,
+    "cups_3_8_accent_fills": true,
+    "footwear_trail_family_profiles": true,
+    "wardrobe_chase_stripe": true,
+    "catalog_rebuild": false
+  },
+  "honesty_packets": {
+    "partylink_2_8": "artifacts/multiplayer/EIGHT_HUMAN_PARTY_PACKET.md",
+    "moltenvk_metal": "artifacts/moltenvk/MOLTENVK_METAL_STATUS.md",
+    "lap_honesty_2client": "artifacts/independent_two_process/INDEPENDENT_CLIENTS_RACE_RESULT.json",
+    "merge_plan_only": "artifacts/main_integration/MAIN_INTEGRATION_MERGE_PLAN.md"
+  },
+  "owner_review_checklist": [
+    "Play one race per cup (8) on desktop or Pixel; note chase readability vs fatigue",
+    "Confirm footwear trail family colors remain distinguishable in crowded fields",
+    "Confirm wardrobe cosmetics never alter handling",
+    "Confirm PartyLink seat labels: bots never shown as humans",
+    "Do not sign MoltenVK or 8-human physical from this package",
+    "Leave HUMAN_FUN / HUMAN_COURSE / RC2 / V1 false until explicit owner approval"
+  ],
+  "cursor_complete_gaps": [
+    "human fun/course approvals",
+    "physical 8-human PartyLink",
+    "Mac MoltenVK/Metal",
+    "shared hub PVS binding",
+    "human a11y certification",
+    "owner eight-cup camera sign-off"
+  ]
+}

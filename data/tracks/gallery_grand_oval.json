@@ -164,7 +164,7 @@
   "bank_bias": 0.1,
   "geometry_note": "Archive Relay upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. skylight bank / gallery benches.",
   "tribute_note": "Archive of Life crossover is fictional exhibition theming only \u2014 original gunnchOS tribute, no fabricated research claims.",
-  "camera_identity": "archive_chase",
+  "camera_identity": "gallery_chase",
   "digital_completion": {
     "route_graph": true,
     "ai_path": true,

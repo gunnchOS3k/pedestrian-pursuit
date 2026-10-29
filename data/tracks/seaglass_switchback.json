@@ -163,7 +163,7 @@
   "elevation_profile": "switchback_steps",
   "bank_bias": 0.12,
   "geometry_note": "Kinetic Coast upgraded batch \u2014 real env/collision/audio candidates; not commercial final art.",
-  "camera_identity": "coast_chase",
+  "camera_identity": "seaglass_chase",
   "digital_completion": {
     "route_graph": true,
     "ai_path": true,
