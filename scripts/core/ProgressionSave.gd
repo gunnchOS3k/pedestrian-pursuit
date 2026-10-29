@@ -3,7 +3,8 @@ extends Node
 ## Career progression + unlock surfacing (digital Beta).
 
 const SAVE_PATH := "user://pp_progression.cfg"
-const SAVE_VERSION := 3
+## v4: championship 8-cup / 32-track career shell unlocks (not commercial art / not all vehicles).
+const SAVE_VERSION := 4
 
 var xp: int = 0
 var level: int = 1
@@ -75,6 +76,15 @@ func _migrate_from(version: int) -> void:
 		## Separate developer/test unlock-all from genuine player progression.
 		## Do NOT auto-grant all 50 vehicles — starters remain freely available via unlock.mode.
 		unlocked["unlock_mode:starter"] = true
+		if typeof(unlocked_vehicles) != TYPE_DICTIONARY:
+			unlocked_vehicles = {}
+	if version < 4:
+		## Championship expansion: surface all 8 cups / 32 raceable tracks in career shell.
+		## Honest: does NOT grant commercial art, HUMAN approvals, or all 50 footwear unlocks.
+		unlocked["mode:cup"] = true
+		unlocked["championship_cups:8"] = true
+		unlocked["tracks:championship_32"] = true
+		unlocked["mode:partylink"] = true
 		if typeof(unlocked_vehicles) != TYPE_DICTIONARY:
 			unlocked_vehicles = {}
 

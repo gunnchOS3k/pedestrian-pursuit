@@ -9,8 +9,8 @@
   "V1_0_0_RELEASE_AUTHORIZED": false,
   "note": "Runtime playability is separate from final commercial art acceptance. Procedural/garage meshes never silently satisfy human-approved commercial art.",
   "counts": {
-    "final_art_candidate": 41,
-    "final_art_pending": 9
+    "final_art_candidate": 50,
+    "final_art_pending": 0
   },
   "vehicles": [
     {
@@ -323,82 +323,82 @@
       "id": "cinderstride",
       "family_id": "anime_aggressors",
       "runtime_status": "playable_runtime",
-      "art_status": "procedural_final_for_garage",
-      "final_art_status": "final_art_pending",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_candidate",
       "human_commercial_art_approved": false,
-      "notes": "Garage/procedural presentation only \u2014 final art pending; never commercial approved."
+      "notes": "Native procedural presentation for Anime-family tribute footwear; still not HUMAN commercial-art approved. Silhouette/ability props authored in RacerVisual."
     },
     {
       "id": "bastion_stomp",
       "family_id": "anime_aggressors",
       "runtime_status": "playable_runtime",
-      "art_status": "procedural_final_for_garage",
-      "final_art_status": "final_art_pending",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_candidate",
       "human_commercial_art_approved": false,
-      "notes": "Garage/procedural presentation only \u2014 final art pending; never commercial approved."
+      "notes": "Native procedural presentation for Anime-family tribute footwear; still not HUMAN commercial-art approved. Silhouette/ability props authored in RacerVisual."
     },
     {
       "id": "voltstep_coils",
       "family_id": "anime_aggressors",
       "runtime_status": "playable_runtime",
-      "art_status": "procedural_final_for_garage",
-      "final_art_status": "final_art_pending",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_candidate",
       "human_commercial_art_approved": false,
-      "notes": "Garage/procedural presentation only \u2014 final art pending; never commercial approved."
+      "notes": "Native procedural presentation for Anime-family tribute footwear; still not HUMAN commercial-art approved. Silhouette/ability props authored in RacerVisual."
     },
     {
       "id": "galeleaf_gliders",
       "family_id": "anime_aggressors",
       "runtime_status": "playable_runtime",
-      "art_status": "procedural_final_for_garage",
-      "final_art_status": "final_art_pending",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_candidate",
       "human_commercial_art_approved": false,
-      "notes": "Garage/procedural presentation only \u2014 final art pending; never commercial approved."
+      "notes": "Native procedural presentation for Anime-family tribute footwear; still not HUMAN commercial-art approved. Silhouette/ability props authored in RacerVisual."
     },
     {
       "id": "azure_bastions",
       "family_id": "anime_aggressors",
       "runtime_status": "playable_runtime",
-      "art_status": "procedural_final_for_garage",
-      "final_art_status": "final_art_pending",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_candidate",
       "human_commercial_art_approved": false,
-      "notes": "Garage/procedural presentation only \u2014 final art pending; never commercial approved."
+      "notes": "Native procedural presentation for Anime-family tribute footwear; still not HUMAN commercial-art approved. Silhouette/ability props authored in RacerVisual."
     },
     {
       "id": "orbitwalkers",
       "family_id": "anime_aggressors",
       "runtime_status": "playable_runtime",
-      "art_status": "procedural_final_for_garage",
-      "final_art_status": "final_art_pending",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_candidate",
       "human_commercial_art_approved": false,
-      "notes": "Garage/procedural presentation only \u2014 final art pending; never commercial approved."
+      "notes": "Native procedural presentation for Anime-family tribute footwear; still not HUMAN commercial-art approved. Silhouette/ability props authored in RacerVisual."
     },
     {
       "id": "phase_echoes",
       "family_id": "anime_aggressors",
       "runtime_status": "playable_runtime",
-      "art_status": "procedural_final_for_garage",
-      "final_art_status": "final_art_pending",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_candidate",
       "human_commercial_art_approved": false,
-      "notes": "Garage/procedural presentation only \u2014 final art pending; never commercial approved."
+      "notes": "Native procedural presentation for Anime-family tribute footwear; still not HUMAN commercial-art approved. Silhouette/ability props authored in RacerVisual."
     },
     {
       "id": "nullstep",
       "family_id": "anime_aggressors",
       "runtime_status": "playable_runtime",
-      "art_status": "procedural_final_for_garage",
-      "final_art_status": "final_art_pending",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_candidate",
       "human_commercial_art_approved": false,
-      "notes": "Garage/procedural presentation only \u2014 final art pending; never commercial approved."
+      "notes": "Native procedural presentation for Anime-family tribute footwear; still not HUMAN commercial-art approved. Silhouette/ability props authored in RacerVisual."
     },
     {
       "id": "radiant_order",
       "family_id": "anime_aggressors",
       "runtime_status": "playable_runtime",
-      "art_status": "procedural_final_for_garage",
-      "final_art_status": "final_art_pending",
+      "art_status": "native_v1",
+      "final_art_status": "final_art_candidate",
       "human_commercial_art_approved": false,
-      "notes": "Garage/procedural presentation only \u2014 final art pending; never commercial approved."
+      "notes": "Native procedural presentation for Anime-family tribute footwear; still not HUMAN commercial-art approved. Silhouette/ability props authored in RacerVisual."
     },
     {
       "id": "lifeling_lopers",

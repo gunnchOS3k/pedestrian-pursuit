@@ -21,9 +21,13 @@ func _run() -> void:
 	await _exercise_course("metro_pulse_loop", failures)
 	await _exercise_course("saltline_boardwalk", failures)
 	await _exercise_course("cliffside_draft", failures)
+	await _exercise_course("lantern_corridor", failures)
+	await _exercise_course("rooftop_ribbon", failures)
+	await _exercise_course("marble_foyer_loop", failures)
+	await _exercise_course("cascade_colossus", failures)
 	if failures.is_empty():
 		print(
-			"COURSE_BUILD_SURFACE_PASS verdant_cascade_circuit cloverwind_ranch prism_apex emberkeep_gauntlet sneaker_city_sprintway metro_pulse_loop saltline_boardwalk cliffside_draft"
+			"COURSE_BUILD_SURFACE_PASS verdant_cascade_circuit cloverwind_ranch prism_apex emberkeep_gauntlet sneaker_city_sprintway metro_pulse_loop saltline_boardwalk cliffside_draft lantern_corridor rooftop_ribbon marble_foyer_loop cascade_colossus"
 		)
 		quit(0)
 		return
@@ -94,6 +98,38 @@ func _exercise_course(track_id: String, failures: PackedStringArray) -> void:
 			failures.append("cliffside missing CliffFaceRock hazard")
 		if course.get_node_or_null("CoastFill") == null:
 			failures.append("cliffside missing CoastFill lighting")
+	elif track_id == "lantern_corridor":
+		var scenery := course.get_node_or_null("Scenery")
+		if scenery == null or scenery.get_node_or_null("LanternCanopy") == null:
+			failures.append("lantern missing LanternCanopy landmark")
+		if scenery == null or scenery.get_node_or_null("MarketCrate") == null:
+			failures.append("lantern missing MarketCrate hazard")
+		if course.get_node_or_null("NeonFill") == null:
+			failures.append("lantern missing NeonFill lighting")
+	elif track_id == "rooftop_ribbon":
+		var scenery := course.get_node_or_null("Scenery")
+		if scenery == null or scenery.get_node_or_null("BillboardArch") == null:
+			failures.append("rooftop missing BillboardArch landmark")
+		if scenery == null or scenery.get_node_or_null("RoofVent") == null:
+			failures.append("rooftop missing RoofVent hazard")
+		if course.get_node_or_null("SkylineFill") == null:
+			failures.append("rooftop missing SkylineFill lighting")
+	elif track_id == "marble_foyer_loop":
+		var scenery := course.get_node_or_null("Scenery")
+		if scenery == null or scenery.get_node_or_null("FoyerArch") == null:
+			failures.append("foyer missing FoyerArch landmark")
+		if scenery == null or scenery.get_node_or_null("RotundaPlinth") == null:
+			failures.append("foyer missing RotundaPlinth hazard")
+		if course.get_node_or_null("ArchiveFill") == null:
+			failures.append("foyer missing ArchiveFill lighting")
+	elif track_id == "cascade_colossus":
+		var scenery := course.get_node_or_null("Scenery")
+		if scenery == null or scenery.get_node_or_null("ColossusFalls") == null:
+			failures.append("cascade missing ColossusFalls landmark")
+		if scenery == null or scenery.get_node_or_null("MistRock") == null:
+			failures.append("cascade missing MistRock hazard")
+		if course.get_node_or_null("WonderFill") == null:
+			failures.append("cascade missing WonderFill lighting")
 	course.queue_free()
 
 

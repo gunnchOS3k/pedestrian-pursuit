@@ -34,10 +34,24 @@ func _init() -> void:
 		## Runtime playability must not imply commercial art.
 		if VehicleCatalogScript.is_playable(vid) and fas == "final_art_approved":
 			failures.append("%s playable silently marked final_art_approved" % vid)
-	if int(counts.get("final_art_candidate", 0)) < 1:
-		failures.append("expected some final_art_candidate entries")
-	if int(counts.get("final_art_pending", 0)) < 1:
-		failures.append("expected some final_art_pending entries")
+	if int(counts.get("final_art_candidate", 0)) != 50:
+		failures.append(
+			"expected 50 final_art_candidate, got %s" % str(counts.get("final_art_candidate"))
+		)
+	if int(counts.get("final_art_pending", 0)) != 0:
+		failures.append(
+			"expected 0 final_art_pending after tribute footwear promotion, got %s"
+			% str(counts.get("final_art_pending"))
+		)
+	## HUMAN commercial gate must remain unearned even when all 50 are candidates.
+	if bool(ArtAcceptanceScript.load_registry().get("human_commercial_art_gate", false)):
+		failures.append("human_commercial_art_gate must stay false")
+	if bool(ArtAcceptanceScript.load_registry().get("HUMAN_FUN_APPROVAL", false)):
+		failures.append("HUMAN_FUN_APPROVAL must stay false")
+	if bool(ArtAcceptanceScript.load_registry().get("RC2_READY", false)):
+		failures.append("RC2_READY must stay false")
+	if bool(ArtAcceptanceScript.load_registry().get("V1_0_0_RELEASE_AUTHORIZED", false)):
+		failures.append("V1_0_0_RELEASE_AUTHORIZED must stay false")
 
 	if failures.is_empty():
 		print(

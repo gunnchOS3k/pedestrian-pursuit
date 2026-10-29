@@ -340,6 +340,47 @@ func _build_environment() -> void:
 		fill.light_color = _color("accent_color", Color(1.0, 0.45, 0.75))
 		fill.omni_range = 105.0
 		add_child(fill)
+		## Secondary wet-street bounce so neon boulevards stay readable at dusk.
+		var bounce := OmniLight3D.new()
+		bounce.name = "NeonBounce"
+		bounce.position = Vector3(8.0, 4.0, -6.0)
+		bounce.light_energy = 1.8
+		bounce.light_color = Color(0.45, 0.55, 1.0)
+		bounce.omni_range = 55.0
+		add_child(bounce)
+	elif theme in ["rooftop_ribbon", "skybridge_sprint", "antenna_ascent", "cloud_deck_circuit", "skyline_relay"]:
+		sun.rotation_degrees = Vector3(-62.0, -20.0, 0.0)
+		sun.light_energy = 1.55
+		sun.light_color = Color(0.92, 0.96, 1.0)
+		var fill := OmniLight3D.new()
+		fill.name = "SkylineFill"
+		fill.position = Vector3(0.0, 16.0, 0.0)
+		fill.light_energy = 2.4
+		fill.light_color = _color("accent_color", Color(0.65, 0.85, 1.0))
+		fill.omni_range = 110.0
+		add_child(fill)
+	elif theme in ["marble_foyer_loop", "stack_corridor", "gallery_grand_oval", "vault_gate_gauntlet", "archive_relay"]:
+		sun.rotation_degrees = Vector3(-38.0, 48.0, 0.0)
+		sun.light_energy = 1.05
+		sun.light_color = Color(1.0, 0.94, 0.82)
+		var fill := OmniLight3D.new()
+		fill.name = "ArchiveFill"
+		fill.position = Vector3(0.0, 12.0, 0.0)
+		fill.light_energy = 2.5
+		fill.light_color = Color(1.0, 0.88, 0.65)
+		fill.omni_range = 95.0
+		add_child(fill)
+	elif theme in ["cascade_colossus", "aurora_amphitheater", "origami_orchard", "horizon_crown_finale", "world_wonder"]:
+		sun.rotation_degrees = Vector3(-50.0, 25.0, 0.0)
+		sun.light_energy = 1.5
+		sun.light_color = Color(1.0, 0.98, 0.92)
+		var fill := OmniLight3D.new()
+		fill.name = "WonderFill"
+		fill.position = Vector3(0.0, 14.0, 0.0)
+		fill.light_energy = 2.3
+		fill.light_color = _color("accent_color", Color(0.55, 0.85, 0.95))
+		fill.omni_range = 115.0
+		add_child(fill)
 	add_child(sun)
 
 

@@ -25,13 +25,33 @@ func _init() -> void:
 	racer["appearance"]["affects_collision"] = false
 	racer["appearance"]["affects_stats"] = false
 
-	## 2) Choose clothing + footwear
+	## 2) Choose clothing + footwear (incl. formerly-pending kiln/loom families)
+	for fam_id in ["crosswind_kiln", "archive_loom"]:
+		if WardrobeCatalogScript.family_art_status(fam_id) != "integrated_mesh_v1":
+			failures.append("%s family not integrated_mesh_v1" % fam_id)
+	for preset_id in ["crosswind_kiln_default", "archive_loom_default"]:
+		var kiln_preset := WardrobeCatalogScript.preset(preset_id)
+		if kiln_preset.is_empty():
+			failures.append("%s preset missing" % preset_id)
+			continue
+		for key in ["base_underlayer", "top", "bottom", "outerwear"]:
+			var gid := str(kiln_preset.get("slots", {}).get(key, ""))
+			var g := WardrobeCatalogScript.garment_by_id(gid)
+			if g.is_empty() or str(g.get("art_status", "")) != "integrated_mesh_v1":
+				failures.append("%s missing integrated %s" % [preset_id, key])
+			if not bool(g.get("cosmetic_only", false)):
+				failures.append("%s garment must stay cosmetic_only" % gid)
+			if str(g.get("mesh_recipe", "")).is_empty():
+				failures.append("%s missing mesh_recipe" % gid)
 	var preset := WardrobeCatalogScript.preset("metro_pulse_default")
 	if preset.is_empty():
 		failures.append("metro_pulse_default preset missing")
 	var slots: Dictionary = preset.get("slots", {})
-	if WardrobeCatalogScript.integrated_complete_outfit_ids().is_empty():
+	var integrated_ids := WardrobeCatalogScript.integrated_complete_outfit_ids()
+	if integrated_ids.is_empty():
 		failures.append("no integrated complete outfit")
+	if "crosswind_kiln_default" not in integrated_ids or "archive_loom_default" not in integrated_ids:
+		failures.append("kiln/loom presets missing from integrated complete outfits")
 	slots["footwear_vehicle"] = "reedline_circlers"
 	CreatedRacerStoreScript.save_outfit("metro_pulse_default", slots, true)
 	racer["outfit_id"] = "metro_pulse_default"

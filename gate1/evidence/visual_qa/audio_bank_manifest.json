@@ -2,7 +2,7 @@
   "schema": "pp_audio_bank_manifest/v1",
   "status": "PROCEDURAL_FINAL",
   "license": "ORIGINAL_INTERNAL",
-  "count": 60,
+  "count": 92,
   "files": [
     {
       "id": "music.menu_theme",
@@ -98,6 +98,246 @@
       "id": "ambience.mirage_mesa",
       "path": "assets/audio/ambience/mirage_mesa.wav",
       "sha256": "f18d1533cdaa30f056d1728d69e234f915c9623e63681155816e2ed083c9ba58"
+    },
+    {
+      "id": "music.race.sneaker_city_sprintway",
+      "path": "assets/audio/music/sneaker_city_sprintway_race.wav",
+      "sha256": "f86765504cb1901e0ba8259e44676aabaab565105893b44a9ceff6a80e114d53"
+    },
+    {
+      "id": "ambience.sneaker_city_sprintway",
+      "path": "assets/audio/ambience/sneaker_city_sprintway.wav",
+      "sha256": "875d78dd6418b7b1d6f47cb038400beec4cda79f41f2a5f212897bbc6437e71c"
+    },
+    {
+      "id": "music.race.metro_pulse_loop",
+      "path": "assets/audio/music/metro_pulse_loop_race.wav",
+      "sha256": "6bf609c7200a7928b9e572508ab4d420be0f26c89bb5ed0d965d0a4137694bb3"
+    },
+    {
+      "id": "ambience.metro_pulse_loop",
+      "path": "assets/audio/ambience/metro_pulse_loop.wav",
+      "sha256": "079973aa62f6f545a2c6d598ae7b7f515185370524721b2cd92a958b64c04a4b"
+    },
+    {
+      "id": "music.race.crosswalk_canyon",
+      "path": "assets/audio/music/crosswalk_canyon_race.wav",
+      "sha256": "48c4b2ebda41ab67899662a0a867d64b21eda5aa82d2e03a4c48db581c503e51"
+    },
+    {
+      "id": "ambience.crosswalk_canyon",
+      "path": "assets/audio/ambience/crosswalk_canyon.wav",
+      "sha256": "5c484485874352cd0ecb0c857d2244ff7776a754e0561d8f38885fb870418ff5"
+    },
+    {
+      "id": "music.race.transit_spiral",
+      "path": "assets/audio/music/transit_spiral_race.wav",
+      "sha256": "e5bd72a6995bbe296071180e4728aeedfa0948b72248f6dced3ef63ce5664b6a"
+    },
+    {
+      "id": "ambience.transit_spiral",
+      "path": "assets/audio/ambience/transit_spiral.wav",
+      "sha256": "12199a3f4f0e5120a3f68f2d0ab60462b507d098f79e6fee51ee887a2902c800"
+    },
+    {
+      "id": "music.race.saltline_boardwalk",
+      "path": "assets/audio/music/saltline_boardwalk_race.wav",
+      "sha256": "fd9b5fb78c084f329e60857f6cb63016ba1323783942fd662b6f4c507734e499"
+    },
+    {
+      "id": "ambience.saltline_boardwalk",
+      "path": "assets/audio/ambience/saltline_boardwalk.wav",
+      "sha256": "0f3acd1b97b4997cf2b75276f4d34a6e97894d8010b7a62f58706e9718aa1caf"
+    },
+    {
+      "id": "music.race.cliffside_draft",
+      "path": "assets/audio/music/cliffside_draft_race.wav",
+      "sha256": "d25c7874f31e7690b04fdada43536b5524520a3a69f13d1a40a94af427563d66"
+    },
+    {
+      "id": "ambience.cliffside_draft",
+      "path": "assets/audio/ambience/cliffside_draft.wav",
+      "sha256": "f2100ecabbb458fd3c7964d883083209cc830a42523036275489aa55aed748ca"
+    },
+    {
+      "id": "music.race.tidal_bridge_run",
+      "path": "assets/audio/music/tidal_bridge_run_race.wav",
+      "sha256": "41d77161a469b3450f977db1df92b385cd500a1529ea78121c717ca45df66269"
+    },
+    {
+      "id": "ambience.tidal_bridge_run",
+      "path": "assets/audio/ambience/tidal_bridge_run.wav",
+      "sha256": "6516647816e49847a72f449f3956bd6f03079cd58969cb0d306114d4f09d09f0"
+    },
+    {
+      "id": "music.race.seaglass_switchback",
+      "path": "assets/audio/music/seaglass_switchback_race.wav",
+      "sha256": "0f963f0b41027282cd5fd7edb155bcbfa4800efcf5cd582726b8ff91810efc5f"
+    },
+    {
+      "id": "ambience.seaglass_switchback",
+      "path": "assets/audio/ambience/seaglass_switchback.wav",
+      "sha256": "cc36db93e8694541cd8f4c2041d2679a1aa6386a5b8fa1c78d762e6226618584"
+    },
+    {
+      "id": "music.race.lantern_corridor",
+      "path": "assets/audio/music/lantern_corridor_race.wav",
+      "sha256": "f7c697d6b3bc87b78998eb73b97c0e4cd03cca7788c0198bc25f7a60cb40c4fd"
+    },
+    {
+      "id": "ambience.lantern_corridor",
+      "path": "assets/audio/ambience/lantern_corridor.wav",
+      "sha256": "45faf3b7d0d5edc2e6d16446b47350dfb99003b549741b246299760c0440dcba"
+    },
+    {
+      "id": "music.race.mirror_boulevard",
+      "path": "assets/audio/music/mirror_boulevard_race.wav",
+      "sha256": "c2367b7d95bd74a253941f0bef7a3a184863db2016f88dc8518cc23d714231cf"
+    },
+    {
+      "id": "ambience.mirror_boulevard",
+      "path": "assets/audio/ambience/mirror_boulevard.wav",
+      "sha256": "5c6165cb15b53f2d61b3b742e9b6010d343c37566e41224853108f2786244e47"
+    },
+    {
+      "id": "music.race.afterglow_overpass",
+      "path": "assets/audio/music/afterglow_overpass_race.wav",
+      "sha256": "cf9312a7701ab891028c97d9164c9de203f64481cddf8e8623d076b9a409197e"
+    },
+    {
+      "id": "ambience.afterglow_overpass",
+      "path": "assets/audio/ambience/afterglow_overpass.wav",
+      "sha256": "203ec323176e38d7a9b782866eda4a0809c16b2b4a467d8e4c3b449f78b97c38"
+    },
+    {
+      "id": "music.race.signal_storm_yard",
+      "path": "assets/audio/music/signal_storm_yard_race.wav",
+      "sha256": "cdd1b5e7d7955ee155fa3acedd06148dd0d973ccf022b5723a76597d875ff0ce"
+    },
+    {
+      "id": "ambience.signal_storm_yard",
+      "path": "assets/audio/ambience/signal_storm_yard.wav",
+      "sha256": "3f88959517d16fc94f7c8cf082338cc660a03f996334aea41585ea803e9e20d2"
+    },
+    {
+      "id": "music.race.rooftop_ribbon",
+      "path": "assets/audio/music/rooftop_ribbon_race.wav",
+      "sha256": "4141d2c8fe1c703d1127c0760125b1b2c9aa445656615293a10f2eb484b2a294"
+    },
+    {
+      "id": "ambience.rooftop_ribbon",
+      "path": "assets/audio/ambience/rooftop_ribbon.wav",
+      "sha256": "75f3f695e0095985728ffd7d62f3a8e5ef56cf22f0c2c5da12cc29729355d7e8"
+    },
+    {
+      "id": "music.race.skybridge_sprint",
+      "path": "assets/audio/music/skybridge_sprint_race.wav",
+      "sha256": "88f6f68565c8f67b9bfee6c1afafbc9ec1fc1dae012396d188492b8217749492"
+    },
+    {
+      "id": "ambience.skybridge_sprint",
+      "path": "assets/audio/ambience/skybridge_sprint.wav",
+      "sha256": "2826604cc0920b5077e20a610504655b253fd22b020ae7b658c4c5f5a22e6e40"
+    },
+    {
+      "id": "music.race.antenna_ascent",
+      "path": "assets/audio/music/antenna_ascent_race.wav",
+      "sha256": "ea8eec6ece0c4f312b00089be40c4b8045b5ac3df4bda824faef39622ee6ee76"
+    },
+    {
+      "id": "ambience.antenna_ascent",
+      "path": "assets/audio/ambience/antenna_ascent.wav",
+      "sha256": "9628c960ac70c6589c9697d6c5c495eb56d1a78c63e5de5f538a046f45350d98"
+    },
+    {
+      "id": "music.race.cloud_deck_circuit",
+      "path": "assets/audio/music/cloud_deck_circuit_race.wav",
+      "sha256": "5e56f32add28a1763471fa19d7473399bab817b94670ef35227fe8aba0f3efb8"
+    },
+    {
+      "id": "ambience.cloud_deck_circuit",
+      "path": "assets/audio/ambience/cloud_deck_circuit.wav",
+      "sha256": "af80695e35866124d29bd415690f5ad7782eae2d7c8c6a74e5819c35e641867e"
+    },
+    {
+      "id": "music.race.marble_foyer_loop",
+      "path": "assets/audio/music/marble_foyer_loop_race.wav",
+      "sha256": "ab7718fed231a009c3b1415c2064735a8c0e4a6b507a984f035ef390eda16a80"
+    },
+    {
+      "id": "ambience.marble_foyer_loop",
+      "path": "assets/audio/ambience/marble_foyer_loop.wav",
+      "sha256": "65d2a30b84daa831e1a137ee8c0d7f0b6932c47ff2d1579f1bd59b68a6b82c14"
+    },
+    {
+      "id": "music.race.stack_corridor",
+      "path": "assets/audio/music/stack_corridor_race.wav",
+      "sha256": "ea5aae1f254561c9d48a9ff89158225971b0b7bf05d15d0228a1be63e93202b4"
+    },
+    {
+      "id": "ambience.stack_corridor",
+      "path": "assets/audio/ambience/stack_corridor.wav",
+      "sha256": "547979f84d7d12ddc5b93eff713cf37ea6c4cac16af8a256b30367f8bbf65c94"
+    },
+    {
+      "id": "music.race.gallery_grand_oval",
+      "path": "assets/audio/music/gallery_grand_oval_race.wav",
+      "sha256": "ba8e834f94b41a16643768db0a5e604d39996751d69372b6b7f9e1f845aab5c4"
+    },
+    {
+      "id": "ambience.gallery_grand_oval",
+      "path": "assets/audio/ambience/gallery_grand_oval.wav",
+      "sha256": "b1dd6be38cded0d5354f9fa6fd4140c14b565ca77db4aabd1079a35113c2fb57"
+    },
+    {
+      "id": "music.race.vault_gate_gauntlet",
+      "path": "assets/audio/music/vault_gate_gauntlet_race.wav",
+      "sha256": "310e1c4af6547cdf06ac02d54708afdacb7fb0023e22d850da6f738dbe0f1952"
+    },
+    {
+      "id": "ambience.vault_gate_gauntlet",
+      "path": "assets/audio/ambience/vault_gate_gauntlet.wav",
+      "sha256": "8c68e43ce6421946f7a7034101c0bc75dc5b51ba86c4ee20bc3b725b3c947947"
+    },
+    {
+      "id": "music.race.cascade_colossus",
+      "path": "assets/audio/music/cascade_colossus_race.wav",
+      "sha256": "6f22ffd0c78f0fe0118749ce5c4c2245ed68c77a07c689716e8e3b182f91b85d"
+    },
+    {
+      "id": "ambience.cascade_colossus",
+      "path": "assets/audio/ambience/cascade_colossus.wav",
+      "sha256": "885ce55bf2d8bbaef1336f5eb85af7e87ad809a69baeae4e6aae07a48d1e185b"
+    },
+    {
+      "id": "music.race.aurora_amphitheater",
+      "path": "assets/audio/music/aurora_amphitheater_race.wav",
+      "sha256": "c759ac7994068d1d5e33a1ea97e643a4219cdedd844bef8acf8c26e501531341"
+    },
+    {
+      "id": "ambience.aurora_amphitheater",
+      "path": "assets/audio/ambience/aurora_amphitheater.wav",
+      "sha256": "9b0fe40f8aeef57ef855064905bcc70d372d2be08050249e0b95e898eefdf2b9"
+    },
+    {
+      "id": "music.race.origami_orchard",
+      "path": "assets/audio/music/origami_orchard_race.wav",
+      "sha256": "3766380765945b0022f3f902d945a6fa1a8d75d36475c9682cdef047ea86ea18"
+    },
+    {
+      "id": "ambience.origami_orchard",
+      "path": "assets/audio/ambience/origami_orchard.wav",
+      "sha256": "cc91aec9d52200b7cf83804316f3afca0ba0391ed5f7fefc04ec97634b440696"
+    },
+    {
+      "id": "music.race.horizon_crown_finale",
+      "path": "assets/audio/music/horizon_crown_finale_race.wav",
+      "sha256": "5ce4aebe86e06773385ff2a1d617f3135b42274c668b847fb245261be15562e7"
+    },
+    {
+      "id": "ambience.horizon_crown_finale",
+      "path": "assets/audio/ambience/horizon_crown_finale.wav",
+      "sha256": "806a1e1516abb8ddf36ad7500540b6d565ba997af15e5bfeffd3d3da297c2cb1"
     },
     {
       "id": "sfx.footstep.asphalt",
@@ -223,86 +463,6 @@
       "id": "ui.countdown",
       "path": "assets/audio/ui/countdown.wav",
       "sha256": "63180f185a8535e9aee67007398efd658c57fc7068d76bd052ec3e29d40011f1"
-    },
-    {
-      "id": "music.race.sneaker_city_sprintway",
-      "path": "assets/audio/music/sneaker_city_sprintway_race.wav",
-      "sha256": "f6d18bb1809396c8253958afa752edb7e1446a60b1992c903a501c015696414d"
-    },
-    {
-      "id": "ambience.sneaker_city_sprintway",
-      "path": "assets/audio/ambience/sneaker_city_sprintway.wav",
-      "sha256": "70be3fd18e1efa2495ae80ad8681ac4b212402f9260e3c461376a3b4e52f8181"
-    },
-    {
-      "id": "music.race.metro_pulse_loop",
-      "path": "assets/audio/music/metro_pulse_loop_race.wav",
-      "sha256": "f6d18bb1809396c8253958afa752edb7e1446a60b1992c903a501c015696414d"
-    },
-    {
-      "id": "ambience.metro_pulse_loop",
-      "path": "assets/audio/ambience/metro_pulse_loop.wav",
-      "sha256": "70be3fd18e1efa2495ae80ad8681ac4b212402f9260e3c461376a3b4e52f8181"
-    },
-    {
-      "id": "music.race.crosswalk_canyon",
-      "path": "assets/audio/music/crosswalk_canyon_race.wav",
-      "sha256": "f6d18bb1809396c8253958afa752edb7e1446a60b1992c903a501c015696414d"
-    },
-    {
-      "id": "ambience.crosswalk_canyon",
-      "path": "assets/audio/ambience/crosswalk_canyon.wav",
-      "sha256": "70be3fd18e1efa2495ae80ad8681ac4b212402f9260e3c461376a3b4e52f8181"
-    },
-    {
-      "id": "music.race.transit_spiral",
-      "path": "assets/audio/music/transit_spiral_race.wav",
-      "sha256": "f6d18bb1809396c8253958afa752edb7e1446a60b1992c903a501c015696414d"
-    },
-    {
-      "id": "ambience.transit_spiral",
-      "path": "assets/audio/ambience/transit_spiral.wav",
-      "sha256": "70be3fd18e1efa2495ae80ad8681ac4b212402f9260e3c461376a3b4e52f8181"
-    },
-    {
-      "id": "music.race.saltline_boardwalk",
-      "path": "assets/audio/music/saltline_boardwalk_race.wav",
-      "sha256": "2e940365aa1629a5cd7dedc65db772b8424163fbccce425fcd54a15fe4b58b02"
-    },
-    {
-      "id": "ambience.saltline_boardwalk",
-      "path": "assets/audio/ambience/saltline_boardwalk.wav",
-      "sha256": "b7baca2be903313840ae89662d4333196940ccbed7b25dc8382a25e22dbc34a9"
-    },
-    {
-      "id": "music.race.cliffside_draft",
-      "path": "assets/audio/music/cliffside_draft_race.wav",
-      "sha256": "db1f7a6f6d8391586f0c0164f3e1d5bf21a445c52bae1b7c44122c925ae0ed23"
-    },
-    {
-      "id": "ambience.cliffside_draft",
-      "path": "assets/audio/ambience/cliffside_draft.wav",
-      "sha256": "3a84997031b3b3e4bead8698e53318df606ea7d46b98ad4349a845100647c5d7"
-    },
-    {
-      "id": "music.race.tidal_bridge_run",
-      "path": "assets/audio/music/tidal_bridge_run_race.wav",
-      "sha256": "d102af2e94a623131bdf3bcdc2a6aba2ce87f96ce4e5f4361fc3ef6e5a793e48"
-    },
-    {
-      "id": "ambience.tidal_bridge_run",
-      "path": "assets/audio/ambience/tidal_bridge_run.wav",
-      "sha256": "c7b56477860ba1ea92d07a6f9d95963ba906acc35beb28e6d2ffbc1259af4ab6"
-    },
-    {
-      "id": "music.race.seaglass_switchback",
-      "path": "assets/audio/music/seaglass_switchback_race.wav",
-      "sha256": "9ddf3cc0d415f0fa4e65e6969c26886661f3d30450017c9d28e4980ffd6c9d6a"
-    },
-    {
-      "id": "ambience.seaglass_switchback",
-      "path": "assets/audio/ambience/seaglass_switchback.wav",
-      "sha256": "d6b7a3f19694e4e2453f15c086a4da00bf64bdd3edc296b595ca8ea27da25c8c"
     }
   ]
 }

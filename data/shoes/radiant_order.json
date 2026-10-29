@@ -5,7 +5,7 @@
   "family_id": "anime_aggressors",
   "movement_archetype": "tribute_radiant",
   "playable": true,
-  "art_status": "procedural_final_for_garage",
+  "art_status": "native_v1",
   "top_speed_modifier": 1.08,
   "acceleration_modifier": 1.05,
   "handling_modifier": 1.02,
@@ -34,5 +34,7 @@
   "ai_notes": "Radiant Order \u2014 crest-boost order sole; original Pedestrian tribute art.",
   "description": "Radiant Order \u2014 original Pedestrian Kinetic Sole tribute design (procedural garage art; not sourced from Anime Aggressors assets).",
   "collision_contract": "Always grounded race collision; tribute themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through. Original Pedestrian procedural art only; no Anime meshes/textures.",
-  "unlock_mode": "crossover"
+  "unlock_mode": "crossover",
+  "final_art_status": "final_art_candidate",
+  "human_commercial_art_approved": false
 }

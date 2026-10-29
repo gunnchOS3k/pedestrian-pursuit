@@ -7,8 +7,8 @@
   "theme": "signal_storm_yard",
   "description": "Rail-yard storm circuit under blinking signal gantries with tight cuts and live collision crates.",
   "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-  "geometry_status": "championship_raceable",
-  "final_track_art_status": "track_art_pending",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
   "human_track_art_approved": false,
   "lane_width": 13.5,
   "guard_rails": true,
@@ -115,7 +115,10 @@
         7,
         9
       ],
-      "speed_multiplier": 0.78
+      "speed_multiplier": 0.78,
+      "terrain_name": "yard_ballast",
+      "handling_multiplier": 0.9,
+      "color": "#303438"
     }
   ],
   "bounce_pads": [
@@ -159,6 +162,21 @@
   ],
   "elevation_profile": "signal_spikes",
   "bank_bias": 0.12,
-  "geometry_note": "Neon Night production batch \u2014 distinct raceable geometry; track art still pending (not commercial).",
-  "camera_identity": "neon_chase"
+  "geometry_note": "Neon Night upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. signal gantry / yard crates.",
+  "camera_identity": "neon_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "Neon Night collision hazards are off-line props; do not claim human commercial art approval."
+  ]
 }

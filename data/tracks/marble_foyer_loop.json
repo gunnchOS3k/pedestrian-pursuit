@@ -7,8 +7,8 @@
   "theme": "marble_foyer_loop",
   "description": "Tribute exhibition foyer loop under marble arches and plinths \u2014 original gunnchOS Archive of Life homage, fictional gallery set only.",
   "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-  "geometry_status": "championship_raceable",
-  "final_track_art_status": "track_art_pending",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
   "human_track_art_approved": false,
   "lane_width": 13.5,
   "guard_rails": true,
@@ -104,7 +104,10 @@
         8,
         10
       ],
-      "speed_multiplier": 0.85
+      "speed_multiplier": 0.85,
+      "terrain_name": "marble_polish",
+      "handling_multiplier": 0.9,
+      "color": "#6A655C"
     }
   ],
   "bounce_pads": [
@@ -148,7 +151,22 @@
   ],
   "elevation_profile": "foyer_rolls",
   "bank_bias": 0.07,
-  "geometry_note": "Archive Relay production batch \u2014 original gunnchOS tribute exhibition geometry; not a scientific claim. Track art still pending.",
+  "geometry_note": "Archive Relay upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. foyer arch / marble plinths.",
   "tribute_note": "Archive of Life crossover is fictional exhibition theming only \u2014 original gunnchOS tribute, no fabricated research claims.",
-  "camera_identity": "archive_chase"
+  "camera_identity": "archive_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "Archive Relay collision hazards are off-line props; do not claim human commercial art approval."
+  ]
 }

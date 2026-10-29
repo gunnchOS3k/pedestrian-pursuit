@@ -7,8 +7,8 @@
   "theme": "origami_orchard",
   "description": "Folded orchard switchbacks among paper-tree spires and crease rails \u2014 original wonder grove.",
   "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-  "geometry_status": "championship_raceable",
-  "final_track_art_status": "track_art_pending",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
   "human_track_art_approved": false,
   "lane_width": 13.5,
   "guard_rails": true,
@@ -115,7 +115,10 @@
         7,
         9
       ],
-      "speed_multiplier": 0.79
+      "speed_multiplier": 0.79,
+      "terrain_name": "paper_leaf_litter",
+      "handling_multiplier": 0.9,
+      "color": "#5A7048"
     }
   ],
   "bounce_pads": [
@@ -159,6 +162,21 @@
   ],
   "elevation_profile": "orchard_folds",
   "bank_bias": 0.11,
-  "geometry_note": "World Wonder Grand Prix production batch \u2014 original wonder landmarks (not nation costumes); track art still pending.",
-  "camera_identity": "wonder_chase"
+  "geometry_note": "World Wonder upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. paper spire / crease gate / root bundles.",
+  "camera_identity": "wonder_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "World Wonder collision hazards are off-line props; do not claim human commercial art approval."
+  ]
 }

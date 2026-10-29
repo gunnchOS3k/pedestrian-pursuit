@@ -1,6 +1,7 @@
 extends SceneTree
 
-## Headless: full 50-vehicle Kinetic Sole garage, six items intact. Tribute art is procedural_final_for_garage.
+## Headless: full 50-vehicle Kinetic Sole garage, six items intact.
+## Tribute art may be procedural_final_for_garage or promoted native_v1 candidates (never commercial).
 
 const VehicleCatalogScript = preload("res://scripts/data/VehicleCatalog.gd")
 const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
@@ -47,10 +48,16 @@ func _init() -> void:
 			if art == "stub_not_final":
 				failures.append("%s still stub_not_final: %s" % [family_id, str(entry.get("id", ""))])
 		if family_id == "anime_aggressors":
-			## Tribute family must use procedural_final_for_garage (honest, not photoreal).
+			## Tribute: procedural garage or native_v1 candidate — never commercial / Anime assets.
 			for entry in family:
-				if str(entry.get("art_status", "")) != "procedural_final_for_garage":
-					failures.append("tribute art must be procedural_final_for_garage: %s" % str(entry.get("id", "")))
+				var tribute_art := str(entry.get("art_status", ""))
+				if tribute_art not in PLAYABLE_ART:
+					failures.append(
+						"tribute art must be procedural_final_for_garage or native_v1: %s"
+						% str(entry.get("id", ""))
+					)
+				if bool(entry.get("human_commercial_art_approved", false)):
+					failures.append("tribute commercial art must stay false: %s" % str(entry.get("id", "")))
 				## Movement archetypes must be Pedestrian tribute_* — not Anime asset hooks.
 				var arch := str(entry.get("movement_archetype", ""))
 				if not arch.begins_with("tribute_"):
@@ -120,7 +127,7 @@ func _init() -> void:
 			failures.append("legacy shoe missing %s" % lid)
 
 	if failures.is_empty():
-		print("VehicleGarageTest PASS — 50 IDs, 50 playable, 0 stubs, 6 items (tribute procedural_final_for_garage).")
+		print("VehicleGarageTest PASS — 50 IDs, 50 playable, 0 stubs, 6 items (tribute candidates, commercial false).")
 		quit(0)
 	else:
 		print("VehicleGarageTest FAIL:")

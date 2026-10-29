@@ -7,8 +7,8 @@
   "theme": "antenna_ascent",
   "description": "Climbing antenna farm circuit with mast landmarks, updraft pads, and a ledge shortcut.",
   "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-  "geometry_status": "championship_raceable",
-  "final_track_art_status": "track_art_pending",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
   "human_track_art_approved": false,
   "lane_width": 13.5,
   "guard_rails": true,
@@ -115,7 +115,10 @@
         8,
         10
       ],
-      "speed_multiplier": 0.8
+      "speed_multiplier": 0.8,
+      "terrain_name": "mast_platform",
+      "handling_multiplier": 0.9,
+      "color": "#485058"
     }
   ],
   "bounce_pads": [
@@ -159,6 +162,21 @@
   ],
   "elevation_profile": "antenna_climb",
   "bank_bias": 0.11,
-  "geometry_note": "Skyline Relay production batch \u2014 distinct raceable geometry; track art still pending (not commercial).",
-  "camera_identity": "skyline_chase"
+  "geometry_note": "Skyline Relay upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. antenna mast / dish / mast base.",
+  "camera_identity": "skyline_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "Skyline Relay collision hazards are off-line props; do not claim human commercial art approval."
+  ]
 }

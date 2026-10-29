@@ -16,6 +16,8 @@ var selected_challenge_id: String = ""
 var total_laps: int = 3
 var local_mp_players: int = 2
 var ai_field_size: int = 3
+var party_link_active: bool = false
+var party_link_human_seats: int = 0
 var ai_eval_mode: bool = false
 var ai_eval_tier: String = "standard"
 
@@ -124,6 +126,8 @@ func start_quick_race(track_id: String) -> void:
 
 func start_single_race(track_id: String) -> void:
 	clear_cup()
+	party_link_active = false
+	party_link_human_seats = 0
 	current_race_mode = RaceMode.SINGLE
 	selected_track_id = track_id
 	ai_field_size = 3
@@ -142,11 +146,37 @@ func start_time_trial(track_id: String) -> void:
 
 func start_local_mp(track_id: String, players: int = 2) -> void:
 	clear_cup()
+	party_link_active = false
+	party_link_human_seats = 0
 	current_race_mode = RaceMode.LOCAL_MP
 	selected_track_id = track_id
 	local_mp_players = clampi(players, 2, 2)
 	ai_field_size = 2
 	reset_race_stats()
+
+
+func start_party_link(track_id: String, human_seats: int = 2) -> void:
+	## PartyLink capacity 2–8: local field always fills to 8; CPU owns non-human seats.
+	## BeatLink sibling independent-client contract remains host+guest (2 humans).
+	## Bots/scripted seats never count as human participants.
+	const OnlineArchitectureScript = preload("res://scripts/net/OnlineArchitecture.gd")
+	clear_cup()
+	current_race_mode = RaceMode.SINGLE
+	selected_track_id = track_id
+	party_link_active = true
+	party_link_human_seats = clampi(
+		human_seats,
+		OnlineArchitectureScript.PARTYLINK_MIN_HUMAN_SEATS,
+		OnlineArchitectureScript.PARTYLINK_MAX_HUMAN_SEATS
+	)
+	ai_field_size = OnlineArchitectureScript.PARTYLINK_FIELD_SIZE - 1
+	set_meta("party_link_seat_map", OnlineArchitectureScript.partylink_seat_map(party_link_human_seats))
+	reset_race_stats()
+	sync_race_mode_string()
+
+
+func is_party_link() -> bool:
+	return party_link_active
 
 
 func start_tutorial(track_id: String = "verdant_cascade_circuit") -> void:
@@ -260,6 +290,8 @@ func restart_cup() -> bool:
 
 
 func clear_cup() -> void:
+	party_link_active = false
+	party_link_human_seats = 0
 	active_cup_id = ""
 	cup_track_ids.clear()
 	cup_round_index = 0

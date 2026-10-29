@@ -76,18 +76,18 @@
     {
       "id": "crosswind_kiln",
       "display_name": "Crosswind Kiln",
-      "art_status": "catalog_art_pending",
+      "art_status": "integrated_mesh_v1",
       "category": "culturally_informed",
-      "provenance": "Catalog placeholders for culturally-informed original pieces \u2014 meshes pending; never nation-costume stereotypes.",
-      "note": "Honest art-pending."
+      "provenance": "Original culturally-informed studio silhouettes \u2014 never nation-costume stereotypes.",
+      "note": "Integrated mesh v1. Cosmetic only; footwear owns handling."
     },
     {
       "id": "archive_loom",
       "display_name": "Archive Loom",
-      "art_status": "catalog_art_pending",
+      "art_status": "integrated_mesh_v1",
       "category": "everyday",
-      "provenance": "Broader everyday catalog stubs.",
-      "note": "Honest art-pending."
+      "provenance": "Original everyday Archive tribute knitwear \u2014 exhibition fiction only.",
+      "note": "Integrated mesh v1. Cosmetic only; footwear owns handling."
     }
   ],
   "garments": [
@@ -666,15 +666,43 @@
       "body_fit": "attach_to_rig_v1"
     },
     {
+      "id": "crosswind_base",
+      "family_id": "crosswind_kiln",
+      "slot": "base_underlayer",
+      "display_name": "Crosswind Studio Base",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "fitted_undersuit",
+      "colors": {
+        "primary": "#2E1C12",
+        "accent": "#C47A4A"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
       "id": "crosswind_top",
       "family_id": "crosswind_kiln",
       "slot": "top",
       "display_name": "Crosswind Studio Top",
-      "art_status": "catalog_art_pending",
-      "mesh_recipe": "",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "cropped_shell",
       "colors": {
         "primary": "#C47A4A",
         "accent": "#2E1C12"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "crosswind_bottom",
+      "family_id": "crosswind_kiln",
+      "slot": "bottom",
+      "display_name": "Crosswind Studio Trousers",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "tapered_pants",
+      "colors": {
+        "primary": "#8B5A3C",
+        "accent": "#F0D7C0"
       },
       "cosmetic_only": true,
       "body_fit": "attach_to_rig_v1"
@@ -684,11 +712,67 @@
       "family_id": "crosswind_kiln",
       "slot": "outerwear",
       "display_name": "Crosswind Studio Wrap",
-      "art_status": "catalog_art_pending",
-      "mesh_recipe": "",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "modest_wrap",
       "colors": {
         "primary": "#8B5A3C",
         "accent": "#F0D7C0"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "crosswind_headwrap",
+      "family_id": "crosswind_kiln",
+      "slot": "headwear",
+      "display_name": "Crosswind Soft Headwrap",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "soft_headwrap",
+      "colors": {
+        "primary": "#C47A4A",
+        "accent": "#F0D7C0"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "crosswind_sling",
+      "family_id": "crosswind_kiln",
+      "slot": "bags",
+      "display_name": "Crosswind Studio Sling",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "cross_sling",
+      "colors": {
+        "primary": "#2E1C12",
+        "accent": "#C47A4A"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "crosswind_trail",
+      "family_id": "crosswind_kiln",
+      "slot": "trail_expression",
+      "display_name": "Crosswind Ember Trail",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "trail_ember",
+      "colors": {
+        "primary": "#C47A4A",
+        "accent": "#F0D7C0"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "archive_base",
+      "family_id": "archive_loom",
+      "slot": "base_underlayer",
+      "display_name": "Archive Loom Base",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "fitted_undersuit",
+      "colors": {
+        "primary": "#EFE7DA",
+        "accent": "#5A6B7A"
       },
       "cosmetic_only": true,
       "body_fit": "attach_to_rig_v1"
@@ -698,11 +782,25 @@
       "family_id": "archive_loom",
       "slot": "top",
       "display_name": "Archive Loom Tee",
-      "art_status": "catalog_art_pending",
-      "mesh_recipe": "",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "relaxed_overshirt",
       "colors": {
         "primary": "#EFE7DA",
         "accent": "#5A6B7A"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "archive_bottom",
+      "family_id": "archive_loom",
+      "slot": "bottom",
+      "display_name": "Archive Loom Trousers",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "wide_soft_pants",
+      "colors": {
+        "primary": "#D7CBB8",
+        "accent": "#6E7F8C"
       },
       "cosmetic_only": true,
       "body_fit": "attach_to_rig_v1"
@@ -712,11 +810,53 @@
       "family_id": "archive_loom",
       "slot": "outerwear",
       "display_name": "Archive Loom Cardigan",
-      "art_status": "catalog_art_pending",
-      "mesh_recipe": "",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "open_drape",
       "colors": {
         "primary": "#D7CBB8",
         "accent": "#6E7F8C"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "archive_scarf",
+      "family_id": "archive_loom",
+      "slot": "headwear",
+      "display_name": "Archive Loom Scarf",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "soft_scarf",
+      "colors": {
+        "primary": "#EFE7DA",
+        "accent": "#6E7F8C"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "archive_tote",
+      "family_id": "archive_loom",
+      "slot": "bags",
+      "display_name": "Archive Loom Tote",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "hip_pack",
+      "colors": {
+        "primary": "#5A6B7A",
+        "accent": "#EFE7DA"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "archive_trail",
+      "family_id": "archive_loom",
+      "slot": "trail_expression",
+      "display_name": "Archive Loom Trail",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "trail_signal",
+      "colors": {
+        "primary": "#5A6B7A",
+        "accent": "#EFE7DA"
       },
       "cosmetic_only": true,
       "body_fit": "attach_to_rig_v1"
@@ -818,6 +958,36 @@
         "eyewear": "orbit_visor",
         "trail_expression": "orbit_trail",
         "footwear_vehicle": "anti_gravity_platforms"
+      }
+    },
+    {
+      "id": "crosswind_kiln_default",
+      "display_name": "Crosswind Kiln Studio",
+      "family_id": "crosswind_kiln",
+      "slots": {
+        "base_underlayer": "crosswind_base",
+        "top": "crosswind_top",
+        "bottom": "crosswind_bottom",
+        "outerwear": "crosswind_wrap",
+        "headwear": "crosswind_headwrap",
+        "bags": "crosswind_sling",
+        "trail_expression": "crosswind_trail",
+        "footwear_vehicle": "reedline_circlers"
+      }
+    },
+    {
+      "id": "archive_loom_default",
+      "display_name": "Archive Loom Everyday",
+      "family_id": "archive_loom",
+      "slots": {
+        "base_underlayer": "archive_base",
+        "top": "archive_tee",
+        "bottom": "archive_bottom",
+        "outerwear": "archive_cardigan",
+        "headwear": "archive_scarf",
+        "bags": "archive_tote",
+        "trail_expression": "archive_trail",
+        "footwear_vehicle": "lifeling_lopers"
       }
     }
   ]

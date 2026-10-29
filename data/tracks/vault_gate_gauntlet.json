@@ -7,8 +7,8 @@
   "theme": "vault_gate_gauntlet",
   "description": "Vault-gate gauntlet under security arches and sealed doors \u2014 fictional archive vault set, tribute theming only.",
   "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-  "geometry_status": "championship_raceable",
-  "final_track_art_status": "track_art_pending",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
   "human_track_art_approved": false,
   "lane_width": 13.5,
   "guard_rails": true,
@@ -115,7 +115,10 @@
         7,
         9
       ],
-      "speed_multiplier": 0.78
+      "speed_multiplier": 0.78,
+      "terrain_name": "vault_threshold",
+      "handling_multiplier": 0.9,
+      "color": "#3A3834"
     }
   ],
   "bounce_pads": [
@@ -159,7 +162,22 @@
   ],
   "elevation_profile": "vault_steps",
   "bank_bias": 0.12,
-  "geometry_note": "Archive Relay production batch \u2014 original gunnchOS tribute exhibition geometry; not a scientific claim. Track art still pending.",
+  "geometry_note": "Archive Relay upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. vault arch / seal door / barriers.",
   "tribute_note": "Archive of Life crossover is fictional exhibition theming only \u2014 original gunnchOS tribute, no fabricated research claims.",
-  "camera_identity": "archive_chase"
+  "camera_identity": "archive_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "Archive Relay collision hazards are off-line props; do not claim human commercial art approval."
+  ]
 }

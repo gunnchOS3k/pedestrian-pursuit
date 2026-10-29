@@ -3,15 +3,15 @@
 	"affects_stats": false,
 	"art_acceptance": {
 		"final_art_approved": 0,
-		"final_art_candidate": 41,
-		"final_art_pending": 9,
+		"final_art_candidate": 50,
+		"final_art_pending": 0,
 		"playable_runtime": 50,
 		"total": 50
 	},
 	"eight_player_complete": false,
 	"family_garment_counts": {
-		"archive_loom": 2,
-		"crosswind_kiln": 2,
+		"archive_loom": 7,
+		"crosswind_kiln": 7,
 		"harbor_linen": 6,
 		"metro_pulse": 8,
 		"midnight_atelier": 5,
@@ -20,9 +20,9 @@
 		"orbit_signal": 6,
 		"quiet_plaza": 5
 	},
-	"fingerprint": "1|created_1793204244|Sync Studio|deep_warm|cornrows|running_blade_vis|orbit_signal_default|base_underlayer=orbit_base,bottom=orbit_bottom,eyewear=orbit_visor,footwear_vehicle=anti_gravity_platforms,outerwear=orbit_outer,top=orbit_top,trail_expression=orbit_trail|anti_gravity_platforms",
+	"fingerprint": "1|created_1793250056|Sync Studio|deep_warm|cornrows|running_blade_vis|orbit_signal_default|base_underlayer=orbit_base,bottom=orbit_bottom,eyewear=orbit_visor,footwear_vehicle=anti_gravity_platforms,outerwear=orbit_outer,top=orbit_top,trail_expression=orbit_trail|anti_gravity_platforms",
 	"flow": "create_customize_save_reopen_peer_apply_edit",
-	"integrated_presets": 6,
+	"integrated_presets": 8,
 	"lod_hooks": true,
 	"peer_fingerprint": "1||Dash Reed|deep_warm|cornrows|running_blade_vis||base_underlayer=orbit_base,bottom=orbit_bottom,eyewear=orbit_visor,footwear_vehicle=anti_gravity_platforms,outerwear=orbit_outer,top=orbit_top,trail_expression=orbit_trail|anti_gravity_platforms",
 	"peer_wardrobe_root": true

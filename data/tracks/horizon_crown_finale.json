@@ -7,8 +7,8 @@
   "theme": "horizon_crown_finale",
   "description": "Championship finale under the horizon crown \u2014 twin crown arches, long draft straights, and a victory-chord cut.",
   "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-  "geometry_status": "championship_raceable",
-  "final_track_art_status": "track_art_pending",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
   "human_track_art_approved": false,
   "lane_width": 13.5,
   "guard_rails": true,
@@ -104,7 +104,10 @@
         8,
         11
       ],
-      "speed_multiplier": 0.82
+      "speed_multiplier": 0.82,
+      "terrain_name": "crown_plaza",
+      "handling_multiplier": 0.9,
+      "color": "#605848"
     }
   ],
   "bounce_pads": [
@@ -148,6 +151,21 @@
   ],
   "elevation_profile": "crown_spans",
   "bank_bias": 0.12,
-  "geometry_note": "World Wonder Grand Prix production batch \u2014 original wonder landmarks (not nation costumes); track art still pending.",
-  "camera_identity": "wonder_chase"
+  "geometry_note": "World Wonder upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. crown arches / finale pillars.",
+  "camera_identity": "wonder_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "World Wonder collision hazards are off-line props; do not claim human commercial art approval."
+  ]
 }

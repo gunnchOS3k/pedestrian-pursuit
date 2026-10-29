@@ -1507,7 +1507,7 @@
       "sort_order": 35,
       "movement_archetype": "tribute_ember",
       "playable": true,
-      "art_status": "procedural_final_for_garage",
+      "art_status": "native_v1",
       "signature_runner_id": "ember_vale",
       "unlock": {
         "mode": "challenge",
@@ -1540,7 +1540,9 @@
       "gameplay_distinction": "Cinderstride \u2014 ember midsole push; original Pedestrian sole, grounded checkpoints.",
       "collision_contract": "Always grounded race collision; tribute themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through. Original Pedestrian procedural art only; no Anime meshes/textures.",
       "description": "Cinderstride \u2014 original Pedestrian Kinetic Sole tribute design (procedural garage art; not sourced from Anime Aggressors assets).",
-      "ai_notes": "Cinderstride \u2014 ember midsole push; original Pedestrian sole, grounded checkpoints."
+      "ai_notes": "Cinderstride \u2014 ember midsole push; original Pedestrian sole, grounded checkpoints.",
+      "final_art_status": "final_art_candidate",
+      "human_commercial_art_approved": false
     },
     {
       "id": "bastion_stomp",
@@ -1550,7 +1552,7 @@
       "sort_order": 36,
       "movement_archetype": "tribute_bastion",
       "playable": true,
-      "art_status": "procedural_final_for_garage",
+      "art_status": "native_v1",
       "signature_runner_id": "rook_ironside",
       "unlock": {
         "mode": "challenge",
@@ -1583,7 +1585,9 @@
       "gameplay_distinction": "Bastion Stomp \u2014 heavy plate stomps; original Pedestrian silhouette.",
       "collision_contract": "Always grounded race collision; tribute themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through. Original Pedestrian procedural art only; no Anime meshes/textures.",
       "description": "Bastion Stomp \u2014 original Pedestrian Kinetic Sole tribute design (procedural garage art; not sourced from Anime Aggressors assets).",
-      "ai_notes": "Bastion Stomp \u2014 heavy plate stomps; original Pedestrian silhouette."
+      "ai_notes": "Bastion Stomp \u2014 heavy plate stomps; original Pedestrian silhouette.",
+      "final_art_status": "final_art_candidate",
+      "human_commercial_art_approved": false
     },
     {
       "id": "voltstep_coils",
@@ -1593,7 +1597,7 @@
       "sort_order": 37,
       "movement_archetype": "tribute_volt",
       "playable": true,
-      "art_status": "procedural_final_for_garage",
+      "art_status": "native_v1",
       "signature_runner_id": "juno_spark",
       "unlock": {
         "mode": "challenge",
@@ -1626,7 +1630,9 @@
       "gameplay_distinction": "Voltstep Coils \u2014 coil-boost snap; original Pedestrian sole, no Anime meshes.",
       "collision_contract": "Always grounded race collision; tribute themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through. Original Pedestrian procedural art only; no Anime meshes/textures.",
       "description": "Voltstep Coils \u2014 original Pedestrian Kinetic Sole tribute design (procedural garage art; not sourced from Anime Aggressors assets).",
-      "ai_notes": "Voltstep Coils \u2014 coil-boost snap; original Pedestrian sole, no Anime meshes."
+      "ai_notes": "Voltstep Coils \u2014 coil-boost snap; original Pedestrian sole, no Anime meshes.",
+      "final_art_status": "final_art_candidate",
+      "human_commercial_art_approved": false
     },
     {
       "id": "galeleaf_gliders",
@@ -1636,7 +1642,7 @@
       "sort_order": 38,
       "movement_archetype": "tribute_gale",
       "playable": true,
-      "art_status": "procedural_final_for_garage",
+      "art_status": "native_v1",
       "signature_runner_id": "kaia_windrow",
       "unlock": {
         "mode": "achievement",
@@ -1669,7 +1675,9 @@
       "gameplay_distinction": "Galeleaf Gliders \u2014 leaf-wing handling; original Pedestrian silhouette.",
       "collision_contract": "Always grounded race collision; tribute themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through. Original Pedestrian procedural art only; no Anime meshes/textures.",
       "description": "Galeleaf Gliders \u2014 original Pedestrian Kinetic Sole tribute design (procedural garage art; not sourced from Anime Aggressors assets).",
-      "ai_notes": "Galeleaf Gliders \u2014 leaf-wing handling; original Pedestrian silhouette."
+      "ai_notes": "Galeleaf Gliders \u2014 leaf-wing handling; original Pedestrian silhouette.",
+      "final_art_status": "final_art_candidate",
+      "human_commercial_art_approved": false
     },
     {
       "id": "azure_bastions",
@@ -1679,7 +1687,7 @@
       "sort_order": 39,
       "movement_archetype": "tribute_azure",
       "playable": true,
-      "art_status": "procedural_final_for_garage",
+      "art_status": "native_v1",
       "signature_runner_id": "nix_calder",
       "unlock": {
         "mode": "achievement",
@@ -1712,7 +1720,9 @@
       "gameplay_distinction": "Azure Bastions \u2014 blue-plate brace; distinct from Bastion Stomp, grounded.",
       "collision_contract": "Always grounded race collision; tribute themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through. Original Pedestrian procedural art only; no Anime meshes/textures.",
       "description": "Azure Bastions \u2014 original Pedestrian Kinetic Sole tribute design (procedural garage art; not sourced from Anime Aggressors assets).",
-      "ai_notes": "Azure Bastions \u2014 blue-plate brace; distinct from Bastion Stomp, grounded."
+      "ai_notes": "Azure Bastions \u2014 blue-plate brace; distinct from Bastion Stomp, grounded.",
+      "final_art_status": "final_art_candidate",
+      "human_commercial_art_approved": false
     },
     {
       "id": "orbitwalkers",
@@ -1722,7 +1732,7 @@
       "sort_order": 40,
       "movement_archetype": "tribute_orbit",
       "playable": true,
-      "art_status": "procedural_final_for_garage",
+      "art_status": "native_v1",
       "signature_runner_id": "orion_vell",
       "unlock": {
         "mode": "achievement",
@@ -1755,7 +1765,9 @@
       "gameplay_distinction": "Orbitwalkers \u2014 heel-ring orbit read; affinity/VFX only, never phase colliders.",
       "collision_contract": "Always grounded race collision; tribute themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through. Original Pedestrian procedural art only; no Anime meshes/textures.",
       "description": "Orbitwalkers \u2014 original Pedestrian Kinetic Sole tribute design (procedural garage art; not sourced from Anime Aggressors assets).",
-      "ai_notes": "Orbitwalkers \u2014 heel-ring orbit read; affinity/VFX only, never phase colliders."
+      "ai_notes": "Orbitwalkers \u2014 heel-ring orbit read; affinity/VFX only, never phase colliders.",
+      "final_art_status": "final_art_candidate",
+      "human_commercial_art_approved": false
     },
     {
       "id": "phase_echoes",
@@ -1765,7 +1777,7 @@
       "sort_order": 41,
       "movement_archetype": "tribute_echo",
       "playable": true,
-      "art_status": "procedural_final_for_garage",
+      "art_status": "native_v1",
       "signature_runner_id": "vesper_nyx",
       "unlock": {
         "mode": "crossover",
@@ -1798,7 +1810,9 @@
       "gameplay_distinction": "Phase Echoes \u2014 echo trail VFX only; checkpoints/colliders never skipped or phased.",
       "collision_contract": "Always grounded race collision; tribute themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through. Original Pedestrian procedural art only; no Anime meshes/textures.",
       "description": "Phase Echoes \u2014 original Pedestrian Kinetic Sole tribute design (procedural garage art; not sourced from Anime Aggressors assets).",
-      "ai_notes": "Phase Echoes \u2014 echo trail VFX only; checkpoints/colliders never skipped or phased."
+      "ai_notes": "Phase Echoes \u2014 echo trail VFX only; checkpoints/colliders never skipped or phased.",
+      "final_art_status": "final_art_candidate",
+      "human_commercial_art_approved": false
     },
     {
       "id": "nullstep",
@@ -1808,7 +1822,7 @@
       "sort_order": 42,
       "movement_archetype": "tribute_null",
       "playable": true,
-      "art_status": "procedural_final_for_garage",
+      "art_status": "native_v1",
       "signature_runner_id": "yin",
       "unlock": {
         "mode": "crossover",
@@ -1841,7 +1855,9 @@
       "gameplay_distinction": "Nullstep \u2014 matte void sole; balanced tribute handling, grounded collision.",
       "collision_contract": "Always grounded race collision; tribute themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through. Original Pedestrian procedural art only; no Anime meshes/textures.",
       "description": "Nullstep \u2014 original Pedestrian Kinetic Sole tribute design (procedural garage art; not sourced from Anime Aggressors assets).",
-      "ai_notes": "Nullstep \u2014 matte void sole; balanced tribute handling, grounded collision."
+      "ai_notes": "Nullstep \u2014 matte void sole; balanced tribute handling, grounded collision.",
+      "final_art_status": "final_art_candidate",
+      "human_commercial_art_approved": false
     },
     {
       "id": "radiant_order",
@@ -1851,7 +1867,7 @@
       "sort_order": 43,
       "movement_archetype": "tribute_radiant",
       "playable": true,
-      "art_status": "procedural_final_for_garage",
+      "art_status": "native_v1",
       "signature_runner_id": "yang",
       "unlock": {
         "mode": "crossover",
@@ -1884,7 +1900,9 @@
       "gameplay_distinction": "Radiant Order \u2014 crest-boost order sole; original Pedestrian tribute art.",
       "collision_contract": "Always grounded race collision; tribute themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through. Original Pedestrian procedural art only; no Anime meshes/textures.",
       "description": "Radiant Order \u2014 original Pedestrian Kinetic Sole tribute design (procedural garage art; not sourced from Anime Aggressors assets).",
-      "ai_notes": "Radiant Order \u2014 crest-boost order sole; original Pedestrian tribute art."
+      "ai_notes": "Radiant Order \u2014 crest-boost order sole; original Pedestrian tribute art.",
+      "final_art_status": "final_art_candidate",
+      "human_commercial_art_approved": false
     },
     {
       "id": "lifeling_lopers",

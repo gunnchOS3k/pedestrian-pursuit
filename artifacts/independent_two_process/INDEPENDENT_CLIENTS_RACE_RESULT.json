@@ -1,24 +1,50 @@
 {
   "schema": "pp_independent_two_process/v1",
-  "INDEPENDENT_CLIENTS_RACED": false,
+  "INDEPENDENT_CLIENTS_RACED": true,
   "local_darwin_attempt": {
-    "status": "blocked",
-    "godot_version": "4.7.1.stable.official",
-    "symptom": "SIGSEGV in mvk::SPIRVToMSLConverter at process start even with --rendering-method gl_compatibility --rendering-driver opengl3",
+    "status": "pass_headless_opengl3",
+    "godot_invoked_as": "godot via tools/bin/xvfb-run Darwin shim",
+    "godot_version_observed": "4.7.1.stable.official (PATH) / prior SIGSEGV on Metal/MoltenVK startup still recorded historically",
+    "display": "--display-driver headless --rendering-driver opengl3",
+    "symptom_metal_moltenvk_historical": "SIGSEGV in mvk::SPIRVToMSLConverter when Metal/MoltenVK path is taken; this pass used headless+opengl3 only \u2014 not a MoltenVK/Metal certificate",
     "log": "artifacts/independent_two_process/TWO_PROCESS_RACE.log",
+    "result_markers": {
+      "expected_laps": 3,
+      "host_laps": 3,
+      "guest_laps": 3,
+      "laps_equal": true,
+      "both_finished": true,
+      "APPEARANCE_SYNC": true,
+      "INDEPENDENT_CLIENTS_RACED": true
+    },
     "beatlink_contract_present": true,
-    "xvfb": "tools/bin/xvfb-run Darwin shim (CI uses real xvfb-run)"
+    "fabricated_pass": false,
+    "note": "Do not claim Mac MoltenVK/Metal race pass. Headless opengl3 local pass strengthens Darwin packaging; Linux Gate1 remains primary CI evidence."
   },
   "exact_head_ci_gate1": {
-    "sha": "3716bfdc6608d248a9e9d20cc868de6cae82a41f",
-    "url": "https://github.com/gunnchOS3k/pedestrian-pursuit/actions/runs/40806837123",
+    "prior_tip_sha": "fe7606d628cdda96b8d13da296724a76de7d85a7",
+    "url": "https://github.com/gunnchOS3k/pedestrian-pursuit/actions/runs/40809953663",
     "status": "success",
-    "note": "Gate 1 godot-headless-no-false-green includes Checkout BeatLink + tools/run_game_session_race.sh two-process race with corrected lap honesty"
+    "windows_pilot_url": "https://github.com/gunnchOS3k/pedestrian-pursuit/actions/runs/40809953507",
+    "note": "Prior tip Gate1/Windows PASS. New tip CI pending after FF-push."
+  },
+  "partylink_capacity": {
+    "min_human_seats": 2,
+    "max_human_seats": 8,
+    "field_size": 8,
+    "beatlink_sibling_contract_humans": 2,
+    "bots_never_count_as_humans": true,
+    "physical_eight_human_party": false,
+    "local_capacity_test": "tests/PartyLinkCapacityTest.gd",
+    "local_capacity_result": "PASS"
   },
   "honesty": {
     "HUMAN_FUN_APPROVAL": false,
     "HUMAN_COURSE_APPROVAL": false,
-    "fabricated": false
+    "RC2_READY": false,
+    "V1_0_0_RELEASE_AUTHORIZED": false,
+    "fabricated": false,
+    "moltenvk_metal_pass": false
   },
-  "generated_at": "2026-10-29T03:02:30Z"
+  "generated_at": "2026-10-29T05:05:55Z"
 }

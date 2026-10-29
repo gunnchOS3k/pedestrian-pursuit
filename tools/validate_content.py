@@ -436,10 +436,14 @@ def _validate_vehicle_registry(root: Path) -> list[str]:
                 if "grounded" not in contract and "checkpoint" not in contract:
                     errors.append(f"{path}: {family_id} {v.get('id')} missing grounded collision contract")
             if family_id == "anime_aggressors":
-                if str(v.get("art_status", "")) != "procedural_final_for_garage":
+                ## Garage-only procedural OR promoted native_v1 candidate — never commercial.
+                art = str(v.get("art_status", ""))
+                if art not in ("procedural_final_for_garage", "native_v1"):
                     errors.append(
-                        f"{path}: tribute {v.get('id')} must use art_status procedural_final_for_garage"
+                        f"{path}: tribute {v.get('id')} art_status must be procedural_final_for_garage or native_v1"
                     )
+                if bool(v.get("human_commercial_art_approved", False)):
+                    errors.append(f"{path}: tribute {v.get('id')} commercial art must stay false")
                 arch = str(v.get("movement_archetype", ""))
                 if not arch.startswith("tribute_"):
                     errors.append(f"{path}: tribute {v.get('id')} archetype must be tribute_* (got {arch})")
@@ -504,8 +508,16 @@ def _validate_art_acceptance(root: Path) -> list[str]:
             pending += 1
         elif fas == "final_art_candidate":
             candidate += 1
-    if pending < 1 or candidate < 1:
-        errors.append(f"{path}: need both pending and candidate classifications")
+    ## All 50 may be candidates; pending may be 0. Commercial approvals stay false.
+    if candidate < 1:
+        errors.append(f"{path}: need at least one final_art_candidate")
+    if pending + candidate != 50:
+        errors.append(f"{path}: pending+candidate must equal 50 (got {pending}+{candidate})")
+    counts = doc.get("counts") if isinstance(doc.get("counts"), dict) else {}
+    if int(counts.get("final_art_candidate", -1)) != candidate:
+        errors.append(f"{path}: counts.final_art_candidate mismatch")
+    if int(counts.get("final_art_pending", -1)) != pending:
+        errors.append(f"{path}: counts.final_art_pending mismatch")
     return errors
 
 
@@ -520,14 +532,17 @@ def _validate_wardrobe(root: Path) -> list[str]:
         errors.append(f"{path}: wardrobe slots incomplete")
     garments = doc.get("garments")
     if not isinstance(garments, list) or len(garments) < 20:
-        errors.append(f"{path}: need multi-family integrated + pending garments")
+        errors.append(f"{path}: need multi-family integrated garments")
         return errors
     integrated = [g for g in garments if isinstance(g, dict) and g.get("art_status") == "integrated_mesh_v1"]
     pending = [g for g in garments if isinstance(g, dict) and g.get("art_status") == "catalog_art_pending"]
-    if len(integrated) < 30:
-        errors.append(f"{path}: need ≥30 integrated_mesh_v1 garments across families")
-    if len(pending) < 1:
-        errors.append(f"{path}: need honest catalog_art_pending entries")
+    if len(integrated) < 40:
+        errors.append(f"{path}: need ≥40 integrated_mesh_v1 garments across families")
+    ## Honest pending may be zero once Crosswind Kiln + Archive Loom are integrated.
+    if pending:
+        for g in pending:
+            if not bool(g.get("cosmetic_only", True)):
+                errors.append(f"{path}: pending garment {g.get('id')} must stay cosmetic_only")
     families = {
         str(f.get("id"))
         for f in doc.get("families", [])
@@ -541,9 +556,19 @@ def _validate_wardrobe(root: Path) -> list[str]:
         "midnight_atelier",
         "myth_circuit",
         "orbit_signal",
+        "crosswind_kiln",
+        "archive_loom",
     ):
         if need not in families:
             errors.append(f"{path}: missing wardrobe family {need}")
+    fam_status = {
+        str(f.get("id")): str(f.get("art_status", ""))
+        for f in doc.get("families", [])
+        if isinstance(f, dict)
+    }
+    for need in ("crosswind_kiln", "archive_loom"):
+        if fam_status.get(need) != "integrated_mesh_v1":
+            errors.append(f"{path}: {need} must be integrated_mesh_v1")
     presets = doc.get("presets")
     if not isinstance(presets, list) or len(presets) < 5:
         errors.append(f"{path}: need ≥5 complete outfit presets")

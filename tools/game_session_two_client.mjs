@@ -204,6 +204,7 @@ function startGodot(root, script) {
   // Prefer explicit headless display. On Darwin, CI-style xvfb is unavailable;
   // tools/bin/xvfb-run (local shim) or PATH xvfb-run on Ubuntu both work.
   // Keep opengl3 so macOS does not take the Metal/MoltenVK crash path.
+  // PATH must include tools/bin (see tools/run_game_session_race.sh).
   const args = [
     '--headless',
     '--display-driver', 'headless',
@@ -211,7 +212,10 @@ function startGodot(root, script) {
     '--path', root,
     '--script', script,
   ];
-  return spawn('xvfb-run', ['-a', 'godot', ...args], { stdio: 'inherit', env: process.env });
+  const env = { ...process.env };
+  const shimBin = join(root, 'tools', 'bin');
+  env.PATH = `${shimBin}${env.PATH ? `:${env.PATH}` : ''}`;
+  return spawn('xvfb-run', ['-a', 'godot', ...args], { stdio: 'inherit', env });
 }
 
 function waitFor(child) {

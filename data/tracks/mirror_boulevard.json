@@ -7,8 +7,8 @@
   "theme": "mirror_boulevard",
   "description": "Reflective twin-boulevard circuit with glass facades, mirror gates, and a plaza chord cut.",
   "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-  "geometry_status": "championship_raceable",
-  "final_track_art_status": "track_art_pending",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
   "human_track_art_approved": false,
   "lane_width": 13.5,
   "guard_rails": true,
@@ -115,7 +115,10 @@
         8,
         10
       ],
-      "speed_multiplier": 0.8
+      "speed_multiplier": 0.8,
+      "terrain_name": "mirror_glass_dust",
+      "handling_multiplier": 0.9,
+      "color": "#2A3850"
     }
   ],
   "bounce_pads": [
@@ -159,6 +162,21 @@
   ],
   "elevation_profile": "boulevard_rolls",
   "bank_bias": 0.1,
-  "geometry_note": "Neon Night production batch \u2014 distinct raceable geometry; track art still pending (not commercial).",
-  "camera_identity": "neon_chase"
+  "geometry_note": "Neon Night upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. mirror gates / glass planters.",
+  "camera_identity": "neon_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "Neon Night collision hazards are off-line props; do not claim human commercial art approval."
+  ]
 }

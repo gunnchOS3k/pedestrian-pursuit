@@ -7,8 +7,8 @@
   "theme": "cascade_colossus",
   "description": "Original cascade-colossus circuit with terrace falls, mist columns, and a cliff-ledge cut \u2014 wonder landmark, not a nation costume.",
   "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
-  "geometry_status": "championship_raceable",
-  "final_track_art_status": "track_art_pending",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
   "human_track_art_approved": false,
   "lane_width": 13.5,
   "guard_rails": true,
@@ -104,7 +104,10 @@
         8,
         10
       ],
-      "speed_multiplier": 0.83
+      "speed_multiplier": 0.83,
+      "terrain_name": "mist_terrace",
+      "handling_multiplier": 0.9,
+      "color": "#4A6070"
     }
   ],
   "bounce_pads": [
@@ -148,6 +151,21 @@
   ],
   "elevation_profile": "cascade_terraces",
   "bank_bias": 0.08,
-  "geometry_note": "World Wonder Grand Prix production batch \u2014 original wonder landmarks (not nation costumes); track art still pending.",
-  "camera_identity": "wonder_chase"
+  "geometry_note": "World Wonder upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. colossus falls / terrace arch.",
+  "camera_identity": "wonder_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "World Wonder collision hazards are off-line props; do not claim human commercial art approval."
+  ]
 }

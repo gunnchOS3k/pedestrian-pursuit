@@ -164,19 +164,29 @@ func _run() -> void:
 			if coast_course.get_node_or_null("CoastFill") == null:
 				failures.append("%s missing CoastFill lighting" % tid)
 		coast_course.queue_free()
-	## Cup 5 Neon Night: four distinct championship_raceable courses.
+	## Cup 5 Neon Night: upgraded candidates with NeonFill env/collision/audio.
 	var neon := TrackCatalogScript.load_cup("neon_night_cup")
 	var neon_ids: Array = neon.get("track_ids", [])
 	if neon_ids.size() != 4:
 		failures.append("neon_night size")
+	var neon_landmarks := {
+		"lantern_corridor": "LanternCanopy",
+		"mirror_boulevard": "MirrorGateA",
+		"afterglow_overpass": "OverpassNorth",
+		"signal_storm_yard": "SignalGantry",
+	}
 	for tid in ["lantern_corridor", "mirror_boulevard", "afterglow_overpass", "signal_storm_yard"]:
 		if tid not in neon_ids:
 			failures.append("neon_night missing %s" % tid)
 		var nd := TrackCatalogScript.load_track(tid)
-		if str(nd.get("geometry_status", "")) != "championship_raceable":
-			failures.append("%s not championship_raceable" % tid)
-		if str(nd.get("final_track_art_status", "")) != "track_art_pending":
-			failures.append("%s art must stay pending" % tid)
+		if str(nd.get("geometry_status", "")) != "championship_upgraded":
+			failures.append("%s not championship_upgraded" % tid)
+		if str(nd.get("final_track_art_status", "")) != "track_art_candidate":
+			failures.append("%s art must be candidate" % tid)
+		if bool(nd.get("human_track_art_approved", false)):
+			failures.append("%s commercial art must stay false" % tid)
+		if str(nd.get("camera_identity", "")) != "neon_chase":
+			failures.append("%s missing neon camera identity" % tid)
 		var neon_has_y := false
 		for p in nd.get("path_points", []):
 			if typeof(p) == TYPE_ARRAY and p.size() == 3 and absf(float(p[1])) > 0.1:
@@ -193,30 +203,39 @@ func _run() -> void:
 			failures.append("build neon %s" % tid)
 		else:
 			var neon_scenery := neon_course.get_node_or_null("Scenery")
+			var want_neon := str(neon_landmarks.get(tid, ""))
 			if neon_scenery == null:
 				failures.append("%s missing Scenery" % tid)
-			elif tid == "lantern_corridor" and neon_scenery.get_node_or_null("LanternCanopy") == null:
-				failures.append("lantern missing LanternCanopy")
-			elif tid == "mirror_boulevard" and neon_scenery.get_node_or_null("MirrorGateA") == null:
-				failures.append("mirror missing MirrorGateA")
-			elif tid == "afterglow_overpass" and neon_scenery.get_node_or_null("OverpassNorth") == null:
-				failures.append("afterglow missing OverpassNorth")
-			elif tid == "signal_storm_yard" and neon_scenery.get_node_or_null("SignalGantry") == null:
-				failures.append("signal missing SignalGantry")
+			elif want_neon != "" and neon_scenery.get_node_or_null(want_neon) == null:
+				failures.append("%s missing %s" % [tid, want_neon])
+			if neon_course.get_node_or_null("WorldEnvironment") == null:
+				failures.append("%s missing WorldEnvironment lighting" % tid)
+			if neon_course.get_node_or_null("NeonFill") == null:
+				failures.append("%s missing NeonFill lighting" % tid)
 		neon_course.queue_free()
-	## Cup 6 Skyline Relay: four distinct championship_raceable courses.
+	## Cup 6 Skyline Relay: upgraded candidates with SkylineFill.
 	var sky := TrackCatalogScript.load_cup("skyline_relay_cup")
 	var sky_ids: Array = sky.get("track_ids", [])
 	if sky_ids.size() != 4:
 		failures.append("skyline_relay size")
+	var sky_landmarks := {
+		"rooftop_ribbon": "BillboardArch",
+		"skybridge_sprint": "BridgeTowerA",
+		"antenna_ascent": "AntennaMast",
+		"cloud_deck_circuit": "ObsSpire",
+	}
 	for tid in ["rooftop_ribbon", "skybridge_sprint", "antenna_ascent", "cloud_deck_circuit"]:
 		if tid not in sky_ids:
 			failures.append("skyline_relay missing %s" % tid)
 		var sd := TrackCatalogScript.load_track(tid)
-		if str(sd.get("geometry_status", "")) != "championship_raceable":
-			failures.append("%s not championship_raceable" % tid)
-		if str(sd.get("final_track_art_status", "")) != "track_art_pending":
-			failures.append("%s art must stay pending" % tid)
+		if str(sd.get("geometry_status", "")) != "championship_upgraded":
+			failures.append("%s not championship_upgraded" % tid)
+		if str(sd.get("final_track_art_status", "")) != "track_art_candidate":
+			failures.append("%s art must be candidate" % tid)
+		if bool(sd.get("human_track_art_approved", false)):
+			failures.append("%s commercial art must stay false" % tid)
+		if str(sd.get("camera_identity", "")) != "skyline_chase":
+			failures.append("%s missing skyline camera identity" % tid)
 		var sky_has_y := false
 		for p in sd.get("path_points", []):
 			if typeof(p) == TYPE_ARRAY and p.size() == 3 and absf(float(p[1])) > 0.1:
@@ -233,32 +252,41 @@ func _run() -> void:
 			failures.append("build skyline %s" % tid)
 		else:
 			var sky_scenery := sky_course.get_node_or_null("Scenery")
+			var want_sky := str(sky_landmarks.get(tid, ""))
 			if sky_scenery == null:
 				failures.append("%s missing Scenery" % tid)
-			elif tid == "rooftop_ribbon" and sky_scenery.get_node_or_null("BillboardArch") == null:
-				failures.append("rooftop missing BillboardArch")
-			elif tid == "skybridge_sprint" and sky_scenery.get_node_or_null("BridgeTowerA") == null:
-				failures.append("skybridge missing BridgeTowerA")
-			elif tid == "antenna_ascent" and sky_scenery.get_node_or_null("AntennaMast") == null:
-				failures.append("antenna missing AntennaMast")
-			elif tid == "cloud_deck_circuit" and sky_scenery.get_node_or_null("ObsSpire") == null:
-				failures.append("cloud_deck missing ObsSpire")
+			elif want_sky != "" and sky_scenery.get_node_or_null(want_sky) == null:
+				failures.append("%s missing %s" % [tid, want_sky])
+			if sky_course.get_node_or_null("WorldEnvironment") == null:
+				failures.append("%s missing WorldEnvironment lighting" % tid)
+			if sky_course.get_node_or_null("SkylineFill") == null:
+				failures.append("%s missing SkylineFill lighting" % tid)
 		sky_course.queue_free()
-	## Cup 7 Archive Relay: four distinct championship_raceable tribute courses.
+	## Cup 7 Archive Relay: upgraded tribute candidates with ArchiveFill.
 	var archive := TrackCatalogScript.load_cup("archive_relay_cup")
 	var archive_ids: Array = archive.get("track_ids", [])
 	if archive_ids.size() != 4:
 		failures.append("archive_relay size")
+	var archive_landmarks := {
+		"marble_foyer_loop": "FoyerArch",
+		"stack_corridor": "ShelfRowA",
+		"gallery_grand_oval": "SkylightBank",
+		"vault_gate_gauntlet": "VaultArch",
+	}
 	for tid in ["marble_foyer_loop", "stack_corridor", "gallery_grand_oval", "vault_gate_gauntlet"]:
 		if tid not in archive_ids:
 			failures.append("archive_relay missing %s" % tid)
 		var ad := TrackCatalogScript.load_track(tid)
-		if str(ad.get("geometry_status", "")) != "championship_raceable":
-			failures.append("%s not championship_raceable" % tid)
-		if str(ad.get("final_track_art_status", "")) != "track_art_pending":
-			failures.append("%s art must stay pending" % tid)
+		if str(ad.get("geometry_status", "")) != "championship_upgraded":
+			failures.append("%s not championship_upgraded" % tid)
+		if str(ad.get("final_track_art_status", "")) != "track_art_candidate":
+			failures.append("%s art must be candidate" % tid)
+		if bool(ad.get("human_track_art_approved", false)):
+			failures.append("%s commercial art must stay false" % tid)
 		if str(ad.get("tribute_note", "")).is_empty():
 			failures.append("%s missing tribute honesty note" % tid)
+		if str(ad.get("camera_identity", "")) != "archive_chase":
+			failures.append("%s missing archive camera identity" % tid)
 		var archive_has_y := false
 		for p in ad.get("path_points", []):
 			if typeof(p) == TYPE_ARRAY and p.size() == 3 and absf(float(p[1])) > 0.1:
@@ -275,30 +303,39 @@ func _run() -> void:
 			failures.append("build archive %s" % tid)
 		else:
 			var archive_scenery := archive_course.get_node_or_null("Scenery")
+			var want_archive := str(archive_landmarks.get(tid, ""))
 			if archive_scenery == null:
 				failures.append("%s missing Scenery" % tid)
-			elif tid == "marble_foyer_loop" and archive_scenery.get_node_or_null("FoyerArch") == null:
-				failures.append("foyer missing FoyerArch")
-			elif tid == "stack_corridor" and archive_scenery.get_node_or_null("ShelfRowA") == null:
-				failures.append("stack missing ShelfRowA")
-			elif tid == "gallery_grand_oval" and archive_scenery.get_node_or_null("SkylightBank") == null:
-				failures.append("gallery missing SkylightBank")
-			elif tid == "vault_gate_gauntlet" and archive_scenery.get_node_or_null("VaultArch") == null:
-				failures.append("vault missing VaultArch")
+			elif want_archive != "" and archive_scenery.get_node_or_null(want_archive) == null:
+				failures.append("%s missing %s" % [tid, want_archive])
+			if archive_course.get_node_or_null("WorldEnvironment") == null:
+				failures.append("%s missing WorldEnvironment lighting" % tid)
+			if archive_course.get_node_or_null("ArchiveFill") == null:
+				failures.append("%s missing ArchiveFill lighting" % tid)
 		archive_course.queue_free()
-	## Cup 8 World Wonder Grand Prix: four distinct championship_raceable courses.
+	## Cup 8 World Wonder Grand Prix: upgraded candidates with WonderFill.
 	var wonder := TrackCatalogScript.load_cup("world_wonder_grand_prix")
 	var wonder_ids: Array = wonder.get("track_ids", [])
 	if wonder_ids.size() != 4:
 		failures.append("world_wonder size")
+	var wonder_landmarks := {
+		"cascade_colossus": "ColossusFalls",
+		"aurora_amphitheater": "AuroraRim",
+		"origami_orchard": "PaperSpire",
+		"horizon_crown_finale": "CrownArchNorth",
+	}
 	for tid in ["cascade_colossus", "aurora_amphitheater", "origami_orchard", "horizon_crown_finale"]:
 		if tid not in wonder_ids:
 			failures.append("world_wonder missing %s" % tid)
 		var wd := TrackCatalogScript.load_track(tid)
-		if str(wd.get("geometry_status", "")) != "championship_raceable":
-			failures.append("%s not championship_raceable" % tid)
-		if str(wd.get("final_track_art_status", "")) != "track_art_pending":
-			failures.append("%s art must stay pending" % tid)
+		if str(wd.get("geometry_status", "")) != "championship_upgraded":
+			failures.append("%s not championship_upgraded" % tid)
+		if str(wd.get("final_track_art_status", "")) != "track_art_candidate":
+			failures.append("%s art must be candidate" % tid)
+		if bool(wd.get("human_track_art_approved", false)):
+			failures.append("%s commercial art must stay false" % tid)
+		if str(wd.get("camera_identity", "")) != "wonder_chase":
+			failures.append("%s missing wonder camera identity" % tid)
 		var wonder_has_y := false
 		for p in wd.get("path_points", []):
 			if typeof(p) == TYPE_ARRAY and p.size() == 3 and absf(float(p[1])) > 0.1:
@@ -315,28 +352,34 @@ func _run() -> void:
 			failures.append("build wonder %s" % tid)
 		else:
 			var wonder_scenery := wonder_course.get_node_or_null("Scenery")
+			var want_wonder := str(wonder_landmarks.get(tid, ""))
 			if wonder_scenery == null:
 				failures.append("%s missing Scenery" % tid)
-			elif tid == "cascade_colossus" and wonder_scenery.get_node_or_null("ColossusFalls") == null:
-				failures.append("cascade missing ColossusFalls")
-			elif tid == "aurora_amphitheater" and wonder_scenery.get_node_or_null("AuroraRim") == null:
-				failures.append("aurora missing AuroraRim")
-			elif tid == "origami_orchard" and wonder_scenery.get_node_or_null("PaperSpire") == null:
-				failures.append("origami missing PaperSpire")
-			elif tid == "horizon_crown_finale" and wonder_scenery.get_node_or_null("CrownArchNorth") == null:
-				failures.append("horizon missing CrownArchNorth")
+			elif want_wonder != "" and wonder_scenery.get_node_or_null(want_wonder) == null:
+				failures.append("%s missing %s" % [tid, want_wonder])
+			if wonder_course.get_node_or_null("WorldEnvironment") == null:
+				failures.append("%s missing WorldEnvironment lighting" % tid)
+			if wonder_course.get_node_or_null("WonderFill") == null:
+				failures.append("%s missing WonderFill lighting" % tid)
 		wonder_course.queue_free()
-	## All 32 tracks must be non-stub championship geometry.
+	## All 32 tracks must be championship_upgraded (no stubs / no pending-only raceable).
 	var stub_left := 0
+	var pending_left := 0
 	for tid_all in TrackCatalogScript.list_all_track_ids():
 		var gd := TrackCatalogScript.load_track(str(tid_all))
 		var gs := str(gd.get("geometry_status", ""))
 		if gs == "championship_stub_raceable":
 			stub_left += 1
-		elif gs not in ["championship_raceable", "championship_upgraded"]:
+		elif gs != "championship_upgraded":
 			failures.append("%s unexpected geometry %s" % [tid_all, gs])
+		if str(gd.get("final_track_art_status", "")) == "track_art_pending":
+			pending_left += 1
+		if bool(gd.get("human_track_art_approved", false)):
+			failures.append("%s commercial art leak" % tid_all)
 	if stub_left != 0:
 		failures.append("stub tracks remaining %d" % stub_left)
+	if pending_left != 0:
+		failures.append("track_art_pending remaining %d" % pending_left)
 	var art := TrackArtAcceptanceScript.counts()
 	if int(art.get("raceable", 0)) != 32:
 		failures.append("track art raceable %s" % str(art.get("raceable")))
@@ -356,6 +399,10 @@ func _run() -> void:
 			failures.append("start_cup %s" % cup_id)
 		gm.clear_cup()
 
+	if int(art.get("final_track_art_candidate", 0)) != 32:
+		failures.append("expected 32 track_art_candidate, got %s" % str(art.get("final_track_art_candidate")))
+	if int(art.get("final_track_art_pending", 0)) != 0:
+		failures.append("expected 0 track_art_pending, got %s" % str(art.get("final_track_art_pending")))
 	if failures.is_empty():
 		print(
 			"ChampionshipCatalogTest PASS — cups 8 · tracks 32 · raceable 32 · art candidates %d · pending %d"
