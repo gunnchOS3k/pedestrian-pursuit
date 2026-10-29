@@ -8,7 +8,7 @@ extends SceneTree
 ## Exits 0 after every course is printed. tests/verdant_race_acceptance_gate.py
 ## fails the job unless each course saw a checkpoint, a lap, and results.
 
-## Cups 1–2 launch set, then Cup 3 Metro Motion (first cups 3–8 full-race matrix expansion).
+## Cups 1–2 launch set, then cups 3–8 championship matrix (Metro → Wonder).
 const COURSE_IDS: Array[String] = [
 	"verdant_cascade_circuit",
 	"cloverwind_ranch",
@@ -22,13 +22,95 @@ const COURSE_IDS: Array[String] = [
 	"metro_pulse_loop",
 	"crosswalk_canyon",
 	"transit_spiral",
+	"saltline_boardwalk",
+	"cliffside_draft",
+	"tidal_bridge_run",
+	"seaglass_switchback",
+	"lantern_corridor",
+	"mirror_boulevard",
+	"afterglow_overpass",
+	"signal_storm_yard",
+	"rooftop_ribbon",
+	"skybridge_sprint",
+	"antenna_ascent",
+	"cloud_deck_circuit",
+	"marble_foyer_loop",
+	"stack_corridor",
+	"gallery_grand_oval",
+	"vault_gate_gauntlet",
+	"cascade_colossus",
+	"aurora_amphitheater",
+	"origami_orchard",
+	"horizon_crown_finale",
 ]
-## Cup 3 ids — elevated metro courses that need a soft racing-line magnet under headless steer.
+## Cup 3 Metro Motion.
+const CUP3_COURSE_IDS: Array[String] = [
+	"sneaker_city_sprintway",
+	"metro_pulse_loop",
+	"crosswalk_canyon",
+	"transit_spiral",
+]
+## Cup 4 Kinetic Coast.
+const CUP4_COURSE_IDS: Array[String] = [
+	"saltline_boardwalk",
+	"cliffside_draft",
+	"tidal_bridge_run",
+	"seaglass_switchback",
+]
+## Cup 5 Neon Night.
+const CUP5_COURSE_IDS: Array[String] = [
+	"lantern_corridor",
+	"mirror_boulevard",
+	"afterglow_overpass",
+	"signal_storm_yard",
+]
+## Cup 6 Skyline Relay.
+const CUP6_COURSE_IDS: Array[String] = [
+	"rooftop_ribbon",
+	"skybridge_sprint",
+	"antenna_ascent",
+	"cloud_deck_circuit",
+]
+## Cup 7 Archive Relay.
+const CUP7_COURSE_IDS: Array[String] = [
+	"marble_foyer_loop",
+	"stack_corridor",
+	"gallery_grand_oval",
+	"vault_gate_gauntlet",
+]
+## Cup 8 World Wonder Grand Prix.
+const CUP8_COURSE_IDS: Array[String] = [
+	"cascade_colossus",
+	"aurora_amphitheater",
+	"origami_orchard",
+	"horizon_crown_finale",
+]
+## Cups 3–8 elevated courses need a soft racing-line magnet under headless steer.
 const ELEVATED_COURSE_IDS: Array[String] = [
 	"sneaker_city_sprintway",
 	"metro_pulse_loop",
 	"crosswalk_canyon",
 	"transit_spiral",
+	"saltline_boardwalk",
+	"cliffside_draft",
+	"tidal_bridge_run",
+	"seaglass_switchback",
+	"lantern_corridor",
+	"mirror_boulevard",
+	"afterglow_overpass",
+	"signal_storm_yard",
+	"rooftop_ribbon",
+	"skybridge_sprint",
+	"antenna_ascent",
+	"cloud_deck_circuit",
+	"marble_foyer_loop",
+	"stack_corridor",
+	"gallery_grand_oval",
+	"vault_gate_gauntlet",
+	"cascade_colossus",
+	"aurora_amphitheater",
+	"origami_orchard",
+	"horizon_crown_finale",
 ]
 const ENTER_FRAMES := 180
 ## Countdown holds movement. Wait for RACING before any drive time counts.
@@ -67,14 +149,73 @@ func _observe_plan() -> Dictionary:
 	if mode == "cup3":
 		return {
 			"mode": "cup3",
+			"courses": PackedStringArray(CUP3_COURSE_IDS),
+			"stop_after": CUP3_COURSE_IDS.size(),
+		}
+	if mode == "cup4":
+		return {
+			"mode": "cup4",
+			"courses": PackedStringArray(CUP4_COURSE_IDS),
+			"stop_after": CUP4_COURSE_IDS.size(),
+		}
+	if mode == "cup5":
+		return {
+			"mode": "cup5",
+			"courses": PackedStringArray(CUP5_COURSE_IDS),
+			"stop_after": CUP5_COURSE_IDS.size(),
+		}
+	if mode == "cup6":
+		return {
+			"mode": "cup6",
+			"courses": PackedStringArray(CUP6_COURSE_IDS),
+			"stop_after": CUP6_COURSE_IDS.size(),
+		}
+	if mode == "cup7":
+		return {
+			"mode": "cup7",
+			"courses": PackedStringArray(CUP7_COURSE_IDS),
+			"stop_after": CUP7_COURSE_IDS.size(),
+		}
+	if mode == "cup8":
+		return {
+			"mode": "cup8",
+			"courses": PackedStringArray(CUP8_COURSE_IDS),
+			"stop_after": CUP8_COURSE_IDS.size(),
+		}
+	if mode == "cups4-8":
+		var cups48: Array[String] = []
+		cups48.append_array(CUP4_COURSE_IDS)
+		cups48.append_array(CUP5_COURSE_IDS)
+		cups48.append_array(CUP6_COURSE_IDS)
+		cups48.append_array(CUP7_COURSE_IDS)
+		cups48.append_array(CUP8_COURSE_IDS)
+		return {
+			"mode": "cups4-8",
+			"courses": PackedStringArray(cups48),
+			"stop_after": cups48.size(),
+		}
+	if mode == "cups3-8":
+		return {
+			"mode": "cups3-8",
 			"courses": PackedStringArray(ELEVATED_COURSE_IDS),
 			"stop_after": ELEVATED_COURSE_IDS.size(),
 		}
 	if mode == "cups1-3":
+		var cups13: Array[String] = [
+			"verdant_cascade_circuit",
+			"cloverwind_ranch",
+			"prism_apex",
+			"emberkeep_gauntlet",
+			"tideglass_harbor",
+			"neon_switchyard",
+			"cloudstep_ridge",
+			"mirage_mesa",
+		]
+		cups13.append_array(CUP3_COURSE_IDS)
 		return {
 			"mode": "cups1-3",
-			"courses": PackedStringArray(COURSE_IDS),
-			"stop_after": COURSE_IDS.size(),
+			"courses": PackedStringArray(cups13),
+			"stop_after": cups13.size(),
 		}
 	## Default stays cups 1–2 launch set for Gate1 parity; cups 3–8 opt in via mode/track.
 	var launch_only := PackedStringArray([

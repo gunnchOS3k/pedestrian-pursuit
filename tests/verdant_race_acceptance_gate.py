@@ -49,6 +49,69 @@ CUP3_COURSE_IDS = (
     "transit_spiral",
 )
 
+# Cup 4 Kinetic Coast.
+CUP4_COURSE_IDS = (
+    "saltline_boardwalk",
+    "cliffside_draft",
+    "tidal_bridge_run",
+    "seaglass_switchback",
+)
+
+# Cup 5 Neon Night.
+CUP5_COURSE_IDS = (
+    "lantern_corridor",
+    "mirror_boulevard",
+    "afterglow_overpass",
+    "signal_storm_yard",
+)
+
+# Cup 6 Skyline Relay.
+CUP6_COURSE_IDS = (
+    "rooftop_ribbon",
+    "skybridge_sprint",
+    "antenna_ascent",
+    "cloud_deck_circuit",
+)
+
+# Cup 7 Archive Relay.
+CUP7_COURSE_IDS = (
+    "marble_foyer_loop",
+    "stack_corridor",
+    "gallery_grand_oval",
+    "vault_gate_gauntlet",
+)
+
+# Cup 8 World Wonder Grand Prix.
+CUP8_COURSE_IDS = (
+    "cascade_colossus",
+    "aurora_amphitheater",
+    "origami_orchard",
+    "horizon_crown_finale",
+)
+
+CUPS4_8_COURSE_IDS = (
+    CUP4_COURSE_IDS
+    + CUP5_COURSE_IDS
+    + CUP6_COURSE_IDS
+    + CUP7_COURSE_IDS
+    + CUP8_COURSE_IDS
+)
+
+CUPS3_8_COURSE_IDS = CUP3_COURSE_IDS + CUPS4_8_COURSE_IDS
+
+SUITE_COURSES = {
+    "launch": LAUNCH_COURSE_IDS,
+    "cup3": CUP3_COURSE_IDS,
+    "cup4": CUP4_COURSE_IDS,
+    "cup5": CUP5_COURSE_IDS,
+    "cup6": CUP6_COURSE_IDS,
+    "cup7": CUP7_COURSE_IDS,
+    "cup8": CUP8_COURSE_IDS,
+    "cups4-8": CUPS4_8_COURSE_IDS,
+    "cups3-8": CUPS3_8_COURSE_IDS,
+    "cups1-3": LAUNCH_COURSE_IDS + CUP3_COURSE_IDS,
+}
+
 
 def parse_observer_log(text: str) -> dict[str, str | None]:
     """Last assignment wins. Absent keys stay None. Do not invent values."""
@@ -196,20 +259,22 @@ def format_report(fields: dict[str, str | None], failure: str | None) -> str:
 
 
 def main(argv: list[str]) -> int:
+    suite_names = "|".join(sorted(SUITE_COURSES))
     if len(argv) not in (2, 3):
         print(
-            "usage: verdant_race_acceptance_gate.py OBSERVER_LOG [launch|cup3|cups1-3]",
+            "usage: verdant_race_acceptance_gate.py OBSERVER_LOG [%s]" % suite_names,
             file=sys.stderr,
         )
         return 2
     path = Path(argv[1])
     suite = argv[2] if len(argv) == 3 else "launch"
-    if suite == "cup3":
-        required = CUP3_COURSE_IDS
-    elif suite == "cups1-3":
-        required = LAUNCH_COURSE_IDS + CUP3_COURSE_IDS
-    else:
-        required = LAUNCH_COURSE_IDS
+    if suite not in SUITE_COURSES:
+        print(
+            "usage: verdant_race_acceptance_gate.py OBSERVER_LOG [%s]" % suite_names,
+            file=sys.stderr,
+        )
+        return 2
+    required = SUITE_COURSES[suite]
     if not path.is_file():
         report, _failures = evaluate_courses("", required)
         print(report, end="")

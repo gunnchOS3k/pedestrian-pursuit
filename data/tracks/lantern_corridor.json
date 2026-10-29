@@ -10,7 +10,7 @@
   "geometry_status": "championship_upgraded",
   "final_track_art_status": "track_art_candidate",
   "human_track_art_approved": false,
-  "lane_width": 13.5,
+  "lane_width": 15.0,
   "guard_rails": true,
   "has_shortcut": true,
   "track_color": "#2A2038",
@@ -20,27 +20,27 @@
   "path_points": [
     [
       28.0,
-      2.21,
+      1.75,
       0.0
     ],
     [
       24.25,
-      3.12,
+      2.4,
       26.0
     ],
     [
       14.0,
-      2.99,
+      2.307,
       45.03
     ],
     [
       0.0,
-      1.86,
+      1.5,
       52.0
     ],
     [
       -14.0,
-      0.73,
+      0.693,
       45.03
     ],
     [
@@ -50,32 +50,32 @@
     ],
     [
       -28.0,
-      1.51,
+      1.25,
       0.0
     ],
     [
       -24.25,
-      2.51,
+      1.964,
       -26.0
     ],
     [
       -14.0,
-      2.64,
+      2.057,
       -45.03
     ],
     [
       -0.0,
-      1.86,
+      1.5,
       -52.0
     ],
     [
       14.0,
-      1.08,
+      0.943,
       -45.03
     ],
     [
       24.25,
-      1.21,
+      1.036,
       -26.0
     ]
   ],
@@ -113,8 +113,8 @@
   "bounce_pads": [
     {
       "point_index": 9,
-      "bounce_force": 10.5,
-      "forward_boost": 3.2,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
       "size": [
         5,
         5
@@ -122,8 +122,8 @@
     },
     {
       "point_index": 11,
-      "bounce_force": 11.0,
-      "forward_boost": 3.8,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
       "size": [
         5,
         5
