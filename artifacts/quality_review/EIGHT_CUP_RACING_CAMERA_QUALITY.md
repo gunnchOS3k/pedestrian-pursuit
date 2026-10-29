@@ -53,6 +53,14 @@ Candidate counts are inventory, not the milestone. This pass deepens racing-came
 - Wardrobe garments remain cosmetic; footwear vehicle owns handling
 - `visual_lod` still budgets particles for 8-racer fields (does not claim 8p physical)
 
+## Follow-on env / racing-feel (non-camera)
+
+Camera identities + accents for cups 3–8 were already landed at `8c3ac55` and are **not repeated**. Subsequent env work:
+
+- Data landmark IDs for cups 3–8 now sculpt distinct silhouettes in `CourseTrack._sculpt_landmark` (was default box).
+- Pickup / rail / bounce density on cups 3–8 raised toward Stride levels (no catalog rebuild).
+- Global boost FOV/spring punch strengthened in `CameraRig` without retuning per-track chase tables.
+
 ## Explicit non-claims
 
 - Not palette-swap “final art.”

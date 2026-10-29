@@ -1515,8 +1515,9 @@ func _landmark_node_name(landmark_id: String) -> String:
 
 func _sculpt_landmark(root: Node3D, landmark_id: String, accent: Color) -> void:
 	## Distinct silhouettes so chase-cam reads course identity, not a box field.
+	## Cups 3–8 IDs are sculpted here (env readability) — do not retouch camera_identity/accents.
 	match landmark_id:
-		"mist_columns", "tide_posts", "ledge_rails", "dune_rails":
+		"mist_columns", "tide_posts", "ledge_rails", "dune_rails", "salt_spray_posts", "shard_rails", "cloud_rail", "mist_column":
 			for n in range(3):
 				_add_visual_cylinder(
 					root,
@@ -1526,26 +1527,33 @@ func _sculpt_landmark(root: Node3D, landmark_id: String, accent: Color) -> void:
 					accent.lightened(0.08),
 					true
 				)
-		"start_arch", "pier_arch", "mesa_arch", "cloud_gate", "void_gate":
+		"start_arch", "pier_arch", "mesa_arch", "cloud_gate", "void_gate", "billboard_arch", "paper_arch", "foyer_arch", "vault_arch", "terrace_arch", "crease_gate", "alley_gate", "crown_arch_north", "crown_arch_south":
 			_add_visual_box(root, Vector3(-4.5, 3.0, 0.0), Vector3(1.0, 6.0, 1.0), Color(0.35, 0.35, 0.4))
 			_add_visual_box(root, Vector3(4.5, 3.0, 0.0), Vector3(1.0, 6.0, 1.0), Color(0.35, 0.35, 0.4))
 			_add_visual_box(root, Vector3(0.0, 6.2, 0.0), Vector3(10.0, 0.7, 1.1), accent, true)
-		"river_bank", "fence_line", "basalt_walls":
+		"river_bank", "fence_line", "basalt_walls", "shelf_row_a", "shelf_row_b", "storefront_row", "stall_row", "roof_vent_row":
 			_add_visual_box(root, Vector3(0.0, 1.2, 0.0), Vector3(10.0, 2.4, 1.6), accent.darkened(0.25))
 			_add_visual_box(root, Vector3(0.0, 2.6, 0.4), Vector3(8.0, 0.35, 0.45), accent, true)
-		"barn_silhouette", "glass_shed", "switch_tower":
+		"barn_silhouette", "glass_shed", "switch_tower", "boardwalk_shed", "pulse_station", "catalog_desk", "glass_facade", "hvac_island":
 			_add_visual_box(root, Vector3(0.0, 2.4, 0.0), Vector3(6.5, 4.8, 5.0), accent.darkened(0.2))
 			_add_visual_box(root, Vector3(0.0, 5.2, 0.0), Vector3(7.2, 0.8, 5.6), accent.lightened(0.1))
-		"windmill", "ridge_cairn", "mirage_spire", "prism_spires":
+		"windmill", "ridge_cairn", "mirage_spire", "prism_spires", "cliff_cairn", "seaglass_spire", "obs_spire", "paper_spire", "finale_spire", "antenna_mast", "stage_pylon", "frame_pylon":
 			_add_visual_cylinder(root, Vector3(0.0, 4.5, 0.0), 1.1, 9.0, accent, true)
 			_add_visual_sphere(root, Vector3(0.0, 9.4, 0.0), 1.6, accent.lightened(0.2), true)
-		"forge_towers", "signal_gantry":
+		"forge_towers", "signal_gantry", "draft_gantry", "cable_gantry", "security_gantry", "signal_tower", "storm_tower", "bridge_tower_a", "bridge_tower_b", "depot_crane", "yard_crane":
 			_add_visual_box(root, Vector3(-3.0, 4.0, 0.0), Vector3(1.4, 8.0, 1.4), Color(0.3, 0.3, 0.32))
 			_add_visual_box(root, Vector3(3.0, 4.0, 0.0), Vector3(1.4, 8.0, 1.4), Color(0.3, 0.3, 0.32))
 			_add_visual_box(root, Vector3(0.0, 8.2, 0.0), Vector3(8.0, 0.7, 1.2), accent, true)
-		"ember_braziers", "neon_hoops", "luminous_ribbon":
+		"ember_braziers", "neon_hoops", "luminous_ribbon", "hairpin_beacon", "ascent_beacon", "deck_beacon", "bowl_beacon", "grove_lantern", "afterglow_sign", "marble_plinth", "gallery_bench":
 			_add_visual_cylinder(root, Vector3(0.0, 1.2, 0.0), 1.4, 2.4, Color(0.25, 0.22, 0.2))
 			_add_visual_sphere(root, Vector3(0.0, 3.0, 0.0), 1.3, accent, true)
+		"elevated_rail", "zebra_bridge", "north_bridge", "south_bridge", "overpass_north", "overpass_south", "skylight_bank", "spiral_ramp", "rail_yard_cut", "platform_cut":
+			_add_visual_box(root, Vector3(0.0, 3.5, 0.0), Vector3(14.0, 0.55, 2.4), accent.darkened(0.15))
+			_add_visual_box(root, Vector3(-5.5, 1.8, 0.0), Vector3(1.1, 3.6, 1.1), Color(0.32, 0.32, 0.36))
+			_add_visual_box(root, Vector3(5.5, 1.8, 0.0), Vector3(1.1, 3.6, 1.1), Color(0.32, 0.32, 0.36))
+		"crosswalk_plaza", "lantern_canopy", "mirror_gate_a", "mirror_gate_b", "dish_array", "rotunda_dome", "seal_door", "aurora_rim", "colossus_falls":
+			_add_visual_cylinder(root, Vector3(0.0, 2.8, 0.0), 3.2, 5.6, accent.darkened(0.1), true)
+			_add_visual_box(root, Vector3(0.0, 6.0, 0.0), Vector3(7.0, 0.45, 7.0), accent, true)
 		_:
 			_add_visual_box(root, Vector3(0.0, 2.5, 0.0), Vector3(2.2, 5.0, 2.2), accent.lightened(0.12))
 

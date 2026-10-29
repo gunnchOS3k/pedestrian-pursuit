@@ -119,15 +119,26 @@
         5,
         5
       ]
+    },
+    {
+      "point_index": 11,
+      "bounce_force": 11.0,
+      "forward_boost": 3.8,
+      "size": [
+        5,
+        5
+      ]
     }
   ],
   "item_boxes": [
     1,
+    4,
     5,
     9
   ],
   "boost_pickups": [
     0,
+    5,
     6
   ],
   "rail_segments": [

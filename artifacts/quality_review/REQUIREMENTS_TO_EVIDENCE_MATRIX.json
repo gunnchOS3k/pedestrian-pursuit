@@ -1,0 +1,374 @@
+{
+  "schema_version": "1.0.0",
+  "contract_id": "GUNNCHOS3K_PVS",
+  "contract_version": "1.0.0",
+  "contract_source_sha": "45b456617002569c33a5a27fe30d5cf8be5a7032",
+  "product_id": "pedestrian-pursuit",
+  "product_repo": "https://github.com/gunnchOS3k/pedestrian-pursuit",
+  "generated_at": "2026-10-29T20:00:00Z",
+  "honesty_flags": {
+    "HUMAN": false,
+    "RC2": false,
+    "V1": false
+  },
+  "phase_summary": {
+    "cursor_complete": {
+      "status": "in_progress",
+      "notes": "Digital depth advancing; Cursor Complete not claimed. Cups 3–8 camera already deepened prior tip — this pass binds RTM + env landmark sculpting."
+    },
+    "codex_independently_verified": {
+      "status": "not_started"
+    },
+    "human_approval": {
+      "status": "not_started",
+      "notes": "HUMAN_FUN / HUMAN_COURSE / RC2 / V1 remain false."
+    }
+  },
+  "rows": [
+    {
+      "req_id": "PP-RTM-01",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "32 championship tracks remain raceable without catalog rebuild.",
+      "verification_method": "ChampionshipCatalogTest + CATALOG_RESULT stamp",
+      "layers": [1, 2],
+      "tests": ["tests/ChampionshipCatalogTest.gd"],
+      "automated_evidence": [
+        "artifacts/championship/CATALOG_RESULT.json",
+        "data/tracks/*.json"
+      ],
+      "native_physical": {
+        "status": "not_applicable",
+        "platforms": [],
+        "notes": "Digital catalog honesty only."
+      },
+      "art_status": "review_pending",
+      "limitations": [
+        "32 track_art_candidate; 0 commercial human approvals",
+        "candidate ≠ finished / human-approved"
+      ],
+      "severity": "high",
+      "sha": "8c3ac55817dc4b21b3c08f8b2c0a159a2c3c7112",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress",
+      "notes": "No catalog rebuild this pass."
+    },
+    {
+      "req_id": "PP-RTM-02",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "8 cups authored Sole→Wonder with cup career start loop.",
+      "verification_method": "ChampionshipCatalogTest cup start loop",
+      "layers": [1, 2, 4],
+      "tests": ["tests/ChampionshipCatalogTest.gd", "tests/ChampionshipCupCareerTest.gd"],
+      "automated_evidence": ["data/cups/*.json"],
+      "native_physical": {
+        "status": "not_applicable",
+        "platforms": [],
+        "notes": "Digital cup catalog."
+      },
+      "art_status": "review_pending",
+      "limitations": ["Human course fun not claimed"],
+      "severity": "high",
+      "sha": "8c3ac55817dc4b21b3c08f8b2c0a159a2c3c7112",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress"
+    },
+    {
+      "req_id": "PP-RTM-03",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "50 Kinetic Sole vehicles playable (shared movement archetypes).",
+      "verification_method": "vehicle_registry counts + garage tests",
+      "layers": [1, 2],
+      "tests": ["tests/VehicleGarageTest.gd", "tests/GarageProgressionTest.gd"],
+      "automated_evidence": ["data/vehicles/vehicle_registry.json"],
+      "native_physical": {
+        "status": "not_applicable",
+        "platforms": [],
+        "notes": "Not 50 distinct physics engines."
+      },
+      "art_status": "review_pending",
+      "limitations": ["Shared archetypes — not unique physics per vehicle"],
+      "severity": "medium",
+      "sha": "8c3ac55817dc4b21b3c08f8b2c0a159a2c3c7112",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress"
+    },
+    {
+      "req_id": "PP-RTM-04",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "Career / cup save-resume round-trips.",
+      "verification_method": "ChampionshipCupCareerTest + CupResumeTest",
+      "layers": [1, 2, 4],
+      "tests": ["tests/ChampionshipCupCareerTest.gd", "tests/CupResumeTest.gd"],
+      "automated_evidence": [],
+      "native_physical": {
+        "status": "not_run",
+        "platforms": [],
+        "notes": "Human career fun not claimed."
+      },
+      "art_status": "not_applicable",
+      "limitations": ["Digital save path only"],
+      "severity": "high",
+      "sha": "8c3ac55817dc4b21b3c08f8b2c0a159a2c3c7112",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress"
+    },
+    {
+      "req_id": "PP-RTM-05",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "Wardrobe / creator cosmetics apply without changing footwear handling.",
+      "verification_method": "CreatorWardrobeRaceFlowTest + RacerVisual wardrobe apply",
+      "layers": [2, 4],
+      "tests": ["tests/CreatorWardrobeRaceFlowTest.gd", "tests/AppearanceMultiplayerSyncTest.gd"],
+      "automated_evidence": [
+        "data/wardrobe/wardrobe_catalog.json",
+        "artifacts/creator_wardrobe/FLOW_RESULT.json"
+      ],
+      "native_physical": {
+        "status": "not_applicable",
+        "platforms": [],
+        "notes": "Cosmetic-only contract."
+      },
+      "art_status": "review_pending",
+      "limitations": ["Footwear vehicle owns handling"],
+      "severity": "medium",
+      "sha": "8c3ac55817dc4b21b3c08f8b2c0a159a2c3c7112",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress"
+    },
+    {
+      "req_id": "PP-RTM-06",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "Independent 2-client lap honesty (not Metal; not 8-human physical).",
+      "verification_method": "Gate1 two-member race + independent_two_process artifact",
+      "layers": [2, 4, 7],
+      "tests": ["tests/test_lap_honesty_gate.py", "tests/GameSessionTwoMemberRace.gd"],
+      "automated_evidence": [
+        "artifacts/independent_two_process/INDEPENDENT_CLIENTS_RACE_RESULT.json"
+      ],
+      "native_physical": {
+        "status": "partial",
+        "platforms": ["linux-gate1", "darwin-headless-opengl3"],
+        "notes": "2-client digital/headless GL. Distinct from Mac Metal/MoltenVK and from 8-human physical."
+      },
+      "art_status": "not_applicable",
+      "limitations": [
+        "Not Mac MoltenVK/Metal",
+        "Not physical 8-human PartyLink"
+      ],
+      "severity": "blocker",
+      "sha": "8c3ac55817dc4b21b3c08f8b2c0a159a2c3c7112",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress",
+      "notes": "Keep 2-client vs 8-human physical vs Mac Metal/MoltenVK distinct."
+    },
+    {
+      "req_id": "PP-RTM-07",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "PartyLink seat honesty clamps 2–8 humans; bots never count as humans; BeatLink sibling stays 2.",
+      "verification_method": "PartyLinkCapacityTest + prepare-only packet",
+      "layers": [2, 4, 7],
+      "tests": ["tests/PartyLinkCapacityTest.gd"],
+      "automated_evidence": ["artifacts/multiplayer/EIGHT_HUMAN_PARTY_PACKET.md"],
+      "native_physical": {
+        "status": "not_run",
+        "platforms": [],
+        "notes": "Digital contract only; physical 8-human is PP-RTM-08."
+      },
+      "art_status": "not_applicable",
+      "limitations": ["Bots ≠ humans", "BeatLink sibling remains 2 humans"],
+      "severity": "high",
+      "sha": "8c3ac55817dc4b21b3c08f8b2c0a159a2c3c7112",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress"
+    },
+    {
+      "req_id": "PP-RTM-08",
+      "owner": "owner-qa",
+      "expected_behavior": "Physical 8-human PartyLink session with seat map and finish evidence.",
+      "verification_method": "Owner/QA live session — agent must not fabricate participants",
+      "layers": [7],
+      "tests": [],
+      "automated_evidence": ["artifacts/multiplayer/EIGHT_HUMAN_PARTY_PACKET.md"],
+      "native_physical": {
+        "status": "not_run",
+        "platforms": ["partylink-8-human"],
+        "notes": "Prepare-only packet. Distinct from 2-client Gate1 honesty."
+      },
+      "art_status": "not_applicable",
+      "limitations": ["Not executed", "Do not invent participants"],
+      "severity": "blocker",
+      "sha": "8c3ac55817dc4b21b3c08f8b2c0a159a2c3c7112",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "not_started"
+    },
+    {
+      "req_id": "PP-RTM-09",
+      "owner": "platform",
+      "expected_behavior": "Mac MoltenVK / Metal display-backed race without SIGSEGV.",
+      "verification_method": "Explicit Metal evidence file — not Gate1 Linux, not Darwin headless GL",
+      "layers": [7],
+      "tests": [],
+      "automated_evidence": ["artifacts/moltenvk/MOLTENVK_METAL_STATUS.md"],
+      "native_physical": {
+        "status": "fail",
+        "platforms": ["darwin-metal-moltenvk"],
+        "notes": "Historical SPIRVToMSLConverter SIGSEGV. Linux Gate1 ≠ Metal."
+      },
+      "art_status": "not_applicable",
+      "limitations": [
+        "moltenvk_metal_pass = false",
+        "Distinct from 2-client headless GL"
+      ],
+      "severity": "blocker",
+      "sha": "8c3ac55817dc4b21b3c08f8b2c0a159a2c3c7112",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "not_started"
+    },
+    {
+      "req_id": "PP-RTM-10",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "Accessibility baseline toggles (reduce motion, larger UI, auto-accel, colorblind HUD) + reduce-motion FOV.",
+      "verification_method": "AccessibilitySettings + MainMenu toggles + CameraRig reduce-motion path",
+      "layers": [6],
+      "tests": [],
+      "automated_evidence": ["scripts/core/AccessibilitySettings.gd"],
+      "native_physical": {
+        "status": "not_run",
+        "platforms": [],
+        "notes": "Digital baseline — not human a11y certification."
+      },
+      "art_status": "not_applicable",
+      "limitations": ["Not WCAG certification"],
+      "severity": "medium",
+      "sha": "8c3ac55817dc4b21b3c08f8b2c0a159a2c3c7112",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress"
+    },
+    {
+      "req_id": "PP-RTM-11",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "Racing-camera quality cups 1–8 with per-track chase + accents (procedural candidate).",
+      "verification_method": "ChampionshipCatalogTest accent/chase assertions + quality review doc",
+      "layers": [2, 4, 5],
+      "tests": ["tests/ChampionshipCatalogTest.gd"],
+      "automated_evidence": [
+        "artifacts/quality_review/EIGHT_CUP_RACING_CAMERA_QUALITY.md",
+        "scripts/player/CameraRig.gd",
+        "scripts/tracks/CourseTrack.gd"
+      ],
+      "native_physical": {
+        "status": "not_run",
+        "platforms": [],
+        "notes": "Cups 3–8 chase/accent already landed at 8c3ac55 — do not repeat; deepen env landmarks instead."
+      },
+      "art_status": "wip",
+      "limitations": [
+        "Procedural candidate ≠ commercial final art",
+        "Owner eight-cup camera sign-off pending"
+      ],
+      "severity": "high",
+      "sha": "8c3ac55817dc4b21b3c08f8b2c0a159a2c3c7112",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress"
+    },
+    {
+      "req_id": "PP-RTM-12",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "Footwear / wardrobe chase-cam polish (trail family + stripe) without handling changes.",
+      "verification_method": "RacerVisual trail/stripe + wardrobe cosmetic contract",
+      "layers": [2, 5],
+      "tests": ["tests/CreatorWardrobeRaceFlowTest.gd"],
+      "automated_evidence": ["scripts/player/RacerVisual.gd"],
+      "native_physical": {
+        "status": "not_applicable",
+        "platforms": [],
+        "notes": "Candidate VFX only."
+      },
+      "art_status": "wip",
+      "limitations": ["visual_lod budgets 8-racer fields; does not claim 8p physical"],
+      "severity": "medium",
+      "sha": "8c3ac55817dc4b21b3c08f8b2c0a159a2c3c7112",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress"
+    },
+    {
+      "req_id": "PP-RTM-13",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "Owner playable review package ready; Cursor Complete not claimed.",
+      "verification_method": "OWNER_PLAYABLE_REVIEW_PACKAGE.json checklist",
+      "layers": [4],
+      "tests": [],
+      "automated_evidence": [
+        "artifacts/quality_review/OWNER_PLAYABLE_REVIEW_PACKAGE.json"
+      ],
+      "native_physical": {
+        "status": "not_run",
+        "platforms": [],
+        "notes": "Owner play required."
+      },
+      "art_status": "review_pending",
+      "limitations": ["CURSOR_COMPLETE false"],
+      "severity": "medium",
+      "sha": "8c3ac55817dc4b21b3c08f8b2c0a159a2c3c7112",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "not_started"
+    },
+    {
+      "req_id": "PP-RTM-14",
+      "owner": "owner",
+      "expected_behavior": "Main-integration merge remains plan-only until owner approval + exact-head Gate1/Windows green.",
+      "verification_method": "Merge plan artifact; never agent-merge/reset/force-push/retarget",
+      "layers": [4],
+      "tests": [],
+      "automated_evidence": [
+        "artifacts/main_integration/MAIN_INTEGRATION_MERGE_PLAN.md",
+        "docs/decisions/MAIN_INTEGRATION_MERGE_PLAN.md"
+      ],
+      "native_physical": {
+        "status": "not_applicable",
+        "platforms": [],
+        "notes": "Plan only."
+      },
+      "art_status": "not_applicable",
+      "limitations": [
+        "Do not merge/retarget/force-push/reset without owner",
+        "Prefer FF merge when owner approves"
+      ],
+      "severity": "blocker",
+      "sha": "8c3ac55817dc4b21b3c08f8b2c0a159a2c3c7112",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "not_started"
+    },
+    {
+      "req_id": "PP-RTM-15",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "Cups 1–2 genuine full-race RESULTS_PATH on Gate1 observer; cups 3–8 env landmark sculpting deepened without repeating chase/accent pass.",
+      "verification_method": "verdant_race_acceptance_gate on Gate1 tip + CourseTrack landmark sculpt match",
+      "layers": [2, 4, 5],
+      "tests": [
+        "tests/VerdantRaceSceneObserve.gd",
+        "tests/verdant_race_acceptance_gate.py",
+        "tests/ChampionshipCatalogTest.gd"
+      ],
+      "automated_evidence": [
+        "artifacts/quality_review/EIGHT_CUP_RACING_CAMERA_QUALITY.md"
+      ],
+      "native_physical": {
+        "status": "partial",
+        "platforms": ["linux-gate1"],
+        "notes": "Tip 8c3ac55 Gate1: cups 1–2 RESULTS_PATH=true. COURSE_ACCEPTED remains false. Cups 3–8 full-race observer matrix not expanded this pass."
+      },
+      "art_status": "wip",
+      "limitations": [
+        "COURSE_ACCEPTED false (human)",
+        "candidate env ≠ finished art",
+        "Cups 3–8 multi-track full-race CI matrix still open"
+      ],
+      "severity": "high",
+      "sha": "8c3ac55817dc4b21b3c08f8b2c0a159a2c3c7112",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress",
+      "notes": "Non-repeated: landmark silhouette sculpt + RTM PVS bind; camera identities/accents already present."
+    }
+  ]
+}

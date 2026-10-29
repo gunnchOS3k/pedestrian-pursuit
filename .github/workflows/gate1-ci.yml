@@ -68,6 +68,12 @@ jobs:
       - name: GAME-RC-001 contract validation
         run: python3 tools/validate_game_rc_contracts.py
 
+      - name: Validate RTM against GUNNCHOS3K_PVS@1.0.0
+        run: |
+          set -euo pipefail
+          pip install 'jsonschema>=4.20'
+          python3 tools/validate_rtm.py
+
       - name: Upload synthetic Gate1 summary
         if: always()
         uses: actions/upload-artifact@v4

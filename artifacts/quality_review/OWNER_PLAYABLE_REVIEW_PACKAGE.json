@@ -3,7 +3,7 @@
   "product": "pedestrian-pursuit",
   "pr": 46,
   "branch": "lane-b/course-build-fix",
-  "generated_at_utc": "2026-10-29T19:00:00Z",
+  "generated_at_utc": "2026-10-29T20:05:00Z",
   "tip_policy": "recover against remote tip; stamp with git rev-parse HEAD at review time",
   "CURSOR_COMPLETE": false,
   "HUMAN_FUN_APPROVAL": false,
@@ -19,11 +19,21 @@
     "vehicles_playable": 50,
     "wardrobe_garments": 55
   },
+  "pvs": {
+    "contract": "GUNNCHOS3K_PVS@1.0.0",
+    "contract_source_sha": "45b456617002569c33a5a27fe30d5cf8be5a7032",
+    "rtm_canonical": "artifacts/quality_review/REQUIREMENTS_TO_EVIDENCE_MATRIX.json",
+    "independent_review": "not_started"
+  },
   "quality_delivered_this_pass": {
-    "rtm": "artifacts/quality_review/REQUIREMENTS_TO_EVIDENCE_MATRIX.md",
+    "rtm": "artifacts/quality_review/REQUIREMENTS_TO_EVIDENCE_MATRIX.json",
     "eight_cup_racing_camera": "artifacts/quality_review/EIGHT_CUP_RACING_CAMERA_QUALITY.md",
     "cups_3_8_per_track_chase": true,
     "cups_3_8_accent_fills": true,
+    "cups_3_8_camera_not_repeated": true,
+    "cups_3_8_landmark_sculpt": true,
+    "cups_3_8_pickup_density": true,
+    "boost_racing_feel_punch": true,
     "footwear_trail_family_profiles": true,
     "wardrobe_chase_stripe": true,
     "catalog_rebuild": false
@@ -36,6 +46,7 @@
   },
   "owner_review_checklist": [
     "Play one race per cup (8) on desktop or Pixel; note chase readability vs fatigue",
+    "Confirm cups 3–8 landmark silhouettes read as course identity (not generic boxes)",
     "Confirm footwear trail family colors remain distinguishable in crowded fields",
     "Confirm wardrobe cosmetics never alter handling",
     "Confirm PartyLink seat labels: bots never shown as humans",
@@ -46,7 +57,7 @@
     "human fun/course approvals",
     "physical 8-human PartyLink",
     "Mac MoltenVK/Metal",
-    "shared hub PVS binding",
+    "cups 3–8 multi-track full-race CI matrix",
     "human a11y certification",
     "owner eight-cup camera sign-off"
   ]

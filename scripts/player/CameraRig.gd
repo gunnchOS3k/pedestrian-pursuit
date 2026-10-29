@@ -299,7 +299,8 @@ func _on_speed_changed(speed: float) -> void:
 func _physics_process(delta: float) -> void:
 	var feel := clampf(_speed_ratio, 0.0, 1.0)
 	if _boosting:
-		feel = clampf(feel + 0.18, 0.0, 1.2)
+		## Stronger boost punch for racing-feel (does not retune per-track chase identities).
+		feel = clampf(feel + 0.28, 0.0, 1.25)
 	# Reduce-motion: keep FOV static, still allow mild look-ahead.
 	var a11y := _accessibility()
 	var reduce_motion := false
@@ -307,10 +308,12 @@ func _physics_process(delta: float) -> void:
 		reduce_motion = not a11y.camera_shake_allowed()
 	var fov_t := 0.0 if reduce_motion else feel
 	look_ahead = lerpf(base_look_ahead, max_look_ahead, feel)
-	spring_length = lerpf(base_spring_length, max_spring_length, feel * 0.85)
+	## Slight pull-back under boost so FOV punch reads as speed, not zoom-in.
+	var spring_feel := feel * (0.92 if _boosting else 0.85)
+	spring_length = lerpf(base_spring_length, max_spring_length, spring_feel)
 	if _camera != null:
 		var target_fov := lerpf(base_fov, max_fov, clampf(fov_t, 0.0, 1.0))
-		_camera.fov = lerpf(_camera.fov, target_fov, clampf(6.0 * delta, 0.0, 1.0))
+		_camera.fov = lerpf(_camera.fov, target_fov, clampf(7.5 * delta, 0.0, 1.0))
 
 	if _target == null:
 		return
