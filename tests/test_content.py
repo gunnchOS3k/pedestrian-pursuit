@@ -114,7 +114,9 @@ class WaveEAlphaContentTests(unittest.TestCase):
             for v in family:
                 self.assertTrue(v["playable"])
                 if family_id == "anime_aggressors":
-                    self.assertEqual(v["art_status"], "procedural_final_for_garage")
+                    ## Tribute may stay garage-procedural or promote to native_v1 candidate.
+                    self.assertIn(v["art_status"], ("procedural_final_for_garage", "native_v1"))
+                    self.assertFalse(bool(v.get("human_commercial_art_approved", False)))
                     self.assertTrue(str(v["movement_archetype"]).startswith("tribute_"))
                 else:
                     self.assertEqual(v["art_status"], "native_v1")
