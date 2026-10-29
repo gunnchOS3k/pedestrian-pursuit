@@ -41,6 +41,14 @@ LAUNCH_COURSE_IDS = (
     "mirage_mesa",
 )
 
+# Cup 3 Metro Motion — first cups 3–8 full-race observer expansion.
+CUP3_COURSE_IDS = (
+    "sneaker_city_sprintway",
+    "metro_pulse_loop",
+    "crosswalk_canyon",
+    "transit_spiral",
+)
+
 
 def parse_observer_log(text: str) -> dict[str, str | None]:
     """Last assignment wins. Absent keys stay None. Do not invent values."""
@@ -134,11 +142,15 @@ def _store_block(
     # Keep the recorded failure. A later pass must not replace it.
 
 
-def evaluate_courses(text: str) -> tuple[str, list[str]]:
+def evaluate_courses(
+    text: str,
+    course_ids: tuple[str, ...] | None = None,
+) -> tuple[str, list[str]]:
+    required = course_ids if course_ids is not None else LAUNCH_COURSE_IDS
     blocks = parse_course_blocks(text)
     failures: list[str] = []
     lines: list[str] = []
-    for course_id in LAUNCH_COURSE_IDS:
+    for course_id in required:
         fields = blocks.get(course_id)
         if fields is None:
             failures.append(course_id)
@@ -184,16 +196,29 @@ def format_report(fields: dict[str, str | None], failure: str | None) -> str:
 
 
 def main(argv: list[str]) -> int:
-    if len(argv) != 2:
-        print("usage: verdant_race_acceptance_gate.py OBSERVER_LOG", file=sys.stderr)
+    if len(argv) not in (2, 3):
+        print(
+            "usage: verdant_race_acceptance_gate.py OBSERVER_LOG [launch|cup3|cups1-3]",
+            file=sys.stderr,
+        )
         return 2
     path = Path(argv[1])
+    suite = argv[2] if len(argv) == 3 else "launch"
+    if suite == "cup3":
+        required = CUP3_COURSE_IDS
+    elif suite == "cups1-3":
+        required = LAUNCH_COURSE_IDS + CUP3_COURSE_IDS
+    else:
+        required = LAUNCH_COURSE_IDS
     if not path.is_file():
-        report, _failures = evaluate_courses("")
+        report, _failures = evaluate_courses("", required)
         print(report, end="")
         print("RACE_ACCEPTANCE_FAIL observer log absent: %s" % path)
         return 1
-    report, failures = evaluate_courses(path.read_text(encoding="utf-8", errors="replace"))
+    report, failures = evaluate_courses(
+        path.read_text(encoding="utf-8", errors="replace"),
+        required,
+    )
     print(report, end="")
     return 0 if not failures else 1
 

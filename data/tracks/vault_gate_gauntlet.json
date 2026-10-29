@@ -20,72 +20,72 @@
   "path_points": [
     [
       51.92,
-      0.46,
+      3.4,
       0.0
     ],
     [
       44.09,
-      1.86,
+      4.8,
       15.05
     ],
     [
       26.33,
-      2.04,
+      4.98,
       30.64
     ],
     [
       8.2,
-      0.76,
+      3.7,
       41.72
     ],
     [
       -8.2,
-      -1.14,
+      1.8,
       41.72
     ],
     [
       -26.33,
-      -2.34,
+      0.6,
       30.64
     ],
     [
       -44.09,
-      -2.02,
+      0.92,
       15.05
     ],
     [
       -51.92,
-      -0.46,
+      2.48,
       0.0
     ],
     [
       -44.09,
-      1.19,
+      4.13,
       -15.05
     ],
     [
       -26.33,
-      1.77,
+      4.71,
       -30.64
     ],
     [
       -8.2,
-      0.93,
+      3.87,
       -41.72
     ],
     [
       8.2,
-      -0.55,
+      2.39,
       -41.72
     ],
     [
       26.33,
-      -1.46,
+      1.48,
       -30.64
     ],
     [
       44.09,
-      -1.03,
+      1.91,
       -15.05
     ]
   ],
@@ -173,7 +173,7 @@
   ],
   "elevation_profile": "vault_steps",
   "bank_bias": 0.12,
-  "geometry_note": "Archive Relay upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. vault arch / seal door / barriers.",
+  "geometry_note": "Archive Relay upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. vault arch / seal door / barriers. Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn.",
   "tribute_note": "Archive of Life crossover is fictional exhibition theming only \u2014 original gunnchOS tribute, no fabricated research claims.",
   "camera_identity": "vault_chase",
   "digital_completion": {

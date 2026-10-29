@@ -20,72 +20,72 @@
   "path_points": [
     [
       52.2,
-      0.55,
+      3.35,
       0.0
     ],
     [
       44.59,
-      1.98,
+      4.78,
       14.05
     ],
     [
       27.06,
-      2.2,
+      5.0,
       28.09
     ],
     [
       8.57,
-      0.95,
+      3.75,
       37.81
     ],
     [
       -8.57,
-      -0.95,
+      1.85,
       37.81
     ],
     [
       -27.06,
-      -2.2,
+      0.6,
       28.09
     ],
     [
       -44.59,
-      -1.98,
+      0.82,
       14.05
     ],
     [
       -52.2,
-      -0.55,
+      2.25,
       0.0
     ],
     [
       -44.59,
-      0.99,
+      3.79,
       -14.05
     ],
     [
       -27.06,
-      1.51,
+      4.31,
       -28.09
     ],
     [
       -8.57,
-      0.7,
+      3.5,
       -37.81
     ],
     [
       8.57,
-      -0.7,
+      2.1,
       -37.81
     ],
     [
       27.06,
-      -1.51,
+      1.29,
       -28.09
     ],
     [
       44.59,
-      -0.99,
+      1.81,
       -14.05
     ]
   ],
@@ -173,7 +173,7 @@
   ],
   "elevation_profile": "cloud_steps",
   "bank_bias": 0.12,
-  "geometry_note": "Skyline Relay upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. obs spire / deck beacon / mist pylons.",
+  "geometry_note": "Skyline Relay upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. obs spire / deck beacon / mist pylons. Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn.",
   "camera_identity": "cloud_deck_chase",
   "digital_completion": {
     "route_graph": true,

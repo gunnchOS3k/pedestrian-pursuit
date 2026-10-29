@@ -20,62 +20,62 @@
   "path_points": [
     [
       50.0,
-      0.4,
+      2.6,
       0.0
     ],
     [
       43.3,
-      1.6,
+      3.8,
       18.0
     ],
     [
       25.0,
-      1.46,
+      3.66,
       31.18
     ],
     [
       0.0,
-      0.0,
+      2.2,
       36.0
     ],
     [
       -25.0,
-      -1.46,
+      0.74,
       31.18
     ],
     [
       -43.3,
-      -1.6,
+      0.6,
       18.0
     ],
     [
       -50.0,
-      -0.4,
+      1.8,
       0.0
     ],
     [
       -43.3,
-      0.91,
+      3.11,
       -18.0
     ],
     [
       -25.0,
-      1.06,
+      3.26,
       -31.18
     ],
     [
       -0.0,
-      0.0,
+      2.2,
       -36.0
     ],
     [
       25.0,
-      -1.06,
+      1.14,
       -31.18
     ],
     [
       43.3,
-      -0.91,
+      1.29,
       -18.0
     ]
   ],
@@ -162,7 +162,7 @@
   ],
   "elevation_profile": "cascade_terraces",
   "bank_bias": 0.08,
-  "geometry_note": "World Wonder upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. colossus falls / terrace arch.",
+  "geometry_note": "World Wonder upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. colossus falls / terrace arch. Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn.",
   "camera_identity": "colossus_chase",
   "digital_completion": {
     "route_graph": true,

@@ -10,7 +10,7 @@
   "geometry_status": "championship_upgraded",
   "final_track_art_status": "track_art_candidate",
   "human_track_art_approved": false,
-  "lane_width": 13.5,
+  "lane_width": 15.0,
   "guard_rails": true,
   "has_shortcut": true,
   "track_color": "#1B2430",
@@ -20,82 +20,82 @@
   "path_points": [
     [
       59.31,
-      3.13,
+      2.21,
       0.0
     ],
     [
       55.86,
-      3.97,
+      2.4,
       16.83
     ],
     [
       41.31,
-      2.49,
+      2.064,
       30.04
     ],
     [
       20.81,
-      -0.46,
+      1.396,
       36.53
     ],
     [
       0.0,
-      -3.13,
+      0.79,
       36.87
     ],
     [
       -18.96,
-      -3.97,
+      0.6,
       33.28
     ],
     [
       -36.47,
-      -2.49,
+      0.936,
       26.53
     ],
     [
       -51.39,
-      0.46,
+      1.604,
       15.48
     ],
     [
       -59.31,
-      3.13,
+      2.21,
       0.0
     ],
     [
       -55.86,
-      3.97,
+      2.4,
       -16.83
     ],
     [
       -41.31,
-      2.49,
+      2.064,
       -30.04
     ],
     [
       -20.81,
-      -0.46,
+      1.396,
       -36.53
     ],
     [
       -0.0,
-      -3.13,
+      0.79,
       -36.87
     ],
     [
       18.96,
-      -3.97,
+      0.6,
       -33.28
     ],
     [
       36.47,
-      -2.49,
+      0.936,
       -26.53
     ],
     [
       51.39,
-      0.46,
+      1.604,
       -15.48
     ]
   ],
@@ -135,8 +135,8 @@
   "bounce_pads": [
     {
       "point_index": 8,
-      "bounce_force": 11.0,
-      "forward_boost": 3.5,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
       "size": [
         5,
         5
@@ -144,8 +144,8 @@
     },
     {
       "point_index": 11,
-      "bounce_force": 11.0,
-      "forward_boost": 3.8,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
       "size": [
         5,
         5
@@ -199,5 +199,6 @@
   },
   "exploit_notes": [
     "Shortcut floors are collision-backed; do not claim human commercial art approval."
-  ]
+  ],
+  "geometry_note": "Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn."
 }

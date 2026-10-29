@@ -20,62 +20,62 @@
   "path_points": [
     [
       54.0,
-      0.23,
+      1.92,
       0.0
     ],
     [
       46.77,
-      1.09,
+      2.78,
       15.0
     ],
     [
       27.0,
-      0.86,
+      2.55,
       25.98
     ],
     [
       0.0,
-      -0.23,
+      1.46,
       30.0
     ],
     [
       -27.0,
-      -1.09,
+      0.6,
       25.98
     ],
     [
       -46.77,
-      -0.86,
+      0.83,
       15.0
     ],
     [
       -54.0,
-      0.23,
+      1.92,
       0.0
     ],
     [
       -46.77,
-      1.09,
+      2.78,
       -15.0
     ],
     [
       -27.0,
-      0.86,
+      2.55,
       -25.98
     ],
     [
       -0.0,
-      -0.23,
+      1.46,
       -30.0
     ],
     [
       27.0,
-      -1.09,
+      0.6,
       -25.98
     ],
     [
       46.77,
-      -0.86,
+      0.83,
       -15.0
     ]
   ],
@@ -162,7 +162,7 @@
   ],
   "elevation_profile": "boardwalk_rolls",
   "bank_bias": 0.07,
-  "geometry_note": "Kinetic Coast upgraded batch \u2014 real env/collision/audio candidates; not commercial final art.",
+  "geometry_note": "Kinetic Coast upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn.",
   "camera_identity": "saltline_chase",
   "digital_completion": {
     "route_graph": true,

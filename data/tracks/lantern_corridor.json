@@ -20,62 +20,62 @@
   "path_points": [
     [
       28.0,
-      0.35,
+      2.21,
       0.0
     ],
     [
       24.25,
-      1.26,
+      3.12,
       26.0
     ],
     [
       14.0,
-      1.13,
+      2.99,
       45.03
     ],
     [
       0.0,
-      0.0,
+      1.86,
       52.0
     ],
     [
       -14.0,
-      -1.13,
+      0.73,
       45.03
     ],
     [
       -24.25,
-      -1.26,
+      0.6,
       26.0
     ],
     [
       -28.0,
-      -0.35,
+      1.51,
       0.0
     ],
     [
       -24.25,
-      0.65,
+      2.51,
       -26.0
     ],
     [
       -14.0,
-      0.78,
+      2.64,
       -45.03
     ],
     [
       -0.0,
-      0.0,
+      1.86,
       -52.0
     ],
     [
       14.0,
-      -0.78,
+      1.08,
       -45.03
     ],
     [
       24.25,
-      -0.65,
+      1.21,
       -26.0
     ]
   ],
@@ -162,7 +162,7 @@
   ],
   "elevation_profile": "lantern_rise",
   "bank_bias": 0.08,
-  "geometry_note": "Neon Night upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. lantern_canopy / stall crates.",
+  "geometry_note": "Neon Night upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. lantern_canopy / stall crates. Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn.",
   "camera_identity": "lantern_chase",
   "digital_completion": {
     "route_graph": true,

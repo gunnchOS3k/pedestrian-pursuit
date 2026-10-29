@@ -20,62 +20,62 @@
   "path_points": [
     [
       50.0,
-      0.4,
+      2.52,
       0.0
     ],
     [
       43.3,
-      1.52,
+      3.64,
       16.0
     ],
     [
       25.0,
-      1.37,
+      3.49,
       27.71
     ],
     [
       0.0,
-      0.0,
+      2.12,
       32.0
     ],
     [
       -25.0,
-      -1.37,
+      0.75,
       27.71
     ],
     [
       -43.3,
-      -1.52,
+      0.6,
       16.0
     ],
     [
       -50.0,
-      -0.4,
+      1.72,
       0.0
     ],
     [
       -43.3,
-      0.82,
+      2.94,
       -16.0
     ],
     [
       -25.0,
-      0.97,
+      3.09,
       -27.71
     ],
     [
       -0.0,
-      0.0,
+      2.12,
       -32.0
     ],
     [
       25.0,
-      -0.97,
+      1.15,
       -27.71
     ],
     [
       43.3,
-      -0.82,
+      1.3,
       -16.0
     ]
   ],
@@ -162,7 +162,7 @@
   ],
   "elevation_profile": "ribbon_rolls",
   "bank_bias": 0.08,
-  "geometry_note": "Skyline Relay upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. billboard arch / HVAC / vents.",
+  "geometry_note": "Skyline Relay upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. billboard arch / HVAC / vents. Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn.",
   "camera_identity": "rooftop_chase",
   "digital_completion": {
     "route_graph": true,

@@ -20,72 +20,72 @@
   "path_points": [
     [
       53.82,
-      0.5,
+      3.17,
       0.0
     ],
     [
       45.84,
-      1.86,
+      4.53,
       13.56
     ],
     [
       27.6,
-      2.07,
+      4.74,
       27.35
     ],
     [
       8.67,
-      0.89,
+      3.56,
       37.03
     ],
     [
       -8.67,
-      -0.89,
+      1.78,
       37.03
     ],
     [
       -27.6,
-      -2.07,
+      0.6,
       27.35
     ],
     [
       -45.84,
-      -1.86,
+      0.81,
       13.56
     ],
     [
       -53.82,
-      -0.5,
+      2.17,
       0.0
     ],
     [
       -45.84,
-      0.96,
+      3.63,
       -13.56
     ],
     [
       -27.6,
-      1.44,
+      4.11,
       -27.35
     ],
     [
       -8.67,
-      0.67,
+      3.34,
       -37.03
     ],
     [
       8.67,
-      -0.67,
+      2.0,
       -37.03
     ],
     [
       27.6,
-      -1.44,
+      1.23,
       -27.35
     ],
     [
       45.84,
-      -0.96,
+      1.71,
       -13.56
     ]
   ],
@@ -173,7 +173,7 @@
   ],
   "elevation_profile": "orchard_folds",
   "bank_bias": 0.11,
-  "geometry_note": "World Wonder upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. paper spire / crease gate / root bundles.",
+  "geometry_note": "World Wonder upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. paper spire / crease gate / root bundles. Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn.",
   "camera_identity": "origami_chase",
   "digital_completion": {
     "route_graph": true,

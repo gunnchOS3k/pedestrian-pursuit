@@ -447,9 +447,9 @@
     },
     {
       "req_id": "PP-RTM-15",
-      "owner": "lane-b/course-build-fix",
-      "expected_behavior": "Cups 1\u20132 genuine full-race RESULTS_PATH on Gate1 observer; cups 3\u20138 env landmark sculpting deepened without repeating chase/accent pass.",
-      "verification_method": "verdant_race_acceptance_gate on Gate1 tip + CourseTrack landmark sculpt match",
+      "owner": "eng/cursor-packet-s3-cups-20261029",
+      "expected_behavior": "Cups 1\u20132 genuine full-race RESULTS_PATH; Cup 3 Metro Motion four-track full-race RESULTS_PATH via RACE_OBSERVE_MODE=cup3; cups 4\u20138 env elevated but full-race observer matrix still open.",
+      "verification_method": "verdant_race_acceptance_gate launch + cup3 suites; ChampionshipCatalogTest",
       "layers": [
         2,
         4,
@@ -461,26 +461,29 @@
         "tests/ChampionshipCatalogTest.gd"
       ],
       "automated_evidence": [
-        "artifacts/quality_review/EIGHT_CUP_RACING_CAMERA_QUALITY.md"
+        "artifacts/quality_review/EIGHT_CUP_RACING_CAMERA_QUALITY.md",
+        "tmp/observe-cup3-all.log",
+        "tmp/cup3-gate-report.txt"
       ],
       "native_physical": {
         "status": "partial",
         "platforms": [
-          "linux-gate1"
+          "macos-godot-4.5-headless"
         ],
-        "notes": "Tip 8c3ac55 Gate1: cups 1\u20132 RESULTS_PATH=true. COURSE_ACCEPTED remains false. Cups 3\u20138 full-race observer matrix not expanded this pass."
+        "notes": "Cup 3 Metro (sneaker_city/metro_pulse/crosswalk_canyon/transit_spiral) RESULTS_PATH=true under headless line-steer. COURSE_ACCEPTED remains false. Cups 4\u20138 full-race observer not yet expanded."
       },
       "art_status": "wip",
       "limitations": [
         "COURSE_ACCEPTED false (human)",
         "candidate env \u2260 finished art",
-        "Cups 3\u20138 multi-track full-race CI matrix still open"
+        "Cups 4\u20138 multi-track full-race CI matrix still open",
+        "HUMAN/RC2/V1 false"
       ],
       "severity": "high",
-      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
+      "sha": "PENDING_TIP",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
-      "notes": "Non-repeated: landmark silhouette sculpt + RTM PVS bind; camera identities/accents already present."
+      "notes": "Path Y lifted above void floor; metro lanes widened; bounce softened; cup3 observer/gate added. Cups 4\u20138 remain next."
     }
   ]
 }

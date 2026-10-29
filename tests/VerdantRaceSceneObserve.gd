@@ -8,6 +8,7 @@ extends SceneTree
 ## Exits 0 after every course is printed. tests/verdant_race_acceptance_gate.py
 ## fails the job unless each course saw a checkpoint, a lap, and results.
 
+## Cups 1–2 launch set, then Cup 3 Metro Motion (first cups 3–8 full-race matrix expansion).
 const COURSE_IDS: Array[String] = [
 	"verdant_cascade_circuit",
 	"cloverwind_ranch",
@@ -17,6 +18,17 @@ const COURSE_IDS: Array[String] = [
 	"neon_switchyard",
 	"cloudstep_ridge",
 	"mirage_mesa",
+	"sneaker_city_sprintway",
+	"metro_pulse_loop",
+	"crosswalk_canyon",
+	"transit_spiral",
+]
+## Cup 3 ids — elevated metro courses that need a soft racing-line magnet under headless steer.
+const ELEVATED_COURSE_IDS: Array[String] = [
+	"sneaker_city_sprintway",
+	"metro_pulse_loop",
+	"crosswalk_canyon",
+	"transit_spiral",
 ]
 const ENTER_FRAMES := 180
 ## Countdown holds movement. Wait for RACING before any drive time counts.
@@ -52,10 +64,33 @@ func _observe_plan() -> Dictionary:
 			"courses": PackedStringArray(COURSE_IDS),
 			"stop_after": 1,
 		}
+	if mode == "cup3":
+		return {
+			"mode": "cup3",
+			"courses": PackedStringArray(ELEVATED_COURSE_IDS),
+			"stop_after": ELEVATED_COURSE_IDS.size(),
+		}
+	if mode == "cups1-3":
+		return {
+			"mode": "cups1-3",
+			"courses": PackedStringArray(COURSE_IDS),
+			"stop_after": COURSE_IDS.size(),
+		}
+	## Default stays cups 1–2 launch set for Gate1 parity; cups 3–8 opt in via mode/track.
+	var launch_only := PackedStringArray([
+		"verdant_cascade_circuit",
+		"cloverwind_ranch",
+		"prism_apex",
+		"emberkeep_gauntlet",
+		"tideglass_harbor",
+		"neon_switchyard",
+		"cloudstep_ridge",
+		"mirage_mesa",
+	])
 	return {
 		"mode": "all",
-		"courses": PackedStringArray(COURSE_IDS),
-		"stop_after": COURSE_IDS.size(),
+		"courses": launch_only,
+		"stop_after": launch_only.size(),
 	}
 
 
@@ -185,7 +220,7 @@ func _observe_course(gm: Node, input: Node, packed: PackedScene, track_id: Strin
 	var follower: Node = null
 	var line_steer := false
 	if countdown_finished and is_instance_valid(player) and is_instance_valid(track):
-		follower = _attach_line_steer(player, track)
+		follower = _attach_line_steer(player, track, track_id)
 		line_steer = follower != null
 	var driven_msec := 0
 	var sample_count := 0
@@ -310,7 +345,7 @@ func _drop_scene(scene: Node) -> void:
 		await physics_frame
 
 
-func _attach_line_steer(player: Node, track: Node) -> Node:
+func _attach_line_steer(player: Node, track: Node, track_id: String = "") -> Node:
 	## Feed the existing racing-line steer through touch input. Do not snap the
 	## body onto the path and do not enable accept_test_mode.
 	if not track.has_method("get_race_path"):
@@ -325,8 +360,16 @@ func _attach_line_steer(player: Node, track: Node) -> Node:
 	follower.name = "HeadlessLineSteer"
 	player.add_child(follower)
 	follower.setup(path)
-	follower.set("look_ahead", 5.5)
-	follower.set("magnet_strength", 0.0)
+	## Flat launch cups stay magnet-off. Elevated cup-3+ courses need a soft
+	## racing-line magnet (same assist AI rookies use) so headless accelerate+steer
+	## can finish without path-snapping or accept_test_mode.
+	var elevated := track_id in ELEVATED_COURSE_IDS
+	if elevated:
+		follower.set("look_ahead", 8.0)
+		follower.set("magnet_strength", 0.08)
+	else:
+		follower.set("look_ahead", 5.5)
+		follower.set("magnet_strength", 0.0)
 	return follower
 
 

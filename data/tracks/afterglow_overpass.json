@@ -20,62 +20,62 @@
   "path_points": [
     [
       48.0,
-      0.0,
+      1.0,
       0.0
     ],
     [
       40.0,
-      0.29,
+      1.29,
       22.0
     ],
     [
       18.0,
-      1.99,
+      2.99,
       30.0
     ],
     [
       0.0,
-      1.99,
+      2.99,
       30.0
     ],
     [
       -18.0,
-      0.0,
+      1.0,
       30.0
     ],
     [
       -40.0,
-      -0.3,
+      0.7,
       22.0
     ],
     [
       -48.0,
-      -0.4,
+      0.6,
       0.0
     ],
     [
       -40.0,
-      -0.25,
+      0.75,
       -22.0
     ],
     [
       -18.0,
-      1.73,
+      2.73,
       -30.0
     ],
     [
       0.0,
-      1.73,
+      2.73,
       -30.0
     ],
     [
       18.0,
-      0.0,
+      1.0,
       -30.0
     ],
     [
       40.0,
-      0.23,
+      1.23,
       -22.0
     ]
   ],
@@ -162,7 +162,7 @@
   ],
   "elevation_profile": "overpass_spans",
   "bank_bias": 0.11,
-  "geometry_note": "Neon Night upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. overpass spans / afterglow pillars.",
+  "geometry_note": "Neon Night upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. overpass spans / afterglow pillars. Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn.",
   "camera_identity": "afterglow_chase",
   "digital_completion": {
     "route_graph": true,
