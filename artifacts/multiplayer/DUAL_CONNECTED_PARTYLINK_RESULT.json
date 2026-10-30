@@ -1,6 +1,6 @@
 {
   "schema": "pp_dual_connected_partylink/v1",
-  "advance": "1h+7cpu → 2h+6cpu BeatLink-sibling local PartyLink",
+  "advance": "1h+7cpu \u2192 2h+6cpu BeatLink-sibling local PartyLink",
   "allocated_human_seats": 8,
   "connected_humans": 2,
   "cpu_actors": 6,
@@ -15,5 +15,6 @@
   "V1": false,
   "results_path": true,
   "log": "packet evidence DualConnectedPartyLinkObserve.log",
-  "notes": "PartyLink dual local seats (Player2Racer). Distinct from GAME_SESSION_DIR independent two-process and from physical 8p."
+  "notes": "PartyLink dual local seats (Player2Racer). Distinct from GAME_SESSION_DIR independent two-process and from physical 8p.",
+  "tip_sha": "0707183c354172ad47e278863b0d6bdc3e567ed2"
 }

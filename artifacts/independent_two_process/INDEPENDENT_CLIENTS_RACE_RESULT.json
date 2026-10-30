@@ -1,6 +1,6 @@
 {
   "schema": "pp_independent_two_client_race/v1",
-  "tip_sha": "41ccfb0bbcc560112ef62cee28037568ae53f440",
+  "tip_sha": "0707183c354172ad47e278863b0d6bdc3e567ed2",
   "independent_clients_raced": true,
   "connected_humans_digital": 2,
   "bots_count_as_humans": false,
