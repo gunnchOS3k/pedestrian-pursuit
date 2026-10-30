@@ -455,8 +455,8 @@
     {
       "req_id": "PP-RTM-15",
       "owner": "eng/cursor-packet-s3-cups-20261029",
-      "expected_behavior": "Cups 1\u20138 genuine full-race RESULTS_PATH via RACE_OBSERVE_MODE launch/cup3/cup4\u2013cup8/cups4-8; COURSE_ACCEPTED remains false.",
-      "verification_method": "verdant_race_acceptance_gate launch + cup3 + cups4-8 suites; ChampionshipCatalogTest",
+      "expected_behavior": "Cups 1\u20138 genuine full-race RESULTS_PATH via RACE_OBSERVE_MODE championship with strengthened completion assertions (COMPLETED_LAPS, FINISH_TRIGGER, REACQUIRE, TELEPORT_FALSE_FINISH); COURSE_ACCEPTED remains false.",
+      "verification_method": "verdant_race_acceptance_gate championship suite + CupResume/ChampionshipCupCareer",
       "layers": [
         2,
         4,
@@ -468,31 +468,29 @@
         "tests/ChampionshipCatalogTest.gd"
       ],
       "automated_evidence": [
-        "artifacts/quality_review/EIGHT_CUP_RACING_CAMERA_QUALITY.md",
-        "tmp/observe-cup3-all.log",
-        "tmp/cup3-gate-report.txt",
-        "tmp/postsoft/observe-cups4-8-all.log",
-        "tmp/postsoft/cups4-8-gate-report.txt"
+        "tmp/s5-evidence/championship-gate-s5-final.txt",
+        "tmp/s5-evidence/RESULTS_MATRIX_32.json",
+        "tmp/s5-evidence/observe-cup3-s5.log"
       ],
       "native_physical": {
         "status": "partial",
         "platforms": [
-          "macos-godot-4.5-headless"
+          "macos-godot-headless"
         ],
-        "notes": "Cups 3\u20138 (Metro+Kinetic+Neon+Skyline+Archive+Wonder = 24 tracks with cups1-2 launch separate) RESULTS_PATH=true under headless line-steer after path-Y/lane/bounce + elevation soften for cups4\u20138. COURSE_ACCEPTED remains false. HUMAN/RC2/V1 false."
+        "notes": "32/32 RESULTS_PATH under strengthened gate after cloudstep bounce/lane soften. COURSE_ACCEPTED/HUMAN/RC2/V1 false. Metal\u2260headless GL."
       },
       "art_status": "wip",
       "limitations": [
         "COURSE_ACCEPTED false (human)",
-        "candidate env \u2260 finished art",
         "HUMAN/RC2/V1 false",
-        "headless line-steer \u2260 human fun proof"
+        "headless line-steer \u2260 human course fun",
+        "Metal/MoltenVK display path not proven"
       ],
       "severity": "high",
-      "sha": "8da5e1b6e2af047369bcfad9c1a7dfb4a50b2e20",
+      "sha": "83bafa520011ab982dfd96914bbc87f7731b2764",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
-      "notes": "Cups 4\u20138 observer/gate expanded; lane/bounce capped; high-span elevation softened to [0.6,2.4]; postsoft cups4\u20138 20/20 RESULTS_PATH."
+      "notes": "S5: gate strengthened (not weakened); Cup3 soften analysis retained; cloudstep/mirage bounce softened for chronic-reacquire honesty."
     }
   ]
 }
