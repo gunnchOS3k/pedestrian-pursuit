@@ -67,5 +67,6 @@
   "RC2": false,
   "V1": false,
   "generated_at": "2026-10-30T18:52:16Z",
-  "notes": "Display-backed Metal observe matrix \u2014 not Gate1/Windows/headless GL. Soft tracks held under strengthened assertions."
+  "notes": "Display-backed Metal observe matrix \u2014 not Gate1/Windows/headless GL. Soft tracks held under strengthened assertions.",
+  "tip_sha": "e939b86d0e6aa4518a951a7b1f15a96374ad7393"
 }
