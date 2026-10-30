@@ -36,7 +36,10 @@ class VerdantRaceAcceptanceGateTests(unittest.TestCase):
                 "RACE_ENTERED=true",
                 "LAP_COMPLETED=false",
                 "CHECKPOINT_CROSSED=false",
+                "CHECKPOINT_TRAVERSAL=false",
                 "RESULTS_PATH=false",
+                "FINISH_TRIGGER=false",
+                "TELEPORT_FALSE_FINISH=false",
                 "COURSE_ACCEPTED=false",
                 "DEVICE_RUN=false",
             ]
@@ -77,12 +80,64 @@ class VerdantRaceAcceptanceGateTests(unittest.TestCase):
                 "RACE_ENTERED=true",
                 "LAP_COMPLETED=true",
                 "CHECKPOINT_CROSSED=true",
+                "CHECKPOINT_TRAVERSAL=true",
                 "RESULTS_PATH=true",
+                "FINISH_TRIGGER=true",
+                "TELEPORT_FALSE_FINISH=false",
                 "COURSE_ACCEPTED=false",
                 "DEVICE_RUN=false",
+                "RACE_STATE=3",
+                "DRIVEN_MSEC=87000",
+                "EXPECTED_LAPS=3",
+                "COMPLETED_LAPS=3",
+                "REACQUIRE_COUNT=0",
             ]
         )
         self.assertIsNone(acceptance_failure(parse_observer_log(text)))
+
+    def test_chronic_reacquire_fails(self) -> None:
+        fields = parse_observer_log(
+            "\n".join(
+                [
+                    "RACE_ENTERED=true",
+                    "LAP_COMPLETED=true",
+                    "CHECKPOINT_CROSSED=true",
+                    "CHECKPOINT_TRAVERSAL=true",
+                    "RESULTS_PATH=true",
+                    "FINISH_TRIGGER=true",
+                    "TELEPORT_FALSE_FINISH=false",
+                    "COURSE_ACCEPTED=false",
+                    "RACE_STATE=3",
+                    "DRIVEN_MSEC=87000",
+                    "EXPECTED_LAPS=3",
+                    "COMPLETED_LAPS=3",
+                    "REACQUIRE_COUNT=44",
+                ]
+            )
+        )
+        self.assertIn("REACQUIRE_COUNT", acceptance_failure(fields) or "")
+
+    def test_incomplete_laps_fail(self) -> None:
+        fields = parse_observer_log(
+            "\n".join(
+                [
+                    "RACE_ENTERED=true",
+                    "LAP_COMPLETED=true",
+                    "CHECKPOINT_CROSSED=true",
+                    "CHECKPOINT_TRAVERSAL=true",
+                    "RESULTS_PATH=true",
+                    "FINISH_TRIGGER=true",
+                    "TELEPORT_FALSE_FINISH=false",
+                    "COURSE_ACCEPTED=false",
+                    "RACE_STATE=3",
+                    "DRIVEN_MSEC=87000",
+                    "EXPECTED_LAPS=3",
+                    "COMPLETED_LAPS=0",
+                    "REACQUIRE_COUNT=0",
+                ]
+            )
+        )
+        self.assertIn("COMPLETED_LAPS", acceptance_failure(fields) or "")
 
     def test_recorded_pr46_log_extract_is_not_a_lap(self) -> None:
         extract = json.loads(EXTRACT.read_text(encoding="utf-8"))
@@ -153,13 +208,21 @@ def _course_block(track_id: str, **overrides: str) -> str:
     fields = {
         "RACE_ENTERED": "true",
         "CHECKPOINT_CROSSED": "true",
+        "CHECKPOINT_TRAVERSAL": "true",
         "LAP_COMPLETED": "true",
         "RESULTS_PATH": "true",
+        "FINISH_TRIGGER": "true",
+        "TELEPORT_FALSE_FINISH": "false",
         "COURSE_ACCEPTED": "false",
         "DEVICE_RUN": "false",
         "RACE_STATE": "3",
         "DRIVEN_MSEC": "87000",
+        "ELAPSED_MSEC": "87000",
         "LAP_COUNT": "3",
+        "EXPECTED_LAPS": "3",
+        "COMPLETED_LAPS": "3",
+        "REACQUIRE_COUNT": "0",
+        "COLLISION_SLIDES_MAX": "2",
     }
     fields.update(overrides)
     lines = ["COURSE_OBSERVE_BEGIN", "TRACK_ID=%s" % track_id]

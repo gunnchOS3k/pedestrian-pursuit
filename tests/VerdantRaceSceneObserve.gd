@@ -217,6 +217,12 @@ func _observe_plan() -> Dictionary:
 			"courses": PackedStringArray(cups13),
 			"stop_after": cups13.size(),
 		}
+	if mode == "cups1-8" or mode == "championship":
+		return {
+			"mode": mode,
+			"courses": PackedStringArray(COURSE_IDS),
+			"stop_after": COURSE_IDS.size(),
+		}
 	## Default stays cups 1–2 launch set for Gate1 parity; cups 3–8 opt in via mode/track.
 	var launch_only := PackedStringArray([
 		"verdant_cascade_circuit",
@@ -368,6 +374,7 @@ func _observe_course(gm: Node, input: Node, packed: PackedScene, track_id: Strin
 	var max_gap := 0.0
 	var max_lateral := 0.0
 	var max_speed := 0.0
+	var max_slides := 0
 	var completed_laps := 0
 	if countdown_finished:
 		var drive_started := Time.get_ticks_msec()
@@ -388,7 +395,7 @@ func _observe_course(gm: Node, input: Node, packed: PackedScene, track_id: Strin
 					observed["results"] = true
 			if lap_manager != null and is_instance_valid(player) and lap_manager.has_method("get_lap"):
 				completed_laps = int(lap_manager.get_lap(player))
-				if completed_laps >= 1:
+				if completed_laps >= expected_laps:
 					observed["lap"] = true
 			if sample_count < TELEMETRY_MAX_SAMPLES and now >= next_sample:
 				var snap := _sample_driver(track_id, now - drive_started, delta, player, follower, lap_manager, race_manager, results, input)
@@ -397,14 +404,16 @@ func _observe_course(gm: Node, input: Node, packed: PackedScene, track_id: Strin
 				max_gap = maxf(max_gap, absf(float(snap.get("progress_gap", 0.0))))
 				max_lateral = maxf(max_lateral, float(snap.get("lateral", 0.0)))
 				max_speed = maxf(max_speed, float(snap.get("hspeed", 0.0)))
-			if bool(observed["checkpoint"]) and bool(observed["lap"]) and bool(observed["results"]):
+				max_slides = maxi(max_slides, int(snap.get("slides", 0)))
+			## Do not accept a finish until expected laps are actually completed.
+			if bool(observed["checkpoint"]) and completed_laps >= expected_laps and bool(observed["results"]):
 				break
 		driven_msec = Time.get_ticks_msec() - drive_started
 		_release_gameplay_input(input)
 	var reacquire_count := 0
 	if follower != null and is_instance_valid(follower) and "reacquire_count" in follower:
 		reacquire_count = int(follower.reacquire_count)
-	print("DRIVER_SUMMARY track=%s samples=%d max_gap=%.3f max_lateral=%.3f max_hspeed=%.3f completed_laps=%d reacquire_count=%d checkpoint_history=%s" % [
+	print("DRIVER_SUMMARY track=%s samples=%d max_gap=%.3f max_lateral=%.3f max_hspeed=%.3f completed_laps=%d reacquire_count=%d max_slides=%d checkpoint_history=%s" % [
 		track_id,
 		sample_count,
 		max_gap,
@@ -412,11 +421,25 @@ func _observe_course(gm: Node, input: Node, packed: PackedScene, track_id: Strin
 		max_speed,
 		completed_laps,
 		reacquire_count,
+		max_slides,
 		",".join(PackedStringArray(checkpoint_history)),
 	])
 	var state_after := -1
 	if is_instance_valid(race_manager):
 		state_after = int(race_manager.get("state"))
+	var laps_done := completed_laps >= expected_laps and expected_laps >= 1
+	var finish_trigger := state_after == 3 and bool(observed["results"]) and laps_done
+	## Teleport / void-respawn false finish: instant RESULTS or chronic reacquire + 0 laps.
+	## Pre-soften Cup3 sneaker_city: completed_laps=0 reacquire_count=44.
+	var min_driven := maxi(12000, expected_laps * 8000)
+	var teleport_false := (
+		bool(observed["results"])
+		and (
+			driven_msec < min_driven
+			or completed_laps < expected_laps
+			or reacquire_count >= 20
+		)
+	)
 	_print_course(
 		track_id,
 		true,
@@ -426,10 +449,21 @@ func _observe_course(gm: Node, input: Node, packed: PackedScene, track_id: Strin
 		countdown_finished,
 		driven_msec,
 		line_steer,
-		bool(observed["lap"]),
+		laps_done,
 		bool(observed["checkpoint"]),
 		bool(observed["results"]),
-		""
+		"",
+		{
+			"COMPLETED_LAPS": completed_laps,
+			"REACQUIRE_COUNT": reacquire_count,
+			"FINISH_TRIGGER": finish_trigger,
+			"TELEPORT_FALSE_FINISH": teleport_false,
+			"MAX_GAP": max_gap,
+			"MAX_LATERAL": max_lateral,
+			"MAX_HSPEED": max_speed,
+			"COLLISION_SLIDES_MAX": max_slides,
+			"CHECKPOINT_TRAVERSAL": bool(observed["checkpoint"]),
+		}
 	)
 	await _drop_scene(scene)
 
@@ -456,24 +490,39 @@ func _print_course(
 	lap_completed: bool,
 	checkpoint_crossed: bool,
 	results_path: bool,
-	fail_reason: String
+	fail_reason: String,
+	extras: Dictionary = {}
 ) -> void:
 	print("COURSE_OBSERVE_BEGIN")
 	print("TRACK_ID=%s" % track_id)
 	print("RACE_ENTERED=%s" % str(entered).to_lower())
 	print("RACE_STATE=%d" % race_state)
 	print("LAP_COUNT=%d" % expected_laps)
+	print("EXPECTED_LAPS=%d" % expected_laps)
 	print("LAP_COUNT_RUNTIME=%d" % runtime_laps)
+	print("COMPLETED_LAPS=%d" % int(extras.get("COMPLETED_LAPS", -1)))
 	print("COUNTDOWN_FINISHED=%s" % str(countdown_finished).to_lower())
 	print("DRIVE_BOUND_MSEC=%d" % DRIVE_BOUND_MSEC)
 	print("DRIVEN_MSEC=%d" % driven_msec)
+	print("ELAPSED_MSEC=%d" % driven_msec)
 	print("LINE_STEER=%s" % str(line_steer).to_lower())
 	print("INPUT_PATH=accelerate_action+touch_accelerate+touch_steer")
 	print("LAP_COMPLETED=%s" % str(lap_completed).to_lower())
 	print("CHECKPOINT_CROSSED=%s" % str(checkpoint_crossed).to_lower())
+	print("CHECKPOINT_TRAVERSAL=%s" % str(bool(extras.get("CHECKPOINT_TRAVERSAL", checkpoint_crossed))).to_lower())
 	print("RESULTS_PATH=%s" % str(results_path).to_lower())
+	print("FINISH_TRIGGER=%s" % str(bool(extras.get("FINISH_TRIGGER", false))).to_lower())
+	print("REACQUIRE_COUNT=%d" % int(extras.get("REACQUIRE_COUNT", -1)))
+	print("TELEPORT_FALSE_FINISH=%s" % str(bool(extras.get("TELEPORT_FALSE_FINISH", false))).to_lower())
+	print("MAX_GAP=%.3f" % float(extras.get("MAX_GAP", -1.0)))
+	print("MAX_LATERAL=%.3f" % float(extras.get("MAX_LATERAL", -1.0)))
+	print("MAX_HSPEED=%.3f" % float(extras.get("MAX_HSPEED", -1.0)))
+	print("COLLISION_SLIDES_MAX=%d" % int(extras.get("COLLISION_SLIDES_MAX", -1)))
 	print("COURSE_ACCEPTED=false")
 	print("DEVICE_RUN=false")
+	print("HUMAN=false")
+	print("RC2=false")
+	print("V1=false")
 	if not fail_reason.is_empty():
 		print("RACE_SCENE_FAIL %s" % fail_reason)
 	print("COURSE_OBSERVE_END")
@@ -601,7 +650,7 @@ func _sample_driver(
 			str(reacquired).to_lower(),
 		]
 	)
-	return {"progress_gap": gap, "lateral": lateral, "hspeed": hspeed, "reacquired": reacquired}
+	return {"progress_gap": gap, "lateral": lateral, "hspeed": hspeed, "reacquired": reacquired, "slides": slides}
 
 
 func _hold_gameplay_input(input: Node, follower: Node, player: Node, delta: float) -> void:

@@ -485,6 +485,16 @@ func _field_ownership_summary(racers: Array, roster: Dictionary) -> Dictionary:
 			"counts_as_human_participant": human,
 			"racer_id": str(racer.get("racer_id")) if "racer_id" in racer else "",
 		})
+	## Independent two-client race authority: only when GAME_SESSION_DIR hosts a
+	## real host/guest process pair (tools/run_game_session_race.sh). Never invent
+	## 8 humans; PartyLink eight-racer remains connected=1 + cpu=7 unless seats say otherwise.
+	var session_dir := OS.get_environment("GAME_SESSION_DIR").strip_edges()
+	var independent_two := (
+		not session_dir.is_empty()
+		and GameManager != null
+		and GameManager.is_local_mp()
+		and connected >= 2
+	)
 	return {
 		"schema": "pp_field_ownership/v1",
 		"actor_count": racers.size(),
@@ -492,7 +502,7 @@ func _field_ownership_summary(racers: Array, roster: Dictionary) -> Dictionary:
 		"cpu_actors": cpu,
 		"allocated_human_seats": int(roster.get("allocated_human_seats", 0)),
 		"physical_eight_human_party": false,
-		"independent_two_client": false,
+		"independent_two_client": independent_two,
 		"bots_never_count_as_humans": true,
 		"moltenvk_metal_pass": false,
 		"COURSE_ACCEPTED": false,

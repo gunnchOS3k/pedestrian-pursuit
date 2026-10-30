@@ -20,14 +20,31 @@ OBSERVED_KEYS = (
     "RESULTS_PATH",
     "COURSE_ACCEPTED",
     "DEVICE_RUN",
+    "FINISH_TRIGGER",
+    "CHECKPOINT_TRAVERSAL",
+    "TELEPORT_FALSE_FINISH",
 )
 
 REQUIRED_TRUE = (
     "RACE_ENTERED",
     "CHECKPOINT_CROSSED",
+    "CHECKPOINT_TRAVERSAL",
     "LAP_COMPLETED",
     "RESULTS_PATH",
+    "FINISH_TRIGGER",
 )
+
+REQUIRED_FALSE = (
+    "COURSE_ACCEPTED",
+    "TELEPORT_FALSE_FINISH",
+)
+
+# Chronic void/line reacquire seen on pre-soften Cup3 sneaker_city (44).
+MAX_REACQUIRE_COUNT = 12
+# Honest elapsed floor — teleport/false finish finishes under this.
+MIN_DRIVEN_MSEC = 12000
+# Finished race manager state.
+FINISHED_RACE_STATE = "3"
 
 # Verdant first, then the other seven launch courses. Order is the observer order.
 LAUNCH_COURSE_IDS = (
@@ -99,6 +116,8 @@ CUPS4_8_COURSE_IDS = (
 
 CUPS3_8_COURSE_IDS = CUP3_COURSE_IDS + CUPS4_8_COURSE_IDS
 
+CUPS1_8_COURSE_IDS = LAUNCH_COURSE_IDS + CUPS3_8_COURSE_IDS
+
 SUITE_COURSES = {
     "launch": LAUNCH_COURSE_IDS,
     "cup3": CUP3_COURSE_IDS,
@@ -110,12 +129,32 @@ SUITE_COURSES = {
     "cups4-8": CUPS4_8_COURSE_IDS,
     "cups3-8": CUPS3_8_COURSE_IDS,
     "cups1-3": LAUNCH_COURSE_IDS + CUP3_COURSE_IDS,
+    "cups1-8": CUPS1_8_COURSE_IDS,
+    "championship": CUPS1_8_COURSE_IDS,
 }
+
+
+_SCALAR_KEYS = (
+    "TRACK_ID",
+    "RACE_STATE",
+    "DRIVEN_MSEC",
+    "ELAPSED_MSEC",
+    "LAP_COUNT",
+    "EXPECTED_LAPS",
+    "COMPLETED_LAPS",
+    "REACQUIRE_COUNT",
+    "COLLISION_SLIDES_MAX",
+    "MAX_GAP",
+    "MAX_LATERAL",
+    "MAX_HSPEED",
+)
 
 
 def parse_observer_log(text: str) -> dict[str, str | None]:
     """Last assignment wins. Absent keys stay None. Do not invent values."""
     found: dict[str, str | None] = {key: None for key in OBSERVED_KEYS}
+    for key in _SCALAR_KEYS:
+        found[key] = None
     found["RACE_SCENE_FAIL"] = None
     for raw_line in text.splitlines():
         line = raw_line.strip()
@@ -132,7 +171,7 @@ def parse_observer_log(text: str) -> dict[str, str | None]:
 
 
 def acceptance_failure(fields: dict[str, str | None]) -> str | None:
-    """Return a failure reason, or None when the three observations are real."""
+    """Return a failure reason, or None when completion assertions are real."""
     if fields.get("RACE_SCENE_FAIL"):
         return "RACE_SCENE_FAIL %s" % fields["RACE_SCENE_FAIL"]
     if fields.get("COURSE_ACCEPTED") == "true":
@@ -145,6 +184,49 @@ def acceptance_failure(fields: dict[str, str | None]) -> str | None:
         return "not true " + ",".join(
             "%s=%s" % (key, fields.get(key)) for key in false_keys
         )
+    for key in REQUIRED_FALSE:
+        value = fields.get(key)
+        if value is None:
+            # Older logs without TELEPORT_FALSE_FINISH still need COURSE_ACCEPTED=false.
+            if key == "COURSE_ACCEPTED":
+                return "absent COURSE_ACCEPTED"
+            continue
+        if value != "false":
+            return "%s=%s" % (key, value)
+    race_state = fields.get("RACE_STATE")
+    if race_state is not None and race_state != FINISHED_RACE_STATE:
+        return "RACE_STATE=%s want %s" % (race_state, FINISHED_RACE_STATE)
+    driven = fields.get("DRIVEN_MSEC") or fields.get("ELAPSED_MSEC")
+    if driven is not None:
+        try:
+            if int(driven) < MIN_DRIVEN_MSEC:
+                return "DRIVEN_MSEC=%s below %d (teleport risk)" % (
+                    driven,
+                    MIN_DRIVEN_MSEC,
+                )
+        except ValueError:
+            return "DRIVEN_MSEC unparseable %s" % driven
+    expected = fields.get("EXPECTED_LAPS") or fields.get("LAP_COUNT")
+    completed = fields.get("COMPLETED_LAPS")
+    if expected is not None and completed is not None:
+        try:
+            if int(completed) < int(expected):
+                return "COMPLETED_LAPS=%s < EXPECTED_LAPS=%s" % (completed, expected)
+        except ValueError:
+            return "lap counts unparseable completed=%s expected=%s" % (
+                completed,
+                expected,
+            )
+    reacquire = fields.get("REACQUIRE_COUNT")
+    if reacquire is not None:
+        try:
+            if int(reacquire) > MAX_REACQUIRE_COUNT:
+                return "REACQUIRE_COUNT=%s chronic (>%d)" % (
+                    reacquire,
+                    MAX_REACQUIRE_COUNT,
+                )
+        except ValueError:
+            return "REACQUIRE_COUNT unparseable %s" % reacquire
     return None
 
 
@@ -154,7 +236,12 @@ def _blank_block() -> dict[str, str | None]:
     fields["TRACK_ID"] = None
     fields["RACE_STATE"] = None
     fields["DRIVEN_MSEC"] = None
+    fields["ELAPSED_MSEC"] = None
     fields["LAP_COUNT"] = None
+    fields["EXPECTED_LAPS"] = None
+    fields["COMPLETED_LAPS"] = None
+    fields["REACQUIRE_COUNT"] = None
+    fields["COLLISION_SLIDES_MAX"] = None
     return fields
 
 
@@ -181,7 +268,20 @@ def parse_course_blocks(text: str) -> dict[str, dict[str, str | None]]:
         if "=" not in line:
             continue
         key, value = line.split("=", 1)
-        if key in current or key in ("TRACK_ID", "RACE_STATE", "DRIVEN_MSEC", "LAP_COUNT"):
+        if key in current or key in (
+            "TRACK_ID",
+            "RACE_STATE",
+            "DRIVEN_MSEC",
+            "ELAPSED_MSEC",
+            "LAP_COUNT",
+            "EXPECTED_LAPS",
+            "COMPLETED_LAPS",
+            "REACQUIRE_COUNT",
+            "COLLISION_SLIDES_MAX",
+            "MAX_GAP",
+            "MAX_LATERAL",
+            "MAX_HSPEED",
+        ):
             current[key] = value.strip()
     if current is not None:
         _store_block(blocks, current)
@@ -228,13 +328,21 @@ def evaluate_courses(
         for key in (
             "RACE_ENTERED",
             "CHECKPOINT_CROSSED",
+            "CHECKPOINT_TRAVERSAL",
             "LAP_COMPLETED",
             "RESULTS_PATH",
+            "FINISH_TRIGGER",
+            "TELEPORT_FALSE_FINISH",
             "COURSE_ACCEPTED",
             "DEVICE_RUN",
             "RACE_STATE",
             "DRIVEN_MSEC",
+            "ELAPSED_MSEC",
             "LAP_COUNT",
+            "EXPECTED_LAPS",
+            "COMPLETED_LAPS",
+            "REACQUIRE_COUNT",
+            "COLLISION_SLIDES_MAX",
         ):
             value = fields.get(key)
             lines.append("%s %s=%s" % (course_id, key, "absent" if value is None else value))

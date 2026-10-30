@@ -7,7 +7,7 @@
   "theme": "ridge_cloud",
   "description": "Ridge shelves with elevation impulses, mist slowdowns, and a cliffside bounce shortcut.",
   "art_status": "LAUNCH_PROCEDURAL_FINAL",
-  "lane_width": 13.0,
+  "lane_width": 15.0,
   "guard_rails": true,
   "has_shortcut": true,
   "track_color": "#7A8A92",
@@ -123,8 +123,8 @@
         5,
         5
       ],
-      "bounce_force": 14.0,
-      "forward_boost": 6.0
+      "bounce_force": 6.0,
+      "forward_boost": 2.0
     },
     {
       "point_index": 5,
@@ -132,8 +132,8 @@
         5,
         5
       ],
-      "bounce_force": 13.0,
-      "forward_boost": 5.5
+      "bounce_force": 6.0,
+      "forward_boost": 2.0
     }
   ],
   "item_boxes": [
@@ -177,5 +177,6 @@
     "cloud_gate",
     "ledge_rails"
   ],
-  "camera_identity": "ridge_chase"
+  "camera_identity": "ridge_chase",
+  "geometry_note": "Softened bounce/lane (force<=6, lane>=15) after championship fail: 0 laps / 26 reacquisitions under strengthened gate; essential acceptance checks retained."
 }
