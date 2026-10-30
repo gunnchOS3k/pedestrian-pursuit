@@ -487,7 +487,7 @@
         "Metal/MoltenVK display path not proven"
       ],
       "severity": "high",
-      "sha": "83bafa520011ab982dfd96914bbc87f7731b2764",
+      "sha": "eff4e7a1b2dd22b74c90109b9f08bb1fc61064fe",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
       "notes": "S5: gate strengthened (not weakened); Cup3 soften analysis retained; cloudstep/mirage bounce softened for chronic-reacquire honesty."
