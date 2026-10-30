@@ -12,3 +12,5 @@
 2. `ridge_cairn` / `cliff_cairn` stacked spheres; `storefront_row` / `stall_row` awning rhythm.
 3. S7f: `neon_hoops` twin-ring silhouette for neon yard chase.
 4. Footwear trail families + stripe emission (PP-RTM-12). Footwear vehicles: cosmetics remain honest.
+
+5. S8: `dish_array` / `rotunda_dome` / `seal_door` / `colossus_falls` distinct silhouettes; `neon_hoops` twin-ring split from beacon family.

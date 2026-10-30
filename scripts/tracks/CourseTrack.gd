@@ -1557,7 +1557,13 @@ func _sculpt_landmark(root: Node3D, landmark_id: String, accent: Color) -> void:
 		"windmill", "mirage_spire", "prism_spires", "seaglass_spire", "obs_spire", "paper_spire", "finale_spire", "antenna_mast", "stage_pylon", "frame_pylon":
 			_add_visual_cylinder(root, Vector3(0.0, 4.5, 0.0), 1.1, 9.0, accent, true)
 			_add_visual_sphere(root, Vector3(0.0, 9.4, 0.0), 1.6, accent.lightened(0.2), true)
-		"forge_towers", "signal_gantry", "draft_gantry", "cable_gantry", "security_gantry", "signal_tower", "storm_tower", "bridge_tower_a", "bridge_tower_b", "depot_crane", "yard_crane":
+		"signal_gantry", "storm_tower":
+			## Tall yard mast + accent crossarm — chase-cam reads neon/signal cups.
+			_add_visual_box(root, Vector3(0.0, 5.0, 0.0), Vector3(1.2, 10.0, 1.2), Color(0.28, 0.28, 0.3))
+			_add_visual_box(root, Vector3(0.0, 9.5, 0.0), Vector3(7.5, 0.55, 1.0), accent, true)
+			_add_visual_sphere(root, Vector3(-3.2, 9.5, 0.0), 0.55, accent.lightened(0.2), true)
+			_add_visual_sphere(root, Vector3(3.2, 9.5, 0.0), 0.55, accent, true)
+		"forge_towers", "draft_gantry", "cable_gantry", "security_gantry", "signal_tower", "bridge_tower_a", "bridge_tower_b", "depot_crane", "yard_crane":
 			_add_visual_box(root, Vector3(-3.0, 4.0, 0.0), Vector3(1.4, 8.0, 1.4), Color(0.3, 0.3, 0.32))
 			_add_visual_box(root, Vector3(3.0, 4.0, 0.0), Vector3(1.4, 8.0, 1.4), Color(0.3, 0.3, 0.32))
 			_add_visual_box(root, Vector3(0.0, 8.2, 0.0), Vector3(8.0, 0.7, 1.2), accent, true)
@@ -1573,9 +1579,28 @@ func _sculpt_landmark(root: Node3D, landmark_id: String, accent: Color) -> void:
 			_add_visual_box(root, Vector3(0.0, 3.5, 0.0), Vector3(14.0, 0.55, 2.4), accent.darkened(0.15))
 			_add_visual_box(root, Vector3(-5.5, 1.8, 0.0), Vector3(1.1, 3.6, 1.1), Color(0.32, 0.32, 0.36))
 			_add_visual_box(root, Vector3(5.5, 1.8, 0.0), Vector3(1.1, 3.6, 1.1), Color(0.32, 0.32, 0.36))
-		"crosswalk_plaza", "lantern_canopy", "mirror_gate_a", "mirror_gate_b", "dish_array", "rotunda_dome", "seal_door", "aurora_rim", "colossus_falls":
+		"crosswalk_plaza", "lantern_canopy", "mirror_gate_a", "mirror_gate_b", "aurora_rim":
 			_add_visual_cylinder(root, Vector3(0.0, 2.8, 0.0), 3.2, 5.6, accent.darkened(0.1), true)
 			_add_visual_box(root, Vector3(0.0, 6.0, 0.0), Vector3(7.0, 0.45, 7.0), accent, true)
+		"dish_array":
+			## Parabolic dish stack — chase-cam reads observatory cups vs generic canopy.
+			_add_visual_cylinder(root, Vector3(0.0, 1.4, 0.0), 1.1, 2.8, Color(0.28, 0.28, 0.32))
+			_add_visual_sphere(root, Vector3(0.0, 3.6, 0.0), 2.4, accent.darkened(0.12), true)
+			_add_visual_box(root, Vector3(0.0, 4.8, 1.6), Vector3(0.35, 0.35, 3.2), accent.lightened(0.15), true)
+		"rotunda_dome":
+			## Domed rotunda — wider base + hemisphere cap for museum/gallery chase read.
+			_add_visual_cylinder(root, Vector3(0.0, 2.2, 0.0), 4.2, 4.4, accent.darkened(0.18), true)
+			_add_visual_sphere(root, Vector3(0.0, 5.0, 0.0), 3.4, accent, true)
+		"seal_door":
+			## Sealed vault door plate — flat face readable at FOV without racing-line collision.
+			_add_visual_box(root, Vector3(0.0, 2.6, 0.0), Vector3(5.5, 5.2, 1.2), accent.darkened(0.22))
+			_add_visual_cylinder(root, Vector3(0.0, 2.6, 0.7), 1.6, 0.35, accent, true)
+			_add_visual_box(root, Vector3(1.8, 2.6, 0.75), Vector3(0.45, 1.8, 0.25), accent.lightened(0.2), true)
+		"colossus_falls":
+			## Twin cascade sheets — vertical water-read for wonder chase landmarks.
+			_add_visual_box(root, Vector3(-1.6, 4.0, 0.0), Vector3(1.4, 8.0, 0.6), accent.lightened(0.1), true)
+			_add_visual_box(root, Vector3(1.6, 3.4, 0.0), Vector3(1.4, 6.8, 0.6), accent, true)
+			_add_visual_box(root, Vector3(0.0, 0.4, 0.8), Vector3(6.0, 0.5, 2.4), accent.darkened(0.25))
 		_:
 			_add_visual_box(root, Vector3(0.0, 2.5, 0.0), Vector3(2.2, 5.0, 2.2), accent.lightened(0.12))
 
