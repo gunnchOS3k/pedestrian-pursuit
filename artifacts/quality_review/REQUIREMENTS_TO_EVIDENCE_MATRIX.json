@@ -5,7 +5,7 @@
   "contract_source_sha": "45b456617002569c33a5a27fe30d5cf8be5a7032",
   "product_id": "pedestrian-pursuit",
   "product_repo": "https://github.com/gunnchOS3k/pedestrian-pursuit",
-  "generated_at": "2026-10-30T18:52:16Z",
+  "generated_at": "2026-10-30T19:28:36Z",
   "honesty_flags": {
     "HUMAN": false,
     "RC2": false,
@@ -302,7 +302,7 @@
         "platforms": [
           "darwin-metal-apple-m2"
         ],
-        "notes": "4-track Metal matrix (verdant/cloudstep/sneaker/mirage) RESULTS_PATH under strengthened stamps."
+        "notes": "6-track Metal matrix RESULTS_PATH after tip 3cd4145 Gate1+Windows green."
       },
       "art_status": "not_applicable",
       "limitations": [
@@ -311,7 +311,7 @@
         "Not physical 8-human PartyLink"
       ],
       "severity": "blocker",
-      "sha": "e939b86d0e6aa4518a951a7b1f15a96374ad7393",
+      "sha": "3cd4145fbf0a1d3a49af0f1c57693a23f27e6891",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
       "notes": "Display-backed Metal observe evidence \u2014 not inferred from Gate1/Windows/headless GL."

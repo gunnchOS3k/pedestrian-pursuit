@@ -1,5 +1,6 @@
 {
   "schema": "pp_metal_multi_track_matrix/v1",
+  "tip_sha": "3cd4145fbf0a1d3a49af0f1c57693a23f27e6891",
   "godot": "4.7.1.stable.official a13da4feb",
   "platform": "darwin-metal-apple-m2",
   "tracks": [
@@ -12,9 +13,6 @@
       "REACQUIRE_COUNT": "0",
       "TELEPORT_FALSE_FINISH": "false",
       "COURSE_ACCEPTED": "false",
-      "HUMAN": "false",
-      "RC2": "false",
-      "V1": "false",
       "pass": true
     },
     {
@@ -26,9 +24,6 @@
       "REACQUIRE_COUNT": "0",
       "TELEPORT_FALSE_FINISH": "false",
       "COURSE_ACCEPTED": "false",
-      "HUMAN": "false",
-      "RC2": "false",
-      "V1": "false",
       "pass": true
     },
     {
@@ -40,9 +35,6 @@
       "REACQUIRE_COUNT": "0",
       "TELEPORT_FALSE_FINISH": "false",
       "COURSE_ACCEPTED": "false",
-      "HUMAN": "false",
-      "RC2": "false",
-      "V1": "false",
       "pass": true
     },
     {
@@ -54,9 +46,28 @@
       "REACQUIRE_COUNT": "0",
       "TELEPORT_FALSE_FINISH": "false",
       "COURSE_ACCEPTED": "false",
-      "HUMAN": "false",
-      "RC2": "false",
-      "V1": "false",
+      "pass": true
+    },
+    {
+      "track_id": "lantern_corridor",
+      "renderer": "Metal 4.0 Forward+ Apple M2",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "FINISH_TRIGGER": "true",
+      "REACQUIRE_COUNT": "0",
+      "TELEPORT_FALSE_FINISH": "false",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "stack_corridor",
+      "renderer": "Metal 4.0 Forward+ Apple M2",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "FINISH_TRIGGER": "true",
+      "REACQUIRE_COUNT": "0",
+      "TELEPORT_FALSE_FINISH": "false",
+      "COURSE_ACCEPTED": "false",
       "pass": true
     }
   ],
@@ -66,7 +77,6 @@
   "HUMAN": false,
   "RC2": false,
   "V1": false,
-  "generated_at": "2026-10-30T18:52:16Z",
-  "notes": "Display-backed Metal observe matrix \u2014 not Gate1/Windows/headless GL. Soft tracks held under strengthened assertions.",
-  "tip_sha": "e939b86d0e6aa4518a951a7b1f15a96374ad7393"
+  "generated_at": "2026-10-30T19:28:36Z",
+  "notes": "6-track display-backed Metal matrix after tip 3cd4145 Gate1+Windows green. COURSE/HUMAN/RC2/V1 false."
 }
