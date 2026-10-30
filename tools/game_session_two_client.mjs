@@ -1,11 +1,28 @@
 /** Second client for the BeatLink room. The race result comes from the Godot file. */
 
 import { spawn } from 'node:child_process';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { resetAuthority } from '../beatlink-party/apps/server/src/rooms/roomHttp.mjs';
-import {
+
+// Permitted cross-repo BeatLink sibling contract (do not edit BeatLink).
+// Default: frozen pin under contracts/beatlink_sibling_rooms.
+// Override: BEATLINK_ROOMS_ROOT -> directory containing roomHttp.mjs + gameSessionContract.mjs
+// Legacy: beatlink-party/ checkout (gitignored) still accepted if present.
+const __toolDir = dirname(fileURLToPath(import.meta.url));
+const __repoRoot = join(__toolDir, '..');
+function resolveRoomsRoot() {
+  if (process.env.BEATLINK_ROOMS_ROOT) return process.env.BEATLINK_ROOMS_ROOT;
+  const pin = join(__repoRoot, 'contracts', 'beatlink_sibling_rooms');
+  const legacy = join(__repoRoot, 'beatlink-party', 'apps', 'server', 'src', 'rooms');
+  if (existsSync(join(pin, 'roomHttp.mjs')) && existsSync(join(pin, 'gameSessionContract.mjs'))) {
+    return pin;
+  }
+  return legacy;
+}
+const roomsRoot = resolveRoomsRoot();
+const { resetAuthority } = await import(join(roomsRoot, 'roomHttp.mjs'));
+const {
   acknowledge,
   disconnectGuest,
   endGame,
@@ -22,7 +39,7 @@ import {
   runtimeRaceDigest,
   startGame,
   submitRuntimeRaceResult,
-} from '../beatlink-party/apps/server/src/rooms/gameSessionContract.mjs';
+} = await import(join(roomsRoot, 'gameSessionContract.mjs'));
 
 const dir = process.env.GAME_SESSION_DIR;
 const mode = process.argv[2];
@@ -215,7 +232,12 @@ function startGodot(root, script) {
   const env = { ...process.env };
   const shimBin = join(root, 'tools', 'bin');
   env.PATH = `${shimBin}${env.PATH ? `:${env.PATH}` : ''}`;
-  return spawn('xvfb-run', ['-a', 'godot', ...args], { stdio: 'inherit', env });
+  const xvfb = join(shimBin, 'xvfb-run');
+  if (existsSync(xvfb)) {
+    return spawn(xvfb, ['-a', 'godot', ...args], { stdio: 'inherit', env });
+  }
+  // Darwin without shim: headless display-driver already set; spawn godot directly.
+  return spawn('godot', args, { stdio: 'inherit', env });
 }
 
 function waitFor(child) {

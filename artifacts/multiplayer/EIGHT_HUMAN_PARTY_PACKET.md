@@ -40,3 +40,9 @@ Contract source: `scripts/net/OnlineArchitecture.gd` (`partylink_seat_map` + `pa
 - Not HUMAN_FUN / HUMAN_COURSE / RC2 / V1 authorization.
 - Not BeatLink 8-member — BeatLink sibling stays 2.
 - Eight CPU-filled actors ≠ eight humans.
+
+## S6 digital independence note
+
+- Independent two-process BeatLink sibling race restored via `contracts/beatlink_sibling_rooms` (BeatLink repo not edited): **2 digital clients**, not 8 humans.
+- PartyLink field observe remains honest **1 connected human + 7 CPU** until additional independent clients are present.
+- Bots ≠ humans. Physical 8-human PartyLink still **false / not executed**.

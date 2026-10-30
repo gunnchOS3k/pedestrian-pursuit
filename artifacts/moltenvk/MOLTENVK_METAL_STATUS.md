@@ -4,17 +4,20 @@
 
 ## What passed
 
-- Darwin **headless + opengl3** two-process race (appearance sync + lap honesty).
-- Evidence: `artifacts/independent_two_process/INDEPENDENT_CLIENTS_RACE_RESULT.json`
-- Log: `artifacts/independent_two_process/TWO_PROCESS_RACE.log`
+- Darwin **headless + opengl3** course observe / packaging smoke on tip `41ccfb0bbcc560112ef62cee28037568ae53f440`.
+- Soft-track re-proof (cloudstep_ridge, sneaker_city_sprintway) under strengthened gate.
+- CourseBuildSurfaceTest PASS (landmarks/hazards retained after soften).
 
 ## What did **not** pass
 
 - Native Mac **Metal / MoltenVK** windowed or display-backed race.
 - Historical symptom remains: `SIGSEGV` in `mvk::SPIRVToMSLConverter` when the Metal path is taken.
-- Reconfirmed 2026-10-29 on Godot 4.7.1 (`a13da4feb`): even `--headless --display-driver headless --rendering-driver opengl3 --script` still aborted in `mvk::SPIRVToMSLConverter` on this Darwin host — do not treat local Mac script exit as Gate1 evidence.
-- Headless GL (when it works) is packaging/smoke evidence only — **not** a Metal certificate.
-- Linux Gate1 CI remains the authoritative Godot script gate.
+- Headless GL is packaging/smoke evidence only — **not** a Metal certificate.
+- Linux Gate1 CI remains the authoritative Godot script gate for PR tips.
+
+## Physical review
+
+See `artifacts/moltenvk/PHYSICAL_REVIEW_BUILD_PACKET.md` (prepare-only).
 
 ## Operator rule
 

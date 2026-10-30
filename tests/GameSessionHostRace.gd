@@ -414,7 +414,9 @@ func _path_start(race_manager: Node) -> Array:
 func _read_json(path: String) -> Dictionary:
 	if path.is_empty() or not FileAccess.file_exists(path):
 		return {}
-	var text := FileAccess.get_file_as_string(path)
+	var text := FileAccess.get_file_as_string(path).strip_edges()
+	if text.is_empty():
+		return {}
 	if text.contains("hostSession") or text.contains("hostToken"):
 		return {}
 	var parsed: Variant = JSON.parse_string(text)

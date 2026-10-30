@@ -1,50 +1,28 @@
 {
-  "schema": "pp_independent_two_process/v1",
-  "INDEPENDENT_CLIENTS_RACED": true,
-  "local_darwin_attempt": {
-    "status": "pass_headless_opengl3",
-    "godot_invoked_as": "godot via tools/bin/xvfb-run Darwin shim",
-    "godot_version_observed": "4.7.1.stable.official (PATH) / prior SIGSEGV on Metal/MoltenVK startup still recorded historically",
-    "display": "--display-driver headless --rendering-driver opengl3",
-    "symptom_metal_moltenvk_historical": "SIGSEGV in mvk::SPIRVToMSLConverter when Metal/MoltenVK path is taken; this pass used headless+opengl3 only \u2014 not a MoltenVK/Metal certificate",
-    "log": "artifacts/independent_two_process/TWO_PROCESS_RACE.log",
-    "result_markers": {
-      "expected_laps": 3,
-      "host_laps": 3,
-      "guest_laps": 3,
-      "laps_equal": true,
-      "both_finished": true,
-      "APPEARANCE_SYNC": true,
-      "INDEPENDENT_CLIENTS_RACED": true
-    },
-    "beatlink_contract_present": true,
-    "fabricated_pass": false,
-    "note": "Do not claim Mac MoltenVK/Metal race pass. Headless opengl3 local pass strengthens Darwin packaging; Linux Gate1 remains primary CI evidence."
-  },
-  "exact_head_ci_gate1": {
-    "prior_tip_sha": "c397c22f2950810b225c3ce947ff1deb8e1033e5",
-    "gate1_run_id": "40821812719",
-    "windows_run_id": "40821812722",
-    "status": "pass_reported_by_owner",
-    "note": "Owner-reported Gate1/Windows PASS on tip c397c22. Local Darwin MoltenVK still false; new tip CI pending after FF-push."
-  },
-  "partylink_capacity": {
-    "min_human_seats": 2,
-    "max_human_seats": 8,
-    "field_size": 8,
-    "beatlink_sibling_contract_humans": 2,
-    "bots_never_count_as_humans": true,
-    "physical_eight_human_party": false,
-    "local_capacity_test": "tests/PartyLinkCapacityTest.gd",
-    "local_capacity_result": "PASS"
-  },
-  "honesty": {
-    "HUMAN_FUN_APPROVAL": false,
-    "HUMAN_COURSE_APPROVAL": false,
-    "RC2_READY": false,
-    "V1_0_0_RELEASE_AUTHORIZED": false,
-    "fabricated": false,
-    "moltenvk_metal_pass": false
-  },
-  "generated_at": "2026-10-29T14:36:00Z"
+  "schema": "pp_independent_two_client_race/v1",
+  "tip_sha": "41ccfb0bbcc560112ef62cee28037568ae53f440",
+  "independent_clients_raced": true,
+  "connected_humans_digital": 2,
+  "bots_count_as_humans": false,
+  "physical_eight_human_party": false,
+  "partylink_field_observe_still": "1h+7cpu until more independent clients",
+  "beatlink_sibling_contract": "contracts/beatlink_sibling_rooms @ pin (BeatLink not edited)",
+  "course_id": "verdant_cascade_circuit",
+  "host_laps": 3,
+  "guest_laps": 3,
+  "driven_msec": 86138,
+  "guest_input_frames": 5322,
+  "results_path": true,
+  "appearance_sync": true,
+  "godot": "4.7.1.stable.official a13da4feb",
+  "display": "--display-driver headless --rendering-driver opengl3",
+  "moltenvk_metal_pass": false,
+  "COURSE_ACCEPTED": false,
+  "HUMAN": false,
+  "HUMAN_FUN_APPROVAL": "unset",
+  "HUMAN_COURSE_APPROVAL": "unset",
+  "RC2": false,
+  "V1": false,
+  "generated_at": "2026-10-30T16:37:05Z",
+  "log": "artifacts/independent_two_process/TWO_PROCESS_RACE.log"
 }

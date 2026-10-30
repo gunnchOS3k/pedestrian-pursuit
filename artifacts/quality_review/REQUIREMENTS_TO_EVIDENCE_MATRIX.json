@@ -2,26 +2,29 @@
   "schema_version": "1.0.0",
   "contract_id": "GUNNCHOS3K_PVS",
   "contract_version": "1.0.0",
-  "contract_source_sha": "45b456617002569c33a5a27fe30d5cf8be5a7032",
+  "contract_source_sha": "935eb3a20548b1a4b726f2ba305df94ff496be16",
   "product_id": "pedestrian-pursuit",
   "product_repo": "https://github.com/gunnchOS3k/pedestrian-pursuit",
-  "generated_at": "2026-10-29T20:00:00Z",
+  "generated_at": "2026-10-30T16:31:52Z",
   "honesty_flags": {
     "HUMAN": false,
+    "COURSE_ACCEPTED": false,
     "RC2": false,
-    "V1": false
+    "V1": false,
+    "HUMAN_FUN": false,
+    "HUMAN_COURSE": false
   },
   "phase_summary": {
     "cursor_complete": {
       "status": "in_progress",
-      "notes": "Cups 1\u20138 headless full-race RESULTS_PATH local; COURSE_ACCEPTED/HUMAN/RC2/V1 false; Cursor Complete not claimed."
+      "notes": "S6: FF PR#46 tip; soft-track obstacles retained; BeatLink sibling rooms contract pin restored for independent two-client. COURSE_ACCEPTED/HUMAN/RC2/V1 false. Cursor Complete not claimed."
     },
     "codex_independently_verified": {
       "status": "not_started"
     },
     "human_approval": {
       "status": "not_started",
-      "notes": "HUMAN_FUN / HUMAN_COURSE / RC2 / V1 remain false."
+      "notes": "HUMAN_FUN / HUMAN_COURSE / COURSE_ACCEPTED / RC2 / V1 remain false."
     }
   },
   "rows": [
@@ -291,7 +294,8 @@
       ],
       "tests": [],
       "automated_evidence": [
-        "artifacts/moltenvk/MOLTENVK_METAL_STATUS.md"
+        "artifacts/moltenvk/MOLTENVK_METAL_STATUS.md",
+        "artifacts/moltenvk/PHYSICAL_REVIEW_BUILD_PACKET.md"
       ],
       "native_physical": {
         "status": "fail",
@@ -303,10 +307,11 @@
       "art_status": "not_applicable",
       "limitations": [
         "moltenvk_metal_pass = false",
-        "Distinct from 2-client headless GL"
+        "Distinct from 2-client headless GL",
+        "Physical review packet prepared; display-backed Metal not passed"
       ],
       "severity": "blocker",
-      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
+      "sha": "41ccfb0bbcc560112ef62cee28037568ae53f440",
       "independent_review_status": "not_started",
       "cursor_complete_status": "not_started"
     },
@@ -468,9 +473,9 @@
         "tests/ChampionshipCatalogTest.gd"
       ],
       "automated_evidence": [
-        "tmp/s5-evidence/championship-gate-s5-final.txt",
-        "tmp/s5-evidence/RESULTS_MATRIX_32.json",
-        "tmp/s5-evidence/observe-cup3-s5.log"
+        "artifacts/quality_review/REQUIREMENTS_TO_EVIDENCE_MATRIX.json",
+        "contracts/beatlink_sibling_rooms/CONTRACT_PIN.json",
+        "artifacts/moltenvk/PHYSICAL_REVIEW_BUILD_PACKET.md"
       ],
       "native_physical": {
         "status": "partial",
@@ -487,10 +492,10 @@
         "Metal/MoltenVK display path not proven"
       ],
       "severity": "high",
-      "sha": "eff4e7a1b2dd22b74c90109b9f08bb1fc61064fe",
+      "sha": "41ccfb0bbcc560112ef62cee28037568ae53f440",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
-      "notes": "S5: gate strengthened (not weakened); Cup3 soften analysis retained; cloudstep/mirage bounce softened for chronic-reacquire honesty."
+      "notes": "S6: contract pin GUNNCHOS3K_PVS@1.0.0 @ 935eb3a; soft cloudstep/sneaker re-proof PASS under strengthened gate; obstacles retained; BeatLink rooms pin without editing BeatLink."
     }
   ]
 }

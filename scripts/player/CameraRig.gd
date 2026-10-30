@@ -307,9 +307,11 @@ func _physics_process(delta: float) -> void:
 	if a11y != null and a11y.has_method("camera_shake_allowed"):
 		reduce_motion = not a11y.camera_shake_allowed()
 	var fov_t := 0.0 if reduce_motion else feel
-	look_ahead = lerpf(base_look_ahead, max_look_ahead, feel)
+	# Reduce-motion keeps chase readable without speed FOV/spring punch.
+	var motion_feel := 0.15 if reduce_motion else feel
+	look_ahead = lerpf(base_look_ahead, max_look_ahead, motion_feel)
 	## Slight pull-back under boost so FOV punch reads as speed, not zoom-in.
-	var spring_feel := feel * (0.92 if _boosting else 0.85)
+	var spring_feel := motion_feel * (0.92 if (_boosting and not reduce_motion) else 0.85)
 	spring_length = lerpf(base_spring_length, max_spring_length, spring_feel)
 	if _camera != null:
 		var target_fov := lerpf(base_fov, max_fov, clampf(fov_t, 0.0, 1.0))

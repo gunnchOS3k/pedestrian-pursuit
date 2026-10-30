@@ -1,0 +1,39 @@
+{
+  "schema": "pp_s6_soft_track_gate/v1",
+  "strengthened_assertions": [
+    "RACE_ENTERED",
+    "CHECKPOINT_CROSSED",
+    "CHECKPOINT_TRAVERSAL",
+    "LAP_COMPLETED",
+    "RESULTS_PATH",
+    "FINISH_TRIGGER",
+    "NOT_COURSE_ACCEPTED",
+    "NOT_TELEPORT_FALSE_FINISH",
+    "COMPLETED_LAPS==EXPECTED_LAPS",
+    "REACQUIRE<=12",
+    "DRIVEN_MSEC>=12000"
+  ],
+  "obstacles_retained": true,
+  "tracks": {
+    "cloudstep_ridge": {
+      "pass": true,
+      "fails": [],
+      "COMPLETED_LAPS": "3",
+      "REACQUIRE_COUNT": "0",
+      "DRIVEN_MSEC": "69408",
+      "RESULTS_PATH": "true"
+    },
+    "sneaker_city_sprintway": {
+      "pass": true,
+      "fails": [],
+      "COMPLETED_LAPS": "3",
+      "REACQUIRE_COUNT": "0",
+      "DRIVEN_MSEC": "69699",
+      "RESULTS_PATH": "true"
+    }
+  },
+  "COURSE_ACCEPTED": false,
+  "HUMAN": false,
+  "RC2": false,
+  "V1": false
+}
