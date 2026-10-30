@@ -5,7 +5,7 @@
   "contract_source_sha": "935eb3a20548b1a4b726f2ba305df94ff496be16",
   "product_id": "pedestrian-pursuit",
   "product_repo": "https://github.com/gunnchOS3k/pedestrian-pursuit",
-  "generated_at": "2026-10-30T16:31:52Z",
+  "generated_at": "2026-10-30T17:10:26Z",
   "honesty_flags": {
     "HUMAN": false,
     "COURSE_ACCEPTED": false,
@@ -473,16 +473,17 @@
         "tests/ChampionshipCatalogTest.gd"
       ],
       "automated_evidence": [
-        "artifacts/quality_review/REQUIREMENTS_TO_EVIDENCE_MATRIX.json",
-        "contracts/beatlink_sibling_rooms/CONTRACT_PIN.json",
-        "artifacts/moltenvk/PHYSICAL_REVIEW_BUILD_PACKET.md"
+        "artifacts/s6_evidence/championship-gate-s6.txt",
+        "artifacts/s6_evidence/RESULTS_MATRIX_32.json",
+        "artifacts/s6_evidence/SOFT_TRACK_STRENGTHENED_GATE.json",
+        "contracts/beatlink_sibling_rooms/CONTRACT_PIN.json"
       ],
       "native_physical": {
         "status": "partial",
         "platforms": [
           "macos-godot-headless"
         ],
-        "notes": "32/32 RESULTS_PATH under strengthened gate after cloudstep bounce/lane soften. COURSE_ACCEPTED/HUMAN/RC2/V1 false. Metal\u2260headless GL."
+        "notes": "32/32 RESULTS_PATH on tip after S6 continue. COURSE_ACCEPTED/HUMAN/RC2/V1 false. Metal\u2260headless GL. Independent 2-client digital \u2260 8 humans."
       },
       "art_status": "wip",
       "limitations": [
@@ -492,10 +493,10 @@
         "Metal/MoltenVK display path not proven"
       ],
       "severity": "high",
-      "sha": "41ccfb0bbcc560112ef62cee28037568ae53f440",
+      "sha": "2e9b17c961d37c75e499980c78998dc076a153c7",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
-      "notes": "S6: contract pin GUNNCHOS3K_PVS@1.0.0 @ 935eb3a; soft cloudstep/sneaker re-proof PASS under strengthened gate; obstacles retained; BeatLink rooms pin without editing BeatLink."
+      "notes": "S6 integrated tip: 32/32 championship PASS under strengthened gate; soft obstacles retained; BeatLink sibling rooms pin; independent 2-client true; COURSE/HUMAN/RC2/V1 false."
     }
   ]
 }
