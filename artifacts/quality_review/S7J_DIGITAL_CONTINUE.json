@@ -1,0 +1,13 @@
+{
+  "schema": "pp_s7j_continue/v1",
+  "soaked_tip_5781efd_windows": "success #41138021604",
+  "soaked_tip_b81079c_gate1": "success #41141277011",
+  "metal_22of22": true,
+  "mirror_panel_silhouette": true,
+  "camera_boost_punch": 0.34,
+  "COURSE_ACCEPTED": false,
+  "HUMAN": false,
+  "RC2": false,
+  "V1": false,
+  "generated_at": "2026-10-30T23:33:58Z"
+}

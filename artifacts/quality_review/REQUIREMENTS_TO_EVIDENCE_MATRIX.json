@@ -302,7 +302,7 @@
         "platforms": [
           "darwin-metal-apple-m2"
         ],
-        "notes": "18-track Metal matrix."
+        "notes": "22-track Metal matrix."
       },
       "art_status": "not_applicable",
       "limitations": [

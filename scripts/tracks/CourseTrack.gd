@@ -1618,6 +1618,12 @@ func _sculpt_landmark(root: Node3D, landmark_id: String, accent: Color) -> void:
 			## Backlit sign slab for afterglow chase readability.
 			_add_visual_box(root, Vector3(0.0, 2.8, 0.0), Vector3(5.5, 3.2, 0.45), accent.darkened(0.2), true)
 			_add_visual_box(root, Vector3(0.0, 1.0, 0.0), Vector3(0.7, 2.0, 0.7), Color(0.25, 0.25, 0.28))
+		"mirror_panel":
+			## Reflective boulevard panel — twin panes + frame for mirror chase FOV.
+			_add_visual_box(root, Vector3(0.0, 2.6, 0.0), Vector3(6.0, 4.8, 0.35), accent.lightened(0.25), true)
+			_add_visual_box(root, Vector3(-1.6, 2.6, 0.0), Vector3(0.15, 4.8, 0.4), Color(0.35, 0.4, 0.45))
+			_add_visual_box(root, Vector3(1.6, 2.6, 0.0), Vector3(0.15, 4.8, 0.4), Color(0.35, 0.4, 0.45))
+			_add_visual_box(root, Vector3(0.0, 0.7, 0.0), Vector3(1.0, 1.4, 1.0), Color(0.28, 0.28, 0.3))
 		"ember_braziers", "luminous_ribbon", "hairpin_beacon", "ascent_beacon", "deck_beacon", "bowl_beacon", "grove_lantern", "marble_plinth", "gallery_bench":
 			_add_visual_cylinder(root, Vector3(0.0, 1.2, 0.0), 1.4, 2.4, Color(0.25, 0.22, 0.2))
 			_add_visual_sphere(root, Vector3(0.0, 3.0, 0.0), 1.3, accent, true)

@@ -301,7 +301,7 @@ func _physics_process(delta: float) -> void:
 	if _boosting:
 		## Stronger boost punch for racing-feel (does not retune per-track chase identities).
 		## Reduce-motion path below still freezes FOV punch.
-		feel = clampf(feel + 0.32, 0.0, 1.25)
+		feel = clampf(feel + 0.34, 0.0, 1.25)
 	# Reduce-motion: keep FOV static, still allow mild look-ahead.
 	var a11y := _accessibility()
 	var reduce_motion := false

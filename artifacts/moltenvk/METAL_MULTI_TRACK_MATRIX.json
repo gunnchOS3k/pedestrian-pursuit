@@ -1,6 +1,6 @@
 {
   "schema": "pp_metal_multi_track_matrix/v1",
-  "tip_sha": "926fced04c88a71c5b1e386690d1a75db06a151b",
+  "tip_sha": "PENDING",
   "tracks": [
     {
       "track_id": "verdant_cascade_circuit",
@@ -145,6 +145,38 @@
       "REACQUIRE_COUNT": "0",
       "COURSE_ACCEPTED": "false",
       "pass": true
+    },
+    {
+      "track_id": "mirror_boulevard",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "antenna_ascent",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "seaglass_switchback",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "crosswalk_canyon",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
     }
   ],
   "all_pass": true,
@@ -153,6 +185,6 @@
   "HUMAN": false,
   "RC2": false,
   "V1": false,
-  "generated_at": "2026-10-30T22:25:15Z",
-  "notes": "18-track Metal matrix after tip 926fced Gate1+Windows green."
+  "generated_at": "2026-10-30T23:33:58Z",
+  "notes": "22-track Metal matrix on M2 OpenGL Metal 4.1; +mirror/antenna/seaglass/crosswalk after 5781efd Windows + b81079c Gate1 green."
 }

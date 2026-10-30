@@ -169,7 +169,8 @@
   "landmarks": [
     "mirror_gate_a",
     "mirror_gate_b",
-    "glass_facade"
+    "glass_facade",
+    "mirror_panel"
   ],
   "elevation_profile": "boulevard_rolls",
   "bank_bias": 0.1,
