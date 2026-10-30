@@ -210,7 +210,7 @@
         "Metal proven separately on PP-RTM-09"
       ],
       "severity": "blocker",
-      "sha": "0707183c354172ad47e278863b0d6bdc3e567ed2",
+      "sha": "0351cc546363477f51bafa9b3ef81d068b84c16f",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
       "notes": "S6/S7: BeatLink sibling rooms pin restores independent two-client. Distinct from PartyLink dual seat and Metal."
@@ -249,7 +249,7 @@
         "Not physical 8p"
       ],
       "severity": "high",
-      "sha": "0707183c354172ad47e278863b0d6bdc3e567ed2",
+      "sha": "0351cc546363477f51bafa9b3ef81d068b84c16f",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
       "notes": "Ownership advanced beyond 1h+7cpu via dual connected PartyLink (2h+6cpu). COURSE_ACCEPTED false."
@@ -310,7 +310,7 @@
         "Not physical 8-human PartyLink"
       ],
       "severity": "blocker",
-      "sha": "0707183c354172ad47e278863b0d6bdc3e567ed2",
+      "sha": "0351cc546363477f51bafa9b3ef81d068b84c16f",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
       "notes": "Display-backed Metal observe evidence \u2014 not inferred from Gate1/Windows/headless GL."
@@ -493,7 +493,7 @@
         "Metal/MoltenVK display path not proven"
       ],
       "severity": "high",
-      "sha": "0707183c354172ad47e278863b0d6bdc3e567ed2",
+      "sha": "0351cc546363477f51bafa9b3ef81d068b84c16f",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
       "notes": "32/32 RESULTS_PATH under strengthened gate held; S7 stack_corridor route segments fixed for Gate1 content validation. COURSE/HUMAN/RC2/V1 false."
