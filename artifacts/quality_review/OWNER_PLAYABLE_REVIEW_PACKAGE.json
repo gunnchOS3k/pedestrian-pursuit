@@ -3,7 +3,7 @@
   "product": "pedestrian-pursuit",
   "pr": 46,
   "branch": "lane-b/course-build-fix",
-  "generated_at_utc": "2026-10-30T22:37:14Z",
+  "generated_at_utc": "2026-10-30T22:40:15Z",
   "tip_policy": "recover against remote tip; stamp with git rev-parse HEAD at review time",
   "CURSOR_COMPLETE": false,
   "HUMAN_FUN_APPROVAL": false,
@@ -63,6 +63,6 @@
     "human a11y certification",
     "owner eight-cup camera sign-off"
   ],
-  "tip_sha": "5781efd0599624d15d8a566ae194269a86d2403d",
+  "tip_sha": "7b0f278035c19f389b0492b627cccb89f7684353",
   "pr_head_expected": "5781efd0599624d15d8a566ae194269a86d2403d"
 }
