@@ -1,24 +1,26 @@
 # Mac MoltenVK / Metal status (honest)
 
-**Verdict (this tip / this machine):** `moltenvk_metal_pass = true` for **display-backed Metal multi-track observe** on Apple M2 / Godot 4.7.1.
+**Verdict:** `moltenvk_metal_pass = true` for **10-track display-backed Metal matrix** on Apple M2 / Godot 4.7.1 (tip `31944a9c99b4823a79b15c15d45b2180b4000eae` CI green).
 
 **Still false:** COURSE_ACCEPTED / HUMAN / RC2 / V1; physical 8-human PartyLink; commercial art.
 
-## Matrix (S7c — tip 3cd4145 CI green)
+## Matrix (S7f)
 
-| Track | COMPLETED_LAPS | RESULTS_PATH | REACQUIRE | Metal |
-| --- | --- | --- | --- | --- |
-| verdant_cascade_circuit | 3 | true | 0 | Metal 4.0 Forward+ M2 |
-| cloudstep_ridge | 3 | true | 0 | Metal 4.0 Forward+ M2 |
-| sneaker_city_sprintway | 3 | true | 0 | Metal 4.0 Forward+ M2 |
-| mirage_mesa | 3 | true | 0 | Metal 4.0 Forward+ M2 |
-| lantern_corridor | 3 | true | 0 | Metal 4.0 Forward+ M2 |
-| stack_corridor | 3 | true | 0 | Metal 4.0 Forward+ M2 |
+| Track | Laps | RESULTS_PATH | REACQUIRE |
+| --- | --- | --- | --- |
+| verdant_cascade_circuit | 3 | true | 0 |
+| cloudstep_ridge | 3 | true | 0 |
+| sneaker_city_sprintway | 3 | true | 0 |
+| mirage_mesa | 3 | true | 0 |
+| lantern_corridor | 3 | true | 0 |
+| stack_corridor | 3 | true | 0 |
+| neon_switchyard | 3 | true | 1 |
+| metro_pulse_loop | 3 | true | 0 |
+| prism_apex | 3 | true | 0 |
+| tideglass_harbor | 3 | true | 0 |
 
-Evidence: `artifacts/moltenvk/METAL_MULTI_TRACK_MATRIX.json` + packet `metal_matrix/`.
+Evidence: `artifacts/moltenvk/METAL_MULTI_TRACK_MATRIX.json`
 
-## Explicit non-claims
-
-- Not inferred from Gate1 Linux, Windows Pilot, or Darwin headless GL.
-- Historical SPIRV crash not reproduced on this tip/machine; other Macs may differ.
-- Soft/championship tracks held under strengthened race gates on Metal.
+## Non-claims
+- Not inferred from Gate1/Windows/headless GL.
+- Historical SPIRV crash not reproduced on this tip/machine.

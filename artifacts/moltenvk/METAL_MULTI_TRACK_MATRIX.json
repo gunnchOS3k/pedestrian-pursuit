@@ -1,6 +1,6 @@
 {
   "schema": "pp_metal_multi_track_matrix/v1",
-  "tip_sha": "3cd4145fbf0a1d3a49af0f1c57693a23f27e6891",
+  "tip_sha": "31944a9c99b4823a79b15c15d45b2180b4000eae",
   "godot": "4.7.1.stable.official a13da4feb",
   "platform": "darwin-metal-apple-m2",
   "tracks": [
@@ -69,6 +69,50 @@
       "TELEPORT_FALSE_FINISH": "false",
       "COURSE_ACCEPTED": "false",
       "pass": true
+    },
+    {
+      "track_id": "neon_switchyard",
+      "renderer": "Metal 4.0 Forward+ Apple M2",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "FINISH_TRIGGER": "true",
+      "REACQUIRE_COUNT": "1",
+      "TELEPORT_FALSE_FINISH": "false",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "metro_pulse_loop",
+      "renderer": "Metal 4.0 Forward+ Apple M2",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "FINISH_TRIGGER": "true",
+      "REACQUIRE_COUNT": "0",
+      "TELEPORT_FALSE_FINISH": "false",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "prism_apex",
+      "renderer": "Metal 4.0 Forward+ Apple M2",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "FINISH_TRIGGER": "true",
+      "REACQUIRE_COUNT": "0",
+      "TELEPORT_FALSE_FINISH": "false",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "tideglass_harbor",
+      "renderer": "Metal 4.0 Forward+ Apple M2",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "FINISH_TRIGGER": "true",
+      "REACQUIRE_COUNT": "0",
+      "TELEPORT_FALSE_FINISH": "false",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
     }
   ],
   "all_pass": true,
@@ -77,6 +121,6 @@
   "HUMAN": false,
   "RC2": false,
   "V1": false,
-  "generated_at": "2026-10-30T19:28:36Z",
-  "notes": "6-track display-backed Metal matrix after tip 3cd4145 Gate1+Windows green. COURSE/HUMAN/RC2/V1 false."
+  "generated_at": "2026-10-30T21:16:32Z",
+  "notes": "10-track Metal matrix after tip 31944a9 Gate1+Windows green. Soft+championship cups. COURSE/HUMAN/RC2/V1 false."
 }
