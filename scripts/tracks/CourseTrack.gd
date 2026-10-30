@@ -1531,7 +1531,19 @@ func _sculpt_landmark(root: Node3D, landmark_id: String, accent: Color) -> void:
 			_add_visual_box(root, Vector3(-4.5, 3.0, 0.0), Vector3(1.0, 6.0, 1.0), Color(0.35, 0.35, 0.4))
 			_add_visual_box(root, Vector3(4.5, 3.0, 0.0), Vector3(1.0, 6.0, 1.0), Color(0.35, 0.35, 0.4))
 			_add_visual_box(root, Vector3(0.0, 6.2, 0.0), Vector3(10.0, 0.7, 1.1), accent, true)
-		"river_bank", "fence_line", "basalt_walls", "shelf_row_a", "shelf_row_b", "storefront_row", "stall_row", "roof_vent_row":
+		"storefront_row", "stall_row":
+			## Awning + window rhythm — chase-cam reads city cups without racing-line collision.
+			_add_visual_box(root, Vector3(0.0, 1.4, 0.0), Vector3(11.0, 2.8, 1.8), accent.darkened(0.28))
+			_add_visual_box(root, Vector3(0.0, 3.0, 0.55), Vector3(11.4, 0.35, 1.4), accent, true)
+			for n in range(3):
+				_add_visual_box(
+					root,
+					Vector3(float(n - 1) * 3.2, 1.6, 0.55),
+					Vector3(2.2, 1.6, 0.2),
+					accent.lightened(0.18),
+					true
+				)
+		"river_bank", "fence_line", "basalt_walls", "shelf_row_a", "shelf_row_b", "roof_vent_row":
 			_add_visual_box(root, Vector3(0.0, 1.2, 0.0), Vector3(10.0, 2.4, 1.6), accent.darkened(0.25))
 			_add_visual_box(root, Vector3(0.0, 2.6, 0.4), Vector3(8.0, 0.35, 0.45), accent, true)
 		"barn_silhouette", "glass_shed", "switch_tower", "boardwalk_shed", "pulse_station", "catalog_desk", "glass_facade", "hvac_island":

@@ -11,5 +11,6 @@
 ## Camera / env increments
 
 1. Per-track chase IDs for cups 3–8 retained; boost FOV punch 0.28→0.32 with reduce-motion still freezing FOV.
-2. S7b: `ridge_cairn` / `cliff_cairn` stacked-sphere silhouette (distinct from generic spire) for chase-cam readability.
-3. Footwear vehicles: shared archetypes OK when declared; cosmetics remain honest.
+2. S7b: `ridge_cairn` / `cliff_cairn` stacked-sphere silhouette.
+3. S7d: `storefront_row` / `stall_row` awning+window rhythm for city chase readability.
+4. Footwear vehicles: shared archetypes OK when declared; cosmetics remain honest.

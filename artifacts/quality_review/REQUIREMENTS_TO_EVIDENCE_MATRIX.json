@@ -5,7 +5,7 @@
   "contract_source_sha": "45b456617002569c33a5a27fe30d5cf8be5a7032",
   "product_id": "pedestrian-pursuit",
   "product_repo": "https://github.com/gunnchOS3k/pedestrian-pursuit",
-  "generated_at": "2026-10-30T19:28:36Z",
+  "generated_at": "2026-10-30T20:05:51Z",
   "honesty_flags": {
     "HUMAN": false,
     "RC2": false,
@@ -324,9 +324,13 @@
       "layers": [
         6
       ],
-      "tests": [],
+      "tests": [
+        "tests/AccessibilityBaselineTest.gd"
+      ],
       "automated_evidence": [
-        "scripts/core/AccessibilitySettings.gd"
+        "scripts/core/AccessibilitySettings.gd",
+        "tests/AccessibilityBaselineTest.gd",
+        "scripts/player/CameraRig.gd"
       ],
       "native_physical": {
         "status": "not_run",
@@ -338,9 +342,10 @@
         "Not WCAG certification"
       ],
       "severity": "medium",
-      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
+      "sha": "6428848c8f7ed135e9783ccd66cdc00e51fb82b7",
       "independent_review_status": "not_started",
-      "cursor_complete_status": "in_progress"
+      "cursor_complete_status": "in_progress",
+      "notes": "Digital a11y baseline PASS (reduce-motion FOV contract, larger_ui, colorblind HUD, auto-accel). Not WCAG/HUMAN."
     },
     {
       "req_id": "PP-RTM-11",
@@ -371,9 +376,10 @@
         "Owner eight-cup camera sign-off pending"
       ],
       "severity": "high",
-      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
+      "sha": "6428848c8f7ed135e9783ccd66cdc00e51fb82b7",
       "independent_review_status": "not_started",
-      "cursor_complete_status": "in_progress"
+      "cursor_complete_status": "in_progress",
+      "notes": "Storefront/stall awning silhouette + ridge cairn; chase IDs retained. Candidate\u2260commercial; COURSE false."
     },
     {
       "req_id": "PP-RTM-12",
