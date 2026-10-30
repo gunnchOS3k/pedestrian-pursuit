@@ -247,7 +247,7 @@
         "Not Mac Metal/MoltenVK"
       ],
       "severity": "high",
-      "sha": "82c16a3bb9e920d6a9131ba7047bba555cfdbfe2",
+      "sha": "90c964f8f7ee345d96a4dc8fd2c8b847c0af0533",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
       "notes": "Keep 2-client vs allocated seats vs connected vs physical 8p distinct. COURSE_ACCEPTED false."
