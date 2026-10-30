@@ -3,7 +3,7 @@
   "product": "pedestrian-pursuit",
   "pr": 46,
   "branch": "lane-b/course-build-fix",
-  "generated_at_utc": "2026-10-29T20:05:00Z",
+  "generated_at_utc": "2026-10-30T22:37:14Z",
   "tip_policy": "recover against remote tip; stamp with git rev-parse HEAD at review time",
   "CURSOR_COMPLETE": false,
   "HUMAN_FUN_APPROVAL": false,
@@ -21,7 +21,7 @@
   },
   "pvs": {
     "contract": "GUNNCHOS3K_PVS@1.0.0",
-    "contract_source_sha": "45b456617002569c33a5a27fe30d5cf8be5a7032",
+    "contract_source_sha": "935eb3a20548b1a4b726f2ba305df94ff496be16",
     "rtm_canonical": "artifacts/quality_review/REQUIREMENTS_TO_EVIDENCE_MATRIX.json",
     "independent_review": "not_started"
   },
@@ -36,7 +36,9 @@
     "boost_racing_feel_punch": true,
     "footwear_trail_family_profiles": true,
     "wardrobe_chase_stripe": true,
-    "catalog_rebuild": false
+    "catalog_rebuild": false,
+    "rooftop_hvac_boardwalk_pulse_silhouette_deepen": true,
+    "metal_matrix_18": true
   },
   "honesty_packets": {
     "partylink_2_8": "artifacts/multiplayer/EIGHT_HUMAN_PARTY_PACKET.md",
@@ -46,7 +48,7 @@
   },
   "owner_review_checklist": [
     "Play one race per cup (8) on desktop or Pixel; note chase readability vs fatigue",
-    "Confirm cups 3–8 landmark silhouettes read as course identity (not generic boxes)",
+    "Confirm cups 3\u20138 landmark silhouettes read as course identity (not generic boxes)",
     "Confirm footwear trail family colors remain distinguishable in crowded fields",
     "Confirm wardrobe cosmetics never alter handling",
     "Confirm PartyLink seat labels: bots never shown as humans",
@@ -57,8 +59,10 @@
     "human fun/course approvals",
     "physical 8-human PartyLink",
     "Mac MoltenVK/Metal",
-    "cups 3–8 multi-track full-race CI matrix",
+    "cups 3\u20138 multi-track full-race CI matrix",
     "human a11y certification",
     "owner eight-cup camera sign-off"
-  ]
+  ],
+  "tip_sha": "5781efd0599624d15d8a566ae194269a86d2403d",
+  "pr_head_expected": "5781efd0599624d15d8a566ae194269a86d2403d"
 }

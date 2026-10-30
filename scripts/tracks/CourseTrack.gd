@@ -1543,12 +1543,54 @@ func _sculpt_landmark(root: Node3D, landmark_id: String, accent: Color) -> void:
 					accent.lightened(0.18),
 					true
 				)
-		"river_bank", "fence_line", "basalt_walls", "shelf_row_a", "shelf_row_b", "roof_vent_row":
+		"river_bank", "fence_line", "basalt_walls", "shelf_row_a", "shelf_row_b":
 			_add_visual_box(root, Vector3(0.0, 1.2, 0.0), Vector3(10.0, 2.4, 1.6), accent.darkened(0.25))
 			_add_visual_box(root, Vector3(0.0, 2.6, 0.4), Vector3(8.0, 0.35, 0.45), accent, true)
-		"barn_silhouette", "glass_shed", "switch_tower", "boardwalk_shed", "pulse_station", "catalog_desk", "glass_facade", "hvac_island":
+		"roof_vent_row":
+			## Rooftop HVAC vent rhythm — chase-cam reads ribbon cups vs flat shelf rows.
+			for n in range(4):
+				_add_visual_box(
+					root,
+					Vector3(float(n - 1.5) * 2.4, 1.1, 0.0),
+					Vector3(1.6, 2.2, 1.6),
+					accent.darkened(0.18)
+				)
+				_add_visual_cylinder(
+					root,
+					Vector3(float(n - 1.5) * 2.4, 2.6, 0.0),
+					0.55,
+					1.1,
+					accent,
+					true
+				)
+		"barn_silhouette", "switch_tower", "catalog_desk", "glass_facade":
 			_add_visual_box(root, Vector3(0.0, 2.4, 0.0), Vector3(6.5, 4.8, 5.0), accent.darkened(0.2))
 			_add_visual_box(root, Vector3(0.0, 5.2, 0.0), Vector3(7.2, 0.8, 5.6), accent.lightened(0.1))
+		"hvac_island":
+			## Rooftop plant island — wide plinth + twin stacks for skyline chase ID.
+			_add_visual_box(root, Vector3(0.0, 0.9, 0.0), Vector3(8.5, 1.8, 6.5), accent.darkened(0.25))
+			_add_visual_cylinder(root, Vector3(-2.2, 3.2, 0.0), 1.2, 4.0, Color(0.3, 0.3, 0.34), true)
+			_add_visual_cylinder(root, Vector3(2.2, 2.8, 0.0), 1.0, 3.2, accent.darkened(0.1), true)
+			_add_visual_box(root, Vector3(0.0, 2.0, 2.4), Vector3(3.5, 1.4, 1.6), accent, true)
+		"boardwalk_shed":
+			## Saltline pier shed — raised deck + lean-to roof for boardwalk chase read.
+			_add_visual_box(root, Vector3(0.0, 0.6, 0.0), Vector3(8.0, 0.35, 5.5), accent.darkened(0.3))
+			_add_visual_box(root, Vector3(0.0, 2.2, 0.0), Vector3(6.0, 3.2, 4.2), accent.darkened(0.15))
+			_add_visual_box(root, Vector3(0.0, 4.2, 0.0), Vector3(7.2, 0.45, 5.0), accent.lightened(0.08), true)
+			_add_visual_box(root, Vector3(3.6, 1.5, 0.0), Vector3(0.35, 3.0, 0.35), Color(0.28, 0.26, 0.22))
+			_add_visual_box(root, Vector3(-3.6, 1.5, 0.0), Vector3(0.35, 3.0, 0.35), Color(0.28, 0.26, 0.22))
+		"glass_shed":
+			## Harbor glass shed — translucent frame box + ridge for tideglass chase ID.
+			_add_visual_box(root, Vector3(0.0, 2.0, 0.0), Vector3(5.5, 4.0, 4.0), accent.lightened(0.22), true)
+			_add_visual_box(root, Vector3(0.0, 4.4, 0.0), Vector3(6.2, 0.35, 4.6), accent.darkened(0.05))
+			_add_visual_box(root, Vector3(-2.4, 2.0, 0.0), Vector3(0.25, 4.0, 4.0), Color(0.35, 0.4, 0.45))
+			_add_visual_box(root, Vector3(2.4, 2.0, 0.0), Vector3(0.25, 4.0, 4.0), Color(0.35, 0.4, 0.45))
+		"pulse_station":
+			## Metro pulse kiosk — vertical totem + canopy for elevated-rail chase ID.
+			_add_visual_box(root, Vector3(0.0, 2.6, 0.0), Vector3(2.2, 5.2, 2.2), accent.darkened(0.18))
+			_add_visual_box(root, Vector3(0.0, 5.6, 0.0), Vector3(4.8, 0.4, 4.8), accent, true)
+			_add_visual_sphere(root, Vector3(0.0, 6.4, 0.0), 0.85, accent.lightened(0.2), true)
+			_add_visual_box(root, Vector3(0.0, 1.0, 1.4), Vector3(3.2, 1.6, 0.35), accent.lightened(0.1), true)
 		"ridge_cairn", "cliff_cairn":
 			## Stacked cairn silhouette — readable at chase FOV without colliding the racing line.
 			_add_visual_sphere(root, Vector3(0.0, 1.1, 0.0), 1.8, accent.darkened(0.15), true)

@@ -1,0 +1,14 @@
+{
+  "schema": "pp_s7i_continue/v1",
+  "base_tip": "5781efd0599624d15d8a566ae194269a86d2403d",
+  "hvac_island_silhouette": true,
+  "roof_vent_row_silhouette": true,
+  "boardwalk_shed_silhouette": true,
+  "glass_shed_silhouette": true,
+  "pulse_station_silhouette": true,
+  "COURSE_ACCEPTED": false,
+  "HUMAN": false,
+  "RC2": false,
+  "V1": false,
+  "generated_at": "2026-10-30T22:37:14Z"
+}

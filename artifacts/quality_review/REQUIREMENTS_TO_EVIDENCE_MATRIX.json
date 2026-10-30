@@ -5,7 +5,7 @@
   "contract_source_sha": "45b456617002569c33a5a27fe30d5cf8be5a7032",
   "product_id": "pedestrian-pursuit",
   "product_repo": "https://github.com/gunnchOS3k/pedestrian-pursuit",
-  "generated_at": "2026-10-30T22:25:15Z",
+  "generated_at": "2026-10-30T22:37:14Z",
   "honesty_flags": {
     "HUMAN": false,
     "RC2": false,
@@ -311,10 +311,10 @@
         "Not physical 8-human PartyLink"
       ],
       "severity": "blocker",
-      "sha": "926fced04c88a71c5b1e386690d1a75db06a151b",
+      "sha": "5781efd0599624d15d8a566ae194269a86d2403d",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
-      "notes": "Display-backed Metal observe evidence \u2014 not inferred from Gate1/Windows/headless GL."
+      "notes": "Display-backed Metal observe evidence \u2014 not inferred from Gate1/Windows/headless GL. S7I: rooftop HVAC/vent + boardwalk/glass shed + metro pulse silhouettes deepened; candidate\u2260commercial."
     },
     {
       "req_id": "PP-RTM-10",
@@ -376,10 +376,10 @@
         "Owner eight-cup camera sign-off pending"
       ],
       "severity": "high",
-      "sha": "926fced04c88a71c5b1e386690d1a75db06a151b",
+      "sha": "5781efd0599624d15d8a566ae194269a86d2403d",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
-      "notes": "afterglow_sign + prior neon/signal silhouettes; candidate\u2260commercial."
+      "notes": "afterglow_sign + prior neon/signal silhouettes; candidate\u2260commercial. S7I: rooftop HVAC/vent + boardwalk/glass shed + metro pulse silhouettes deepened; candidate\u2260commercial."
     },
     {
       "req_id": "PP-RTM-12",
