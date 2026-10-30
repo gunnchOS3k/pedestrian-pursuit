@@ -84,8 +84,10 @@ func _ready() -> void:
 		field_roster = GameManager.get_meta("party_link_runtime_roster")
 	_stamp_seat_ownership(player, 0, field_roster)
 
-	# Local MP: second human + vertical split-screen cameras.
-	if GameManager.is_local_mp():
+	# Second local human: couch Local MP, or PartyLink connected>=2 (BeatLink sibling max).
+	# Does NOT invent 8 humans; physical 8p remains owner/QA (PP-RTM-08).
+	var party_extra := GameManager.is_party_link() and int(GameManager.party_link_connected_humans) >= 2
+	if GameManager.is_local_mp() or party_extra:
 		local_p2 = AI_SCENE.instantiate()
 		local_p2.name = "Player2Racer"
 		add_child(local_p2)
@@ -107,16 +109,17 @@ func _ready() -> void:
 		local_p2.setup_for_race(p2_start)
 		if local_p2.has_method("setup_rails"):
 			local_p2.setup_rails(track.get_rail_world_points())
-		## Local MP seat 1 is a second connected human — not CPU, not PartyLink 8p.
+		## Seat 1 is a second connected human — not CPU, not physical 8p.
 		local_p2.set_meta("seat_index", 1)
 		local_p2.set_meta("seat_owner", "human")
 		local_p2.set_meta("input_ownership", "human_input")
 		local_p2.set_meta("counts_as_human_participant", true)
 		local_p2.set_meta("allocated_human_capacity", true)
 		racers.append(local_p2)
-		ai_count = mini(ai_count, 2)
-		_setup_local_mp_split(local_p2)
-
+		if GameManager.is_local_mp():
+			ai_count = mini(ai_count, 2)
+			_setup_local_mp_split(local_p2)
+		## PartyLink dual keeps full 8-racer field (no split) — remaining seats are CPU.
 	for i in ai_count:
 		var ai: Node = ai_racer if i == 0 and not GameManager.is_local_mp() else AI_SCENE.instantiate()
 		if i > 0 or GameManager.is_local_mp():
@@ -152,9 +155,9 @@ func _ready() -> void:
 			ai.configure_shortcuts(track.get_shortcut_routes())
 		if ai.has_method("notify_shoe_changed"):
 			ai.notify_shoe_changed()
-		## Seat index: player=0; local-MP P2 occupies 1; AI fill remaining seats.
+		## Seat index: player=0; local P2 (Local MP or PartyLink dual) occupies 1; AI fill rest.
 		var seat_i := i + 1
-		if GameManager.is_local_mp() and local_p2 != null:
+		if local_p2 != null:
 			seat_i = i + 2
 		_stamp_seat_ownership(ai, seat_i, field_roster)
 		racers.append(ai)

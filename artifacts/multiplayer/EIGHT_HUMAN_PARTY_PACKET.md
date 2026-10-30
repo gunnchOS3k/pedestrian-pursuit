@@ -46,3 +46,9 @@ Contract source: `scripts/net/OnlineArchitecture.gd` (`partylink_seat_map` + `pa
 - Independent two-process BeatLink sibling race restored via `contracts/beatlink_sibling_rooms` (BeatLink repo not edited): **2 digital clients**, not 8 humans.
 - PartyLink field observe remains honest **1 connected human + 7 CPU** until additional independent clients are present.
 - Bots ≠ humans. Physical 8-human PartyLink still **false / not executed**.
+
+## S7 ownership advance
+
+- Dual connected PartyLink observe (`tests/DualConnectedPartyLinkObserve.gd`): **2 humans + 6 CPU** on allocated-8 field.
+- Still bots≠humans; BeatLink sibling max local extras = 2; physical 8p **false**.
+- Independent two-process remains a separate GAME_SESSION_DIR artifact.

@@ -118,6 +118,28 @@ func _run() -> void:
 		if int(live.get("cpu_seats", -1)) != 7:
 			failures.append("runtime roster cpu_seats != 7")
 
+	## BeatLink-sibling dual connected (2h+6cpu) — still bots≠humans, not physical 8p.
+	gm.start_party_link("lantern_corridor", 8, 2)
+	if int(gm.party_link_connected_humans) != 2:
+		failures.append("dual connected_humans must be 2")
+	if int(gm.ai_field_size) != 6:
+		failures.append("dual field should be player + local P2 + 6 AI = 8")
+	if int(gm.get_meta("party_link_local_extra_humans")) != 1:
+		failures.append("party_link_local_extra_humans must be 1 for connected=2")
+	var dual: Dictionary = gm.get_meta("party_link_runtime_roster")
+	if int(dual.get("connected_humans", -1)) != 2:
+		failures.append("dual roster connected_humans != 2")
+	if int(dual.get("cpu_seats", -1)) != 6:
+		failures.append("dual roster cpu_seats != 6")
+	## Cap: connected beyond BeatLink sibling still clamps seats; never invent 8 humans here.
+	gm.start_party_link("lantern_corridor", 8, 8)
+	if int(gm.party_link_connected_humans) != 8:
+		failures.append("roster may record connected=8 when requested")
+	if int(gm.get_meta("party_link_local_extra_humans")) != 1:
+		failures.append("local extra humans must stay BeatLink-sibling capped at 1")
+	if int(gm.ai_field_size) != 6:
+		failures.append("local field wiring stays sibling-2 even if allocated/connected ask for 8")
+
 	## Course still builds under PartyLink track pick (Neon Night candidate).
 	var data := TrackCatalogScript.load_track("lantern_corridor")
 	var course: Node = CourseTrackScript.new()

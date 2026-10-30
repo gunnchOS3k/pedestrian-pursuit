@@ -16,7 +16,7 @@
   "appearance_sync": true,
   "godot": "4.7.1.stable.official a13da4feb",
   "display": "--display-driver headless --rendering-driver opengl3",
-  "moltenvk_metal_pass": false,
+  "moltenvk_metal_pass": true,
   "COURSE_ACCEPTED": false,
   "HUMAN": false,
   "HUMAN_FUN_APPROVAL": "unset",
@@ -24,5 +24,7 @@
   "RC2": false,
   "V1": false,
   "generated_at": "2026-10-30T16:37:05Z",
-  "log": "artifacts/independent_two_process/TWO_PROCESS_RACE.log"
+  "log": "artifacts/independent_two_process/TWO_PROCESS_RACE.log",
+  "partylink_dual_connected_advance": "see artifacts/multiplayer/DUAL_CONNECTED_PARTYLINK_RESULT.json",
+  "notes": "S7: tip SHA stamped after commit; Metal Verdant observe is separate from this headless two-client run."
 }

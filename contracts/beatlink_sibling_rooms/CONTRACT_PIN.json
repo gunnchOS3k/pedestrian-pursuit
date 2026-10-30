@@ -7,8 +7,9 @@
     "apps/server/src/rooms/partyLifecycle.mjs",
     "apps/server/src/rooms/gameSessionContract.mjs"
   ],
-  "source_sha": "09e566061d1e839c0d18573a68f725006c7bb843",
+  "source_sha": "55825f4775615a2bd2f3099cb5ca5bfa98ddbf02",
+  "prior_source_sha": "09e566061d1e839c0d18573a68f725006c7bb843",
   "consumer": "tools/game_session_two_client.mjs",
   "beatlink_edited": false,
-  "notes": "Frozen permitted cross-repo contract copy. Prefer BEATLINK_ROOMS_ROOT env to point at a live sibling checkout when coordinated; default to this pin."
+  "notes": "Frozen permitted cross-repo contract copy (rooms modules unchanged vs 09e5660 pin content). Prefer BEATLINK_ROOMS_ROOT for live sibling; default to this pin. BeatLink repo not edited from Pedestrian."
 }

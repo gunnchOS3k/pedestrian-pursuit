@@ -1,24 +1,22 @@
 # Mac MoltenVK / Metal status (honest)
 
-**Verdict:** `moltenvk_metal_pass = false`
+**Verdict (this tip / this machine):** `moltenvk_metal_pass = true` for **Verdant display-backed Metal observe** on Apple M2 / Godot 4.7.1.
 
-## What passed
+**Still false:** COURSE_ACCEPTED / HUMAN / RC2 / V1; physical 8-human PartyLink; commercial art.
 
-- Darwin **headless + opengl3** course observe / packaging smoke on tip `41ccfb0bbcc560112ef62cee28037568ae53f440`.
-- Soft-track re-proof (cloudstep_ridge, sneaker_city_sprintway) under strengthened gate.
-- CourseBuildSurfaceTest PASS (landmarks/hazards retained after soften).
+## What passed (S7)
 
-## What did **not** pass
+- Darwin **Metal 4.0 Forward+** (Apple M2) windowed Godot launch (not `--headless`, not forced `opengl3`).
+- `VerdantRaceSceneObserve` on `verdant_cascade_circuit`: COMPLETED_LAPS=3, RESULTS_PATH=true, FINISH_TRIGGER=true, REACQUIRE=0, TELEPORT_FALSE_FINISH=false.
+- Evidence: packet `shift-s7-pedestrian-continue-20261030/moltenvk-metal-observe.log` (+ short boot `moltenvk-metal-probe.log`).
 
-- Native Mac **Metal / MoltenVK** windowed or display-backed race.
-- Historical symptom remains: `SIGSEGV` in `mvk::SPIRVToMSLConverter` when the Metal path is taken.
-- Headless GL is packaging/smoke evidence only — **not** a Metal certificate.
-- Linux Gate1 CI remains the authoritative Godot script gate for PR tips.
+## What this is **not**
 
-## Physical review
-
-See `artifacts/moltenvk/PHYSICAL_REVIEW_BUILD_PACKET.md` (prepare-only).
+- Not a claim that every historical MoltenVK/SPIRV crash is gone on every Mac.
+- Historical `SIGSEGV` in `mvk::SPIRVToMSLConverter` remains documented; this tip re-tested without that crash on M2.
+- Not Gate1 Linux green ⇒ Metal; Gate1 content/Windows remain separate CI surfaces.
+- Headless GL remains packaging/smoke only when Metal is not the active driver.
 
 ## Operator rule
 
-Do not claim Mac MoltenVK/Metal pass from Gate1 Linux CI, Windows Pilot, or Darwin headless GL. Re-test Metal only with an explicit display-backed Godot Metal run and a new dated evidence file.
+Re-test Metal on the exact tip under review with `--rendering-driver metal` (no headless). Keep COURSE/HUMAN/RC2/V1 false until owner authority.

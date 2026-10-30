@@ -5,7 +5,7 @@
   "contract_source_sha": "935eb3a20548b1a4b726f2ba305df94ff496be16",
   "product_id": "pedestrian-pursuit",
   "product_repo": "https://github.com/gunnchOS3k/pedestrian-pursuit",
-  "generated_at": "2026-10-30T17:10:26Z",
+  "generated_at": "2026-10-30T17:12:43Z",
   "honesty_flags": {
     "HUMAN": false,
     "COURSE_ACCEPTED": false,
@@ -17,7 +17,7 @@
   "phase_summary": {
     "cursor_complete": {
       "status": "in_progress",
-      "notes": "S6: FF PR#46 tip; soft-track obstacles retained; BeatLink sibling rooms contract pin restored for independent two-client. COURSE_ACCEPTED/HUMAN/RC2/V1 false. Cursor Complete not claimed."
+      "notes": "S7: Gate1 stack_corridor lane_width fix; dual PartyLink 2h+6cpu; Metal Verdant observe PASS on M2; BeatLink sibling pin coord @55825f4 (no BeatLink edit). COURSE/HUMAN/RC2/V1 false. Cursor Complete not claimed."
     },
     "codex_independently_verified": {
       "status": "not_started"
@@ -196,7 +196,8 @@
         "tests/GameSessionTwoMemberRace.gd"
       ],
       "automated_evidence": [
-        "artifacts/independent_two_process/INDEPENDENT_CLIENTS_RACE_RESULT.json"
+        "artifacts/independent_two_process/INDEPENDENT_CLIENTS_RACE_RESULT.json",
+        "contracts/beatlink_sibling_rooms/CONTRACT_PIN.json"
       ],
       "native_physical": {
         "status": "partial",
@@ -208,14 +209,14 @@
       },
       "art_status": "not_applicable",
       "limitations": [
-        "Not Mac MoltenVK/Metal",
-        "Not physical 8-human PartyLink"
+        "Not physical 8-human PartyLink",
+        "Metal proven separately on PP-RTM-09"
       ],
       "severity": "blocker",
       "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
-      "notes": "Keep 2-client vs 8-human physical vs Mac Metal/MoltenVK distinct."
+      "notes": "S6/S7: BeatLink sibling rooms pin restores independent two-client. Distinct from PartyLink dual seat and Metal."
     },
     {
       "req_id": "PP-RTM-07",
@@ -229,31 +230,32 @@
       ],
       "tests": [
         "tests/PartyLinkCapacityTest.gd",
-        "tests/EightRacerFieldObserve.gd"
+        "tests/EightRacerFieldObserve.gd",
+        "tests/DualConnectedPartyLinkObserve.gd"
       ],
       "automated_evidence": [
-        "artifacts/multiplayer/EIGHT_HUMAN_PARTY_PACKET.md"
+        "artifacts/multiplayer/EIGHT_HUMAN_PARTY_PACKET.md",
+        "artifacts/multiplayer/DUAL_CONNECTED_PARTYLINK_RESULT.json"
       ],
       "native_physical": {
         "status": "partial",
         "platforms": [
           "darwin-headless-opengl3"
         ],
-        "notes": "Eight-actor headless field + seat honesty local. Physical 8-human remains PP-RTM-08. Not Metal."
+        "notes": "1h+7cpu eight-racer + 2h+6cpu dual sibling local. Physical 8p open. bots\u2260humans."
       },
       "art_status": "not_applicable",
       "limitations": [
         "Bots \u2260 humans",
         "Allocated seats \u2260 connected humans",
         "BeatLink sibling remains 2 humans",
-        "Not physical 8p",
-        "Not Mac Metal/MoltenVK"
+        "Not physical 8p"
       ],
       "severity": "high",
       "sha": "82c16a3bb9e920d6a9131ba7047bba555cfdbfe2",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
-      "notes": "Keep 2-client vs allocated seats vs connected vs physical 8p distinct. COURSE_ACCEPTED false."
+      "notes": "Ownership advanced beyond 1h+7cpu via dual connected PartyLink (2h+6cpu). COURSE_ACCEPTED false."
     },
     {
       "req_id": "PP-RTM-08",
@@ -298,22 +300,23 @@
         "artifacts/moltenvk/PHYSICAL_REVIEW_BUILD_PACKET.md"
       ],
       "native_physical": {
-        "status": "fail",
+        "status": "pass",
         "platforms": [
-          "darwin-metal-moltenvk"
+          "darwin-metal-apple-m2"
         ],
-        "notes": "Historical SPIRVToMSLConverter SIGSEGV. Linux Gate1 \u2260 Metal."
+        "notes": "Godot 4.7.1 Metal 4.0 Forward+ Verdant observe RESULTS_PATH; historical SPIRV crash not reproduced on this tip/machine."
       },
       "art_status": "not_applicable",
       "limitations": [
-        "moltenvk_metal_pass = false",
-        "Distinct from 2-client headless GL",
-        "Physical review packet prepared; display-backed Metal not passed"
+        "moltenvk_metal_pass = true for Verdant Metal observe on tested M2 tip only",
+        "Not COURSE_ACCEPTED/HUMAN/RC2/V1",
+        "Not physical 8-human PartyLink"
       ],
       "severity": "blocker",
       "sha": "41ccfb0bbcc560112ef62cee28037568ae53f440",
       "independent_review_status": "not_started",
-      "cursor_complete_status": "not_started"
+      "cursor_complete_status": "in_progress",
+      "notes": "Display-backed Metal observe evidence \u2014 not inferred from Gate1/Windows/headless GL."
     },
     {
       "req_id": "PP-RTM-10",
@@ -496,7 +499,7 @@
       "sha": "2e9b17c961d37c75e499980c78998dc076a153c7",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
-      "notes": "S6 integrated tip: 32/32 championship PASS under strengthened gate; soft obstacles retained; BeatLink sibling rooms pin; independent 2-client true; COURSE/HUMAN/RC2/V1 false."
+      "notes": "32/32 RESULTS_PATH under strengthened gate held; S7 stack_corridor route segments fixed for Gate1 content validation. COURSE/HUMAN/RC2/V1 false."
     }
   ]
 }

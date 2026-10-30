@@ -173,8 +173,15 @@ func start_party_link(track_id: String, human_seats: int = 2, connected_humans: 
 		OnlineArchitectureScript.PARTYLINK_MAX_HUMAN_SEATS
 	)
 	party_link_connected_humans = clampi(connected_humans, 0, party_link_human_seats)
-	## Player + AI fill = field 8. Extra connected humans beyond seat 0 need local/net wiring.
-	ai_field_size = OnlineArchitectureScript.PARTYLINK_FIELD_SIZE - 1
+	## Seat 0 = local player. Up to one extra local human seat matches BeatLink sibling (=2).
+	## Beyond sibling-2 requires independent net clients / physical PartyLink (not invented here).
+	var local_extra_humans := clampi(
+		party_link_connected_humans - 1,
+		0,
+		OnlineArchitectureScript.BEATLINK_SIBLING_CONTRACT_HUMANS - 1
+	)
+	## Field = player + local extras + AI = 8.
+	ai_field_size = OnlineArchitectureScript.PARTYLINK_FIELD_SIZE - 1 - local_extra_humans
 	var capacity_map: Dictionary = OnlineArchitectureScript.partylink_seat_map(party_link_human_seats)
 	var roster: Dictionary = OnlineArchitectureScript.partylink_runtime_roster(
 		party_link_human_seats,
@@ -182,6 +189,7 @@ func start_party_link(track_id: String, human_seats: int = 2, connected_humans: 
 	)
 	set_meta("party_link_seat_map", capacity_map)
 	set_meta("party_link_runtime_roster", roster)
+	set_meta("party_link_local_extra_humans", local_extra_humans)
 	reset_race_stats()
 	sync_race_mode_string()
 
