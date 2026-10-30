@@ -2,17 +2,14 @@
   "schema_version": "1.0.0",
   "contract_id": "GUNNCHOS3K_PVS",
   "contract_version": "1.0.0",
-  "contract_source_sha": "935eb3a20548b1a4b726f2ba305df94ff496be16",
+  "contract_source_sha": "45b456617002569c33a5a27fe30d5cf8be5a7032",
   "product_id": "pedestrian-pursuit",
   "product_repo": "https://github.com/gunnchOS3k/pedestrian-pursuit",
   "generated_at": "2026-10-30T17:12:43Z",
   "honesty_flags": {
     "HUMAN": false,
-    "COURSE_ACCEPTED": false,
     "RC2": false,
-    "V1": false,
-    "HUMAN_FUN": false,
-    "HUMAN_COURSE": false
+    "V1": false
   },
   "phase_summary": {
     "cursor_complete": {
@@ -24,7 +21,7 @@
     },
     "human_approval": {
       "status": "not_started",
-      "notes": "HUMAN_FUN / HUMAN_COURSE / COURSE_ACCEPTED / RC2 / V1 remain false."
+      "notes": "HUMAN_FUN / HUMAN_COURSE / COURSE_ACCEPTED / RC2 / V1 remain false (COURSE flags live in notes \u2014 honesty_flags schema allows only HUMAN/RC2/V1)."
     }
   },
   "rows": [
