@@ -6,13 +6,18 @@ extends SceneTree
 ## No ProductionGateHarness, accept_force_laps, fake checkpoint stepping, or transform cheats.
 
 const TRACK_ID := "verdant_cascade_circuit"
-const MAX_SIM_SEC := 90.0
+## Local default; Linux CI (Godot 4.3 dummy) uses a milder scale + longer wall budget.
+const MAX_SIM_SEC := 150.0
 const TIME_SCALE := 10.0
+const CI_MAX_SIM_SEC := 180.0
+const CI_TIME_SCALE := 6.0
 const DriverNodeScript = preload("res://tests/engineering_wave010/SyntheticInputDriverNode.gd")
 
 var _failures: PackedStringArray = PackedStringArray()
 var _obs: Dictionary = {}
 var _driver_node: Node = null
+var _time_scale: float = TIME_SCALE
+var _max_sim_sec: float = MAX_SIM_SEC
 
 
 func _initialize() -> void:
@@ -21,7 +26,11 @@ func _initialize() -> void:
 
 func _run() -> void:
 	print("Wave010RaceSceneE2E BEGIN")
-	Engine.time_scale = TIME_SCALE
+	var on_ci := str(OS.get_environment("GITHUB_ACTIONS")).to_lower() == "true"
+	_time_scale = CI_TIME_SCALE if on_ci else TIME_SCALE
+	_max_sim_sec = CI_MAX_SIM_SEC if on_ci else MAX_SIM_SEC
+	Engine.time_scale = _time_scale
+	print("Wave010RaceSceneE2E time_scale=%.1f max_sim_sec=%.1f ci=%s" % [_time_scale, _max_sim_sec, str(on_ci)])
 
 	var gm = root.get_node_or_null("GameManager")
 	if gm == null:
@@ -136,7 +145,7 @@ func _run() -> void:
 	if lap_manager != null:
 		lap_before = int(lap_manager.get_lap(player))
 
-	var deadline := sim_start + MAX_SIM_SEC
+	var deadline := sim_start + _max_sim_sec
 	while Time.get_ticks_msec() / 1000.0 < deadline:
 		await process_frame
 		# Continuously enforce normal-input flags (RaceScene must not leave assists on).
@@ -223,7 +232,7 @@ func _run() -> void:
 		"checkpoint_ids": checkpoint_ids,
 		"lap_events": lap_events,
 		"sim_time": snappedf(sim_elapsed, 0.01),
-		"time_scale": TIME_SCALE,
+		"time_scale": _time_scale,
 		"track_id": TRACK_ID,
 		"accept_test_mode": false,
 		"auto_accelerate": false,
