@@ -1,0 +1,71 @@
+{
+  "schema": "pp_metal_multi_track_matrix/v1",
+  "godot": "4.7.1.stable.official a13da4feb",
+  "platform": "darwin-metal-apple-m2",
+  "tracks": [
+    {
+      "track_id": "verdant_cascade_circuit",
+      "renderer": "Metal 4.0 Forward+ Apple M2",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "FINISH_TRIGGER": "true",
+      "REACQUIRE_COUNT": "0",
+      "TELEPORT_FALSE_FINISH": "false",
+      "COURSE_ACCEPTED": "false",
+      "HUMAN": "false",
+      "RC2": "false",
+      "V1": "false",
+      "pass": true
+    },
+    {
+      "track_id": "cloudstep_ridge",
+      "renderer": "Metal 4.0 Forward+ Apple M2",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "FINISH_TRIGGER": "true",
+      "REACQUIRE_COUNT": "0",
+      "TELEPORT_FALSE_FINISH": "false",
+      "COURSE_ACCEPTED": "false",
+      "HUMAN": "false",
+      "RC2": "false",
+      "V1": "false",
+      "pass": true
+    },
+    {
+      "track_id": "sneaker_city_sprintway",
+      "renderer": "Metal 4.0 Forward+ Apple M2",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "FINISH_TRIGGER": "true",
+      "REACQUIRE_COUNT": "0",
+      "TELEPORT_FALSE_FINISH": "false",
+      "COURSE_ACCEPTED": "false",
+      "HUMAN": "false",
+      "RC2": "false",
+      "V1": "false",
+      "pass": true
+    },
+    {
+      "track_id": "mirage_mesa",
+      "renderer": "Metal 4.0 Forward+ Apple M2",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "FINISH_TRIGGER": "true",
+      "REACQUIRE_COUNT": "0",
+      "TELEPORT_FALSE_FINISH": "false",
+      "COURSE_ACCEPTED": "false",
+      "HUMAN": "false",
+      "RC2": "false",
+      "V1": "false",
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "moltenvk_metal_pass": true,
+  "COURSE_ACCEPTED": false,
+  "HUMAN": false,
+  "RC2": false,
+  "V1": false,
+  "generated_at": "2026-10-30T18:52:16Z",
+  "notes": "Display-backed Metal observe matrix \u2014 not Gate1/Windows/headless GL. Soft tracks held under strengthened assertions."
+}

@@ -1537,7 +1537,12 @@ func _sculpt_landmark(root: Node3D, landmark_id: String, accent: Color) -> void:
 		"barn_silhouette", "glass_shed", "switch_tower", "boardwalk_shed", "pulse_station", "catalog_desk", "glass_facade", "hvac_island":
 			_add_visual_box(root, Vector3(0.0, 2.4, 0.0), Vector3(6.5, 4.8, 5.0), accent.darkened(0.2))
 			_add_visual_box(root, Vector3(0.0, 5.2, 0.0), Vector3(7.2, 0.8, 5.6), accent.lightened(0.1))
-		"windmill", "ridge_cairn", "mirage_spire", "prism_spires", "cliff_cairn", "seaglass_spire", "obs_spire", "paper_spire", "finale_spire", "antenna_mast", "stage_pylon", "frame_pylon":
+		"ridge_cairn", "cliff_cairn":
+			## Stacked cairn silhouette — readable at chase FOV without colliding the racing line.
+			_add_visual_sphere(root, Vector3(0.0, 1.1, 0.0), 1.8, accent.darkened(0.15), true)
+			_add_visual_sphere(root, Vector3(0.0, 2.8, 0.0), 1.35, accent, true)
+			_add_visual_sphere(root, Vector3(0.0, 4.2, 0.0), 0.95, accent.lightened(0.12), true)
+		"windmill", "mirage_spire", "prism_spires", "seaglass_spire", "obs_spire", "paper_spire", "finale_spire", "antenna_mast", "stage_pylon", "frame_pylon":
 			_add_visual_cylinder(root, Vector3(0.0, 4.5, 0.0), 1.1, 9.0, accent, true)
 			_add_visual_sphere(root, Vector3(0.0, 9.4, 0.0), 1.6, accent.lightened(0.2), true)
 		"forge_towers", "signal_gantry", "draft_gantry", "cable_gantry", "security_gantry", "signal_tower", "storm_tower", "bridge_tower_a", "bridge_tower_b", "depot_crane", "yard_crane":

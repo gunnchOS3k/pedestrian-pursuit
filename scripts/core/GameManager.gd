@@ -172,24 +172,38 @@ func start_party_link(track_id: String, human_seats: int = 2, connected_humans: 
 		OnlineArchitectureScript.PARTYLINK_MIN_HUMAN_SEATS,
 		OnlineArchitectureScript.PARTYLINK_MAX_HUMAN_SEATS
 	)
-	party_link_connected_humans = clampi(connected_humans, 0, party_link_human_seats)
+	## Requested connected (lobby intent) vs wired local humans (field stamps).
+	## Never stamp more humans than we actually spawn — bots ≠ humans.
+	var requested_connected := clampi(connected_humans, 0, party_link_human_seats)
 	## Seat 0 = local player. Up to one extra local human seat matches BeatLink sibling (=2).
 	## Beyond sibling-2 requires independent net clients / physical PartyLink (not invented here).
 	var local_extra_humans := clampi(
-		party_link_connected_humans - 1,
+		requested_connected - 1,
 		0,
 		OnlineArchitectureScript.BEATLINK_SIBLING_CONTRACT_HUMANS - 1
 	)
-	## Field = player + local extras + AI = 8.
-	ai_field_size = OnlineArchitectureScript.PARTYLINK_FIELD_SIZE - 1 - local_extra_humans
+	var wired_humans := 1 + local_extra_humans if requested_connected > 0 else 0
+	party_link_connected_humans = wired_humans
+	## Field = wired humans + AI = 8 (player always occupies seat 0 when wired≥1).
+	if wired_humans >= 1:
+		ai_field_size = OnlineArchitectureScript.PARTYLINK_FIELD_SIZE - wired_humans
+	else:
+		ai_field_size = OnlineArchitectureScript.PARTYLINK_FIELD_SIZE - 1
 	var capacity_map: Dictionary = OnlineArchitectureScript.partylink_seat_map(party_link_human_seats)
+	## Runtime roster stamps only wired humans — requested>wired stays honest meta, not fake seats.
 	var roster: Dictionary = OnlineArchitectureScript.partylink_runtime_roster(
 		party_link_human_seats,
-		party_link_connected_humans
+		wired_humans
 	)
+	roster["requested_connected_humans"] = requested_connected
+	roster["wired_connected_humans"] = wired_humans
+	roster["unwired_requested_humans"] = maxi(requested_connected - wired_humans, 0)
+	roster["note"] = "wired≤BeatLink_sibling_2; unwired requests need independent clients/physical 8p"
 	set_meta("party_link_seat_map", capacity_map)
 	set_meta("party_link_runtime_roster", roster)
 	set_meta("party_link_local_extra_humans", local_extra_humans)
+	set_meta("party_link_requested_connected_humans", requested_connected)
+	set_meta("party_link_wired_connected_humans", wired_humans)
 	reset_race_stats()
 	sync_race_mode_string()
 

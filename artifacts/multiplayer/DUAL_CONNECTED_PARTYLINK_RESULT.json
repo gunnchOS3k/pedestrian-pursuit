@@ -16,5 +16,6 @@
   "results_path": true,
   "log": "packet evidence DualConnectedPartyLinkObserve.log",
   "notes": "PartyLink dual local seats (Player2Racer). Distinct from GAME_SESSION_DIR independent two-process and from physical 8p.",
-  "tip_sha": "0707183c354172ad47e278863b0d6bdc3e567ed2"
+  "tip_sha": "0707183c354172ad47e278863b0d6bdc3e567ed2",
+  "requested_vs_wired": "requested may exceed BeatLink sibling; field stamps only wired\u22642"
 }

@@ -131,14 +131,25 @@ func _run() -> void:
 		failures.append("dual roster connected_humans != 2")
 	if int(dual.get("cpu_seats", -1)) != 6:
 		failures.append("dual roster cpu_seats != 6")
-	## Cap: connected beyond BeatLink sibling still clamps seats; never invent 8 humans here.
+	## Cap: requested 8 must NOT invent 8 wired humans — field stays sibling-2 (2h+6cpu).
 	gm.start_party_link("lantern_corridor", 8, 8)
-	if int(gm.party_link_connected_humans) != 8:
-		failures.append("roster may record connected=8 when requested")
+	if int(gm.get_meta("party_link_requested_connected_humans")) != 8:
+		failures.append("requested_connected_humans must record lobby intent=8")
+	if int(gm.party_link_connected_humans) != 2:
+		failures.append("wired party_link_connected_humans must stay BeatLink-sibling 2 (do not invent humans)")
+	if int(gm.get_meta("party_link_wired_connected_humans")) != 2:
+		failures.append("wired_connected_humans meta must be 2")
 	if int(gm.get_meta("party_link_local_extra_humans")) != 1:
 		failures.append("local extra humans must stay BeatLink-sibling capped at 1")
 	if int(gm.ai_field_size) != 6:
 		failures.append("local field wiring stays sibling-2 even if allocated/connected ask for 8")
+	var capped: Dictionary = gm.get_meta("party_link_runtime_roster")
+	if int(capped.get("connected_humans", -1)) != 2:
+		failures.append("runtime roster must stamp only wired humans (=2), not requested 8")
+	if int(capped.get("cpu_seats", -1)) != 6:
+		failures.append("capped roster cpu_seats != 6")
+	if int(capped.get("unwired_requested_humans", -1)) != 6:
+		failures.append("unwired_requested_humans should be 6 (8 requested − 2 wired)")
 
 	## Course still builds under PartyLink track pick (Neon Night candidate).
 	var data := TrackCatalogScript.load_track("lantern_corridor")

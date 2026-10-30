@@ -5,7 +5,7 @@
   "contract_source_sha": "45b456617002569c33a5a27fe30d5cf8be5a7032",
   "product_id": "pedestrian-pursuit",
   "product_repo": "https://github.com/gunnchOS3k/pedestrian-pursuit",
-  "generated_at": "2026-10-30T17:12:43Z",
+  "generated_at": "2026-10-30T18:52:16Z",
   "honesty_flags": {
     "HUMAN": false,
     "RC2": false,
@@ -14,14 +14,14 @@
   "phase_summary": {
     "cursor_complete": {
       "status": "in_progress",
-      "notes": "S7: Gate1 stack_corridor lane_width fix; dual PartyLink 2h+6cpu; Metal Verdant observe PASS on M2; BeatLink sibling pin coord @55825f4 (no BeatLink edit). COURSE/HUMAN/RC2/V1 false. Cursor Complete not claimed."
+      "notes": "S7b: exact-head Gate1+Windows green @ de9a59b; Metal 4-track matrix PASS; wired\u22642 PartyLink honesty (requested\u2260wired); COURSE/HUMAN/RC2/V1 false. Cursor Complete not claimed."
     },
     "codex_independently_verified": {
       "status": "not_started"
     },
     "human_approval": {
       "status": "not_started",
-      "notes": "HUMAN_FUN / HUMAN_COURSE / COURSE_ACCEPTED / RC2 / V1 remain false (COURSE flags live in notes \u2014 honesty_flags schema allows only HUMAN/RC2/V1)."
+      "notes": "HUMAN_FUN / HUMAN_COURSE / COURSE_ACCEPTED / RC2 / V1 remain false (COURSE flags in notes \u2014 honesty_flags schema allows only HUMAN/RC2/V1)."
     }
   },
   "rows": [
@@ -245,14 +245,14 @@
       "limitations": [
         "Bots \u2260 humans",
         "Allocated seats \u2260 connected humans",
-        "BeatLink sibling remains 2 humans",
+        "Wired local humans \u2264 BeatLink sibling 2",
         "Not physical 8p"
       ],
       "severity": "high",
       "sha": "0351cc546363477f51bafa9b3ef81d068b84c16f",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
-      "notes": "Ownership advanced beyond 1h+7cpu via dual connected PartyLink (2h+6cpu). COURSE_ACCEPTED false."
+      "notes": "Ownership: 1h+7cpu + 2h+6cpu wired; requested>2 recorded but not stamped as humans. bots\u2260humans. Physical 8p open."
     },
     {
       "req_id": "PP-RTM-08",
@@ -294,6 +294,7 @@
       "tests": [],
       "automated_evidence": [
         "artifacts/moltenvk/MOLTENVK_METAL_STATUS.md",
+        "artifacts/moltenvk/METAL_MULTI_TRACK_MATRIX.json",
         "artifacts/moltenvk/PHYSICAL_REVIEW_BUILD_PACKET.md"
       ],
       "native_physical": {
@@ -301,11 +302,11 @@
         "platforms": [
           "darwin-metal-apple-m2"
         ],
-        "notes": "Godot 4.7.1 Metal 4.0 Forward+ Verdant observe RESULTS_PATH; historical SPIRV crash not reproduced on this tip/machine."
+        "notes": "4-track Metal matrix (verdant/cloudstep/sneaker/mirage) RESULTS_PATH under strengthened stamps."
       },
       "art_status": "not_applicable",
       "limitations": [
-        "moltenvk_metal_pass = true for Verdant Metal observe on tested M2 tip only",
+        "moltenvk_metal_pass = true on tested M2 tip/matrix only",
         "Not COURSE_ACCEPTED/HUMAN/RC2/V1",
         "Not physical 8-human PartyLink"
       ],
@@ -489,14 +490,13 @@
       "limitations": [
         "COURSE_ACCEPTED false (human)",
         "HUMAN/RC2/V1 false",
-        "headless line-steer \u2260 human course fun",
-        "Metal/MoltenVK display path not proven"
+        "headless line-steer \u2260 human course fun"
       ],
       "severity": "high",
       "sha": "0351cc546363477f51bafa9b3ef81d068b84c16f",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
-      "notes": "32/32 RESULTS_PATH under strengthened gate held; S7 stack_corridor route segments fixed for Gate1 content validation. COURSE/HUMAN/RC2/V1 false."
+      "notes": "32/32 strengthened gates held; soft tracks re-proved under Metal matrix. COURSE/HUMAN/RC2/V1 false."
     }
   ]
 }
