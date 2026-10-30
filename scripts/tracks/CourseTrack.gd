@@ -1572,7 +1572,11 @@ func _sculpt_landmark(root: Node3D, landmark_id: String, accent: Color) -> void:
 			_add_visual_cylinder(root, Vector3(-2.2, 2.6, 0.0), 1.8, 0.35, accent, true)
 			_add_visual_cylinder(root, Vector3(2.2, 2.6, 0.0), 1.8, 0.35, accent.lightened(0.12), true)
 			_add_visual_box(root, Vector3(0.0, 1.0, 0.0), Vector3(1.2, 2.0, 1.2), Color(0.22, 0.22, 0.26))
-		"ember_braziers", "luminous_ribbon", "hairpin_beacon", "ascent_beacon", "deck_beacon", "bowl_beacon", "grove_lantern", "afterglow_sign", "marble_plinth", "gallery_bench":
+		"afterglow_sign":
+			## Backlit sign slab for afterglow chase readability.
+			_add_visual_box(root, Vector3(0.0, 2.8, 0.0), Vector3(5.5, 3.2, 0.45), accent.darkened(0.2), true)
+			_add_visual_box(root, Vector3(0.0, 1.0, 0.0), Vector3(0.7, 2.0, 0.7), Color(0.25, 0.25, 0.28))
+		"ember_braziers", "luminous_ribbon", "hairpin_beacon", "ascent_beacon", "deck_beacon", "bowl_beacon", "grove_lantern", "marble_plinth", "gallery_bench":
 			_add_visual_cylinder(root, Vector3(0.0, 1.2, 0.0), 1.4, 2.4, Color(0.25, 0.22, 0.2))
 			_add_visual_sphere(root, Vector3(0.0, 3.0, 0.0), 1.3, accent, true)
 		"elevated_rail", "zebra_bridge", "north_bridge", "south_bridge", "overpass_north", "overpass_south", "skylight_bank", "spiral_ramp", "rail_yard_cut", "platform_cut":

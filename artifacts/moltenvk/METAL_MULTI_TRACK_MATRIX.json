@@ -1,10 +1,9 @@
 {
   "schema": "pp_metal_multi_track_matrix/v1",
-  "tip_sha": "751578f5ec0230a42d4fa4bc2f395ae82a9cd0d8",
+  "tip_sha": "926fced04c88a71c5b1e386690d1a75db06a151b",
   "tracks": [
     {
       "track_id": "verdant_cascade_circuit",
-      "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
       "REACQUIRE_COUNT": "0",
@@ -13,7 +12,6 @@
     },
     {
       "track_id": "cloudstep_ridge",
-      "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
       "REACQUIRE_COUNT": "0",
@@ -22,7 +20,6 @@
     },
     {
       "track_id": "sneaker_city_sprintway",
-      "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
       "REACQUIRE_COUNT": "0",
@@ -31,7 +28,6 @@
     },
     {
       "track_id": "mirage_mesa",
-      "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
       "REACQUIRE_COUNT": "0",
@@ -40,7 +36,6 @@
     },
     {
       "track_id": "lantern_corridor",
-      "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
       "REACQUIRE_COUNT": "0",
@@ -49,7 +44,6 @@
     },
     {
       "track_id": "stack_corridor",
-      "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
       "REACQUIRE_COUNT": "0",
@@ -58,7 +52,6 @@
     },
     {
       "track_id": "neon_switchyard",
-      "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
       "REACQUIRE_COUNT": "1",
@@ -67,7 +60,6 @@
     },
     {
       "track_id": "metro_pulse_loop",
-      "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
       "REACQUIRE_COUNT": "0",
@@ -76,7 +68,6 @@
     },
     {
       "track_id": "prism_apex",
-      "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
       "REACQUIRE_COUNT": "0",
@@ -85,7 +76,6 @@
     },
     {
       "track_id": "tideglass_harbor",
-      "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
       "REACQUIRE_COUNT": "0",
@@ -94,7 +84,6 @@
     },
     {
       "track_id": "emberkeep_gauntlet",
-      "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
       "REACQUIRE_COUNT": "3",
@@ -103,7 +92,6 @@
     },
     {
       "track_id": "cloverwind_ranch",
-      "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
       "REACQUIRE_COUNT": "1",
@@ -112,7 +100,6 @@
     },
     {
       "track_id": "afterglow_overpass",
-      "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
       "REACQUIRE_COUNT": "0",
@@ -121,7 +108,38 @@
     },
     {
       "track_id": "signal_storm_yard",
-      "renderer": "Metal 4.0 Forward+ Apple M2",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "rooftop_ribbon",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "skybridge_sprint",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "saltline_boardwalk",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "cliffside_draft",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
       "REACQUIRE_COUNT": "0",
@@ -135,6 +153,6 @@
   "HUMAN": false,
   "RC2": false,
   "V1": false,
-  "generated_at": "2026-10-30T21:51:12Z",
-  "notes": "14-track Metal matrix after tip 751578f Gate1+Windows green (Gate1 attempt2)."
+  "generated_at": "2026-10-30T22:25:15Z",
+  "notes": "18-track Metal matrix after tip 926fced Gate1+Windows green."
 }
