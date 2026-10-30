@@ -217,33 +217,40 @@
     {
       "req_id": "PP-RTM-07",
       "owner": "lane-b/course-build-fix",
-      "expected_behavior": "PartyLink seat honesty clamps 2\u20138 humans; bots never count as humans; BeatLink sibling stays 2.",
-      "verification_method": "PartyLinkCapacityTest + prepare-only packet",
+      "expected_behavior": "PartyLink allocated 2\u20138 vs connected humans vs CPU fill; bots never count as humans; BeatLink sibling stays 2; eight-actor field spawn with ownership stamps.",
+      "verification_method": "PartyLinkCapacityTest + EightRacerFieldObserve + prepare-only packet",
       "layers": [
         2,
         4,
         7
       ],
       "tests": [
-        "tests/PartyLinkCapacityTest.gd"
+        "tests/PartyLinkCapacityTest.gd",
+        "tests/EightRacerFieldObserve.gd"
       ],
       "automated_evidence": [
         "artifacts/multiplayer/EIGHT_HUMAN_PARTY_PACKET.md"
       ],
       "native_physical": {
-        "status": "not_run",
-        "platforms": [],
-        "notes": "Digital contract only; physical 8-human is PP-RTM-08."
+        "status": "partial",
+        "platforms": [
+          "darwin-headless-opengl3"
+        ],
+        "notes": "Eight-actor headless field + seat honesty local. Physical 8-human remains PP-RTM-08. Not Metal."
       },
       "art_status": "not_applicable",
       "limitations": [
         "Bots \u2260 humans",
-        "BeatLink sibling remains 2 humans"
+        "Allocated seats \u2260 connected humans",
+        "BeatLink sibling remains 2 humans",
+        "Not physical 8p",
+        "Not Mac Metal/MoltenVK"
       ],
       "severity": "high",
-      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
+      "sha": "PENDING_S3C_TIP",
       "independent_review_status": "not_started",
-      "cursor_complete_status": "in_progress"
+      "cursor_complete_status": "in_progress",
+      "notes": "Keep 2-client vs allocated seats vs connected vs physical 8p distinct. COURSE_ACCEPTED false."
     },
     {
       "req_id": "PP-RTM-08",

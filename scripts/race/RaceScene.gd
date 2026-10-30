@@ -63,17 +63,26 @@ func _ready() -> void:
 	var racers: Array = [player]
 	var ai_count := GameManager.ai_field_size
 	var local_p2: Node = null
+	## Eight-racer grid offsets (player + up to 7 AI). Distinct lanes; no stacked seats.
 	var ai_offsets := [
 		Vector3(2.5, 0, 3.0),
 		Vector3(-2.5, 0, 4.5),
 		Vector3(1.5, 0, 6.0),
 		Vector3(-1.5, 0, 7.5),
+		Vector3(3.0, 0, 9.0),
+		Vector3(-3.0, 0, 10.5),
+		Vector3(0.0, 0, 12.0),
 	]
-	var ai_tiers := ["rookie", "standard", "ace", "standard"]
+	var ai_tiers := ["rookie", "standard", "ace", "standard", "rookie", "ace", "standard"]
 	if GameManager.ai_eval_mode and not str(GameManager.ai_eval_tier).is_empty():
-		ai_tiers = [str(GameManager.ai_eval_tier), str(GameManager.ai_eval_tier), str(GameManager.ai_eval_tier), str(GameManager.ai_eval_tier)]
+		var t := str(GameManager.ai_eval_tier)
+		ai_tiers = [t, t, t, t, t, t, t]
 	_assign_profile(player, player_profile)
 	_assigned_profiles = [player_profile]
+	var field_roster: Dictionary = {}
+	if GameManager.is_party_link() and GameManager.has_meta("party_link_runtime_roster"):
+		field_roster = GameManager.get_meta("party_link_runtime_roster")
+	_stamp_seat_ownership(player, 0, field_roster)
 
 	# Local MP: second human + vertical split-screen cameras.
 	if GameManager.is_local_mp():
@@ -98,6 +107,12 @@ func _ready() -> void:
 		local_p2.setup_for_race(p2_start)
 		if local_p2.has_method("setup_rails"):
 			local_p2.setup_rails(track.get_rail_world_points())
+		## Local MP seat 1 is a second connected human — not CPU, not PartyLink 8p.
+		local_p2.set_meta("seat_index", 1)
+		local_p2.set_meta("seat_owner", "human")
+		local_p2.set_meta("input_ownership", "human_input")
+		local_p2.set_meta("counts_as_human_participant", true)
+		local_p2.set_meta("allocated_human_capacity", true)
 		racers.append(local_p2)
 		ai_count = mini(ai_count, 2)
 		_setup_local_mp_split(local_p2)
@@ -137,6 +152,11 @@ func _ready() -> void:
 			ai.configure_shortcuts(track.get_shortcut_routes())
 		if ai.has_method("notify_shoe_changed"):
 			ai.notify_shoe_changed()
+		## Seat index: player=0; local-MP P2 occupies 1; AI fill remaining seats.
+		var seat_i := i + 1
+		if GameManager.is_local_mp() and local_p2 != null:
+			seat_i = i + 2
+		_stamp_seat_ownership(ai, seat_i, field_roster)
 		racers.append(ai)
 
 	if GameManager.is_time_trial() and ai_racer != null:
@@ -152,6 +172,11 @@ func _ready() -> void:
 	## Visual budget hooks for crowded fields (LOD only — 8p not claimed complete).
 	apply_field_visual_budget(racers.size())
 	_try_apply_session_peer_appearance(local_p2)
+	## Publish honest field ownership for observers / HUD — never invents humans.
+	var ownership_summary := _field_ownership_summary(racers, field_roster)
+	set_meta("field_ownership", ownership_summary)
+	if GameManager != null:
+		GameManager.set_meta("last_field_ownership", ownership_summary)
 
 	# Time Trial product design: single-lap mastery/ghost run (not accept_force_laps).
 	# Documented in docs/engineering_wave010/CANONICAL_GAMEPLAY_MAP.md (TIME_TRIAL_LAP_COUNT=1).
@@ -412,6 +437,67 @@ func apply_field_visual_budget(racer_count: int) -> void:
 		var visual = child.get_node_or_null("RacerVisual") if child != null else null
 		if visual != null and visual.has_method("set_visual_lod"):
 			visual.set_visual_lod(lod)
+
+
+func _stamp_seat_ownership(racer: Node, seat_index: int, roster: Dictionary) -> void:
+	## Honest control labels: human_input vs cpu. Allocated ≠ connected ≠ physical 8p.
+	if racer == null:
+		return
+	var seats: Array = roster.get("seats", []) if not roster.is_empty() else []
+	var entry: Dictionary = {}
+	if seat_index >= 0 and seat_index < seats.size() and typeof(seats[seat_index]) == TYPE_DICTIONARY:
+		entry = seats[seat_index]
+	var owner := "cpu"
+	var control := "cpu"
+	var counts_human := false
+	if not entry.is_empty():
+		owner = str(entry.get("owner", "cpu"))
+		control = str(entry.get("control", "cpu"))
+		counts_human = bool(entry.get("counts_as_human_participant", false))
+	elif seat_index == 0:
+		## Non-PartyLink quick race: seat 0 is the local human; others remain CPU.
+		owner = "human"
+		control = "human_input"
+		counts_human = true
+	racer.set_meta("seat_index", seat_index)
+	racer.set_meta("seat_owner", owner)
+	racer.set_meta("input_ownership", control)
+	racer.set_meta("counts_as_human_participant", counts_human)
+	racer.set_meta("allocated_human_capacity", bool(entry.get("allocated_human_capacity", seat_index == 0)))
+
+
+func _field_ownership_summary(racers: Array, roster: Dictionary) -> Dictionary:
+	var rows: Array = []
+	var connected := 0
+	var cpu := 0
+	for racer in racers:
+		if racer == null:
+			continue
+		var human := bool(racer.get_meta("counts_as_human_participant")) if racer.has_meta("counts_as_human_participant") else false
+		if human:
+			connected += 1
+		else:
+			cpu += 1
+		rows.append({
+			"seat": int(racer.get_meta("seat_index")) if racer.has_meta("seat_index") else -1,
+			"owner": str(racer.get_meta("seat_owner")) if racer.has_meta("seat_owner") else "unknown",
+			"control": str(racer.get_meta("input_ownership")) if racer.has_meta("input_ownership") else "unknown",
+			"counts_as_human_participant": human,
+			"racer_id": str(racer.get("racer_id")) if "racer_id" in racer else "",
+		})
+	return {
+		"schema": "pp_field_ownership/v1",
+		"actor_count": racers.size(),
+		"connected_humans": connected,
+		"cpu_actors": cpu,
+		"allocated_human_seats": int(roster.get("allocated_human_seats", 0)),
+		"physical_eight_human_party": false,
+		"independent_two_client": false,
+		"bots_never_count_as_humans": true,
+		"moltenvk_metal_pass": false,
+		"COURSE_ACCEPTED": false,
+		"seats": rows,
+	}
 
 
 func _try_apply_session_peer_appearance(guest_racer: Node) -> void:

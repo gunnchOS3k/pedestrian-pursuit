@@ -30,7 +30,8 @@ static func describe() -> Dictionary:
 			"bots_never_count_as_humans": true,
 			"independent_two_process_proven": true,
 			"physical_eight_human_party": false,
-			"note": "Capacity 2–8 human seats with CPU fill to field 8. BeatLink sibling contract stays 2-member; do not invent Mac MoltenVK passes.",
+			"runtime_roster": "partylink_runtime_roster(allocated, connected)",
+			"note": "Allocated seats 2–8 ≠ connected humans ≠ physical 8p. CPU fills empty seats. BeatLink sibling stays 2. No Mac MoltenVK invent.",
 		},
 		"modes": {
 			"private_room": {
@@ -57,21 +58,83 @@ static func describe() -> Dictionary:
 
 
 static func partylink_seat_map(human_seats: int) -> Dictionary:
-	## Authoritative seat ownership for PartyLink capacity probes.
-	var humans := clampi(human_seats, PARTYLINK_MIN_HUMAN_SEATS, PARTYLINK_MAX_HUMAN_SEATS)
+	## Allocated PartyLink capacity only — not connected humans and not physical 8p.
+	## Prefer partylink_runtime_roster() when stamping live actors.
+	var allocated := clampi(human_seats, PARTYLINK_MIN_HUMAN_SEATS, PARTYLINK_MAX_HUMAN_SEATS)
 	var seats: Array = []
 	for i in range(PARTYLINK_FIELD_SIZE):
-		var owner := "human" if i < humans else "cpu"
+		var allocated_human := i < allocated
 		seats.append({
 			"seat": i,
-			"owner": owner,
-			"counts_as_human_participant": owner == "human",
+			"owner": "allocated_human" if allocated_human else "cpu",
+			"counts_as_human_participant": false,
+			"allocated_human_capacity": allocated_human,
+			"note": "allocated_capacity_only_not_connected",
 		})
 	return {
-		"human_seats": humans,
+		"human_seats": allocated,
+		"allocated_human_seats": allocated,
+		"connected_humans": 0,
 		"field_size": PARTYLINK_FIELD_SIZE,
-		"cpu_seats": PARTYLINK_FIELD_SIZE - humans,
+		"cpu_seats": PARTYLINK_FIELD_SIZE - allocated,
 		"beatlink_sibling_humans": BEATLINK_SIBLING_CONTRACT_HUMANS,
+		"physical_eight_human_party": false,
+		"bots_never_count_as_humans": true,
+		"seats": seats,
+	}
+
+
+static func partylink_runtime_roster(allocated_human_seats: int, connected_humans: int) -> Dictionary:
+	## Live field ownership: connected humans vs CPU fill. Never invents humans.
+	## Distinct from: 2-client Gate1, allocated lobby seats, physical 8-human PartyLink.
+	var allocated := clampi(
+		allocated_human_seats,
+		PARTYLINK_MIN_HUMAN_SEATS,
+		PARTYLINK_MAX_HUMAN_SEATS
+	)
+	var connected := clampi(connected_humans, 0, allocated)
+	var seats: Array = []
+	var cpu_count := 0
+	var human_count := 0
+	for i in range(PARTYLINK_FIELD_SIZE):
+		var entry: Dictionary = {
+			"seat": i,
+			"allocated_human_capacity": i < allocated,
+			"counts_as_human_participant": false,
+			"control": "cpu",
+			"owner": "cpu",
+		}
+		if i < connected:
+			entry["owner"] = "human"
+			entry["control"] = "human_input"
+			entry["counts_as_human_participant"] = true
+			human_count += 1
+		else:
+			cpu_count += 1
+			if i < allocated:
+				entry["owner"] = "cpu"
+				entry["control"] = "cpu"
+				entry["unoccupied_allocated_seat"] = true
+				entry["note"] = "allocated_seat_cpu_fill_not_a_connected_human"
+			else:
+				entry["note"] = "field_cpu_fill"
+		seats.append(entry)
+	return {
+		"schema": "pp_partylink_runtime_roster/v1",
+		"allocated_human_seats": allocated,
+		"connected_humans": connected,
+		"human_seats_connected": human_count,
+		"field_size": PARTYLINK_FIELD_SIZE,
+		"cpu_seats": cpu_count,
+		"beatlink_sibling_humans": BEATLINK_SIBLING_CONTRACT_HUMANS,
+		"independent_two_client_proven": true,
+		"physical_eight_human_party": false,
+		"bots_never_count_as_humans": true,
+		"moltenvk_metal_pass": false,
+		"COURSE_ACCEPTED": false,
+		"HUMAN": false,
+		"RC2": false,
+		"V1": false,
 		"seats": seats,
 	}
 

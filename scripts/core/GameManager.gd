@@ -18,6 +18,8 @@ var local_mp_players: int = 2
 var ai_field_size: int = 3
 var party_link_active: bool = false
 var party_link_human_seats: int = 0
+## Connected local/remote humans present now — never invent; distinct from allocated seats.
+var party_link_connected_humans: int = 0
 var ai_eval_mode: bool = false
 var ai_eval_tier: String = "standard"
 
@@ -155,10 +157,11 @@ func start_local_mp(track_id: String, players: int = 2) -> void:
 	reset_race_stats()
 
 
-func start_party_link(track_id: String, human_seats: int = 2) -> void:
-	## PartyLink capacity 2–8: local field always fills to 8; CPU owns non-human seats.
+func start_party_link(track_id: String, human_seats: int = 2, connected_humans: int = 1) -> void:
+	## PartyLink capacity 2–8 allocated; field always fills to 8 with CPU for empty seats.
+	## connected_humans = real present humans only (default 1 local). Never invents humans.
 	## BeatLink sibling independent-client contract remains host+guest (2 humans).
-	## Bots/scripted seats never count as human participants.
+	## Bots/scripted seats never count as human participants. Not physical 8p / Metal.
 	const OnlineArchitectureScript = preload("res://scripts/net/OnlineArchitecture.gd")
 	clear_cup()
 	current_race_mode = RaceMode.SINGLE
@@ -169,8 +172,16 @@ func start_party_link(track_id: String, human_seats: int = 2) -> void:
 		OnlineArchitectureScript.PARTYLINK_MIN_HUMAN_SEATS,
 		OnlineArchitectureScript.PARTYLINK_MAX_HUMAN_SEATS
 	)
+	party_link_connected_humans = clampi(connected_humans, 0, party_link_human_seats)
+	## Player + AI fill = field 8. Extra connected humans beyond seat 0 need local/net wiring.
 	ai_field_size = OnlineArchitectureScript.PARTYLINK_FIELD_SIZE - 1
-	set_meta("party_link_seat_map", OnlineArchitectureScript.partylink_seat_map(party_link_human_seats))
+	var capacity_map: Dictionary = OnlineArchitectureScript.partylink_seat_map(party_link_human_seats)
+	var roster: Dictionary = OnlineArchitectureScript.partylink_runtime_roster(
+		party_link_human_seats,
+		party_link_connected_humans
+	)
+	set_meta("party_link_seat_map", capacity_map)
+	set_meta("party_link_runtime_roster", roster)
 	reset_race_stats()
 	sync_race_mode_string()
 
@@ -292,6 +303,7 @@ func restart_cup() -> bool:
 func clear_cup() -> void:
 	party_link_active = false
 	party_link_human_seats = 0
+	party_link_connected_humans = 0
 	active_cup_id = ""
 	cup_track_ids.clear()
 	cup_round_index = 0
