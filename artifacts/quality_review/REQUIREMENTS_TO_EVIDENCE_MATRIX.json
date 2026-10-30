@@ -5,7 +5,7 @@
   "contract_source_sha": "45b456617002569c33a5a27fe30d5cf8be5a7032",
   "product_id": "pedestrian-pursuit",
   "product_repo": "https://github.com/gunnchOS3k/pedestrian-pursuit",
-  "generated_at": "2026-10-30T20:05:51Z",
+  "generated_at": "2026-10-30T20:41:12Z",
   "honesty_flags": {
     "HUMAN": false,
     "RC2": false,
@@ -14,7 +14,7 @@
   "phase_summary": {
     "cursor_complete": {
       "status": "in_progress",
-      "notes": "S7b: exact-head Gate1+Windows green @ de9a59b; Metal 4-track matrix PASS; wired\u22642 PartyLink honesty (requested\u2260wired); COURSE/HUMAN/RC2/V1 false. Cursor Complete not claimed."
+      "notes": "S7e: tip 7234c4d Gate1+Windows green; footwear trail families + audio cup_theme fallback; PartyLink wired\u22642; Metal 6/4 earlier; COURSE/HUMAN/RC2/V1 false. Cursor Complete not claimed."
     },
     "codex_independently_verified": {
       "status": "not_started"
@@ -249,10 +249,10 @@
         "Not physical 8p"
       ],
       "severity": "high",
-      "sha": "e939b86d0e6aa4518a951a7b1f15a96374ad7393",
+      "sha": "7234c4d7c20182c420147637efce714b95673641",
       "independent_review_status": "not_started",
       "cursor_complete_status": "in_progress",
-      "notes": "Ownership: 1h+7cpu + 2h+6cpu wired; requested>2 recorded but not stamped as humans. bots\u2260humans. Physical 8p open."
+      "notes": "PartyLinkCapacity recheck PASS after S7e; wired\u22642; bots\u2260humans; physical 8p open."
     },
     {
       "req_id": "PP-RTM-08",
@@ -391,10 +391,13 @@
         5
       ],
       "tests": [
-        "tests/CreatorWardrobeRaceFlowTest.gd"
+        "tests/CreatorWardrobeRaceFlowTest.gd",
+        "tests/FootwearChaseCamPolishTest.gd"
       ],
       "automated_evidence": [
-        "scripts/player/RacerVisual.gd"
+        "scripts/player/RacerVisual.gd",
+        "artifacts/quality_review/FASHION_AUDIO_CONTINUE.json",
+        "tests/FootwearChaseCamPolishTest.gd"
       ],
       "native_physical": {
         "status": "not_applicable",
@@ -406,9 +409,10 @@
         "visual_lod budgets 8-racer fields; does not claim 8p physical"
       ],
       "severity": "medium",
-      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
+      "sha": "7234c4d7c20182c420147637efce714b95673641",
       "independent_review_status": "not_started",
-      "cursor_complete_status": "in_progress"
+      "cursor_complete_status": "in_progress",
+      "notes": "Distinct trail families + stripe emission chase polish; cosmetic\u2260handling; not commercial."
     },
     {
       "req_id": "PP-RTM-13",

@@ -14,6 +14,9 @@ var _sfx: AudioStreamPlayer
 var _ui: AudioStreamPlayer
 var _enabled: bool = true
 var _cache: Dictionary = {}
+var _last_music_path: String = ""
+var _last_ambience_path: String = ""
+var _last_music_fallback: bool = false
 
 
 func _ready() -> void:
@@ -48,8 +51,21 @@ func play_cup_music() -> void:
 
 
 func play_race_music(track_id: String) -> void:
-	_play_loop(_music, MUSIC_DIR + "%s_race.wav" % track_id, -5.0)
-	_play_loop(_ambience, AMB_DIR + "%s.wav" % track_id, -10.0)
+	## Prefer per-track race bed; fall back to cup_theme so cups never go silent digitally.
+	## Missing banks still fail soft — not commercial/final audio, not HUMAN.
+	var preferred := MUSIC_DIR + "%s_race.wav" % track_id
+	var music_path := preferred
+	_last_music_fallback = false
+	if not FileAccess.file_exists(music_path):
+		music_path = MUSIC_DIR + "cup_theme.wav"
+		_last_music_fallback = true
+	_last_music_path = music_path
+	_play_loop(_music, music_path, -5.0)
+	var amb := AMB_DIR + "%s.wav" % track_id
+	if not FileAccess.file_exists(amb):
+		amb = AMB_DIR + "verdant_cascade_circuit.wav"
+	_last_ambience_path = amb
+	_play_loop(_ambience, amb, -10.0)
 
 
 func play_results() -> void:
@@ -91,6 +107,12 @@ func describe() -> Dictionary:
 		"music_dir": MUSIC_DIR,
 		"sfx_dir": SFX_DIR,
 		"procedural_final": true,
+		"commercial_final_audio": false,
+		"last_music_path": _last_music_path,
+		"last_ambience_path": _last_ambience_path,
+		"last_music_fallback": _last_music_fallback,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
 	}
 
 

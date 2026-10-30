@@ -541,10 +541,20 @@ func _footwear_trail_profile(runner_arch: String) -> Dictionary:
 		profile["spread"] = 9.0
 		profile["lifetime"] = 0.5
 		profile["smin"] = 0.1
-	elif family.find("roller") >= 0 or march.begins_with("roller_"):
+	elif family.find("roller") >= 0 or march.begins_with("roller_") or family.find("urethane") >= 0:
 		profile["amount"] = 30
 		profile["spread"] = 11.0
 		profile["vmax"] = 4.4
+	elif family.find("tap") >= 0 or family.find("bass") >= 0 or family.find("circuit") >= 0:
+		## Crossover footwear chase ID (Pedestrian-side VFX only — no BeatLink/MLV source edits).
+		profile["amount"] = 33
+		profile["spread"] = 7.0
+		profile["lifetime"] = 0.42
+		profile["vmax"] = 4.6
+	elif family.find("portal") >= 0 or family.find("gyro") >= 0:
+		profile["amount"] = 27
+		profile["spread"] = 15.0
+		profile["lifetime"] = 0.48
 	elif runner_arch == "all_terrain":
 		profile["amount"] = 30
 		profile["spread"] = 13.0
@@ -2551,7 +2561,8 @@ func _attach_shoes(
 		stripe_mat.albedo_color = Color(stripe_col.r, stripe_col.g, stripe_col.b, 1.0)
 		stripe_mat.emission_enabled = true
 		stripe_mat.emission = stripe_mat.albedo_color
-		stripe_mat.emission_energy_multiplier = 0.35
+		## Slightly brighter emission so chase-cam reads family stripe at gameplay FOV.
+		stripe_mat.emission_energy_multiplier = 0.48
 		stripe_mat.roughness = 0.4
 		var stripe := _mesh_box(
 			Vector3(0.04 * ws * shoe_scale, 0.03 * shoe_scale, 0.18 * shoe_scale),
