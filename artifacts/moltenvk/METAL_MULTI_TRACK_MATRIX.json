@@ -1,17 +1,13 @@
 {
   "schema": "pp_metal_multi_track_matrix/v1",
-  "tip_sha": "31944a9c99b4823a79b15c15d45b2180b4000eae",
-  "godot": "4.7.1.stable.official a13da4feb",
-  "platform": "darwin-metal-apple-m2",
+  "tip_sha": "751578f5ec0230a42d4fa4bc2f395ae82a9cd0d8",
   "tracks": [
     {
       "track_id": "verdant_cascade_circuit",
       "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
-      "FINISH_TRIGGER": "true",
       "REACQUIRE_COUNT": "0",
-      "TELEPORT_FALSE_FINISH": "false",
       "COURSE_ACCEPTED": "false",
       "pass": true
     },
@@ -20,9 +16,7 @@
       "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
-      "FINISH_TRIGGER": "true",
       "REACQUIRE_COUNT": "0",
-      "TELEPORT_FALSE_FINISH": "false",
       "COURSE_ACCEPTED": "false",
       "pass": true
     },
@@ -31,9 +25,7 @@
       "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
-      "FINISH_TRIGGER": "true",
       "REACQUIRE_COUNT": "0",
-      "TELEPORT_FALSE_FINISH": "false",
       "COURSE_ACCEPTED": "false",
       "pass": true
     },
@@ -42,9 +34,7 @@
       "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
-      "FINISH_TRIGGER": "true",
       "REACQUIRE_COUNT": "0",
-      "TELEPORT_FALSE_FINISH": "false",
       "COURSE_ACCEPTED": "false",
       "pass": true
     },
@@ -53,9 +43,7 @@
       "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
-      "FINISH_TRIGGER": "true",
       "REACQUIRE_COUNT": "0",
-      "TELEPORT_FALSE_FINISH": "false",
       "COURSE_ACCEPTED": "false",
       "pass": true
     },
@@ -64,9 +52,7 @@
       "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
-      "FINISH_TRIGGER": "true",
       "REACQUIRE_COUNT": "0",
-      "TELEPORT_FALSE_FINISH": "false",
       "COURSE_ACCEPTED": "false",
       "pass": true
     },
@@ -75,9 +61,7 @@
       "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
-      "FINISH_TRIGGER": "true",
       "REACQUIRE_COUNT": "1",
-      "TELEPORT_FALSE_FINISH": "false",
       "COURSE_ACCEPTED": "false",
       "pass": true
     },
@@ -86,9 +70,7 @@
       "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
-      "FINISH_TRIGGER": "true",
       "REACQUIRE_COUNT": "0",
-      "TELEPORT_FALSE_FINISH": "false",
       "COURSE_ACCEPTED": "false",
       "pass": true
     },
@@ -97,9 +79,7 @@
       "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
-      "FINISH_TRIGGER": "true",
       "REACQUIRE_COUNT": "0",
-      "TELEPORT_FALSE_FINISH": "false",
       "COURSE_ACCEPTED": "false",
       "pass": true
     },
@@ -108,9 +88,43 @@
       "renderer": "Metal 4.0 Forward+ Apple M2",
       "COMPLETED_LAPS": "3",
       "RESULTS_PATH": "true",
-      "FINISH_TRIGGER": "true",
       "REACQUIRE_COUNT": "0",
-      "TELEPORT_FALSE_FINISH": "false",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "emberkeep_gauntlet",
+      "renderer": "Metal 4.0 Forward+ Apple M2",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "3",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "cloverwind_ranch",
+      "renderer": "Metal 4.0 Forward+ Apple M2",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "1",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "afterglow_overpass",
+      "renderer": "Metal 4.0 Forward+ Apple M2",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "signal_storm_yard",
+      "renderer": "Metal 4.0 Forward+ Apple M2",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
       "COURSE_ACCEPTED": "false",
       "pass": true
     }
@@ -121,6 +135,6 @@
   "HUMAN": false,
   "RC2": false,
   "V1": false,
-  "generated_at": "2026-10-30T21:16:32Z",
-  "notes": "10-track Metal matrix after tip 31944a9 Gate1+Windows green. Soft+championship cups. COURSE/HUMAN/RC2/V1 false."
+  "generated_at": "2026-10-30T21:51:12Z",
+  "notes": "14-track Metal matrix after tip 751578f Gate1+Windows green (Gate1 attempt2)."
 }

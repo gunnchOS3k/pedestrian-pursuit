@@ -14,3 +14,4 @@
 4. Footwear trail families + stripe emission (PP-RTM-12). Footwear vehicles: cosmetics remain honest.
 
 5. S8: `dish_array` / `rotunda_dome` / `seal_door` / `colossus_falls` distinct silhouettes; `neon_hoops` twin-ring split from beacon family.
+5. S7g: `signal_gantry` / `storm_tower` mast+crossarm silhouette.
