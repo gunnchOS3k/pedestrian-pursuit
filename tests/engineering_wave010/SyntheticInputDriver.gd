@@ -10,6 +10,9 @@ const STEERING_GAIN: float = 4.2
 const STEERING_MULTIPLIER: float = 1.0
 const LATERAL_BLEND: float = 0.35
 const LATERAL_THRESHOLD: float = 3.0
+## Off-track closest_offset can jump across the loop; refuse large progress snaps.
+const PROGRESS_CATCHUP_MAX: float = 8.0
+const OFFTRACK_LATERAL: float = 5.0
 const TANGENT_SAMPLE: float = 3.0
 const SPEED_LOOK_AHEAD_FACTOR: float = 0.25
 const SPEED_LOOK_AHEAD_CAP: float = 8.0
@@ -201,13 +204,22 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 	if "horizontal_speed" in player:
 		speed = absf(float(player.horizontal_speed))
 	ahead_bias = maxf(speed, PROGRESS_MIN_SPEED) * PROGRESS_AHEAD_FACTOR
+	var closest_on: Vector3 = path.to_global(curve.sample_baked(closest))
+	var closest_lateral := player.global_position.distance_to(
+		Vector3(closest_on.x, player.global_position.y, closest_on.z)
+	)
 	var delta_along := closest - _progress
 	if delta_along < -path_len * 0.5:
 		delta_along += path_len
 	elif delta_along > path_len * 0.5:
 		delta_along -= path_len
-	if delta_along > -2.0:
-		_progress = fposmod(_progress + maxf(delta_along, 0.0) + ahead_bias, path_len)
+	## Off-track closest snaps (void near finish ↔ start) must not teleport progress.
+	var offtrack := closest_lateral > OFFTRACK_LATERAL
+	if offtrack or absf(delta_along) > PROGRESS_CATCHUP_MAX:
+		_progress = fposmod(_progress + ahead_bias, path_len)
+	elif delta_along > -2.0:
+		var catchup := clampf(delta_along, 0.0, PROGRESS_CATCHUP_MAX)
+		_progress = fposmod(_progress + catchup + ahead_bias, path_len)
 	else:
 		_progress = fposmod(_progress + ahead_bias * 0.5, path_len)
 
@@ -228,8 +240,13 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 
 	var lateral: Vector3 = player.global_position - on_path
 	lateral.y = 0.0
-	if lateral.length() > LATERAL_THRESHOLD:
-		target = target.lerp(on_path, LATERAL_BLEND)
+	var lateral_mag := lateral.length()
+	if lateral_mag > LATERAL_THRESHOLD:
+		## Stronger reacquire blend when void/off-line; still steer-only (no body teleport).
+		var blend := LATERAL_BLEND
+		if offtrack or lateral_mag > OFFTRACK_LATERAL:
+			blend = 0.85
+		target = target.lerp(on_path, blend)
 
 	var forward: Vector3 = -player.global_transform.basis.z
 	forward.y = 0.0
@@ -251,7 +268,10 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 		return 0.0
 	var dir: Vector3 = to_target.normalized()
 	var cross_y: float = forward.cross(dir).y
-	return clampf(cross_y * STEERING_GAIN, -1.0, 1.0)
+	var gain := STEERING_GAIN
+	if offtrack or lateral_mag > OFFTRACK_LATERAL:
+		gain = STEERING_GAIN * 1.35
+	return clampf(cross_y * gain, -1.0, 1.0)
 
 
 func path_curvature(path: Path3D, offset: float = -1.0) -> float:
