@@ -243,12 +243,18 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 	elif delta_along > path_len * 0.5:
 		delta_along -= path_len
 	## Off-track closest snaps (void near finish ↔ start) must not teleport progress.
-	## Snap refusal kept while stagnating — only look-ahead / crawl rate boost.
-	var offtrack := closest_lateral > OFFTRACK_LATERAL
-	if offtrack or absf(delta_along) > PROGRESS_CATCHUP_MAX:
+	## On-track large deltas catch up (OR-cap caused verdant CP2↔3 stall / no lap on Linux CI).
+	## Stagnation still only boosts look-ahead / crawl — no body teleport; COURSE/HUMAN false.
+	var offtrack_limit := OFFTRACK_LATERAL
+	if stagnating:
+		offtrack_limit = OFFTRACK_LATERAL * 1.6
+	var offtrack := closest_lateral > offtrack_limit
+	if offtrack and absf(delta_along) > PROGRESS_CATCHUP_MAX:
 		_progress = fposmod(_progress + ahead_bias, path_len)
 	elif delta_along > -2.0:
-		var catchup := clampf(delta_along, 0.0, PROGRESS_CATCHUP_MAX)
+		var catchup := maxf(delta_along, 0.0)
+		if offtrack:
+			catchup = clampf(delta_along, 0.0, PROGRESS_CATCHUP_MAX)
 		_progress = fposmod(_progress + catchup + ahead_bias, path_len)
 	else:
 		_progress = fposmod(_progress + ahead_bias * 0.5, path_len)
