@@ -290,8 +290,13 @@ func _fail(msg: String) -> void:
 
 func _finish(ok: bool) -> void:
 	Engine.time_scale = 1.0
-	if _driver_node != null:
+	if _driver_node != null and is_instance_valid(_driver_node):
 		_driver_node.stop()
+		var d := _driver_node
+		_driver_node = null
+		if d.get_parent() != null:
+			d.get_parent().remove_child(d)
+		d.free()
 	_obs["pass"] = ok and _failures.is_empty()
 	_obs["failures"] = Array(_failures)
 	var abs_path := ProjectSettings.globalize_path("res://artifacts/engineering_wave010/RACESCENE_E2E_RESULT.json")

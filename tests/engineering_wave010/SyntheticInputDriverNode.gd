@@ -74,8 +74,11 @@ func _attach_follower() -> void:
 
 func _detach_follower() -> void:
 	if _follower != null and is_instance_valid(_follower):
-		_follower.queue_free()
-	_follower = null
+		var f := _follower
+		_follower = null
+		if f.get_parent() != null:
+			f.get_parent().remove_child(f)
+		f.free()
 
 
 func _im():
