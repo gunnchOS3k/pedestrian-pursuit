@@ -409,6 +409,7 @@ func _build_figure() -> void:
 	_name_label.outline_size = 4
 	add_child(_name_label)
 	## Footwear-forward speed trail — tinted by material_family / archetype for chase-cam ID.
+	## Optional wardrobe trail_expression may override tint only (cosmetic); footwear still owns handling.
 	_speed_trail = GPUParticles3D.new()
 	_speed_trail.name = "KineticSoleTrail"
 	_speed_trail.position = Vector3(0.0, 0.2, 0.35)
@@ -424,7 +425,7 @@ func _build_figure() -> void:
 	trail_mat.gravity = Vector3(0.0, 0.4, 0.0)
 	trail_mat.scale_min = float(trail_profile.get("smin", 0.08))
 	trail_mat.scale_max = float(trail_profile.get("smax", 0.22))
-	trail_mat.color = _footwear_trail_color(accent_color, arch)
+	trail_mat.color = _trail_expression_cosmetic_color(_footwear_trail_color(accent_color, arch))
 	_speed_trail.process_material = trail_mat
 	var trail_mesh := SphereMesh.new()
 	trail_mesh.radius = 0.12
@@ -460,6 +461,27 @@ func _build_figure() -> void:
 		spark.size = Vector3(0.08, 0.08, 0.08)
 		_sole_contact.draw_pass_1 = spark
 		add_child(_sole_contact)
+
+
+func _trail_expression_cosmetic_color(fallback: Color) -> Color:
+	## Wardrobe trail_expression is chase-cam ID only — never reads handling / never changes vehicle_id.
+	var trail_id := str(wardrobe_outfit_slots.get("trail_expression", ""))
+	if trail_id.is_empty():
+		return fallback
+	var g := WardrobeCatalogScript.garment_by_id(trail_id)
+	if g.is_empty() or str(g.get("slot", "")) != "trail_expression":
+		return fallback
+	if not bool(g.get("cosmetic_only", false)):
+		return fallback
+	var colors: Variant = g.get("colors", {})
+	if typeof(colors) != TYPE_DICTIONARY:
+		return fallback
+	var hex := str((colors as Dictionary).get("accent", (colors as Dictionary).get("primary", "")))
+	if hex.begins_with("#") and hex.length() >= 7:
+		var parsed := Color.html(hex)
+		parsed.a = 0.78
+		return parsed
+	return fallback
 
 
 func _footwear_trail_color(fallback: Color, runner_arch: String) -> Color:

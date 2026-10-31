@@ -97,6 +97,18 @@ func _run() -> void:
 	if seen_identity.size() < 8:
 		failures.append("too few distinct camera identities: %d" % seen_identity.size())
 
+	## Deepen: each resolved identity arm must assign base_fov (personality ≠ silent empty arm).
+	var src := FileAccess.get_file_as_string("res://scripts/player/CameraRig.gd")
+	for identity in seen_identity.keys():
+		var needle := "\"%s\"" % identity
+		var idx := src.find(needle)
+		if idx < 0:
+			failures.append("CameraRig source missing arm literal for %s" % identity)
+			continue
+		var window := src.substr(idx, mini(420, src.length() - idx))
+		if not window.contains("base_fov"):
+			failures.append("%s arm missing base_fov assignment window" % identity)
+
 	_finish(failures)
 
 

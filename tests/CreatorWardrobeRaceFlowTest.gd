@@ -55,9 +55,15 @@ func _init() -> void:
 			failures.append("%s missing trail_expression garment" % preset_id)
 		elif not bool(trail_g.get("cosmetic_only", false)):
 			failures.append("%s trail must stay cosmetic_only" % trail_id)
+		## Trail garments must not invent handling/stat keys (footwear owns handling).
+		for forbid_key in ["handling", "stats", "speed", "accel", "grip", "affects_stats", "affects_handling"]:
+			if trail_g.has(forbid_key):
+				failures.append("%s trail must not carry %s" % [trail_id, forbid_key])
 	var trail_count := 0
 	for g2 in WardrobeCatalogScript.garments_in_slot("trail_expression"):
 		trail_count += 1
+		if not bool(g2.get("cosmetic_only", false)):
+			failures.append("%s must stay cosmetic_only" % str(g2.get("id", "")))
 	if trail_count < 9:
 		failures.append("expected ≥9 trail_expression garments, got %d" % trail_count)
 	var preset := WardrobeCatalogScript.preset("metro_pulse_default")
@@ -70,6 +76,9 @@ func _init() -> void:
 	if "crosswind_kiln_default" not in integrated_ids or "archive_loom_default" not in integrated_ids:
 		failures.append("kiln/loom presets missing from integrated complete outfits")
 	slots["footwear_vehicle"] = "reedline_circlers"
+	## Keep / set trail_expression so KineticSoleTrail can take cosmetic tint without handling churn.
+	if str(slots.get("trail_expression", "")).is_empty():
+		slots["trail_expression"] = "metro_pulse_trail"
 	CreatedRacerStoreScript.save_outfit("metro_pulse_default", slots, true)
 	racer["outfit_id"] = "metro_pulse_default"
 	racer["footwear_vehicle_id"] = "reedline_circlers"
@@ -106,6 +115,16 @@ func _init() -> void:
 		failures.append("racer visual did not build modular figure")
 	if visual.get_node_or_null("WardrobeRoot") == null:
 		failures.append("wardrobe root missing after outfit apply")
+	## Trail expression is cosmetic chase-cam ID — footwear vehicle_id must stay the handling owner.
+	if str(visual.get("vehicle_id")) != "reedline_circlers":
+		failures.append("trail_expression must not replace footwear vehicle_id (got %s)" % str(visual.get("vehicle_id")))
+	if visual.has_method("_trail_expression_cosmetic_color"):
+		var tint: Color = visual.call("_trail_expression_cosmetic_color", Color(1, 1, 1, 1))
+		if tint.a < 0.5:
+			failures.append("trail_expression cosmetic tint missing/invalid")
+	var sole_trail := visual.get_node_or_null("KineticSoleTrail")
+	if sole_trail == null:
+		failures.append("KineticSoleTrail missing after wardrobe apply")
 
 	## 5) Edit same character again
 	again["appearance"]["hair_style"] = "locs_shoulder"
