@@ -317,11 +317,16 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 		forward = forward.normalized()
 
 	var along := forward.dot(tangent)
-	if along < 0.15:
+	var airborne := false
+	if "is_on_floor" in player and player.has_method("is_on_floor"):
+		airborne = not bool(player.is_on_floor())
+	elif player.global_position.y > on_path.y + 2.2:
+		airborne = true
+	if along < 0.15 and not airborne:
 		var turn_sign := signf(forward.cross(tangent).y)
 		if is_zero_approx(turn_sign):
 			turn_sign = 1.0
-		## Keep full U-turn authority; stagnation recovery is look-ahead/crawl only.
+		## Grounded U-turn only — airborne after bounce must keep aiming look-ahead.
 		return clampf(turn_sign * 1.0, -1.0, 1.0)
 
 	var to_target: Vector3 = target - player.global_position

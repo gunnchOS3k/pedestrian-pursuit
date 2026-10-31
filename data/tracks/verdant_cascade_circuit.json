@@ -51,9 +51,19 @@
       -31
     ],
     [
+      -38,
+      0,
+      -18
+    ],
+    [
       -46,
       0,
       -4
+    ],
+    [
+      -42,
+      0,
+      12
     ],
     [
       -35,
@@ -66,7 +76,7 @@
     2,
     4,
     6,
-    8
+    10
   ],
   "speed_lanes": [
     {
@@ -93,7 +103,7 @@
   ],
   "bounce_pads": [
     {
-      "point_index": 7,
+      "point_index": 3,
       "size": [
         6,
         6
@@ -105,7 +115,7 @@
   "item_boxes": [
     1,
     4,
-    7
+    8
   ],
   "boost_pickups": [
     2,
@@ -125,7 +135,8 @@
     6
   ],
   "exploit_notes": [
-    "Do not clip through cascade columns; guard rails block off-course wall runs."
+    "Do not clip through cascade columns; guard rails block off-course wall runs.",
+    "Bounce pad sits before CP2 so ordered CP3\u2192CP4 registration is not launch-interrupted."
   ],
   "digital_completion": {
     "route_graph": true,
