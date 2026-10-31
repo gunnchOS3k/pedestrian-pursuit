@@ -10,9 +10,12 @@ const STEERING_GAIN: float = 4.2
 const STEERING_MULTIPLIER: float = 1.0
 const LATERAL_BLEND: float = 0.35
 const LATERAL_THRESHOLD: float = 3.0
-## Off-track closest_offset can jump across the loop; refuse large progress snaps.
+## Off-track / seam closest_offset can jump across the loop; refuse large progress snaps.
 const PROGRESS_CATCHUP_MAX: float = 8.0
+## Mid-course on-track catch-up (verdant CP2↔3 stall on Linux CI with 8-only cap).
+const PROGRESS_CATCHUP_ONTRACK: float = 48.0
 const OFFTRACK_LATERAL: float = 5.0
+const SEAM_ZONE: float = 24.0
 const TANGENT_SAMPLE: float = 3.0
 const SPEED_LOOK_AHEAD_FACTOR: float = 0.25
 const SPEED_LOOK_AHEAD_CAP: float = 8.0
@@ -242,19 +245,28 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 		delta_along += path_len
 	elif delta_along > path_len * 0.5:
 		delta_along -= path_len
-	## Off-track closest snaps (void near finish ↔ start) must not teleport progress.
-	## On-track large deltas catch up (OR-cap caused verdant CP2↔3 stall / no lap on Linux CI).
+	## Seam/off-track closest snaps must not teleport progress across the loop.
+	## Mid-course on-track may catch up farther so verdant can clear CP3→finish on Linux CI.
 	## Stagnation still only boosts look-ahead / crawl — no body teleport; COURSE/HUMAN false.
 	var offtrack_limit := OFFTRACK_LATERAL
 	if stagnating:
 		offtrack_limit = OFFTRACK_LATERAL * 1.6
 	var offtrack := closest_lateral > offtrack_limit
-	if offtrack and absf(delta_along) > PROGRESS_CATCHUP_MAX:
+	var near_seam := (
+		_progress < SEAM_ZONE
+		or _progress > path_len - SEAM_ZONE
+		or closest < SEAM_ZONE
+		or closest > path_len - SEAM_ZONE
+	)
+	var refuse_snap := (
+		(offtrack and absf(delta_along) > PROGRESS_CATCHUP_MAX)
+		or (near_seam and absf(delta_along) > PROGRESS_CATCHUP_MAX)
+	)
+	if refuse_snap:
 		_progress = fposmod(_progress + ahead_bias, path_len)
 	elif delta_along > -2.0:
-		var catchup := maxf(delta_along, 0.0)
-		if offtrack:
-			catchup = clampf(delta_along, 0.0, PROGRESS_CATCHUP_MAX)
+		var cap := PROGRESS_CATCHUP_MAX if offtrack else PROGRESS_CATCHUP_ONTRACK
+		var catchup := clampf(delta_along, 0.0, cap)
 		_progress = fposmod(_progress + catchup + ahead_bias, path_len)
 	else:
 		_progress = fposmod(_progress + ahead_bias * 0.5, path_len)
