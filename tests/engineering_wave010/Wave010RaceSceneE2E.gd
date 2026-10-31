@@ -9,9 +9,9 @@ const TRACK_ID := "verdant_cascade_circuit"
 ## Local default; Linux CI (Godot 4.3 dummy) uses a milder scale + longer wall budget.
 const MAX_SIM_SEC := 150.0
 const TIME_SCALE := 10.0
-const CI_MAX_SIM_SEC := 420.0
-## CI uses milder time_scale so verdant CP3→finish registers; longer wall budget compensates.
-const CI_TIME_SCALE := 3.0
+const CI_MAX_SIM_SEC := 260.0
+## Keep the same time_scale as local — milder CI scale was shedding the verdant line harder.
+const CI_TIME_SCALE := 10.0
 const DriverNodeScript = preload("res://tests/engineering_wave010/SyntheticInputDriverNode.gd")
 
 var _failures: PackedStringArray = PackedStringArray()
