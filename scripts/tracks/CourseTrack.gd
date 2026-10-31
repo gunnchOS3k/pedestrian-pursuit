@@ -873,7 +873,7 @@ func _build_checkpoints() -> void:
 		checkpoint.transform = _transform_at_point(point_index, 1.8)
 		var shape := BoxShape3D.new()
 		# Slightly deeper gates so mobile lines still register ordered checkpoints.
-		shape.size = Vector3(_lane_width * 0.95, 5.0, 3.6)
+		shape.size = Vector3(_lane_width * 0.95, 5.0, 4.8)
 		var collider := CollisionShape3D.new()
 		collider.shape = shape
 		checkpoint.add_child(collider)

@@ -5,10 +5,10 @@ extends RefCounted
 ## Never mutates player transform, velocity, checkpoints, or laps.
 ## Technique success is NOT counted here (production signals only).
 
-const LOOK_AHEAD: float = 12.0
-const STEERING_GAIN: float = 4.2
+const LOOK_AHEAD: float = 8.0
+const STEERING_GAIN: float = 3.1
 const STEERING_MULTIPLIER: float = 1.0
-const LATERAL_BLEND: float = 0.35
+const LATERAL_BLEND: float = 0.45
 const LATERAL_THRESHOLD: float = 3.0
 ## Off-track closest_offset can jump across the loop; refuse large progress snaps.
 const PROGRESS_CATCHUP_MAX: float = 8.0
@@ -21,7 +21,7 @@ const PROGRESS_MIN_SPEED: float = 4.0
 ## Linux CI dummy physics can stall mid-course; steer-only recovery (no body teleport).
 const STAGNATION_SEC: float = 2.5
 const STAGNATION_PROGRESS_EPS: float = 2.0
-const STAGNATION_LOOK_AHEAD: float = 20.0
+const STAGNATION_LOOK_AHEAD: float = 14.0
 const STAGNATION_AHEAD_FACTOR: float = 0.12
 const STAGNATION_SPEED_LOOK_CAP: float = 12.0
 
@@ -271,9 +271,14 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 	var tangent_pos: Vector3 = path.to_global(
 		curve.sample_baked(fposmod(_progress + TANGENT_SAMPLE, path_len))
 	)
-	var target: Vector3 = path.to_global(
+	var mid_pos: Vector3 = path.to_global(
+		curve.sample_baked(fposmod(_progress + sample_ahead * 0.45, path_len))
+	)
+	var far_pos: Vector3 = path.to_global(
 		curve.sample_baked(fposmod(_progress + sample_ahead, path_len))
 	)
+	## Blend near/far like production AIPathFollower so sharp verdant corners keep CP4.
+	var target: Vector3 = mid_pos.lerp(far_pos, 0.55)
 	var tangent: Vector3 = tangent_pos - on_path
 	tangent.y = 0.0
 	if tangent.length_squared() > 0.01:
