@@ -10,22 +10,22 @@ const STEERING_GAIN: float = 4.2
 const STEERING_MULTIPLIER: float = 1.0
 const LATERAL_BLEND: float = 0.35
 const LATERAL_THRESHOLD: float = 3.0
-## Off-track / seam closest_offset can jump across the loop; refuse large progress snaps.
+## Off-track closest_offset can jump across the loop; refuse large progress snaps.
 const PROGRESS_CATCHUP_MAX: float = 8.0
-## Mid-course on-track catch-up (verdant CP2↔3 stall on Linux CI with 8-only cap).
-const PROGRESS_CATCHUP_ONTRACK: float = 48.0
+## Mid-course on-track may need a wider catch-up than void-snap refuse.
+const PROGRESS_CATCHUP_ONTRACK: float = 28.0
 const OFFTRACK_LATERAL: float = 5.0
-const SEAM_ZONE: float = 24.0
+const SEAM_ZONE: float = 18.0
 const TANGENT_SAMPLE: float = 3.0
 const SPEED_LOOK_AHEAD_FACTOR: float = 0.25
 const SPEED_LOOK_AHEAD_CAP: float = 8.0
 const PROGRESS_AHEAD_FACTOR: float = 0.05
 const PROGRESS_MIN_SPEED: float = 4.0
 ## Linux CI dummy physics can stall mid-course; steer-only recovery (no body teleport).
-const STAGNATION_SEC: float = 3.0
+const STAGNATION_SEC: float = 2.0
 const STAGNATION_PROGRESS_EPS: float = 2.0
-const STAGNATION_LOOK_AHEAD: float = 20.0
-const STAGNATION_AHEAD_FACTOR: float = 0.12
+const STAGNATION_LOOK_AHEAD: float = 28.0
+const STAGNATION_AHEAD_FACTOR: float = 0.18
 const STAGNATION_SPEED_LOOK_CAP: float = 12.0
 
 ## Skill policy (sim seconds — NOT frame counts).
@@ -245,27 +245,24 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 		delta_along += path_len
 	elif delta_along > path_len * 0.5:
 		delta_along -= path_len
-	## Seam/off-track closest snaps must not teleport progress across the loop.
-	## Mid-course on-track may catch up farther so verdant can clear CP3→finish on Linux CI.
-	## Stagnation still only boosts look-ahead / crawl — no body teleport; COURSE/HUMAN false.
-	var offtrack_limit := OFFTRACK_LATERAL
-	if stagnating:
-		offtrack_limit = OFFTRACK_LATERAL * 1.6
-	var offtrack := closest_lateral > offtrack_limit
+	## Void/seam snaps refuse large teleports; mid-course on-track uses wider catch-up.
+	## Preserves b81079c strengthened gate near finish/void; COURSE/HUMAN false.
+	var offtrack := closest_lateral > OFFTRACK_LATERAL
 	var near_seam := (
 		_progress < SEAM_ZONE
 		or _progress > path_len - SEAM_ZONE
 		or closest < SEAM_ZONE
 		or closest > path_len - SEAM_ZONE
 	)
-	var refuse_snap := (
-		(offtrack and absf(delta_along) > PROGRESS_CATCHUP_MAX)
-		or (near_seam and absf(delta_along) > PROGRESS_CATCHUP_MAX)
-	)
-	if refuse_snap:
+	var refuse_snap := offtrack or near_seam
+	if refuse_snap and absf(delta_along) > PROGRESS_CATCHUP_MAX:
 		_progress = fposmod(_progress + ahead_bias, path_len)
+	elif (not refuse_snap) and absf(delta_along) > PROGRESS_CATCHUP_ONTRACK:
+		## Still bound mid-course catch-up; crawl remainder via ahead_bias.
+		var catchup := clampf(delta_along, 0.0, PROGRESS_CATCHUP_ONTRACK)
+		_progress = fposmod(_progress + catchup + ahead_bias, path_len)
 	elif delta_along > -2.0:
-		var cap := PROGRESS_CATCHUP_MAX if offtrack else PROGRESS_CATCHUP_ONTRACK
+		var cap := PROGRESS_CATCHUP_MAX if refuse_snap else PROGRESS_CATCHUP_ONTRACK
 		var catchup := clampf(delta_along, 0.0, cap)
 		_progress = fposmod(_progress + catchup + ahead_bias, path_len)
 	else:
