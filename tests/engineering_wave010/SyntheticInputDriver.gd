@@ -13,10 +13,6 @@ const LATERAL_THRESHOLD: float = 3.0
 ## Off-track closest_offset can jump across the loop; refuse large progress snaps.
 const PROGRESS_CATCHUP_MAX: float = 8.0
 const OFFTRACK_LATERAL: float = 5.0
-## Verdant CP3→CP4 west apex: short look-ahead + soft brake (pathing, not gate weaken).
-const CORNER_CURVATURE: float = 0.085
-const CORNER_LOOK_AHEAD: float = 4.5
-const CORNER_BRAKE_SPEED: float = 10.5
 const TANGENT_SAMPLE: float = 3.0
 const SPEED_LOOK_AHEAD_FACTOR: float = 0.25
 const SPEED_LOOK_AHEAD_CAP: float = 8.0
@@ -25,9 +21,9 @@ const PROGRESS_MIN_SPEED: float = 4.0
 ## Linux CI dummy physics can stall mid-course; steer-only recovery (no body teleport).
 const STAGNATION_SEC: float = 3.0
 const STAGNATION_PROGRESS_EPS: float = 2.0
-const STAGNATION_LOOK_AHEAD: float = 9.0
+const STAGNATION_LOOK_AHEAD: float = 20.0
 const STAGNATION_AHEAD_FACTOR: float = 0.12
-const STAGNATION_SPEED_LOOK_CAP: float = 8.0
+const STAGNATION_SPEED_LOOK_CAP: float = 12.0
 
 ## Skill policy (sim seconds — NOT frame counts).
 const FRAME_COUNT_SKILL_TIMING: bool = false
@@ -198,20 +194,11 @@ func tick(player: Node3D, path: Path3D, delta: float = -1.0) -> void:
 	var steer := compute_steer(player, path)
 	steer = clampf(steer * STEERING_MULTIPLIER, -1.0, 1.0)
 	var im := _im()
-	var corner := path_curvature(path) >= CORNER_CURVATURE
-	var speed_now := 0.0
-	if player != null and "horizontal_speed" in player:
-		speed_now = absf(float(player.horizontal_speed))
-	var brake_corner := corner and speed_now >= CORNER_BRAKE_SPEED
 	if im != null:
 		im.set_touch_steer(steer)
-		im.set_touch_accelerate(not brake_corner)
-	if brake_corner:
-		Input.action_release("accelerate")
-		Input.action_press("brake")
-	else:
-		Input.action_press("accelerate")
-		Input.action_release("brake")
+		im.set_touch_accelerate(true)
+	Input.action_press("accelerate")
+	Input.action_release("brake")
 	if skills_enabled:
 		_tick_advanced(player, path, steer, dt)
 	else:
@@ -245,11 +232,6 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 		speed_look_cap = STAGNATION_SPEED_LOOK_CAP
 		_stagnation_recoveries += 1
 		diagnostics["stagnation_recoveries"] = _stagnation_recoveries
-	## Prefer short look-ahead on sharp corners so we don't cut past CP4 and reverse to CP2.
-	var pre_corner := path_curvature(path, _progress if _progress >= 0.0 else 0.0)
-	if pre_corner >= CORNER_CURVATURE:
-		look_ahead = CORNER_LOOK_AHEAD
-		speed_look_cap = minf(speed_look_cap, 4.0)
 	ahead_bias = maxf(speed, PROGRESS_MIN_SPEED) * ahead_factor
 	var closest_on: Vector3 = path.to_global(curve.sample_baked(closest))
 	var closest_lateral := player.global_position.distance_to(
@@ -285,13 +267,9 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 	var tangent_pos: Vector3 = path.to_global(
 		curve.sample_baked(fposmod(_progress + TANGENT_SAMPLE, path_len))
 	)
-	var mid_pos: Vector3 = path.to_global(
-		curve.sample_baked(fposmod(_progress + sample_ahead * 0.4, path_len))
-	)
-	var far_pos: Vector3 = path.to_global(
+	var target: Vector3 = path.to_global(
 		curve.sample_baked(fposmod(_progress + sample_ahead, path_len))
 	)
-	var target: Vector3 = mid_pos.lerp(far_pos, 0.4 if pre_corner >= CORNER_CURVATURE else 0.6)
 	var tangent: Vector3 = tangent_pos - on_path
 	tangent.y = 0.0
 	if tangent.length_squared() > 0.01:
@@ -317,16 +295,11 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 		forward = forward.normalized()
 
 	var along := forward.dot(tangent)
-	var airborne := false
-	if "is_on_floor" in player and player.has_method("is_on_floor"):
-		airborne = not bool(player.is_on_floor())
-	elif player.global_position.y > on_path.y + 2.2:
-		airborne = true
-	if along < 0.15 and not airborne:
+	if along < 0.15:
 		var turn_sign := signf(forward.cross(tangent).y)
 		if is_zero_approx(turn_sign):
 			turn_sign = 1.0
-		## Grounded U-turn only — airborne after bounce must keep aiming look-ahead.
+		## Keep full U-turn authority; stagnation recovery is look-ahead/crawl only.
 		return clampf(turn_sign * 1.0, -1.0, 1.0)
 
 	var to_target: Vector3 = target - player.global_position
