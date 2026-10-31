@@ -5,10 +5,10 @@ extends RefCounted
 ## Never mutates player transform, velocity, checkpoints, or laps.
 ## Technique success is NOT counted here (production signals only).
 
-const LOOK_AHEAD: float = 8.0
-const STEERING_GAIN: float = 3.1
+const LOOK_AHEAD: float = 5.5
+const STEERING_GAIN: float = 2.8
 const STEERING_MULTIPLIER: float = 1.0
-const LATERAL_BLEND: float = 0.45
+const LATERAL_BLEND: float = 0.35
 const LATERAL_THRESHOLD: float = 3.0
 ## Off-track closest_offset can jump across the loop; refuse large progress snaps.
 const PROGRESS_CATCHUP_MAX: float = 8.0
@@ -19,9 +19,9 @@ const SPEED_LOOK_AHEAD_CAP: float = 8.0
 const PROGRESS_AHEAD_FACTOR: float = 0.05
 const PROGRESS_MIN_SPEED: float = 4.0
 ## Linux CI dummy physics can stall mid-course; steer-only recovery (no body teleport).
-const STAGNATION_SEC: float = 2.5
+const STAGNATION_SEC: float = 3.0
 const STAGNATION_PROGRESS_EPS: float = 2.0
-const STAGNATION_LOOK_AHEAD: float = 14.0
+const STAGNATION_LOOK_AHEAD: float = 9.0
 const STAGNATION_AHEAD_FACTOR: float = 0.12
 const STAGNATION_SPEED_LOOK_CAP: float = 12.0
 
@@ -191,6 +191,7 @@ func tick(player: Node3D, path: Path3D, delta: float = -1.0) -> void:
 	_sim_elapsed_sec += dt
 	_path_ref = path
 	look_ahead = LOOK_AHEAD
+	_advance_progress_follower_style(player, path, dt)
 	var steer := compute_steer(player, path)
 	steer = clampf(steer * STEERING_MULTIPLIER, -1.0, 1.0)
 	var im := _im()
@@ -205,9 +206,12 @@ func tick(player: Node3D, path: Path3D, delta: float = -1.0) -> void:
 		_release_skill_actions()
 
 
-func compute_steer(player: Node3D, path: Path3D) -> float:
+
+func _advance_progress_follower_style(player: Node3D, path: Path3D, dt: float) -> void:
+	## Speed-integrated progress like AIPathFollower (verdant-repro). No body teleport.
+	## On-line reacquire only — refuse void/offtrack closest snaps (strengthened gate).
 	if player == null or path == null or path.curve == null:
-		return 0.0
+		return
 	var curve: Curve3D = path.curve
 	var path_len: float = maxf(curve.get_baked_length(), 1.0)
 	var local: Vector3 = path.to_local(player.global_position)
@@ -216,47 +220,25 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 		_progress = closest
 		_progress_high_water = closest
 		_last_progress_advance_sim = _sim_elapsed_sec
-	var ahead_bias := 0.0
+		return
 	var speed := 0.0
 	if "horizontal_speed" in player:
 		speed = absf(float(player.horizontal_speed))
-	var ahead_factor := PROGRESS_AHEAD_FACTOR
-	var speed_look_cap := SPEED_LOOK_AHEAD_CAP
-	var stagnating := (
-		_progress_high_water >= 0.0
-		and (_sim_elapsed_sec - _last_progress_advance_sim) >= STAGNATION_SEC
-	)
-	if stagnating:
-		ahead_factor = STAGNATION_AHEAD_FACTOR
-		look_ahead = STAGNATION_LOOK_AHEAD
-		speed_look_cap = STAGNATION_SPEED_LOOK_CAP
-		_stagnation_recoveries += 1
-		diagnostics["stagnation_recoveries"] = _stagnation_recoveries
-	ahead_bias = maxf(speed, PROGRESS_MIN_SPEED) * ahead_factor
 	var closest_on: Vector3 = path.to_global(curve.sample_baked(closest))
-	var closest_lateral := player.global_position.distance_to(
+	var lateral := player.global_position.distance_to(
 		Vector3(closest_on.x, player.global_position.y, closest_on.z)
 	)
-	var delta_along := closest - _progress
-	if delta_along < -path_len * 0.5:
-		delta_along += path_len
-	elif delta_along > path_len * 0.5:
-		delta_along -= path_len
-	## Off-track closest snaps (void near finish ↔ start) must not teleport progress.
-	## Snap refusal kept while stagnating — look-ahead/crawl boost, plus on-line resync.
-	var offtrack := closest_lateral > OFFTRACK_LATERAL
-	if stagnating and not offtrack and absf(delta_along) > PROGRESS_CATCHUP_MAX:
-		## Safe progress resync only when still on the race line (not a void teleport).
-		_progress = closest
-		_last_progress_advance_sim = _sim_elapsed_sec
-	elif offtrack or absf(delta_along) > PROGRESS_CATCHUP_MAX:
-		_progress = fposmod(_progress + ahead_bias, path_len)
-	elif delta_along > -2.0:
-		var catchup := clampf(delta_along, 0.0, PROGRESS_CATCHUP_MAX)
-		_progress = fposmod(_progress + catchup + ahead_bias, path_len)
+	var gap := closest - _progress
+	if gap < -path_len * 0.5:
+		gap += path_len
+	elif gap > path_len * 0.5:
+		gap -= path_len
+	var offtrack := lateral > OFFTRACK_LATERAL
+	var on_line_reacquire := (not offtrack) and lateral <= 3.5 and absf(gap) > 6.0
+	if on_line_reacquire:
+		_progress = fposmod(closest, path_len)
 	else:
-		_progress = fposmod(_progress + ahead_bias * 0.5, path_len)
-
+		_progress = fposmod(_progress + maxf(speed, 0.0) * dt, path_len)
 	var hw_delta := _progress - _progress_high_water
 	if hw_delta < -path_len * 0.5:
 		hw_delta += path_len
@@ -266,7 +248,33 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 		_progress_high_water = _progress
 		_last_progress_advance_sim = _sim_elapsed_sec
 
-	var sample_ahead: float = look_ahead + clampf(speed * SPEED_LOOK_AHEAD_FACTOR, 0.0, speed_look_cap)
+
+func compute_steer(player: Node3D, path: Path3D) -> float:
+	if player == null or path == null or path.curve == null:
+		return 0.0
+	var curve: Curve3D = path.curve
+	var path_len: float = maxf(curve.get_baked_length(), 1.0)
+	var local: Vector3 = path.to_local(player.global_position)
+	var closest: float = curve.get_closest_offset(local)
+	if _progress < 0.0:
+		_progress = closest
+	var speed := 0.0
+	if "horizontal_speed" in player:
+		speed = absf(float(player.horizontal_speed))
+	var closest_on: Vector3 = path.to_global(curve.sample_baked(closest))
+	var closest_lateral := player.global_position.distance_to(
+		Vector3(closest_on.x, player.global_position.y, closest_on.z)
+	)
+	var offtrack := closest_lateral > OFFTRACK_LATERAL
+	var stagnating := (
+		_progress_high_water >= 0.0
+		and (_sim_elapsed_sec - _last_progress_advance_sim) >= STAGNATION_SEC
+	)
+	if stagnating:
+		look_ahead = STAGNATION_LOOK_AHEAD
+		_stagnation_recoveries += 1
+		diagnostics["stagnation_recoveries"] = _stagnation_recoveries
+	var sample_ahead: float = look_ahead + clampf(speed * SPEED_LOOK_AHEAD_FACTOR, 0.0, SPEED_LOOK_AHEAD_CAP)
 	var on_path: Vector3 = path.to_global(curve.sample_baked(_progress))
 	var tangent_pos: Vector3 = path.to_global(
 		curve.sample_baked(fposmod(_progress + TANGENT_SAMPLE, path_len))
@@ -277,8 +285,7 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 	var far_pos: Vector3 = path.to_global(
 		curve.sample_baked(fposmod(_progress + sample_ahead, path_len))
 	)
-	## Blend near/far like production AIPathFollower so sharp verdant corners keep CP4.
-	var target: Vector3 = mid_pos.lerp(far_pos, 0.55)
+	var target: Vector3 = mid_pos.lerp(far_pos, 0.5)
 	var tangent: Vector3 = tangent_pos - on_path
 	tangent.y = 0.0
 	if tangent.length_squared() > 0.01:
