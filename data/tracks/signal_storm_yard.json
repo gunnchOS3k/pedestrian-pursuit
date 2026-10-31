@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "id": "signal_storm_yard",
+  "display_name": "Signal Storm Yard",
+  "lap_count": 3,
+  "difficulty": "advanced",
+  "theme": "signal_storm_yard",
+  "description": "Rail-yard storm circuit under blinking signal gantries with tight cuts and live collision crates.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "lane_width": 15.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#1A2228",
+  "accent_color": "#FFD14A",
+  "sky_color": "#101418",
+  "backdrop_color": "#0C1014",
+  "path_points": [
+    [
+      52.8,
+      1.793,
+      0.0
+    ],
+    [
+      44.59,
+      2.344,
+      14.26
+    ],
+    [
+      26.21,
+      2.4,
+      29.02
+    ],
+    [
+      8.03,
+      1.866,
+      39.52
+    ],
+    [
+      -8.03,
+      1.087,
+      39.52
+    ],
+    [
+      -26.21,
+      0.6,
+      29.02
+    ],
+    [
+      -44.59,
+      0.733,
+      14.26
+    ],
+    [
+      -52.8,
+      1.382,
+      0.0
+    ],
+    [
+      -44.59,
+      2.071,
+      -14.26
+    ],
+    [
+      -26.21,
+      2.319,
+      -29.02
+    ],
+    [
+      -8.03,
+      1.994,
+      -39.52
+    ],
+    [
+      8.03,
+      1.4,
+      -39.52
+    ],
+    [
+      26.21,
+      1.032,
+      -29.02
+    ],
+    [
+      44.59,
+      1.203,
+      -14.26
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 12,
+      "size": [
+        5,
+        10
+      ],
+      "speed_bonus": 1.18
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 4,
+      "size": [
+        7,
+        9
+      ],
+      "speed_multiplier": 0.78,
+      "terrain_name": "yard_ballast",
+      "handling_multiplier": 0.9,
+      "color": "#303438"
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 7,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    },
+    {
+      "point_index": 11,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    }
+  ],
+  "item_boxes": [
+    2,
+    4,
+    6,
+    10
+  ],
+  "boost_pickups": [
+    1,
+    5,
+    9
+  ],
+  "rail_segments": [
+    3,
+    9
+  ],
+  "shortcut_routes": [
+    {
+      "id": "signal_storm_yard_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 8,
+      "risk": "high",
+      "ai_preference": 0.27,
+      "description": "Yard crate cut between signals \u2014 crate collision if you miss."
+    }
+  ],
+  "landmarks": [
+    "signal_gantry",
+    "storm_tower",
+    "yard_crane"
+  ],
+  "elevation_profile": "signal_spikes",
+  "bank_bias": 0.12,
+  "geometry_note": "Neon Night upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. signal gantry / yard crates. Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn.",
+  "camera_identity": "signal_storm_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "Neon Night collision hazards are off-line props; do not claim human commercial art approval."
+  ]
+}

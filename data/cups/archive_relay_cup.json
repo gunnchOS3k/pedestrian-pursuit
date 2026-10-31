@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "id": "archive_relay_cup",
+  "display_name": "Archive Relay Cup",
+  "description": "Museum halls, archive stacks, and exhibition courts as an original gunnchOS Archive of Life tribute set \u2014 fictional gallery theming only, no scientific claims. Cup 7 production batch \u2014 four distinct raceable courses; track art still pending.",
+  "cup_index": 7,
+  "track_ids": [
+    "marble_foyer_loop",
+    "stack_corridor",
+    "gallery_grand_oval",
+    "vault_gate_gauntlet"
+  ],
+  "points_by_position": [
+    10,
+    7,
+    5,
+    3,
+    2,
+    1
+  ]
+}

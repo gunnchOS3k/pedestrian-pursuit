@@ -6,13 +6,20 @@ extends Node3D
 ## Limbs are Node3D joint pivots; meshes hang along the limb axis.
 
 const RunnerProfileScript = preload("res://scripts/data/RunnerProfile.gd")
+const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
+const AvatarAppearanceScript = preload("res://scripts/data/AvatarAppearance.gd")
+const WardrobeCatalogScript = preload("res://scripts/data/WardrobeCatalog.gd")
 
 @export var body_color: Color = Color(1.0, 0.82, 0.35, 1.0)
 @export var accent_color: Color = Color(1.0, 0.35, 0.2, 1.0)
 @export var is_ai: bool = false
 @export var runner_id: String = "dash_reed"
+@export var vehicle_id: String = "reedline_circlers"
 
 var profile: RunnerProfile
+## Modular cosmetic layers (do not affect collision/stats). Procedural body remains fallback.
+var avatar_appearance: Dictionary = {}
+var wardrobe_outfit_slots: Dictionary = {}
 var _torso: MeshInstance3D
 var _head: Node3D
 var _leg_l: Node3D
@@ -29,6 +36,9 @@ var _scarf: MeshInstance3D
 var _backpack: MeshInstance3D
 var _accent_fx: MeshInstance3D
 var _name_label: Label3D
+var _speed_trail: GPUParticles3D
+var _sole_contact: GPUParticles3D
+var _wardrobe_root: Node3D
 var _phase: float = 0.0
 var _parent_body: CharacterBody3D
 var _emotion_t: float = 0.0
@@ -38,6 +48,18 @@ var _boosting: bool = false
 var _menu_preview: bool = false
 var _rest_torso_y: float = 1.05
 var _rest_head_y: float = 1.55
+## 0 = full detail (solo/local preview), 1 = reduced wardrobe/VFX, 2 = silhouette-only budget for crowded fields.
+var visual_lod: int = 0
+
+
+func set_visual_lod(level: int) -> void:
+	## Eight-racer visual budget hook — reduces particles/wardrobe density; does not claim 8p complete.
+	var next := clampi(level, 0, 2)
+	if visual_lod == next:
+		return
+	visual_lod = next
+	if profile != null:
+		_rebuild()
 
 
 func _ready() -> void:
@@ -57,6 +79,60 @@ func apply_profile(p: RunnerProfile) -> void:
 	_rebuild()
 
 
+func apply_avatar_appearance(data: Dictionary, rebuild: bool = true) -> void:
+	## Cosmetic modular avatar path. Keeps procedural figure as base mesh fallback.
+	avatar_appearance = data.duplicate(true)
+	if rebuild and profile != null:
+		_rebuild()
+
+
+func apply_wardrobe_outfit(slots: Dictionary, rebuild: bool = true) -> void:
+	## Cosmetic wardrobe overlays. Footwear vehicle id still owns handling via set_vehicle_id.
+	wardrobe_outfit_slots = slots.duplicate(true)
+	var foot := str(slots.get("footwear_vehicle", ""))
+	if not foot.is_empty():
+		set_vehicle_id(foot, false)
+	if rebuild and profile != null:
+		_rebuild()
+
+
+func set_vehicle_id(id: String, rebuild: bool = true) -> void:
+	## Set footwear vehicle before/with profile so RaceScene only rebuilds once.
+	if vehicle_id == id:
+		return
+	vehicle_id = id
+	if rebuild and profile != null:
+		_rebuild()
+
+
+func _shoe_archetype() -> String:
+	if not vehicle_id.is_empty():
+		var arch := ShoeDataScript.movement_archetype(vehicle_id)
+		if not arch.is_empty():
+			return arch
+	## Fallback: map runner archetype → street movement archetype.
+	var runner_arch := profile.archetype if profile else "all_terrain"
+	match runner_arch:
+		"all_terrain":
+			return "street_balanced"
+		"sprinter":
+			return "street_sprint"
+		"parkour":
+			return "street_parkour"
+		"endurance":
+			return "street_tempo"
+		"uphill":
+			return "street_power"
+		"trick":
+			return "street_trick"
+		"cornering":
+			return "street_rail"
+		"kinetic":
+			return "street_kinetic"
+		_:
+			return "street_balanced"
+
+
 func set_menu_preview(enabled: bool) -> void:
 	_menu_preview = enabled
 	_parent_body = null if enabled else (get_parent() as CharacterBody3D)
@@ -73,6 +149,10 @@ func set_pose_state(state: String, duration: float = 0.45) -> void:
 
 func set_boosting(active: bool) -> void:
 	_boosting = active
+	if _speed_trail != null:
+		_speed_trail.emitting = active
+	if _sole_contact != null:
+		_sole_contact.emitting = active
 	if active and profile:
 		set_pose_state(str(profile.boost_style), 0.35)
 	elif active:
@@ -123,17 +203,32 @@ func _rebuild() -> void:
 	_backpack = null
 	_accent_fx = null
 	_name_label = null
+	_speed_trail = null
+	_sole_contact = null
+	_wardrobe_root = null
 	_build_figure()
+	_apply_modular_cosmetics()
 
 
 func _build_figure() -> void:
 	var hs := profile.height_scale if profile else 1.0
 	var ws := profile.width_scale if profile else 1.0
 	var ls := profile.leg_scale if profile else 1.0
+	## Modular appearance may override presentation scales only (never collision shapes).
+	if not avatar_appearance.is_empty():
+		hs = clampf(float(avatar_appearance.get("height_scale", hs)), 0.85, 1.2)
+		ws = clampf(float(avatar_appearance.get("width_scale", ws)), 0.85, 1.2)
+		ls = clampf(float(avatar_appearance.get("leg_scale", ls)), 0.85, 1.2)
 	var arch := profile.archetype if profile else "all_terrain"
 
 	var skin := StandardMaterial3D.new()
-	skin.albedo_color = Color(0.92, 0.72, 0.58).lerp(body_color.lightened(0.35), 0.25)
+	if not avatar_appearance.is_empty():
+		skin.albedo_color = AvatarAppearanceScript.skin_color(
+			str(avatar_appearance.get("skin_tone", "warm_medium")),
+			str(avatar_appearance.get("undertone", "neutral"))
+		)
+	else:
+		skin.albedo_color = Color(0.92, 0.72, 0.58).lerp(body_color.lightened(0.35), 0.25)
 	skin.roughness = 0.65
 	var shirt := StandardMaterial3D.new()
 	shirt.albedo_color = body_color
@@ -152,7 +247,10 @@ func _build_figure() -> void:
 	dark.albedo_color = accent_color.darkened(0.4)
 	dark.roughness = 0.55
 	var hair_mat := StandardMaterial3D.new()
-	hair_mat.albedo_color = body_color.darkened(0.45).lerp(accent_color.darkened(0.2), 0.35)
+	if not avatar_appearance.is_empty() and avatar_appearance.has("hair_color"):
+		hair_mat.albedo_color = Color.html(str(avatar_appearance.get("hair_color", "#2A1A12")))
+	else:
+		hair_mat.albedo_color = body_color.darkened(0.45).lerp(accent_color.darkened(0.2), 0.35)
 	hair_mat.roughness = 0.7
 	var eye_mat := StandardMaterial3D.new()
 	eye_mat.albedo_color = Color(0.08, 0.08, 0.1)
@@ -282,8 +380,11 @@ func _build_figure() -> void:
 	skull.position = Vector3(0, head_r * 0.85, 0)
 	_add_face(_head, head_r, eye_mat, mouth_mat)
 
-	# Hair / headwear per archetype (parented to head).
-	_add_hair_for_archetype(arch, head_r, hair_mat, accent, dark, hs)
+	# Hair / headwear — modular style overrides archetype fallback when present.
+	if not avatar_appearance.is_empty() and str(avatar_appearance.get("hair_style", "")) != "":
+		_add_modular_hair(str(avatar_appearance.get("hair_style", "short_fade")), head_r, hair_mat, dark, hs)
+	else:
+		_add_hair_for_archetype(arch, head_r, hair_mat, accent, dark, hs)
 
 	# Arms — shoulder pivots, cylinders hang down, hands at ends.
 	_arm_l = _make_limb(self, Vector3(-shoulder_spread, shoulder_y, 0), arm_len, arm_r, skin, true)
@@ -307,6 +408,526 @@ func _build_figure() -> void:
 	_name_label.outline_modulate = Color(0, 0, 0, 0.8)
 	_name_label.outline_size = 4
 	add_child(_name_label)
+	## Footwear-forward speed trail — tinted by material_family / archetype for chase-cam ID.
+	## Optional wardrobe trail_expression may override tint only (cosmetic); footwear still owns handling.
+	_speed_trail = GPUParticles3D.new()
+	_speed_trail.name = "KineticSoleTrail"
+	_speed_trail.position = Vector3(0.0, 0.2, 0.35)
+	var trail_profile := _footwear_trail_profile(arch)
+	_speed_trail.amount = int(trail_profile.get("amount", 28))
+	_speed_trail.lifetime = float(trail_profile.get("lifetime", 0.45))
+	_speed_trail.emitting = false
+	var trail_mat := ParticleProcessMaterial.new()
+	trail_mat.direction = Vector3(0.0, 0.2, 1.0)
+	trail_mat.spread = float(trail_profile.get("spread", 12.0))
+	trail_mat.initial_velocity_min = float(trail_profile.get("vmin", 1.5))
+	trail_mat.initial_velocity_max = float(trail_profile.get("vmax", 4.0))
+	trail_mat.gravity = Vector3(0.0, 0.4, 0.0)
+	trail_mat.scale_min = float(trail_profile.get("smin", 0.08))
+	trail_mat.scale_max = float(trail_profile.get("smax", 0.22))
+	trail_mat.color = _trail_expression_cosmetic_color(_footwear_trail_color(accent_color, arch))
+	_speed_trail.process_material = trail_mat
+	var trail_mesh := SphereMesh.new()
+	trail_mesh.radius = 0.12
+	trail_mesh.height = 0.24
+	_speed_trail.draw_pass_1 = trail_mesh
+	if visual_lod >= 2:
+		_speed_trail.amount = 1
+		_speed_trail.emitting = false
+		_speed_trail.visible = false
+	elif visual_lod == 1:
+		_speed_trail.amount = mini(maxi(_speed_trail.amount, 1), 8)
+	add_child(_speed_trail)
+	## Secondary sole contact spark — denser for sticky/plate families at gameplay FOV.
+	_sole_contact = null
+	if visual_lod < 2 and not vehicle_id.is_empty():
+		_sole_contact = GPUParticles3D.new()
+		_sole_contact.name = "KineticSoleContact"
+		_sole_contact.position = Vector3(0.0, 0.05, 0.2)
+		_sole_contact.amount = 12
+		_sole_contact.lifetime = 0.28
+		_sole_contact.emitting = false
+		var contact_mat := ParticleProcessMaterial.new()
+		contact_mat.direction = Vector3(0.0, 0.6, 0.4)
+		contact_mat.spread = 28.0
+		contact_mat.initial_velocity_min = 0.6
+		contact_mat.initial_velocity_max = 2.2
+		contact_mat.gravity = Vector3(0.0, -1.2, 0.0)
+		contact_mat.scale_min = 0.04
+		contact_mat.scale_max = 0.12
+		contact_mat.color = trail_mat.color.lightened(0.15)
+		_sole_contact.process_material = contact_mat
+		var spark := BoxMesh.new()
+		spark.size = Vector3(0.08, 0.08, 0.08)
+		_sole_contact.draw_pass_1 = spark
+		add_child(_sole_contact)
+
+
+func _trail_expression_cosmetic_color(fallback: Color) -> Color:
+	## Wardrobe trail_expression is chase-cam ID only — never reads handling / never changes vehicle_id.
+	var trail_id := str(wardrobe_outfit_slots.get("trail_expression", ""))
+	if trail_id.is_empty():
+		return fallback
+	var g := WardrobeCatalogScript.garment_by_id(trail_id)
+	if g.is_empty() or str(g.get("slot", "")) != "trail_expression":
+		return fallback
+	if not bool(g.get("cosmetic_only", false)):
+		return fallback
+	var colors: Variant = g.get("colors", {})
+	if typeof(colors) != TYPE_DICTIONARY:
+		return fallback
+	var hex := str((colors as Dictionary).get("accent", (colors as Dictionary).get("primary", "")))
+	if hex.begins_with("#") and hex.length() >= 7:
+		var parsed := Color.html(hex)
+		parsed.a = 0.78
+		return parsed
+	return fallback
+
+
+func _footwear_trail_color(fallback: Color, runner_arch: String) -> Color:
+	## Chase-cam readable trail tint from Kinetic Sole material_family / archetype.
+	var family := ShoeDataScript.material_family(vehicle_id) if not vehicle_id.is_empty() else ""
+	var march := _shoe_archetype()
+	if family.find("magma") >= 0 or family.find("cinder") >= 0 or march == "elemental_magma" or march == "tribute_ember":
+		return Color(1.0, 0.38, 0.12, 0.8)
+	if family.find("frost") >= 0 or family.find("azure") >= 0 or march == "elemental_frost" or march == "tribute_azure":
+		return Color(0.55, 0.85, 1.0, 0.78)
+	if family.find("volt") >= 0 or family.find("kinetic") >= 0 or march == "street_kinetic" or march == "tribute_volt":
+		return Color(0.25, 0.95, 0.9, 0.8)
+	if family.find("rail") >= 0 or march == "street_rail" or march == "tribute_orbit":
+		return Color(0.72, 0.48, 1.0, 0.78)
+	if family.find("mud") >= 0 or family.find("sand") >= 0 or march == "elemental_mud" or march == "elemental_sand":
+		return Color(0.72, 0.52, 0.28, 0.75)
+	if family.find("kelp") >= 0 or family.find("tide") >= 0 or march == "elemental_wet" or march == "elemental_dive":
+		return Color(0.25, 0.75, 0.85, 0.78)
+	if family.find("neon") >= 0 or family.find("bass") >= 0 or march.begins_with("crossover_"):
+		return Color(1.0, 0.35, 0.75, 0.8)
+	if family.find("null") >= 0 or march == "tribute_null":
+		return Color(0.55, 0.55, 0.62, 0.7)
+	if family.find("hover") >= 0 or march.begins_with("hover_"):
+		return Color(0.65, 0.85, 1.0, 0.78)
+	if family.find("roller") >= 0 or march.begins_with("roller_"):
+		return Color(0.95, 0.45, 0.65, 0.78)
+	if runner_arch == "all_terrain":
+		return Color(1.0, 0.42, 0.24, 0.75)
+	return Color(fallback.r, fallback.g, fallback.b, 0.75)
+
+
+func _footwear_trail_profile(runner_arch: String) -> Dictionary:
+	## Per-family trail density for wardrobe/chase-cam ID — not commercial final VFX.
+	var family := ShoeDataScript.material_family(vehicle_id) if not vehicle_id.is_empty() else ""
+	var march := _shoe_archetype()
+	var profile := {
+		"amount": 28,
+		"lifetime": 0.45,
+		"spread": 12.0,
+		"vmin": 1.5,
+		"vmax": 4.0,
+		"smin": 0.08,
+		"smax": 0.22,
+	}
+	if family.find("magma") >= 0 or march == "elemental_magma" or march == "tribute_ember":
+		profile["amount"] = 36
+		profile["spread"] = 18.0
+		profile["lifetime"] = 0.38
+		profile["smax"] = 0.28
+	elif family.find("frost") >= 0 or march == "elemental_frost" or march == "tribute_azure":
+		profile["amount"] = 32
+		profile["spread"] = 10.0
+		profile["lifetime"] = 0.52
+		profile["smin"] = 0.06
+	elif family.find("volt") >= 0 or march == "street_kinetic" or march == "tribute_volt":
+		profile["amount"] = 34
+		profile["spread"] = 8.0
+		profile["vmax"] = 5.2
+	elif family.find("rail") >= 0 or march == "street_rail":
+		profile["amount"] = 24
+		profile["spread"] = 6.0
+		profile["lifetime"] = 0.4
+	elif family.find("mud") >= 0 or family.find("sand") >= 0 or march == "elemental_mud" or march == "elemental_sand":
+		profile["amount"] = 30
+		profile["spread"] = 20.0
+		profile["vmin"] = 0.8
+		profile["vmax"] = 2.6
+		profile["smax"] = 0.3
+	elif family.find("kelp") >= 0 or family.find("tide") >= 0 or march == "elemental_wet" or march == "elemental_dive":
+		profile["amount"] = 26
+		profile["lifetime"] = 0.55
+		profile["spread"] = 14.0
+	elif family.find("neon") >= 0 or march.begins_with("crossover_"):
+		profile["amount"] = 38
+		profile["spread"] = 16.0
+		profile["vmax"] = 4.8
+	elif family.find("hover") >= 0 or march.begins_with("hover_"):
+		profile["amount"] = 22
+		profile["spread"] = 9.0
+		profile["lifetime"] = 0.5
+		profile["smin"] = 0.1
+	elif family.find("roller") >= 0 or march.begins_with("roller_") or family.find("urethane") >= 0:
+		profile["amount"] = 30
+		profile["spread"] = 11.0
+		profile["vmax"] = 4.4
+	elif family.find("tap") >= 0 or family.find("bass") >= 0 or family.find("circuit") >= 0:
+		## Crossover footwear chase ID (Pedestrian-side VFX only — no BeatLink/MLV source edits).
+		profile["amount"] = 33
+		profile["spread"] = 7.0
+		profile["lifetime"] = 0.42
+		profile["vmax"] = 4.6
+	elif family.find("portal") >= 0 or family.find("gyro") >= 0:
+		profile["amount"] = 27
+		profile["spread"] = 15.0
+		profile["lifetime"] = 0.48
+	elif runner_arch == "all_terrain":
+		profile["amount"] = 30
+		profile["spread"] = 13.0
+	return profile
+
+
+func _apply_modular_cosmetics() -> void:
+	## Wardrobe overlays only. Never changes CharacterBody3D collision or MovementStats.
+	if wardrobe_outfit_slots.is_empty() and avatar_appearance.is_empty():
+		return
+	if _torso == null or _head == null:
+		return
+	_wardrobe_root = Node3D.new()
+	_wardrobe_root.name = "WardrobeRoot"
+	add_child(_wardrobe_root)
+	var hs := profile.height_scale if profile else 1.0
+	var ws := profile.width_scale if profile else 1.0
+	if not avatar_appearance.is_empty():
+		hs = clampf(float(avatar_appearance.get("height_scale", hs)), 0.85, 1.2)
+		ws = clampf(float(avatar_appearance.get("width_scale", ws)), 0.85, 1.2)
+	## Face / covering cosmetics (independent of wardrobe slots).
+	if not avatar_appearance.is_empty() and visual_lod < 2:
+		_apply_face_cosmetics(hs, ws)
+	if wardrobe_outfit_slots.is_empty():
+		_apply_assistive_visual(hs, ws)
+		return
+	var slot_budget := 99
+	if visual_lod == 1:
+		slot_budget = 4
+	elif visual_lod >= 2:
+		slot_budget = 1
+	var attached := 0
+	for slot in wardrobe_outfit_slots.keys():
+		if attached >= slot_budget:
+			break
+		var gid := str(wardrobe_outfit_slots.get(slot, ""))
+		if gid.is_empty() or slot == "footwear_vehicle":
+			continue
+		var g := WardrobeCatalogScript.garment_by_id(gid)
+		if g.is_empty():
+			continue
+		if str(g.get("art_status", "")) != "integrated_mesh_v1":
+			continue ## art-pending catalog entries stay honest — no fake mesh claim
+		_attach_garment_mesh(g, hs, ws)
+		attached += 1
+	_apply_assistive_visual(hs, ws)
+
+
+func _apply_assistive_visual(hs: float, ws: float) -> void:
+	if avatar_appearance.is_empty() or _wardrobe_root == null or visual_lod >= 2:
+		return
+	var assist := str(avatar_appearance.get("assistive", "none"))
+	if assist == "none" or assist == "":
+		return
+	var brace_mat := StandardMaterial3D.new()
+	brace_mat.albedo_color = Color(0.75, 0.78, 0.82)
+	brace_mat.metallic = 0.55
+	brace_mat.roughness = 0.35
+	match assist:
+		"forearm_sleeve_vis":
+			var sleeve := _mesh_capsule(0.05 * ws, 0.2 * hs, Vector3.ZERO, brace_mat)
+			_wardrobe_root.add_child(sleeve)
+			sleeve.position = Vector3(0.24 * ws, _rest_torso_y + 0.05 * hs, 0.0)
+		"running_blade_vis":
+			var blade := _mesh_box(Vector3(0.06 * ws, 0.28 * hs, 0.04), Vector3.ZERO, brace_mat)
+			_wardrobe_root.add_child(blade)
+			blade.position = Vector3(0.12 * ws, _rest_torso_y - 0.45 * hs, 0.02)
+		_:
+			var brace := _mesh_box(Vector3(0.08 * ws, 0.22 * hs, 0.06), Vector3.ZERO, brace_mat)
+			_wardrobe_root.add_child(brace)
+			brace.position = Vector3(0.16 * ws, _rest_torso_y - 0.15 * hs, 0.02)
+
+
+func _apply_face_cosmetics(hs: float, _ws: float) -> void:
+	if _head == null:
+		return
+	var head_r := 0.15 * hs
+	var dark := StandardMaterial3D.new()
+	dark.albedo_color = Color(0.18, 0.12, 0.1)
+	dark.roughness = 0.55
+	var accent := StandardMaterial3D.new()
+	accent.albedo_color = Color(0.75, 0.25, 0.35)
+	accent.roughness = 0.4
+	var mark := StandardMaterial3D.new()
+	mark.albedo_color = Color(0.45, 0.28, 0.22)
+	mark.roughness = 0.6
+	var covering := str(avatar_appearance.get("head_covering", "none"))
+	if covering != "none" and covering != "" and covering != "hijab_wrap":
+		var cover_mat := StandardMaterial3D.new()
+		cover_mat.albedo_color = Color(0.2, 0.22, 0.28) if covering in ["cap", "beanie", "durag"] else Color(0.85, 0.75, 0.35)
+		cover_mat.roughness = 0.5
+		var cover := _mesh_capsule(head_r * 1.05, head_r * 0.7, Vector3.ZERO, cover_mat)
+		_head.add_child(cover)
+		cover.position = Vector3(0, head_r * 1.35, -0.02)
+	var facial := str(avatar_appearance.get("facial_hair", "none"))
+	if facial != "none":
+		match facial:
+			"mustache":
+				var m := _mesh_box(Vector3(head_r * 0.35, head_r * 0.05, head_r * 0.08), Vector3.ZERO, dark)
+				_head.add_child(m)
+				m.position = Vector3(0, head_r * 0.62, head_r * 0.85)
+			"goatee":
+				var g := _mesh_box(Vector3(head_r * 0.18, head_r * 0.16, head_r * 0.08), Vector3.ZERO, dark)
+				_head.add_child(g)
+				g.position = Vector3(0, head_r * 0.38, head_r * 0.8)
+			"full_beard":
+				var b := _mesh_capsule(head_r * 0.55, head_r * 0.7, Vector3.ZERO, dark)
+				_head.add_child(b)
+				b.position = Vector3(0, head_r * 0.35, head_r * 0.55)
+			"stubble":
+				var s := _mesh_box(Vector3(head_r * 0.55, head_r * 0.12, head_r * 0.12), Vector3.ZERO, dark)
+				_head.add_child(s)
+				s.position = Vector3(0, head_r * 0.5, head_r * 0.78)
+	var makeup := str(avatar_appearance.get("makeup", "none"))
+	if makeup == "bold_lip":
+		var lip := _mesh_box(Vector3(head_r * 0.28, head_r * 0.07, head_r * 0.06), Vector3.ZERO, accent)
+		_head.add_child(lip)
+		lip.position = Vector3(0, head_r * 0.55, head_r * 0.86)
+	elif makeup == "soft_liner":
+		var liner := _mesh_box(Vector3(head_r * 0.55, head_r * 0.03, head_r * 0.04), Vector3.ZERO, dark)
+		_head.add_child(liner)
+		liner.position = Vector3(0, head_r * 1.05, head_r * 0.78)
+	elif makeup == "race_stripe":
+		var stripe := _mesh_box(Vector3(head_r * 0.08, head_r * 0.55, head_r * 0.05), Vector3.ZERO, accent)
+		_head.add_child(stripe)
+		stripe.position = Vector3(0, head_r * 0.95, head_r * 0.9)
+	var scar := str(avatar_appearance.get("scar", "none"))
+	if scar == "cheek_thin":
+		var sc := _mesh_box(Vector3(head_r * 0.18, head_r * 0.03, head_r * 0.03), Vector3.ZERO, mark)
+		_head.add_child(sc)
+		sc.position = Vector3(head_r * 0.35, head_r * 0.75, head_r * 0.7)
+	elif scar == "brow_nick":
+		var bn := _mesh_box(Vector3(head_r * 0.12, head_r * 0.03, head_r * 0.03), Vector3.ZERO, mark)
+		_head.add_child(bn)
+		bn.position = Vector3(-head_r * 0.28, head_r * 1.12, head_r * 0.72)
+	var birth := str(avatar_appearance.get("birthmark", "none"))
+	if birth == "cheek_dot":
+		var dot := _mesh_sphere(head_r * 0.05, Vector3.ZERO, mark)
+		_head.add_child(dot)
+		dot.position = Vector3(head_r * 0.4, head_r * 0.7, head_r * 0.72)
+	elif birth == "temple_patch":
+		var patch := _mesh_sphere(head_r * 0.08, Vector3.ZERO, mark)
+		_head.add_child(patch)
+		patch.position = Vector3(-head_r * 0.55, head_r * 1.05, head_r * 0.35)
+	## Expression hooks — subtle mouth/eye offset by idle/start/victory selection.
+	var expr := str(avatar_appearance.get("expression_idle", "neutral"))
+	if _pose_state in ["arms_up", "finish"] or _pose_state.begins_with("victory"):
+		expr = str(avatar_appearance.get("expression_victory", expr))
+	elif _pose_state != "idle" and _pose_timer > 0.0:
+		expr = str(avatar_appearance.get("expression_start", expr))
+	set_meta("expression_hook", expr)
+
+
+func _attach_garment_mesh(g: Dictionary, hs: float, ws: float) -> void:
+	## Body-fit attachment: garments scale with presentation proportions only (no collision change).
+	var colors: Dictionary = g.get("colors", {})
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = Color.html(str(colors.get("primary", "#2EC4B6")))
+	mat.roughness = 0.45
+	var accent := StandardMaterial3D.new()
+	accent.albedo_color = Color.html(str(colors.get("accent", "#FF6A3D")))
+	accent.roughness = 0.4
+	var recipe := str(g.get("mesh_recipe", ""))
+	var mesh: MeshInstance3D = null
+	match recipe:
+		"fitted_undersuit":
+			mesh = _mesh_capsule(0.175 * ws, 0.5 * hs, Vector3(0, _rest_torso_y, 0.01), mat)
+		"cropped_shell":
+			mesh = _mesh_capsule(0.19 * ws, 0.28 * hs, Vector3(0, _rest_torso_y + 0.08 * hs, -0.02), mat)
+		"tapered_pants":
+			mesh = _mesh_capsule(0.16 * ws, 0.34 * hs, Vector3(0, _rest_torso_y - 0.28 * hs, 0.0), mat)
+		"wide_soft_pants":
+			mesh = _mesh_capsule(0.19 * ws, 0.36 * hs, Vector3(0, _rest_torso_y - 0.3 * hs, 0.0), mat)
+		"open_windshell":
+			mesh = _mesh_capsule(0.21 * ws, 0.42 * hs, Vector3(0, _rest_torso_y + 0.02 * hs, -0.04), mat)
+			var wing := _mesh_box(Vector3(0.08 * ws, 0.28 * hs, 0.04), Vector3.ZERO, accent)
+			_wardrobe_root.add_child(wing)
+			wing.position = Vector3(0.14 * ws, _rest_torso_y, -0.08)
+		"relaxed_overshirt":
+			mesh = _mesh_capsule(0.2 * ws, 0.36 * hs, Vector3(0, _rest_torso_y + 0.04 * hs, -0.01), mat)
+		"open_drape":
+			mesh = _mesh_capsule(0.23 * ws, 0.5 * hs, Vector3(0, _rest_torso_y - 0.02 * hs, -0.06), mat)
+		"panel_jacket":
+			mesh = _mesh_capsule(0.22 * ws, 0.4 * hs, Vector3(0, _rest_torso_y + 0.02 * hs, -0.03), mat)
+			var stripe := _mesh_box(Vector3(0.06 * ws, 0.32 * hs, 0.03), Vector3.ZERO, accent)
+			_wardrobe_root.add_child(stripe)
+			stripe.position = Vector3(-0.12 * ws, _rest_torso_y, -0.1)
+		"formal_lapel":
+			mesh = _mesh_capsule(0.2 * ws, 0.32 * hs, Vector3(0, _rest_torso_y + 0.06 * hs, -0.02), mat)
+			var lapel := _mesh_box(Vector3(0.1 * ws, 0.18 * hs, 0.03), Vector3.ZERO, accent)
+			_wardrobe_root.add_child(lapel)
+			lapel.position = Vector3(0.1 * ws, _rest_torso_y + 0.12 * hs, 0.06)
+		"formal_coat":
+			mesh = _mesh_capsule(0.24 * ws, 0.55 * hs, Vector3(0, _rest_torso_y - 0.05 * hs, -0.05), mat)
+		"longline_robe":
+			mesh = _mesh_capsule(0.22 * ws, 0.62 * hs, Vector3(0, _rest_torso_y - 0.08 * hs, -0.02), mat)
+		"modest_wrap":
+			mesh = _mesh_capsule(0.23 * ws, 0.48 * hs, Vector3(0, _rest_torso_y, -0.04), mat)
+		"mantle_vest":
+			mesh = _mesh_capsule(0.2 * ws, 0.3 * hs, Vector3(0, _rest_torso_y + 0.05 * hs, -0.02), mat)
+			var pauldron := _mesh_box(Vector3(0.12 * ws, 0.08 * hs, 0.1), Vector3.ZERO, accent)
+			_wardrobe_root.add_child(pauldron)
+			pauldron.position = Vector3(0.18 * ws, _rest_torso_y + 0.18 * hs, 0.0)
+		"short_capelet":
+			mesh = _mesh_box(Vector3(0.36 * ws, 0.08 * hs, 0.28 * ws), Vector3.ZERO, mat)
+			_wardrobe_root.add_child(mesh)
+			mesh.position = Vector3(0, _rest_torso_y + 0.2 * hs, -0.08)
+			return
+		"hard_shell_panel":
+			mesh = _mesh_box(Vector3(0.34 * ws, 0.28 * hs, 0.12), Vector3.ZERO, mat)
+			_wardrobe_root.add_child(mesh)
+			mesh.position = Vector3(0, _rest_torso_y + 0.05 * hs, 0.04)
+			var glow := _mesh_box(Vector3(0.08 * ws, 0.2 * hs, 0.04), Vector3.ZERO, accent)
+			_wardrobe_root.add_child(glow)
+			glow.position = Vector3(0.12 * ws, _rest_torso_y + 0.05 * hs, 0.08)
+			return
+		"headband":
+			mesh = _mesh_box(Vector3(0.28 * ws, 0.05 * hs, 0.22 * ws), Vector3.ZERO, mat)
+			if _head != null:
+				_head.add_child(mesh)
+				mesh.position = Vector3(0, 0.22 * hs, 0.02)
+				return
+		"soft_headwrap":
+			mesh = _mesh_capsule(0.17 * ws, 0.2 * hs, Vector3.ZERO, mat)
+			if _head != null:
+				_head.add_child(mesh)
+				mesh.position = Vector3(0, 0.28 * hs, -0.02)
+				return
+		"hip_pack":
+			mesh = _mesh_box(Vector3(0.16 * ws, 0.1 * hs, 0.08), Vector3.ZERO, mat)
+			_wardrobe_root.add_child(mesh)
+			mesh.position = Vector3(0.14 * ws, _rest_torso_y - 0.2 * hs, -0.06)
+			return
+		"cross_sling":
+			mesh = _mesh_box(Vector3(0.12 * ws, 0.18 * hs, 0.06), Vector3.ZERO, mat)
+			_wardrobe_root.add_child(mesh)
+			mesh.position = Vector3(-0.14 * ws, _rest_torso_y - 0.05 * hs, -0.05)
+			return
+		"soft_scarf":
+			mesh = _mesh_box(Vector3(0.22 * ws, 0.08 * hs, 0.12), Vector3.ZERO, mat)
+			_wardrobe_root.add_child(mesh)
+			mesh.position = Vector3(0, _rest_torso_y + 0.22 * hs, 0.06)
+			return
+		"crest_pin":
+			mesh = _mesh_box(Vector3(0.05 * ws, 0.05 * hs, 0.03), Vector3.ZERO, accent)
+			_wardrobe_root.add_child(mesh)
+			mesh.position = Vector3(0.08 * ws, _rest_torso_y + 0.15 * hs, 0.1)
+			return
+		"race_visor":
+			mesh = _mesh_box(Vector3(0.28 * ws, 0.05 * hs, 0.12), Vector3.ZERO, mat)
+			if _head != null:
+				_head.add_child(mesh)
+				mesh.position = Vector3(0, 0.18 * hs, 0.14)
+				var lens := _mesh_box(Vector3(0.22 * ws, 0.03 * hs, 0.02), Vector3.ZERO, accent)
+				_head.add_child(lens)
+				lens.position = Vector3(0, 0.18 * hs, 0.18)
+				return
+		"trail_ember", "trail_signal":
+			if visual_lod >= 1:
+				return
+			var trail := GPUParticles3D.new()
+			trail.amount = 10
+			trail.lifetime = 0.35
+			trail.emitting = true
+			var pm := ParticleProcessMaterial.new()
+			pm.direction = Vector3(0, 0.2, 1)
+			pm.spread = 10.0
+			pm.initial_velocity_min = 0.8
+			pm.initial_velocity_max = 2.2
+			pm.color = mat.albedo_color
+			trail.process_material = pm
+			var sm := SphereMesh.new()
+			sm.radius = 0.06
+			sm.height = 0.12
+			trail.draw_pass_1 = sm
+			_wardrobe_root.add_child(trail)
+			trail.position = Vector3(0, _rest_torso_y - 0.1 * hs, -0.15)
+			return
+		_:
+			return
+	if mesh != null:
+		_wardrobe_root.add_child(mesh)
+
+
+func cosmetic_fingerprint() -> String:
+	## Peer-verifiable cosmetic identity (appearance + outfit + footwear).
+	const AppearanceSyncScript = preload("res://scripts/data/AppearanceSync.gd")
+	return str(AppearanceSyncScript.fingerprint({
+		"schema_version": 1,
+		"racer_id": str(get_meta("created_racer_id")) if has_meta("created_racer_id") else "",
+		"display_name": profile.display_name if profile else "",
+		"appearance": avatar_appearance,
+		"outfit_id": str(get_meta("outfit_id")) if has_meta("outfit_id") else "",
+		"outfit_slots": wardrobe_outfit_slots,
+		"footwear_vehicle_id": vehicle_id,
+	}))
+
+
+func _add_modular_hair(style: String, head_r: float, hair_mat: Material, dark: Material, hs: float) -> void:
+	## Protective styles and coverings — original procedural meshes only.
+	match style:
+		"locs_shoulder":
+			_hair = _mesh_sphere(head_r * 0.55, Vector3(0, head_r * 1.4, -0.05), hair_mat)
+			_head.add_child(_hair)
+			for i in range(5):
+				var loc := _mesh_capsule(head_r * 0.08, head_r * 1.5, Vector3.ZERO, hair_mat)
+				_head.add_child(loc)
+				loc.position = Vector3((-0.12 + float(i) * 0.06) * hs, head_r * 0.7, -head_r * 0.9)
+				loc.rotation.x = 0.7
+		"box_braids":
+			_hair = _mesh_sphere(head_r * 0.65, Vector3(0, head_r * 1.45, -0.05), hair_mat)
+			_head.add_child(_hair)
+			for i in range(6):
+				var braid := _mesh_capsule(head_r * 0.06, head_r * 1.7, Vector3.ZERO, hair_mat)
+				_head.add_child(braid)
+				braid.position = Vector3((-0.14 + float(i) * 0.055), head_r * 0.65, -head_r * 0.85)
+				braid.rotation.x = 0.85
+		"cornrows":
+			_hair = _mesh_box(Vector3(head_r * 1.2, head_r * 0.12, head_r * 1.0), Vector3.ZERO, hair_mat)
+			_head.add_child(_hair)
+			_hair.position = Vector3(0, head_r * 1.4, -0.05)
+			for i in range(4):
+				var row := _mesh_box(Vector3(head_r * 0.08, head_r * 0.08, head_r * 1.1), Vector3.ZERO, hair_mat)
+				_head.add_child(row)
+				row.position = Vector3((-0.12 + float(i) * 0.08), head_r * 1.35, -head_r * 0.1)
+		"twists":
+			_hair = _mesh_sphere(head_r * 0.5, Vector3(0, head_r * 1.4, -0.04), hair_mat)
+			_head.add_child(_hair)
+			for i in range(4):
+				var tw := _mesh_capsule(head_r * 0.07, head_r * 1.2, Vector3.ZERO, hair_mat)
+				_head.add_child(tw)
+				tw.position = Vector3((-0.1 + float(i) * 0.07), head_r * 0.8, -head_r * 0.8)
+				tw.rotation.x = 0.6
+		"protective_bun":
+			_hair = _mesh_sphere(head_r * 0.7, Vector3(0, head_r * 1.7, -head_r * 0.2), hair_mat)
+			_head.add_child(_hair)
+		"afro_crown":
+			_hair = _mesh_sphere(head_r * 1.15, Vector3(0, head_r * 1.35, -0.05), hair_mat)
+			_head.add_child(_hair)
+		"long_waves":
+			_hair = _mesh_capsule(head_r * 0.55, head_r * 1.8, Vector3(0, head_r * 0.4, -head_r * 0.7), hair_mat)
+			_head.add_child(_hair)
+		"buzz", "bald":
+			_hair = null
+		"hijab_wrap", "durag":
+			_hair = _mesh_capsule(head_r * 1.05, head_r * 1.1, Vector3(0, head_r * 0.9, -0.05), dark)
+			_head.add_child(_hair)
+		_:
+			_hair = _mesh_box(Vector3(head_r * 1.3, head_r * 0.35, head_r * 1.1), Vector3.ZERO, hair_mat)
+			_head.add_child(_hair)
+			_hair.position = Vector3(0, head_r * 1.5, -0.05)
 
 
 func _add_face(head: Node3D, head_r: float, eye_mat: Material, mouth_mat: Material) -> void:
@@ -441,35 +1062,1543 @@ func _attach_shoes(
 	accent: Material, dark: Material
 ) -> void:
 	var side := -1.0 if is_left else 1.0
+	var march := _shoe_archetype()
+	## Street + Roller + Hover Couture — distinct silhouettes, shared mesh stack.
+	## Hover/space reads are VFX only; race collision stays grounded.
+	var balanced := march == "street_balanced"
+	var sprint := march == "street_sprint"
+	var parkour := march == "street_parkour"
+	var tempo := march == "street_tempo"
+	var power := march == "street_power"
+	var trick := march == "street_trick"
+	var rail := march == "street_rail"
+	var kinetic := march == "street_kinetic"
+	var roller_inline := march == "roller_inline"
+	var roller_quad := march == "roller_quad"
+	var roller_hover := march == "roller_hoverish"
+	var hover_glide := march == "hover_glide"
+	var hover_boost := march == "hover_boost"
+	var hover_bounce := march == "hover_bounce"
+	var hover_precision := march == "hover_precision"
+	var elemental_wet := march == "elemental_wet"
+	var elemental_dive := march == "elemental_dive"
+	var elemental_sand := march == "elemental_sand"
+	var elemental_magma := march == "elemental_magma"
+	var elemental_frost := march == "elemental_frost"
+	var elemental_mud := march == "elemental_mud"
+	var ridiculous_boost := march == "ridiculous_boost"
+	var ridiculous_stomp := march == "ridiculous_stomp"
+	var ridiculous_reach := march == "ridiculous_reach"
+	var ridiculous_caffeine := march == "ridiculous_caffeine"
+	var ridiculous_drift := march == "ridiculous_drift"
+	var ridiculous_trick := march == "ridiculous_trick"
+	var crossover_soft := march == "crossover_soft"
+	var crossover_heavy := march == "crossover_heavy"
+	var crossover_tap := march == "crossover_tap"
+	var crossover_bass := march == "crossover_bass"
+	var crossover_circuit := march == "crossover_circuit"
+	var crossover_portal := march == "crossover_portal"
+	var crossover_gyro := march == "crossover_gyro"
+	var tribute_ember := march == "tribute_ember"
+	var tribute_bastion := march == "tribute_bastion"
+	var tribute_volt := march == "tribute_volt"
+	var tribute_gale := march == "tribute_gale"
+	var tribute_azure := march == "tribute_azure"
+	var tribute_orbit := march == "tribute_orbit"
+	var tribute_echo := march == "tribute_echo"
+	var tribute_null := march == "tribute_null"
+	var tribute_radiant := march == "tribute_radiant"
+	var native_street := balanced or sprint or parkour or tempo or power or trick or rail or kinetic
+	var native_roller := roller_inline or roller_quad or roller_hover
+	var native_hover := hover_glide or hover_boost or hover_bounce or hover_precision
+	var native_elemental := (
+		elemental_wet or elemental_dive or elemental_sand
+		or elemental_magma or elemental_frost or elemental_mud
+	)
+	var native_ridiculous := (
+		ridiculous_boost or ridiculous_stomp or ridiculous_reach
+		or ridiculous_caffeine or ridiculous_drift or ridiculous_trick
+	)
+	var native_crossover := (
+		crossover_soft or crossover_heavy or crossover_tap or crossover_bass
+		or crossover_circuit or crossover_portal or crossover_gyro
+	)
+	var native_tribute := (
+		tribute_ember or tribute_bastion or tribute_volt or tribute_gale or tribute_azure
+		or tribute_orbit or tribute_echo or tribute_null or tribute_radiant
+	)
+	if tempo or rail or power or sprint or trick or kinetic or parkour or native_roller or native_hover or native_elemental or native_ridiculous or native_crossover or native_tribute:
+		shoe_scale *= 1.14
+	if power:
+		shoe_scale *= 1.08 ## Blockier iron silhouette for forge ash.
+	if sprint:
+		shoe_scale *= 0.96 ## Low spike profile.
+	if roller_quad:
+		shoe_scale *= 1.06
+	if roller_hover:
+		shoe_scale *= 1.04
+	if hover_bounce:
+		shoe_scale *= 1.12
+	if hover_boost:
+		shoe_scale *= 1.05
+	if elemental_mud:
+		shoe_scale *= 1.12
+	if elemental_magma:
+		shoe_scale *= 1.08
+	if elemental_frost:
+		shoe_scale *= 1.05
+	if ridiculous_stomp:
+		shoe_scale *= 1.18
+	if ridiculous_reach:
+		shoe_scale *= 1.2
+	if ridiculous_drift:
+		shoe_scale *= 1.1
+	if ridiculous_boost or ridiculous_caffeine:
+		shoe_scale *= 1.04
+	if crossover_heavy:
+		shoe_scale *= 1.12
+	if crossover_bass:
+		shoe_scale *= 1.08
+	if crossover_portal:
+		shoe_scale *= 1.05
+	if crossover_gyro:
+		shoe_scale *= 1.04
+	if tribute_bastion or tribute_azure:
+		shoe_scale *= 1.12
+	if tribute_volt or tribute_radiant:
+		shoe_scale *= 1.06
+	if tribute_gale:
+		shoe_scale *= 1.04
+	if tribute_orbit or tribute_echo:
+		shoe_scale *= 1.05
+	if vehicle_id == "treadfall_blades":
+		shoe_scale *= 0.98
+	elif vehicle_id == "iron_derby_blitz":
+		shoe_scale *= 1.1
+	elif vehicle_id == "anti_gravity_platforms":
+		shoe_scale *= 1.15
+	elif vehicle_id == "starglass_pointe":
+		shoe_scale *= 0.92
+	elif vehicle_id == "kelpjet_submariners":
+		shoe_scale *= 1.06
+	elif vehicle_id == "tidefin_runners":
+		shoe_scale *= 0.98
+	elif vehicle_id == "bubblegum_stilts":
+		shoe_scale *= 1.08
+	elif vehicle_id == "banana_boomerang_cleats":
+		shoe_scale *= 0.97
+	elif vehicle_id == "lifeling_lopers":
+		shoe_scale *= 1.02
+	elif vehicle_id == "waike_circuit_clogs":
+		shoe_scale *= 1.06
+	elif vehicle_id == "nullstep":
+		shoe_scale *= 0.98
+	elif vehicle_id == "cinderstride":
+		shoe_scale *= 1.03
+	# Kinetic Sole stack: outsole / midsole yellow / kinetic upper / tread bars.
+	var midsole := StandardMaterial3D.new()
+	midsole.albedo_color = Color(0.96, 0.77, 0.09) # Midsole Yellow
+	midsole.roughness = 0.45
+	midsole.emission_enabled = native_street or native_roller or native_hover or native_elemental or native_ridiculous or native_crossover or native_tribute
+	if midsole.emission_enabled:
+		midsole.emission = Color(0.96, 0.77, 0.09)
+		midsole.emission_energy_multiplier = (
+			0.36 if (hover_boost or hover_bounce or elemental_magma or ridiculous_boost or ridiculous_caffeine or crossover_circuit or crossover_bass or tribute_ember or tribute_volt or tribute_radiant) else (
+				0.34 if (power or kinetic or roller_hover or hover_glide or elemental_dive or ridiculous_trick or crossover_portal or crossover_tap or tribute_orbit or tribute_echo) else (
+					0.3 if (tempo or rail or roller_inline or hover_precision or elemental_wet or elemental_frost or ridiculous_reach or crossover_gyro or crossover_soft or tribute_gale or tribute_azure) else 0.22
+				)
+			)
+		)
+	var upper := StandardMaterial3D.new()
+	if balanced:
+		upper.albedo_color = Color(1.0, 0.42, 0.24) # Kinetic Orange Circlers
+	elif sprint:
+		upper.albedo_color = Color(1.0, 0.42, 0.36) # Quillspike coral
+	elif parkour:
+		upper.albedo_color = Color(0.18, 0.77, 0.71) # Fluxgrip teal
+	elif tempo:
+		upper.albedo_color = Color(0.45, 0.75, 0.98) # Lanewind sky
+	elif rail:
+		upper.albedo_color = Color(0.65, 0.45, 0.98) # Ghost Violet
+	elif power:
+		upper.albedo_color = Color(0.64, 0.44, 0.28) # Clay iron plate
+	elif trick:
+		upper.albedo_color = Color(0.58, 0.85, 0.18) # Kaleido lime
+	elif kinetic:
+		upper.albedo_color = Color(0.13, 0.72, 0.81) # Volt cyan
+	elif vehicle_id == "slipstream_inlines":
+		upper.albedo_color = Color(0.2, 0.78, 0.95) # Slipstream cyan
+	elif vehicle_id == "heelspin_quads":
+		upper.albedo_color = Color(0.95, 0.35, 0.55) # Heelspin magenta
+	elif vehicle_id == "velvet_rollers":
+		upper.albedo_color = Color(0.55, 0.28, 0.72) # Velvet plum
+	elif vehicle_id == "iron_derby_blitz":
+		upper.albedo_color = Color(0.45, 0.48, 0.52) # Derby steel
+	elif vehicle_id == "scissorblade_skates":
+		upper.albedo_color = Color(0.85, 0.9, 0.95) # Blade silver
+	elif vehicle_id == "orbitwheel_heels":
+		upper.albedo_color = Color(0.35, 0.85, 0.7) # Orbit mint
+	elif vehicle_id == "treadfall_blades":
+		upper.albedo_color = Color(0.95, 0.55, 0.15) # Treadfall amber
+	elif vehicle_id == "cloudsole_striders":
+		upper.albedo_color = Color(0.78, 0.88, 1.0) # Cloud white-blue
+	elif vehicle_id == "nebula_skippers":
+		upper.albedo_color = Color(0.55, 0.35, 0.95) # Nebula violet
+	elif vehicle_id == "ufo_loafers":
+		upper.albedo_color = Color(0.7, 0.85, 0.45) # Saucer olive
+	elif vehicle_id == "meteor_heeljets":
+		upper.albedo_color = Color(1.0, 0.45, 0.2) # Meteor ember
+	elif vehicle_id == "anti_gravity_platforms":
+		upper.albedo_color = Color(0.55, 0.9, 0.95) # Anti-G cyan
+	elif vehicle_id == "moonbounce_booties":
+		upper.albedo_color = Color(0.9, 0.9, 0.85) # Moon foam
+	elif vehicle_id == "starglass_pointe":
+		upper.albedo_color = Color(0.85, 0.75, 1.0) # Starglass lilac
+	elif vehicle_id == "tidefin_runners":
+		upper.albedo_color = Color(0.15, 0.72, 0.88) # Tidefin aqua
+	elif vehicle_id == "kelpjet_submariners":
+		upper.albedo_color = Color(0.18, 0.55, 0.42) # Kelp deep green
+	elif vehicle_id == "sandstorm_skimmers":
+		upper.albedo_color = Color(0.92, 0.72, 0.38) # Sandstorm gold
+	elif vehicle_id == "magma_treaders":
+		upper.albedo_color = Color(0.95, 0.28, 0.12) # Magma crimson
+	elif vehicle_id == "snowglobe_galoshes":
+		upper.albedo_color = Color(0.78, 0.92, 0.98) # Frost ice
+	elif vehicle_id == "mud_monster_waders":
+		upper.albedo_color = Color(0.42, 0.32, 0.18) # Mud ochre
+	elif vehicle_id == "slipper_rockets":
+		upper.albedo_color = Color(0.95, 0.55, 0.75) # Fuzzy pink slipper
+	elif vehicle_id == "pancake_stompers":
+		upper.albedo_color = Color(0.92, 0.7, 0.35) # Pancake batter
+	elif vehicle_id == "bubblegum_stilts":
+		upper.albedo_color = Color(0.98, 0.45, 0.78) # Bubblegum pink
+	elif vehicle_id == "espresso_jet_socks":
+		upper.albedo_color = Color(0.35, 0.2, 0.12) # Espresso brown
+	elif vehicle_id == "sofa_surfers":
+		upper.albedo_color = Color(0.55, 0.65, 0.85) # Sofa denim
+	elif vehicle_id == "banana_boomerang_cleats":
+		upper.albedo_color = Color(0.98, 0.88, 0.2) # Banana yellow
+	elif vehicle_id == "lifeling_lopers":
+		upper.albedo_color = Color(0.45, 0.82, 0.55) # Lifeling leaf
+	elif vehicle_id == "fossil_footsteps":
+		upper.albedo_color = Color(0.62, 0.48, 0.32) # Fossil sandstone
+	elif vehicle_id == "beatlink_tapstep_oxfords":
+		upper.albedo_color = Color(0.2, 0.22, 0.28) # Tap oxford charcoal
+	elif vehicle_id == "beatlink_bassline_boots":
+		upper.albedo_color = Color(0.55, 0.18, 0.65) # Bassline violet
+	elif vehicle_id == "waike_circuit_clogs":
+		upper.albedo_color = Color(0.15, 0.75, 0.7) # WAIKE circuit teal
+	elif vehicle_id == "mlv_portal_pumps":
+		upper.albedo_color = Color(0.75, 0.4, 0.95) # MLV portal violet
+	elif vehicle_id == "edge_io_gyrowraps":
+		upper.albedo_color = Color(0.25, 0.85, 0.55) # Edge I/O lime
+	elif vehicle_id == "cinderstride":
+		upper.albedo_color = Color(0.95, 0.35, 0.15) # Cinder ember
+	elif vehicle_id == "bastion_stomp":
+		upper.albedo_color = Color(0.55, 0.52, 0.48) # Bastion steel
+	elif vehicle_id == "voltstep_coils":
+		upper.albedo_color = Color(0.95, 0.85, 0.15) # Volt gold
+	elif vehicle_id == "galeleaf_gliders":
+		upper.albedo_color = Color(0.35, 0.85, 0.45) # Galeleaf green
+	elif vehicle_id == "azure_bastions":
+		upper.albedo_color = Color(0.25, 0.55, 0.95) # Azure blue
+	elif vehicle_id == "orbitwalkers":
+		upper.albedo_color = Color(0.65, 0.7, 0.95) # Orbit silver-blue
+	elif vehicle_id == "phase_echoes":
+		upper.albedo_color = Color(0.55, 0.85, 0.95) # Echo cyan
+	elif vehicle_id == "nullstep":
+		upper.albedo_color = Color(0.18, 0.18, 0.22) # Null matte
+	elif vehicle_id == "radiant_order":
+		upper.albedo_color = Color(0.98, 0.92, 0.55) # Radiant gold
+	else:
+		upper.albedo_color = self.accent_color
+	upper.roughness = 0.38 if not (power or elemental_mud or elemental_magma or ridiculous_stomp or ridiculous_drift or crossover_heavy or tribute_bastion or tribute_null) else 0.55
+	upper.emission_enabled = true
+	upper.emission = Color(1.0, 0.42, 0.24) if power else upper.albedo_color
+	upper.emission_energy_multiplier = (
+		0.45 if (hover_boost or elemental_magma or ridiculous_caffeine or crossover_bass or tribute_ember or tribute_radiant) else (
+			0.42 if (kinetic or roller_hover or hover_bounce or elemental_dive or ridiculous_boost or crossover_circuit or crossover_portal or tribute_volt or tribute_orbit) else (
+				0.38 if power else (
+					0.4 if (rail or hover_precision or elemental_frost or ridiculous_trick or crossover_tap or crossover_gyro or tribute_echo or tribute_gale) else (
+						0.35 if (tempo or roller_inline or hover_glide or elemental_wet or ridiculous_reach or crossover_soft or tribute_azure) else 0.28
+					)
+				)
+			)
+		)
+	)
+	var wheel := StandardMaterial3D.new()
+	wheel.albedo_color = Color(0.08, 0.08, 0.1)
+	wheel.roughness = 0.7
+	wheel.emission_enabled = roller_hover or native_hover
+	if wheel.emission_enabled:
+		wheel.emission = Color(0.55, 0.85, 1.0) if native_hover else Color(0.35, 0.85, 0.7)
+		wheel.emission_energy_multiplier = 0.4 if native_hover else 0.35
+	var hover_pad := StandardMaterial3D.new()
+	hover_pad.albedo_color = Color(0.65, 0.85, 1.0)
+	hover_pad.roughness = 0.25
+	hover_pad.emission_enabled = true
+	hover_pad.emission = Color(0.45, 0.75, 1.0)
+	hover_pad.emission_energy_multiplier = 0.4
+	var hydro := StandardMaterial3D.new()
+	hydro.albedo_color = Color(0.2, 0.75, 0.95)
+	hydro.roughness = 0.28
+	hydro.emission_enabled = elemental_wet or elemental_dive
+	if hydro.emission_enabled:
+		hydro.emission = Color(0.15, 0.65, 0.9)
+		hydro.emission_energy_multiplier = 0.42 if elemental_dive else 0.36
+	var sand_pad := StandardMaterial3D.new()
+	sand_pad.albedo_color = Color(0.88, 0.7, 0.4)
+	sand_pad.roughness = 0.65
+	sand_pad.emission_enabled = elemental_sand
+	if sand_pad.emission_enabled:
+		sand_pad.emission = Color(0.95, 0.75, 0.35)
+		sand_pad.emission_energy_multiplier = 0.28
+	var magma_plate := StandardMaterial3D.new()
+	magma_plate.albedo_color = Color(0.95, 0.35, 0.12)
+	magma_plate.roughness = 0.4
+	magma_plate.metallic = 0.45
+	magma_plate.emission_enabled = elemental_magma
+	if magma_plate.emission_enabled:
+		magma_plate.emission = Color(1.0, 0.4, 0.08)
+		magma_plate.emission_energy_multiplier = 0.48
+	var frost_pad := StandardMaterial3D.new()
+	frost_pad.albedo_color = Color(0.75, 0.9, 1.0)
+	frost_pad.roughness = 0.22
+	frost_pad.emission_enabled = elemental_frost
+	if frost_pad.emission_enabled:
+		frost_pad.emission = Color(0.65, 0.85, 1.0)
+		frost_pad.emission_energy_multiplier = 0.38
+	var mud_pad := StandardMaterial3D.new()
+	mud_pad.albedo_color = Color(0.38, 0.28, 0.16)
+	mud_pad.roughness = 0.85
+	mud_pad.emission_enabled = elemental_mud
+	if mud_pad.emission_enabled:
+		mud_pad.emission = Color(0.45, 0.32, 0.12)
+		mud_pad.emission_energy_multiplier = 0.2
+	var joke_jet := StandardMaterial3D.new()
+	joke_jet.albedo_color = Color(1.0, 0.55, 0.75)
+	joke_jet.roughness = 0.35
+	joke_jet.emission_enabled = ridiculous_boost or ridiculous_caffeine
+	if joke_jet.emission_enabled:
+		joke_jet.emission = Color(1.0, 0.45, 0.2) if ridiculous_caffeine else Color(1.0, 0.6, 0.85)
+		joke_jet.emission_energy_multiplier = 0.45 if ridiculous_caffeine else 0.4
+	var pancake_mat := StandardMaterial3D.new()
+	pancake_mat.albedo_color = Color(0.9, 0.68, 0.32)
+	pancake_mat.roughness = 0.7
+	pancake_mat.emission_enabled = ridiculous_stomp
+	if pancake_mat.emission_enabled:
+		pancake_mat.emission = Color(0.95, 0.55, 0.15)
+		pancake_mat.emission_energy_multiplier = 0.25
+	var gum_mat := StandardMaterial3D.new()
+	gum_mat.albedo_color = Color(0.98, 0.5, 0.82)
+	gum_mat.roughness = 0.3
+	gum_mat.emission_enabled = ridiculous_reach
+	if gum_mat.emission_enabled:
+		gum_mat.emission = Color(1.0, 0.4, 0.75)
+		gum_mat.emission_energy_multiplier = 0.35
+	var sofa_mat := StandardMaterial3D.new()
+	sofa_mat.albedo_color = Color(0.5, 0.6, 0.8)
+	sofa_mat.roughness = 0.75
+	sofa_mat.emission_enabled = ridiculous_drift
+	if sofa_mat.emission_enabled:
+		sofa_mat.emission = Color(0.45, 0.55, 0.85)
+		sofa_mat.emission_energy_multiplier = 0.22
+	var banana_mat := StandardMaterial3D.new()
+	banana_mat.albedo_color = Color(0.98, 0.88, 0.2)
+	banana_mat.roughness = 0.4
+	banana_mat.emission_enabled = ridiculous_trick
+	if banana_mat.emission_enabled:
+		banana_mat.emission = Color(1.0, 0.85, 0.15)
+		banana_mat.emission_energy_multiplier = 0.32
+	var life_mat := StandardMaterial3D.new()
+	life_mat.albedo_color = Color(0.4, 0.8, 0.5)
+	life_mat.roughness = 0.45
+	life_mat.emission_enabled = crossover_soft
+	if life_mat.emission_enabled:
+		life_mat.emission = Color(0.35, 0.85, 0.45)
+		life_mat.emission_energy_multiplier = 0.3
+	var fossil_mat := StandardMaterial3D.new()
+	fossil_mat.albedo_color = Color(0.58, 0.45, 0.3)
+	fossil_mat.roughness = 0.8
+	fossil_mat.emission_enabled = crossover_heavy
+	if fossil_mat.emission_enabled:
+		fossil_mat.emission = Color(0.7, 0.5, 0.25)
+		fossil_mat.emission_energy_multiplier = 0.22
+	var tap_mat := StandardMaterial3D.new()
+	tap_mat.albedo_color = Color(0.85, 0.75, 0.45)
+	tap_mat.roughness = 0.35
+	tap_mat.metallic = 0.4
+	tap_mat.emission_enabled = crossover_tap
+	if tap_mat.emission_enabled:
+		tap_mat.emission = Color(0.95, 0.8, 0.35)
+		tap_mat.emission_energy_multiplier = 0.35
+	var bass_mat := StandardMaterial3D.new()
+	bass_mat.albedo_color = Color(0.5, 0.15, 0.6)
+	bass_mat.roughness = 0.4
+	bass_mat.emission_enabled = crossover_bass
+	if bass_mat.emission_enabled:
+		bass_mat.emission = Color(0.7, 0.25, 0.9)
+		bass_mat.emission_energy_multiplier = 0.42
+	var circuit_mat := StandardMaterial3D.new()
+	circuit_mat.albedo_color = Color(0.12, 0.8, 0.75)
+	circuit_mat.roughness = 0.3
+	circuit_mat.emission_enabled = crossover_circuit
+	if circuit_mat.emission_enabled:
+		circuit_mat.emission = Color(0.1, 0.9, 0.85)
+		circuit_mat.emission_energy_multiplier = 0.4
+	var portal_mat := StandardMaterial3D.new()
+	portal_mat.albedo_color = Color(0.7, 0.35, 0.95)
+	portal_mat.roughness = 0.25
+	portal_mat.emission_enabled = crossover_portal
+	if portal_mat.emission_enabled:
+		portal_mat.emission = Color(0.8, 0.4, 1.0)
+		portal_mat.emission_energy_multiplier = 0.45
+	var gyro_mat := StandardMaterial3D.new()
+	gyro_mat.albedo_color = Color(0.2, 0.85, 0.5)
+	gyro_mat.roughness = 0.35
+	gyro_mat.emission_enabled = crossover_gyro
+	if gyro_mat.emission_enabled:
+		gyro_mat.emission = Color(0.25, 0.95, 0.55)
+		gyro_mat.emission_energy_multiplier = 0.38
+	var ember_mat := StandardMaterial3D.new()
+	ember_mat.albedo_color = Color(0.95, 0.4, 0.12)
+	ember_mat.roughness = 0.4
+	ember_mat.emission_enabled = tribute_ember
+	if ember_mat.emission_enabled:
+		ember_mat.emission = Color(1.0, 0.35, 0.08)
+		ember_mat.emission_energy_multiplier = 0.45
+	var bastion_mat := StandardMaterial3D.new()
+	bastion_mat.albedo_color = Color(0.5, 0.48, 0.45)
+	bastion_mat.roughness = 0.55
+	bastion_mat.metallic = 0.5
+	bastion_mat.emission_enabled = tribute_bastion
+	if bastion_mat.emission_enabled:
+		bastion_mat.emission = Color(0.7, 0.65, 0.55)
+		bastion_mat.emission_energy_multiplier = 0.25
+	var volt_mat := StandardMaterial3D.new()
+	volt_mat.albedo_color = Color(0.95, 0.85, 0.15)
+	volt_mat.roughness = 0.3
+	volt_mat.emission_enabled = tribute_volt
+	if volt_mat.emission_enabled:
+		volt_mat.emission = Color(1.0, 0.9, 0.2)
+		volt_mat.emission_energy_multiplier = 0.48
+	var gale_mat := StandardMaterial3D.new()
+	gale_mat.albedo_color = Color(0.35, 0.85, 0.45)
+	gale_mat.roughness = 0.35
+	gale_mat.emission_enabled = tribute_gale
+	if gale_mat.emission_enabled:
+		gale_mat.emission = Color(0.4, 0.95, 0.5)
+		gale_mat.emission_energy_multiplier = 0.35
+	var azure_mat := StandardMaterial3D.new()
+	azure_mat.albedo_color = Color(0.25, 0.55, 0.95)
+	azure_mat.roughness = 0.4
+	azure_mat.metallic = 0.45
+	azure_mat.emission_enabled = tribute_azure
+	if azure_mat.emission_enabled:
+		azure_mat.emission = Color(0.3, 0.6, 1.0)
+		azure_mat.emission_energy_multiplier = 0.35
+	var orbit_mat := StandardMaterial3D.new()
+	orbit_mat.albedo_color = Color(0.65, 0.7, 0.95)
+	orbit_mat.roughness = 0.28
+	orbit_mat.emission_enabled = tribute_orbit
+	if orbit_mat.emission_enabled:
+		orbit_mat.emission = Color(0.7, 0.75, 1.0)
+		orbit_mat.emission_energy_multiplier = 0.4
+	var echo_mat := StandardMaterial3D.new()
+	echo_mat.albedo_color = Color(0.55, 0.85, 0.95)
+	echo_mat.roughness = 0.22
+	echo_mat.emission_enabled = tribute_echo
+	if echo_mat.emission_enabled:
+		echo_mat.emission = Color(0.5, 0.9, 1.0)
+		echo_mat.emission_energy_multiplier = 0.42
+	var null_mat := StandardMaterial3D.new()
+	null_mat.albedo_color = Color(0.12, 0.12, 0.16)
+	null_mat.roughness = 0.9
+	null_mat.emission_enabled = tribute_null
+	if null_mat.emission_enabled:
+		null_mat.emission = Color(0.25, 0.25, 0.35)
+		null_mat.emission_energy_multiplier = 0.18
+	var radiant_mat := StandardMaterial3D.new()
+	radiant_mat.albedo_color = Color(0.98, 0.9, 0.45)
+	radiant_mat.roughness = 0.3
+	radiant_mat.emission_enabled = tribute_radiant
+	if radiant_mat.emission_enabled:
+		radiant_mat.emission = Color(1.0, 0.95, 0.55)
+		radiant_mat.emission_energy_multiplier = 0.45
+	var outsole := StandardMaterial3D.new()
+	outsole.albedo_color = Color(0.12, 0.12, 0.14)
+	outsole.roughness = 0.85
+	var grip := StandardMaterial3D.new()
+	grip.albedo_color = Color(0.24, 0.86, 0.52) # Grip Green
+	grip.roughness = 0.55
+	grip.emission_enabled = tempo or parkour
+	if grip.emission_enabled:
+		grip.emission = Color(0.24, 0.86, 0.52)
+		grip.emission_energy_multiplier = 0.4
+	var railfin := StandardMaterial3D.new()
+	railfin.albedo_color = Color(0.18, 0.9, 0.95) # Boost Cyan
+	railfin.roughness = 0.35
+	railfin.emission_enabled = rail or kinetic
+	if railfin.emission_enabled:
+		railfin.emission = Color(0.18, 0.9, 0.95)
+		railfin.emission_energy_multiplier = 0.45
+	var iron := StandardMaterial3D.new()
+	iron.albedo_color = Color(1.0, 0.42, 0.24) # Kinetic Orange plates
+	iron.roughness = 0.4
+	iron.metallic = 0.55
+	iron.emission_enabled = power
+	if iron.emission_enabled:
+		iron.emission = Color(1.0, 0.42, 0.24)
+		iron.emission_energy_multiplier = 0.42
+	var spike := StandardMaterial3D.new()
+	spike.albedo_color = Color(0.12, 0.12, 0.14)
+	spike.metallic = 0.7
+	spike.roughness = 0.3
 	# Toe / sole body (forward +Z).
+	var sole_len := 0.34 if sprint else (0.28 if parkour else 0.3)
 	var sole := _mesh_box(
-		Vector3(0.14 * ws * shoe_scale, 0.07 * shoe_scale, 0.28 * shoe_scale),
+		Vector3(0.15 * ws * shoe_scale, 0.05 * shoe_scale, sole_len * shoe_scale),
 		Vector3.ZERO,
-		accent
+		outsole
 	)
 	leg.add_child(sole)
-	sole.position = Vector3(0, -leg_len - 0.02, 0.06 * shoe_scale)
+	sole.position = Vector3(0, -leg_len - 0.035, 0.06 * shoe_scale)
+	var mid := _mesh_box(
+		Vector3(0.145 * ws * shoe_scale, 0.045 * shoe_scale, (sole_len - 0.02) * shoe_scale),
+		Vector3.ZERO,
+		midsole
+	)
+	leg.add_child(mid)
+	mid.position = Vector3(0, -leg_len + 0.005, 0.05 * shoe_scale)
+	var vamp := _mesh_box(
+		Vector3(0.13 * ws * shoe_scale, 0.08 * shoe_scale, 0.22 * shoe_scale),
+		Vector3.ZERO,
+		upper
+	)
+	leg.add_child(vamp)
+	vamp.position = Vector3(0, -leg_len + 0.05, 0.04 * shoe_scale)
 	# Rounded toe nub.
-	var toe := _mesh_sphere(0.055 * shoe_scale * ws / 0.55, Vector3.ZERO, accent)
+	var toe := _mesh_sphere(0.055 * shoe_scale * ws / 0.55, Vector3.ZERO, upper)
 	leg.add_child(toe)
-	toe.position = Vector3(0, -leg_len - 0.01, 0.18 * shoe_scale)
+	toe.position = Vector3(0, -leg_len - 0.01, 0.2 * shoe_scale)
 	toe.scale = Vector3(1.1, 0.7, 1.2)
-	# Heel block (rear).
+	# Forward chevron (speed symbol) on the tongue.
+	var chevron := _mesh_box(
+		Vector3(0.06 * ws * shoe_scale, 0.02 * shoe_scale, 0.08 * shoe_scale),
+		Vector3.ZERO,
+		midsole
+	)
+	leg.add_child(chevron)
+	chevron.position = Vector3(0, -leg_len + 0.09, 0.12 * shoe_scale)
+	# Grip tread bars / roller / hover / elemental / ridiculous / crossover / tribute soles under the outsole.
+	var tread_count := 5 if (tempo or parkour or roller_quad or hover_bounce or elemental_mud or elemental_sand or ridiculous_stomp or ridiculous_drift or crossover_heavy or crossover_gyro or tribute_bastion or tribute_azure) else (
+		4 if (
+			rail or power or kinetic or trick or roller_inline or roller_hover
+			or hover_glide or hover_boost or hover_precision
+			or elemental_wet or elemental_dive or elemental_magma or elemental_frost
+			or ridiculous_boost or ridiculous_caffeine or ridiculous_reach or ridiculous_trick
+			or crossover_soft or crossover_tap or crossover_bass or crossover_circuit or crossover_portal
+			or tribute_ember or tribute_volt or tribute_gale or tribute_orbit or tribute_echo or tribute_null or tribute_radiant
+		) else 3
+	)
+	for i in range(tread_count):
+		var tread_mat: Material = dark
+		if tempo or parkour:
+			tread_mat = grip
+		elif rail or kinetic:
+			tread_mat = railfin
+		elif power:
+			tread_mat = iron
+		elif sprint:
+			tread_mat = spike
+		elif trick:
+			tread_mat = upper
+		elif elemental_wet or elemental_dive:
+			tread_mat = hydro
+		elif elemental_sand:
+			tread_mat = sand_pad
+		elif elemental_magma:
+			tread_mat = magma_plate
+		elif elemental_frost:
+			tread_mat = frost_pad
+		elif elemental_mud:
+			tread_mat = mud_pad
+		elif ridiculous_boost or ridiculous_caffeine:
+			tread_mat = joke_jet
+		elif ridiculous_stomp:
+			tread_mat = pancake_mat
+		elif ridiculous_reach:
+			tread_mat = gum_mat
+		elif ridiculous_drift:
+			tread_mat = sofa_mat
+		elif ridiculous_trick:
+			tread_mat = banana_mat
+		elif crossover_soft:
+			tread_mat = life_mat
+		elif crossover_heavy:
+			tread_mat = fossil_mat
+		elif crossover_tap:
+			tread_mat = tap_mat
+		elif crossover_bass:
+			tread_mat = bass_mat
+		elif crossover_circuit:
+			tread_mat = circuit_mat
+		elif crossover_portal:
+			tread_mat = portal_mat
+		elif crossover_gyro:
+			tread_mat = gyro_mat
+		elif tribute_ember:
+			tread_mat = ember_mat
+		elif tribute_bastion:
+			tread_mat = bastion_mat
+		elif tribute_volt:
+			tread_mat = volt_mat
+		elif tribute_gale:
+			tread_mat = gale_mat
+		elif tribute_azure:
+			tread_mat = azure_mat
+		elif tribute_orbit:
+			tread_mat = orbit_mat
+		elif tribute_echo:
+			tread_mat = echo_mat
+		elif tribute_null:
+			tread_mat = null_mat
+		elif tribute_radiant:
+			tread_mat = radiant_mat
+		elif native_hover:
+			tread_mat = hover_pad
+		elif native_roller:
+			tread_mat = wheel
+		var use_wheelish := native_roller and not native_hover and not native_elemental and not native_ridiculous and not native_crossover and not native_tribute
+		var tread := _mesh_box(
+			Vector3(
+				0.14 * ws * shoe_scale if (native_hover or native_elemental or native_ridiculous or native_crossover or native_tribute) else (0.05 * ws * shoe_scale if use_wheelish else 0.13 * ws * shoe_scale),
+				0.02 * shoe_scale if (native_hover or elemental_wet or elemental_frost or ridiculous_reach or crossover_soft or crossover_portal or tribute_echo or tribute_gale) else (
+					0.03 * shoe_scale if (native_elemental or native_ridiculous or native_crossover or native_tribute) else (0.05 * shoe_scale if use_wheelish else 0.025 * shoe_scale)
+				),
+				0.04 * shoe_scale if (native_hover or native_elemental or native_ridiculous or native_crossover or native_tribute) else (0.05 * shoe_scale if use_wheelish else 0.035 * shoe_scale)
+			),
+			Vector3.ZERO,
+			tread_mat
+		)
+		leg.add_child(tread)
+		var z_spread := 0.055 if (native_street or native_roller or native_hover or native_elemental or native_ridiculous or native_crossover or native_tribute) else 0.07
+		tread.position = Vector3(
+			side * (0.06 * ws * shoe_scale if use_wheelish else 0.0),
+			-leg_len - (0.05 if (native_hover or native_elemental or native_ridiculous or native_crossover or native_tribute) else 0.058),
+			(float(i) - float(tread_count - 1) * 0.5) * z_spread * shoe_scale
+		)
+		if native_roller and roller_quad:
+			## Second wheel column for quads.
+			var tread2 := _mesh_box(
+				Vector3(0.05 * ws * shoe_scale, 0.05 * shoe_scale, 0.05 * shoe_scale),
+				Vector3.ZERO,
+				wheel
+			)
+			leg.add_child(tread2)
+			tread2.position = Vector3(
+				side * (-0.06 * ws * shoe_scale),
+				-leg_len - 0.058,
+				(float(i) - float(tread_count - 1) * 0.5) * z_spread * shoe_scale
+			)
+	# Heel block (rear) with family-specific silhouette props.
 	var heel := _mesh_box(
-		Vector3(0.12 * ws * shoe_scale, 0.08 * shoe_scale, 0.1 * shoe_scale),
+		Vector3(0.13 * ws * shoe_scale, 0.1 * shoe_scale, 0.11 * shoe_scale),
 		Vector3.ZERO,
 		dark
 	)
 	leg.add_child(heel)
-	heel.position = Vector3(0, -leg_len - 0.015, -0.1 * shoe_scale)
+	heel.position = Vector3(0, -leg_len - 0.01, -0.11 * shoe_scale)
+	if balanced:
+		var flare := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.12 * shoe_scale, 0.05 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(flare)
+		flare.position = Vector3(side * 0.08 * ws * shoe_scale, -leg_len + 0.04, -0.12 * shoe_scale)
+	elif sprint:
+		## Quillspike launch plates — forward spike rake.
+		for si in range(3):
+			var spike_mesh := _mesh_box(
+				Vector3(0.02 * ws * shoe_scale, 0.06 * shoe_scale, 0.04 * shoe_scale),
+				Vector3.ZERO,
+				spike
+			)
+			leg.add_child(spike_mesh)
+			spike_mesh.position = Vector3(
+				side * 0.04 * ws * shoe_scale,
+				-leg_len - 0.07,
+				(0.02 + float(si) * 0.05) * shoe_scale
+			)
+	elif parkour:
+		## Fluxgrip sticky sidewall cups.
+		var cup := _mesh_box(
+			Vector3(0.05 * ws * shoe_scale, 0.12 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			grip
+		)
+		leg.add_child(cup)
+		cup.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.04, 0.02 * shoe_scale)
+	elif tempo:
+		## Slim wind-cup heel wing — silhouette reads at chase distance.
+		var wing := _mesh_box(
+			Vector3(0.035 * ws * shoe_scale, 0.1 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			grip
+		)
+		leg.add_child(wing)
+		wing.position = Vector3(side * 0.09 * ws * shoe_scale, -leg_len + 0.03, -0.08 * shoe_scale)
+	elif rail:
+		## Razor railfin — Boost Cyan blade for Prism Apex cornering read.
+		var fin := _mesh_box(
+			Vector3(0.03 * ws * shoe_scale, 0.14 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			railfin
+		)
+		leg.add_child(fin)
+		fin.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.05, -0.02 * shoe_scale)
+		var fin2 := _mesh_box(
+			Vector3(0.025 * ws * shoe_scale, 0.08 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(fin2)
+		fin2.position = Vector3(side * 0.11 * ws * shoe_scale, -leg_len + 0.02, -0.12 * shoe_scale)
+	elif power:
+		## Blocky Harborclimb iron heel plates — forge ash silhouette.
+		var plate := _mesh_box(
+			Vector3(0.06 * ws * shoe_scale, 0.14 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			iron
+		)
+		leg.add_child(plate)
+		plate.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.04, -0.1 * shoe_scale)
+		var cuff := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.08 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			iron
+		)
+		leg.add_child(cuff)
+		cuff.position = Vector3(0.0, -leg_len + 0.1, -0.02 * shoe_scale)
+	elif trick:
+		## Rivenspin kaleido heel wings — loud offset fins.
+		var wing_a := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.12 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(wing_a)
+		wing_a.position = Vector3(side * 0.11 * ws * shoe_scale, -leg_len + 0.05, -0.06 * shoe_scale)
+		var wing_b := _mesh_box(
+			Vector3(0.03 * ws * shoe_scale, 0.08 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(wing_b)
+		wing_b.position = Vector3(side * -0.05 * ws * shoe_scale, -leg_len + 0.02, -0.1 * shoe_scale)
+	elif kinetic:
+		## Voltcirc coreloop heel rings (emissive torus approximation).
+		var ring := _mesh_box(
+			Vector3(0.16 * ws * shoe_scale, 0.03 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			railfin
+		)
+		leg.add_child(ring)
+		ring.position = Vector3(0.0, -leg_len + 0.08, -0.08 * shoe_scale)
+		var ring2 := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.025 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(ring2)
+		ring2.position = Vector3(0.0, -leg_len + 0.12, -0.08 * shoe_scale)
+	elif roller_inline:
+		## Inline chassis + ankle cuff; per-ID blade/fin read.
+		var chassis := _mesh_box(
+			Vector3(0.08 * ws * shoe_scale, 0.04 * shoe_scale, 0.28 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(chassis)
+		chassis.position = Vector3(0.0, -leg_len - 0.02, 0.02 * shoe_scale)
+		var cuff_i := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.1 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			midsole if vehicle_id != "iron_derby_blitz" else iron
+		)
+		leg.add_child(cuff_i)
+		cuff_i.position = Vector3(0.0, -leg_len + 0.08, -0.06 * shoe_scale)
+		if vehicle_id == "scissorblade_skates":
+			var blade := _mesh_box(
+				Vector3(0.02 * ws * shoe_scale, 0.06 * shoe_scale, 0.22 * shoe_scale),
+				Vector3.ZERO,
+				spike
+			)
+			leg.add_child(blade)
+			blade.position = Vector3(side * 0.09 * ws * shoe_scale, -leg_len - 0.02, 0.04 * shoe_scale)
+		elif vehicle_id == "treadfall_blades":
+			var rake := _mesh_box(
+				Vector3(0.03 * ws * shoe_scale, 0.05 * shoe_scale, 0.18 * shoe_scale),
+				Vector3.ZERO,
+				upper
+			)
+			leg.add_child(rake)
+			rake.position = Vector3(side * 0.08 * ws * shoe_scale, -leg_len + 0.02, -0.1 * shoe_scale)
+		elif vehicle_id == "slipstream_inlines":
+			var stream := _mesh_box(
+				Vector3(0.025 * ws * shoe_scale, 0.08 * shoe_scale, 0.14 * shoe_scale),
+				Vector3.ZERO,
+				railfin
+			)
+			leg.add_child(stream)
+			stream.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.04, 0.0)
+	elif roller_quad:
+		## Quad boot block + heel brake pad.
+		var boot := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.1 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(boot)
+		boot.position = Vector3(0.0, -leg_len + 0.04, -0.02 * shoe_scale)
+		var brake := _mesh_box(
+			Vector3(0.08 * ws * shoe_scale, 0.05 * shoe_scale, 0.06 * shoe_scale),
+			Vector3.ZERO,
+			midsole if vehicle_id == "velvet_rollers" else iron
+		)
+		leg.add_child(brake)
+		brake.position = Vector3(0.0, -leg_len - 0.02, -0.14 * shoe_scale)
+		if vehicle_id == "heelspin_quads":
+			var spin := _mesh_box(
+				Vector3(0.04 * ws * shoe_scale, 0.12 * shoe_scale, 0.04 * shoe_scale),
+				Vector3.ZERO,
+				upper
+			)
+			leg.add_child(spin)
+			spin.position = Vector3(side * 0.11 * ws * shoe_scale, -leg_len + 0.06, -0.08 * shoe_scale)
+	elif roller_hover:
+		## Mag-orbit heel disc (grounded collision; VFX-only hover read).
+		var disc := _mesh_box(
+			Vector3(0.18 * ws * shoe_scale, 0.03 * shoe_scale, 0.18 * shoe_scale),
+			Vector3.ZERO,
+			wheel
+		)
+		leg.add_child(disc)
+		disc.position = Vector3(0.0, -leg_len - 0.01, -0.04 * shoe_scale)
+		var orbit := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.04 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(orbit)
+		orbit.position = Vector3(0.0, -leg_len + 0.08, -0.04 * shoe_scale)
+	elif hover_glide:
+		## Glide skirt + ankle ring — grounded pad silhouette (no phase-through).
+		var skirt := _mesh_box(
+			Vector3(0.2 * ws * shoe_scale, 0.025 * shoe_scale, 0.22 * shoe_scale),
+			Vector3.ZERO,
+			hover_pad
+		)
+		leg.add_child(skirt)
+		skirt.position = Vector3(0.0, -leg_len - 0.02, 0.02 * shoe_scale)
+		var ring_g := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.05 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(ring_g)
+		ring_g.position = Vector3(0.0, -leg_len + 0.07, -0.04 * shoe_scale)
+		if vehicle_id == "ufo_loafers":
+			var dome := _mesh_box(
+				Vector3(0.16 * ws * shoe_scale, 0.08 * shoe_scale, 0.16 * shoe_scale),
+				Vector3.ZERO,
+				midsole
+			)
+			leg.add_child(dome)
+			dome.position = Vector3(0.0, -leg_len + 0.1, 0.0)
+		elif vehicle_id == "anti_gravity_platforms":
+			var plate_g := _mesh_box(
+				Vector3(0.24 * ws * shoe_scale, 0.03 * shoe_scale, 0.18 * shoe_scale),
+				Vector3.ZERO,
+				hover_pad
+			)
+			leg.add_child(plate_g)
+			plate_g.position = Vector3(0.0, -leg_len - 0.04, 0.0)
+		elif vehicle_id == "nebula_skippers":
+			var trail := _mesh_box(
+				Vector3(0.04 * ws * shoe_scale, 0.1 * shoe_scale, 0.12 * shoe_scale),
+				Vector3.ZERO,
+				upper
+			)
+			leg.add_child(trail)
+			trail.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.05, -0.08 * shoe_scale)
+	elif hover_boost:
+		## Meteor heeljets — dual rear thruster cones (VFX; collision grounded).
+		var jet_l := _mesh_box(
+			Vector3(0.05 * ws * shoe_scale, 0.08 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(jet_l)
+		jet_l.position = Vector3(side * 0.07 * ws * shoe_scale, -leg_len + 0.02, -0.14 * shoe_scale)
+		var jet_flame := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.04 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(jet_flame)
+		jet_flame.position = Vector3(side * 0.07 * ws * shoe_scale, -leg_len - 0.02, -0.2 * shoe_scale)
+		var cuff_j := _mesh_box(
+			Vector3(0.13 * ws * shoe_scale, 0.1 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(cuff_j)
+		cuff_j.position = Vector3(0.0, -leg_len + 0.1, -0.02 * shoe_scale)
+	elif hover_bounce:
+		## Moonbounce foam heel bulb.
+		var bulb := _mesh_box(
+			Vector3(0.16 * ws * shoe_scale, 0.12 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(bulb)
+		bulb.position = Vector3(0.0, -leg_len + 0.02, -0.08 * shoe_scale)
+		var foam := _mesh_box(
+			Vector3(0.18 * ws * shoe_scale, 0.04 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			hover_pad
+		)
+		leg.add_child(foam)
+		foam.position = Vector3(0.0, -leg_len - 0.03, 0.0)
+	elif hover_precision:
+		## Starglass pointe blade + slim ankle cuff.
+		var pointe := _mesh_box(
+			Vector3(0.06 * ws * shoe_scale, 0.05 * shoe_scale, 0.26 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(pointe)
+		pointe.position = Vector3(0.0, -leg_len - 0.01, 0.06 * shoe_scale)
+		var glass := _mesh_box(
+			Vector3(0.03 * ws * shoe_scale, 0.12 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			hover_pad
+		)
+		leg.add_child(glass)
+		glass.position = Vector3(side * 0.09 * ws * shoe_scale, -leg_len + 0.05, -0.02 * shoe_scale)
+		var cuff_p := _mesh_box(
+			Vector3(0.1 * ws * shoe_scale, 0.08 * shoe_scale, 0.07 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(cuff_p)
+		cuff_p.position = Vector3(0.0, -leg_len + 0.09, -0.06 * shoe_scale)
+	elif elemental_wet:
+		## Tidefin side fins — water theme VFX only; collision grounded.
+		var fin_w := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.1 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			hydro
+		)
+		leg.add_child(fin_w)
+		fin_w.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.04, 0.02 * shoe_scale)
+		var cuff_w := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.08 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(cuff_w)
+		cuff_w.position = Vector3(0.0, -leg_len + 0.09, -0.04 * shoe_scale)
+	elif elemental_dive:
+		## Kelpjet sub canopy + rear thruster nubs (grounded).
+		var canopy := _mesh_box(
+			Vector3(0.16 * ws * shoe_scale, 0.09 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(canopy)
+		canopy.position = Vector3(0.0, -leg_len + 0.08, 0.0)
+		var jet_k := _mesh_box(
+			Vector3(0.05 * ws * shoe_scale, 0.06 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			hydro
+		)
+		leg.add_child(jet_k)
+		jet_k.position = Vector3(side * 0.08 * ws * shoe_scale, -leg_len + 0.02, -0.14 * shoe_scale)
+		var kelp := _mesh_box(
+			Vector3(0.03 * ws * shoe_scale, 0.12 * shoe_scale, 0.05 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(kelp)
+		kelp.position = Vector3(side * 0.11 * ws * shoe_scale, -leg_len + 0.05, -0.06 * shoe_scale)
+	elif elemental_sand:
+		## Sandstorm skim skirt + dune wing.
+		var skirt_s := _mesh_box(
+			Vector3(0.22 * ws * shoe_scale, 0.03 * shoe_scale, 0.2 * shoe_scale),
+			Vector3.ZERO,
+			sand_pad
+		)
+		leg.add_child(skirt_s)
+		skirt_s.position = Vector3(0.0, -leg_len - 0.02, 0.02 * shoe_scale)
+		var wing_s := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.1 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(wing_s)
+		wing_s.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.04, -0.06 * shoe_scale)
+	elif elemental_magma:
+		## Magma heat plates + ember heel block (affinity/VFX; never phase colliders).
+		var plate_m := _mesh_box(
+			Vector3(0.07 * ws * shoe_scale, 0.14 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			magma_plate
+		)
+		leg.add_child(plate_m)
+		plate_m.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.04, -0.08 * shoe_scale)
+		var ember := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.08 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(ember)
+		ember.position = Vector3(0.0, -leg_len + 0.02, -0.12 * shoe_scale)
+		var cuff_m := _mesh_box(
+			Vector3(0.13 * ws * shoe_scale, 0.08 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			iron
+		)
+		leg.add_child(cuff_m)
+		cuff_m.position = Vector3(0.0, -leg_len + 0.1, -0.02 * shoe_scale)
+	elif elemental_frost:
+		## Snowglobe galosh bulb + ice cuff.
+		var bulb_f := _mesh_box(
+			Vector3(0.16 * ws * shoe_scale, 0.11 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			frost_pad
+		)
+		leg.add_child(bulb_f)
+		bulb_f.position = Vector3(0.0, -leg_len + 0.02, -0.06 * shoe_scale)
+		var cuff_f := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.09 * shoe_scale, 0.09 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(cuff_f)
+		cuff_f.position = Vector3(0.0, -leg_len + 0.1, -0.02 * shoe_scale)
+		var crystal := _mesh_box(
+			Vector3(0.03 * ws * shoe_scale, 0.1 * shoe_scale, 0.03 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(crystal)
+		crystal.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.06, 0.02 * shoe_scale)
+	elif elemental_mud:
+		## Mud Monster tall wader cuff + chunky heel clod.
+		var wader := _mesh_box(
+			Vector3(0.15 * ws * shoe_scale, 0.16 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(wader)
+		wader.position = Vector3(0.0, -leg_len + 0.08, -0.04 * shoe_scale)
+		var clod := _mesh_box(
+			Vector3(0.18 * ws * shoe_scale, 0.06 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			mud_pad
+		)
+		leg.add_child(clod)
+		clod.position = Vector3(0.0, -leg_len - 0.02, 0.0)
+		var strap := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.12 * shoe_scale, 0.04 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(strap)
+		strap.position = Vector3(side * 0.09 * ws * shoe_scale, -leg_len + 0.1, -0.02 * shoe_scale)
+	elif ridiculous_boost:
+		## Slipper Rockets — fuzzy cuff + rear rocket nozzles (VFX; grounded).
+		var fuzzy := _mesh_box(
+			Vector3(0.16 * ws * shoe_scale, 0.1 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(fuzzy)
+		fuzzy.position = Vector3(0.0, -leg_len + 0.06, -0.02 * shoe_scale)
+		var nozzle := _mesh_box(
+			Vector3(0.05 * ws * shoe_scale, 0.06 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			joke_jet
+		)
+		leg.add_child(nozzle)
+		nozzle.position = Vector3(side * 0.08 * ws * shoe_scale, -leg_len + 0.02, -0.16 * shoe_scale)
+		var flame_s := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.04 * shoe_scale, 0.07 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(flame_s)
+		flame_s.position = Vector3(side * 0.08 * ws * shoe_scale, -leg_len - 0.01, -0.22 * shoe_scale)
+	elif ridiculous_stomp:
+		## Pancake stack plates — syrup-heavy stomp silhouette.
+		var cake := _mesh_box(
+			Vector3(0.2 * ws * shoe_scale, 0.05 * shoe_scale, 0.18 * shoe_scale),
+			Vector3.ZERO,
+			pancake_mat
+		)
+		leg.add_child(cake)
+		cake.position = Vector3(0.0, -leg_len + 0.02, 0.0)
+		var cake2 := _mesh_box(
+			Vector3(0.18 * ws * shoe_scale, 0.045 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(cake2)
+		cake2.position = Vector3(0.0, -leg_len + 0.07, 0.0)
+		var syrup := _mesh_box(
+			Vector3(0.08 * ws * shoe_scale, 0.1 * shoe_scale, 0.05 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(syrup)
+		syrup.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.04, -0.1 * shoe_scale)
+	elif ridiculous_reach:
+		## Bubblegum stilts — tall shaft + gum bubble cuff.
+		var shaft := _mesh_box(
+			Vector3(0.08 * ws * shoe_scale, 0.22 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			gum_mat
+		)
+		leg.add_child(shaft)
+		shaft.position = Vector3(0.0, -leg_len + 0.12, -0.04 * shoe_scale)
+		var bubble := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.1 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(bubble)
+		bubble.position = Vector3(0.0, -leg_len + 0.02, 0.02 * shoe_scale)
+		var stick := _mesh_box(
+			Vector3(0.03 * ws * shoe_scale, 0.08 * shoe_scale, 0.03 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(stick)
+		stick.position = Vector3(side * 0.09 * ws * shoe_scale, -leg_len + 0.08, 0.0)
+	elif ridiculous_caffeine:
+		## Espresso Jet Socks — slim sock shaft + dual espresso thrusters.
+		var sock := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.14 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(sock)
+		sock.position = Vector3(0.0, -leg_len + 0.08, -0.02 * shoe_scale)
+		var jet_e := _mesh_box(
+			Vector3(0.045 * ws * shoe_scale, 0.055 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			joke_jet
+		)
+		leg.add_child(jet_e)
+		jet_e.position = Vector3(side * 0.08 * ws * shoe_scale, -leg_len + 0.01, -0.14 * shoe_scale)
+		var crema := _mesh_box(
+			Vector3(0.1 * ws * shoe_scale, 0.04 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(crema)
+		crema.position = Vector3(0.0, -leg_len + 0.14, -0.02 * shoe_scale)
+	elif ridiculous_drift:
+		## Sofa Surfers — cushion block + armrest wing.
+		var cushion := _mesh_box(
+			Vector3(0.2 * ws * shoe_scale, 0.1 * shoe_scale, 0.18 * shoe_scale),
+			Vector3.ZERO,
+			sofa_mat
+		)
+		leg.add_child(cushion)
+		cushion.position = Vector3(0.0, -leg_len + 0.02, 0.0)
+		var armrest := _mesh_box(
+			Vector3(0.05 * ws * shoe_scale, 0.12 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(armrest)
+		armrest.position = Vector3(side * 0.11 * ws * shoe_scale, -leg_len + 0.06, -0.04 * shoe_scale)
+		var pillow := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.06 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(pillow)
+		pillow.position = Vector3(0.0, -leg_len + 0.1, -0.08 * shoe_scale)
+	elif ridiculous_trick:
+		## Banana Boomerang Cleats — curved peel wing + cleat nubs.
+		var peel := _mesh_box(
+			Vector3(0.05 * ws * shoe_scale, 0.08 * shoe_scale, 0.2 * shoe_scale),
+			Vector3.ZERO,
+			banana_mat
+		)
+		leg.add_child(peel)
+		peel.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.04, 0.02 * shoe_scale)
+		var peel2 := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.06 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(peel2)
+		peel2.position = Vector3(side * -0.06 * ws * shoe_scale, -leg_len + 0.02, -0.08 * shoe_scale)
+		var cleat := _mesh_box(
+			Vector3(0.03 * ws * shoe_scale, 0.05 * shoe_scale, 0.03 * shoe_scale),
+			Vector3.ZERO,
+			spike
+		)
+		leg.add_child(cleat)
+		cleat.position = Vector3(side * 0.05 * ws * shoe_scale, -leg_len - 0.05, 0.08 * shoe_scale)
+	elif crossover_soft:
+		## Lifeling Lopers — soft leaf cuff + archive loop (original tribute).
+		var leaf := _mesh_box(
+			Vector3(0.05 * ws * shoe_scale, 0.12 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			life_mat
+		)
+		leg.add_child(leaf)
+		leaf.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.05, 0.0)
+		var loop_l := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.04 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(loop_l)
+		loop_l.position = Vector3(0.0, -leg_len + 0.1, -0.04 * shoe_scale)
+	elif crossover_heavy:
+		## Fossil Footsteps — sediment plates + chunky heel.
+		var plate_f := _mesh_box(
+			Vector3(0.08 * ws * shoe_scale, 0.14 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			fossil_mat
+		)
+		leg.add_child(plate_f)
+		plate_f.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.04, -0.08 * shoe_scale)
+		var heel_f := _mesh_box(
+			Vector3(0.16 * ws * shoe_scale, 0.1 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(heel_f)
+		heel_f.position = Vector3(0.0, -leg_len + 0.02, -0.1 * shoe_scale)
+		var ridge := _mesh_box(
+			Vector3(0.18 * ws * shoe_scale, 0.03 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(ridge)
+		ridge.position = Vector3(0.0, -leg_len + 0.1, -0.04 * shoe_scale)
+	elif crossover_tap:
+		## BeatLink Tapstep Oxfords — slim oxford cuff + brass tap plate.
+		var oxford := _mesh_box(
+			Vector3(0.13 * ws * shoe_scale, 0.1 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(oxford)
+		oxford.position = Vector3(0.0, -leg_len + 0.06, -0.02 * shoe_scale)
+		var tap_plate := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.025 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			tap_mat
+		)
+		leg.add_child(tap_plate)
+		tap_plate.position = Vector3(0.0, -leg_len - 0.02, 0.08 * shoe_scale)
+		var lace := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.08 * shoe_scale, 0.03 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(lace)
+		lace.position = Vector3(side * 0.08 * ws * shoe_scale, -leg_len + 0.08, 0.02 * shoe_scale)
+	elif crossover_bass:
+		## BeatLink Bassline Boots — tall boot shaft + bass woofer heel.
+		var boot_b := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.16 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(boot_b)
+		boot_b.position = Vector3(0.0, -leg_len + 0.08, -0.04 * shoe_scale)
+		var woofer := _mesh_box(
+			Vector3(0.16 * ws * shoe_scale, 0.05 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			bass_mat
+		)
+		leg.add_child(woofer)
+		woofer.position = Vector3(0.0, -leg_len - 0.01, -0.08 * shoe_scale)
+		var cone := _mesh_box(
+			Vector3(0.1 * ws * shoe_scale, 0.04 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(cone)
+		cone.position = Vector3(0.0, -leg_len + 0.04, -0.08 * shoe_scale)
+	elif crossover_circuit:
+		## WAIKE Circuit Clogs — clog block + circuit trace fin.
+		var clog := _mesh_box(
+			Vector3(0.18 * ws * shoe_scale, 0.08 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(clog)
+		clog.position = Vector3(0.0, -leg_len + 0.02, 0.0)
+		var trace := _mesh_box(
+			Vector3(0.03 * ws * shoe_scale, 0.1 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			circuit_mat
+		)
+		leg.add_child(trace)
+		trace.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.05, -0.02 * shoe_scale)
+		var chip := _mesh_box(
+			Vector3(0.08 * ws * shoe_scale, 0.04 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(chip)
+		chip.position = Vector3(0.0, -leg_len + 0.1, -0.04 * shoe_scale)
+	elif crossover_portal:
+		## 3k MLV Portal Pumps — portal ring heel (VFX; never phase colliders).
+		var ring_p := _mesh_box(
+			Vector3(0.16 * ws * shoe_scale, 0.03 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			portal_mat
+		)
+		leg.add_child(ring_p)
+		ring_p.position = Vector3(0.0, -leg_len + 0.08, -0.06 * shoe_scale)
+		var ring_p2 := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.025 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(ring_p2)
+		ring_p2.position = Vector3(0.0, -leg_len + 0.12, -0.06 * shoe_scale)
+		var pump := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.08 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(pump)
+		pump.position = Vector3(0.0, -leg_len + 0.02, 0.02 * shoe_scale)
+	elif crossover_gyro:
+		## Edge I/O Gyrowraps — wrap straps + gyro disc.
+		var wrap := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.14 * shoe_scale, 0.18 * shoe_scale),
+			Vector3.ZERO,
+			gyro_mat
+		)
+		leg.add_child(wrap)
+		wrap.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.05, 0.0)
+		var disc_g := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.03 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(disc_g)
+		disc_g.position = Vector3(0.0, -leg_len - 0.01, -0.04 * shoe_scale)
+		var hub := _mesh_box(
+			Vector3(0.08 * ws * shoe_scale, 0.05 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(hub)
+		hub.position = Vector3(0.0, -leg_len + 0.06, -0.04 * shoe_scale)
+	elif tribute_ember:
+		## Cinderstride — ember fins (original Pedestrian procedural sole).
+		var ember_fin := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.12 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			ember_mat
+		)
+		leg.add_child(ember_fin)
+		ember_fin.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.05, -0.04 * shoe_scale)
+		var cuff_e := _mesh_box(
+			Vector3(0.13 * ws * shoe_scale, 0.09 * shoe_scale, 0.09 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(cuff_e)
+		cuff_e.position = Vector3(0.0, -leg_len + 0.09, -0.02 * shoe_scale)
+	elif tribute_bastion:
+		## Bastion Stomp — heavy side plates + heel block.
+		var plate_b := _mesh_box(
+			Vector3(0.07 * ws * shoe_scale, 0.15 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			bastion_mat
+		)
+		leg.add_child(plate_b)
+		plate_b.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.04, -0.08 * shoe_scale)
+		var heel_b := _mesh_box(
+			Vector3(0.16 * ws * shoe_scale, 0.1 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(heel_b)
+		heel_b.position = Vector3(0.0, -leg_len + 0.02, -0.1 * shoe_scale)
+	elif tribute_volt:
+		## Voltstep Coils — coil rings + spark cuff.
+		var coil := _mesh_box(
+			Vector3(0.15 * ws * shoe_scale, 0.03 * shoe_scale, 0.15 * shoe_scale),
+			Vector3.ZERO,
+			volt_mat
+		)
+		leg.add_child(coil)
+		coil.position = Vector3(0.0, -leg_len + 0.08, -0.04 * shoe_scale)
+		var coil2 := _mesh_box(
+			Vector3(0.11 * ws * shoe_scale, 0.025 * shoe_scale, 0.11 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(coil2)
+		coil2.position = Vector3(0.0, -leg_len + 0.12, -0.04 * shoe_scale)
+		var spark := _mesh_box(
+			Vector3(0.03 * ws * shoe_scale, 0.1 * shoe_scale, 0.04 * shoe_scale),
+			Vector3.ZERO,
+			volt_mat
+		)
+		leg.add_child(spark)
+		spark.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.05, 0.02 * shoe_scale)
+	elif tribute_gale:
+		## Galeleaf Gliders — leaf wing + slim ankle.
+		var leaf_g := _mesh_box(
+			Vector3(0.05 * ws * shoe_scale, 0.12 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			gale_mat
+		)
+		leg.add_child(leaf_g)
+		leaf_g.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.05, 0.0)
+		var ankle_g := _mesh_box(
+			Vector3(0.11 * ws * shoe_scale, 0.08 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(ankle_g)
+		ankle_g.position = Vector3(0.0, -leg_len + 0.09, -0.04 * shoe_scale)
+	elif tribute_azure:
+		## Azure Bastions — blue brace plates (distinct from Bastion Stomp).
+		var brace := _mesh_box(
+			Vector3(0.06 * ws * shoe_scale, 0.14 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			azure_mat
+		)
+		leg.add_child(brace)
+		brace.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.05, -0.04 * shoe_scale)
+		var cuff_a := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.08 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(cuff_a)
+		cuff_a.position = Vector3(0.0, -leg_len + 0.1, -0.02 * shoe_scale)
+		var toe_a := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.04 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			azure_mat
+		)
+		leg.add_child(toe_a)
+		toe_a.position = Vector3(0.0, -leg_len - 0.01, 0.12 * shoe_scale)
+	elif tribute_orbit:
+		## Orbitwalkers — dual heel rings (VFX; grounded collision).
+		var ring_o := _mesh_box(
+			Vector3(0.16 * ws * shoe_scale, 0.03 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			orbit_mat
+		)
+		leg.add_child(ring_o)
+		ring_o.position = Vector3(0.0, -leg_len + 0.07, -0.06 * shoe_scale)
+		var ring_o2 := _mesh_box(
+			Vector3(0.12 * ws * shoe_scale, 0.025 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(ring_o2)
+		ring_o2.position = Vector3(0.0, -leg_len + 0.11, -0.06 * shoe_scale)
+	elif tribute_echo:
+		## Phase Echoes — veil fins; NEVER phase-through colliders.
+		var veil := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.12 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			echo_mat
+		)
+		leg.add_child(veil)
+		veil.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.05, -0.06 * shoe_scale)
+		var echo_trail := _mesh_box(
+			Vector3(0.03 * ws * shoe_scale, 0.08 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(echo_trail)
+		echo_trail.position = Vector3(side * -0.05 * ws * shoe_scale, -leg_len + 0.03, -0.12 * shoe_scale)
+	elif tribute_null:
+		## Nullstep — matte void block + thin rail.
+		var void_b := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.1 * shoe_scale, 0.14 * shoe_scale),
+			Vector3.ZERO,
+			null_mat
+		)
+		leg.add_child(void_b)
+		void_b.position = Vector3(0.0, -leg_len + 0.04, -0.02 * shoe_scale)
+		var rail_n := _mesh_box(
+			Vector3(0.02 * ws * shoe_scale, 0.08 * shoe_scale, 0.16 * shoe_scale),
+			Vector3.ZERO,
+			midsole
+		)
+		leg.add_child(rail_n)
+		rail_n.position = Vector3(side * 0.09 * ws * shoe_scale, -leg_len + 0.04, 0.0)
+	elif tribute_radiant:
+		## Radiant Order — crest plate + radiant heel flare.
+		var crest := _mesh_box(
+			Vector3(0.08 * ws * shoe_scale, 0.12 * shoe_scale, 0.08 * shoe_scale),
+			Vector3.ZERO,
+			radiant_mat
+		)
+		leg.add_child(crest)
+		crest.position = Vector3(0.0, -leg_len + 0.1, 0.02 * shoe_scale)
+		var flare_r := _mesh_box(
+			Vector3(0.05 * ws * shoe_scale, 0.1 * shoe_scale, 0.12 * shoe_scale),
+			Vector3.ZERO,
+			upper
+		)
+		leg.add_child(flare_r)
+		flare_r.position = Vector3(side * 0.1 * ws * shoe_scale, -leg_len + 0.05, -0.08 * shoe_scale)
+		var heel_r := _mesh_box(
+			Vector3(0.14 * ws * shoe_scale, 0.08 * shoe_scale, 0.1 * shoe_scale),
+			Vector3.ZERO,
+			radiant_mat
+		)
+		leg.add_child(heel_r)
+		heel_r.position = Vector3(0.0, -leg_len + 0.02, -0.1 * shoe_scale)
+	## Wardrobe/chase-cam family stripe — readable at gameplay FOV; not commercial sole art.
+	if visual_lod < 2 and not vehicle_id.is_empty():
+		var stripe_mat := StandardMaterial3D.new()
+		var stripe_col := _footwear_trail_color(self.accent_color, profile.archetype if profile else "all_terrain")
+		stripe_mat.albedo_color = Color(stripe_col.r, stripe_col.g, stripe_col.b, 1.0)
+		stripe_mat.emission_enabled = true
+		stripe_mat.emission = stripe_mat.albedo_color
+		## Slightly brighter emission so chase-cam reads family stripe at gameplay FOV.
+		stripe_mat.emission_energy_multiplier = 0.48
+		stripe_mat.roughness = 0.4
+		var stripe := _mesh_box(
+			Vector3(0.04 * ws * shoe_scale, 0.03 * shoe_scale, 0.18 * shoe_scale),
+			Vector3.ZERO,
+			stripe_mat
+		)
+		leg.add_child(stripe)
+		stripe.position = Vector3(side * 0.08 * ws * shoe_scale, -leg_len + 0.07, 0.02 * shoe_scale)
 	if is_left:
 		_shoe_l = sole
 		_heel_l = heel
 	else:
 		_shoe_r = sole
 		_heel_r = heel
-	# Quiet unused warning for side symmetry quirks.
-	sole.position.x = side * 0.0
 
 
 func _make_pivot(parent: Node3D, pos: Vector3) -> Node3D:
@@ -856,6 +2985,33 @@ func _apply_pose_overlay(delta: float) -> void:
 				_arm_l.rotation.x = lerpf(_arm_l.rotation.x, -2.0, delta * 5.0)
 			if _arm_r:
 				_arm_r.rotation.x = lerpf(_arm_r.rotation.x, -2.0, delta * 5.0)
+		"jump":
+			if _torso:
+				_torso.rotation.x = lerpf(_torso.rotation.x, -0.15, delta * 10.0)
+			if _leg_l:
+				_leg_l.rotation.x = lerpf(_leg_l.rotation.x, 0.55, delta * 10.0)
+			if _leg_r:
+				_leg_r.rotation.x = lerpf(_leg_r.rotation.x, -0.55, delta * 10.0)
+			if _arm_l:
+				_arm_l.rotation.x = lerpf(_arm_l.rotation.x, -1.2, delta * 10.0)
+			if _arm_r:
+				_arm_r.rotation.x = lerpf(_arm_r.rotation.x, -1.2, delta * 10.0)
+		"trick":
+			if _torso:
+				_torso.rotation.y = sin(_emotion_t * 14.0) * 0.55
+				_torso.rotation.x = lerpf(_torso.rotation.x, -0.35, delta * 8.0)
+			if _arm_l:
+				_arm_l.rotation.z = lerpf(_arm_l.rotation.z, 1.1, delta * 8.0)
+			if _arm_r:
+				_arm_r.rotation.z = lerpf(_arm_r.rotation.z, -1.1, delta * 8.0)
+		"drift":
+			if _torso:
+				_torso.rotation.z = lerpf(_torso.rotation.z, -0.42, delta * 9.0)
+				_torso.rotation.x = lerpf(_torso.rotation.x, -0.12, delta * 8.0)
+			if _leg_l:
+				_leg_l.rotation.x = lerpf(_leg_l.rotation.x, 0.35, delta * 8.0)
+			if _arm_r:
+				_arm_r.rotation.z = lerpf(_arm_r.rotation.z, -0.55, delta * 8.0)
 		"defeat":
 			if _torso:
 				_torso.rotation.x = lerpf(_torso.rotation.x, 0.4, delta * 4.0)

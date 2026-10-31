@@ -131,8 +131,8 @@
         6,
         6
       ],
-      "bounce_force": 12.5,
-      "forward_boost": 5.0
+      "bounce_force": 6.0,
+      "forward_boost": 2.0
     }
   ],
   "item_boxes": [
@@ -157,6 +157,21 @@
     "checkpoints": true,
     "shortcuts": true,
     "rails": true,
-    "visual_final": false
-  }
+    "visual_final": false,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "elevation_profile": "mesa_steps",
+  "bank_bias": 0.08,
+  "landmarks": [
+    "mesa_arch",
+    "mirage_spire",
+    "dune_rails"
+  ],
+  "camera_identity": "mesa_chase",
+  "geometry_note": "Softened bounce/lane for headless completion honesty (gate keeps REACQUIRE/COMPLETED_LAPS checks)."
 }

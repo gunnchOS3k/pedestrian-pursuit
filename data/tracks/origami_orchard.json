@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "id": "origami_orchard",
+  "display_name": "Origami Orchard",
+  "lap_count": 3,
+  "difficulty": "intermediate",
+  "theme": "origami_orchard",
+  "description": "Folded orchard switchbacks among paper-tree spires and crease rails \u2014 original wonder grove.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "lane_width": 15.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#3A5840",
+  "accent_color": "#C8E8A0",
+  "sky_color": "#6A9870",
+  "backdrop_color": "#243828",
+  "path_points": [
+    [
+      53.82,
+      1.717,
+      0.0
+    ],
+    [
+      45.84,
+      2.309,
+      13.56
+    ],
+    [
+      27.6,
+      2.4,
+      27.35
+    ],
+    [
+      8.67,
+      1.887,
+      37.03
+    ],
+    [
+      -8.67,
+      1.113,
+      37.03
+    ],
+    [
+      -27.6,
+      0.6,
+      27.35
+    ],
+    [
+      -45.84,
+      0.691,
+      13.56
+    ],
+    [
+      -53.82,
+      1.283,
+      0.0
+    ],
+    [
+      -45.84,
+      1.917,
+      -13.56
+    ],
+    [
+      -27.6,
+      2.126,
+      -27.35
+    ],
+    [
+      -8.67,
+      1.791,
+      -37.03
+    ],
+    [
+      8.67,
+      1.209,
+      -37.03
+    ],
+    [
+      27.6,
+      0.874,
+      -27.35
+    ],
+    [
+      45.84,
+      1.083,
+      -13.56
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 12,
+      "size": [
+        5,
+        11
+      ],
+      "speed_bonus": 1.17
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 4,
+      "size": [
+        7,
+        9
+      ],
+      "speed_multiplier": 0.79,
+      "terrain_name": "paper_leaf_litter",
+      "handling_multiplier": 0.9,
+      "color": "#5A7048"
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 7,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    },
+    {
+      "point_index": 11,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    }
+  ],
+  "item_boxes": [
+    2,
+    4,
+    6,
+    10
+  ],
+  "boost_pickups": [
+    1,
+    5,
+    9
+  ],
+  "rail_segments": [
+    3,
+    9
+  ],
+  "shortcut_routes": [
+    {
+      "id": "origami_orchard_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 8,
+      "risk": "high",
+      "ai_preference": 0.28,
+      "description": "Crease cut between folds \u2014 root collision if you miss."
+    }
+  ],
+  "landmarks": [
+    "paper_spire",
+    "crease_gate",
+    "grove_lantern"
+  ],
+  "elevation_profile": "orchard_folds",
+  "bank_bias": 0.11,
+  "geometry_note": "World Wonder upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. paper spire / crease gate / root bundles. Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn.",
+  "camera_identity": "origami_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "World Wonder collision hazards are off-line props; do not claim human commercial art approval."
+  ]
+}

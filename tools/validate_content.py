@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate launch catalog: ≥2 cups, 8 unique courses, shoes, items, device roles."""
+"""Validate championship catalog: 8 cups × 4 = 32 raceable courses, shoes, items, device roles."""
 
 from __future__ import annotations
 
@@ -14,7 +14,32 @@ SAFE_ID = re.compile(r"^[a-z0-9_]+$")
 HEX_COLOR = re.compile(r"^#[0-9A-Fa-f]{6}$")
 CUP_TRACK_COUNT = 4
 LAUNCH_TRACK_TARGET = 8
-KNOWN_CUPS = ("sole_surge_cup", "stride_circuit_cup")
+CHAMPIONSHIP_TRACK_TARGET = 32
+CHAMPIONSHIP_CUP_TARGET = 8
+KNOWN_CUPS = (
+    "sole_surge_cup",
+    "stride_circuit_cup",
+    "metro_motion_cup",
+    "kinetic_coast_cup",
+    "neon_night_cup",
+    "skyline_relay_cup",
+    "archive_relay_cup",
+    "world_wonder_grand_prix",
+)
+LAUNCH_TRACKS = (
+    "verdant_cascade_circuit",
+    "cloverwind_ranch",
+    "prism_apex",
+    "emberkeep_gauntlet",
+    "tideglass_harbor",
+    "neon_switchyard",
+    "cloudstep_ridge",
+    "mirage_mesa",
+)
+RACEABLE_ART = (
+    "LAUNCH_PROCEDURAL_FINAL",
+    "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+)
 FEATURE_COLLECTIONS = ("speed_lanes", "terrain_zones", "bounce_pads")
 INDEX_COLLECTIONS = ("item_boxes", "boost_pickups", "rail_segments")
 EXPECTED_SHOES = ("starter_soles", "speed_sneakers", "grip_soles", "bounce_boots")
@@ -166,10 +191,19 @@ def validate_project(root: Path) -> list[str]:
             _validate_track(path, track, errors)
 
     unique_tracks = sorted(set(all_track_ids))
+    if len(KNOWN_CUPS) != CHAMPIONSHIP_CUP_TARGET:
+        errors.append(f"championship needs {CHAMPIONSHIP_CUP_TARGET} cups, got {len(KNOWN_CUPS)}")
+    if len(unique_tracks) != CHAMPIONSHIP_TRACK_TARGET:
+        errors.append(
+            f"championship catalog has {len(unique_tracks)} unique cup tracks; need {CHAMPIONSHIP_TRACK_TARGET}"
+        )
     if len(unique_tracks) < LAUNCH_TRACK_TARGET:
         errors.append(
             f"launch catalog has {len(unique_tracks)} unique cup tracks; need ≥{LAUNCH_TRACK_TARGET}"
         )
+    for launch_id in LAUNCH_TRACKS:
+        if launch_id not in unique_tracks:
+            errors.append(f"missing preserved launch track {launch_id}")
 
     for shoe_id in EXPECTED_SHOES:
         shoe_path = root / f"data/shoes/{shoe_id}.json"
@@ -182,6 +216,10 @@ def validate_project(root: Path) -> list[str]:
             affinities = shoe.get("surface_affinities")
             if not isinstance(affinities, dict) or len(affinities) < 6:
                 errors.append(f"{shoe_path}: surface_affinities must cover launch surfaces")
+
+    errors.extend(_validate_vehicle_registry(root))
+    errors.extend(_validate_art_acceptance(root))
+    errors.extend(_validate_wardrobe(root))
 
     expected_runners = (
         "dash_reed",
@@ -208,8 +246,8 @@ def validate_project(root: Path) -> list[str]:
     art = _read_json(art_inv, errors)
     if art and art.get("status") != "LAUNCH_PROCEDURAL_FINAL":
         errors.append(f"{art_inv}: status must be LAUNCH_PROCEDURAL_FINAL for digital RC")
-    if art and len(art.get("tracks", [])) != 8:
-        errors.append(f"{art_inv}: need 8 launch tracks")
+    if art and len(art.get("tracks", [])) < 8:
+        errors.append(f"{art_inv}: need ≥8 launch inventory tracks")
     provenance = root / "data/art/provenance.json"
     prov = _read_json(provenance, errors)
     if prov and int(prov.get("counts", {}).get("racers", 0)) < 8:
@@ -231,24 +269,34 @@ def validate_project(root: Path) -> list[str]:
     for profile_id in ("keyboard_default", "gamepad_default", "touch_assist", "local_mp_split"):
         if not (root / f"data/input_profiles/{profile_id}.json").exists():
             errors.append(f"missing input profile {profile_id}")
-    # No launch greybox tags on the eight cup courses.
-    launch_tracks = (
-        "verdant_cascade_circuit",
-        "cloverwind_ranch",
-        "prism_apex",
-        "emberkeep_gauntlet",
-        "tideglass_harbor",
-        "neon_switchyard",
-        "cloudstep_ridge",
-        "mirage_mesa",
-    )
-    for track_id in launch_tracks:
+    # Cups 1–2 launch eight remain LAUNCH_PROCEDURAL_FINAL; championship tracks are raceable procedural.
+    for track_id in LAUNCH_TRACKS:
         track_path = root / f"data/tracks/{track_id}.json"
         track = _read_json(track_path, errors)
         if track and track.get("art_status") == "REQUIRES_ART_PRODUCTION":
             errors.append(f"{track_path}: launch art_status must not remain REQUIRES_ART_PRODUCTION")
         if track and track.get("art_status") != "LAUNCH_PROCEDURAL_FINAL":
             errors.append(f"{track_path}: expected LAUNCH_PROCEDURAL_FINAL")
+    for track_id in unique_tracks:
+        track_path = root / f"data/tracks/{track_id}.json"
+        track = _read_json(track_path, errors)
+        if not track:
+            continue
+        if track.get("art_status") not in RACEABLE_ART:
+            errors.append(f"{track_path}: art_status must be raceable procedural ({track.get('art_status')})")
+        if track.get("art_status") == "REQUIRES_ART_PRODUCTION":
+            errors.append(f"{track_path}: greybox REQUIRES_ART_PRODUCTION not allowed in championship")
+        if bool(track.get("human_track_art_approved", False)):
+            errors.append(f"{track_path}: human track art must stay unapproved")
+    track_art_path = root / "data/art/track_art_acceptance.json"
+    track_art = _read_json(track_art_path, errors)
+    if track_art:
+        if track_art.get("HUMAN_FUN_APPROVAL") or track_art.get("HUMAN_COURSE_APPROVAL"):
+            errors.append(f"{track_art_path}: human approvals must stay false")
+        if track_art.get("RC2_READY") or track_art.get("V1_0_0_RELEASE_AUTHORIZED"):
+            errors.append(f"{track_art_path}: RC2/V1 must stay false")
+        if len(track_art.get("tracks", [])) != CHAMPIONSHIP_TRACK_TARGET:
+            errors.append(f"{track_art_path}: need {CHAMPIONSHIP_TRACK_TARGET} track art entries")
 
     grammar = root / "data/mechanics/foot_racing_grammar.json"
     gram = _read_json(grammar, errors)
@@ -279,6 +327,255 @@ def validate_project(root: Path) -> list[str]:
         errors.append(f"{roster_path}: need ≥8 runners for Alpha launch scope")
 
     errors.extend(_validate_device_roles(root))
+    return errors
+
+
+def _validate_vehicle_registry(root: Path) -> list[str]:
+    """Kinetic Sole garage: exactly 50 playable IDs; tribute art may be procedural_final_for_garage."""
+    errors: list[str] = []
+    path = root / "data/vehicles/vehicle_registry.json"
+    reg = _read_json(path, errors)
+    if not reg:
+        return errors
+    vehicles = reg.get("vehicles")
+    if not isinstance(vehicles, list):
+        errors.append(f"{path}: vehicles must be a list")
+        return errors
+    if len(vehicles) != 50:
+        errors.append(f"{path}: expected 50 vehicles, found {len(vehicles)}")
+    ids: list[str] = []
+    playable = 0
+    stub = 0
+    playable_art = {"native_v1", "procedural_final_for_garage"}
+    required_fields = (
+        "id",
+        "display_name",
+        "family_id",
+        "movement_archetype",
+        "playable",
+        "art_status",
+        "top_speed_modifier",
+        "acceleration_modifier",
+        "handling_modifier",
+        "surface_affinities",
+        "collision_contract",
+    )
+    for entry in vehicles:
+        if not isinstance(entry, dict):
+            errors.append(f"{path}: vehicle entry must be an object")
+            continue
+        for key in required_fields:
+            if key not in entry:
+                errors.append(f"{path}: vehicle missing {key}")
+        vid = str(entry.get("id", ""))
+        if not SAFE_ID.match(vid):
+            errors.append(f"{path}: invalid vehicle id {vid!r}")
+        ids.append(vid)
+        if bool(entry.get("playable", False)):
+            playable += 1
+            art = str(entry.get("art_status", ""))
+            if art not in playable_art:
+                errors.append(f"{path}: playable {vid} art_status must be one of {sorted(playable_art)}")
+            if art == "stub_not_final":
+                errors.append(f"{path}: playable {vid} must not remain stub_not_final")
+            shoe_path = root / f"data/shoes/{vid}.json"
+            if not shoe_path.exists():
+                errors.append(f"{path}: playable {vid} missing shoe JSON {shoe_path.name}")
+        else:
+            stub += 1
+            if str(entry.get("art_status", "")) != "stub_not_final":
+                errors.append(f"{path}: stub {vid} must flag art_status stub_not_final")
+        affinities = entry.get("surface_affinities")
+        if not isinstance(affinities, dict) or len(affinities) < 6:
+            errors.append(f"{path}: {vid} surface_affinities incomplete")
+        contract = str(entry.get("collision_contract", "")).lower()
+        if "checkpoint" not in contract and "collision" not in contract:
+            errors.append(f"{path}: {vid} collision_contract must mention grounded collision/checkpoints")
+    if len(ids) != len(set(ids)):
+        errors.append(f"{path}: duplicate vehicle ids")
+    if playable != 50:
+        errors.append(f"{path}: need exactly 50 playable Kinetic Sole vehicles, found {playable}")
+    if stub != 0:
+        errors.append(f"{path}: need 0 stubs, found {stub}")
+    if stub + playable != len(vehicles):
+        errors.append(f"{path}: playable/stub accounting mismatch")
+    if int(reg.get("vehicle_count", -1)) != 50:
+        errors.append(f"{path}: vehicle_count must be 50")
+    if int(reg.get("playable_count", -1)) != 50:
+        errors.append(f"{path}: playable_count must be 50")
+    if int(reg.get("stub_count", -1)) != 0:
+        errors.append(f"{path}: stub_count must be 0")
+    street = [v for v in vehicles if isinstance(v, dict) and v.get("family_id") == "street_legends"]
+    if len(street) != 8:
+        errors.append(f"{path}: Street Legends family must have 8 vehicles")
+    if not all(bool(v.get("playable")) for v in street):
+        errors.append(f"{path}: all Street Legends must be playable")
+    for family_id, label, expect in (
+        ("roller_revolution", "Roller Revolution", 7),
+        ("hover_couture", "Hover Couture / Spaceflight", 7),
+        ("elemental_amphibious", "Elemental / Amphibious", 6),
+        ("beautifully_ridiculous", "Beautifully Ridiculous", 6),
+        ("gunnchos_crossover", "gunnchOS3k Crossover", 7),
+        ("anime_aggressors", "Anime Aggressors Footwear (Pedestrian tribute)", 9),
+    ):
+        family = [v for v in vehicles if isinstance(v, dict) and v.get("family_id") == family_id]
+        if len(family) != expect:
+            errors.append(f"{path}: {label} family must have {expect} vehicles")
+        if not all(bool(v.get("playable")) for v in family):
+            errors.append(f"{path}: all {label} vehicles must be playable")
+        fps: set[tuple] = set()
+        for v in family:
+            if family_id in (
+                "hover_couture",
+                "elemental_amphibious",
+                "beautifully_ridiculous",
+                "gunnchos_crossover",
+                "anime_aggressors",
+            ):
+                contract = str(v.get("collision_contract", "")).lower()
+                if "grounded" not in contract and "checkpoint" not in contract:
+                    errors.append(f"{path}: {family_id} {v.get('id')} missing grounded collision contract")
+            if family_id == "anime_aggressors":
+                ## Garage-only procedural OR promoted native_v1 candidate — never commercial.
+                art = str(v.get("art_status", ""))
+                if art not in ("procedural_final_for_garage", "native_v1"):
+                    errors.append(
+                        f"{path}: tribute {v.get('id')} art_status must be procedural_final_for_garage or native_v1"
+                    )
+                if bool(v.get("human_commercial_art_approved", False)):
+                    errors.append(f"{path}: tribute {v.get('id')} commercial art must stay false")
+                arch = str(v.get("movement_archetype", ""))
+                if not arch.startswith("tribute_"):
+                    errors.append(f"{path}: tribute {v.get('id')} archetype must be tribute_* (got {arch})")
+            fp = (
+                float(v.get("top_speed_modifier", 0)),
+                float(v.get("acceleration_modifier", 0)),
+                float(v.get("handling_modifier", 0)),
+                float(v.get("drift_modifier", 0)),
+                float(v.get("jump_modifier", 0)),
+                float(v.get("boost_modifier", 0)),
+                float(v.get("stomp_modifier", 0)),
+                str(v.get("material_family", "")),
+            )
+            if fp in fps:
+                errors.append(f"{path}: duplicate {label} fingerprint for {v.get('id')}")
+            fps.add(fp)
+    modes: dict[str, int] = {}
+    for v in vehicles:
+        if not isinstance(v, dict):
+            continue
+        unlock = v.get("unlock") if isinstance(v.get("unlock"), dict) else {}
+        mode = str(unlock.get("mode", "starter"))
+        modes[mode] = modes.get(mode, 0) + 1
+    if modes.get("starter", 0) >= 50:
+        errors.append(f"{path}: unlock modes must not leave all 50 as starter")
+    for need in ("cup", "challenge", "achievement", "crossover"):
+        if modes.get(need, 0) < 1:
+            errors.append(f"{path}: missing unlock mode {need}")
+    return errors
+
+
+def _validate_art_acceptance(root: Path) -> list[str]:
+    errors: list[str] = []
+    path = root / "data/art/vehicle_art_acceptance.json"
+    doc = _read_json(path, errors)
+    if not doc:
+        return errors
+    if doc.get("human_commercial_art_gate") is not False:
+        errors.append(f"{path}: human_commercial_art_gate must be false")
+    if doc.get("HUMAN_FUN_APPROVAL") is not False:
+        errors.append(f"{path}: HUMAN_FUN_APPROVAL must remain false")
+    if doc.get("HUMAN_COURSE_APPROVAL") is not False:
+        errors.append(f"{path}: HUMAN_COURSE_APPROVAL must remain false")
+    vehicles = doc.get("vehicles")
+    if not isinstance(vehicles, list) or len(vehicles) != 50:
+        errors.append(f"{path}: expected 50 art-acceptance entries")
+        return errors
+    pending = 0
+    candidate = 0
+    for entry in vehicles:
+        if not isinstance(entry, dict):
+            errors.append(f"{path}: entry must be object")
+            continue
+        if entry.get("runtime_status") != "playable_runtime":
+            errors.append(f"{path}: {entry.get('id')} runtime_status must be playable_runtime")
+        fas = str(entry.get("final_art_status", ""))
+        if fas not in ("final_art_pending", "final_art_candidate"):
+            errors.append(f"{path}: {entry.get('id')} invalid final_art_status {fas}")
+        if entry.get("human_commercial_art_approved"):
+            errors.append(f"{path}: {entry.get('id')} must not claim commercial art approval")
+        if fas == "final_art_pending":
+            pending += 1
+        elif fas == "final_art_candidate":
+            candidate += 1
+    ## All 50 may be candidates; pending may be 0. Commercial approvals stay false.
+    if candidate < 1:
+        errors.append(f"{path}: need at least one final_art_candidate")
+    if pending + candidate != 50:
+        errors.append(f"{path}: pending+candidate must equal 50 (got {pending}+{candidate})")
+    counts = doc.get("counts") if isinstance(doc.get("counts"), dict) else {}
+    if int(counts.get("final_art_candidate", -1)) != candidate:
+        errors.append(f"{path}: counts.final_art_candidate mismatch")
+    if int(counts.get("final_art_pending", -1)) != pending:
+        errors.append(f"{path}: counts.final_art_pending mismatch")
+    return errors
+
+
+def _validate_wardrobe(root: Path) -> list[str]:
+    errors: list[str] = []
+    path = root / "data/wardrobe/wardrobe_catalog.json"
+    doc = _read_json(path, errors)
+    if not doc:
+        return errors
+    slots = doc.get("slots")
+    if not isinstance(slots, list) or "footwear_vehicle" not in slots or "top" not in slots:
+        errors.append(f"{path}: wardrobe slots incomplete")
+    garments = doc.get("garments")
+    if not isinstance(garments, list) or len(garments) < 20:
+        errors.append(f"{path}: need multi-family integrated garments")
+        return errors
+    integrated = [g for g in garments if isinstance(g, dict) and g.get("art_status") == "integrated_mesh_v1"]
+    pending = [g for g in garments if isinstance(g, dict) and g.get("art_status") == "catalog_art_pending"]
+    if len(integrated) < 40:
+        errors.append(f"{path}: need ≥40 integrated_mesh_v1 garments across families")
+    ## Honest pending may be zero once Crosswind Kiln + Archive Loom are integrated.
+    if pending:
+        for g in pending:
+            if not bool(g.get("cosmetic_only", True)):
+                errors.append(f"{path}: pending garment {g.get('id')} must stay cosmetic_only")
+    families = {
+        str(f.get("id"))
+        for f in doc.get("families", [])
+        if isinstance(f, dict)
+    }
+    for need in (
+        "metro_pulse",
+        "harbor_linen",
+        "neon_trackside",
+        "quiet_plaza",
+        "midnight_atelier",
+        "myth_circuit",
+        "orbit_signal",
+        "crosswind_kiln",
+        "archive_loom",
+    ):
+        if need not in families:
+            errors.append(f"{path}: missing wardrobe family {need}")
+    fam_status = {
+        str(f.get("id")): str(f.get("art_status", ""))
+        for f in doc.get("families", [])
+        if isinstance(f, dict)
+    }
+    for need in ("crosswind_kiln", "archive_loom"):
+        if fam_status.get(need) != "integrated_mesh_v1":
+            errors.append(f"{path}: {need} must be integrated_mesh_v1")
+    presets = doc.get("presets")
+    if not isinstance(presets, list) or len(presets) < 5:
+        errors.append(f"{path}: need ≥5 complete outfit presets")
+    if not isinstance(presets, list) or not any(
+        isinstance(p, dict) and p.get("id") == "metro_pulse_default" for p in presets
+    ):
+        errors.append(f"{path}: metro_pulse_default preset required")
     return errors
 
 
@@ -324,8 +621,9 @@ def main() -> int:
             print(f"- {error}", file=sys.stderr)
         return 1
     print(
-        "Validated Beta/Digital-RC catalog: 2 cups, 8 unique courses, "
-        "4 footwear w/ materials, 6 items, 8 runners w/ stats, grammar, challenges, art inventory."
+        "Validated championship catalog: 8 cups, 32 unique courses, "
+        "4 legacy footwear + 50-vehicle Kinetic Sole garage, 6 items, 8 runners w/ stats, "
+        "grammar, challenges, art inventory."
     )
     return 0
 

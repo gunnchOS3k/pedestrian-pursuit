@@ -101,6 +101,11 @@ func _play_finish_celebration(finished: bool, position: int) -> void:
 		return
 	title_label.pivot_offset = title_label.size * 0.5
 	title_label.scale = Vector2(0.88, 0.88)
+	## Kinetic Sole podium colors — midsole yellow for P1, kinetic orange otherwise.
+	if finished and position == 1:
+		title_label.add_theme_color_override("font_color", Color(0.96, 0.77, 0.09))
+	elif finished:
+		title_label.add_theme_color_override("font_color", Color(1.0, 0.42, 0.24))
 	var peak := Vector2(1.12, 1.12) if finished and position == 1 else Vector2(1.05, 1.05)
 	var tw := create_tween()
 	tw.tween_property(title_label, "scale", peak, 0.2).set_trans(Tween.TRANS_BACK)
@@ -175,7 +180,10 @@ func _ensure_results_art() -> void:
 
 
 func _on_menu() -> void:
-	GameManager.clear_cup()
+	# The standing was written in show_results. Clearing the cup here dropped
+	# it from the session and the next Start Cup began again at race 1.
+	if GameManager.is_cup_active() and GameManager.has_method("save_cup_progress"):
+		GameManager.save_cup_progress()
 	var tree := get_tree()
 	if tree != null and tree.paused:
 		tree.paused = false

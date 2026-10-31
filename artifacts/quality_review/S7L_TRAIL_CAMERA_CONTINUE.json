@@ -1,0 +1,18 @@
+{
+  "schema": "ped.s7l_trail_camera_continue.v1",
+  "wave010_untouched": true,
+  "course_false": true,
+  "human_false": true,
+  "fashion": {
+    "trail_expression_tints_kinetic_sole": true,
+    "cosmetic_only": true,
+    "handling_owner": "footwear",
+    "creator_wardrobe_test": "PASS"
+  },
+  "camera": {
+    "identity_coverage_test": "PASS",
+    "base_fov_arm_window": true,
+    "method": "parse CameraRig.apply_course_identity arms + base_fov window; no CameraRig preload under --script"
+  },
+  "notes": "One digital continue after soak green tip 0094a65; RaceScene/wave010 gates preserved."
+}

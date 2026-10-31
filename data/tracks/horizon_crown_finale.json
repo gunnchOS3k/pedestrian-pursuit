@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "id": "horizon_crown_finale",
+  "display_name": "Horizon Crown Finale",
+  "lap_count": 3,
+  "difficulty": "advanced",
+  "theme": "horizon_crown_finale",
+  "description": "Championship finale under the horizon crown \u2014 twin crown arches, long draft straights, and a victory-chord cut.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "lane_width": 15.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#2A3048",
+  "accent_color": "#FFD878",
+  "sky_color": "#4A6088",
+  "backdrop_color": "#181C28",
+  "path_points": [
+    [
+      54.0,
+      0.949,
+      0.0
+    ],
+    [
+      46.0,
+      1.176,
+      20.0
+    ],
+    [
+      20.0,
+      2.4,
+      28.0
+    ],
+    [
+      0.0,
+      2.4,
+      28.0
+    ],
+    [
+      -20.0,
+      0.949,
+      28.0
+    ],
+    [
+      -46.0,
+      0.821,
+      20.0
+    ],
+    [
+      -54.0,
+      0.636,
+      0.0
+    ],
+    [
+      -46.0,
+      0.6,
+      -20.0
+    ],
+    [
+      -20.0,
+      2.243,
+      -28.0
+    ],
+    [
+      0.0,
+      2.243,
+      -28.0
+    ],
+    [
+      20.0,
+      0.949,
+      -28.0
+    ],
+    [
+      46.0,
+      1.297,
+      -20.0
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 0,
+      "size": [
+        6,
+        16
+      ],
+      "speed_bonus": 1.24
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 5,
+      "size": [
+        8,
+        11
+      ],
+      "speed_multiplier": 0.82,
+      "terrain_name": "crown_plaza",
+      "handling_multiplier": 0.9,
+      "color": "#605848"
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 3,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    },
+    {
+      "point_index": 11,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    }
+  ],
+  "item_boxes": [
+    1,
+    4,
+    5,
+    9
+  ],
+  "boost_pickups": [
+    0,
+    5,
+    7
+  ],
+  "rail_segments": [
+    2,
+    8
+  ],
+  "shortcut_routes": [
+    {
+      "id": "horizon_crown_finale_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 8,
+      "risk": "high",
+      "ai_preference": 0.26,
+      "description": "Victory chord under the crown \u2014 miss into grit."
+    }
+  ],
+  "landmarks": [
+    "crown_arch_north",
+    "crown_arch_south",
+    "finale_spire"
+  ],
+  "elevation_profile": "crown_spans",
+  "bank_bias": 0.12,
+  "geometry_note": "World Wonder upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. crown arches / finale pillars. Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn.",
+  "camera_identity": "crown_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "World Wonder collision hazards are off-line props; do not claim human commercial art approval."
+  ]
+}

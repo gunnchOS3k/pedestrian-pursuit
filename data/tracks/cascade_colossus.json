@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "id": "cascade_colossus",
+  "display_name": "Cascade Colossus",
+  "lap_count": 3,
+  "difficulty": "beginner",
+  "theme": "cascade_colossus",
+  "description": "Original cascade-colossus circuit with terrace falls, mist columns, and a cliff-ledge cut \u2014 wonder landmark, not a nation costume.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "lane_width": 15.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#2A5A6A",
+  "accent_color": "#7EE8F0",
+  "sky_color": "#6AB0C8",
+  "backdrop_color": "#1A3A48",
+  "path_points": [
+    [
+      50.0,
+      1.725,
+      0.0
+    ],
+    [
+      43.3,
+      2.4,
+      18.0
+    ],
+    [
+      25.0,
+      2.321,
+      31.18
+    ],
+    [
+      0.0,
+      1.5,
+      36.0
+    ],
+    [
+      -25.0,
+      0.679,
+      31.18
+    ],
+    [
+      -43.3,
+      0.6,
+      18.0
+    ],
+    [
+      -50.0,
+      1.275,
+      0.0
+    ],
+    [
+      -43.3,
+      2.012,
+      -18.0
+    ],
+    [
+      -25.0,
+      2.096,
+      -31.18
+    ],
+    [
+      -0.0,
+      1.5,
+      -36.0
+    ],
+    [
+      25.0,
+      0.904,
+      -31.18
+    ],
+    [
+      43.3,
+      0.988,
+      -18.0
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 1,
+      "size": [
+        6,
+        12
+      ],
+      "speed_bonus": 1.16
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 5,
+      "size": [
+        8,
+        10
+      ],
+      "speed_multiplier": 0.83,
+      "terrain_name": "mist_terrace",
+      "handling_multiplier": 0.9,
+      "color": "#4A6070"
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 9,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    },
+    {
+      "point_index": 11,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    }
+  ],
+  "item_boxes": [
+    2,
+    4,
+    6,
+    10
+  ],
+  "boost_pickups": [
+    1,
+    5,
+    8
+  ],
+  "rail_segments": [
+    3,
+    8
+  ],
+  "shortcut_routes": [
+    {
+      "id": "cascade_colossus_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 7,
+      "risk": "medium",
+      "ai_preference": 0.33,
+      "description": "Ledge cut behind the falls \u2014 wet grit if you miss."
+    }
+  ],
+  "landmarks": [
+    "colossus_falls",
+    "mist_column",
+    "terrace_arch"
+  ],
+  "elevation_profile": "cascade_terraces",
+  "bank_bias": 0.08,
+  "geometry_note": "World Wonder upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. colossus falls / terrace arch. Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn.",
+  "camera_identity": "colossus_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "World Wonder collision hazards are off-line props; do not claim human commercial art approval."
+  ]
+}

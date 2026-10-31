@@ -2,7 +2,7 @@ name: Gate 1 post-merge integrity
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, lane-b/course-gameplay-fix-cup-resume]
   push:
     branches: [main]
   workflow_dispatch:
@@ -67,6 +67,12 @@ jobs:
 
       - name: GAME-RC-001 contract validation
         run: python3 tools/validate_game_rc_contracts.py
+
+      - name: Validate RTM against GUNNCHOS3K_PVS@1.0.0
+        run: |
+          set -euo pipefail
+          pip install 'jsonschema>=4.20'
+          python3 tools/validate_rtm.py
 
       - name: Upload synthetic Gate1 summary
         if: always()
@@ -148,7 +154,8 @@ jobs:
 
   godot-headless-no-false-green:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    ## Four Kinetic Sole captures + suite + two-client; keep headroom above 25m cancel.
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
 
@@ -207,12 +214,54 @@ jobs:
               echo "PASS ${name}"
             }
             run_step startup "$GODOT" --headless --path "$ROOT" --quit-after 2
+            run_step CourseProgressReacquireTest "$GODOT" --headless --path "$ROOT" --script res://tests/CourseProgressReacquireTest.gd
             run_step TestRunner "$GODOT" --headless --path "$ROOT" --script res://tests/TestRunner.gd
+            run_step CourseBuildSurfaceTest "$GODOT" --headless --path "$ROOT" --script res://tests/CourseBuildSurfaceTest.gd
+            run_step VerdantRaceSceneObserve "$GODOT" --headless --path "$ROOT" --script res://tests/VerdantRaceSceneObserve.gd
+            echo "=== VerdantRaceSceneObserve markers ==="
+            if [[ -f tmp/godot-VerdantRaceSceneObserve.log ]]; then
+              grep -E "^(RACE_ENTERED|LAP_COMPLETED|CHECKPOINT_CROSSED|RESULTS_PATH|COURSE_ACCEPTED|DEVICE_RUN|RACE_STATE|TRACK_ID|LAP_COUNT|LAP_COUNT_RUNTIME|COUNTDOWN_FINISHED|DRIVE_BOUND_MSEC|DRIVEN_MSEC|LINE_STEER|INPUT_PATH)=|^RACE_SCENE_FAIL|^COURSE_OBSERVE_" tmp/godot-VerdantRaceSceneObserve.log || true
+            else
+              echo "OBSERVER_LOG=absent"
+            fi
+            # Exit 0 from the observer is not a lap. This gate fails closed.
+            python3 tests/verdant_race_acceptance_gate.py tmp/godot-VerdantRaceSceneObserve.log
             run_step G2C6RuntimeTest "$GODOT" --headless --path "$ROOT" --script res://tests/G2C6RuntimeTest.gd
             run_step CupFlowTest "$GODOT" --headless --path "$ROOT" --script res://tests/CupFlowTest.gd
+            run_step CupResumeTest "$GODOT" --headless --path "$ROOT" --script res://tests/CupResumeTest.gd
+            run_step VehicleGarageTest "$GODOT" --headless --path "$ROOT" --script res://tests/VehicleGarageTest.gd
+            run_step ArtAcceptanceTest "$GODOT" --headless --path "$ROOT" --script res://tests/ArtAcceptanceTest.gd
+            run_step GarageProgressionTest "$GODOT" --headless --path "$ROOT" --script res://tests/GarageProgressionTest.gd
+            run_step CreatorWardrobeRaceFlowTest "$GODOT" --headless --path "$ROOT" --script res://tests/CreatorWardrobeRaceFlowTest.gd
+            run_step AppearanceMultiplayerSyncTest "$GODOT" --headless --path "$ROOT" --script res://tests/AppearanceMultiplayerSyncTest.gd
+            run_step ChampionshipCatalogTest "$GODOT" --headless --path "$ROOT" --script res://tests/ChampionshipCatalogTest.gd
+            run_step ChampionshipCupCareerTest "$GODOT" --headless --path "$ROOT" --script res://tests/ChampionshipCupCareerTest.gd
+            run_step PartyLinkCapacityTest "$GODOT" --headless --path "$ROOT" --script res://tests/PartyLinkCapacityTest.gd
             run_step BetaProductStateTest "$GODOT" --headless --path "$ROOT" --script res://tests/BetaProductStateTest.gd
             run_step FullProductDepthTest "$GODOT" --headless --path "$ROOT" --script res://tests/FullProductDepthTest.gd
             run_step AchievementRuntimeTest "$GODOT" --headless --path "$ROOT" --script res://tests/AchievementRuntimeTest.gd
+            # Kinetic Sole course captures (xvfb). Reject black frames in-script;
+            # require CAPTURED shots so art regressions fail closed.
+            run_step KineticSoleVerdantCapture xvfb-run -a "$GODOT" --path "$ROOT" --script res://tests/KineticSoleVerdantCapture.gd
+            if [[ -f artifacts/kinetic_sole_verdant/CAPTURE_RUN.json ]]; then
+              echo "=== KineticSoleVerdantCapture markers ==="
+              grep -E "KINETIC_SOLE_|CAPTURED|CAPTURE_FAILED|black_retry" tmp/godot-KineticSoleVerdantCapture.log || true
+            fi
+            run_step KineticSoleCloverwindCapture xvfb-run -a "$GODOT" --path "$ROOT" --script res://tests/KineticSoleCloverwindCapture.gd
+            if [[ -f artifacts/kinetic_sole_cloverwind/CAPTURE_RUN.json ]]; then
+              echo "=== KineticSoleCloverwindCapture markers ==="
+              grep -E "KINETIC_SOLE_|CAPTURED|CAPTURE_FAILED|black_retry" tmp/godot-KineticSoleCloverwindCapture.log || true
+            fi
+            run_step KineticSolePrismCapture xvfb-run -a "$GODOT" --path "$ROOT" --script res://tests/KineticSolePrismCapture.gd
+            if [[ -f artifacts/kinetic_sole_prism/CAPTURE_RUN.json ]]; then
+              echo "=== KineticSolePrismCapture markers ==="
+              grep -E "KINETIC_SOLE_|CAPTURED|CAPTURE_FAILED|black_retry" tmp/godot-KineticSolePrismCapture.log || true
+            fi
+            run_step KineticSoleEmberkeepCapture xvfb-run -a "$GODOT" --path "$ROOT" --script res://tests/KineticSoleEmberkeepCapture.gd
+            if [[ -f artifacts/kinetic_sole_emberkeep/CAPTURE_RUN.json ]]; then
+              echo "=== KineticSoleEmberkeepCapture markers ==="
+              grep -E "KINETIC_SOLE_|CAPTURED|CAPTURE_FAILED|black_retry" tmp/godot-KineticSoleEmberkeepCapture.log || true
+            fi
             # Retired smokes must hard-fail (exit != 0) if invoked
             set +e
             "$GODOT" --headless --path "$ROOT" --script res://tests/AlphaProductStateTest.gd > tmp/godot-AlphaRetired.log 2>&1
@@ -228,3 +277,118 @@ jobs:
           '
         env:
           DISPLAY: ":99"
+
+      - name: Upload Kinetic Sole Verdant capture
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kinetic-sole-verdant-dash
+          path: artifacts/kinetic_sole_verdant/
+          if-no-files-found: warn
+
+      - name: Upload Kinetic Sole Cloverwind capture
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kinetic-sole-cloverwind-mira
+          path: artifacts/kinetic_sole_cloverwind/
+          if-no-files-found: warn
+
+      - name: Upload Kinetic Sole Prism capture
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kinetic-sole-prism-solen
+          path: artifacts/kinetic_sole_prism/
+          if-no-files-found: warn
+
+      - name: Upload Kinetic Sole Emberkeep capture
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kinetic-sole-emberkeep-bolt
+          path: artifacts/kinetic_sole_emberkeep/
+          if-no-files-found: warn
+
+      - name: Checkout BeatLink room contract
+        uses: actions/checkout@v4
+        with:
+          repository: gunnchOS3k/beatlink-party
+          ref: fix/loopback-room-lifecycle
+          path: beatlink-party
+
+      - name: Two-member race through the room contract
+        run: bash tools/run_game_session_race.sh
+
+  verdant-repro-diagnostics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Godot 4.7.1 headless
+        run: |
+          set -euo pipefail
+          url="https://github.com/godotengine/godot/releases/download/4.7.1-stable/Godot_v4.7.1-stable_linux.x86_64.zip"
+          for attempt in 1 2 3 4 5; do
+            if curl -fsSL --retry 3 --retry-all-errors --retry-delay 2 -o godot.zip "$url"; then
+              break
+            fi
+            echo "Godot download attempt ${attempt} failed; sleeping..."
+            sleep $((attempt * 5))
+            if [[ "$attempt" -eq 5 ]]; then
+              echo "Godot download failed after retries"
+              exit 1
+            fi
+          done
+          unzip -q godot.zip
+          chmod +x Godot_v4.7.1-stable_linux.x86_64
+          sudo mv Godot_v4.7.1-stable_linux.x86_64 /usr/local/bin/godot
+          godot --version
+
+      - name: Import project cache
+        run: |
+          set -euo pipefail
+          xvfb-run -a godot --headless --path . --import || \
+            xvfb-run -a godot --headless --editor --path . --quit-after 2 || true
+
+      - name: Solo Verdant, second solo, and first-of-batch
+        run: |
+          set -euo pipefail
+          mkdir -p tmp/repro
+          run_one() {
+            local name="$1"
+            local mode="$2"
+            local log="tmp/repro/${name}.log"
+            echo "=== ${name} mode=${mode} ==="
+            set +e
+            RACE_OBSERVE_MODE="${mode}" xvfb-run -a godot --headless --path . --script res://tests/VerdantRaceSceneObserve.gd >"${log}" 2>&1
+            local code=$?
+            set -e
+            echo "PROCESS_EXIT ${name}=${code}"
+            if grep -Eiq "SCRIPT ERROR|Parse Error|Failed to load script" "${log}"; then
+              echo "FAIL ${name} script error"
+              grep -nEi "SCRIPT ERROR|Parse Error|Failed to load script" "${log}" | head -20 || true
+              exit 1
+            fi
+          }
+          run_one solo-a solo
+          run_one solo-b solo
+          run_one batch-first batch-first
+          python3 - <<'PY'
+          import hashlib
+          from pathlib import Path
+          root = Path("tmp/repro")
+          for path in sorted(root.glob("*.log")):
+              digest = hashlib.sha256(path.read_bytes()).hexdigest()
+              print(f"LOG_SHA256 {path.name} {digest}")
+          PY
+
+      - name: Upload repro logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verdant-repro-diagnostics
+          path: tmp/repro/*.log
+          if-no-files-found: warn
+          retention-days: 30

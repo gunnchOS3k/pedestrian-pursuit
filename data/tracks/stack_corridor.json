@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "id": "stack_corridor",
+  "display_name": "Stack Corridor",
+  "lap_count": 3,
+  "difficulty": "intermediate",
+  "theme": "stack_corridor",
+  "description": "Archive-stack aisle circuit between shelf walls \u2014 tribute shelving props only, no real catalog claims.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "lane_width": 15.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#3A3A42",
+  "accent_color": "#C4A882",
+  "sky_color": "#6A6870",
+  "backdrop_color": "#242428",
+  "path_points": [
+    [
+      26.0,
+      1.69,
+      0.0
+    ],
+    [
+      22.52,
+      2.4,
+      27.0
+    ],
+    [
+      13.2,
+      2.21,
+      47.45
+    ],
+    [
+      0.0,
+      1.31,
+      54.7
+    ],
+    [
+      -13.0,
+      0.6,
+      46.77
+    ],
+    [
+      -22.52,
+      0.79,
+      27.0
+    ],
+    [
+      -26.0,
+      1.69,
+      0.0
+    ],
+    [
+      -22.52,
+      2.4,
+      -27.0
+    ],
+    [
+      -13.2,
+      2.21,
+      -47.45
+    ],
+    [
+      0.0,
+      1.31,
+      -54.7
+    ],
+    [
+      13.0,
+      0.6,
+      -46.77
+    ],
+    [
+      22.52,
+      0.79,
+      -27.0
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 1,
+      "size": [
+        5,
+        11
+      ],
+      "speed_bonus": 1.18
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 5,
+      "size": [
+        7,
+        9
+      ],
+      "speed_multiplier": 0.8,
+      "terrain_name": "stack_dust",
+      "handling_multiplier": 0.9,
+      "color": "#4A3A2A"
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 9,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    },
+    {
+      "point_index": 11,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    }
+  ],
+  "item_boxes": [
+    2,
+    4,
+    6,
+    10
+  ],
+  "boost_pickups": [
+    1,
+    5,
+    8
+  ],
+  "rail_segments": [
+    3,
+    8
+  ],
+  "shortcut_routes": [
+    {
+      "id": "stack_corridor_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 7,
+      "risk": "medium",
+      "ai_preference": 0.31,
+      "description": "Shelf-gap cut \u2014 crate stacks block if you miss."
+    }
+  ],
+  "landmarks": [
+    "shelf_row_a",
+    "shelf_row_b",
+    "catalog_desk"
+  ],
+  "elevation_profile": "stack_aisle",
+  "bank_bias": 0.09,
+  "geometry_note": "Archive Relay upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. shelf rows / crate stacks. Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn.",
+  "tribute_note": "Archive of Life crossover is fictional exhibition theming only \u2014 original gunnchOS tribute, no fabricated research claims.",
+  "camera_identity": "stack_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "Archive Relay collision hazards are off-line props; do not claim human commercial art approval."
+  ]
+}

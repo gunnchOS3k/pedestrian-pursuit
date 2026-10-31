@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "id": "metro_pulse_loop",
+  "display_name": "Metro Pulse Loop",
+  "lap_count": 3,
+  "difficulty": "intermediate",
+  "theme": "metro_pulse",
+  "description": "Transit-ring circuit under elevated rails with pulse lights, platform shortcuts, and station landmarks.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "lane_width": 15.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#1B2430",
+  "accent_color": "#2EC4B6",
+  "sky_color": "#203040",
+  "backdrop_color": "#121820",
+  "path_points": [
+    [
+      59.31,
+      2.21,
+      0.0
+    ],
+    [
+      55.86,
+      2.4,
+      16.83
+    ],
+    [
+      41.31,
+      2.064,
+      30.04
+    ],
+    [
+      20.81,
+      1.396,
+      36.53
+    ],
+    [
+      0.0,
+      0.79,
+      36.87
+    ],
+    [
+      -18.96,
+      0.6,
+      33.28
+    ],
+    [
+      -36.47,
+      0.936,
+      26.53
+    ],
+    [
+      -51.39,
+      1.604,
+      15.48
+    ],
+    [
+      -59.31,
+      2.21,
+      0.0
+    ],
+    [
+      -55.86,
+      2.4,
+      -16.83
+    ],
+    [
+      -41.31,
+      2.064,
+      -30.04
+    ],
+    [
+      -20.81,
+      1.396,
+      -36.53
+    ],
+    [
+      -0.0,
+      0.79,
+      -36.87
+    ],
+    [
+      18.96,
+      0.6,
+      -33.28
+    ],
+    [
+      36.47,
+      0.936,
+      -26.53
+    ],
+    [
+      51.39,
+      1.604,
+      -15.48
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 1,
+      "size": [
+        6,
+        12
+      ],
+      "speed_bonus": 1.15
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 5,
+      "size": [
+        8,
+        10
+      ],
+      "speed_multiplier": 0.85,
+      "terrain_name": "platform_grime",
+      "handling_multiplier": 0.9,
+      "color": "#3A4850"
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 8,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    },
+    {
+      "point_index": 11,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    }
+  ],
+  "item_boxes": [
+    2,
+    4,
+    8,
+    10
+  ],
+  "boost_pickups": [
+    1,
+    5,
+    9
+  ],
+  "rail_segments": [
+    4,
+    6
+  ],
+  "shortcut_routes": [
+    {
+      "id": "metro_pulse_loop_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 8,
+      "risk": "medium",
+      "ai_preference": 0.35,
+      "description": "Risk cut across the infield; miss and hit slow terrain."
+    }
+  ],
+  "landmarks": [
+    "elevated_rail",
+    "pulse_station",
+    "platform_cut"
+  ],
+  "elevation_profile": "metro_ramps",
+  "bank_bias": 0.11,
+  "camera_identity": "metro_pulse_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "Shortcut floors are collision-backed; do not claim human commercial art approval."
+  ],
+  "geometry_note": "Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn."
+}

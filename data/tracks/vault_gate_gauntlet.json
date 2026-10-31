@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "id": "vault_gate_gauntlet",
+  "display_name": "Vault Gate Gauntlet",
+  "lap_count": 3,
+  "difficulty": "advanced",
+  "theme": "vault_gate_gauntlet",
+  "description": "Vault-gate gauntlet under security arches and sealed doors \u2014 fictional archive vault set, tribute theming only.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "lane_width": 15.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#2E3038",
+  "accent_color": "#B8A070",
+  "sky_color": "#505860",
+  "backdrop_color": "#1A1C22",
+  "path_points": [
+    [
+      51.92,
+      1.751,
+      0.0
+    ],
+    [
+      44.09,
+      2.326,
+      15.05
+    ],
+    [
+      26.33,
+      2.4,
+      30.64
+    ],
+    [
+      8.2,
+      1.874,
+      41.72
+    ],
+    [
+      -8.2,
+      1.093,
+      41.72
+    ],
+    [
+      -26.33,
+      0.6,
+      30.64
+    ],
+    [
+      -44.09,
+      0.732,
+      15.05
+    ],
+    [
+      -51.92,
+      1.373,
+      0.0
+    ],
+    [
+      -44.09,
+      2.051,
+      -15.05
+    ],
+    [
+      -26.33,
+      2.289,
+      -30.64
+    ],
+    [
+      -8.2,
+      1.944,
+      -41.72
+    ],
+    [
+      8.2,
+      1.336,
+      -41.72
+    ],
+    [
+      26.33,
+      0.962,
+      -30.64
+    ],
+    [
+      44.09,
+      1.138,
+      -15.05
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 12,
+      "size": [
+        5,
+        10
+      ],
+      "speed_bonus": 1.18
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 4,
+      "size": [
+        7,
+        9
+      ],
+      "speed_multiplier": 0.78,
+      "terrain_name": "vault_threshold",
+      "handling_multiplier": 0.9,
+      "color": "#3A3834"
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 7,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    },
+    {
+      "point_index": 11,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    }
+  ],
+  "item_boxes": [
+    2,
+    4,
+    6,
+    10
+  ],
+  "boost_pickups": [
+    1,
+    5,
+    9
+  ],
+  "rail_segments": [
+    3,
+    9
+  ],
+  "shortcut_routes": [
+    {
+      "id": "vault_gate_gauntlet_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 8,
+      "risk": "high",
+      "ai_preference": 0.27,
+      "description": "Vault chord between seals \u2014 door collision if you miss."
+    }
+  ],
+  "landmarks": [
+    "vault_arch",
+    "seal_door",
+    "security_gantry"
+  ],
+  "elevation_profile": "vault_steps",
+  "bank_bias": 0.12,
+  "geometry_note": "Archive Relay upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. vault arch / seal door / barriers. Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn.",
+  "tribute_note": "Archive of Life crossover is fictional exhibition theming only \u2014 original gunnchOS tribute, no fabricated research claims.",
+  "camera_identity": "vault_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "Archive Relay collision hazards are off-line props; do not claim human commercial art approval."
+  ]
+}

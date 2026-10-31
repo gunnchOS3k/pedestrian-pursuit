@@ -62,6 +62,18 @@ func _exercise_stride_resume(failures: PackedStringArray) -> void:
 	gm.save_cup_progress()
 	if int(gm.cup_standings.get("You", 0)) != 10:
 		failures.append("first course should award 10 points, got %s" % str(gm.cup_standings))
+	var saved := ConfigFile.new()
+	if saved.load(_CUP_PATH) != OK:
+		failures.append("first finish did not write cup_progress.cfg")
+	else:
+		if int(saved.get_value("cup", "resume_index", -1)) != 1:
+			failures.append(
+				"first finish should save resume at the second race, got %s"
+				% str(saved.get_value("cup", "resume_index", -1))
+			)
+		var standing = saved.get_value("cup", "standings", {})
+		if typeof(standing) != TYPE_DICTIONARY or int(standing.get("You", 0)) != 10:
+			failures.append("saved standing missing after the first finish: %s" % str(standing))
 
 	var resumed = _new_manager()
 	plan = resumed.describe_saved_cup()

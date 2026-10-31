@@ -1,0 +1,274 @@
+{
+  "schema_version": 1,
+  "id": "championship_track_art_acceptance",
+  "display_name": "Championship Track Art Acceptance",
+  "note": "Runtime raceability is separate from commercial track art. LAUNCH_PROCEDURAL_FINAL is not commercial finished art.",
+  "HUMAN_FUN_APPROVAL": false,
+  "HUMAN_COURSE_APPROVAL": false,
+  "RC2_READY": false,
+  "V1_0_0_RELEASE_AUTHORIZED": false,
+  "human_track_art_gate": false,
+  "tracks": [
+    {
+      "id": "verdant_cascade_circuit",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "LAUNCH_PROCEDURAL_FINAL",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "cloverwind_ranch",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "LAUNCH_PROCEDURAL_FINAL",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "prism_apex",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "LAUNCH_PROCEDURAL_FINAL",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "emberkeep_gauntlet",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "LAUNCH_PROCEDURAL_FINAL",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "tideglass_harbor",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "LAUNCH_PROCEDURAL_FINAL",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "neon_switchyard",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "LAUNCH_PROCEDURAL_FINAL",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "cloudstep_ridge",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "LAUNCH_PROCEDURAL_FINAL",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "mirage_mesa",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "LAUNCH_PROCEDURAL_FINAL",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "sneaker_city_sprintway",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "metro_pulse_loop",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "crosswalk_canyon",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "transit_spiral",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "saltline_boardwalk",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "cliffside_draft",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "tidal_bridge_run",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "seaglass_switchback",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "lantern_corridor",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "mirror_boulevard",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "afterglow_overpass",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "signal_storm_yard",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "rooftop_ribbon",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "skybridge_sprint",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "antenna_ascent",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "cloud_deck_circuit",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "marble_foyer_loop",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "stack_corridor",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "gallery_grand_oval",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "vault_gate_gauntlet",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "cascade_colossus",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "aurora_amphitheater",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "origami_orchard",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    },
+    {
+      "id": "horizon_crown_finale",
+      "runtime_status": "raceable",
+      "geometry_status": "championship_upgraded",
+      "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+      "final_track_art_status": "track_art_candidate",
+      "human_track_art_approved": false
+    }
+  ],
+  "counts": {
+    "final_track_art_candidate": 32,
+    "final_track_art_pending": 0,
+    "raceable": 32
+  }
+}

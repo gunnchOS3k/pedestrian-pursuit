@@ -1,0 +1,175 @@
+extends SceneTree
+
+## Acceptance flow: create → wardrobe → save → apply visual → edit same character.
+## Does not teleport / force checkpoints / raise 150s. Uses temporary user:// paths.
+
+const CreatedRacerStoreScript = preload("res://scripts/data/CreatedRacerStore.gd")
+const WardrobeCatalogScript = preload("res://scripts/data/WardrobeCatalog.gd")
+const RunnerProfileScript = preload("res://scripts/data/RunnerProfile.gd")
+const RacerVisualScript = preload("res://scripts/player/RacerVisual.gd")
+const GarageProgressionScript = preload("res://scripts/data/GarageProgression.gd")
+const ArtAcceptanceScript = preload("res://scripts/data/ArtAcceptance.gd")
+
+
+func _init() -> void:
+	var failures: PackedStringArray = []
+	GarageProgressionScript.set_test_unlock_all(true)
+
+	## 1) Create / customize
+	var racer := CreatedRacerStoreScript.create_racer("Flow Tester", "dash_reed")
+	if racer.is_empty() or str(racer.get("id", "")).is_empty():
+		failures.append("create_racer failed")
+	racer["appearance"]["skin_tone"] = "rich_brown"
+	racer["appearance"]["hair_style"] = "box_braids"
+	racer["appearance"]["assistive"] = "leg_brace_vis"
+	racer["appearance"]["affects_collision"] = false
+	racer["appearance"]["affects_stats"] = false
+
+	## 2) Choose clothing + footwear (incl. formerly-pending kiln/loom families)
+	for fam_id in ["crosswind_kiln", "archive_loom"]:
+		if WardrobeCatalogScript.family_art_status(fam_id) != "integrated_mesh_v1":
+			failures.append("%s family not integrated_mesh_v1" % fam_id)
+	for preset_id in ["crosswind_kiln_default", "archive_loom_default"]:
+		var kiln_preset := WardrobeCatalogScript.preset(preset_id)
+		if kiln_preset.is_empty():
+			failures.append("%s preset missing" % preset_id)
+			continue
+		for key in ["base_underlayer", "top", "bottom", "outerwear"]:
+			var gid := str(kiln_preset.get("slots", {}).get(key, ""))
+			var g := WardrobeCatalogScript.garment_by_id(gid)
+			if g.is_empty() or str(g.get("art_status", "")) != "integrated_mesh_v1":
+				failures.append("%s missing integrated %s" % [preset_id, key])
+			if not bool(g.get("cosmetic_only", false)):
+				failures.append("%s garment must stay cosmetic_only" % gid)
+			if str(g.get("mesh_recipe", "")).is_empty():
+				failures.append("%s missing mesh_recipe" % gid)
+	## Trail expression complete for everyday/formal families (cosmetic chase-cam ID).
+	for preset_id in ["harbor_linen_default", "quiet_plaza_default", "midnight_atelier_default"]:
+		var trail_preset := WardrobeCatalogScript.preset(preset_id)
+		if trail_preset.is_empty():
+			failures.append("%s preset missing" % preset_id)
+			continue
+		var trail_id := str(trail_preset.get("slots", {}).get("trail_expression", ""))
+		var trail_g := WardrobeCatalogScript.garment_by_id(trail_id)
+		if trail_g.is_empty() or str(trail_g.get("slot", "")) != "trail_expression":
+			failures.append("%s missing trail_expression garment" % preset_id)
+		elif not bool(trail_g.get("cosmetic_only", false)):
+			failures.append("%s trail must stay cosmetic_only" % trail_id)
+		## Trail garments must not invent handling/stat keys (footwear owns handling).
+		for forbid_key in ["handling", "stats", "speed", "accel", "grip", "affects_stats", "affects_handling"]:
+			if trail_g.has(forbid_key):
+				failures.append("%s trail must not carry %s" % [trail_id, forbid_key])
+	var trail_count := 0
+	for g2 in WardrobeCatalogScript.garments_in_slot("trail_expression"):
+		trail_count += 1
+		if not bool(g2.get("cosmetic_only", false)):
+			failures.append("%s must stay cosmetic_only" % str(g2.get("id", "")))
+	if trail_count < 9:
+		failures.append("expected ≥9 trail_expression garments, got %d" % trail_count)
+	var preset := WardrobeCatalogScript.preset("metro_pulse_default")
+	if preset.is_empty():
+		failures.append("metro_pulse_default preset missing")
+	var slots: Dictionary = preset.get("slots", {})
+	var integrated_ids := WardrobeCatalogScript.integrated_complete_outfit_ids()
+	if integrated_ids.is_empty():
+		failures.append("no integrated complete outfit")
+	if "crosswind_kiln_default" not in integrated_ids or "archive_loom_default" not in integrated_ids:
+		failures.append("kiln/loom presets missing from integrated complete outfits")
+	slots["footwear_vehicle"] = "reedline_circlers"
+	## Keep / set trail_expression so KineticSoleTrail can take cosmetic tint without handling churn.
+	if str(slots.get("trail_expression", "")).is_empty():
+		slots["trail_expression"] = "metro_pulse_trail"
+	CreatedRacerStoreScript.save_outfit("metro_pulse_default", slots, true)
+	racer["outfit_id"] = "metro_pulse_default"
+	racer["footwear_vehicle_id"] = "reedline_circlers"
+	CreatedRacerStoreScript.update_racer(racer)
+
+	## 3) Save outfit + reload same character
+	var again := CreatedRacerStoreScript.get_active()
+	if str(again.get("id", "")) != str(racer.get("id", "")):
+		failures.append("active racer mismatch after save")
+	if str(again.get("appearance", {}).get("hair_style", "")) != "box_braids":
+		failures.append("appearance not persisted")
+	var outfit := CreatedRacerStoreScript.get_outfit("metro_pulse_default")
+	if outfit.is_empty():
+		failures.append("saved outfit missing")
+
+	## 4) Build visual like race entry (procedural fallback + wardrobe overlays)
+	var root := Node3D.new()
+	root.name = "FlowRoot"
+	get_root().add_child(root)
+	var visual := Node3D.new()
+	visual.set_script(RacerVisualScript)
+	root.add_child(visual)
+	var profile := RunnerProfileScript.by_id("dash_reed")
+	profile.display_name = str(again.get("display_name", "Flow Tester"))
+	if visual.has_method("set_menu_preview"):
+		visual.set_menu_preview(true)
+	if visual.has_method("apply_avatar_appearance"):
+		visual.apply_avatar_appearance(again.get("appearance", {}), false)
+	if visual.has_method("apply_wardrobe_outfit"):
+		visual.apply_wardrobe_outfit(slots, false)
+	if visual.has_method("apply_profile"):
+		visual.apply_profile(profile)
+	if visual.get_child_count() < 3:
+		failures.append("racer visual did not build modular figure")
+	if visual.get_node_or_null("WardrobeRoot") == null:
+		failures.append("wardrobe root missing after outfit apply")
+	## Trail expression is cosmetic chase-cam ID — footwear vehicle_id must stay the handling owner.
+	if str(visual.get("vehicle_id")) != "reedline_circlers":
+		failures.append("trail_expression must not replace footwear vehicle_id (got %s)" % str(visual.get("vehicle_id")))
+	if visual.has_method("_trail_expression_cosmetic_color"):
+		var tint: Color = visual.call("_trail_expression_cosmetic_color", Color(1, 1, 1, 1))
+		if tint.a < 0.5:
+			failures.append("trail_expression cosmetic tint missing/invalid")
+	var sole_trail := visual.get_node_or_null("KineticSoleTrail")
+	if sole_trail == null:
+		failures.append("KineticSoleTrail missing after wardrobe apply")
+
+	## 5) Edit same character again
+	again["appearance"]["hair_style"] = "locs_shoulder"
+	CreatedRacerStoreScript.update_racer(again)
+	var edited := CreatedRacerStoreScript.get_active()
+	if str(edited.get("appearance", {}).get("hair_style", "")) != "locs_shoulder":
+		failures.append("edit same character failed")
+
+	## Capture evidence screenshot via viewport when display present; always write JSON artifact.
+	var evidence := {
+		"flow": "create_customize_clothing_save_race_visual_edit",
+		"racer_id": str(edited.get("id", "")),
+		"outfit_id": "metro_pulse_default",
+		"footwear_vehicle_id": str(edited.get("footwear_vehicle_id", "")),
+		"wardrobe_root_present": visual.get_node_or_null("WardrobeRoot") != null,
+		"art_acceptance": ArtAcceptanceScript.counts(),
+		"human_commercial_art_gate": false,
+		"affects_collision": false,
+		"affects_stats": false,
+	}
+	DirAccess.make_dir_recursive_absolute("user://creator_wardrobe_evidence")
+	var ef := FileAccess.open("user://creator_wardrobe_evidence/FLOW_RESULT.json", FileAccess.WRITE)
+	if ef != null:
+		ef.store_string(JSON.stringify(evidence, "\t"))
+	## Also mirror under res artifacts when writable (CI checkout).
+	DirAccess.make_dir_recursive_absolute("res://artifacts/creator_wardrobe")
+	var af := FileAccess.open("res://artifacts/creator_wardrobe/FLOW_RESULT.json", FileAccess.WRITE)
+	if af != null:
+		af.store_string(JSON.stringify(evidence, "\t"))
+		print("EVIDENCE_PATH=res://artifacts/creator_wardrobe/FLOW_RESULT.json")
+	else:
+		print("EVIDENCE_PATH=user://creator_wardrobe_evidence/FLOW_RESULT.json")
+
+	## Screenshot attempt (xvfb in CI).
+	if DisplayServer.get_name() != "headless":
+		var img := get_root().get_viewport().get_texture().get_image()
+		if img != null:
+			img.save_png("user://creator_wardrobe_evidence/preview.png")
+			print("SCREENSHOT=user://creator_wardrobe_evidence/preview.png")
+
+	if failures.is_empty():
+		print("CreatorWardrobeRaceFlowTest PASS — create/wardrobe/save/visual/edit intact")
+		quit(0)
+	else:
+		print("CreatorWardrobeRaceFlowTest FAIL:")
+		for f in failures:
+			print(" - ", f)
+		quit(1)
