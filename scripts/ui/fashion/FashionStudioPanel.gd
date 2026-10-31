@@ -171,12 +171,18 @@ func _on_slot_selected(idx: int) -> void:
 		var label := "%s [%s]" % [str(g.get("display_name", g.get("id"))), str(g.get("art_status", ""))]
 		_piece_list.add_item(label)
 		_piece_list.set_item_metadata(_piece_list.item_count - 1, str(g.get("id", "")))
+	if _current_slot == "trail_expression":
+		_status.text = "Trail expression is cosmetic chase-cam ID only — footwear still owns handling/stats."
+	else:
+		_status.text = "Outfit cosmetic · footwear owns handling · multi-family integrated meshes · trails complete for all families"
 
 
 func _on_piece_selected(idx: int) -> void:
 	var gid := str(_piece_list.get_item_metadata(idx))
 	_slots[_current_slot] = gid
 	_rebuild_preview()
+	if _current_slot == "trail_expression":
+		_status.text = "Trail %s selected (cosmetic). Footwear still owns handling." % gid
 
 
 func _rebuild_preview() -> void:

@@ -43,6 +43,23 @@ func _init() -> void:
 				failures.append("%s garment must stay cosmetic_only" % gid)
 			if str(g.get("mesh_recipe", "")).is_empty():
 				failures.append("%s missing mesh_recipe" % gid)
+	## Trail expression complete for everyday/formal families (cosmetic chase-cam ID).
+	for preset_id in ["harbor_linen_default", "quiet_plaza_default", "midnight_atelier_default"]:
+		var trail_preset := WardrobeCatalogScript.preset(preset_id)
+		if trail_preset.is_empty():
+			failures.append("%s preset missing" % preset_id)
+			continue
+		var trail_id := str(trail_preset.get("slots", {}).get("trail_expression", ""))
+		var trail_g := WardrobeCatalogScript.garment_by_id(trail_id)
+		if trail_g.is_empty() or str(trail_g.get("slot", "")) != "trail_expression":
+			failures.append("%s missing trail_expression garment" % preset_id)
+		elif not bool(trail_g.get("cosmetic_only", false)):
+			failures.append("%s trail must stay cosmetic_only" % trail_id)
+	var trail_count := 0
+	for g2 in WardrobeCatalogScript.garments_in_slot("trail_expression"):
+		trail_count += 1
+	if trail_count < 9:
+		failures.append("expected ≥9 trail_expression garments, got %d" % trail_count)
 	var preset := WardrobeCatalogScript.preset("metro_pulse_default")
 	if preset.is_empty():
 		failures.append("metro_pulse_default preset missing")

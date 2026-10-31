@@ -860,6 +860,48 @@
       },
       "cosmetic_only": true,
       "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "harbor_linen_trail",
+      "family_id": "harbor_linen",
+      "slot": "trail_expression",
+      "display_name": "Harbor Linen Mist Trail",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "trail_signal",
+      "colors": {
+        "primary": "#7A8F9A",
+        "accent": "#E8F0F4"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "quiet_plaza_trail",
+      "family_id": "quiet_plaza",
+      "slot": "trail_expression",
+      "display_name": "Quiet Plaza Soft Trail",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "trail_ember",
+      "colors": {
+        "primary": "#6B6358",
+        "accent": "#F3EDE4"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "midnight_atelier_trail",
+      "family_id": "midnight_atelier",
+      "slot": "trail_expression",
+      "display_name": "Midnight Atelier Ember Trail",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "trail_ember",
+      "colors": {
+        "primary": "#2A2438",
+        "accent": "#C9A45C"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
     }
   ],
   "presets": [
@@ -890,7 +932,8 @@
         "outerwear": "harbor_linen_outer",
         "jewelry_accessories": "harbor_linen_scarf",
         "bags": "harbor_linen_bag",
-        "footwear_vehicle": "lanewind_tempo_flats"
+        "footwear_vehicle": "lanewind_tempo_flats",
+        "trail_expression": "harbor_linen_trail"
       }
     },
     {
@@ -917,7 +960,8 @@
         "bottom": "quiet_plaza_bottom",
         "outerwear": "quiet_plaza_outer",
         "headwear": "quiet_plaza_head",
-        "footwear_vehicle": "cloudsole_striders"
+        "footwear_vehicle": "cloudsole_striders",
+        "trail_expression": "quiet_plaza_trail"
       }
     },
     {
@@ -930,7 +974,8 @@
         "bottom": "midnight_bottom",
         "outerwear": "midnight_outer",
         "jewelry_accessories": "midnight_pin",
-        "footwear_vehicle": "iron_derby_blitz"
+        "footwear_vehicle": "iron_derby_blitz",
+        "trail_expression": "midnight_atelier_trail"
       }
     },
     {
