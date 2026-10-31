@@ -13,6 +13,7 @@ var path: Path3D = null
 var active: bool = false
 var _follower: Node = null
 var _profile: String = "basic"
+var use_line_steer: bool = true
 
 
 func _ready() -> void:
@@ -20,14 +21,18 @@ func _ready() -> void:
 	set_physics_process(false)
 
 
-func start(p_player: Node3D, p_path: Path3D, profile: String = "basic") -> void:
+func start(p_player: Node3D, p_path: Path3D, profile: String = "basic", p_use_line_steer: bool = true) -> void:
 	player = p_player
 	path = p_path
 	_profile = profile
+	use_line_steer = p_use_line_steer
 	logic.reset(profile)
 	active = true
 	process_priority = -1000
-	_attach_follower()
+	if use_line_steer:
+		_attach_follower()
+	else:
+		_detach_follower()
 	set_physics_process(true)
 
 
@@ -66,10 +71,11 @@ func _attach_follower() -> void:
 	_follower.name = "Wave010LineSteer"
 	player.add_child(_follower)
 	_follower.setup(path)
+	## set_tier resets look_ahead/magnet — apply verdant line-steer AFTER tier defaults.
+	if _follower.has_method("set_tier"):
+		_follower.set_tier(_follower.tier)
 	_follower.set("look_ahead", 5.5)
 	_follower.set("magnet_strength", 0.0)
-	if _follower.has_method("set_tier"):
-		_follower.set_tier(_follower.Tier)
 
 
 func _detach_follower() -> void:
@@ -100,6 +106,11 @@ func _physics_process(delta: float) -> void:
 			gm.auto_accelerate = false
 			gm.accept_steer = 0.0
 			gm.mobile_assist_steer = 0.0
+
+	if not use_line_steer and logic != null:
+		## Classic Wave010 path (mastery): same steering for basic/advanced; skills only differ.
+		logic.tick(player, path, delta)
+		return
 
 	var steer := 0.0
 	var accelerate := true
@@ -133,6 +144,10 @@ func _physics_process(delta: float) -> void:
 	if logic != null and _profile == "advanced":
 		logic.force_normal_input_flags()
 		logic.look_ahead = 5.5
+		## Keep skill curvature/progress in sync with the follower estimate (not path origin).
+		if _follower != null and "_progress" in _follower:
+			logic._progress = float(_follower.get("_progress"))
+			logic._path_ref = path
 		## Reuse skill ticker with externally applied steer baseline.
 		if logic.has_method("_tick_advanced"):
 			logic._sim_elapsed_sec += clampf(delta, 0.0, 0.25)
