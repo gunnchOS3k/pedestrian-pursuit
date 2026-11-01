@@ -49,10 +49,39 @@ func _run() -> void:
 		if cups.is_empty():
 			failures.append("TrackCatalog cup list empty")
 
+		## Championship deepen: all 32 tracks resolve music+ambience paths; commercial stays false.
+		var all_ids: PackedStringArray = TrackCatalogScript.list_all_track_ids()
+		if all_ids.size() != 32:
+			failures.append("championship audio coverage expects 32 tracks, got %d" % all_ids.size())
+		if audio.has_method("resolve_championship_music_coverage"):
+			var cov: Dictionary = audio.resolve_championship_music_coverage(all_ids)
+			if int(cov.get("track_count", -1)) != 32:
+				failures.append("audio coverage track_count != 32")
+			if int(cov.get("missing_paths", 1)) != 0:
+				failures.append("championship music missing_paths must be 0")
+			if int(cov.get("preferred_hits", 0)) + int(cov.get("cup_theme_fallback_hits", 0)) != 32:
+				failures.append("preferred+fallback must cover 32 tracks")
+			if bool(cov.get("commercial_final_audio", true)):
+				failures.append("coverage must keep commercial_final_audio false")
+		for tid2 in all_ids:
+			audio.play_race_music(tid2)
+			var d3: Dictionary = audio.describe()
+			if str(d3.get("last_music_path", "")).is_empty():
+				failures.append("%s music path empty" % tid2)
+			if str(d3.get("last_ambience_path", "")).is_empty():
+				failures.append("%s ambience path empty" % tid2)
+		## Synthetic missing ambience track still falls back honestly.
+		audio.play_race_music("__no_such_track_pp_s7m_amb__")
+		var d4: Dictionary = audio.describe()
+		if not bool(d4.get("last_music_fallback", false)):
+			failures.append("missing track must set last_music_fallback")
+		if not bool(d4.get("last_ambience_fallback", false)):
+			failures.append("missing track must set last_ambience_fallback")
+
 	audio.set_enabled(false)
 	if failures.is_empty():
 		print(
-			"AudioDirectorContractTest PASS — per-track race bed · cup_theme fallback · procedural≠commercial · HUMAN/COURSE false"
+			"AudioDirectorContractTest PASS — 32-track race beds · cup_theme/ambience fallback · procedural≠commercial · HUMAN/COURSE false"
 		)
 		quit(0)
 	else:

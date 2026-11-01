@@ -43,8 +43,19 @@ func _init() -> void:
 				failures.append("%s garment must stay cosmetic_only" % gid)
 			if str(g.get("mesh_recipe", "")).is_empty():
 				failures.append("%s missing mesh_recipe" % gid)
-	## Trail expression complete for everyday/formal families (cosmetic chase-cam ID).
-	for preset_id in ["harbor_linen_default", "quiet_plaza_default", "midnight_atelier_default"]:
+	## Trail expression complete for all wardrobe families (cosmetic chase-cam ID).
+	var family_trail_hex := {}
+	for preset_id in [
+		"harbor_linen_default",
+		"quiet_plaza_default",
+		"midnight_atelier_default",
+		"metro_pulse_default",
+		"neon_trackside_default",
+		"myth_circuit_default",
+		"orbit_signal_default",
+		"crosswind_kiln_default",
+		"archive_loom_default",
+	]:
 		var trail_preset := WardrobeCatalogScript.preset(preset_id)
 		if trail_preset.is_empty():
 			failures.append("%s preset missing" % preset_id)
@@ -59,6 +70,13 @@ func _init() -> void:
 		for forbid_key in ["handling", "stats", "speed", "accel", "grip", "affects_stats", "affects_handling"]:
 			if trail_g.has(forbid_key):
 				failures.append("%s trail must not carry %s" % [trail_id, forbid_key])
+		var colors: Variant = trail_g.get("colors", {})
+		if typeof(colors) == TYPE_DICTIONARY:
+			var accent_hex := str((colors as Dictionary).get("accent", ""))
+			if accent_hex.begins_with("#"):
+				family_trail_hex[trail_id] = accent_hex
+	if family_trail_hex.size() < 9:
+		failures.append("expected ≥9 family trail accent hex values, got %d" % family_trail_hex.size())
 	var trail_count := 0
 	for g2 in WardrobeCatalogScript.garments_in_slot("trail_expression"):
 		trail_count += 1
@@ -125,6 +143,26 @@ func _init() -> void:
 	var sole_trail := visual.get_node_or_null("KineticSoleTrail")
 	if sole_trail == null:
 		failures.append("KineticSoleTrail missing after wardrobe apply")
+	elif not sole_trail.has_meta("chase_cam_trail_id"):
+		failures.append("KineticSoleTrail missing chase_cam_trail_id meta")
+	elif str(sole_trail.get_meta("chase_cam_trail_id")) != str(slots.get("trail_expression", "")):
+		failures.append("KineticSoleTrail chase_cam_trail_id meta mismatch")
+	elif not bool(sole_trail.get_meta("chase_cam_trail_cosmetic_only", false)):
+		failures.append("KineticSoleTrail must stamp chase_cam_trail_cosmetic_only")
+	elif str(sole_trail.get_meta("handling_owner", "")) != "footwear":
+		failures.append("KineticSoleTrail handling_owner must remain footwear")
+	if visual.has_method("chase_cam_trail_fingerprint"):
+		var fp: Dictionary = visual.call("chase_cam_trail_fingerprint")
+		if str(fp.get("trail_expression_id", "")) != str(slots.get("trail_expression", "")):
+			failures.append("chase_cam_trail_fingerprint trail id mismatch")
+		if not bool(fp.get("cosmetic_only", false)):
+			failures.append("chase_cam_trail_fingerprint must stay cosmetic_only")
+		if str(fp.get("handling_owner", "")) != "footwear":
+			failures.append("chase_cam_trail_fingerprint handling_owner must be footwear")
+		if str(fp.get("vehicle_id", "")) != "reedline_circlers":
+			failures.append("chase_cam_trail_fingerprint must not rewrite vehicle_id")
+		if bool(fp.get("affects_stats", true)) or bool(fp.get("HUMAN", true)) or bool(fp.get("COURSE_ACCEPTED", true)):
+			failures.append("chase_cam_trail_fingerprint honesty flags must stay false")
 
 	## 5) Edit same character again
 	again["appearance"]["hair_style"] = "locs_shoulder"

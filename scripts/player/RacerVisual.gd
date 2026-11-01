@@ -427,6 +427,11 @@ func _build_figure() -> void:
 	trail_mat.scale_max = float(trail_profile.get("smax", 0.22))
 	trail_mat.color = _trail_expression_cosmetic_color(_footwear_trail_color(accent_color, arch))
 	_speed_trail.process_material = trail_mat
+	## Chase-cam trail fingerprint meta — cosmetic ID only; never owns handling.
+	var trail_expr_id := str(wardrobe_outfit_slots.get("trail_expression", ""))
+	_speed_trail.set_meta("chase_cam_trail_id", trail_expr_id)
+	_speed_trail.set_meta("chase_cam_trail_cosmetic_only", true)
+	_speed_trail.set_meta("handling_owner", "footwear")
 	var trail_mesh := SphereMesh.new()
 	trail_mesh.radius = 0.12
 	trail_mesh.height = 0.24
@@ -482,6 +487,23 @@ func _trail_expression_cosmetic_color(fallback: Color) -> Color:
 		parsed.a = 0.78
 		return parsed
 	return fallback
+
+
+func chase_cam_trail_fingerprint() -> Dictionary:
+	## Digital chase-cam ID for fashion deepen — cosmetic≠handling; COURSE/HUMAN false.
+	var trail_id := str(wardrobe_outfit_slots.get("trail_expression", ""))
+	var tint := _trail_expression_cosmetic_color(_footwear_trail_color(accent_color, str(profile.archetype) if profile != null else ""))
+	return {
+		"schema": "pp_chase_cam_trail_fingerprint/v1",
+		"trail_expression_id": trail_id,
+		"cosmetic_only": true,
+		"handling_owner": "footwear",
+		"vehicle_id": vehicle_id,
+		"tint_hex": tint.to_html(false),
+		"affects_stats": false,
+		"COURSE_ACCEPTED": false,
+		"HUMAN": false,
+	}
 
 
 func _footwear_trail_color(fallback: Color, runner_arch: String) -> Color:

@@ -63,6 +63,14 @@ func _run() -> void:
 				failures.append("roster connected mismatch a=%d c=%d" % [allocated, connected])
 			if int(roster.get("cpu_seats", -1)) != 8 - connected:
 				failures.append("roster cpu_seats wrong a=%d c=%d" % [allocated, connected])
+			if int(roster.get("human_participant_count", -1)) != connected:
+				failures.append("human_participant_count mismatch a=%d c=%d" % [allocated, connected])
+			if int(roster.get("bot_participant_count", -1)) != 8 - connected:
+				failures.append("bot_participant_count mismatch a=%d c=%d" % [allocated, connected])
+			if int(roster.get("field_sum_humans_plus_bots", -1)) != 8:
+				failures.append("humans+bots must equal field 8")
+			if bool(roster.get("bots_count_as_humans", true)):
+				failures.append("bots_count_as_humans must stay false")
 			if bool(roster.get("physical_eight_human_party", true)):
 				failures.append("roster must keep physical_eight_human_party false")
 			if bool(roster.get("COURSE_ACCEPTED", true)):
@@ -84,6 +92,16 @@ func _run() -> void:
 				failures.append("counted humans %d != connected %d" % [humans, connected])
 			if cpus != 8 - connected:
 				failures.append("counted cpus wrong")
+			## Explicit bots≠humans accounting helper.
+			var acct: Dictionary = OnlineArchitectureScript.partylink_human_bot_accounting(allocated, connected)
+			if int(acct.get("connected_humans", -1)) != connected:
+				failures.append("accounting connected mismatch")
+			if int(acct.get("bot_participant_count", -1)) != 8 - connected:
+				failures.append("accounting bots mismatch")
+			if int(acct.get("humans_plus_bots", -1)) != 8:
+				failures.append("accounting humans+bots != 8")
+			if bool(acct.get("bots_count_as_humans", true)) or not bool(acct.get("bots_never_count_as_humans", false)):
+				failures.append("accounting must keep bots≠humans")
 
 	## Clamp honesty: out-of-range requests still stay 2–8 allocated; connected clamps.
 	if int(OnlineArchitectureScript.partylink_seat_map(1).get("allocated_human_seats", 0)) != 2:

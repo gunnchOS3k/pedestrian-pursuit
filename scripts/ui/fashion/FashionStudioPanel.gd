@@ -182,7 +182,15 @@ func _on_piece_selected(idx: int) -> void:
 	_slots[_current_slot] = gid
 	_rebuild_preview()
 	if _current_slot == "trail_expression":
-		_status.text = "Trail %s selected (cosmetic). Footwear still owns handling." % gid
+		var g := WardrobeCatalogScript.garment_by_id(gid)
+		var accent := ""
+		var colors: Variant = g.get("colors", {})
+		if typeof(colors) == TYPE_DICTIONARY:
+			accent = str((colors as Dictionary).get("accent", (colors as Dictionary).get("primary", "")))
+		if accent.is_empty():
+			_status.text = "Trail %s selected (cosmetic chase-cam ID). Footwear still owns handling." % gid
+		else:
+			_status.text = "Trail %s · chase tint %s (cosmetic≠handling)." % [gid, accent]
 
 
 func _rebuild_preview() -> void:

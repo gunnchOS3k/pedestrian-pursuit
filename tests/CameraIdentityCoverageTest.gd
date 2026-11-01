@@ -4,7 +4,7 @@ extends SceneTree
 ## CameraRig.apply_course_identity (no silent `_` default fallthrough).
 ## Do not preload CameraRig — GameManager autoload is not visible under --script preload
 ## (same contract as AccessibilityBaselineTest). Does not load RaceScene / wave010.
-## COURSE/HUMAN false.
+## Preserves 32-track gates. COURSE/HUMAN false.
 
 const TrackCatalogScript = preload("res://scripts/data/TrackCatalog.gd")
 
@@ -54,8 +54,8 @@ func _known_identities_from_camera_rig_source() -> Dictionary:
 func _run() -> void:
 	var failures: PackedStringArray = []
 	var known := _known_identities_from_camera_rig_source()
-	if known.size() < 8:
-		failures.append("CameraRig apply_course_identity parse found <8 identities (%d)" % known.size())
+	if known.size() < 32:
+		failures.append("CameraRig apply_course_identity parse found <32 identities (%d)" % known.size())
 		_finish(failures)
 		return
 
@@ -69,10 +69,12 @@ func _run() -> void:
 				if fname.ends_with(".json"):
 					ids.append(fname.trim_suffix(".json"))
 				fname = dir.get_next()
-	if ids.size() < 8:
-		failures.append("expected championship track set (≥8), got %d" % ids.size())
+	## Preserve 32-track championship gate (do not weaken to ≥8).
+	if ids.size() != 32:
+		failures.append("expected championship track set (==32), got %d" % ids.size())
 
 	var seen_identity := {}
+	var art_candidate := 0
 	for tid in ids:
 		var path := "res://data/tracks/%s.json" % tid
 		if not FileAccess.file_exists(path):
@@ -83,7 +85,8 @@ func _run() -> void:
 		if typeof(parsed) != TYPE_DICTIONARY:
 			failures.append("bad track json %s" % tid)
 			continue
-		var identity := str((parsed as Dictionary).get("camera_identity", ""))
+		var track: Dictionary = parsed as Dictionary
+		var identity := str(track.get("camera_identity", ""))
 		if identity.is_empty():
 			failures.append("%s missing camera_identity" % tid)
 			continue
@@ -93,11 +96,17 @@ func _run() -> void:
 				"%s identity '%s' not in CameraRig.apply_course_identity arms (would fall through default)"
 				% [tid, identity]
 			)
+		if str(track.get("final_track_art_status", "")) == "track_art_candidate":
+			art_candidate += 1
+		if bool(track.get("human_track_art_approved", false)):
+			failures.append("%s human_track_art_approved must stay false" % tid)
 
-	if seen_identity.size() < 8:
-		failures.append("too few distinct camera identities: %d" % seen_identity.size())
+	if seen_identity.size() != 32:
+		failures.append("expected 32 distinct camera identities, got %d" % seen_identity.size())
+	if art_candidate != 32:
+		failures.append("expected 32 track_art_candidate statuses, got %d" % art_candidate)
 
-	## Deepen: each resolved identity arm must assign base_fov (personality ≠ silent empty arm).
+	## Deepen: each resolved identity arm must assign base_fov + max_fov (personality ≠ silent empty arm).
 	var src := FileAccess.get_file_as_string("res://scripts/player/CameraRig.gd")
 	for identity in seen_identity.keys():
 		var needle := "\"%s\"" % identity
@@ -108,6 +117,8 @@ func _run() -> void:
 		var window := src.substr(idx, mini(420, src.length() - idx))
 		if not window.contains("base_fov"):
 			failures.append("%s arm missing base_fov assignment window" % identity)
+		if not window.contains("max_fov"):
+			failures.append("%s arm missing max_fov assignment window" % identity)
 
 	_finish(failures)
 
@@ -115,7 +126,7 @@ func _run() -> void:
 func _finish(failures: PackedStringArray) -> void:
 	if failures.is_empty():
 		print(
-			"CameraIdentityCoverageTest PASS — all track camera_identity values resolve · COURSE/HUMAN false"
+			"CameraIdentityCoverageTest PASS — 32 track camera_identity values resolve · COURSE/HUMAN false"
 		)
 		quit(0)
 	else:

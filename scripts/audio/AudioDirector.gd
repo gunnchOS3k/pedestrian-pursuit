@@ -17,6 +17,7 @@ var _cache: Dictionary = {}
 var _last_music_path: String = ""
 var _last_ambience_path: String = ""
 var _last_music_fallback: bool = false
+var _last_ambience_fallback: bool = false
 
 
 func _ready() -> void:
@@ -62,8 +63,10 @@ func play_race_music(track_id: String) -> void:
 	_last_music_path = music_path
 	_play_loop(_music, music_path, -5.0)
 	var amb := AMB_DIR + "%s.wav" % track_id
+	_last_ambience_fallback = false
 	if not FileAccess.file_exists(amb):
 		amb = AMB_DIR + "verdant_cascade_circuit.wav"
+		_last_ambience_fallback = true
 	_last_ambience_path = amb
 	_play_loop(_ambience, amb, -10.0)
 
@@ -111,6 +114,33 @@ func describe() -> Dictionary:
 		"last_music_path": _last_music_path,
 		"last_ambience_path": _last_ambience_path,
 		"last_music_fallback": _last_music_fallback,
+		"last_ambience_fallback": _last_ambience_fallback,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+	}
+
+
+func resolve_championship_music_coverage(track_ids: PackedStringArray) -> Dictionary:
+	## Digital deepen: every championship track resolves a race bed path (preferred or cup_theme).
+	## Does not claim commercial/final audio or HUMAN acceptance.
+	var preferred_hits := 0
+	var fallback_hits := 0
+	var missing_paths := 0
+	for tid in track_ids:
+		var preferred := MUSIC_DIR + "%s_race.wav" % tid
+		if FileAccess.file_exists(preferred):
+			preferred_hits += 1
+		elif FileAccess.file_exists(MUSIC_DIR + "cup_theme.wav"):
+			fallback_hits += 1
+		else:
+			missing_paths += 1
+	return {
+		"schema": "pp_audio_championship_coverage/v1",
+		"track_count": track_ids.size(),
+		"preferred_hits": preferred_hits,
+		"cup_theme_fallback_hits": fallback_hits,
+		"missing_paths": missing_paths,
+		"commercial_final_audio": false,
 		"HUMAN": false,
 		"COURSE_ACCEPTED": false,
 	}

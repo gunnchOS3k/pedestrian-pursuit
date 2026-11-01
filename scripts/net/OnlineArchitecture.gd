@@ -124,18 +124,42 @@ static func partylink_runtime_roster(allocated_human_seats: int, connected_human
 		"allocated_human_seats": allocated,
 		"connected_humans": connected,
 		"human_seats_connected": human_count,
+		"human_participant_count": human_count,
+		"bot_participant_count": cpu_count,
 		"field_size": PARTYLINK_FIELD_SIZE,
 		"cpu_seats": cpu_count,
+		"field_sum_humans_plus_bots": human_count + cpu_count,
 		"beatlink_sibling_humans": BEATLINK_SIBLING_CONTRACT_HUMANS,
 		"independent_two_client_proven": true,
 		"physical_eight_human_party": false,
 		"bots_never_count_as_humans": true,
+		"bots_count_as_humans": false,
 		"moltenvk_metal_pass": false,
 		"COURSE_ACCEPTED": false,
 		"HUMAN": false,
 		"RC2": false,
 		"V1": false,
 		"seats": seats,
+	}
+
+
+static func partylink_human_bot_accounting(allocated_human_seats: int, connected_humans: int) -> Dictionary:
+	## Explicit bots≠humans ledger for digital deepen / capacity gates.
+	var roster := partylink_runtime_roster(allocated_human_seats, connected_humans)
+	var humans := int(roster.get("human_participant_count", -1))
+	var bots := int(roster.get("bot_participant_count", -1))
+	return {
+		"schema": "pp_partylink_human_bot_accounting/v1",
+		"allocated_human_seats": int(roster.get("allocated_human_seats", 0)),
+		"connected_humans": humans,
+		"bot_participant_count": bots,
+		"field_size": PARTYLINK_FIELD_SIZE,
+		"humans_plus_bots": humans + bots,
+		"bots_never_count_as_humans": true,
+		"bots_count_as_humans": false,
+		"physical_eight_human_party": false,
+		"COURSE_ACCEPTED": false,
+		"HUMAN": false,
 	}
 
 
