@@ -2,9 +2,14 @@
 
 from __future__ import annotations
 
+import sys
 import unittest
+from pathlib import Path
 
-from tools.engineering_wave010.classify_wave010_run import classify_wave010_run
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from tools.engineering_wave010.classify_wave010_run import classify_wave010_run  # noqa: E402
 
 
 OBJECTDB = (
