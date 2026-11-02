@@ -304,6 +304,33 @@ func resolve_preferred_race_music_integrity(track_ids: PackedStringArray) -> Dic
 	}
 
 
+func resolve_shared_bed_path_integrity() -> Dictionary:
+	## S7W audio deepen: shared menu/cup/results beds resolve; procedural ≠ commercial.
+	var beds: PackedStringArray = PackedStringArray([
+		"menu_theme.wav", "cup_theme.wav", "results_fanfare.wav"
+	])
+	var hits := 0
+	var missing: PackedStringArray = PackedStringArray()
+	for bed in beds:
+		var path := MUSIC_DIR + bed
+		if FileAccess.file_exists(path):
+			hits += 1
+		else:
+			missing.append(path)
+	return {
+		"schema": "pp_audio_shared_bed_path_integrity/v1",
+		"expected_beds": beds.size(),
+		"hits": hits,
+		"missing_paths": missing,
+		"path_integrity_ok": missing.is_empty() and hits == beds.size(),
+		"commercial_final_audio": false,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 func resolve_ambience_bank_integrity(track_ids: PackedStringArray) -> Dictionary:
 	## S7U audio deepen: per-track ambience banks resolve; procedural ≠ commercial.
 	var hits := 0

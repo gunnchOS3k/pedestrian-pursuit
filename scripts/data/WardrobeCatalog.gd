@@ -133,6 +133,50 @@ static func key_slot_family_coverage() -> Dictionary:
 	}
 
 
+static func family_upper_body_coverage() -> Dictionary:
+	## S7W fashion deepen: every family has top and/or full_body; partial top ≠ inventing humans.
+	load_catalog()
+	var covered: Dictionary = {}
+	var missing: PackedStringArray = PackedStringArray()
+	for fam in _cache.get("families", []):
+		if typeof(fam) != TYPE_DICTIONARY:
+			continue
+		var fam_id := str(fam.get("id", ""))
+		if fam_id.is_empty():
+			continue
+		covered[fam_id] = {"top": false, "full_body": false}
+	for g in garments():
+		var fam := str(g.get("family_id", ""))
+		var slot := str(g.get("slot", ""))
+		if not covered.has(fam):
+			continue
+		if slot == "top":
+			covered[fam]["top"] = true
+		elif slot == "full_body":
+			covered[fam]["full_body"] = true
+	var ok_count := 0
+	for fam_id in covered.keys():
+		var row: Dictionary = covered[fam_id]
+		var ok := bool(row.get("top", false)) or bool(row.get("full_body", false))
+		if ok:
+			ok_count += 1
+		else:
+			missing.append(str(fam_id))
+	return {
+		"schema": "pp_wardrobe_family_upper_body_coverage/v1",
+		"family_count": covered.size(),
+		"upper_body_ok_count": ok_count,
+		"missing_families": missing,
+		"all_covered": missing.is_empty() and covered.size() == 9 and ok_count == 9,
+		"cosmetic_only": true,
+		"counts_as_human_participant": false,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 static func family_integrated_mesh_honesty() -> Dictionary:
 	## S7U fashion deepen: every wardrobe family stays integrated_mesh_v1 (procedural≠commercial).
 	load_catalog()

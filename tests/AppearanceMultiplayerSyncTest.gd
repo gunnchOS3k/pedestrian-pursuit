@@ -192,6 +192,17 @@ func _init() -> void:
 	if bool(key_cov.get("HUMAN", true)) or bool(key_cov.get("RC2", true)) or bool(key_cov.get("V1", true)):
 		failures.append("key_slot_family_coverage must keep HUMAN/RC2/V1 false")
 
+	## S7W: every family has top and/or full_body; cosmetics ≠ humans.
+	var upper: Dictionary = WardrobeCatalogScript.family_upper_body_coverage()
+	if not bool(upper.get("all_covered", false)):
+		failures.append("family_upper_body_coverage all_covered required")
+	if int(upper.get("upper_body_ok_count", -1)) != 9:
+		failures.append("family_upper_body_coverage expects 9/9")
+	if bool(upper.get("counts_as_human_participant", true)):
+		failures.append("upper body coverage must not invent humans")
+	if bool(upper.get("HUMAN", true)) or bool(upper.get("RC2", true)) or bool(upper.get("V1", true)):
+		failures.append("family_upper_body_coverage must keep HUMAN/RC2/V1 false")
+
 	## S7U: every wardrobe family stays integrated_mesh_v1.
 	var mesh: Dictionary = WardrobeCatalogScript.family_integrated_mesh_honesty()
 	if not bool(mesh.get("all_integrated", false)):

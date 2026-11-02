@@ -189,6 +189,17 @@ func _run() -> void:
 	if bool(scope.get("HUMAN", true)) or bool(scope.get("RC2", true)) or bool(scope.get("V1", true)):
 		failures.append("private scope honesty must keep HUMAN/RC2/V1 false")
 
+	## S7W: CPU fill seats never labeled as human participants.
+	var cpu_label: Dictionary = OnlineArchitectureScript.partylink_cpu_fill_neq_human_label(4, 2)
+	if not bool(cpu_label.get("cpu_fill_neq_human_ok", false)):
+		failures.append("cpu_fill_neq_human_ok required")
+	if int(cpu_label.get("mislabeled_cpu_as_human", 1)) != 0:
+		failures.append("CPU fill must never be labeled human")
+	if bool(cpu_label.get("physical_eight_human_party", true)):
+		failures.append("cpu fill honesty must keep physical_eight_human_party false")
+	if bool(cpu_label.get("HUMAN", true)) or bool(cpu_label.get("RC2", true)) or bool(cpu_label.get("V1", true)):
+		failures.append("cpu fill honesty must keep HUMAN/RC2/V1 false")
+
 	## S7U BeatLink sibling honesty: sibling stays 2; PartyLink ≠ BeatLink.
 	var sibling: Dictionary = OnlineArchitectureScript.partylink_beatlink_sibling_honesty()
 	if not bool(sibling.get("sibling_is_two", false)):

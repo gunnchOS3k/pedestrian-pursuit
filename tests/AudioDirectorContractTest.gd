@@ -169,6 +169,16 @@ func _run() -> void:
 			failures.append("preferred race music must keep commercial_final_audio false")
 		if bool(pref.get("HUMAN", true)) or bool(pref.get("RC2", true)) or bool(pref.get("V1", true)):
 			failures.append("preferred race music must keep HUMAN/RC2/V1 false")
+		## S7W shared menu/cup/results bed path integrity.
+		var shared: Dictionary = audio.resolve_shared_bed_path_integrity()
+		if not bool(shared.get("path_integrity_ok", false)):
+			failures.append("shared bed path_integrity_ok required")
+		if int(shared.get("hits", 0)) != 3:
+			failures.append("shared bed hits != 3")
+		if bool(shared.get("commercial_final_audio", true)):
+			failures.append("shared beds must keep commercial_final_audio false")
+		if bool(shared.get("HUMAN", true)) or bool(shared.get("RC2", true)) or bool(shared.get("V1", true)):
+			failures.append("shared beds must keep HUMAN/RC2/V1 false")
 
 	audio.set_enabled(false)
 	if failures.is_empty():

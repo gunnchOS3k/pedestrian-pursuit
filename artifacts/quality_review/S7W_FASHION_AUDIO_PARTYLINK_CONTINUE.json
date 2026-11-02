@@ -1,0 +1,35 @@
+{
+  "schema": "ped.s7w_fashion_audio_partylink_continue.v1",
+  "prepared_at": "2026-11-02T23:16:56Z",
+  "wave010_untouched": true,
+  "human_false": true,
+  "rc2_false": true,
+  "v1_false": true,
+  "course_false": true,
+  "fashion": {
+    "family_upper_body_coverage": "9/9",
+    "top_or_full_body_per_family": true,
+    "cosmetics_neq_humans": true
+  },
+  "audio": {
+    "shared_bed_path_integrity": true,
+    "shared_beds": [
+      "menu_theme.wav",
+      "cup_theme.wav",
+      "results_fanfare.wav"
+    ],
+    "commercial_final_audio": false
+  },
+  "partylink": {
+    "cpu_fill_neq_human_label": true,
+    "physical_eight_human_party": false,
+    "bots_never_count_as_humans": true
+  },
+  "local_proofs": {
+    "AppearanceMultiplayerSyncTest": "PASS",
+    "AudioDirectorContractTest": "PASS",
+    "PartyLinkCapacityTest": "PASS"
+  },
+  "base_tip": "6b57346b",
+  "notes": "S7W fair-rotate deepen after Anime CI soak wait; preserve wave010 + 32-track + bots\u2260humans"
+}

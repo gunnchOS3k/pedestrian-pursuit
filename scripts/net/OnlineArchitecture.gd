@@ -228,6 +228,41 @@ static func partylink_private_scope_honesty() -> Dictionary:
 	}
 
 
+static func partylink_cpu_fill_neq_human_label(
+	allocated_human_seats: int = 4,
+	connected_humans: int = 2
+) -> Dictionary:
+	## S7W: CPU fill / unoccupied allocated seats never labeled as human participants.
+	var roster := partylink_runtime_roster(allocated_human_seats, connected_humans)
+	var cpu_rows := 0
+	var mislabeled := 0
+	for entry_v in roster.get("seats", []):
+		if typeof(entry_v) != TYPE_DICTIONARY:
+			continue
+		var entry: Dictionary = entry_v
+		var control := str(entry.get("control", ""))
+		var owner := str(entry.get("owner", ""))
+		var counts_human := bool(entry.get("counts_as_human_participant", false))
+		if control == "cpu" or owner == "cpu":
+			cpu_rows += 1
+			if counts_human or owner == "human" or control == "human_input":
+				mislabeled += 1
+	return {
+		"schema": "pp_partylink_cpu_fill_neq_human_label/v1",
+		"allocated_human_seats": int(roster.get("allocated_human_seats", 0)),
+		"connected_humans": int(roster.get("connected_humans", 0)),
+		"cpu_rows": cpu_rows,
+		"mislabeled_cpu_as_human": mislabeled,
+		"cpu_fill_neq_human_ok": mislabeled == 0 and cpu_rows > 0,
+		"bots_never_count_as_humans": true,
+		"physical_eight_human_party": false,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 static func partylink_beatlink_sibling_honesty() -> Dictionary:
 	## S7U: BeatLink sibling stays host+guest (2); PartyLink larger fields ≠ BeatLink.
 	return {
