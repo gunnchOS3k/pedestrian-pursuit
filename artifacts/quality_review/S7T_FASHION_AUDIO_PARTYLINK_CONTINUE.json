@@ -1,0 +1,14 @@
+{
+  "schema": "ped.s7t_fashion_audio_partylink_continue.v1",
+  "wave010_untouched": true,
+  "wave010_negative_path": "PASS",
+  "human_false": true,
+  "rc2_false": true,
+  "v1_false": true,
+  "course_false": true,
+  "ci_exact_head": {"sha": "97b2a03", "pr": 47, "public_actions_html": "green"},
+  "fashion": {"empty_trail_never_invents_human": true},
+  "audio": {"ui_core_cue_path_integrity": true, "commercial_final_audio": false},
+  "partylink": {"allocated_bounds_honesty": true, "physical_eight_human_party": false},
+  "base_tip": "97b2a03"
+}

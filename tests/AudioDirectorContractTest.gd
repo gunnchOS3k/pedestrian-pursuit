@@ -141,6 +141,16 @@ func _run() -> void:
 			failures.append("race-control sfx must keep commercial_final_audio false")
 		if bool(race.get("HUMAN", true)) or bool(race.get("RC2", true)) or bool(race.get("V1", true)):
 			failures.append("race-control sfx must keep HUMAN/RC2/V1 false")
+		## S7T UI core cue path integrity.
+		var ui_paths: Dictionary = audio.resolve_ui_core_cue_path_integrity()
+		if not bool(ui_paths.get("path_integrity_ok", false)):
+			failures.append("ui core cue path_integrity_ok required")
+		if int(ui_paths.get("cue_count", -1)) != 6:
+			failures.append("ui core cue_count != 6")
+		if bool(ui_paths.get("commercial_final_audio", true)):
+			failures.append("ui core cues must keep commercial_final_audio false")
+		if bool(ui_paths.get("HUMAN", true)) or bool(ui_paths.get("RC2", true)) or bool(ui_paths.get("V1", true)):
+			failures.append("ui core cue integrity must keep HUMAN/RC2/V1 false")
 
 	audio.set_enabled(false)
 	if failures.is_empty():

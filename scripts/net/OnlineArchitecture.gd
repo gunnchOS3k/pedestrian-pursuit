@@ -212,6 +212,24 @@ static func partylink_seat_cosmetic_bindings(
 	}
 
 
+static func partylink_allocated_bounds_honesty(requested_seats: int) -> Dictionary:
+	## S7T: allocated seats clamp 2..8; never invent physical eight-human party.
+	var map := partylink_seat_map(requested_seats)
+	var allocated := int(map.get("allocated_human_seats", 0))
+	var bounds_ok := allocated >= 2 and allocated <= 8
+	return {
+		"schema": "pp_partylink_allocated_bounds_honesty/v1",
+		"requested_seats": requested_seats,
+		"allocated_human_seats": allocated,
+		"bounds_ok": bounds_ok,
+		"physical_eight_human_party": false,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 static func partylink_field_sum_honesty(
 	allocated_human_seats: int,
 	connected_humans: int

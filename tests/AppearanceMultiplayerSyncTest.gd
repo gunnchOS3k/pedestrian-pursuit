@@ -183,6 +183,15 @@ func _init() -> void:
 	if bool(bind.get("HUMAN", true)) or bool(bind.get("RC2", true)) or bool(bind.get("V1", true)):
 		failures.append("integrated trail bind must keep HUMAN/RC2/V1 false")
 
+	## S7T: empty trail never invents a human participant.
+	var empty_trail: Dictionary = AppearanceSyncScript.empty_trail_never_invents_human({})
+	if not bool(empty_trail.get("trail_empty", false)):
+		failures.append("empty trail helper must report trail_empty")
+	if bool(empty_trail.get("counts_as_human_participant", true)):
+		failures.append("empty trail must not invent humans")
+	if bool(empty_trail.get("HUMAN", true)) or bool(empty_trail.get("RC2", true)) or bool(empty_trail.get("V1", true)):
+		failures.append("empty trail helper must keep HUMAN/RC2/V1 false")
+
 	var evidence := {
 		"flow": "create_customize_save_reopen_peer_apply_edit",
 		"fingerprint": fp,

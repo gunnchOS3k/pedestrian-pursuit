@@ -180,6 +180,17 @@ func _run() -> void:
 				failures.append("field sum honesty must keep HUMAN/RC2/V1 false")
 
 	## Clamp honesty: out-of-range requests still stay 2–8 allocated; connected clamps.
+	## S7T allocated bounds honesty helper.
+	var under: Dictionary = OnlineArchitectureScript.partylink_allocated_bounds_honesty(1)
+	var over: Dictionary = OnlineArchitectureScript.partylink_allocated_bounds_honesty(99)
+	if not bool(under.get("bounds_ok", false)) or int(under.get("allocated_human_seats", 0)) != 2:
+		failures.append("allocated_bounds under-min must clamp to 2")
+	if not bool(over.get("bounds_ok", false)) or int(over.get("allocated_human_seats", 0)) != 8:
+		failures.append("allocated_bounds over-max must clamp to 8")
+	if bool(under.get("physical_eight_human_party", true)) or bool(over.get("physical_eight_human_party", true)):
+		failures.append("allocated_bounds must keep physical_eight_human_party false")
+	if bool(under.get("HUMAN", true)) or bool(under.get("RC2", true)) or bool(under.get("V1", true)):
+		failures.append("allocated_bounds must keep HUMAN/RC2/V1 false")
 	if int(OnlineArchitectureScript.partylink_seat_map(1).get("allocated_human_seats", 0)) != 2:
 		failures.append("under-min seats must clamp to 2")
 	if int(OnlineArchitectureScript.partylink_seat_map(99).get("allocated_human_seats", 0)) != 8:

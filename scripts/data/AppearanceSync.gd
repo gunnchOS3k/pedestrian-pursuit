@@ -122,6 +122,25 @@ static func preset_trail_fingerprint_matrix() -> Dictionary:
 	}
 
 
+static func empty_trail_never_invents_human(outfit_slots: Dictionary = {}) -> Dictionary:
+	## S7T fashion deepen: missing trail_expression stays cosmetic-empty ≠ human seat.
+	var slots: Dictionary = outfit_slots.duplicate(true) if not outfit_slots.is_empty() else {}
+	var trail := str(slots.get("trail_expression", ""))
+	var meta := chase_cam_trail_meta(slots)
+	return {
+		"schema": "pp_appearance_empty_trail_never_invents_human/v1",
+		"trail_expression": trail,
+		"trail_empty": trail.is_empty(),
+		"chase_cam_meta_empty": str(meta.get("trail_expression", "")).is_empty(),
+		"counts_as_human_participant": false,
+		"cosmetic_only": true,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 static func integrated_preset_trail_bind() -> Dictionary:
 	## S7R fashion deepen: integrated presets keep trail binds; cosmetics ≠ humans.
 	var WardrobeCatalogScript = load("res://scripts/data/WardrobeCatalog.gd")

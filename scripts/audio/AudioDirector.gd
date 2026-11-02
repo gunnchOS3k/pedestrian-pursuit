@@ -280,6 +280,33 @@ func resolve_item_sfx_coverage() -> Dictionary:
 	}
 
 
+func resolve_ui_core_cue_path_integrity() -> Dictionary:
+	## S7T audio deepen: core UI cue paths stay present; procedural ≠ commercial.
+	var cues: PackedStringArray = PackedStringArray([
+		"back", "confirm", "countdown", "finish", "select", "start"
+	])
+	var hits := 0
+	var missing_paths := 0
+	for cue in cues:
+		var path := UI_DIR + "%s.wav" % cue
+		if FileAccess.file_exists(path):
+			hits += 1
+		else:
+			missing_paths += 1
+	return {
+		"schema": "pp_audio_ui_core_cue_path_integrity/v1",
+		"cue_count": cues.size(),
+		"preferred_hits": hits,
+		"missing_paths": missing_paths,
+		"path_integrity_ok": missing_paths == 0 and hits == cues.size(),
+		"commercial_final_audio": false,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 func resolve_race_control_sfx_coverage() -> Dictionary:
 	## S7S audio deepen: race-control SFX banks resolve. Procedural ≠ commercial.
 	var cues: PackedStringArray = PackedStringArray([
