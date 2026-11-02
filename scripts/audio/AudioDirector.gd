@@ -280,6 +280,30 @@ func resolve_item_sfx_coverage() -> Dictionary:
 	}
 
 
+func resolve_ambience_bank_integrity(track_ids: PackedStringArray) -> Dictionary:
+	## S7U audio deepen: per-track ambience banks resolve; procedural ≠ commercial.
+	var hits := 0
+	var missing_paths := 0
+	for tid in track_ids:
+		var path := AMB_DIR + "%s.wav" % tid
+		if FileAccess.file_exists(path):
+			hits += 1
+		else:
+			missing_paths += 1
+	return {
+		"schema": "pp_audio_ambience_bank_integrity/v1",
+		"track_count": track_ids.size(),
+		"preferred_hits": hits,
+		"missing_paths": missing_paths,
+		"path_integrity_ok": missing_paths == 0 and hits == track_ids.size() and track_ids.size() == 32,
+		"commercial_final_audio": false,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 func resolve_ui_core_cue_path_integrity() -> Dictionary:
 	## S7T audio deepen: core UI cue paths stay present; procedural ≠ commercial.
 	var cues: PackedStringArray = PackedStringArray([

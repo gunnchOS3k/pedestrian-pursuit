@@ -151,6 +151,14 @@ func _run() -> void:
 			failures.append("ui core cues must keep commercial_final_audio false")
 		if bool(ui_paths.get("HUMAN", true)) or bool(ui_paths.get("RC2", true)) or bool(ui_paths.get("V1", true)):
 			failures.append("ui core cue integrity must keep HUMAN/RC2/V1 false")
+		## S7U ambience bank integrity across 32 tracks.
+		var amb_int: Dictionary = audio.resolve_ambience_bank_integrity(all_ids)
+		if not bool(amb_int.get("path_integrity_ok", false)):
+			failures.append("ambience bank path_integrity_ok required")
+		if bool(amb_int.get("commercial_final_audio", true)):
+			failures.append("ambience bank must keep commercial_final_audio false")
+		if bool(amb_int.get("HUMAN", true)) or bool(amb_int.get("RC2", true)) or bool(amb_int.get("V1", true)):
+			failures.append("ambience bank integrity must keep HUMAN/RC2/V1 false")
 
 	audio.set_enabled(false)
 	if failures.is_empty():

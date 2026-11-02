@@ -183,6 +183,19 @@ func _init() -> void:
 	if bool(bind.get("HUMAN", true)) or bool(bind.get("RC2", true)) or bool(bind.get("V1", true)):
 		failures.append("integrated trail bind must keep HUMAN/RC2/V1 false")
 
+	## S7U: every wardrobe family stays integrated_mesh_v1.
+	var mesh: Dictionary = WardrobeCatalogScript.family_integrated_mesh_honesty()
+	if not bool(mesh.get("all_integrated", false)):
+		failures.append("family_integrated_mesh_honesty all_integrated required")
+	if int(mesh.get("family_count", -1)) != 9 or int(mesh.get("integrated_mesh_v1", -1)) != 9:
+		failures.append("family_integrated_mesh_honesty expects 9/9 integrated")
+	if bool(mesh.get("commercial_final_art", true)):
+		failures.append("family mesh honesty must keep commercial_final_art false")
+	if bool(mesh.get("counts_as_human_participant", true)):
+		failures.append("family mesh honesty must not invent humans")
+	if bool(mesh.get("HUMAN", true)) or bool(mesh.get("RC2", true)) or bool(mesh.get("V1", true)):
+		failures.append("family_integrated_mesh_honesty must keep HUMAN/RC2/V1 false")
+
 	## S7T: empty trail never invents a human participant.
 	var empty_trail: Dictionary = AppearanceSyncScript.empty_trail_never_invents_human({})
 	if not bool(empty_trail.get("trail_empty", false)):

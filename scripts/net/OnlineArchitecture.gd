@@ -212,6 +212,22 @@ static func partylink_seat_cosmetic_bindings(
 	}
 
 
+static func partylink_beatlink_sibling_honesty() -> Dictionary:
+	## S7U: BeatLink sibling stays host+guest (2); PartyLink larger fields ≠ BeatLink.
+	return {
+		"schema": "pp_partylink_beatlink_sibling_honesty/v1",
+		"beatlink_sibling_humans": BEATLINK_SIBLING_CONTRACT_HUMANS,
+		"sibling_is_two": BEATLINK_SIBLING_CONTRACT_HUMANS == 2,
+		"partylink_max_human_seats": PARTYLINK_MAX_HUMAN_SEATS,
+		"partylink_neq_beatlink_sibling": PARTYLINK_MAX_HUMAN_SEATS != BEATLINK_SIBLING_CONTRACT_HUMANS,
+		"physical_eight_human_party": false,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 static func partylink_allocated_bounds_honesty(requested_seats: int) -> Dictionary:
 	## S7T: allocated seats clamp 2..8; never invent physical eight-human party.
 	var map := partylink_seat_map(requested_seats)

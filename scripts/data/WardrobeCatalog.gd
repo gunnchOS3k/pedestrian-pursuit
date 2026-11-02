@@ -103,6 +103,36 @@ static func integrated_garment_count() -> int:
 	return n
 
 
+static func family_integrated_mesh_honesty() -> Dictionary:
+	## S7U fashion deepen: every wardrobe family stays integrated_mesh_v1 (procedural≠commercial).
+	load_catalog()
+	var family_count := 0
+	var integrated := 0
+	var non_integrated := 0
+	for fam in _cache.get("families", []):
+		if typeof(fam) != TYPE_DICTIONARY:
+			continue
+		family_count += 1
+		if str(fam.get("art_status", "")) == "integrated_mesh_v1":
+			integrated += 1
+		else:
+			non_integrated += 1
+	return {
+		"schema": "pp_wardrobe_family_integrated_mesh_honesty/v1",
+		"family_count": family_count,
+		"integrated_mesh_v1": integrated,
+		"non_integrated": non_integrated,
+		"all_integrated": non_integrated == 0 and family_count > 0,
+		"cosmetic_only": true,
+		"counts_as_human_participant": false,
+		"commercial_final_art": false,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 static func family_footwear_handling_coverage() -> Dictionary:
 	## S7S fashion deepen: every integrated preset binds footwear_vehicle (handling owner).
 	## Footwear cosmetics ≠ humans; procedural ≠ commercial.

@@ -180,6 +180,17 @@ func _run() -> void:
 				failures.append("field sum honesty must keep HUMAN/RC2/V1 false")
 
 	## Clamp honesty: out-of-range requests still stay 2–8 allocated; connected clamps.
+	## S7U BeatLink sibling honesty: sibling stays 2; PartyLink ≠ BeatLink.
+	var sibling: Dictionary = OnlineArchitectureScript.partylink_beatlink_sibling_honesty()
+	if not bool(sibling.get("sibling_is_two", false)):
+		failures.append("beatlink sibling must stay 2 humans")
+	if not bool(sibling.get("partylink_neq_beatlink_sibling", false)):
+		failures.append("PartyLink max must differ from BeatLink sibling")
+	if bool(sibling.get("physical_eight_human_party", true)):
+		failures.append("sibling honesty must keep physical_eight_human_party false")
+	if bool(sibling.get("HUMAN", true)) or bool(sibling.get("RC2", true)) or bool(sibling.get("V1", true)):
+		failures.append("sibling honesty must keep HUMAN/RC2/V1 false")
+
 	## S7T allocated bounds honesty helper.
 	var under: Dictionary = OnlineArchitectureScript.partylink_allocated_bounds_honesty(1)
 	var over: Dictionary = OnlineArchitectureScript.partylink_allocated_bounds_honesty(99)

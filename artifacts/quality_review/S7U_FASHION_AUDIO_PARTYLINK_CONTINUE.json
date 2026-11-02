@@ -1,0 +1,14 @@
+{
+  "schema": "ped.s7u_fashion_audio_partylink_continue.v1",
+  "wave010_untouched": true,
+  "wave010_negative_path": "PASS",
+  "human_false": true,
+  "rc2_false": true,
+  "v1_false": true,
+  "course_false": true,
+  "ci_exact_head": {"sha": "b3a630c", "pr": 47, "public_actions_html": "green"},
+  "fashion": {"family_integrated_mesh_honesty": "9/9"},
+  "audio": {"ambience_bank_integrity": 32, "commercial_final_audio": false},
+  "partylink": {"beatlink_sibling_honesty": 2, "physical_eight_human_party": false},
+  "base_tip": "b3a630c"
+}
