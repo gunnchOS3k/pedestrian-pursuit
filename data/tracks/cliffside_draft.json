@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "id": "cliffside_draft",
+  "display_name": "Cliffside Draft",
+  "lap_count": 3,
+  "difficulty": "intermediate",
+  "theme": "cliffside_draft",
+  "description": "Cliff-shelf circuit with wind-draft straights, updraft pads, and a ledge shortcut above the spray.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "lane_width": 15.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#4A5560",
+  "accent_color": "#F0C27A",
+  "sky_color": "#6A90B0",
+  "backdrop_color": "#2A3540",
+  "path_points": [
+    [
+      48.0,
+      1.737,
+      0.0
+    ],
+    [
+      39.49,
+      2.218,
+      16.49
+    ],
+    [
+      25.25,
+      2.4,
+      29.71
+    ],
+    [
+      8.6,
+      2.297,
+      37.05
+    ],
+    [
+      -8.6,
+      2.053,
+      37.05
+    ],
+    [
+      -25.25,
+      1.863,
+      29.71
+    ],
+    [
+      -39.49,
+      1.784,
+      16.49
+    ],
+    [
+      -48.0,
+      1.737,
+      0.0
+    ],
+    [
+      -43.25,
+      1.571,
+      -16.49
+    ],
+    [
+      -29.93,
+      1.239,
+      -29.71
+    ],
+    [
+      -10.68,
+      0.837,
+      -37.05
+    ],
+    [
+      10.68,
+      0.6,
+      -37.05
+    ],
+    [
+      29.93,
+      0.695,
+      -29.71
+    ],
+    [
+      43.25,
+      1.137,
+      -16.49
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 1,
+      "size": [
+        6,
+        14
+      ],
+      "speed_bonus": 1.22
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 6,
+      "size": [
+        9,
+        11
+      ],
+      "speed_multiplier": 0.8,
+      "terrain_name": "cliff_scree",
+      "handling_multiplier": 0.88,
+      "color": "#6A6050"
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 11,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    },
+    {
+      "point_index": 3,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    }
+  ],
+  "item_boxes": [
+    2,
+    4,
+    7,
+    11
+  ],
+  "boost_pickups": [
+    1,
+    5,
+    8
+  ],
+  "rail_segments": [
+    4,
+    10
+  ],
+  "shortcut_routes": [
+    {
+      "id": "cliffside_draft_cut",
+      "entry_point_index": 3,
+      "exit_point_index": 9,
+      "risk": "high",
+      "ai_preference": 0.28,
+      "description": "Ledge draft cut \u2014 miss and drop into slow spray."
+    }
+  ],
+  "landmarks": [
+    "cliff_cairn",
+    "draft_gantry",
+    "ledge_rails"
+  ],
+  "elevation_profile": "cliff_updraft",
+  "bank_bias": 0.1,
+  "geometry_note": "Kinetic Coast upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn.",
+  "camera_identity": "cliffside_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "Coast collision hazards are off-line rocks; do not claim human commercial art approval."
+  ]
+}

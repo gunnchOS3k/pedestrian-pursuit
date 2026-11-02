@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "id": "rooftop_ribbon",
+  "display_name": "Rooftop Ribbon",
+  "lap_count": 3,
+  "difficulty": "beginner",
+  "theme": "rooftop_ribbon",
+  "description": "Rooftop ribbon circuit across HVAC islands with a AC-unit cut and billboard arches.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "lane_width": 15.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#3A4458",
+  "accent_color": "#A8D4FF",
+  "sky_color": "#6A90B8",
+  "backdrop_color": "#2A3448",
+  "path_points": [
+    [
+      50.0,
+      1.737,
+      0.0
+    ],
+    [
+      43.3,
+      2.4,
+      16.0
+    ],
+    [
+      25.0,
+      2.311,
+      27.71
+    ],
+    [
+      0.0,
+      1.5,
+      32.0
+    ],
+    [
+      -25.0,
+      0.689,
+      27.71
+    ],
+    [
+      -43.3,
+      0.6,
+      16.0
+    ],
+    [
+      -50.0,
+      1.263,
+      0.0
+    ],
+    [
+      -43.3,
+      1.986,
+      -16.0
+    ],
+    [
+      -25.0,
+      2.074,
+      -27.71
+    ],
+    [
+      -0.0,
+      1.5,
+      -32.0
+    ],
+    [
+      25.0,
+      0.926,
+      -27.71
+    ],
+    [
+      43.3,
+      1.014,
+      -16.0
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 1,
+      "size": [
+        6,
+        12
+      ],
+      "speed_bonus": 1.17
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 5,
+      "size": [
+        8,
+        10
+      ],
+      "speed_multiplier": 0.84,
+      "terrain_name": "roof_membrane",
+      "handling_multiplier": 0.9,
+      "color": "#4A5560"
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 9,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    },
+    {
+      "point_index": 11,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    }
+  ],
+  "item_boxes": [
+    2,
+    4,
+    6,
+    10
+  ],
+  "boost_pickups": [
+    1,
+    5,
+    8
+  ],
+  "rail_segments": [
+    3,
+    8
+  ],
+  "shortcut_routes": [
+    {
+      "id": "rooftop_ribbon_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 7,
+      "risk": "medium",
+      "ai_preference": 0.34,
+      "description": "Cut past the HVAC island \u2014 grit slows if you miss."
+    }
+  ],
+  "landmarks": [
+    "hvac_island",
+    "billboard_arch",
+    "roof_vent_row"
+  ],
+  "elevation_profile": "ribbon_rolls",
+  "bank_bias": 0.08,
+  "geometry_note": "Skyline Relay upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. billboard arch / HVAC / vents. Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn.",
+  "camera_identity": "rooftop_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "Skyline Relay collision hazards are off-line props; do not claim human commercial art approval."
+  ]
+}

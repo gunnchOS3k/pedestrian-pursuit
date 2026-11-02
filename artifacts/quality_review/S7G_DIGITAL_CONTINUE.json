@@ -1,0 +1,13 @@
+{
+  "schema": "pp_s7g_continue/v1",
+  "ci_green_tip": "751578f5ec0230a42d4fa4bc2f395ae82a9cd0d8",
+  "metal_14of14": true,
+  "signal_gantry_silhouette": true,
+  "footwear_recheck": "PASS",
+  "course_build_recheck": "PASS",
+  "COURSE_ACCEPTED": false,
+  "HUMAN": false,
+  "RC2": false,
+  "V1": false,
+  "generated_at": "2026-10-30T21:51:12Z"
+}

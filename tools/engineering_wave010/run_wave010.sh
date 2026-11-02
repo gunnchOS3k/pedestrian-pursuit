@@ -14,6 +14,7 @@ resolve_godot() {
 GODOT="$(resolve_godot)"
 mkdir -p artifacts/engineering_wave010 tmp
 export GODOT_BIN="$GODOT"
+CLASSIFY="$ROOT/tools/engineering_wave010/classify_wave010_run.py"
 
 echo "=== Wave010 Godot: $($GODOT --version) ==="
 
@@ -25,22 +26,22 @@ run() {
   "$@" >"$log" 2>&1
   local code=$?
   set -e
-  # Mutation logs intentionally contain "Wave010RuntimeTest FAIL" from killed mutants.
-  if [[ "$name" == "mutation" ]]; then
-    if [[ $code -ne 0 ]]; then
-      echo "FAIL ${name}"
-      tail -80 "$log" || true
-      return 1
-    fi
-    echo "PASS ${name}"
-    return 0
-  fi
-  if [[ $code -ne 0 ]] || grep -Eiq 'SCRIPT ERROR|Parse Error|Compilation failed|Wave010RuntimeTest FAIL|Wave010RaceSceneE2E FAIL|Wave010TimeTrialMasteryE2E FAIL' "$log"; then
+  # Classifier: PASS markers must NOT override genuine FAIL/SCRIPT errors or
+  # uncharacterized nonzero exits. ObjectDB leak after clean suite PASS is the
+  # only allowed nonzero "engine shutdown" exception (see classify_wave010_run.py).
+  set +e
+  local classify_out
+  classify_out="$(python3 "$CLASSIFY" --name "$name" --exit-code "$code" --log "$log")"
+  local classify_rc=$?
+  set -e
+  echo "$classify_out"
+  if [[ $classify_rc -ne 0 ]]; then
     echo "FAIL ${name}"
     tail -80 "$log" || true
     return 1
   fi
   echo "PASS ${name}"
+  return 0
 }
 
 # Android export probe (honest)

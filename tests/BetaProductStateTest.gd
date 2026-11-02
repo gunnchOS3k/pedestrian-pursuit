@@ -156,15 +156,37 @@ func _test_perf_budget(failures: PackedStringArray) -> void:
 
 
 func _test_tracks_digital(failures: PackedStringArray) -> void:
-	for track_id in _TrackCatalog.list_all_track_ids():
+	var ids := _TrackCatalog.list_all_track_ids()
+	if ids.size() != _TrackCatalog.CHAMPIONSHIP_TRACK_TARGET:
+		failures.append("championship tracks %d != %d" % [ids.size(), _TrackCatalog.CHAMPIONSHIP_TRACK_TARGET])
+	if _TrackCatalog.list_cup_ids().size() != _TrackCatalog.CHAMPIONSHIP_CUP_TARGET:
+		failures.append("championship cups mismatch")
+	var launch_ids := [
+		"verdant_cascade_circuit",
+		"cloverwind_ranch",
+		"prism_apex",
+		"emberkeep_gauntlet",
+		"tideglass_harbor",
+		"neon_switchyard",
+		"cloudstep_ridge",
+		"mirage_mesa",
+	]
+	for track_id in ids:
 		var data := _TrackCatalog.load_track(str(track_id))
 		if data.is_empty():
 			failures.append("track load %s" % track_id)
 			continue
-		if str(data.get("art_status", "")) != "LAUNCH_PROCEDURAL_FINAL":
-			failures.append("track %s must be LAUNCH_PROCEDURAL_FINAL" % track_id)
-		if str(data.get("art_status", "")) == "REQUIRES_ART_PRODUCTION":
+		var art := str(data.get("art_status", ""))
+		if art == "REQUIRES_ART_PRODUCTION":
 			failures.append("track %s still marked REQUIRES_ART_PRODUCTION / greybox" % track_id)
+		if art not in ["LAUNCH_PROCEDURAL_FINAL", "CHAMPIONSHIP_PROCEDURAL_RACEABLE"]:
+			failures.append("track %s non-raceable art_status %s" % [track_id, art])
+		if str(track_id) in launch_ids and art != "LAUNCH_PROCEDURAL_FINAL":
+			failures.append("launch track %s must keep LAUNCH_PROCEDURAL_FINAL" % track_id)
+		if bool(data.get("human_track_art_approved", false)):
+			failures.append("track %s commercial art approved without gate" % track_id)
+		if not _TrackCatalog.is_raceable(data):
+			failures.append("track %s not raceable geometry" % track_id)
 		if data.get("shortcut_routes", []).is_empty() and not bool(data.get("has_shortcut", false)):
 			failures.append("track %s missing shortcut metadata" % track_id)
 		var course: Node = _CourseTrack.new()

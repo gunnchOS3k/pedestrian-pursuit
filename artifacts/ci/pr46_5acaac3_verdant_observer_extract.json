@@ -1,0 +1,130 @@
+{
+  "head_sha": "5acaac344b15df5d10cc95943ca7df0e14056d8f",
+  "pr": 46,
+  "repo": "gunnchOS3k/pedestrian-pursuit",
+  "genuine_lap_completed": false,
+  "exit_code_0_is_lap_acceptance": false,
+  "job_name": "godot-headless-no-false-green",
+  "job_id": 120267631211,
+  "workflow_run_id": 39909078890,
+  "job_conclusion": "success",
+  "job_status": "completed",
+  "job_completed_at": "2026-10-23T06:03:13Z",
+  "observer_step": {
+    "started_at": "2026-10-23T06:02:56.5026831Z",
+    "pass_line_at": "2026-10-23T06:03:09.0325511Z",
+    "wall_clock_seconds": 12.529868,
+    "observed_lines": [
+      "=== VerdantRaceSceneObserve ===",
+      "PASS VerdantRaceSceneObserve"
+    ]
+  },
+  "fields": {
+    "RACE_ENTERED": {"present": false, "value": null},
+    "LAP_COMPLETED": {"present": false, "value": null},
+    "CHECKPOINT_CROSSED": {"present": false, "value": null},
+    "RESULTS_PATH": {"present": false, "value": null},
+    "COURSE_ACCEPTED": {"present": false, "value": null},
+    "DEVICE_RUN": {"present": false, "value": null},
+    "RACE_SCENE_FAIL": {"present": false, "value": null}
+  },
+  "windows_pilot0": {
+    "workflow_run_id": 39909078826,
+    "job_id": 120267630650,
+    "job_name": "windows-pilot0-windows-2025",
+    "job_status_when_read": "in_progress",
+    "job_conclusion": null,
+    "completed_log_read": false,
+    "fields": {
+      "RACE_ENTERED": {"present": false, "value": null, "reason": "completed log was not available"},
+      "LAP_COMPLETED": {"present": false, "value": null, "reason": "completed log was not available"},
+      "CHECKPOINT_CROSSED": {"present": false, "value": null, "reason": "completed log was not available"},
+      "RESULTS_PATH": {"present": false, "value": null, "reason": "completed log was not available"},
+      "COURSE_ACCEPTED": {"present": false, "value": null, "reason": "completed log was not available"},
+      "DEVICE_RUN": {"present": false, "value": null, "reason": "completed log was not available"},
+      "RACE_SCENE_FAIL": {"present": false, "value": null, "reason": "completed log was not available"}
+    }
+  },
+  "live_heads_when_read": {
+    "46": {
+      "state": "OPEN",
+      "draft": true,
+      "head_ref": "lane-b/course-build-fix",
+      "head_sha": "5acaac344b15df5d10cc95943ca7df0e14056d8f",
+      "base_ref": "lane-b/course-gameplay-fix-cup-resume",
+      "base_sha": "1ee5074d6d43a2a33403eff047cd7028a4d40473"
+    },
+    "44": {
+      "state": "MERGED",
+      "head_ref": "lane-b/course-gameplay-fix-cup-resume",
+      "head_sha": "d4e0a865d017927aa7839a9561e61e889d940e3b"
+    },
+    "45": {
+      "state": "MERGED",
+      "head_ref": "lane-b/checkpoint-void-recovery",
+      "head_sha": "88b54861b0720b2ad78901573db71e6a2057a2b0"
+    },
+    "42": {
+      "state": "OPEN",
+      "draft": true,
+      "head_ref": "eng/cursor-v1-pedestrian-achievements",
+      "head_sha": "bc327c8c3b2c1735441284e86122bd5a5a26d818"
+    },
+    "43": {
+      "state": "OPEN",
+      "draft": true,
+      "head_ref": "eng/cursor-v1-agent-b-pp-invite",
+      "head_sha": "980d20ae448afaa480757de7131f281804d86ab8"
+    }
+  },
+  "courses": [
+    {"id": "verdant_cascade_circuit", "status": "not_accepted"},
+    {"id": "cloverwind_ranch", "status": "not_accepted"},
+    {"id": "prism_apex", "status": "not_accepted"},
+    {"id": "emberkeep_gauntlet", "status": "not_accepted"},
+    {"id": "tideglass_harbor", "status": "not_accepted"},
+    {"id": "neon_switchyard", "status": "not_accepted"},
+    {"id": "cloudstep_ridge", "status": "not_accepted"},
+    {"id": "mirage_mesa", "status": "not_accepted"}
+  ],
+  "e6b25a3_run_39911949800": {
+    "head_sha": "e6b25a39d8c33be9884969cd91147b7609b6d9bf",
+    "workflow_run_id": 39911949800,
+    "job_id": 120276725664,
+    "job_name": "godot-headless-no-false-green",
+    "job_conclusion": "failure",
+    "shell_syntax_error": false,
+    "genuine_full_race": false,
+    "interpretation": "unfinished multi-lap race",
+    "lines": {
+      "RACE_ENTERED": "true",
+      "CHECKPOINT_CROSSED": "true",
+      "LAP_COMPLETED": "true",
+      "RESULTS_PATH": "false",
+      "COURSE_ACCEPTED": "false",
+      "DEVICE_RUN": "false",
+      "RACE_SCENE_FAIL": "absent",
+      "RACE_ACCEPTANCE_GATE": "fail",
+      "RACE_ACCEPTANCE_FAIL": "not true RESULTS_PATH=false",
+      "COUNTDOWN_FINISHED": "true",
+      "RACE_STATE": "2",
+      "DRIVE_BOUND_MSEC": "150000",
+      "DRIVEN_MSEC": "150006",
+      "LINE_STEER": "true"
+    },
+    "meaning": {
+      "LAP_COMPLETED": "True when LapManager.get_lap is at least 1. Lap increments only on an in-order crossing of checkpoint 0. That is one completed lap, not the race.",
+      "RESULTS_PATH": "True only after race_finished or when the results panel is visible. RaceManager emits race_finished only once lap reaches total_laps, then RaceScene.show_results runs. Verdant lap_count is 3 and this quick race uses that count.",
+      "why_consistent": "RACE_STATE 2 is still RACING. FINISHED is 3. The finish path did not run, so a hidden results screen is not what this log shows.",
+      "which_lap": "The log does not print the numeric lap. Completed laps were at least 1 and less than 3, so the bound ended on circuit lap 2 or 3.",
+      "can_150s_finish": "The closed path is 270.34 units, so three laps are 811.02. At top speed 22 that distance is about 36.9 seconds, and 150 seconds needs only about 5.4 units per second on average. This drive still ended in RACING after 150006 ms, so this run did not finish."
+    }
+  },
+  "notes": [
+    "Read the completed godot-headless-no-false-green log for run 39909078890. None of RACE_ENTERED, LAP_COMPLETED, CHECKPOINT_CROSSED, RESULTS_PATH, COURSE_ACCEPTED, DEVICE_RUN, or RACE_SCENE_FAIL appeared. The step redirects observer stdout and prints PASS on exit 0.",
+    "VerdantRaceSceneObserve ran from 2026-10-23T06:02:56.5026831Z to PASS at 2026-10-23T06:03:09.0325511Z (12.529868s). That duration matches the previous 12-second watch. It is not lap evidence.",
+    "windows-pilot0 run 39909078826 was still in progress on both reads, so no completed Windows log was extracted.",
+    "Job conclusion success is not a completed lap.",
+    "Run 39911949800 on e6b25a3 printed LAP_COMPLETED=true with CHECKPOINT_CROSSED=true, RESULTS_PATH=false, and RACE_STATE=2 after 150006 ms. That is one completed lap of a 3-lap race that was still racing. It is not race acceptance."
+  ]
+}

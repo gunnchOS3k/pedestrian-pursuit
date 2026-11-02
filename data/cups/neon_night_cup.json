@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "id": "neon_night_cup",
+  "display_name": "Neon Night Cup",
+  "description": "After-hours city racing under neon canopies and night markets. Cup 5 production batch \u2014 four distinct raceable courses; track art still pending.",
+  "cup_index": 5,
+  "track_ids": [
+    "lantern_corridor",
+    "mirror_boulevard",
+    "afterglow_overpass",
+    "signal_storm_yard"
+  ],
+  "points_by_position": [
+    10,
+    7,
+    5,
+    3,
+    2,
+    1
+  ]
+}

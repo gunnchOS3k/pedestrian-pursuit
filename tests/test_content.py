@@ -17,6 +17,7 @@ class WaveEAlphaContentTests(unittest.TestCase):
         self.assertEqual(validate_project(ROOT), [])
 
     def test_two_cups_eight_unique_tracks(self) -> None:
+        ## Legacy launch pair still present with 8 unique IDs.
         cups = []
         track_ids: list[str] = []
         for cup_id in ("sole_surge_cup", "stride_circuit_cup"):
@@ -25,6 +26,23 @@ class WaveEAlphaContentTests(unittest.TestCase):
             track_ids.extend(cup["track_ids"])
         self.assertEqual(len(cups), 2)
         self.assertEqual(len(set(track_ids)), 8)
+
+    def test_championship_eight_cups_thirty_two_tracks(self) -> None:
+        from validate_content import KNOWN_CUPS, CHAMPIONSHIP_TRACK_TARGET
+
+        track_ids: list[str] = []
+        self.assertEqual(len(KNOWN_CUPS), 8)
+        for cup_id in KNOWN_CUPS:
+            cup = json.loads((ROOT / f"data/cups/{cup_id}.json").read_text(encoding="utf-8"))
+            self.assertEqual(len(cup["track_ids"]), 4)
+            track_ids.extend(cup["track_ids"])
+        self.assertEqual(len(set(track_ids)), CHAMPIONSHIP_TRACK_TARGET)
+        metro = json.loads((ROOT / "data/cups/metro_motion_cup.json").read_text(encoding="utf-8"))
+        self.assertIn("sneaker_city_sprintway", metro["track_ids"])
+        art = json.loads((ROOT / "data/art/track_art_acceptance.json").read_text(encoding="utf-8"))
+        self.assertFalse(art.get("HUMAN_FUN_APPROVAL", True))
+        self.assertFalse(art.get("V1_0_0_RELEASE_AUTHORIZED", True))
+        self.assertEqual(len(art["tracks"]), 32)
 
     def test_cup_orders_are_intentional(self) -> None:
         sole = json.loads((ROOT / "data/cups/sole_surge_cup.json").read_text(encoding="utf-8"))
@@ -61,6 +79,79 @@ class WaveEAlphaContentTests(unittest.TestCase):
             data = json.loads(path.read_text(encoding="utf-8"))
             self.assertIn("material_family", data)
             self.assertGreaterEqual(len(data.get("surface_affinities", {})), 6)
+
+    def test_kinetic_sole_vehicle_garage_fifty(self) -> None:
+        reg_path = ROOT / "data/vehicles/vehicle_registry.json"
+        self.assertTrue(reg_path.exists(), "vehicle_registry.json missing")
+        reg = json.loads(reg_path.read_text(encoding="utf-8"))
+        vehicles = reg["vehicles"]
+        self.assertEqual(len(vehicles), 50)
+        ids = [v["id"] for v in vehicles]
+        self.assertEqual(len(ids), len(set(ids)))
+        playable = [v for v in vehicles if v.get("playable")]
+        stubs = [v for v in vehicles if not v.get("playable")]
+        self.assertEqual(len(playable), 50)
+        self.assertEqual(len(stubs), 0)
+        self.assertEqual(reg.get("playable_count"), 50)
+        self.assertEqual(reg.get("stub_count"), 0)
+        street = [v for v in vehicles if v.get("family_id") == "street_legends"]
+        self.assertEqual(len(street), 8)
+        for v in street:
+            self.assertTrue(v["playable"])
+            self.assertEqual(v["art_status"], "native_v1")
+            self.assertTrue((ROOT / f"data/shoes/{v['id']}.json").exists())
+        for family_id, expect in (
+            ("roller_revolution", 7),
+            ("hover_couture", 7),
+            ("elemental_amphibious", 6),
+            ("beautifully_ridiculous", 6),
+            ("gunnchos_crossover", 7),
+            ("anime_aggressors", 9),
+        ):
+            family = [v for v in vehicles if v.get("family_id") == family_id]
+            self.assertEqual(len(family), expect)
+            fingerprints = set()
+            for v in family:
+                self.assertTrue(v["playable"])
+                if family_id == "anime_aggressors":
+                    ## Tribute may stay garage-procedural or promote to native_v1 candidate.
+                    self.assertIn(v["art_status"], ("procedural_final_for_garage", "native_v1"))
+                    self.assertFalse(bool(v.get("human_commercial_art_approved", False)))
+                    self.assertTrue(str(v["movement_archetype"]).startswith("tribute_"))
+                else:
+                    self.assertEqual(v["art_status"], "native_v1")
+                self.assertTrue((ROOT / f"data/shoes/{v['id']}.json").exists())
+                if family_id in (
+                    "hover_couture",
+                    "elemental_amphibious",
+                    "beautifully_ridiculous",
+                    "gunnchos_crossover",
+                    "anime_aggressors",
+                ):
+                    contract = str(v.get("collision_contract", "")).lower()
+                    self.assertTrue("grounded" in contract or "checkpoint" in contract)
+                fp = (
+                    v["top_speed_modifier"],
+                    v["acceleration_modifier"],
+                    v["handling_modifier"],
+                    v["drift_modifier"],
+                    v["jump_modifier"],
+                    v["boost_modifier"],
+                    v["stomp_modifier"],
+                    v["material_family"],
+                )
+                self.assertNotIn(fp, fingerprints)
+                fingerprints.add(fp)
+        expected_items = {
+            "turbo_toes",
+            "lace_trap",
+            "sole_shield",
+            "pulse_horn",
+            "magnet_lace",
+            "bounce_bubble",
+        }
+        found_items = {p.stem for p in (ROOT / "data/items").glob("*.json")}
+        self.assertTrue(expected_items.issubset(found_items))
 
     def test_runners_have_gameplay_stats(self) -> None:
         roster = json.loads((ROOT / "data/racers/runner_roster.json").read_text(encoding="utf-8"))

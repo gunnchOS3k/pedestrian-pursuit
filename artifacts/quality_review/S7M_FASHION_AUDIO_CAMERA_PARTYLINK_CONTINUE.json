@@ -1,0 +1,41 @@
+{
+  "schema": "ped.s7m_fashion_audio_camera_partylink_continue.v1",
+  "wave010_untouched": true,
+  "course_false": true,
+  "human_false": true,
+  "rc2_false": true,
+  "v1_false": true,
+  "fashion": {
+    "all_family_trail_presets": 9,
+    "chase_cam_trail_fingerprint": true,
+    "kinetic_sole_trail_meta": true,
+    "cosmetic_only": true,
+    "handling_owner": "footwear",
+    "creator_wardrobe_test": "PASS"
+  },
+  "audio": {
+    "championship_track_coverage": 32,
+    "cup_theme_fallback": true,
+    "ambience_fallback": true,
+    "commercial_final_audio": false,
+    "audio_director_contract_test": "PASS"
+  },
+  "camera": {
+    "identity_coverage_test": "PASS",
+    "championship_tracks": 32,
+    "distinct_camera_identities": 32,
+    "track_art_candidate": 32,
+    "base_fov_and_max_fov_arms": true,
+    "method": "parse CameraRig.apply_course_identity arms; no CameraRig preload under --script"
+  },
+  "partylink": {
+    "capacity_test": "PASS",
+    "bots_never_count_as_humans": true,
+    "bots_count_as_humans": false,
+    "human_bot_accounting": true,
+    "field_sum_humans_plus_bots": 8,
+    "physical_eight_human_party": false
+  },
+  "notes": "Digital continue after wave010 false-green tip bb0c3da; RaceScene/wave010 gates preserved.",
+  "base_tip": "bb0c3da"
+}

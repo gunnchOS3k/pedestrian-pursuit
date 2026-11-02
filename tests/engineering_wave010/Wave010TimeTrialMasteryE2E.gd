@@ -9,8 +9,9 @@ const RACER_ID := "dash_reed"
 const SHOE_ID := "starter_soles"
 const PAIRED_TRIALS := 5
 const PAIRWISE_REQUIRED := 4
-const MAX_SIM_SEC := 90.0
-const TIME_SCALE := 20.0
+## Match Wave010RaceSceneE2E CI scale: line-steer completes ordered verdant laps at 10x.
+const MAX_SIM_SEC := 120.0
+const TIME_SCALE := 10.0
 const WIPEOUT_SLOWER_THAN_BASIC_SEC := 1.5
 const GHOST_PATH_FMT := "user://time_trial_ghost_%s.json"
 const DriverNodeScript = preload("res://tests/engineering_wave010/SyntheticInputDriverNode.gd")
@@ -576,7 +577,7 @@ func _run_time_trial(gm: Node, profile: String) -> Dictionary:
 		scene.queue_free()
 		return {"ok": false, "failures": ["missing race path"], "finish_time": -1.0}
 
-	_driver_node.start(player, race_path, profile)
+	_driver_node.start(player, race_path, profile, true)
 	# Production technique observation only — never driver intent.
 	var production := {"drift_release": 0, "manual_boost": 0, "drift_release_boost": 0}
 	var hits := {"n": 0}

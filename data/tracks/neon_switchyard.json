@@ -164,6 +164,20 @@
     "checkpoints": true,
     "shortcuts": true,
     "rails": true,
-    "visual_final": false
-  }
+    "visual_final": false,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "elevation_profile": "yard_ramps",
+  "bank_bias": 0.09,
+  "landmarks": [
+    "signal_gantry",
+    "switch_tower",
+    "neon_hoops"
+  ],
+  "camera_identity": "neon_yard_chase"
 }

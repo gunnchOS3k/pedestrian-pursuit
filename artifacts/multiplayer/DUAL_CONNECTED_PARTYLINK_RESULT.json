@@ -1,0 +1,21 @@
+{
+  "schema": "pp_dual_connected_partylink/v1",
+  "advance": "1h+7cpu \u2192 2h+6cpu BeatLink-sibling local PartyLink",
+  "allocated_human_seats": 8,
+  "connected_humans": 2,
+  "cpu_actors": 6,
+  "bots_never_count_as_humans": true,
+  "beatlink_sibling_contract_humans": 2,
+  "independent_two_process": false,
+  "physical_eight_human_party": false,
+  "moltenvk_metal_pass": true,
+  "COURSE_ACCEPTED": false,
+  "HUMAN": false,
+  "RC2": false,
+  "V1": false,
+  "results_path": true,
+  "log": "packet evidence DualConnectedPartyLinkObserve.log",
+  "notes": "PartyLink dual local seats (Player2Racer). Distinct from GAME_SESSION_DIR independent two-process and from physical 8p.",
+  "tip_sha": "e939b86d0e6aa4518a951a7b1f15a96374ad7393",
+  "requested_vs_wired": "requested may exceed BeatLink sibling; field stamps only wired\u22642"
+}

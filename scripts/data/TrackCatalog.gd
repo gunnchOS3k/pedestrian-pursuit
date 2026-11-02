@@ -1,14 +1,17 @@
 class_name TrackCatalog
 extends RefCounted
 
-## Loads and validates cup/course content before it reaches the race scene.
+## Loads and validates championship cup/course content (8 cups × 4 = 32 tracks).
 
 const DEFAULT_CUP_ID := "sole_surge_cup"
 const DEFAULT_TRACK_ID := "verdant_cascade_circuit"
 const CUP_ROOT := "res://data/cups/"
 const TRACK_ROOT := "res://data/tracks/"
-const LAUNCH_TRACK_TARGET := 8
 const CUP_TRACK_COUNT := 4
+const CHAMPIONSHIP_CUP_TARGET := 8
+const CHAMPIONSHIP_TRACK_TARGET := 32
+## Legacy digital-RC launch set size (Cups 1–2). Championship expands beyond this.
+const LAUNCH_TRACK_TARGET := 8
 
 const REQUIRED_TRACK_FIELDS := [
 	"schema_version",
@@ -27,7 +30,16 @@ const REQUIRED_TRACK_FIELDS := [
 	"checkpoint_points"
 ]
 
-const KNOWN_CUP_IDS := ["sole_surge_cup", "stride_circuit_cup"]
+const KNOWN_CUP_IDS := [
+	"sole_surge_cup",
+	"stride_circuit_cup",
+	"metro_motion_cup",
+	"kinetic_coast_cup",
+	"neon_night_cup",
+	"skyline_relay_cup",
+	"archive_relay_cup",
+	"world_wonder_grand_prix",
+]
 
 
 static func list_cup_ids() -> Array[String]:
@@ -49,6 +61,10 @@ static func list_all_track_ids() -> Array[String]:
 			seen[tid] = true
 			ids.append(tid)
 	return ids
+
+
+static func championship_track_count() -> int:
+	return list_all_track_ids().size()
 
 
 static func load_all_tracks() -> Array[Dictionary]:
@@ -96,6 +112,17 @@ static func load_tracks_for_cup(cup_id: String = DEFAULT_CUP_ID) -> Array[Dictio
 		if not track.is_empty():
 			result.append(track)
 	return result
+
+
+static func is_raceable(track: Dictionary) -> bool:
+	## Runtime raceability — independent of commercial track art.
+	var geom := str(track.get("geometry_status", "championship_raceable"))
+	return geom in [
+		"championship_upgraded",
+		"championship_raceable",
+		"championship_stub_raceable",
+		"launch_raceable",
+	]
 
 
 static func validate_cup(cup: Dictionary) -> PackedStringArray:

@@ -38,6 +38,11 @@ export/
 # Logs
 *.log
 
+# Local packaging deps (Gate 1 CI checks BeatLink out; Darwin xvfb shim is not Ubuntu xvfb)
+beatlink-party/
+tools/bin/
+tmp/
+
 # Gate 1 runtime evidence outputs
 gate1/evidence/out/**
 !gate1/evidence/out/**/.gitkeep

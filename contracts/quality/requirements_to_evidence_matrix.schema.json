@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gunnchos.com/schemas/gunnchos3k/requirements_to_evidence_matrix.v1.json",
+  "title": "gunnchOS3k Requirements-to-Evidence Matrix",
+  "description": "Local product RTM validating against GUNNCHOS3K_PVS. Not a certification artifact.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "contract_id",
+    "contract_version",
+    "product_id",
+    "honesty_flags",
+    "rows"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "contract_id": {
+      "type": "string",
+      "const": "GUNNCHOS3K_PVS"
+    },
+    "contract_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "contract_source_sha": {
+      "type": "string",
+      "description": "Git SHA of gunnchos-site (or vendored pin) where GUNNCHOS3K_PVS was read.",
+      "pattern": "^[0-9a-f]{7,40}$"
+    },
+    "product_id": {
+      "type": "string",
+      "minLength": 1,
+      "examples": [
+        "anime-aggressors",
+        "pedestrian-pursuit",
+        "beatlink-party",
+        "archive-of-life",
+        "gunnchai3k-mlv"
+      ]
+    },
+    "product_repo": {
+      "type": "string"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "honesty_flags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["HUMAN", "RC2", "V1"],
+      "properties": {
+        "HUMAN": { "type": "boolean" },
+        "RC2": { "type": "boolean" },
+        "V1": { "type": "boolean" }
+      }
+    },
+    "phase_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cursor_complete": { "$ref": "#/$defs/phaseRecord" },
+        "codex_independently_verified": { "$ref": "#/$defs/phaseRecord" },
+        "human_approval": { "$ref": "#/$defs/phaseRecord" }
+      }
+    },
+    "rows": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/rtmRow" }
+    }
+  },
+  "$defs": {
+    "phaseRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["not_started", "in_progress", "complete", "rejected", "waived"]
+        },
+        "sha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{7,40}$"
+        },
+        "actor": { "type": "string" },
+        "evidence_package": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+    "nativePhysical": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["not_applicable", "not_run", "partial", "pass", "fail", "blocked"]
+        },
+        "platforms": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "rtmRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "req_id",
+        "owner",
+        "expected_behavior",
+        "verification_method",
+        "tests",
+        "automated_evidence",
+        "native_physical",
+        "art_status",
+        "limitations",
+        "severity",
+        "sha",
+        "independent_review_status"
+      ],
+      "properties": {
+        "req_id": {
+          "type": "string",
+          "minLength": 3,
+          "pattern": "^[A-Z0-9][A-Z0-9_-]*$"
+        },
+        "owner": { "type": "string", "minLength": 1 },
+        "expected_behavior": { "type": "string", "minLength": 1 },
+        "verification_method": { "type": "string", "minLength": 1 },
+        "layers": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 7
+          },
+          "uniqueItems": true
+        },
+        "tests": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "automated_evidence": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "native_physical": { "$ref": "#/$defs/nativePhysical" },
+        "art_status": {
+          "type": "string",
+          "enum": [
+            "not_applicable",
+            "not_started",
+            "wip",
+            "review_pending",
+            "accepted",
+            "rejected"
+          ]
+        },
+        "limitations": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["blocker", "high", "medium", "low", "info"]
+        },
+        "sha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{7,40}$"
+        },
+        "independent_review_status": {
+          "type": "string",
+          "enum": ["not_started", "in_progress", "verified", "rejected", "waived"]
+        },
+        "cursor_complete_status": {
+          "type": "string",
+          "enum": ["not_started", "in_progress", "complete", "rejected"]
+        },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

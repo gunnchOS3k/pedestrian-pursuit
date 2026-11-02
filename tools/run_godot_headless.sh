@@ -69,6 +69,15 @@ run_step() {
 run_step import "$GODOT" --headless --path "$ROOT" --import
 run_step startup "$GODOT" --headless --path "$ROOT" --quit-after 2
 run_step TestRunner "$GODOT" --headless --path "$ROOT" --script res://tests/TestRunner.gd
+run_step CourseBuildSurfaceTest "$GODOT" --headless --path "$ROOT" --script res://tests/CourseBuildSurfaceTest.gd
+run_step VerdantRaceSceneObserve "$GODOT" --headless --path "$ROOT" --script res://tests/VerdantRaceSceneObserve.gd
+echo "=== VerdantRaceSceneObserve markers ==="
+if [[ -f tmp/godot-VerdantRaceSceneObserve.log ]]; then
+  grep -E '^(RACE_ENTERED|LAP_COMPLETED|CHECKPOINT_CROSSED|RESULTS_PATH|COURSE_ACCEPTED|DEVICE_RUN|RACE_STATE|TRACK_ID|LAP_COUNT|LAP_COUNT_RUNTIME|COUNTDOWN_FINISHED|DRIVE_BOUND_MSEC|DRIVEN_MSEC|LINE_STEER|INPUT_PATH)=|^RACE_SCENE_FAIL|^COURSE_OBSERVE_' tmp/godot-VerdantRaceSceneObserve.log || true
+else
+  echo "OBSERVER_LOG=absent"
+fi
+python3 tests/verdant_race_acceptance_gate.py tmp/godot-VerdantRaceSceneObserve.log
 run_step G2C6RuntimeTest "$GODOT" --headless --path "$ROOT" --script res://tests/G2C6RuntimeTest.gd
 run_step CupFlowTest "$GODOT" --headless --path "$ROOT" --script res://tests/CupFlowTest.gd
 run_step BetaProductStateTest "$GODOT" --headless --path "$ROOT" --script res://tests/BetaProductStateTest.gd

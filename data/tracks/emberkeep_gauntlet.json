@@ -162,6 +162,21 @@
     "checkpoints": true,
     "shortcuts": true,
     "rails": true,
-    "visual_final": false
-  }
+    "visual_final": true,
+    "kinetic_sole_pass": "emberkeep_bolt_harbor_v1",
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "elevation_profile": "forge_steps",
+  "bank_bias": 0.1,
+  "landmarks": [
+    "forge_towers",
+    "basalt_walls",
+    "ember_braziers"
+  ],
+  "camera_identity": "ember_chase"
 }

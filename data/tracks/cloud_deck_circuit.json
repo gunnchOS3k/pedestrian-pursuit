@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "id": "cloud_deck_circuit",
+  "display_name": "Cloud Deck Circuit",
+  "lap_count": 3,
+  "difficulty": "advanced",
+  "theme": "cloud_deck_circuit",
+  "description": "Cloud-deck switchbacks above the fog line with observation spires and a mist canyon cut.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "lane_width": 15.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#3E4A5C",
+  "accent_color": "#C8E8FF",
+  "sky_color": "#7A98B8",
+  "backdrop_color": "#2C3648",
+  "path_points": [
+    [
+      52.2,
+      1.725,
+      0.0
+    ],
+    [
+      44.59,
+      2.31,
+      14.05
+    ],
+    [
+      27.06,
+      2.4,
+      28.09
+    ],
+    [
+      8.57,
+      1.889,
+      37.81
+    ],
+    [
+      -8.57,
+      1.111,
+      37.81
+    ],
+    [
+      -27.06,
+      0.6,
+      28.09
+    ],
+    [
+      -44.59,
+      0.69,
+      14.05
+    ],
+    [
+      -52.2,
+      1.275,
+      0.0
+    ],
+    [
+      -44.59,
+      1.905,
+      -14.05
+    ],
+    [
+      -27.06,
+      2.118,
+      -28.09
+    ],
+    [
+      -8.57,
+      1.786,
+      -37.81
+    ],
+    [
+      8.57,
+      1.214,
+      -37.81
+    ],
+    [
+      27.06,
+      0.882,
+      -28.09
+    ],
+    [
+      44.59,
+      1.095,
+      -14.05
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 12,
+      "size": [
+        5,
+        10
+      ],
+      "speed_bonus": 1.18
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 4,
+      "size": [
+        7,
+        9
+      ],
+      "speed_multiplier": 0.78,
+      "terrain_name": "cloud_deck_mist",
+      "handling_multiplier": 0.9,
+      "color": "#506070"
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 7,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    },
+    {
+      "point_index": 11,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    }
+  ],
+  "item_boxes": [
+    2,
+    4,
+    6,
+    10
+  ],
+  "boost_pickups": [
+    1,
+    5,
+    9
+  ],
+  "rail_segments": [
+    3,
+    9
+  ],
+  "shortcut_routes": [
+    {
+      "id": "cloud_deck_circuit_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 8,
+      "risk": "high",
+      "ai_preference": 0.28,
+      "description": "Mist canyon cut between hairpins \u2014 fog grit if you miss."
+    }
+  ],
+  "landmarks": [
+    "obs_spire",
+    "cloud_rail",
+    "deck_beacon"
+  ],
+  "elevation_profile": "cloud_steps",
+  "bank_bias": 0.12,
+  "geometry_note": "Skyline Relay upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. obs spire / deck beacon / mist pylons. Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn.",
+  "camera_identity": "cloud_deck_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "Skyline Relay collision hazards are off-line props; do not claim human commercial art approval."
+  ]
+}

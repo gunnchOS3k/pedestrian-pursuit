@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "id": "metro_motion_cup",
+  "display_name": "Metro Motion Cup",
+  "description": "Championship Cup 3 \u2014 Sneaker City and three original metro courses with distinct raceable geometry.",
+  "cup_index": 3,
+  "track_ids": [
+    "sneaker_city_sprintway",
+    "metro_pulse_loop",
+    "crosswalk_canyon",
+    "transit_spiral"
+  ],
+  "points_by_position": [
+    10,
+    7,
+    5,
+    3,
+    2,
+    1
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "id": "saltline_boardwalk",
+  "display_name": "Saltline Boardwalk",
+  "lap_count": 3,
+  "difficulty": "beginner",
+  "theme": "saltline_boardwalk",
+  "description": "Seaside boardwalk oval with salt-spray banks, pier arches, and a risky infield dune cut.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "lane_width": 15.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#3A6A7A",
+  "accent_color": "#7EE0F2",
+  "sky_color": "#8EC8E8",
+  "backdrop_color": "#2F5A6A",
+  "path_points": [
+    [
+      54.0,
+      1.69,
+      0.0
+    ],
+    [
+      46.77,
+      2.4,
+      15.0
+    ],
+    [
+      27.0,
+      2.21,
+      25.98
+    ],
+    [
+      0.0,
+      1.31,
+      30.0
+    ],
+    [
+      -27.0,
+      0.6,
+      25.98
+    ],
+    [
+      -46.77,
+      0.79,
+      15.0
+    ],
+    [
+      -54.0,
+      1.69,
+      0.0
+    ],
+    [
+      -46.77,
+      2.4,
+      -15.0
+    ],
+    [
+      -27.0,
+      2.21,
+      -25.98
+    ],
+    [
+      -0.0,
+      1.31,
+      -30.0
+    ],
+    [
+      27.0,
+      0.6,
+      -25.98
+    ],
+    [
+      46.77,
+      0.79,
+      -15.0
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 1,
+      "size": [
+        6,
+        12
+      ],
+      "speed_bonus": 1.18
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 4,
+      "size": [
+        8,
+        10
+      ],
+      "speed_multiplier": 0.82,
+      "terrain_name": "salt_spray",
+      "handling_multiplier": 0.9,
+      "color": "#4A7A80"
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 8,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    },
+    {
+      "point_index": 11,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    }
+  ],
+  "item_boxes": [
+    2,
+    4,
+    6,
+    9
+  ],
+  "boost_pickups": [
+    1,
+    5,
+    7
+  ],
+  "rail_segments": [
+    3,
+    9
+  ],
+  "shortcut_routes": [
+    {
+      "id": "saltline_boardwalk_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 7,
+      "risk": "medium",
+      "ai_preference": 0.32,
+      "description": "Cut under the pier through soft dune sand."
+    }
+  ],
+  "landmarks": [
+    "pier_arch",
+    "salt_spray_posts",
+    "boardwalk_shed"
+  ],
+  "elevation_profile": "boardwalk_rolls",
+  "bank_bias": 0.07,
+  "geometry_note": "Kinetic Coast upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn.",
+  "camera_identity": "saltline_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "Coast collision hazards are off-line rocks; do not claim human commercial art approval."
+  ]
+}

@@ -3,6 +3,10 @@ const _TrackCatalog = preload("res://scripts/data/TrackCatalog.gd")
 const _RunnerProfile = preload("res://scripts/data/RunnerProfile.gd")
 const CrashWatchdogScript = preload("res://scripts/rc/CrashWatchdog.gd")
 const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
+const VehicleCatalogScript = preload("res://scripts/data/VehicleCatalog.gd")
+const AppearanceSyncScript = preload("res://scripts/data/AppearanceSync.gd")
+const CreatedRacerStoreScript = preload("res://scripts/data/CreatedRacerStore.gd")
+const WardrobeCatalogScript = preload("res://scripts/data/WardrobeCatalog.gd")
 
 ## Wires together track, racers, race manager, HUD, and results.
 ## Assigns named character-life profiles so every racer reads as a person.
@@ -34,12 +38,20 @@ func _ready() -> void:
 	_roster = _RunnerProfile.load_roster()
 	race_manager.add_to_group("race_manager")
 	camera_rig.set_target(player)
+	if camera_rig != null and camera_rig.has_method("apply_course_identity"):
+		camera_rig.apply_course_identity(str(course_data.get("camera_identity", "")))
 	var checkpoints: Array = track.get_checkpoints()
 	var start_xf: Transform3D = track.get_start_transform()
 	player.global_transform = start_xf
 	var player_profile = _pick_player_profile()
 	if "shoe_id" in player:
-		player.shoe_id = GameManager.selected_shoe_id
+		var chosen := str(GameManager.selected_shoe_id)
+		if not ShoeDataScript.is_playable(chosen):
+			chosen = VehicleCatalogScript.signature_vehicle_for_runner(str(player_profile.id))
+			if chosen.is_empty():
+				chosen = "reedline_circlers"
+			GameManager.selected_shoe_id = chosen
+		player.shoe_id = chosen
 	if "racer_id" in player:
 		player.racer_id = str(player_profile.id)
 	GameManager.selected_runner_id = str(player_profile.id)
@@ -51,20 +63,31 @@ func _ready() -> void:
 	var racers: Array = [player]
 	var ai_count := GameManager.ai_field_size
 	var local_p2: Node = null
+	## Eight-racer grid offsets (player + up to 7 AI). Distinct lanes; no stacked seats.
 	var ai_offsets := [
 		Vector3(2.5, 0, 3.0),
 		Vector3(-2.5, 0, 4.5),
 		Vector3(1.5, 0, 6.0),
 		Vector3(-1.5, 0, 7.5),
+		Vector3(3.0, 0, 9.0),
+		Vector3(-3.0, 0, 10.5),
+		Vector3(0.0, 0, 12.0),
 	]
-	var ai_tiers := ["rookie", "standard", "ace", "standard"]
+	var ai_tiers := ["rookie", "standard", "ace", "standard", "rookie", "ace", "standard"]
 	if GameManager.ai_eval_mode and not str(GameManager.ai_eval_tier).is_empty():
-		ai_tiers = [str(GameManager.ai_eval_tier), str(GameManager.ai_eval_tier), str(GameManager.ai_eval_tier), str(GameManager.ai_eval_tier)]
+		var t := str(GameManager.ai_eval_tier)
+		ai_tiers = [t, t, t, t, t, t, t]
 	_assign_profile(player, player_profile)
 	_assigned_profiles = [player_profile]
+	var field_roster: Dictionary = {}
+	if GameManager.is_party_link() and GameManager.has_meta("party_link_runtime_roster"):
+		field_roster = GameManager.get_meta("party_link_runtime_roster")
+	_stamp_seat_ownership(player, 0, field_roster)
 
-	# Local MP: second human + vertical split-screen cameras.
-	if GameManager.is_local_mp():
+	# Second local human: couch Local MP, or PartyLink connected>=2 (BeatLink sibling max).
+	# Does NOT invent 8 humans; physical 8p remains owner/QA (PP-RTM-08).
+	var party_extra := GameManager.is_party_link() and int(GameManager.party_link_connected_humans) >= 2
+	if GameManager.is_local_mp() or party_extra:
 		local_p2 = AI_SCENE.instantiate()
 		local_p2.name = "Player2Racer"
 		add_child(local_p2)
@@ -86,10 +109,17 @@ func _ready() -> void:
 		local_p2.setup_for_race(p2_start)
 		if local_p2.has_method("setup_rails"):
 			local_p2.setup_rails(track.get_rail_world_points())
+		## Seat 1 is a second connected human — not CPU, not physical 8p.
+		local_p2.set_meta("seat_index", 1)
+		local_p2.set_meta("seat_owner", "human")
+		local_p2.set_meta("input_ownership", "human_input")
+		local_p2.set_meta("counts_as_human_participant", true)
+		local_p2.set_meta("allocated_human_capacity", true)
 		racers.append(local_p2)
-		ai_count = mini(ai_count, 2)
-		_setup_local_mp_split(local_p2)
-
+		if GameManager.is_local_mp():
+			ai_count = mini(ai_count, 2)
+			_setup_local_mp_split(local_p2)
+		## PartyLink dual keeps full 8-racer field (no split) — remaining seats are CPU.
 	for i in ai_count:
 		var ai: Node = ai_racer if i == 0 and not GameManager.is_local_mp() else AI_SCENE.instantiate()
 		if i > 0 or GameManager.is_local_mp():
@@ -98,14 +128,19 @@ func _ready() -> void:
 		elif i == 0 and ai_racer.get_parent() == null:
 			pass
 		var profile = _pick_ai_profile(i + 1)
-		_assign_profile(ai, profile)
-		_assigned_profiles.append(profile)
 		if "racer_id" in ai:
 			ai.racer_id = str(profile.id)
 		if "shoe_id" in ai:
-			# AI field rotates footwear so material affinities show in pack races.
-			var shoe_ids := ShoeDataScript.all_ids()
-			ai.shoe_id = shoe_ids[(i + 1) % shoe_ids.size()]
+			# Pair each AI with their signature Street Legend footwear (not random extremes).
+			var sig := VehicleCatalogScript.signature_vehicle_for_runner(str(profile.id))
+			if sig.is_empty() or not ShoeDataScript.is_playable(sig):
+				var shoe_ids := ShoeDataScript.race_selectable_ids()
+				if shoe_ids.is_empty():
+					shoe_ids = ShoeDataScript.all_ids()
+				sig = shoe_ids[(i + 1) % shoe_ids.size()]
+			ai.shoe_id = sig
+		_assign_profile(ai, profile)
+		_assigned_profiles.append(profile)
 		var offset: Vector3 = ai_offsets[mini(i, ai_offsets.size() - 1)]
 		var ai_start := start_xf.translated_local(offset)
 		ai.global_transform = ai_start
@@ -120,6 +155,11 @@ func _ready() -> void:
 			ai.configure_shortcuts(track.get_shortcut_routes())
 		if ai.has_method("notify_shoe_changed"):
 			ai.notify_shoe_changed()
+		## Seat index: player=0; local P2 (Local MP or PartyLink dual) occupies 1; AI fill rest.
+		var seat_i := i + 1
+		if local_p2 != null:
+			seat_i = i + 2
+		_stamp_seat_ownership(ai, seat_i, field_roster)
 		racers.append(ai)
 
 	if GameManager.is_time_trial() and ai_racer != null:
@@ -132,6 +172,14 @@ func _ready() -> void:
 		ai_racer.movement_enabled = false
 
 	_setup_time_trial_ghost()
+	## Visual budget hooks for crowded fields (LOD only — 8p not claimed complete).
+	apply_field_visual_budget(racers.size())
+	_try_apply_session_peer_appearance(local_p2)
+	## Publish honest field ownership for observers / HUD — never invents humans.
+	var ownership_summary := _field_ownership_summary(racers, field_roster)
+	set_meta("field_ownership", ownership_summary)
+	if GameManager != null:
+		GameManager.set_meta("last_field_ownership", ownership_summary)
 
 	# Time Trial product design: single-lap mastery/ghost run (not accept_force_laps).
 	# Documented in docs/engineering_wave010/CANONICAL_GAMEPLAY_MAP.md (TIME_TRIAL_LAP_COUNT=1).
@@ -299,9 +347,201 @@ func _assign_profile(racer: Node, profile) -> void:
 	racer.set_meta("runner_profile_id", profile.id)
 	racer.set_meta("runner_display_name", profile.display_name)
 	var visual = racer.get_node_or_null("RacerVisual")
+	_apply_created_racer_cosmetics(racer, visual, profile)
+	_apply_vehicle_presentation(racer, visual)
 	if visual != null and visual.has_method("apply_profile"):
+		## Vehicle id already stamped without rebuild — single mesh rebuild here.
 		visual.apply_profile(profile)
 	_wire_racer_visual_hooks(racer, visual)
+
+
+func _apply_created_racer_cosmetics(racer: Node, visual: Node, profile) -> void:
+	## Optional created-racer path — cosmetic only; collision/stats unchanged.
+	if racer == null or visual == null:
+		return
+	## Peer-synced appearance payload (multiplayer) takes precedence when stamped.
+	if racer.has_meta("appearance_payload"):
+		var payload: Dictionary = racer.get_meta("appearance_payload")
+		if AppearanceSyncScript.apply_to_visual(visual, payload):
+			if profile != null:
+				profile.display_name = str(payload.get("display_name", profile.display_name))
+			racer.set_meta("created_racer_id", str(payload.get("racer_id", "")))
+			racer.set_meta("runner_display_name", str(payload.get("display_name", "")))
+			racer.set_meta("outfit_id", str(payload.get("outfit_id", "")))
+			visual.set_meta("created_racer_id", str(payload.get("racer_id", "")))
+			visual.set_meta("outfit_id", str(payload.get("outfit_id", "")))
+			var foot_peer := str(payload.get("footwear_vehicle_id", ""))
+			if not foot_peer.is_empty() and "shoe_id" in racer:
+				racer.shoe_id = foot_peer
+			return
+	if not GameManager.has_meta("created_racer_id"):
+		return
+	var active: Dictionary = CreatedRacerStoreScript.get_active()
+	if active.is_empty():
+		return
+	if str(active.get("id", "")) != str(GameManager.get_meta("created_racer_id")):
+		return
+	if profile != null:
+		profile.display_name = str(active.get("display_name", profile.display_name))
+	racer.set_meta("created_racer_id", str(active.get("id", "")))
+	racer.set_meta("runner_display_name", str(active.get("display_name", "")))
+	var outfit_id := str(active.get("outfit_id", "metro_pulse_default"))
+	racer.set_meta("outfit_id", outfit_id)
+	var outfit: Dictionary = CreatedRacerStoreScript.get_outfit(outfit_id)
+	var slots: Dictionary = outfit.get("slots", {})
+	if slots.is_empty():
+		var preset: Dictionary = WardrobeCatalogScript.preset(outfit_id)
+		slots = preset.get("slots", {})
+	var packed: Dictionary = AppearanceSyncScript.pack_from_created_racer(active, slots)
+	AppearanceSyncScript.apply_to_visual(visual, packed)
+	visual.set_meta("created_racer_id", str(active.get("id", "")))
+	visual.set_meta("outfit_id", outfit_id)
+	var foot := str(active.get("footwear_vehicle_id", ""))
+	if not foot.is_empty() and "shoe_id" in racer:
+		racer.shoe_id = foot
+	## Publish local appearance for peer sync when a session dir is present.
+	var session_dir := OS.get_environment("GAME_SESSION_DIR").strip_edges()
+	if not session_dir.is_empty():
+		var role := "host"
+		if "local_player_index" in racer and int(racer.local_player_index) == 1:
+			role = "guest"
+		AppearanceSyncScript.write_payload(session_dir.path_join("sync/%s_appearance.json" % role), packed)
+
+
+func apply_peer_appearance_payload(racer: Node, payload: Dictionary) -> bool:
+	## Apply a peer cosmetic payload mid-session (multiplayer sync).
+	if racer == null or payload.is_empty():
+		return false
+	racer.set_meta("appearance_payload", payload)
+	var visual = racer.get_node_or_null("RacerVisual")
+	var ok: bool = AppearanceSyncScript.apply_to_visual(visual, payload)
+	if visual != null and visual.has_method("apply_profile") and visual.get("profile") != null:
+		## Rebuild after stamping cosmetics so peer sees correct outfit.
+		var p = visual.get("profile")
+		p.display_name = str(payload.get("display_name", p.display_name))
+		visual.apply_profile(p)
+	racer.set_meta("created_racer_id", str(payload.get("racer_id", "")))
+	racer.set_meta("runner_display_name", str(payload.get("display_name", "")))
+	racer.set_meta("outfit_id", str(payload.get("outfit_id", "")))
+	if visual != null:
+		visual.set_meta("created_racer_id", str(payload.get("racer_id", "")))
+		visual.set_meta("outfit_id", str(payload.get("outfit_id", "")))
+	return ok
+
+
+func apply_field_visual_budget(racer_count: int) -> void:
+	## Eight-racer visual budget hooks — LOD reduction only; does not claim 8p complete.
+	var lod := 0
+	if racer_count >= 8:
+		lod = 2
+	elif racer_count >= 5:
+		lod = 1
+	for child in get_children():
+		var visual = child.get_node_or_null("RacerVisual") if child != null else null
+		if visual != null and visual.has_method("set_visual_lod"):
+			visual.set_visual_lod(lod)
+
+
+func _stamp_seat_ownership(racer: Node, seat_index: int, roster: Dictionary) -> void:
+	## Honest control labels: human_input vs cpu. Allocated ≠ connected ≠ physical 8p.
+	if racer == null:
+		return
+	var seats: Array = roster.get("seats", []) if not roster.is_empty() else []
+	var entry: Dictionary = {}
+	if seat_index >= 0 and seat_index < seats.size() and typeof(seats[seat_index]) == TYPE_DICTIONARY:
+		entry = seats[seat_index]
+	var owner := "cpu"
+	var control := "cpu"
+	var counts_human := false
+	if not entry.is_empty():
+		owner = str(entry.get("owner", "cpu"))
+		control = str(entry.get("control", "cpu"))
+		counts_human = bool(entry.get("counts_as_human_participant", false))
+	elif seat_index == 0:
+		## Non-PartyLink quick race: seat 0 is the local human; others remain CPU.
+		owner = "human"
+		control = "human_input"
+		counts_human = true
+	racer.set_meta("seat_index", seat_index)
+	racer.set_meta("seat_owner", owner)
+	racer.set_meta("input_ownership", control)
+	racer.set_meta("counts_as_human_participant", counts_human)
+	racer.set_meta("allocated_human_capacity", bool(entry.get("allocated_human_capacity", seat_index == 0)))
+
+
+func _field_ownership_summary(racers: Array, roster: Dictionary) -> Dictionary:
+	var rows: Array = []
+	var connected := 0
+	var cpu := 0
+	for racer in racers:
+		if racer == null:
+			continue
+		var human := bool(racer.get_meta("counts_as_human_participant")) if racer.has_meta("counts_as_human_participant") else false
+		if human:
+			connected += 1
+		else:
+			cpu += 1
+		rows.append({
+			"seat": int(racer.get_meta("seat_index")) if racer.has_meta("seat_index") else -1,
+			"owner": str(racer.get_meta("seat_owner")) if racer.has_meta("seat_owner") else "unknown",
+			"control": str(racer.get_meta("input_ownership")) if racer.has_meta("input_ownership") else "unknown",
+			"counts_as_human_participant": human,
+			"racer_id": str(racer.get("racer_id")) if "racer_id" in racer else "",
+		})
+	## Independent two-client race authority: only when GAME_SESSION_DIR hosts a
+	## real host/guest process pair (tools/run_game_session_race.sh). Never invent
+	## 8 humans; PartyLink eight-racer remains connected=1 + cpu=7 unless seats say otherwise.
+	var session_dir := OS.get_environment("GAME_SESSION_DIR").strip_edges()
+	var independent_two := (
+		not session_dir.is_empty()
+		and GameManager != null
+		and GameManager.is_local_mp()
+		and connected >= 2
+	)
+	return {
+		"schema": "pp_field_ownership/v1",
+		"actor_count": racers.size(),
+		"connected_humans": connected,
+		"cpu_actors": cpu,
+		"allocated_human_seats": int(roster.get("allocated_human_seats", 0)),
+		"physical_eight_human_party": false,
+		"independent_two_client": independent_two,
+		"bots_never_count_as_humans": true,
+		"moltenvk_metal_pass": false,
+		"COURSE_ACCEPTED": false,
+		"seats": rows,
+	}
+
+
+func _try_apply_session_peer_appearance(guest_racer: Node) -> void:
+	## Independent clients: host applies guest cosmetic payload when present.
+	var session_dir := OS.get_environment("GAME_SESSION_DIR").strip_edges()
+	if session_dir.is_empty() or guest_racer == null:
+		return
+	var guest_payload: Dictionary = AppearanceSyncScript.read_payload(
+		session_dir.path_join("sync/guest_appearance.json")
+	)
+	if not guest_payload.is_empty():
+		apply_peer_appearance_payload(guest_racer, guest_payload)
+
+
+func _apply_vehicle_presentation(racer: Node, visual: Node) -> void:
+	if racer == null:
+		return
+	var shoe_id := ""
+	if "shoe_id" in racer:
+		shoe_id = str(racer.shoe_id)
+	if shoe_id.is_empty():
+		shoe_id = str(GameManager.selected_shoe_id)
+	racer.set_meta("vehicle_id", shoe_id)
+	racer.set_meta("movement_archetype", ShoeDataScript.movement_archetype(shoe_id))
+	racer.set_meta("vehicle_art_status", VehicleCatalogScript.art_status(shoe_id))
+	racer.set_meta("vehicle_playable", ShoeDataScript.is_playable(shoe_id))
+	## Handling feedback cue — archetype scalar for HUD / camera lean (hitbox unchanged).
+	var shoe := ShoeDataScript.load_by_id(shoe_id)
+	racer.set_meta("handling_feedback", float(shoe.get("handling_modifier", 1.0)))
+	if visual != null and visual.has_method("set_vehicle_id"):
+		visual.set_vehicle_id(shoe_id, false)
 
 
 func _wire_racer_visual_hooks(racer: Node, visual: Node) -> void:

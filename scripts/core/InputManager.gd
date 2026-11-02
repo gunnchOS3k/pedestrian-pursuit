@@ -68,8 +68,12 @@ func get_steer() -> float:
 		if Input.get_connected_joypads().size() > 0:
 			steer_p1 += Input.get_joy_axis(0, JOY_AXIS_LEFT_X)
 		steer_p1 = clampf(steer_p1, -1.0, 1.0)
+		# Headless host input. P2 keeps p2_* actions and does not read this.
+		if absf(steer_p1) < 0.05 and absf(_touch_steer) > 0.05:
+			steer_p1 = _touch_steer
+			last_active_source = InputSource.TOUCH
 		_note_digital_source(steer_p1)
-		return steer_p1
+		return clampf(steer_p1, -1.0, 1.0)
 	var steer := Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	if absf(_touch_steer) > absf(steer):
 		steer = _touch_steer

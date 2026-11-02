@@ -134,6 +134,21 @@
     "checkpoints": true,
     "shortcuts": true,
     "rails": true,
-    "visual_final": false
-  }
+    "visual_final": true,
+    "kinetic_sole_pass": "verdant_dash_reed_v1",
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "elevation_profile": "cascade_rise",
+  "bank_bias": 0.08,
+  "landmarks": [
+    "mist_columns",
+    "start_arch",
+    "river_bank"
+  ],
+  "camera_identity": "cascade_chase"
 }

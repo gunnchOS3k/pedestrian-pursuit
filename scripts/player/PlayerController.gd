@@ -22,6 +22,9 @@ var terrain_speed_multiplier: float = 1.0
 var terrain_handling_multiplier: float = 1.0
 var terrain_name: String = "standard"
 var movement_enabled: bool = true
+var _remote_steer: float = 0.0
+var _remote_accelerate: bool = false
+var _remote_input: bool = false
 var shield_active: bool = false
 var _slow_timer: float = 0.0
 var _start_boost_multiplier: float = 1.0
@@ -212,6 +215,8 @@ func _handle_ground_movement(delta: float, steer: float) -> void:
 		if not drift_system.is_drifting:
 			if not drift_system.start_drift(horizontal_speed, steer):
 				drifting = false
+			elif is_player:
+				_pose_visual("drift", 0.35)
 		if drifting and drift_system.is_drifting:
 			state_machine.set_state(state_machine.State.DRIFT)
 			drift_system.update_drift(delta, steer, drift_ctrl, drift_charge_mult, horizontal_speed)
@@ -423,12 +428,21 @@ func _do_jump() -> void:
 	state_machine.set_state(state_machine.State.AIR)
 	_jump_buffer = 0.0
 	_coyote_timer = 0.0
+	_pose_visual("jump", 0.4)
 	if TelemetryBus != null:
 		TelemetryBus.record("jump", {"racer_id": racer_id})
 
 
+func set_remote_drive(steer: float, accelerate: bool) -> void:
+	_remote_input = true
+	_remote_steer = clampf(steer, -1.0, 1.0)
+	_remote_accelerate = accelerate
+
+
 func _get_steer() -> float:
 	if is_player:
+		if local_player_index == 1 and _remote_input:
+			return _remote_steer
 		if local_player_index == 1:
 			var steer := Input.get_action_strength("p2_move_right") - Input.get_action_strength("p2_move_left")
 			# Prefer gamepad 1 when present.
@@ -441,6 +455,8 @@ func _get_steer() -> float:
 
 func _get_accelerate_input() -> bool:
 	if is_player:
+		if local_player_index == 1 and _remote_input:
+			return _remote_accelerate
 		if local_player_index == 1:
 			if Input.is_action_pressed("p2_accelerate"):
 				return true
@@ -570,9 +586,11 @@ func _on_drift_released(multiplier: float, tier: int) -> void:
 func _on_trick_landed(success: bool, reward: float, trick_id: String = "", combo: int = 0) -> void:
 	if success:
 		boost_system.add_boost(reward, "trick")
+		_pose_visual("trick", 0.45)
 	elif reward < 0.0:
 		# Single penalty path — add_boost already clamps; do not also mutate current_boost.
 		boost_system.add_boost(reward, "trick_fail")
+		_pose_visual("stutter", 0.4)
 	if TelemetryBus != null:
 		TelemetryBus.record("trick", {
 			"success": success,
@@ -580,6 +598,13 @@ func _on_trick_landed(success: bool, reward: float, trick_id: String = "", combo
 			"combo": combo,
 			"racer_id": racer_id,
 		})
+
+
+func _pose_visual(state: String, duration: float = 0.4) -> void:
+	## Presentation only — does not change physics authority.
+	var visual := get_node_or_null("RacerVisual")
+	if visual != null and visual.has_method("set_pose_state"):
+		visual.set_pose_state(state, duration)
 
 
 func _emit_movement_telemetry(movement_state: String) -> void:

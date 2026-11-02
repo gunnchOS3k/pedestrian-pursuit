@@ -1,0 +1,41 @@
+{
+  "cups": 8,
+  "tracks": 32,
+  "raceable": 32,
+  "geometry": {
+    "championship_upgraded": 32,
+    "championship_raceable": 0,
+    "championship_stub_raceable": 0
+  },
+  "final_track_art": {
+    "track_art_candidate": 32,
+    "track_art_pending": 0
+  },
+  "human_approvals_false": true,
+  "racing_camera_quality_pass": "procedural_deepened_cups_1_8_per_track_chase_accent",
+  "env_racing_feel_pass": "cups_3_8_landmark_sculpt_plus_pickup_density_boost_feel_no_camera_repeat",
+  "production_batch": {
+    "cups_1_2_upgraded": 8,
+    "cup_3_metro_motion_upgraded_candidates": 4,
+    "cup_4_kinetic_coast_upgraded_candidates": 4,
+    "cup_5_neon_night_upgraded_candidates": 4,
+    "cup_6_skyline_relay_upgraded_candidates": 4,
+    "cup_7_archive_relay_upgraded_candidates": 4,
+    "cup_8_world_wonder_upgraded_candidates": 4,
+    "stubs_remaining": 0
+  },
+  "catalog_rebuild_this_pass": false,
+  "pvs_rtm": {
+    "contract": "GUNNCHOS3K_PVS@1.0.0",
+    "contract_source_sha": "45b456617002569c33a5a27fe30d5cf8be5a7032",
+    "canonical": "artifacts/quality_review/REQUIREMENTS_TO_EVIDENCE_MATRIX.json",
+    "independent_review": "not_started"
+  },
+  "next_cup_batch": "human course/fun/art review still required; commercial approvals remain false",
+  "remaining_gaps": "commercial final-art approvals 0; physical 8p human party + Mac MoltenVK still blocked; cups 3–8 multi-track full-race CI matrix open; HUMAN_FUN/COURSE false; Cursor Complete not claimed",
+  "not_v1": true,
+  "HUMAN_FUN_APPROVAL": false,
+  "HUMAN_COURSE_APPROVAL": false,
+  "RC2_READY": false,
+  "V1_0_0_RELEASE_AUTHORIZED": false
+}

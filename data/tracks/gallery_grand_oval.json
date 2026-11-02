@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "id": "gallery_grand_oval",
+  "display_name": "Gallery Grand Oval",
+  "lap_count": 3,
+  "difficulty": "intermediate",
+  "theme": "gallery_grand_oval",
+  "description": "Grand gallery oval under skylight banks and frame pylons \u2014 original tribute exhibition court.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "lane_width": 15.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#4A4852",
+  "accent_color": "#D8C8A8",
+  "sky_color": "#7A7888",
+  "backdrop_color": "#2E2C36",
+  "path_points": [
+    [
+      52.0,
+      1.716,
+      0.0
+    ],
+    [
+      42.45,
+      2.287,
+      15.62
+    ],
+    [
+      28.63,
+      2.4,
+      28.15
+    ],
+    [
+      10.97,
+      2.194,
+      35.1
+    ],
+    [
+      -10.97,
+      2.097,
+      35.1
+    ],
+    [
+      -28.63,
+      2.127,
+      28.15
+    ],
+    [
+      -42.45,
+      1.896,
+      15.62
+    ],
+    [
+      -52.0,
+      1.284,
+      0.0
+    ],
+    [
+      -42.45,
+      0.713,
+      -15.62
+    ],
+    [
+      -28.63,
+      0.6,
+      -28.15
+    ],
+    [
+      -10.97,
+      0.806,
+      -35.1
+    ],
+    [
+      10.97,
+      0.903,
+      -35.1
+    ],
+    [
+      28.63,
+      0.873,
+      -28.15
+    ],
+    [
+      42.45,
+      1.104,
+      -15.62
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 0,
+      "size": [
+        6,
+        14
+      ],
+      "speed_bonus": 1.2
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 6,
+      "size": [
+        8,
+        10
+      ],
+      "speed_multiplier": 0.82,
+      "terrain_name": "gallery_wax",
+      "handling_multiplier": 0.9,
+      "color": "#5A5548"
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 11,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    },
+    {
+      "point_index": 3,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    }
+  ],
+  "item_boxes": [
+    2,
+    4,
+    7,
+    11
+  ],
+  "boost_pickups": [
+    1,
+    5,
+    8
+  ],
+  "rail_segments": [
+    4,
+    10
+  ],
+  "shortcut_routes": [
+    {
+      "id": "gallery_grand_oval_cut",
+      "entry_point_index": 3,
+      "exit_point_index": 9,
+      "risk": "medium",
+      "ai_preference": 0.3,
+      "description": "Courtyard chord under the skylight \u2014 bench collision if you miss."
+    }
+  ],
+  "landmarks": [
+    "skylight_bank",
+    "frame_pylon",
+    "gallery_bench"
+  ],
+  "elevation_profile": "gallery_banks",
+  "bank_bias": 0.1,
+  "geometry_note": "Archive Relay upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. skylight bank / gallery benches. Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn.",
+  "tribute_note": "Archive of Life crossover is fictional exhibition theming only \u2014 original gunnchOS tribute, no fabricated research claims.",
+  "camera_identity": "gallery_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "Archive Relay collision hazards are off-line props; do not claim human commercial art approval."
+  ]
+}

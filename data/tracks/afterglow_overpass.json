@@ -1,0 +1,182 @@
+{
+  "schema_version": 1,
+  "id": "afterglow_overpass",
+  "display_name": "Afterglow Overpass",
+  "lap_count": 3,
+  "difficulty": "intermediate",
+  "theme": "afterglow_overpass",
+  "description": "Elevated afterglow overpass with sunset neon rails, ramp spans, and a underpass sandbar cut.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "lane_width": 15.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#2A1830",
+  "accent_color": "#FF5CA8",
+  "sky_color": "#1A1020",
+  "backdrop_color": "#140C18",
+  "path_points": [
+    [
+      48.0,
+      0.901,
+      0.0
+    ],
+    [
+      40.0,
+      1.12,
+      22.0
+    ],
+    [
+      18.0,
+      2.4,
+      30.0
+    ],
+    [
+      0.0,
+      2.4,
+      30.0
+    ],
+    [
+      -18.0,
+      0.901,
+      30.0
+    ],
+    [
+      -40.0,
+      0.675,
+      22.0
+    ],
+    [
+      -48.0,
+      0.6,
+      0.0
+    ],
+    [
+      -40.0,
+      0.713,
+      -22.0
+    ],
+    [
+      -18.0,
+      2.204,
+      -30.0
+    ],
+    [
+      0.0,
+      2.204,
+      -30.0
+    ],
+    [
+      18.0,
+      0.901,
+      -30.0
+    ],
+    [
+      40.0,
+      1.074,
+      -22.0
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 0,
+      "size": [
+        6,
+        15
+      ],
+      "speed_bonus": 1.22
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 5,
+      "size": [
+        8,
+        11
+      ],
+      "speed_multiplier": 0.83,
+      "terrain_name": "overpass_grit",
+      "handling_multiplier": 0.9,
+      "color": "#352838"
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 3,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    },
+    {
+      "point_index": 11,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    }
+  ],
+  "item_boxes": [
+    1,
+    4,
+    5,
+    9
+  ],
+  "boost_pickups": [
+    0,
+    5,
+    7
+  ],
+  "rail_segments": [
+    2,
+    8
+  ],
+  "shortcut_routes": [
+    {
+      "id": "afterglow_overpass_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 8,
+      "risk": "high",
+      "ai_preference": 0.28,
+      "description": "Dive the underpass chord \u2014 miss and hit wet asphalt."
+    }
+  ],
+  "landmarks": [
+    "overpass_north",
+    "overpass_south",
+    "afterglow_sign"
+  ],
+  "elevation_profile": "overpass_spans",
+  "bank_bias": 0.11,
+  "geometry_note": "Neon Night upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. overpass spans / afterglow pillars. Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn.",
+  "camera_identity": "afterglow_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "Neon Night collision hazards are off-line props; do not claim human commercial art approval."
+  ]
+}

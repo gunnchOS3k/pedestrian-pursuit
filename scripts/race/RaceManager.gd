@@ -180,8 +180,16 @@ func _on_racer_finished(racer: Node, _finish_time: float) -> void:
 		"is_player": human,
 		"local_player_index": local_idx,
 	})
-	# End when primary player finishes, or (Local MP) when any human finishes.
-	if human and (racer == _player or GameManager.is_local_mp()):
+	# Solo: end when the primary player finishes.
+	# Local MP: end only when every local human has finished the same race —
+	# never declare finished because one seat reached the line first.
+	if not human:
+		return
+	if GameManager.is_local_mp():
+		if _all_local_humans_finished():
+			_finish_race()
+		return
+	if racer == _player:
 		_finish_race()
 
 
@@ -193,6 +201,18 @@ func _is_local_human(racer: Node) -> bool:
 	if GameManager.is_local_mp() and bool(racer.get("is_player")):
 		return true
 	return false
+
+
+func _all_local_humans_finished() -> bool:
+	var humans := 0
+	var done := 0
+	for racer in _racers:
+		if not _is_local_human(racer):
+			continue
+		humans += 1
+		if lap_manager != null and lap_manager.is_finished(racer):
+			done += 1
+	return humans > 0 and done >= humans
 
 
 func _finish_race() -> void:

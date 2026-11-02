@@ -1,0 +1,190 @@
+{
+  "schema": "pp_metal_multi_track_matrix/v1",
+  "tip_sha": "1bcbdb1ccee22fba91dd0909676f4e02acecc7ec",
+  "tracks": [
+    {
+      "track_id": "verdant_cascade_circuit",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "cloudstep_ridge",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "sneaker_city_sprintway",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "mirage_mesa",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "lantern_corridor",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "stack_corridor",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "neon_switchyard",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "1",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "metro_pulse_loop",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "prism_apex",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "tideglass_harbor",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "emberkeep_gauntlet",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "3",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "cloverwind_ranch",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "1",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "afterglow_overpass",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "signal_storm_yard",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "rooftop_ribbon",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "skybridge_sprint",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "saltline_boardwalk",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "cliffside_draft",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "mirror_boulevard",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "antenna_ascent",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "seaglass_switchback",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    },
+    {
+      "track_id": "crosswalk_canyon",
+      "COMPLETED_LAPS": "3",
+      "RESULTS_PATH": "true",
+      "REACQUIRE_COUNT": "0",
+      "COURSE_ACCEPTED": "false",
+      "pass": true
+    }
+  ],
+  "all_pass": true,
+  "moltenvk_metal_pass": true,
+  "COURSE_ACCEPTED": false,
+  "HUMAN": false,
+  "RC2": false,
+  "V1": false,
+  "generated_at": "2026-10-30T23:33:58Z",
+  "notes": "22-track Metal matrix on M2 OpenGL Metal 4.1; +mirror/antenna/seaglass/crosswalk after 5781efd Windows + b81079c Gate1 green."
+}

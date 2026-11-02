@@ -10,30 +10,39 @@ const STEERING_GAIN: float = 4.2
 const STEERING_MULTIPLIER: float = 1.0
 const LATERAL_BLEND: float = 0.35
 const LATERAL_THRESHOLD: float = 3.0
+## Off-track closest_offset can jump across the loop; refuse large progress snaps.
+const PROGRESS_CATCHUP_MAX: float = 8.0
+const OFFTRACK_LATERAL: float = 5.0
 const TANGENT_SAMPLE: float = 3.0
 const SPEED_LOOK_AHEAD_FACTOR: float = 0.25
 const SPEED_LOOK_AHEAD_CAP: float = 8.0
 const PROGRESS_AHEAD_FACTOR: float = 0.05
 const PROGRESS_MIN_SPEED: float = 4.0
+## Linux CI dummy physics can stall mid-course; steer-only recovery (no body teleport).
+const STAGNATION_SEC: float = 3.0
+const STAGNATION_PROGRESS_EPS: float = 2.0
+const STAGNATION_LOOK_AHEAD: float = 20.0
+const STAGNATION_AHEAD_FACTOR: float = 0.12
+const STAGNATION_SPEED_LOOK_CAP: float = 12.0
 
 ## Skill policy (sim seconds — NOT frame counts).
 const FRAME_COUNT_SKILL_TIMING: bool = false
 const DRIVER_INTENT_COUNTED_AS_SUCCESS: bool = false
 const DRIFT_MIN_SPEED: float = 5.0
-const DRIFT_CURVATURE_ENTER: float = 0.11
-const DRIFT_CURVATURE_HOLD: float = 0.06
+const DRIFT_CURVATURE_ENTER: float = 0.16
+const DRIFT_CURVATURE_HOLD: float = 0.07
 const DRIFT_STEER_ENTER: float = 0.36
 const DRIFT_STEER_HOLD: float = 0.22
-const DRIFT_MIN_HOLD_SEC: float = 0.45
-const DRIFT_MAX_HOLD_SEC: float = 1.25
-const DRIFT_SAFE_RELEASE_SEC: float = 1.40
+const DRIFT_MIN_HOLD_SEC: float = 0.30
+const DRIFT_MAX_HOLD_SEC: float = 0.55
+const DRIFT_SAFE_RELEASE_SEC: float = 0.50
 const OVERCOMMIT_PROD_SEC: float = 2.4
-const SKILL_COOLDOWN_SEC: float = 3.1
-const BOOST_COOLDOWN_SEC: float = 1.8
-const BOOST_PULSE_SEC: float = 0.06
-const BOOST_START_DELAY_SEC: float = 1.0
-const STRAIGHT_CURVATURE: float = 0.055
-const STRAIGHT_STEER: float = 0.30
+const SKILL_COOLDOWN_SEC: float = 4.0
+const BOOST_COOLDOWN_SEC: float = 0.75
+const BOOST_PULSE_SEC: float = 0.10
+const BOOST_START_DELAY_SEC: float = 0.20
+const STRAIGHT_CURVATURE: float = 0.09
+const STRAIGHT_STEER: float = 0.48
 const MAX_LATERAL_FOR_SKILL: float = 4.2
 const ABORT_LATERAL: float = 6.0
 const MAX_SKILL_EVENT_LOG: int = 48
@@ -48,6 +57,9 @@ var _boost_cooldown_sec: float = 0.0
 var _skill_cooldown_sec: float = 0.0
 var _sim_elapsed_sec: float = 0.0
 var _progress: float = -1.0
+var _progress_high_water: float = -1.0
+var _last_progress_advance_sim: float = 0.0
+var _stagnation_recoveries: int = 0
 var _path_ref: Path3D = null
 ## Intent mirrors only — NEVER used as mastery technique success.
 var intent_counts: Dictionary = {
@@ -68,6 +80,7 @@ var diagnostics: Dictionary = {
 	"drift_suppressed_speed": 0,
 	"drift_suppressed_curve": 0,
 	"low_quality_skips": 0,
+	"stagnation_recoveries": 0,
 }
 
 
@@ -82,6 +95,9 @@ func reset(profile_name: String) -> void:
 	_skill_cooldown_sec = 0.9
 	_sim_elapsed_sec = 0.0
 	_progress = -1.0
+	_progress_high_water = -1.0
+	_last_progress_advance_sim = 0.0
+	_stagnation_recoveries = 0
 	_path_ref = null
 	intent_counts = {"drift_press": 0, "boost_press": 0}
 	skill_event_log = []
@@ -98,6 +114,7 @@ func reset(profile_name: String) -> void:
 		"drift_suppressed_speed": 0,
 		"drift_suppressed_curve": 0,
 		"low_quality_skips": 0,
+		"stagnation_recoveries": 0,
 	}
 	_release_all_actions()
 
@@ -115,7 +132,8 @@ func driver_parameters() -> Dictionary:
 		"progress_ahead_factor": PROGRESS_AHEAD_FACTOR,
 		"progress_min_speed": PROGRESS_MIN_SPEED,
 		"brake_coast": "none",
-		"recovery_policy": "progress_pull_no_body_teleport",
+		"recovery_policy": "progress_pull_no_body_teleport_stagnation_boost",
+		"stagnation_sec": STAGNATION_SEC,
 	}
 
 
@@ -196,22 +214,55 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 	var closest: float = curve.get_closest_offset(local)
 	if _progress < 0.0:
 		_progress = closest
+		_progress_high_water = closest
+		_last_progress_advance_sim = _sim_elapsed_sec
 	var ahead_bias := 0.0
 	var speed := 0.0
 	if "horizontal_speed" in player:
 		speed = absf(float(player.horizontal_speed))
-	ahead_bias = maxf(speed, PROGRESS_MIN_SPEED) * PROGRESS_AHEAD_FACTOR
+	var ahead_factor := PROGRESS_AHEAD_FACTOR
+	var speed_look_cap := SPEED_LOOK_AHEAD_CAP
+	var stagnating := (
+		_progress_high_water >= 0.0
+		and (_sim_elapsed_sec - _last_progress_advance_sim) >= STAGNATION_SEC
+	)
+	if stagnating:
+		ahead_factor = STAGNATION_AHEAD_FACTOR
+		look_ahead = STAGNATION_LOOK_AHEAD
+		speed_look_cap = STAGNATION_SPEED_LOOK_CAP
+		_stagnation_recoveries += 1
+		diagnostics["stagnation_recoveries"] = _stagnation_recoveries
+	ahead_bias = maxf(speed, PROGRESS_MIN_SPEED) * ahead_factor
+	var closest_on: Vector3 = path.to_global(curve.sample_baked(closest))
+	var closest_lateral := player.global_position.distance_to(
+		Vector3(closest_on.x, player.global_position.y, closest_on.z)
+	)
 	var delta_along := closest - _progress
 	if delta_along < -path_len * 0.5:
 		delta_along += path_len
 	elif delta_along > path_len * 0.5:
 		delta_along -= path_len
-	if delta_along > -2.0:
-		_progress = fposmod(_progress + maxf(delta_along, 0.0) + ahead_bias, path_len)
+	## Off-track closest snaps (void near finish ↔ start) must not teleport progress.
+	## Snap refusal kept while stagnating — only look-ahead / crawl rate boost.
+	var offtrack := closest_lateral > OFFTRACK_LATERAL
+	if offtrack or absf(delta_along) > PROGRESS_CATCHUP_MAX:
+		_progress = fposmod(_progress + ahead_bias, path_len)
+	elif delta_along > -2.0:
+		var catchup := clampf(delta_along, 0.0, PROGRESS_CATCHUP_MAX)
+		_progress = fposmod(_progress + catchup + ahead_bias, path_len)
 	else:
 		_progress = fposmod(_progress + ahead_bias * 0.5, path_len)
 
-	var sample_ahead: float = look_ahead + clampf(speed * SPEED_LOOK_AHEAD_FACTOR, 0.0, SPEED_LOOK_AHEAD_CAP)
+	var hw_delta := _progress - _progress_high_water
+	if hw_delta < -path_len * 0.5:
+		hw_delta += path_len
+	elif hw_delta > path_len * 0.5:
+		hw_delta -= path_len
+	if hw_delta >= STAGNATION_PROGRESS_EPS:
+		_progress_high_water = _progress
+		_last_progress_advance_sim = _sim_elapsed_sec
+
+	var sample_ahead: float = look_ahead + clampf(speed * SPEED_LOOK_AHEAD_FACTOR, 0.0, speed_look_cap)
 	var on_path: Vector3 = path.to_global(curve.sample_baked(_progress))
 	var tangent_pos: Vector3 = path.to_global(
 		curve.sample_baked(fposmod(_progress + TANGENT_SAMPLE, path_len))
@@ -228,8 +279,13 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 
 	var lateral: Vector3 = player.global_position - on_path
 	lateral.y = 0.0
-	if lateral.length() > LATERAL_THRESHOLD:
-		target = target.lerp(on_path, LATERAL_BLEND)
+	var lateral_mag := lateral.length()
+	if lateral_mag > LATERAL_THRESHOLD:
+		## Stronger reacquire blend when void/off-line; still steer-only (no body teleport).
+		var blend := LATERAL_BLEND
+		if offtrack or lateral_mag > OFFTRACK_LATERAL:
+			blend = 0.85
+		target = target.lerp(on_path, blend)
 
 	var forward: Vector3 = -player.global_transform.basis.z
 	forward.y = 0.0
@@ -243,6 +299,7 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 		var turn_sign := signf(forward.cross(tangent).y)
 		if is_zero_approx(turn_sign):
 			turn_sign = 1.0
+		## Keep full U-turn authority; stagnation recovery is look-ahead/crawl only.
 		return clampf(turn_sign * 1.0, -1.0, 1.0)
 
 	var to_target: Vector3 = target - player.global_position
@@ -251,7 +308,10 @@ func compute_steer(player: Node3D, path: Path3D) -> float:
 		return 0.0
 	var dir: Vector3 = to_target.normalized()
 	var cross_y: float = forward.cross(dir).y
-	return clampf(cross_y * STEERING_GAIN, -1.0, 1.0)
+	var gain := STEERING_GAIN
+	if offtrack or lateral_mag > OFFTRACK_LATERAL:
+		gain = STEERING_GAIN * 1.35
+	return clampf(cross_y * gain, -1.0, 1.0)
 
 
 func path_curvature(path: Path3D, offset: float = -1.0) -> float:

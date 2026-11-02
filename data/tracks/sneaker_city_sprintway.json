@@ -1,12 +1,204 @@
 {
+  "schema_version": 1,
   "id": "sneaker_city_sprintway",
   "display_name": "Sneaker City Sprintway",
   "lap_count": 3,
-  "difficulty": "beginner",
+  "difficulty": "intermediate",
   "theme": "sneaker_city",
+  "description": "Championship Metro opener: downtown sneaker boulevard with billboard arches, crosswalk cuts, and neon storefronts.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "lane_width": 15.0,
+  "guard_rails": true,
   "has_shortcut": true,
-  "has_speed_lane": true,
-  "has_slow_terrain": true,
-  "has_jump_section": true,
-  "description": "A colorful closed-loop test track with drift curves, speed lanes, slow grass, bounce pads, item boxes, and one risky shortcut."
+  "track_color": "#3A4050",
+  "accent_color": "#FF6A9A",
+  "sky_color": "#6A88B0",
+  "backdrop_color": "#2A3040",
+  "path_points": [
+    [
+      49.13,
+      1.779,
+      0.0
+    ],
+    [
+      47.48,
+      2.332,
+      17.21
+    ],
+    [
+      36.54,
+      2.4,
+      31.97
+    ],
+    [
+      19.05,
+      1.941,
+      40.25
+    ],
+    [
+      0.0,
+      1.221,
+      41.01
+    ],
+    [
+      -17.07,
+      0.668,
+      36.06
+    ],
+    [
+      -31.35,
+      0.6,
+      27.43
+    ],
+    [
+      -42.69,
+      1.059,
+      15.47
+    ],
+    [
+      -49.13,
+      1.779,
+      0.0
+    ],
+    [
+      -47.48,
+      2.332,
+      -17.21
+    ],
+    [
+      -36.54,
+      2.4,
+      -31.97
+    ],
+    [
+      -19.05,
+      1.941,
+      -40.25
+    ],
+    [
+      -0.0,
+      1.221,
+      -41.01
+    ],
+    [
+      17.07,
+      0.668,
+      -36.06
+    ],
+    [
+      31.35,
+      0.6,
+      -27.43
+    ],
+    [
+      42.69,
+      1.059,
+      -15.47
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12,
+    14
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 1,
+      "size": [
+        6,
+        12
+      ],
+      "speed_bonus": 1.15
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 5,
+      "size": [
+        8,
+        10
+      ],
+      "speed_multiplier": 0.85,
+      "terrain_name": "city_grit",
+      "handling_multiplier": 0.9,
+      "color": "#4A5560"
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 8,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    },
+    {
+      "point_index": 11,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    }
+  ],
+  "item_boxes": [
+    2,
+    4,
+    8,
+    10
+  ],
+  "boost_pickups": [
+    1,
+    5,
+    9
+  ],
+  "rail_segments": [
+    4,
+    6
+  ],
+  "shortcut_routes": [
+    {
+      "id": "sneaker_city_sprintway_cut",
+      "entry_point_index": 2,
+      "exit_point_index": 8,
+      "risk": "medium",
+      "ai_preference": 0.35,
+      "description": "Risk cut across the infield; miss and hit slow terrain."
+    }
+  ],
+  "landmarks": [
+    "billboard_arch",
+    "storefront_row",
+    "crosswalk_plaza"
+  ],
+  "elevation_profile": "city_steps",
+  "bank_bias": 0.06,
+  "camera_identity": "sneaker_city_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "Shortcut floors are collision-backed; do not claim human commercial art approval."
+  ],
+  "geometry_note": "Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn."
 }

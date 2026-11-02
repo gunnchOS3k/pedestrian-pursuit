@@ -39,7 +39,7 @@ func _run() -> void:
 					failures.append("course '%s' rail point count mismatch" % track_id)
 			course.queue_free()
 	if failures.is_empty():
-		print("Godot Wave E Alpha course smoke passed for 2 cups / 8 courses.")
+		print("Godot championship course smoke passed for 8 cups / 32 courses.")
 		quit(0)
 	else:
 		for failure in failures:
@@ -49,8 +49,10 @@ func _run() -> void:
 
 func _test_catalog_floor(failures: PackedStringArray) -> void:
 	var ids := _TrackCatalog.list_all_track_ids()
-	if ids.size() < 8:
-		failures.append("catalog has %d tracks; Alpha floor is 8" % ids.size())
+	if ids.size() != 32:
+		failures.append("catalog has %d tracks; championship floor is 32" % ids.size())
+	if _TrackCatalog.list_cup_ids().size() != 8:
+		failures.append("cup catalog must be 8")
 	if ShoeData.all_ids().size() < 4:
 		failures.append("footwear catalog below Alpha floor of 4")
 	if ItemData.all_alpha_ids().size() < 6:

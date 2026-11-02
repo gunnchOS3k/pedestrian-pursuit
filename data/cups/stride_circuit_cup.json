@@ -2,7 +2,8 @@
   "schema_version": 1,
   "id": "stride_circuit_cup",
   "display_name": "Stride Circuit Cup",
-  "description": "Four launch courses that push harbor lines, neon corridors, ridge jumps, and mesa drafting.",
+  "description": "Championship Cup 2 \u2014 harbor to mesa. Geometry upgraded with elevation, banks, and landmarks.",
+  "cup_index": 2,
   "track_ids": [
     "tideglass_harbor",
     "neon_switchyard",

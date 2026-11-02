@@ -1,0 +1,66 @@
+{
+  "contract_id": "GUNNCHOS3K_PVS",
+  "version": "1.0.0",
+  "title": "gunnchOS3k Product Verification Standard",
+  "status": "ACTIVE_METHODOLOGY",
+  "kind": "shared_quality_contract",
+  "document": "docs/quality/GUNNCHOS3K_PRODUCT_VERIFICATION_STANDARD.md",
+  "rtm_schema": "docs/quality/schemas/requirements_to_evidence_matrix.schema.json",
+  "specialty_matrices_dir": "docs/quality/specialty_matrices",
+  "phases": [
+    "cursor_complete",
+    "codex_independently_verified",
+    "human_approval"
+  ],
+  "test_layers": [
+    { "id": 1, "name": "unit_contract" },
+    { "id": 2, "name": "integration" },
+    { "id": 3, "name": "determinism_golden" },
+    { "id": 4, "name": "system_journey" },
+    { "id": 5, "name": "performance" },
+    { "id": 6, "name": "accessibility_input" },
+    { "id": 7, "name": "security_network_native_physical" }
+  ],
+  "internal_performance_targets": {
+    "desktop_fps": 60,
+    "mobile_fps": 30,
+    "determinism": "seeded_modes_identical_on_same_engine_build",
+    "network": "documented_loss_latency_jitter_behavior",
+    "saves": "round_trip_integrity_safe_failure",
+    "accessibility": "wcag_2_2_aa_target_plus_game_a11y_guidelines"
+  },
+  "honesty_flags": {
+    "HUMAN": false,
+    "RC2": false,
+    "V1": false
+  },
+  "certification_claims_allowed": false,
+  "non_claims": [
+    "Not ISO/IEC certification or accreditation",
+    "Not OWASP ASVS/MASVS certification",
+    "Not WCAG, 1EdTech, Steam, or NIST certification",
+    "References are methodology alignment only"
+  ],
+  "reference_alignment": [
+    "ISO/IEC 25010:2023 principles",
+    "ISO/IEC/IEEE 29119 process shape",
+    "WCAG 2.2 AA",
+    "Game Accessibility Guidelines",
+    "OWASP ASVS 5.0",
+    "OWASP MASVS where applicable",
+    "NIST SSDF",
+    "Steamworks practical shipping refs",
+    "Godot/GdUnit4",
+    "Playwright/Vitest",
+    "1EdTech for WAIKE",
+    "EPUB Accessibility 1.1 for books"
+  ],
+  "products_expected_to_reference": [
+    "anime-aggressors",
+    "pedestrian-pursuit",
+    "beatlink-party",
+    "archive-of-life-artifact-world",
+    "gunnchai3k",
+    "waike-research-ops"
+  ]
+}

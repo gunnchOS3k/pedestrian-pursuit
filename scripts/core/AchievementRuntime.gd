@@ -250,6 +250,12 @@ func _unlock(id: String, def: Dictionary) -> void:
 	}
 	(_state["notifications"] as Array).append(note)
 	unlocked.emit(id, note)
+	## Tie career garage unlock_mode:achievement to real achievement unlocks.
+	var tree := Engine.get_main_loop() as SceneTree
+	if tree != null and tree.root != null:
+		var prog := tree.root.get_node_or_null("ProgressionSave")
+		if prog != null and prog.has_method("on_achievement_unlocked"):
+			prog.on_achievement_unlocked(id)
 
 
 func _condition_met(cond) -> bool:

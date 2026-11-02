@@ -9,13 +9,17 @@ enum RaceMode { SINGLE, CUP, TIME_TRIAL, PRACTICE, LOCAL_MP, TUTORIAL, CHALLENGE
 var current_race_mode: RaceMode = RaceMode.SINGLE
 var selected_racer_id: String = "dash_reed"
 var selected_runner_id: String = "dash_reed"
-var selected_shoe_id: String = "starter_soles"
+var selected_shoe_id: String = "reedline_circlers"
 var selected_track_id: String = "verdant_cascade_circuit"
 var selected_cup_id: String = "sole_surge_cup"
 var selected_challenge_id: String = ""
 var total_laps: int = 3
 var local_mp_players: int = 2
 var ai_field_size: int = 3
+var party_link_active: bool = false
+var party_link_human_seats: int = 0
+## Connected local/remote humans present now — never invent; distinct from allocated seats.
+var party_link_connected_humans: int = 0
 var ai_eval_mode: bool = false
 var ai_eval_tier: String = "standard"
 
@@ -124,6 +128,8 @@ func start_quick_race(track_id: String) -> void:
 
 func start_single_race(track_id: String) -> void:
 	clear_cup()
+	party_link_active = false
+	party_link_human_seats = 0
 	current_race_mode = RaceMode.SINGLE
 	selected_track_id = track_id
 	ai_field_size = 3
@@ -142,11 +148,68 @@ func start_time_trial(track_id: String) -> void:
 
 func start_local_mp(track_id: String, players: int = 2) -> void:
 	clear_cup()
+	party_link_active = false
+	party_link_human_seats = 0
 	current_race_mode = RaceMode.LOCAL_MP
 	selected_track_id = track_id
 	local_mp_players = clampi(players, 2, 2)
 	ai_field_size = 2
 	reset_race_stats()
+
+
+func start_party_link(track_id: String, human_seats: int = 2, connected_humans: int = 1) -> void:
+	## PartyLink capacity 2–8 allocated; field always fills to 8 with CPU for empty seats.
+	## connected_humans = real present humans only (default 1 local). Never invents humans.
+	## BeatLink sibling independent-client contract remains host+guest (2 humans).
+	## Bots/scripted seats never count as human participants. Not physical 8p / Metal.
+	const OnlineArchitectureScript = preload("res://scripts/net/OnlineArchitecture.gd")
+	clear_cup()
+	current_race_mode = RaceMode.SINGLE
+	selected_track_id = track_id
+	party_link_active = true
+	party_link_human_seats = clampi(
+		human_seats,
+		OnlineArchitectureScript.PARTYLINK_MIN_HUMAN_SEATS,
+		OnlineArchitectureScript.PARTYLINK_MAX_HUMAN_SEATS
+	)
+	## Requested connected (lobby intent) vs wired local humans (field stamps).
+	## Never stamp more humans than we actually spawn — bots ≠ humans.
+	var requested_connected := clampi(connected_humans, 0, party_link_human_seats)
+	## Seat 0 = local player. Up to one extra local human seat matches BeatLink sibling (=2).
+	## Beyond sibling-2 requires independent net clients / physical PartyLink (not invented here).
+	var local_extra_humans := clampi(
+		requested_connected - 1,
+		0,
+		OnlineArchitectureScript.BEATLINK_SIBLING_CONTRACT_HUMANS - 1
+	)
+	var wired_humans := 1 + local_extra_humans if requested_connected > 0 else 0
+	party_link_connected_humans = wired_humans
+	## Field = wired humans + AI = 8 (player always occupies seat 0 when wired≥1).
+	if wired_humans >= 1:
+		ai_field_size = OnlineArchitectureScript.PARTYLINK_FIELD_SIZE - wired_humans
+	else:
+		ai_field_size = OnlineArchitectureScript.PARTYLINK_FIELD_SIZE - 1
+	var capacity_map: Dictionary = OnlineArchitectureScript.partylink_seat_map(party_link_human_seats)
+	## Runtime roster stamps only wired humans — requested>wired stays honest meta, not fake seats.
+	var roster: Dictionary = OnlineArchitectureScript.partylink_runtime_roster(
+		party_link_human_seats,
+		wired_humans
+	)
+	roster["requested_connected_humans"] = requested_connected
+	roster["wired_connected_humans"] = wired_humans
+	roster["unwired_requested_humans"] = maxi(requested_connected - wired_humans, 0)
+	roster["note"] = "wired≤BeatLink_sibling_2; unwired requests need independent clients/physical 8p"
+	set_meta("party_link_seat_map", capacity_map)
+	set_meta("party_link_runtime_roster", roster)
+	set_meta("party_link_local_extra_humans", local_extra_humans)
+	set_meta("party_link_requested_connected_humans", requested_connected)
+	set_meta("party_link_wired_connected_humans", wired_humans)
+	reset_race_stats()
+	sync_race_mode_string()
+
+
+func is_party_link() -> bool:
+	return party_link_active
 
 
 func start_tutorial(track_id: String = "verdant_cascade_circuit") -> void:
@@ -247,6 +310,8 @@ func advance_cup() -> bool:
 	cup_round_index += 1
 	selected_track_id = cup_track_ids[cup_round_index]
 	reset_race_stats()
+	# The race just entered is the one a reload must continue.
+	save_cup_progress()
 	return true
 
 
@@ -258,6 +323,9 @@ func restart_cup() -> bool:
 
 
 func clear_cup() -> void:
+	party_link_active = false
+	party_link_human_seats = 0
+	party_link_connected_humans = 0
 	active_cup_id = ""
 	cup_track_ids.clear()
 	cup_round_index = 0
@@ -267,13 +335,56 @@ func clear_cup() -> void:
 		current_race_mode = RaceMode.SINGLE
 
 
+func _snapshot_results() -> Array:
+	var copy: Array = []
+	for result in cup_results:
+		if typeof(result) == TYPE_DICTIONARY:
+			copy.append((result as Dictionary).duplicate(true))
+	return copy
+
+
+func _snapshot_standings() -> Dictionary:
+	var copy := {}
+	for key in cup_standings.keys():
+		copy[str(key)] = int(cup_standings[key])
+	return copy
+
+
+func _resume_index_for_save() -> int:
+	## The next unplayed race. A recorded finish must not reload as race 1.
+	var resume_index := cup_round_index
+	if cup_results.size() > cup_round_index:
+		resume_index += 1
+	return resume_index
+
+
+func _assign_saved_results(raw) -> void:
+	cup_results.clear()
+	if typeof(raw) != TYPE_ARRAY:
+		return
+	for item in raw:
+		if typeof(item) == TYPE_DICTIONARY:
+			cup_results.append((item as Dictionary).duplicate(true))
+
+
+func _assign_saved_standings(raw) -> void:
+	cup_standings.clear()
+	if typeof(raw) != TYPE_DICTIONARY:
+		return
+	for key in raw.keys():
+		cup_standings[str(key)] = int(raw[key])
+
+
 func save_cup_progress() -> void:
 	var cfg := ConfigFile.new()
+	var resume_index := _resume_index_for_save()
 	cfg.set_value("cup", "active_cup_id", active_cup_id)
 	cfg.set_value("cup", "round_index", cup_round_index)
-	cfg.set_value("cup", "results", cup_results)
-	cfg.set_value("cup", "standings", cup_standings)
-	cfg.set_value("cup", "track_ids", cup_track_ids)
+	cfg.set_value("cup", "resume_index", resume_index)
+	# Snapshots, not the live arrays. A later clear must not rewrite this save.
+	cfg.set_value("cup", "results", _snapshot_results())
+	cfg.set_value("cup", "standings", _snapshot_standings())
+	cfg.set_value("cup", "track_ids", cup_track_ids.duplicate())
 	# A cup is complete only after the current round has a recorded result.
 	# The last course has no "next" race before that result exists; saving a
 	# pause/quit on the finale must stay resumable instead of looking finished.
@@ -284,7 +395,10 @@ func save_cup_progress() -> void:
 		is_cup_active() and not has_next_cup_race() and round_recorded
 	)
 	cfg.set_value("meta", "saved_at", Time.get_datetime_string_from_system())
-	cfg.set_value("meta", "save_version", 2)
+	## v4: championship catalog expanded to 8 cups / 32 tracks; legacy v3 resumes still load.
+	cfg.set_value("meta", "save_version", 4)
+	cfg.set_value("meta", "championship_cups", 8)
+	cfg.set_value("meta", "championship_tracks", 32)
 	cfg.save("user://cup_progress.cfg")
 	# Mirror selection into progression save for RC migration continuity.
 	var prog := _progression()
@@ -292,6 +406,7 @@ func save_cup_progress() -> void:
 		prog.first_run_complete = true
 		if prog.has_method("unlock"):
 			prog.unlock("mode:cup")
+			prog.unlock("unlock_mode:cup")
 		if prog.has_method("save"):
 			prog.save()
 
@@ -309,8 +424,8 @@ func load_cup_progress() -> bool:
 		return false
 	active_cup_id = str(cfg.get_value("cup", "active_cup_id", ""))
 	cup_round_index = int(cfg.get_value("cup", "round_index", 0))
-	cup_results = cfg.get_value("cup", "results", [])
-	cup_standings = cfg.get_value("cup", "standings", {})
+	_assign_saved_results(cfg.get_value("cup", "results", []))
+	_assign_saved_standings(cfg.get_value("cup", "standings", {}))
 	var tracks = cfg.get_value("cup", "track_ids", [])
 	cup_track_ids.clear()
 	for tid in tracks:
@@ -331,6 +446,8 @@ func describe_saved_cup() -> Dictionary:
 		"course_number": 0,
 		"track_id": "",
 		"completed": false,
+		"cup_id": "",
+		"round_index": 0,
 	}
 	var cfg := ConfigFile.new()
 	if cfg.load("user://cup_progress.cfg") != OK:
@@ -345,6 +462,9 @@ func describe_saved_cup() -> Dictionary:
 	var next_index := round_index
 	if results.size() > round_index:
 		next_index = round_index + 1
+	# resume_index is the race to play. It wins over "start at race 1".
+	if cfg.has_section_key("cup", "resume_index"):
+		next_index = int(cfg.get_value("cup", "resume_index"))
 	var finished_cup := completed_flag or (not tracks.is_empty() and next_index >= tracks.size())
 	var resumable := (
 		not finished_cup
@@ -360,22 +480,29 @@ func describe_saved_cup() -> Dictionary:
 		"course_number": next_index + 1,
 		"track_id": track_id,
 		"completed": finished_cup,
+		"cup_id": active,
+		"round_index": next_index,
 	}
 
 
 func resume_saved_cup() -> bool:
 	## Continue an in-progress cup. Refuses a finished cup.
-	## If the saved round already has a result, start the following course
-	## without adding that result's points again.
+	## The saved race is resume_index, not race 1, and its points are not added again.
 	var plan := describe_saved_cup()
 	if not bool(plan.get("resumable", false)):
 		return false
 	if not load_cup_progress():
 		return false
-	if cup_results.size() > cup_round_index:
-		if not advance_cup():
-			clear_cup()
-			return false
+	var target := int(plan.get("round_index", -1))
+	if target < 0 or target >= cup_track_ids.size():
+		clear_cup()
+		return false
+	if target != cup_round_index:
+		cup_round_index = target
+		selected_track_id = cup_track_ids[target]
+		reset_race_stats()
+	elif selected_track_id != cup_track_ids[target]:
+		selected_track_id = cup_track_ids[target]
 	if not is_cup_active() or selected_track_id != str(plan.get("track_id", "")):
 		clear_cup()
 		return false

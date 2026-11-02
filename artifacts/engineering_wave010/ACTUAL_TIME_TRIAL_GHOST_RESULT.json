@@ -8,13 +8,13 @@
 	"advanced_attempts": 1,
 	"advanced_ghost": {
 		"attempt": 1,
-		"sample_count": 1680,
-		"time": 231.833120000002,
+		"sample_count": 315,
+		"time": 21.6734666666668,
 		"track_id": "verdant_cascade_circuit"
 	},
 	"basic_ghost": {
-		"sample_count": 1699,
-		"time": 234.441260211645,
+		"sample_count": 321,
+		"time": 22.0645900000001,
 		"track_id": "verdant_cascade_circuit"
 	},
 	"ok": true,

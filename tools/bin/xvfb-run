@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Darwin/CI shim: real xvfb-run is Ubuntu-only. Godot already uses
+# --display-driver headless, so just forward the command.
+set -euo pipefail
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -a|--auto-servernum|--listen-tcp)
+      shift
+      ;;
+    -n|--server-num|-e|--error-file|-f|--auth-file|-p|--password|-s|--server-args)
+      shift
+      if [[ $# -gt 0 ]]; then shift; fi
+      ;;
+    --server-num=*|--server-args=*|--error-file=*|--auth-file=*|--password=*)
+      shift
+      ;;
+    --)
+      shift
+      break
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+if [[ $# -eq 0 ]]; then
+  echo "xvfb-run shim: missing command" >&2
+  exit 127
+fi
+exec "$@"

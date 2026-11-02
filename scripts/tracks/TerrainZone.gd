@@ -1,5 +1,7 @@
 extends Area3D
 
+const ShoeDataScript = preload("res://scripts/data/ShoeData.gd")
+
 ## Terrain modifier zone. Shoe surface affinities multiply zone effects.
 
 @export var terrain_name: String = "standard"
@@ -22,7 +24,7 @@ func _on_body_entered(body: Node3D) -> void:
 		if "stats" in body and body.stats != null and body.stats.has_method("affinity_for"):
 			affinity = float(body.stats.affinity_for(terrain_name))
 		elif body.has_method("get") and body.get("shoe_id") != null:
-			affinity = ShoeData.surface_affinity(str(body.shoe_id), terrain_name)
+			affinity = ShoeDataScript.surface_affinity(str(body.shoe_id), terrain_name)
 		# Affinity > 1 softens penalties / boosts bonuses; < 1 worsens soft ground.
 		var speed := speed_multiplier
 		var handling := handling_multiplier

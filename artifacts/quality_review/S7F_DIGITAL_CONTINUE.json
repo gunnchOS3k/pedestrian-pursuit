@@ -1,0 +1,18 @@
+{
+  "schema": "pp_s7f_continue/v1",
+  "ci_green_tip": "31944a9c99b4823a79b15c15d45b2180b4000eae",
+  "metal_tracks_pass": 10,
+  "metal_tracks_total": 10,
+  "footwear_recheck": "PASS",
+  "audio_recheck": "PASS",
+  "dual_partylink_2h6cpu": "PASS",
+  "a11y_recheck": "PASS",
+  "neon_hoops_silhouette": true,
+  "wired_humans_max": 2,
+  "physical_eight_human_party": false,
+  "COURSE_ACCEPTED": false,
+  "HUMAN": false,
+  "RC2": false,
+  "V1": false,
+  "generated_at": "2026-10-30T21:16:32Z"
+}

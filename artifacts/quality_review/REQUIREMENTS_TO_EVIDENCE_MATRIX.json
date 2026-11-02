@@ -1,0 +1,512 @@
+{
+  "schema_version": "1.0.0",
+  "contract_id": "GUNNCHOS3K_PVS",
+  "contract_version": "1.0.0",
+  "contract_source_sha": "45b456617002569c33a5a27fe30d5cf8be5a7032",
+  "product_id": "pedestrian-pursuit",
+  "product_repo": "https://github.com/gunnchOS3k/pedestrian-pursuit",
+  "generated_at": "2026-10-30T22:40:15Z",
+  "honesty_flags": {
+    "HUMAN": false,
+    "RC2": false,
+    "V1": false
+  },
+  "phase_summary": {
+    "cursor_complete": {
+      "status": "in_progress",
+      "notes": "S7f: 31944a9 Gate1+Windows green; Metal 10/10; dual 2h+6cpu; fashion/audio/a11y recheck PASS; neon_hoops silhouette. COURSE/HUMAN/RC2/V1 false. Cursor Complete not claimed."
+    },
+    "codex_independently_verified": {
+      "status": "not_started"
+    },
+    "human_approval": {
+      "status": "not_started",
+      "notes": "HUMAN_FUN / HUMAN_COURSE / COURSE_ACCEPTED / RC2 / V1 remain false (COURSE flags in notes \u2014 honesty_flags schema allows only HUMAN/RC2/V1)."
+    }
+  },
+  "rows": [
+    {
+      "req_id": "PP-RTM-01",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "32 championship tracks remain raceable without catalog rebuild.",
+      "verification_method": "ChampionshipCatalogTest + CATALOG_RESULT stamp",
+      "layers": [
+        1,
+        2
+      ],
+      "tests": [
+        "tests/ChampionshipCatalogTest.gd"
+      ],
+      "automated_evidence": [
+        "artifacts/championship/CATALOG_RESULT.json",
+        "data/tracks/*.json"
+      ],
+      "native_physical": {
+        "status": "not_applicable",
+        "platforms": [],
+        "notes": "Digital catalog honesty only."
+      },
+      "art_status": "review_pending",
+      "limitations": [
+        "32 track_art_candidate; 0 commercial human approvals",
+        "candidate \u2260 finished / human-approved"
+      ],
+      "severity": "high",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress",
+      "notes": "No catalog rebuild this pass."
+    },
+    {
+      "req_id": "PP-RTM-02",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "8 cups authored Sole\u2192Wonder with cup career start loop.",
+      "verification_method": "ChampionshipCatalogTest cup start loop",
+      "layers": [
+        1,
+        2,
+        4
+      ],
+      "tests": [
+        "tests/ChampionshipCatalogTest.gd",
+        "tests/ChampionshipCupCareerTest.gd"
+      ],
+      "automated_evidence": [
+        "data/cups/*.json"
+      ],
+      "native_physical": {
+        "status": "not_applicable",
+        "platforms": [],
+        "notes": "Digital cup catalog."
+      },
+      "art_status": "review_pending",
+      "limitations": [
+        "Human course fun not claimed"
+      ],
+      "severity": "high",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress"
+    },
+    {
+      "req_id": "PP-RTM-03",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "50 Kinetic Sole vehicles playable (shared movement archetypes).",
+      "verification_method": "vehicle_registry counts + garage tests",
+      "layers": [
+        1,
+        2
+      ],
+      "tests": [
+        "tests/VehicleGarageTest.gd",
+        "tests/GarageProgressionTest.gd"
+      ],
+      "automated_evidence": [
+        "data/vehicles/vehicle_registry.json"
+      ],
+      "native_physical": {
+        "status": "not_applicable",
+        "platforms": [],
+        "notes": "Not 50 distinct physics engines."
+      },
+      "art_status": "review_pending",
+      "limitations": [
+        "Shared archetypes \u2014 not unique physics per vehicle"
+      ],
+      "severity": "medium",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress"
+    },
+    {
+      "req_id": "PP-RTM-04",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "Career / cup save-resume round-trips.",
+      "verification_method": "ChampionshipCupCareerTest + CupResumeTest",
+      "layers": [
+        1,
+        2,
+        4
+      ],
+      "tests": [
+        "tests/ChampionshipCupCareerTest.gd",
+        "tests/CupResumeTest.gd"
+      ],
+      "automated_evidence": [],
+      "native_physical": {
+        "status": "not_run",
+        "platforms": [],
+        "notes": "Human career fun not claimed."
+      },
+      "art_status": "not_applicable",
+      "limitations": [
+        "Digital save path only"
+      ],
+      "severity": "high",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress"
+    },
+    {
+      "req_id": "PP-RTM-05",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "Wardrobe / creator cosmetics apply without changing footwear handling.",
+      "verification_method": "CreatorWardrobeRaceFlowTest + RacerVisual wardrobe apply",
+      "layers": [
+        2,
+        4
+      ],
+      "tests": [
+        "tests/CreatorWardrobeRaceFlowTest.gd",
+        "tests/AppearanceMultiplayerSyncTest.gd"
+      ],
+      "automated_evidence": [
+        "data/wardrobe/wardrobe_catalog.json",
+        "artifacts/creator_wardrobe/FLOW_RESULT.json"
+      ],
+      "native_physical": {
+        "status": "not_applicable",
+        "platforms": [],
+        "notes": "Cosmetic-only contract."
+      },
+      "art_status": "review_pending",
+      "limitations": [
+        "Footwear vehicle owns handling"
+      ],
+      "severity": "medium",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress"
+    },
+    {
+      "req_id": "PP-RTM-06",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "Independent 2-client lap honesty (not Metal; not 8-human physical).",
+      "verification_method": "Gate1 two-member race + independent_two_process artifact",
+      "layers": [
+        2,
+        4,
+        7
+      ],
+      "tests": [
+        "tests/test_lap_honesty_gate.py",
+        "tests/GameSessionTwoMemberRace.gd"
+      ],
+      "automated_evidence": [
+        "artifacts/independent_two_process/INDEPENDENT_CLIENTS_RACE_RESULT.json",
+        "contracts/beatlink_sibling_rooms/CONTRACT_PIN.json"
+      ],
+      "native_physical": {
+        "status": "partial",
+        "platforms": [
+          "linux-gate1",
+          "darwin-headless-opengl3"
+        ],
+        "notes": "2-client digital/headless GL. Distinct from Mac Metal/MoltenVK and from 8-human physical."
+      },
+      "art_status": "not_applicable",
+      "limitations": [
+        "Not physical 8-human PartyLink",
+        "Metal proven separately on PP-RTM-09"
+      ],
+      "severity": "blocker",
+      "sha": "e939b86d0e6aa4518a951a7b1f15a96374ad7393",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress",
+      "notes": "S6/S7: BeatLink sibling rooms pin restores independent two-client. Distinct from PartyLink dual seat and Metal."
+    },
+    {
+      "req_id": "PP-RTM-07",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "PartyLink allocated 2\u20138 vs connected humans vs CPU fill; bots never count as humans; BeatLink sibling stays 2; eight-actor field spawn with ownership stamps.",
+      "verification_method": "PartyLinkCapacityTest + EightRacerFieldObserve + prepare-only packet",
+      "layers": [
+        2,
+        4,
+        7
+      ],
+      "tests": [
+        "tests/PartyLinkCapacityTest.gd",
+        "tests/EightRacerFieldObserve.gd",
+        "tests/DualConnectedPartyLinkObserve.gd"
+      ],
+      "automated_evidence": [
+        "artifacts/multiplayer/EIGHT_HUMAN_PARTY_PACKET.md",
+        "artifacts/multiplayer/DUAL_CONNECTED_PARTYLINK_RESULT.json"
+      ],
+      "native_physical": {
+        "status": "partial",
+        "platforms": [
+          "darwin-headless-opengl3"
+        ],
+        "notes": "1h+7cpu eight-racer + 2h+6cpu dual sibling local. Physical 8p open. bots\u2260humans."
+      },
+      "art_status": "not_applicable",
+      "limitations": [
+        "Bots \u2260 humans",
+        "Allocated seats \u2260 connected humans",
+        "Wired local humans \u2264 BeatLink sibling 2",
+        "Not physical 8p"
+      ],
+      "severity": "high",
+      "sha": "31944a9c99b4823a79b15c15d45b2180b4000eae",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress",
+      "notes": "PartyLinkCapacity recheck PASS after S7e; wired\u22642; bots\u2260humans; physical 8p open."
+    },
+    {
+      "req_id": "PP-RTM-08",
+      "owner": "owner-qa",
+      "expected_behavior": "Physical 8-human PartyLink session with seat map and finish evidence.",
+      "verification_method": "Owner/QA live session \u2014 agent must not fabricate participants",
+      "layers": [
+        7
+      ],
+      "tests": [],
+      "automated_evidence": [
+        "artifacts/multiplayer/EIGHT_HUMAN_PARTY_PACKET.md"
+      ],
+      "native_physical": {
+        "status": "not_run",
+        "platforms": [
+          "partylink-8-human"
+        ],
+        "notes": "Prepare-only packet. Distinct from 2-client Gate1 honesty."
+      },
+      "art_status": "not_applicable",
+      "limitations": [
+        "Not executed",
+        "Do not invent participants"
+      ],
+      "severity": "blocker",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "not_started"
+    },
+    {
+      "req_id": "PP-RTM-09",
+      "owner": "platform",
+      "expected_behavior": "Mac MoltenVK / Metal display-backed race without SIGSEGV.",
+      "verification_method": "Explicit Metal evidence file \u2014 not Gate1 Linux, not Darwin headless GL",
+      "layers": [
+        7
+      ],
+      "tests": [],
+      "automated_evidence": [
+        "artifacts/moltenvk/MOLTENVK_METAL_STATUS.md",
+        "artifacts/moltenvk/METAL_MULTI_TRACK_MATRIX.json",
+        "artifacts/moltenvk/PHYSICAL_REVIEW_BUILD_PACKET.md"
+      ],
+      "native_physical": {
+        "status": "pass",
+        "platforms": [
+          "darwin-metal-apple-m2"
+        ],
+        "notes": "22-track Metal matrix."
+      },
+      "art_status": "not_applicable",
+      "limitations": [
+        "moltenvk_metal_pass = true on tested M2 tip/matrix only",
+        "Not COURSE_ACCEPTED/HUMAN/RC2/V1",
+        "Not physical 8-human PartyLink"
+      ],
+      "severity": "blocker",
+      "sha": "7b0f278035c19f389b0492b627cccb89f7684353",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress",
+      "notes": "Display-backed Metal observe evidence \u2014 not inferred from Gate1/Windows/headless GL. S7I: rooftop HVAC/vent + boardwalk/glass shed + metro pulse silhouettes deepened; candidate\u2260commercial."
+    },
+    {
+      "req_id": "PP-RTM-10",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "Accessibility baseline toggles (reduce motion, larger UI, auto-accel, colorblind HUD) + reduce-motion FOV.",
+      "verification_method": "AccessibilitySettings + MainMenu toggles + CameraRig reduce-motion path",
+      "layers": [
+        6
+      ],
+      "tests": [
+        "tests/AccessibilityBaselineTest.gd"
+      ],
+      "automated_evidence": [
+        "scripts/core/AccessibilitySettings.gd",
+        "tests/AccessibilityBaselineTest.gd",
+        "scripts/player/CameraRig.gd"
+      ],
+      "native_physical": {
+        "status": "not_run",
+        "platforms": [],
+        "notes": "Digital baseline \u2014 not human a11y certification."
+      },
+      "art_status": "not_applicable",
+      "limitations": [
+        "Not WCAG certification"
+      ],
+      "severity": "medium",
+      "sha": "6428848c8f7ed135e9783ccd66cdc00e51fb82b7",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress",
+      "notes": "Digital a11y baseline PASS (reduce-motion FOV contract, larger_ui, colorblind HUD, auto-accel). Not WCAG/HUMAN."
+    },
+    {
+      "req_id": "PP-RTM-11",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "Racing-camera quality cups 1\u20138 with per-track chase + accents (procedural candidate).",
+      "verification_method": "ChampionshipCatalogTest accent/chase assertions + quality review doc",
+      "layers": [
+        2,
+        4,
+        5
+      ],
+      "tests": [
+        "tests/ChampionshipCatalogTest.gd"
+      ],
+      "automated_evidence": [
+        "artifacts/quality_review/EIGHT_CUP_RACING_CAMERA_QUALITY.md",
+        "scripts/player/CameraRig.gd",
+        "scripts/tracks/CourseTrack.gd"
+      ],
+      "native_physical": {
+        "status": "not_run",
+        "platforms": [],
+        "notes": "Cups 3\u20138 chase/accent already landed at 8c3ac55 \u2014 do not repeat; deepen env landmarks instead."
+      },
+      "art_status": "wip",
+      "limitations": [
+        "Procedural candidate \u2260 commercial final art",
+        "Owner eight-cup camera sign-off pending"
+      ],
+      "severity": "high",
+      "sha": "7b0f278035c19f389b0492b627cccb89f7684353",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress",
+      "notes": "afterglow_sign + prior neon/signal silhouettes; candidate\u2260commercial. S7I: rooftop HVAC/vent + boardwalk/glass shed + metro pulse silhouettes deepened; candidate\u2260commercial."
+    },
+    {
+      "req_id": "PP-RTM-12",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "Footwear / wardrobe chase-cam polish (trail family + stripe) without handling changes.",
+      "verification_method": "RacerVisual trail/stripe + wardrobe cosmetic contract",
+      "layers": [
+        2,
+        5
+      ],
+      "tests": [
+        "tests/CreatorWardrobeRaceFlowTest.gd",
+        "tests/FootwearChaseCamPolishTest.gd"
+      ],
+      "automated_evidence": [
+        "scripts/player/RacerVisual.gd",
+        "artifacts/quality_review/FASHION_AUDIO_CONTINUE.json",
+        "tests/FootwearChaseCamPolishTest.gd"
+      ],
+      "native_physical": {
+        "status": "not_applicable",
+        "platforms": [],
+        "notes": "Candidate VFX only."
+      },
+      "art_status": "wip",
+      "limitations": [
+        "visual_lod budgets 8-racer fields; does not claim 8p physical"
+      ],
+      "severity": "medium",
+      "sha": "7234c4d7c20182c420147637efce714b95673641",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress",
+      "notes": "Distinct trail families + stripe emission chase polish; cosmetic\u2260handling; not commercial."
+    },
+    {
+      "req_id": "PP-RTM-13",
+      "owner": "lane-b/course-build-fix",
+      "expected_behavior": "Owner playable review package ready; Cursor Complete not claimed.",
+      "verification_method": "OWNER_PLAYABLE_REVIEW_PACKAGE.json checklist",
+      "layers": [
+        4
+      ],
+      "tests": [],
+      "automated_evidence": [
+        "artifacts/quality_review/OWNER_PLAYABLE_REVIEW_PACKAGE.json"
+      ],
+      "native_physical": {
+        "status": "not_run",
+        "platforms": [],
+        "notes": "Owner play required."
+      },
+      "art_status": "review_pending",
+      "limitations": [
+        "CURSOR_COMPLETE false"
+      ],
+      "severity": "medium",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "not_started"
+    },
+    {
+      "req_id": "PP-RTM-14",
+      "owner": "owner",
+      "expected_behavior": "Main-integration merge remains plan-only until owner approval + exact-head Gate1/Windows green.",
+      "verification_method": "Merge plan artifact; never agent-merge/reset/force-push/retarget",
+      "layers": [
+        4
+      ],
+      "tests": [],
+      "automated_evidence": [
+        "artifacts/main_integration/MAIN_INTEGRATION_MERGE_PLAN.md",
+        "docs/decisions/MAIN_INTEGRATION_MERGE_PLAN.md"
+      ],
+      "native_physical": {
+        "status": "not_applicable",
+        "platforms": [],
+        "notes": "Plan only."
+      },
+      "art_status": "not_applicable",
+      "limitations": [
+        "Do not merge/retarget/force-push/reset without owner",
+        "Prefer FF merge when owner approves"
+      ],
+      "severity": "blocker",
+      "sha": "cb06c2310946e6c1770609c52211183dae7a8498",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "not_started"
+    },
+    {
+      "req_id": "PP-RTM-15",
+      "owner": "eng/cursor-packet-s3-cups-20261029",
+      "expected_behavior": "Cups 1\u20138 genuine full-race RESULTS_PATH via RACE_OBSERVE_MODE championship with strengthened completion assertions (COMPLETED_LAPS, FINISH_TRIGGER, REACQUIRE, TELEPORT_FALSE_FINISH); COURSE_ACCEPTED remains false.",
+      "verification_method": "verdant_race_acceptance_gate championship suite + CupResume/ChampionshipCupCareer",
+      "layers": [
+        2,
+        4,
+        5
+      ],
+      "tests": [
+        "tests/VerdantRaceSceneObserve.gd",
+        "tests/verdant_race_acceptance_gate.py",
+        "tests/ChampionshipCatalogTest.gd"
+      ],
+      "automated_evidence": [
+        "artifacts/s6_evidence/championship-gate-s6.txt",
+        "artifacts/s6_evidence/RESULTS_MATRIX_32.json",
+        "artifacts/s6_evidence/SOFT_TRACK_STRENGTHENED_GATE.json",
+        "contracts/beatlink_sibling_rooms/CONTRACT_PIN.json"
+      ],
+      "native_physical": {
+        "status": "partial",
+        "platforms": [
+          "macos-godot-headless"
+        ],
+        "notes": "32/32 RESULTS_PATH on tip after S6 continue. COURSE_ACCEPTED/HUMAN/RC2/V1 false. Metal\u2260headless GL. Independent 2-client digital \u2260 8 humans."
+      },
+      "art_status": "wip",
+      "limitations": [
+        "COURSE_ACCEPTED false (human)",
+        "HUMAN/RC2/V1 false",
+        "headless line-steer \u2260 human course fun"
+      ],
+      "severity": "high",
+      "sha": "e939b86d0e6aa4518a951a7b1f15a96374ad7393",
+      "independent_review_status": "not_started",
+      "cursor_complete_status": "in_progress",
+      "notes": "32/32 strengthened gates held; soft tracks re-proved under Metal matrix. COURSE/HUMAN/RC2/V1 false."
+    }
+  ]
+}

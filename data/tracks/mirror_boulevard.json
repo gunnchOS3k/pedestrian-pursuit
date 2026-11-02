@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "id": "mirror_boulevard",
+  "display_name": "Mirror Boulevard",
+  "lap_count": 3,
+  "difficulty": "intermediate",
+  "theme": "mirror_boulevard",
+  "description": "Reflective twin-boulevard circuit with glass facades, mirror gates, and a plaza chord cut.",
+  "art_status": "CHAMPIONSHIP_PROCEDURAL_RACEABLE",
+  "geometry_status": "championship_upgraded",
+  "final_track_art_status": "track_art_candidate",
+  "human_track_art_approved": false,
+  "lane_width": 15.0,
+  "guard_rails": true,
+  "has_shortcut": true,
+  "track_color": "#1C2438",
+  "accent_color": "#7AD7FF",
+  "sky_color": "#121820",
+  "backdrop_color": "#0E1420",
+  "path_points": [
+    [
+      50.0,
+      1.747,
+      0.0
+    ],
+    [
+      39.41,
+      2.332,
+      14.75
+    ],
+    [
+      26.31,
+      2.4,
+      26.58
+    ],
+    [
+      10.35,
+      2.132,
+      33.15
+    ],
+    [
+      -10.35,
+      2.021,
+      33.15
+    ],
+    [
+      -26.31,
+      2.089,
+      26.58
+    ],
+    [
+      -39.41,
+      1.879,
+      14.75
+    ],
+    [
+      -50.0,
+      1.253,
+      0.0
+    ],
+    [
+      -39.41,
+      0.668,
+      -14.75
+    ],
+    [
+      -26.31,
+      0.6,
+      -26.58
+    ],
+    [
+      -10.35,
+      0.868,
+      -33.15
+    ],
+    [
+      10.35,
+      0.979,
+      -33.15
+    ],
+    [
+      26.31,
+      0.911,
+      -26.58
+    ],
+    [
+      39.41,
+      1.121,
+      -14.75
+    ]
+  ],
+  "checkpoint_points": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    10,
+    12
+  ],
+  "speed_lanes": [
+    {
+      "point_index": 0,
+      "size": [
+        6,
+        14
+      ],
+      "speed_bonus": 1.2
+    }
+  ],
+  "terrain_zones": [
+    {
+      "point_index": 6,
+      "size": [
+        8,
+        10
+      ],
+      "speed_multiplier": 0.8,
+      "terrain_name": "mirror_glass_dust",
+      "handling_multiplier": 0.9,
+      "color": "#2A3850"
+    }
+  ],
+  "bounce_pads": [
+    {
+      "point_index": 11,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    },
+    {
+      "point_index": 3,
+      "bounce_force": 6.0,
+      "forward_boost": 2.0,
+      "size": [
+        5,
+        5
+      ]
+    }
+  ],
+  "item_boxes": [
+    2,
+    4,
+    7,
+    11
+  ],
+  "boost_pickups": [
+    1,
+    5,
+    8
+  ],
+  "rail_segments": [
+    4,
+    10
+  ],
+  "shortcut_routes": [
+    {
+      "id": "mirror_boulevard_cut",
+      "entry_point_index": 3,
+      "exit_point_index": 9,
+      "risk": "medium",
+      "ai_preference": 0.3,
+      "description": "Plaza mirror cut \u2014 glare zone slows if you miss."
+    }
+  ],
+  "landmarks": [
+    "mirror_gate_a",
+    "mirror_gate_b",
+    "glass_facade",
+    "mirror_panel"
+  ],
+  "elevation_profile": "boulevard_rolls",
+  "bank_bias": 0.1,
+  "geometry_note": "Neon Night upgraded batch \u2014 real env/collision/audio candidates; not commercial final art. mirror gates / glass planters. Path Y lifted above void floor (ymin>=0.6) so elevated cups remain raceable without false void respawn.",
+  "camera_identity": "mirror_chase",
+  "digital_completion": {
+    "route_graph": true,
+    "ai_path": true,
+    "collision": true,
+    "checkpoints": true,
+    "shortcuts": true,
+    "rails": true,
+    "visual_final": true,
+    "lighting": true,
+    "camera_identity": true,
+    "ambience": true
+  },
+  "exploit_notes": [
+    "Neon Night collision hazards are off-line props; do not claim human commercial art approval."
+  ]
+}
