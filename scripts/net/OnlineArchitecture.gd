@@ -163,6 +163,55 @@ static func partylink_human_bot_accounting(allocated_human_seats: int, connected
 	}
 
 
+static func partylink_seat_cosmetic_bindings(
+	allocated_human_seats: int,
+	connected_humans: int,
+	human_payloads: Array = []
+) -> Dictionary:
+	## Fashion deepen: bind chase-cam trail / appearance fingerprints onto seats.
+	## Cosmetics never invent humans; bot seats may carry default CPU cosmetics only.
+	var roster := partylink_runtime_roster(allocated_human_seats, connected_humans)
+	var humans := int(roster.get("human_participant_count", 0))
+	var bindings: Array = []
+	var cosmetic_bound := 0
+	for entry in roster.get("seats", []):
+		if typeof(entry) != TYPE_DICTIONARY:
+			continue
+		var seat_i := int(entry.get("seat", -1))
+		var is_human := bool(entry.get("counts_as_human_participant", false))
+		var fp := ""
+		var trail_id := ""
+		if is_human and seat_i >= 0 and seat_i < human_payloads.size():
+			var payload: Variant = human_payloads[seat_i]
+			if typeof(payload) == TYPE_DICTIONARY:
+				fp = str(payload.get("fingerprint", payload.get("racer_id", "")))
+				trail_id = str(payload.get("trail_expression_id", ""))
+				if trail_id.is_empty():
+					var slots: Dictionary = payload.get("outfit_slots", {})
+					trail_id = str(slots.get("trail_expression", ""))
+				cosmetic_bound += 1
+		bindings.append({
+			"seat": seat_i,
+			"counts_as_human_participant": is_human,
+			"appearance_fingerprint": fp,
+			"trail_expression_id": trail_id,
+			"cosmetics_count_as_human": false,
+			"handling_owner": "footwear",
+		})
+	return {
+		"schema": "pp_partylink_seat_cosmetic_bindings/v1",
+		"allocated_human_seats": int(roster.get("allocated_human_seats", 0)),
+		"connected_humans": humans,
+		"cosmetic_bindings": bindings,
+		"human_cosmetics_bound": cosmetic_bound,
+		"bots_never_count_as_humans": true,
+		"cosmetics_never_invent_humans": true,
+		"physical_eight_human_party": false,
+		"COURSE_ACCEPTED": false,
+		"HUMAN": false,
+	}
+
+
 static func write_evidence(abs_path: String) -> String:
 	var text := JSON.stringify(describe(), "\t")
 	var f := FileAccess.open(abs_path, FileAccess.WRITE)

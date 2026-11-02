@@ -47,10 +47,24 @@ func _init() -> void:
 		failures.append("reopen lost outfit")
 
 	## 3) Pack peer payload + apply on independent visual (simulated peer)
+	## Ensure trail_expression is present for chase-cam fingerprint deepen (S7N).
+	if str(slots.get("trail_expression", "")).is_empty():
+		slots["trail_expression"] = "metro_pulse_trail"
 	var payload: Dictionary = AppearanceSyncScript.pack_from_created_racer(again, slots)
 	var fp := AppearanceSyncScript.fingerprint(payload)
 	if fp.is_empty():
 		failures.append("empty fingerprint")
+	if str(payload.get("trail_expression_id", "")).is_empty():
+		failures.append("pack missing trail_expression_id")
+	if bool(payload.get("counts_as_human_participant", true)):
+		failures.append("cosmetics must not count as human participants")
+	var trail_meta: Dictionary = payload.get("chase_cam_trail", {})
+	if not bool(trail_meta.get("cosmetic_only", false)):
+		failures.append("chase_cam_trail must be cosmetic_only")
+	if str(trail_meta.get("handling_owner", "")) != "footwear":
+		failures.append("chase_cam_trail handling_owner must be footwear")
+	if fp.find("trail=") < 0:
+		failures.append("fingerprint must include trail=")
 	var peer_visual := Node3D.new()
 	peer_visual.set_script(RacerVisualScript)
 	root.add_child(peer_visual)

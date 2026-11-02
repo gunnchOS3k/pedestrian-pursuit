@@ -146,6 +146,33 @@ func resolve_championship_music_coverage(track_ids: PackedStringArray) -> Dictio
 	}
 
 
+func resolve_championship_ambience_coverage(track_ids: PackedStringArray) -> Dictionary:
+	## Audio deepen: every championship track resolves ambience (preferred or verdant fallback).
+	## Procedural banks ≠ commercial final; COURSE/HUMAN false.
+	var preferred_hits := 0
+	var fallback_hits := 0
+	var missing_paths := 0
+	var verdant_fallback := AMB_DIR + "verdant_cascade_circuit.wav"
+	for tid in track_ids:
+		var preferred := AMB_DIR + "%s.wav" % tid
+		if FileAccess.file_exists(preferred):
+			preferred_hits += 1
+		elif FileAccess.file_exists(verdant_fallback):
+			fallback_hits += 1
+		else:
+			missing_paths += 1
+	return {
+		"schema": "pp_audio_championship_ambience_coverage/v1",
+		"track_count": track_ids.size(),
+		"preferred_hits": preferred_hits,
+		"ambience_fallback_hits": fallback_hits,
+		"missing_paths": missing_paths,
+		"commercial_final_audio": false,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+	}
+
+
 func _play_loop(player: AudioStreamPlayer, path: String, volume_db: float) -> void:
 	if not _enabled or player == null:
 		return

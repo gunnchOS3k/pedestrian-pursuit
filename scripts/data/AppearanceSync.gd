@@ -19,6 +19,7 @@ static func pack_from_created_racer(racer: Dictionary, outfit_slots: Dictionary 
 				var WardrobeCatalogScript = load("res://scripts/data/WardrobeCatalog.gd")
 				var preset: Dictionary = WardrobeCatalogScript.preset(outfit_id)
 				slots = preset.get("slots", {})
+	var trail_meta := chase_cam_trail_meta(slots)
 	return {
 		"schema_version": SCHEMA_VERSION,
 		"racer_id": str(racer.get("id", "")),
@@ -28,6 +29,23 @@ static func pack_from_created_racer(racer: Dictionary, outfit_slots: Dictionary 
 		"outfit_id": str(racer.get("outfit_id", "")),
 		"outfit_slots": slots.duplicate(true),
 		"footwear_vehicle_id": str(racer.get("footwear_vehicle_id", "reedline_circlers")),
+		"trail_expression_id": str(trail_meta.get("trail_expression_id", "")),
+		"chase_cam_trail": trail_meta,
+		"affects_collision": false,
+		"affects_stats": false,
+		## Cosmetics never invent PartyLink human seats.
+		"counts_as_human_participant": false,
+	}
+
+
+static func chase_cam_trail_meta(outfit_slots: Dictionary) -> Dictionary:
+	## Fashion deepen: chase-cam trail ID is cosmetic-only; footwear owns handling.
+	var trail_id := str(outfit_slots.get("trail_expression", ""))
+	return {
+		"schema": "pp_chase_cam_trail_fingerprint/v1",
+		"trail_expression_id": trail_id,
+		"cosmetic_only": true,
+		"handling_owner": "footwear",
 		"affects_collision": false,
 		"affects_stats": false,
 	}
@@ -42,6 +60,9 @@ static func fingerprint(payload: Dictionary) -> String:
 	var slot_bits: PackedStringArray = PackedStringArray()
 	for k in keys:
 		slot_bits.append("%s=%s" % [str(k), str(slots[k])])
+	var trail_id := str(payload.get("trail_expression_id", ""))
+	if trail_id.is_empty():
+		trail_id = str(slots.get("trail_expression", ""))
 	return "|".join([
 		str(payload.get("schema_version", SCHEMA_VERSION)),
 		str(payload.get("racer_id", "")),
@@ -52,6 +73,7 @@ static func fingerprint(payload: Dictionary) -> String:
 		str(payload.get("outfit_id", "")),
 		",".join(slot_bits),
 		str(payload.get("footwear_vehicle_id", "")),
+		"trail=%s" % trail_id,
 	])
 
 

@@ -1,0 +1,35 @@
+{
+  "schema": "ped.s7n_fashion_audio_camera_partylink_continue.v1",
+  "wave010_untouched": true,
+  "course_false": true,
+  "human_false": true,
+  "rc2_false": true,
+  "v1_false": true,
+  "fashion": {
+    "chase_cam_trail_in_appearance_sync": true,
+    "fingerprint_includes_trail": true,
+    "cosmetics_never_count_as_humans": true,
+    "handling_owner": "footwear",
+    "appearance_sync_test": "PASS"
+  },
+  "audio": {
+    "championship_ambience_coverage": 32,
+    "verdant_ambience_fallback": true,
+    "commercial_final_audio": false,
+    "audio_director_contract_test": "PASS"
+  },
+  "camera": {
+    "identity_coverage_recheck": "PASS",
+    "championship_tracks": 32,
+    "notes": "Camera identity coverage rechecked; no CameraRig/wave010 churn"
+  },
+  "partylink": {
+    "seat_cosmetic_bindings": true,
+    "cosmetics_never_invent_humans": true,
+    "bots_never_count_as_humans": true,
+    "capacity_test": "PASS"
+  },
+  "notes": "S7N digital continue after S7M tip 1442c9f; RaceScene/wave010 gates preserved.",
+  "base_tip": "bb0c3da",
+  "prior_tip": "1442c9f"
+}

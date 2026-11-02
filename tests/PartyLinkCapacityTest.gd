@@ -102,6 +102,28 @@ func _run() -> void:
 				failures.append("accounting humans+bots != 8")
 			if bool(acct.get("bots_count_as_humans", true)) or not bool(acct.get("bots_never_count_as_humans", false)):
 				failures.append("accounting must keep bots≠humans")
+			## S7N: seat cosmetics bind trails without inventing humans.
+			var fake_payloads: Array = []
+			for hi in range(connected):
+				fake_payloads.append({
+					"fingerprint": "human_%d" % hi,
+					"trail_expression_id": "metro_pulse_trail",
+					"counts_as_human_participant": false,
+				})
+			var cos: Dictionary = OnlineArchitectureScript.partylink_seat_cosmetic_bindings(
+				allocated, connected, fake_payloads
+			)
+			if int(cos.get("connected_humans", -1)) != connected:
+				failures.append("cosmetic bindings must not change connected_humans")
+			if int(cos.get("human_cosmetics_bound", -1)) != connected:
+				failures.append("human_cosmetics_bound mismatch a=%d c=%d" % [allocated, connected])
+			if not bool(cos.get("cosmetics_never_invent_humans", false)):
+				failures.append("cosmetics_never_invent_humans required")
+			for b in cos.get("cosmetic_bindings", []):
+				if typeof(b) != TYPE_DICTIONARY:
+					continue
+				if bool(b.get("cosmetics_count_as_human", true)):
+					failures.append("cosmetics_count_as_human must stay false")
 
 	## Clamp honesty: out-of-range requests still stay 2–8 allocated; connected clamps.
 	if int(OnlineArchitectureScript.partylink_seat_map(1).get("allocated_human_seats", 0)) != 2:

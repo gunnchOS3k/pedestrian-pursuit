@@ -63,6 +63,17 @@ func _run() -> void:
 				failures.append("preferred+fallback must cover 32 tracks")
 			if bool(cov.get("commercial_final_audio", true)):
 				failures.append("coverage must keep commercial_final_audio false")
+		## S7N ambience coverage: 32 tracks resolve preferred or verdant fallback.
+		if audio.has_method("resolve_championship_ambience_coverage"):
+			var amb: Dictionary = audio.resolve_championship_ambience_coverage(all_ids)
+			if int(amb.get("track_count", -1)) != 32:
+				failures.append("ambience coverage track_count != 32")
+			if int(amb.get("missing_paths", 1)) != 0:
+				failures.append("championship ambience missing_paths must be 0")
+			if int(amb.get("preferred_hits", 0)) + int(amb.get("ambience_fallback_hits", 0)) != 32:
+				failures.append("ambience preferred+fallback must cover 32 tracks")
+			if bool(amb.get("commercial_final_audio", true)):
+				failures.append("ambience coverage must keep commercial_final_audio false")
 		for tid2 in all_ids:
 			audio.play_race_music(tid2)
 			var d3: Dictionary = audio.describe()
