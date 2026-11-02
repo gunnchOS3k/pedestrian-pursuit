@@ -212,6 +212,30 @@ static func partylink_seat_cosmetic_bindings(
 	}
 
 
+static func partylink_field_sum_honesty(
+	allocated_human_seats: int,
+	connected_humans: int
+) -> Dictionary:
+	## S7R: humans+bots always sum to 8; never invent physical eight-human party.
+	var acct := partylink_human_bot_accounting(allocated_human_seats, connected_humans)
+	var humans := int(acct.get("connected_humans", 0))
+	var bots := int(acct.get("bot_participant_count", 0))
+	var total := int(acct.get("humans_plus_bots", humans + bots))
+	return {
+		"schema": "pp_partylink_field_sum_honesty/v1",
+		"connected_humans": humans,
+		"bot_participant_count": bots,
+		"humans_plus_bots": total,
+		"field_sum_ok": total == 8,
+		"bots_never_count_as_humans": bool(acct.get("bots_never_count_as_humans", false)),
+		"physical_eight_human_party": false,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 static func partylink_bot_cosmetics_never_humans(
 	allocated_human_seats: int,
 	connected_humans: int

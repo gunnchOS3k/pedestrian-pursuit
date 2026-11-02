@@ -168,6 +168,16 @@ func _run() -> void:
 				failures.append("bot_cosmetics_marked_human must be 0")
 			if bool(bots.get("HUMAN", true)) or bool(bots.get("RC2", true)) or bool(bots.get("V1", true)):
 				failures.append("bot cosmetics helper must keep HUMAN/RC2/V1 false")
+			## S7R: field sum humans+bots == 8; physical eight-human false.
+			var field: Dictionary = OnlineArchitectureScript.partylink_field_sum_honesty(
+				allocated, connected
+			)
+			if not bool(field.get("field_sum_ok", false)):
+				failures.append("field_sum_ok required (humans+bots==8)")
+			if bool(field.get("physical_eight_human_party", true)):
+				failures.append("physical_eight_human_party must stay false")
+			if bool(field.get("HUMAN", true)) or bool(field.get("RC2", true)) or bool(field.get("V1", true)):
+				failures.append("field sum honesty must keep HUMAN/RC2/V1 false")
 
 	## Clamp honesty: out-of-range requests still stay 2–8 allocated; connected clamps.
 	if int(OnlineArchitectureScript.partylink_seat_map(1).get("allocated_human_seats", 0)) != 2:

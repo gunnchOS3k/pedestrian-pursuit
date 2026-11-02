@@ -121,6 +121,16 @@ func _run() -> void:
 			failures.append("menu/results must keep commercial_final_audio false")
 		if bool(beds.get("HUMAN", true)) or bool(beds.get("RC2", true)) or bool(beds.get("V1", true)):
 			failures.append("menu/results must keep HUMAN/RC2/V1 false")
+		## S7R item SFX coverage.
+		var items: Dictionary = audio.resolve_item_sfx_coverage()
+		if int(items.get("item_count", -1)) != 7:
+			failures.append("item sfx item_count != 7")
+		if int(items.get("missing_paths", 1)) != 0 or int(items.get("preferred_hits", 0)) != 7:
+			failures.append("item sfx banks must all resolve")
+		if bool(items.get("commercial_final_audio", true)):
+			failures.append("item sfx must keep commercial_final_audio false")
+		if bool(items.get("HUMAN", true)) or bool(items.get("RC2", true)) or bool(items.get("V1", true)):
+			failures.append("item sfx must keep HUMAN/RC2/V1 false")
 
 	audio.set_enabled(false)
 	if failures.is_empty():

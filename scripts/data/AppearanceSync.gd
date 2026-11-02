@@ -122,6 +122,35 @@ static func preset_trail_fingerprint_matrix() -> Dictionary:
 	}
 
 
+static func integrated_preset_trail_bind() -> Dictionary:
+	## S7R fashion deepen: integrated presets keep trail binds; cosmetics ≠ humans.
+	var WardrobeCatalogScript = load("res://scripts/data/WardrobeCatalog.gd")
+	var ids: Array = WardrobeCatalogScript.integrated_complete_outfit_ids()
+	var bound := 0
+	var missing := 0
+	for pid in ids:
+		var preset: Dictionary = WardrobeCatalogScript.preset(str(pid))
+		var slots: Dictionary = preset.get("slots", {})
+		var trail := str(slots.get("trail_expression", ""))
+		if trail.is_empty():
+			missing += 1
+		else:
+			bound += 1
+	return {
+		"schema": "pp_appearance_integrated_preset_trail_bind/v1",
+		"integrated_preset_count": ids.size(),
+		"trail_bound": bound,
+		"trail_missing": missing,
+		"all_bound": missing == 0 and ids.size() > 0,
+		"counts_as_human_participant": false,
+		"cosmetic_only": true,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 static func peer_trail_parity(host_payload: Dictionary, peer_payload: Dictionary) -> Dictionary:
 	## S7O fashion deepen: host→peer trail fingerprint parity without inventing humans.
 	var host_fp := fingerprint(host_payload)

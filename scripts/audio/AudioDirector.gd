@@ -254,6 +254,32 @@ func resolve_menu_results_music_coverage() -> Dictionary:
 	}
 
 
+func resolve_item_sfx_coverage() -> Dictionary:
+	## S7R audio deepen: launch item SFX banks resolve. Procedural ≠ commercial.
+	var items: PackedStringArray = PackedStringArray([
+		"box", "bounce_bubble", "lace_trap", "magnet_lace", "pulse_horn", "sole_shield", "turbo_toes"
+	])
+	var hits := 0
+	var missing_paths := 0
+	for item_id in items:
+		var path := SFX_DIR + "item_%s.wav" % item_id
+		if FileAccess.file_exists(path):
+			hits += 1
+		else:
+			missing_paths += 1
+	return {
+		"schema": "pp_audio_item_sfx_coverage/v1",
+		"item_count": items.size(),
+		"preferred_hits": hits,
+		"missing_paths": missing_paths,
+		"commercial_final_audio": false,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 func _play_loop(player: AudioStreamPlayer, path: String, volume_db: float) -> void:
 	if not _enabled or player == null:
 		return

@@ -155,6 +155,17 @@ func _init() -> void:
 	if bool(matrix.get("HUMAN", true)) or bool(matrix.get("RC2", true)) or bool(matrix.get("V1", true)):
 		failures.append("preset matrix must keep HUMAN/RC2/V1 false")
 
+	## S7R: integrated presets keep trail binds.
+	var bind: Dictionary = AppearanceSyncScript.integrated_preset_trail_bind()
+	if not bool(bind.get("all_bound", false)):
+		failures.append("integrated presets must all bind trails")
+	if int(bind.get("trail_missing", 1)) != 0:
+		failures.append("integrated preset trail_missing must be 0")
+	if bool(bind.get("counts_as_human_participant", true)):
+		failures.append("integrated trail bind must not invent humans")
+	if bool(bind.get("HUMAN", true)) or bool(bind.get("RC2", true)) or bool(bind.get("V1", true)):
+		failures.append("integrated trail bind must keep HUMAN/RC2/V1 false")
+
 	var evidence := {
 		"flow": "create_customize_save_reopen_peer_apply_edit",
 		"fingerprint": fp,
