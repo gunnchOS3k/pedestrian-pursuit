@@ -212,6 +212,36 @@ static func partylink_seat_cosmetic_bindings(
 	}
 
 
+static func partylink_bot_cosmetics_never_humans(
+	allocated_human_seats: int,
+	connected_humans: int
+) -> Dictionary:
+	## S7Q: bot seats may carry default CPU cosmetics but never count as humans.
+	var bindings := partylink_seat_cosmetic_bindings(allocated_human_seats, connected_humans, [])
+	var bot_seats := 0
+	var bot_marked_human := 0
+	for b in bindings.get("cosmetic_bindings", []):
+		if typeof(b) != TYPE_DICTIONARY:
+			continue
+		if bool(b.get("counts_as_human_participant", false)):
+			continue
+		bot_seats += 1
+		if bool(b.get("cosmetics_count_as_human", false)):
+			bot_marked_human += 1
+	return {
+		"schema": "pp_partylink_bot_cosmetics_never_humans/v1",
+		"connected_humans": int(bindings.get("connected_humans", 0)),
+		"bot_seats": bot_seats,
+		"bot_cosmetics_marked_human": bot_marked_human,
+		"bots_never_count_as_humans": bot_marked_human == 0,
+		"physical_eight_human_party": false,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 static func partylink_seat_fingerprint_uniqueness(
 	allocated_human_seats: int,
 	connected_humans: int,

@@ -142,6 +142,19 @@ func _init() -> void:
 	if bool(trail_cov.get("HUMAN", true)) or bool(trail_cov.get("RC2", true)) or bool(trail_cov.get("V1", true)):
 		failures.append("family_trail_coverage must keep HUMAN/RC2/V1 false")
 
+	## S7Q: preset trail fingerprint matrix — 9 unique cosmetic fingerprints.
+	var matrix: Dictionary = AppearanceSyncScript.preset_trail_fingerprint_matrix()
+	if int(matrix.get("preset_count", -1)) != 9:
+		failures.append("preset trail matrix preset_count != 9")
+	if int(matrix.get("missing_trail", 1)) != 0:
+		failures.append("preset trail matrix missing_trail must be 0")
+	if not bool(matrix.get("all_unique", false)):
+		failures.append("preset trail fingerprints must be unique")
+	if bool(matrix.get("counts_as_human_participant", true)):
+		failures.append("preset matrix must not invent humans")
+	if bool(matrix.get("HUMAN", true)) or bool(matrix.get("RC2", true)) or bool(matrix.get("V1", true)):
+		failures.append("preset matrix must keep HUMAN/RC2/V1 false")
+
 	var evidence := {
 		"flow": "create_customize_save_reopen_peer_apply_edit",
 		"fingerprint": fp,

@@ -111,6 +111,16 @@ func _run() -> void:
 			failures.append("ui coverage must keep commercial_final_audio false")
 		if bool(ui.get("HUMAN", true)) or bool(ui.get("RC2", true)) or bool(ui.get("V1", true)):
 			failures.append("ui coverage must keep HUMAN/RC2/V1 false")
+		## S7Q menu/cup/results beds.
+		var beds: Dictionary = audio.resolve_menu_results_music_coverage()
+		if int(beds.get("bed_count", -1)) != 3:
+			failures.append("menu/results bed_count != 3")
+		if int(beds.get("missing_paths", 1)) != 0 or int(beds.get("preferred_hits", 0)) != 3:
+			failures.append("menu/cup/results beds must all resolve")
+		if bool(beds.get("commercial_final_audio", true)):
+			failures.append("menu/results must keep commercial_final_audio false")
+		if bool(beds.get("HUMAN", true)) or bool(beds.get("RC2", true)) or bool(beds.get("V1", true)):
+			failures.append("menu/results must keep HUMAN/RC2/V1 false")
 
 	audio.set_enabled(false)
 	if failures.is_empty():

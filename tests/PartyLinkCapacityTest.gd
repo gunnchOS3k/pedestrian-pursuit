@@ -158,6 +158,16 @@ func _run() -> void:
 				failures.append("duplicate_fingerprints must be 0")
 			if bool(uniq.get("HUMAN", true)) or bool(uniq.get("RC2", true)) or bool(uniq.get("V1", true)):
 				failures.append("fingerprint uniqueness must keep HUMAN/RC2/V1 false")
+			## S7Q: empty payloads → bot cosmetics never count as humans.
+			var bots: Dictionary = OnlineArchitectureScript.partylink_bot_cosmetics_never_humans(
+				allocated, connected
+			)
+			if not bool(bots.get("bots_never_count_as_humans", false)):
+				failures.append("bot cosmetics must never count as humans")
+			if int(bots.get("bot_cosmetics_marked_human", 1)) != 0:
+				failures.append("bot_cosmetics_marked_human must be 0")
+			if bool(bots.get("HUMAN", true)) or bool(bots.get("RC2", true)) or bool(bots.get("V1", true)):
+				failures.append("bot cosmetics helper must keep HUMAN/RC2/V1 false")
 
 	## Clamp honesty: out-of-range requests still stay 2–8 allocated; connected clamps.
 	if int(OnlineArchitectureScript.partylink_seat_map(1).get("allocated_human_seats", 0)) != 2:

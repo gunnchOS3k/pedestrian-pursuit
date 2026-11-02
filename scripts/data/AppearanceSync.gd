@@ -77,6 +77,51 @@ static func fingerprint(payload: Dictionary) -> String:
 	])
 
 
+static func preset_trail_fingerprint_matrix() -> Dictionary:
+	## S7Q fashion deepen: every wardrobe preset packs a trail fingerprint; cosmetics ≠ humans.
+	var WardrobeCatalogScript = load("res://scripts/data/WardrobeCatalog.gd")
+	WardrobeCatalogScript.load_catalog()
+	var fps: Dictionary = {}
+	var with_trail := 0
+	var missing_trail := 0
+	for p in WardrobeCatalogScript.load_catalog().get("presets", []):
+		if typeof(p) != TYPE_DICTIONARY:
+			continue
+		var pid := str(p.get("id", ""))
+		var slots: Dictionary = (p.get("slots", {}) as Dictionary).duplicate(true)
+		var racer := {
+			"id": "preset_%s" % pid,
+			"display_name": pid,
+			"outfit_id": pid,
+			"footwear_vehicle_id": str(slots.get("footwear_vehicle", "reedline_circlers")),
+			"appearance": {},
+		}
+		var payload: Dictionary = pack_from_created_racer(racer, slots)
+		var fp := fingerprint(payload)
+		fps[pid] = fp
+		if str(payload.get("trail_expression_id", "")).is_empty():
+			missing_trail += 1
+		else:
+			with_trail += 1
+	var unique := {}
+	for pid in fps.keys():
+		unique[str(fps[pid])] = true
+	return {
+		"schema": "pp_appearance_preset_trail_fingerprint_matrix/v1",
+		"preset_count": fps.size(),
+		"with_trail": with_trail,
+		"missing_trail": missing_trail,
+		"unique_fingerprints": unique.size(),
+		"all_unique": unique.size() == fps.size() and fps.size() > 0,
+		"counts_as_human_participant": false,
+		"cosmetic_only": true,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 static func peer_trail_parity(host_payload: Dictionary, peer_payload: Dictionary) -> Dictionary:
 	## S7O fashion deepen: host→peer trail fingerprint parity without inventing humans.
 	var host_fp := fingerprint(host_payload)

@@ -229,6 +229,31 @@ func resolve_ui_cue_coverage() -> Dictionary:
 	}
 
 
+func resolve_menu_results_music_coverage() -> Dictionary:
+	## S7Q audio deepen: menu / cup / results beds resolve. Procedural ≠ commercial.
+	var beds: PackedStringArray = PackedStringArray([
+		"menu_theme.wav", "cup_theme.wav", "results_fanfare.wav"
+	])
+	var hits := 0
+	var missing_paths := 0
+	for bed in beds:
+		if FileAccess.file_exists(MUSIC_DIR + bed):
+			hits += 1
+		else:
+			missing_paths += 1
+	return {
+		"schema": "pp_audio_menu_results_music_coverage/v1",
+		"bed_count": beds.size(),
+		"preferred_hits": hits,
+		"missing_paths": missing_paths,
+		"commercial_final_audio": false,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 func _play_loop(player: AudioStreamPlayer, path: String, volume_db: float) -> void:
 	if not _enabled or player == null:
 		return
