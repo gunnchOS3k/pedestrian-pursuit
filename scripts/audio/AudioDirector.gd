@@ -203,6 +203,32 @@ func resolve_footstep_surface_coverage() -> Dictionary:
 	}
 
 
+func resolve_ui_cue_coverage() -> Dictionary:
+	## S7P audio deepen: core UI cues resolve on disk. Procedural ≠ commercial final.
+	var cues: PackedStringArray = PackedStringArray([
+		"back", "confirm", "countdown", "finish", "select", "start"
+	])
+	var hits := 0
+	var missing_paths := 0
+	for cue in cues:
+		var path := UI_DIR + "%s.wav" % cue
+		if FileAccess.file_exists(path):
+			hits += 1
+		else:
+			missing_paths += 1
+	return {
+		"schema": "pp_audio_ui_cue_coverage/v1",
+		"cue_count": cues.size(),
+		"preferred_hits": hits,
+		"missing_paths": missing_paths,
+		"commercial_final_audio": false,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 func _play_loop(player: AudioStreamPlayer, path: String, volume_db: float) -> void:
 	if not _enabled or player == null:
 		return

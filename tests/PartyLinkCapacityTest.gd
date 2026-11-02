@@ -142,6 +142,22 @@ func _run() -> void:
 				failures.append("gap_ok required for sparse payloads")
 			if bool(gap.get("HUMAN", true)) or bool(gap.get("COURSE_ACCEPTED", true)):
 				failures.append("gap integrity must keep HUMAN/COURSE false")
+			## S7P: unique fingerprints across distinct human seats.
+			var uniq_payloads: Array = []
+			for ui in range(connected):
+				uniq_payloads.append({
+					"fingerprint": "human_fp_%d" % ui,
+					"trail_expression_id": "metro_pulse_trail",
+				})
+			var uniq: Dictionary = OnlineArchitectureScript.partylink_seat_fingerprint_uniqueness(
+				allocated, connected, uniq_payloads
+			)
+			if not bool(uniq.get("uniqueness_ok", false)):
+				failures.append("seat fingerprint uniqueness_ok required")
+			if int(uniq.get("duplicate_fingerprints", 1)) != 0:
+				failures.append("duplicate_fingerprints must be 0")
+			if bool(uniq.get("HUMAN", true)) or bool(uniq.get("RC2", true)) or bool(uniq.get("V1", true)):
+				failures.append("fingerprint uniqueness must keep HUMAN/RC2/V1 false")
 
 	## Clamp honesty: out-of-range requests still stay 2–8 allocated; connected clamps.
 	if int(OnlineArchitectureScript.partylink_seat_map(1).get("allocated_human_seats", 0)) != 2:

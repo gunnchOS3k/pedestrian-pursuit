@@ -1,0 +1,32 @@
+{
+  "schema": "ped.s7p_fashion_audio_partylink_continue.v1",
+  "wave010_untouched": true,
+  "wave010_negative_path": "PASS",
+  "course_false": true,
+  "human_false": true,
+  "rc2_false": true,
+  "v1_false": true,
+  "ci_exact_head": {
+    "sha": "cd7409f",
+    "pr": 47,
+    "public_actions_html": "green (favicon-success; 0 failed jobs on /pull/47/checks)"
+  },
+  "fashion": {
+    "family_trail_coverage": 9,
+    "presets_with_trail": 9,
+    "cosmetics_never_count_as_humans": true,
+    "appearance_sync_test": "PASS"
+  },
+  "audio": {
+    "ui_cue_coverage": 6,
+    "commercial_final_audio": false,
+    "audio_director_contract_test": "PASS"
+  },
+  "partylink": {
+    "seat_fingerprint_uniqueness": true,
+    "cosmetics_never_invent_humans": true,
+    "capacity_test": "PASS"
+  },
+  "notes": "S7P deepen after exact-head CI green on S7O tip cd7409f; wave010 negatives preserved.",
+  "base_tip": "cd7409f"
+}

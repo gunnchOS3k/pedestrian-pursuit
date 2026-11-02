@@ -129,6 +129,19 @@ func _init() -> void:
 	if not ArtAcceptanceScript.procedural_never_satisfies_commercial():
 		failures.append("procedural commercial leak")
 
+	## S7P: nine family trail cosmetics without inventing humans.
+	var trail_cov: Dictionary = WardrobeCatalogScript.family_trail_coverage()
+	if int(trail_cov.get("family_count", -1)) != 9:
+		failures.append("family_trail_coverage family_count != 9")
+	if int(trail_cov.get("trail_garment_count", -1)) != 9:
+		failures.append("family_trail_coverage trail_garment_count != 9")
+	if int(trail_cov.get("presets_with_trail", -1)) != 9:
+		failures.append("family_trail_coverage presets_with_trail != 9")
+	if bool(trail_cov.get("counts_as_human_participant", true)):
+		failures.append("family trails must not count as humans")
+	if bool(trail_cov.get("HUMAN", true)) or bool(trail_cov.get("RC2", true)) or bool(trail_cov.get("V1", true)):
+		failures.append("family_trail_coverage must keep HUMAN/RC2/V1 false")
+
 	var evidence := {
 		"flow": "create_customize_save_reopen_peer_apply_edit",
 		"fingerprint": fp,

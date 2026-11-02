@@ -212,6 +212,47 @@ static func partylink_seat_cosmetic_bindings(
 	}
 
 
+static func partylink_seat_fingerprint_uniqueness(
+	allocated_human_seats: int,
+	connected_humans: int,
+	human_payloads: Array = []
+) -> Dictionary:
+	## S7P: distinct human seat fingerprints stay unique; duplicates never mint seats.
+	var bindings := partylink_seat_cosmetic_bindings(
+		allocated_human_seats, connected_humans, human_payloads
+	)
+	var seen := {}
+	var duplicate_fps := 0
+	var human_fps := 0
+	for b in bindings.get("cosmetic_bindings", []):
+		if typeof(b) != TYPE_DICTIONARY:
+			continue
+		if not bool(b.get("counts_as_human_participant", false)):
+			continue
+		var fp := str(b.get("appearance_fingerprint", ""))
+		if fp.is_empty():
+			continue
+		human_fps += 1
+		if seen.has(fp):
+			duplicate_fps += 1
+		else:
+			seen[fp] = true
+	return {
+		"schema": "pp_partylink_seat_fingerprint_uniqueness/v1",
+		"connected_humans": int(bindings.get("connected_humans", 0)),
+		"human_fingerprints": human_fps,
+		"unique_fingerprints": seen.size(),
+		"duplicate_fingerprints": duplicate_fps,
+		"uniqueness_ok": duplicate_fps == 0,
+		"cosmetics_never_invent_humans": bool(bindings.get("cosmetics_never_invent_humans", false)),
+		"physical_eight_human_party": false,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 static func partylink_cosmetic_gap_integrity(
 	allocated_human_seats: int,
 	connected_humans: int,

@@ -99,6 +99,18 @@ func _run() -> void:
 				failures.append("footstep preferred+fallback must cover 7 surfaces")
 			if bool(feet.get("commercial_final_audio", true)):
 				failures.append("footstep coverage must keep commercial_final_audio false")
+		## S7P UI cue coverage: 6 core cues on disk; procedural ≠ commercial.
+		var ui: Dictionary = audio.resolve_ui_cue_coverage()
+		if int(ui.get("cue_count", -1)) != 6:
+			failures.append("ui cue_count != 6")
+		if int(ui.get("missing_paths", 1)) != 0:
+			failures.append("ui cue missing_paths must be 0")
+		if int(ui.get("preferred_hits", 0)) != 6:
+			failures.append("ui preferred_hits must be 6")
+		if bool(ui.get("commercial_final_audio", true)):
+			failures.append("ui coverage must keep commercial_final_audio false")
+		if bool(ui.get("HUMAN", true)) or bool(ui.get("RC2", true)) or bool(ui.get("V1", true)):
+			failures.append("ui coverage must keep HUMAN/RC2/V1 false")
 
 	audio.set_enabled(false)
 	if failures.is_empty():

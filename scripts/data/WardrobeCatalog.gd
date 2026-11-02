@@ -101,3 +101,40 @@ static func integrated_garment_count() -> int:
 		if str(g.get("art_status", "")) == "integrated_mesh_v1":
 			n += 1
 	return n
+
+
+static func family_trail_coverage() -> Dictionary:
+	## S7P fashion deepen: every wardrobe family ships a cosmetic trail_expression.
+	## Trails never invent humans; footwear owns handling; procedural ≠ commercial.
+	var families: Dictionary = {}
+	var trail_garments := 0
+	for g in garments():
+		if str(g.get("slot", "")) != "trail_expression":
+			continue
+		trail_garments += 1
+		var fam := str(g.get("family_id", ""))
+		if fam.is_empty():
+			continue
+		families[fam] = str(g.get("id", ""))
+	var presets_with_trail := 0
+	load_catalog()
+	for p in _cache.get("presets", []):
+		if typeof(p) != TYPE_DICTIONARY:
+			continue
+		var slots: Dictionary = p.get("slots", {})
+		if not str(slots.get("trail_expression", "")).is_empty():
+			presets_with_trail += 1
+	return {
+		"schema": "pp_wardrobe_family_trail_coverage/v1",
+		"family_count": families.size(),
+		"trail_garment_count": trail_garments,
+		"presets_with_trail": presets_with_trail,
+		"families": families,
+		"cosmetic_only": true,
+		"counts_as_human_participant": false,
+		"handling_owner": "footwear",
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
