@@ -103,6 +103,46 @@ static func integrated_garment_count() -> int:
 	return n
 
 
+static func family_footwear_handling_coverage() -> Dictionary:
+	## S7S fashion deepen: every integrated preset binds footwear_vehicle (handling owner).
+	## Footwear cosmetics ≠ humans; procedural ≠ commercial.
+	var families: Dictionary = {}
+	var footwear_binds := 0
+	var presets_with_footwear := 0
+	var missing_paths := 0
+	load_catalog()
+	for p in _cache.get("presets", []):
+		if typeof(p) != TYPE_DICTIONARY:
+			continue
+		var slots: Dictionary = p.get("slots", {})
+		var foot_id := str(slots.get("footwear_vehicle", ""))
+		if foot_id.is_empty():
+			continue
+		presets_with_footwear += 1
+		footwear_binds += 1
+		var fam := str(p.get("family_id", ""))
+		if not fam.is_empty():
+			families[fam] = foot_id
+		var shoe_path := "res://data/shoes/%s.json" % foot_id
+		if not FileAccess.file_exists(shoe_path):
+			missing_paths += 1
+	return {
+		"schema": "pp_wardrobe_family_footwear_handling_coverage/v1",
+		"family_count": families.size(),
+		"footwear_bind_count": footwear_binds,
+		"presets_with_footwear": presets_with_footwear,
+		"footwear_missing_paths": missing_paths,
+		"families": families,
+		"cosmetic_only": true,
+		"counts_as_human_participant": false,
+		"handling_owner": "footwear",
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 static func family_trail_coverage() -> Dictionary:
 	## S7P fashion deepen: every wardrobe family ships a cosmetic trail_expression.
 	## Trails never invent humans; footwear owns handling; procedural ≠ commercial.

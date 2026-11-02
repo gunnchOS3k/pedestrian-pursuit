@@ -139,6 +139,17 @@ func _run() -> void:
 	if bool(coh.get("RC2", true)) or bool(coh.get("V1", true)):
 		failures.append("camera/art cohonesty must keep RC2/V1 false")
 
+	## S7S: championship/launch procedural raceable honesty.
+	var raceable: Dictionary = TrackArtAcceptanceScript.championship_procedural_raceable_honesty()
+	if int(raceable.get("track_count", -1)) != 32:
+		failures.append("championship raceable honesty track_count != 32")
+	if not bool(raceable.get("procedural_neq_finished", false)):
+		failures.append("championship raceable must keep procedural_neq_finished")
+	if int(raceable.get("final_track_art_approved", 1)) != 0:
+		failures.append("championship raceable must keep final_track_art_approved == 0")
+	if bool(raceable.get("HUMAN", true)) or bool(raceable.get("RC2", true)) or bool(raceable.get("V1", true)):
+		failures.append("championship raceable honesty must keep HUMAN/RC2/V1 false")
+
 	_finish(failures)
 
 

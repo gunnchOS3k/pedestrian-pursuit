@@ -142,6 +142,23 @@ func _init() -> void:
 	if bool(trail_cov.get("HUMAN", true)) or bool(trail_cov.get("RC2", true)) or bool(trail_cov.get("V1", true)):
 		failures.append("family_trail_coverage must keep HUMAN/RC2/V1 false")
 
+	## S7S: footwear_vehicle handling coverage across families.
+	var foot_cov: Dictionary = WardrobeCatalogScript.family_footwear_handling_coverage()
+	if int(foot_cov.get("family_count", -1)) != 9:
+		failures.append("family_footwear_handling_coverage family_count != 9")
+	if int(foot_cov.get("footwear_bind_count", -1)) != 9:
+		failures.append("family_footwear_handling_coverage footwear_bind_count != 9")
+	if int(foot_cov.get("presets_with_footwear", -1)) != 9:
+		failures.append("family_footwear_handling_coverage presets_with_footwear != 9")
+	if int(foot_cov.get("footwear_missing_paths", 1)) != 0:
+		failures.append("family_footwear_handling_coverage footwear shoe JSON must resolve")
+	if str(foot_cov.get("handling_owner", "")) != "footwear":
+		failures.append("handling_owner must remain footwear")
+	if bool(foot_cov.get("counts_as_human_participant", true)):
+		failures.append("footwear coverage must not invent humans")
+	if bool(foot_cov.get("HUMAN", true)) or bool(foot_cov.get("RC2", true)) or bool(foot_cov.get("V1", true)):
+		failures.append("family_footwear_handling_coverage must keep HUMAN/RC2/V1 false")
+
 	## S7Q: preset trail fingerprint matrix — 9 unique cosmetic fingerprints.
 	var matrix: Dictionary = AppearanceSyncScript.preset_trail_fingerprint_matrix()
 	if int(matrix.get("preset_count", -1)) != 9:

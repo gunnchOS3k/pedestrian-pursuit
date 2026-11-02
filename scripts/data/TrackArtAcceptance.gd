@@ -63,6 +63,47 @@ static func procedural_never_satisfies_commercial() -> bool:
 	return true
 
 
+static func championship_procedural_raceable_honesty() -> Dictionary:
+	## S7S art deepen: championship procedural raceable banks ≠ finished art.
+	load_registry()
+	var championship := 0
+	var launch := 0
+	var approved := 0
+	var total := 0
+	for entry in _cache.get("tracks", []):
+		if typeof(entry) != TYPE_DICTIONARY:
+			continue
+		total += 1
+		var art := str(entry.get("art_status", ""))
+		if art == "CHAMPIONSHIP_PROCEDURAL_RACEABLE":
+			championship += 1
+		elif art == "LAUNCH_PROCEDURAL_FINAL":
+			launch += 1
+		var fas := str(entry.get("final_track_art_status", ""))
+		if fas in ["final_track_art_approved", "track_art_approved"]:
+			approved += 1
+		if bool(entry.get("human_track_art_approved", false)):
+			approved += 1
+	var procedural_neq_finished := (
+		approved == 0
+		and procedural_never_satisfies_commercial()
+		and (championship + launch) == total
+		and total == 32
+	)
+	return {
+		"schema": "pp_championship_procedural_raceable_honesty/v1",
+		"track_count": total,
+		"championship_procedural_raceable": championship,
+		"launch_procedural_final": launch,
+		"final_track_art_approved": approved,
+		"procedural_neq_finished": procedural_neq_finished,
+		"COURSE_ACCEPTED": false,
+		"HUMAN": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 static func camera_identity_art_cohonesty() -> Dictionary:
 	## S7O camera deepen: every raceable track keeps camera_identity (from track JSON)
 	## + candidate art without claiming finished/commercial track art.

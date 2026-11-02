@@ -131,6 +131,16 @@ func _run() -> void:
 			failures.append("item sfx must keep commercial_final_audio false")
 		if bool(items.get("HUMAN", true)) or bool(items.get("RC2", true)) or bool(items.get("V1", true)):
 			failures.append("item sfx must keep HUMAN/RC2/V1 false")
+		## S7S race-control SFX coverage.
+		var race: Dictionary = audio.resolve_race_control_sfx_coverage()
+		if int(race.get("cue_count", -1)) != 5:
+			failures.append("race-control sfx cue_count != 5")
+		if int(race.get("missing_paths", 1)) != 0 or int(race.get("preferred_hits", 0)) != 5:
+			failures.append("race-control sfx banks must all resolve")
+		if bool(race.get("commercial_final_audio", true)):
+			failures.append("race-control sfx must keep commercial_final_audio false")
+		if bool(race.get("HUMAN", true)) or bool(race.get("RC2", true)) or bool(race.get("V1", true)):
+			failures.append("race-control sfx must keep HUMAN/RC2/V1 false")
 
 	audio.set_enabled(false)
 	if failures.is_empty():

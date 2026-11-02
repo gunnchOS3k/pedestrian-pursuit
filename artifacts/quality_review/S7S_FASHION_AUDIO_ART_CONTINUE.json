@@ -1,0 +1,14 @@
+{
+  "schema": "ped.s7s_fashion_audio_art_continue.v1",
+  "wave010_untouched": true,
+  "wave010_negative_path": "PASS",
+  "human_false": true,
+  "rc2_false": true,
+  "v1_false": true,
+  "course_false": true,
+  "ci_exact_head": {"sha": "e20e4bd", "pr": 47, "public_actions_html": "green"},
+  "fashion": {"footwear_vehicle_handling_coverage": true, "appearance_sync_test": "PASS"},
+  "audio": {"race_control_sfx_coverage": 5, "commercial_final_audio": false, "audio_director_contract_test": "PASS"},
+  "art": {"championship_procedural_raceable_honesty": true, "camera_identity_coverage_test": "PASS"},
+  "base_tip": "e20e4bd"
+}
