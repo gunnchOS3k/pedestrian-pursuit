@@ -180,6 +180,15 @@ func _run() -> void:
 				failures.append("field sum honesty must keep HUMAN/RC2/V1 false")
 
 	## Clamp honesty: out-of-range requests still stay 2–8 allocated; connected clamps.
+	## S7V private scope honesty: no public matchmaking claim.
+	var scope: Dictionary = OnlineArchitectureScript.partylink_private_scope_honesty()
+	if not bool(scope.get("private_scope_ok", false)):
+		failures.append("private_scope_ok required")
+	if bool(scope.get("public_matchmaking", true)):
+		failures.append("public_matchmaking must stay false")
+	if bool(scope.get("HUMAN", true)) or bool(scope.get("RC2", true)) or bool(scope.get("V1", true)):
+		failures.append("private scope honesty must keep HUMAN/RC2/V1 false")
+
 	## S7U BeatLink sibling honesty: sibling stays 2; PartyLink ≠ BeatLink.
 	var sibling: Dictionary = OnlineArchitectureScript.partylink_beatlink_sibling_honesty()
 	if not bool(sibling.get("sibling_is_two", false)):

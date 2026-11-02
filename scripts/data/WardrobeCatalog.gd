@@ -103,6 +103,36 @@ static func integrated_garment_count() -> int:
 	return n
 
 
+static func key_slot_family_coverage() -> Dictionary:
+	## S7V fashion deepen: key cosmetic slots cover all 9 families; cosmetics ≠ humans.
+	var key_slots: PackedStringArray = PackedStringArray([
+		"base_underlayer", "bottom", "outerwear", "trail_expression"
+	])
+	var per_slot: Dictionary = {}
+	var all_covered := true
+	for slot in key_slots:
+		var families: Dictionary = {}
+		for g in garments_in_slot(slot):
+			var fam := str(g.get("family_id", ""))
+			if not fam.is_empty():
+				families[fam] = str(g.get("id", ""))
+		per_slot[slot] = families.size()
+		if families.size() != 9:
+			all_covered = false
+	return {
+		"schema": "pp_wardrobe_key_slot_family_coverage/v1",
+		"slots": per_slot,
+		"expected_families": 9,
+		"all_covered": all_covered,
+		"cosmetic_only": true,
+		"counts_as_human_participant": false,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 static func family_integrated_mesh_honesty() -> Dictionary:
 	## S7U fashion deepen: every wardrobe family stays integrated_mesh_v1 (procedural≠commercial).
 	load_catalog()

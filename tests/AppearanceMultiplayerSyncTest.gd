@@ -183,6 +183,15 @@ func _init() -> void:
 	if bool(bind.get("HUMAN", true)) or bool(bind.get("RC2", true)) or bool(bind.get("V1", true)):
 		failures.append("integrated trail bind must keep HUMAN/RC2/V1 false")
 
+	## S7V: key cosmetic slots cover all 9 families.
+	var key_cov: Dictionary = WardrobeCatalogScript.key_slot_family_coverage()
+	if not bool(key_cov.get("all_covered", false)):
+		failures.append("key_slot_family_coverage all_covered required")
+	if bool(key_cov.get("counts_as_human_participant", true)):
+		failures.append("key slot coverage must not invent humans")
+	if bool(key_cov.get("HUMAN", true)) or bool(key_cov.get("RC2", true)) or bool(key_cov.get("V1", true)):
+		failures.append("key_slot_family_coverage must keep HUMAN/RC2/V1 false")
+
 	## S7U: every wardrobe family stays integrated_mesh_v1.
 	var mesh: Dictionary = WardrobeCatalogScript.family_integrated_mesh_honesty()
 	if not bool(mesh.get("all_integrated", false)):

@@ -159,6 +159,16 @@ func _run() -> void:
 			failures.append("ambience bank must keep commercial_final_audio false")
 		if bool(amb_int.get("HUMAN", true)) or bool(amb_int.get("RC2", true)) or bool(amb_int.get("V1", true)):
 			failures.append("ambience bank integrity must keep HUMAN/RC2/V1 false")
+		## S7V preferred race music integrity (no cup_theme fallback needed).
+		var pref: Dictionary = audio.resolve_preferred_race_music_integrity(all_ids)
+		if not bool(pref.get("path_integrity_ok", false)):
+			failures.append("preferred race music path_integrity_ok required")
+		if int(pref.get("preferred_hits", 0)) != 32:
+			failures.append("preferred race music preferred_hits != 32")
+		if bool(pref.get("commercial_final_audio", true)):
+			failures.append("preferred race music must keep commercial_final_audio false")
+		if bool(pref.get("HUMAN", true)) or bool(pref.get("RC2", true)) or bool(pref.get("V1", true)):
+			failures.append("preferred race music must keep HUMAN/RC2/V1 false")
 
 	audio.set_enabled(false)
 	if failures.is_empty():

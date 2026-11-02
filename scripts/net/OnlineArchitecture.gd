@@ -212,6 +212,22 @@ static func partylink_seat_cosmetic_bindings(
 	}
 
 
+static func partylink_private_scope_honesty() -> Dictionary:
+	## S7V: PartyLink stays private/dev loopback — no public matchmaking claim.
+	var d := describe()
+	return {
+		"schema": "pp_partylink_private_scope_honesty/v1",
+		"scope": str(d.get("scope", "")),
+		"public_matchmaking": bool(d.get("public_matchmaking", true)),
+		"private_scope_ok": str(d.get("scope", "")) == SCOPE and bool(d.get("public_matchmaking", true)) == false,
+		"physical_eight_human_party": false,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 static func partylink_beatlink_sibling_honesty() -> Dictionary:
 	## S7U: BeatLink sibling stays host+guest (2); PartyLink larger fields ≠ BeatLink.
 	return {

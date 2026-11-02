@@ -280,6 +280,30 @@ func resolve_item_sfx_coverage() -> Dictionary:
 	}
 
 
+func resolve_preferred_race_music_integrity(track_ids: PackedStringArray) -> Dictionary:
+	## S7V audio deepen: every track prefers its own *_race.wav (no cup_theme fallback).
+	var preferred_hits := 0
+	var missing_preferred := 0
+	for tid in track_ids:
+		var preferred := MUSIC_DIR + "%s_race.wav" % tid
+		if FileAccess.file_exists(preferred):
+			preferred_hits += 1
+		else:
+			missing_preferred += 1
+	return {
+		"schema": "pp_audio_preferred_race_music_integrity/v1",
+		"track_count": track_ids.size(),
+		"preferred_hits": preferred_hits,
+		"missing_preferred": missing_preferred,
+		"path_integrity_ok": missing_preferred == 0 and preferred_hits == track_ids.size() and track_ids.size() == 32,
+		"commercial_final_audio": false,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 func resolve_ambience_bank_integrity(track_ids: PackedStringArray) -> Dictionary:
 	## S7U audio deepen: per-track ambience banks resolve; procedural ≠ commercial.
 	var hits := 0
