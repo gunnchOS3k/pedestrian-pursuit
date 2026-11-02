@@ -173,6 +173,36 @@ func resolve_championship_ambience_coverage(track_ids: PackedStringArray) -> Dic
 	}
 
 
+func resolve_footstep_surface_coverage() -> Dictionary:
+	## S7O audio deepen: every kinetic footstep surface resolves a bank (or asphalt fallback).
+	## Procedural SFX ≠ commercial final; COURSE/HUMAN false.
+	var surfaces: PackedStringArray = PackedStringArray([
+		"asphalt", "grass", "mud", "ash", "sand", "metal", "wet"
+	])
+	var preferred_hits := 0
+	var asphalt_fallback_hits := 0
+	var missing_paths := 0
+	var asphalt_path := SFX_DIR + "footstep_asphalt.wav"
+	for surface in surfaces:
+		var preferred := SFX_DIR + "footstep_%s.wav" % surface
+		if FileAccess.file_exists(preferred):
+			preferred_hits += 1
+		elif FileAccess.file_exists(asphalt_path):
+			asphalt_fallback_hits += 1
+		else:
+			missing_paths += 1
+	return {
+		"schema": "pp_audio_footstep_surface_coverage/v1",
+		"surface_count": surfaces.size(),
+		"preferred_hits": preferred_hits,
+		"asphalt_fallback_hits": asphalt_fallback_hits,
+		"missing_paths": missing_paths,
+		"commercial_final_audio": false,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+	}
+
+
 func _play_loop(player: AudioStreamPlayer, path: String, volume_db: float) -> void:
 	if not _enabled or player == null:
 		return

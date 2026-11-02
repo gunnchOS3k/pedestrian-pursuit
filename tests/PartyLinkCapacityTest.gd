@@ -124,6 +124,24 @@ func _run() -> void:
 					continue
 				if bool(b.get("cosmetics_count_as_human", true)):
 					failures.append("cosmetics_count_as_human must stay false")
+			## S7O: sparse payloads never invent humans via cosmetics.
+			var sparse: Array = []
+			if connected > 0:
+				sparse.append({
+					"fingerprint": "only_one",
+					"trail_expression_id": "metro_pulse_trail",
+				})
+			var gap: Dictionary = OnlineArchitectureScript.partylink_cosmetic_gap_integrity(
+				allocated, connected, sparse
+			)
+			if int(gap.get("connected_humans", -1)) != connected:
+				failures.append("gap integrity must not change connected_humans")
+			if not bool(gap.get("cosmetics_never_invent_humans", false)):
+				failures.append("gap integrity cosmetics_never_invent_humans required")
+			if not bool(gap.get("gap_ok", false)):
+				failures.append("gap_ok required for sparse payloads")
+			if bool(gap.get("HUMAN", true)) or bool(gap.get("COURSE_ACCEPTED", true)):
+				failures.append("gap integrity must keep HUMAN/COURSE false")
 
 	## Clamp honesty: out-of-range requests still stay 2–8 allocated; connected clamps.
 	if int(OnlineArchitectureScript.partylink_seat_map(1).get("allocated_human_seats", 0)) != 2:

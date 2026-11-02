@@ -120,6 +120,25 @@ func _run() -> void:
 		if not window.contains("max_fov"):
 			failures.append("%s arm missing max_fov assignment window" % identity)
 
+	## S7O: camera identity + track art cohonesty (procedural ≠ finished).
+	var TrackArtAcceptanceScript = load("res://scripts/data/TrackArtAcceptance.gd")
+	var coh: Dictionary = TrackArtAcceptanceScript.camera_identity_art_cohonesty()
+	if int(coh.get("track_count", -1)) != 32:
+		failures.append("camera/art cohonesty track_count != 32")
+	if int(coh.get("with_camera_identity", -1)) != 32:
+		failures.append("camera/art cohonesty with_camera_identity != 32")
+	if int(coh.get("track_art_candidate", -1)) != 32:
+		failures.append("camera/art cohonesty track_art_candidate != 32")
+	if not bool(coh.get("procedural_neq_finished", false)):
+		failures.append(
+			"procedural_neq_finished required (no finished track art claim) got=%s"
+			% JSON.stringify(coh)
+		)
+	if bool(coh.get("HUMAN", true)) or bool(coh.get("COURSE_ACCEPTED", true)):
+		failures.append("camera/art cohonesty must keep HUMAN/COURSE false")
+	if bool(coh.get("RC2", true)) or bool(coh.get("V1", true)):
+		failures.append("camera/art cohonesty must keep RC2/V1 false")
+
 	_finish(failures)
 
 

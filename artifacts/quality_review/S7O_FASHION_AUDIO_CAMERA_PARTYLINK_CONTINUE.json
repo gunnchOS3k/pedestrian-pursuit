@@ -1,0 +1,47 @@
+{
+  "schema": "ped.s7o_fashion_audio_camera_partylink_continue.v1",
+  "wave010_untouched": true,
+  "wave010_negative_path": "PASS",
+  "course_false": true,
+  "human_false": true,
+  "rc2_false": true,
+  "v1_false": true,
+  "fashion": {
+    "peer_trail_parity": true,
+    "chase_cam_trail_in_appearance_sync": true,
+    "cosmetics_never_count_as_humans": true,
+    "handling_owner": "footwear",
+    "appearance_sync_test": "PASS"
+  },
+  "audio": {
+    "championship_ambience_coverage": 32,
+    "footstep_surface_coverage": 7,
+    "commercial_final_audio": false,
+    "audio_director_contract_test": "PASS"
+  },
+  "camera": {
+    "identity_coverage_recheck": "PASS",
+    "camera_identity_art_cohonesty": "PASS",
+    "procedural_neq_finished": true,
+    "championship_tracks": 32,
+    "notes": "Camera identity + track art cohonesty; no CameraRig/wave010 churn"
+  },
+  "partylink": {
+    "seat_cosmetic_bindings": true,
+    "cosmetic_gap_integrity": true,
+    "cosmetics_never_invent_humans": true,
+    "bots_never_count_as_humans": true,
+    "capacity_test": "PASS"
+  },
+  "notes": "S7O digital continue after S7N tip ff9316b; RaceScene/wave010 negative-path preserved.",
+  "base_tip": "ff9316b",
+  "prior_tip": "ff9316b",
+  "godot": "4.5.stable",
+  "local_evidence": {
+    "AppearanceMultiplayerSyncTest": "PASS",
+    "AudioDirectorContractTest": "PASS",
+    "PartyLinkCapacityTest": "PASS",
+    "CameraIdentityCoverageTest": "PASS",
+    "test_wave010_run_classifier": "PASS"
+  }
+}

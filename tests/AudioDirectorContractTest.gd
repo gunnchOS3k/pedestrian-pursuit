@@ -88,6 +88,17 @@ func _run() -> void:
 			failures.append("missing track must set last_music_fallback")
 		if not bool(d4.get("last_ambience_fallback", false)):
 			failures.append("missing track must set last_ambience_fallback")
+		## S7O footstep surface coverage: 7 surfaces resolve preferred or asphalt fallback.
+		if audio.has_method("resolve_footstep_surface_coverage"):
+			var feet: Dictionary = audio.resolve_footstep_surface_coverage()
+			if int(feet.get("surface_count", -1)) != 7:
+				failures.append("footstep surface_count != 7")
+			if int(feet.get("missing_paths", 1)) != 0:
+				failures.append("footstep missing_paths must be 0")
+			if int(feet.get("preferred_hits", 0)) + int(feet.get("asphalt_fallback_hits", 0)) != 7:
+				failures.append("footstep preferred+fallback must cover 7 surfaces")
+			if bool(feet.get("commercial_final_audio", true)):
+				failures.append("footstep coverage must keep commercial_final_audio false")
 
 	audio.set_enabled(false)
 	if failures.is_empty():

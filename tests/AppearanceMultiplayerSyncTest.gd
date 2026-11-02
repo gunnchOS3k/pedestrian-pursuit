@@ -65,6 +65,15 @@ func _init() -> void:
 		failures.append("chase_cam_trail handling_owner must be footwear")
 	if fp.find("trail=") < 0:
 		failures.append("fingerprint must include trail=")
+	## S7O: host→peer trail parity (repacked peer payload must match).
+	var peer_pack: Dictionary = AppearanceSyncScript.pack_from_created_racer(again, slots)
+	var parity: Dictionary = AppearanceSyncScript.peer_trail_parity(payload, peer_pack)
+	if not bool(parity.get("parity_ok", false)):
+		failures.append("peer_trail_parity must match host pack")
+	if bool(parity.get("counts_as_human_participant", true)):
+		failures.append("peer_trail_parity must not invent humans")
+	if bool(parity.get("HUMAN", true)) or bool(parity.get("COURSE_ACCEPTED", true)):
+		failures.append("peer_trail_parity must keep HUMAN/COURSE false")
 	var peer_visual := Node3D.new()
 	peer_visual.set_script(RacerVisualScript)
 	root.add_child(peer_visual)

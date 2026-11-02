@@ -77,6 +77,35 @@ static func fingerprint(payload: Dictionary) -> String:
 	])
 
 
+static func peer_trail_parity(host_payload: Dictionary, peer_payload: Dictionary) -> Dictionary:
+	## S7O fashion deepen: host→peer trail fingerprint parity without inventing humans.
+	var host_fp := fingerprint(host_payload)
+	var peer_fp := fingerprint(peer_payload)
+	var host_trail := str(host_payload.get("trail_expression_id", ""))
+	if host_trail.is_empty():
+		host_trail = str((host_payload.get("outfit_slots", {}) as Dictionary).get("trail_expression", ""))
+	var peer_trail := str(peer_payload.get("trail_expression_id", ""))
+	if peer_trail.is_empty():
+		peer_trail = str((peer_payload.get("outfit_slots", {}) as Dictionary).get("trail_expression", ""))
+	var trail_match := host_trail == peer_trail and not host_trail.is_empty()
+	var fp_match := host_fp == peer_fp and not host_fp.is_empty()
+	return {
+		"schema": "pp_appearance_peer_trail_parity/v1",
+		"host_fingerprint": host_fp,
+		"peer_fingerprint": peer_fp,
+		"host_trail_expression_id": host_trail,
+		"peer_trail_expression_id": peer_trail,
+		"trail_match": trail_match,
+		"fingerprint_match": fp_match,
+		"parity_ok": trail_match and fp_match,
+		"counts_as_human_participant": false,
+		"cosmetic_only": true,
+		"handling_owner": "footwear",
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+	}
+
+
 static func apply_to_visual(visual: Node, payload: Dictionary) -> bool:
 	if visual == null or payload.is_empty():
 		return false

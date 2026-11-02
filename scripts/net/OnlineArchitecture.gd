@@ -212,6 +212,42 @@ static func partylink_seat_cosmetic_bindings(
 	}
 
 
+static func partylink_cosmetic_gap_integrity(
+	allocated_human_seats: int,
+	connected_humans: int,
+	human_payloads: Array = []
+) -> Dictionary:
+	## S7O: sparse/missing cosmetic payloads must never invent human seats.
+	var bindings := partylink_seat_cosmetic_bindings(
+		allocated_human_seats, connected_humans, human_payloads
+	)
+	var humans := int(bindings.get("connected_humans", 0))
+	var bound := int(bindings.get("human_cosmetics_bound", 0))
+	var payload_n := human_payloads.size()
+	var invents := bound > humans or bound > payload_n
+	var human_seats_with_empty_cosmetics := 0
+	for b in bindings.get("cosmetic_bindings", []):
+		if typeof(b) != TYPE_DICTIONARY:
+			continue
+		if not bool(b.get("counts_as_human_participant", false)):
+			continue
+		if str(b.get("appearance_fingerprint", "")).is_empty():
+			human_seats_with_empty_cosmetics += 1
+	return {
+		"schema": "pp_partylink_cosmetic_gap_integrity/v1",
+		"connected_humans": humans,
+		"payload_count": payload_n,
+		"human_cosmetics_bound": bound,
+		"human_seats_with_empty_cosmetics": human_seats_with_empty_cosmetics,
+		"cosmetics_never_invent_humans": not invents,
+		"gap_ok": not invents and humans == int(bindings.get("connected_humans", -1)),
+		"bots_never_count_as_humans": true,
+		"physical_eight_human_party": false,
+		"COURSE_ACCEPTED": false,
+		"HUMAN": false,
+	}
+
+
 static func write_evidence(abs_path: String) -> String:
 	var text := JSON.stringify(describe(), "\t")
 	var f := FileAccess.open(abs_path, FileAccess.WRITE)
