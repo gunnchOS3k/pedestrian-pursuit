@@ -30,7 +30,9 @@ func run()->void:
 	var body:=scene.get_node("PlayerRacer") as CharacterBody3D
 	var visual:=body.get_node("RacerVisual") as Node3D
 	var slots:Dictionary=preload("res://scripts/data/WardrobeCatalog.gd").preset("metro_pulse_default").get("slots",{}).duplicate(true)
-	slots.outerwear=garment;visual.apply_wardrobe_outfit(slots)
+	slots.outerwear = garment
+	slots.footwear_vehicle = vehicle
+	visual.apply_wardrobe_outfit(slots)
 	var start:=body.global_position
 	for f in range(45):Input.action_press("accelerate");await physics_frame
 	var movement:=horizontal(body.velocity)
@@ -47,10 +49,15 @@ func run()->void:
 		if material==null:continue
 		effects.append({"path":str(visual.get_path_to(child)),"direction_behind_dot":horizontal(particles.global_basis*material.direction).dot(-movement),"spawn_behind_dot":horizontal(particles.global_position-body.global_position).dot(-movement)})
 	var data:Dictionary={"vehicle":vehicle,"garment":garment,"engine":Engine.get_version_info(),"scope":"Actual RaceScene ordinary accelerate; unrotated negative control changes only visual yaw. Boost screenshot invokes visual API only, not earned gameplay boost. Paused front inspection is declared.","distance_m":body.global_position.distance_to(start),"velocity":str(body.velocity),"face_aligned_with_actual_velocity":face_dot,"unrotated_negative_control":negative_dot,"body_capsule_velocity_unchanged_by_visual_negative":body_unchanged,"effects":effects,"chase_capture":await shot("chase")}
+	Input.action_release("accelerate")
+	body.set_physics_process(false)
 	visual.set_boosting(true)
-	for f in range(12):await physics_frame
+	for f in range(6):
+		await process_frame
 	var torso:=visual.get("_torso") as Node3D
-	data.boost_visual_fixture_forward_lean=horizontal(torso.global_basis.y).dot(horizontal(body.velocity))
+	data.boost_visual_fixture_forward_lean=horizontal(torso.global_basis.y).dot(movement)
+	data.boost_visual_fixture_lean_radians = torso.rotation.x
+	data.actual_visual_vehicle = visual.get("vehicle_id")
 	data.boost_visual_fixture_capture=await shot("boost-visual-FIXTURE")
 	visual.set_boosting(false);Input.action_release("accelerate")
 	paused=true
@@ -68,7 +75,8 @@ func run()->void:
 	paused=false
 	var failures:Array=[]
 	if face_dot<.8 or negative_dot>-.8 or not body_unchanged:failures.append("travel_axis_contract")
-	if data.boost_visual_fixture_forward_lean<.8:failures.append("boost_visual_lean")
+	if data.actual_visual_vehicle != vehicle:failures.append("wrong_footwear")
+	if data.boost_visual_fixture_forward_lean<.8 or data.boost_visual_fixture_lean_radians < .02:failures.append("boost_visual_lean")
 	if effects.size()<3:failures.append("missing_effect_emitters")
 	for effect in effects:
 		if effect.direction_behind_dot<.8 or effect.spawn_behind_dot<.8:failures.append("forward_effect:"+effect.path)
