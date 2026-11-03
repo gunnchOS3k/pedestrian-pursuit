@@ -141,6 +141,42 @@ static func empty_trail_never_invents_human(outfit_slots: Dictionary = {}) -> Di
 	}
 
 
+static func preset_eyewear_optional_bind_integrity() -> Dictionary:
+	## S7X presentation deepen: eyewear is optional; bound IDs must resolve in catalog (never invent humans).
+	var WardrobeCatalogScript = load("res://scripts/data/WardrobeCatalog.gd")
+	WardrobeCatalogScript.load_catalog()
+	var bound := 0
+	var unresolved := 0
+	var preset_ids: PackedStringArray = PackedStringArray()
+	for p in WardrobeCatalogScript.load_catalog().get("presets", []):
+		if typeof(p) != TYPE_DICTIONARY:
+			continue
+		var slots: Dictionary = p.get("slots", {})
+		var gid := str(slots.get("eyewear", ""))
+		if gid.is_empty():
+			continue
+		bound += 1
+		preset_ids.append(str(p.get("id", "")))
+		var g: Dictionary = WardrobeCatalogScript.garment_by_id(gid)
+		if g.is_empty() or str(g.get("slot", "")) != "eyewear":
+			unresolved += 1
+	return {
+		"schema": "pp_appearance_preset_eyewear_optional_bind/v1",
+		"presets_with_eyewear": bound,
+		"unresolved_binds": unresolved,
+		"bind_integrity_ok": unresolved == 0 and bound > 0,
+		"optional_slot": true,
+		"full_family_eyewear_not_required": true,
+		"preset_ids": preset_ids,
+		"counts_as_human_participant": false,
+		"cosmetic_only": true,
+		"HUMAN": false,
+		"COURSE_ACCEPTED": false,
+		"RC2": false,
+		"V1": false,
+	}
+
+
 static func integrated_preset_trail_bind() -> Dictionary:
 	## S7R fashion deepen: integrated presets keep trail binds; cosmetics ≠ humans.
 	var WardrobeCatalogScript = load("res://scripts/data/WardrobeCatalog.gd")

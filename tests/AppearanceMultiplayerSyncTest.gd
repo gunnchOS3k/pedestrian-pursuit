@@ -203,6 +203,28 @@ func _init() -> void:
 	if bool(upper.get("HUMAN", true)) or bool(upper.get("RC2", true)) or bool(upper.get("V1", true)):
 		failures.append("family_upper_body_coverage must keep HUMAN/RC2/V1 false")
 
+	## S7X: every family has bottom and/or full_body; optional eyewear binds resolve.
+	var lower: Dictionary = WardrobeCatalogScript.family_lower_body_coverage()
+	if not bool(lower.get("all_covered", false)):
+		failures.append("family_lower_body_coverage all_covered required")
+	if int(lower.get("lower_body_ok_count", -1)) != 9:
+		failures.append("family_lower_body_coverage expects 9/9")
+	if bool(lower.get("counts_as_human_participant", true)):
+		failures.append("lower body coverage must not invent humans")
+	if bool(lower.get("HUMAN", true)) or bool(lower.get("RC2", true)) or bool(lower.get("V1", true)):
+		failures.append("family_lower_body_coverage must keep HUMAN/RC2/V1 false")
+	var eyewear: Dictionary = AppearanceSyncScript.preset_eyewear_optional_bind_integrity()
+	if not bool(eyewear.get("bind_integrity_ok", false)):
+		failures.append("preset_eyewear_optional_bind_integrity required")
+	if int(eyewear.get("presets_with_eyewear", -1)) != 3:
+		failures.append("expected 3 optional eyewear preset binds")
+	if not bool(eyewear.get("full_family_eyewear_not_required", false)):
+		failures.append("eyewear must stay optional across families")
+	if bool(eyewear.get("counts_as_human_participant", true)):
+		failures.append("eyewear bind must not invent humans")
+	if bool(eyewear.get("HUMAN", true)) or bool(eyewear.get("RC2", true)) or bool(eyewear.get("V1", true)):
+		failures.append("eyewear bind integrity must keep HUMAN/RC2/V1 false")
+
 	## S7U: every wardrobe family stays integrated_mesh_v1.
 	var mesh: Dictionary = WardrobeCatalogScript.family_integrated_mesh_honesty()
 	if not bool(mesh.get("all_integrated", false)):

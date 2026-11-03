@@ -1,0 +1,21 @@
+{
+  "schema": "ped.s7x_fashion_presentation_continue.v1",
+  "prepared_at": "2026-11-03T04:10:00Z",
+  "wave010_untouched": true,
+  "human_false": true,
+  "rc2_false": true,
+  "v1_false": true,
+  "course_false": true,
+  "fashion": {
+    "family_lower_body_coverage": "9/9",
+    "bottom_or_full_body_per_family": true,
+    "eyewear_optional_preset_binds": 3,
+    "eyewear_bind_integrity_ok": true,
+    "cosmetics_neq_humans": true
+  },
+  "local_proofs": {
+    "AppearanceMultiplayerSyncTest": "PASS"
+  },
+  "base_tip": "61beb75",
+  "notes": "S7X deepen: lower-body parity + optional eyewear bind integrity; wave010 held; no physical 8p/Metal/owner play"
+}
