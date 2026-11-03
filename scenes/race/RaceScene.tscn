@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://racescene001"]
+[gd_scene load_steps=14 format=3 uid="uid://racescene001"]
 
 [ext_resource type="Script" path="res://scripts/race/RaceScene.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/race/RaceManager.gd" id="2"]
@@ -12,6 +12,8 @@
 [ext_resource type="PackedScene" uid="uid://results001" path="res://scenes/ui/ResultsScreen.tscn" id="11"]
 [ext_resource type="PackedScene" uid="uid://debugoverlay001" path="res://scenes/debug/DebugOverlay.tscn" id="12"]
 [ext_resource type="PackedScene" path="res://scenes/ui/MobileControls.tscn" id="13"]
+
+[ext_resource type="Script" path="res://scripts/art/CourseWorldArt.gd" id="art_wave"]
 
 [node name="RaceScene" type="Node3D"]
 script = ExtResource("1")
@@ -46,3 +48,6 @@ current = true
 [node name="DebugOverlay" parent="." instance=ExtResource("12")]
 
 [node name="MobileControls" parent="." instance=ExtResource("13")]
+
+[node name="CourseWorldArt" type="Node3D" parent="."]
+script = ExtResource("art_wave")

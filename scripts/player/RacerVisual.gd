@@ -753,6 +753,8 @@ func _apply_face_cosmetics(hs: float, _ws: float) -> void:
 
 
 func _attach_garment_mesh(g: Dictionary, hs: float, ws: float) -> void:
+	if not OS.get_cmdline_user_args().has("--baseline-wardrobe") and preload("res://scripts/art/GarmentAtelier.gd").attach(self,g,hs,ws):
+		return
 	## Body-fit attachment: garments scale with presentation proportions only (no collision change).
 	var colors: Dictionary = g.get("colors", {})
 	var mat := StandardMaterial3D.new()
@@ -1083,6 +1085,28 @@ func _attach_shoes(
 	leg: Node3D, is_left: bool, leg_len: float, ws: float, shoe_scale: float,
 	accent: Material, dark: Material
 ) -> void:
+	# Authored wave1 geometry uses the same grounded visual mount. Crowd LOD2
+	# retains its existing low-detail recipe; player/garage retain original meshes.
+	if visual_lod < 2:
+		var authored_mount: MeshInstance3D = preload("res://scripts/art/AuthoredFootwear.gd").mount(leg,vehicle_id,is_left,leg_len,ws,shoe_scale,_parent_body)
+		if authored_mount != null:
+			if is_left: _shoe_l=authored_mount
+			else: _shoe_r=authored_mount
+			return
+	# Original editable Voltstep footwear candidate. Visual mount only: gameplay
+	# stats/collision stay owned by the existing ShoeData and PlayerController.
+	if vehicle_id == "voltstep_coils":
+		var authored := load("res://assets/models/footwear/voltstep_coils/VoltstepCoils.glb") as PackedScene
+		if authored != null:
+			var mount := MeshInstance3D.new()
+			mount.name = "VoltstepAuthoredMountLeft" if is_left else "VoltstepAuthoredMountRight"
+			mount.position = Vector3(0.0, -leg_len, 0.02 * shoe_scale)
+			mount.scale = Vector3(ws, 1.0, 1.0) * shoe_scale * 1.2
+			leg.add_child(mount)
+			mount.add_child(authored.instantiate())
+			if is_left: _shoe_l = mount
+			else: _shoe_r = mount
+			return
 	var side := -1.0 if is_left else 1.0
 	var march := _shoe_archetype()
 	## Street + Roller + Hover Couture — distinct silhouettes, shared mesh stack.

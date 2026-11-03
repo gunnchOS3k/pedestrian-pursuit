@@ -1,0 +1,23 @@
+{
+  "asset_id": "voltstep_coils_authored_20261101",
+  "status": "production_candidate",
+  "author": "Codex original production lane",
+  "base_sha": "bb0c3dac66d0d72f751dd1290da72221cff2cb91",
+  "asset_sha256": "d5961bd64ad01a8fb3df814cc814c7669cb923ae58cfd07b0135de8940f8511e",
+  "source_blend_sha256": "c79b4dc74a801a3b9a7492aebea3373e211ec9885498e1c496b16093e34aec7f",
+  "design_basis": [
+    "data/shoes/voltstep_coils.json",
+    "docs/vxp3/VXP3_BRAND_SYSTEM.md"
+  ],
+  "references": "Existing Voltstep tribute-voltage identity and Kinetic Sole palette; original design, no external third-party assets",
+  "source_files": [
+    "source/VoltstepCoils.blend",
+    "source/author_voltstep.py"
+  ],
+  "runtime_import": "GLB scene; two instances at existing animated leg mounts in RacerVisual",
+  "animation": "Inherited existing leg pivot gait; no new character rig or spring deformation animation",
+  "HUMAN": false,
+  "RC2": false,
+  "V1": false,
+  "independent_review": "pending distinct root reviewer"
+}

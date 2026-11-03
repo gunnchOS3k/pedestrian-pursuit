@@ -1,0 +1,44 @@
+{
+  "id": "heelspin_quads",
+  "name": "HeelspinQuads",
+  "family_id": "roller_revolution",
+  "movement_archetype": "roller_quad",
+  "design": "Four wide-set pink wheels, two truck axles, raised magenta boot, scalloped cream panel and toe brake.",
+  "status": "original_art_candidate_exported_not_runtime_assessed",
+  "authoring_script_sha256": "15e2a5d9d4cf5e3ae77784ca170efdd15a2a5cc82d00e7ccce4d27efc6b08301",
+  "authoring_script_path": "art_source/footwear/wave1/author_wave1.py",
+  "source_blend": "art_source/footwear/wave1/heelspin_quads/HeelspinQuads.blend",
+  "source_blend_sha256": "473e6373f7434d8060208ec623752cae32d3b2d81c3a04972eacf783735d2a9b",
+  "asset_path": "res://assets/models/footwear/wave1/HeelspinQuads.glb",
+  "glb_sha256": "d43329124e43c5a00170555256c59c01226091e2da536daac86cb25fd8bd7028",
+  "triangles_per_foot": 5456,
+  "source_mesh_objects": 68,
+  "runtime_mesh_objects": 5,
+  "bounds": {
+    "min_blender_m": [
+      -0.08950000256299973,
+      -0.1679999977350235,
+      -0.06000000238418579
+    ],
+    "max_blender_m": [
+      0.08950000256299973,
+      0.1340000033378601,
+      0.19499999284744263
+    ],
+    "size_m": [
+      0.17900000512599945,
+      0.3020000010728836,
+      0.2549999952316284
+    ]
+  },
+  "wheel_nodes": [
+    "WheelSpin_LFront",
+    "WheelSpin_RFront",
+    "WheelSpin_LRear",
+    "WheelSpin_RRear"
+  ],
+  "animation": "WheelSpin illustrative one-second linear clip; no runtime speed binding or autoplay promised",
+  "HUMAN": false,
+  "RC2": false,
+  "V1": false
+}

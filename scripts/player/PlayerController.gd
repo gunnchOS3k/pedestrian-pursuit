@@ -551,10 +551,13 @@ func _recover_from_fall() -> void:
 	terrain_speed_multiplier = 1.0
 	terrain_handling_multiplier = 1.0
 	if visual != null and visual.has_method("play_recovery"):
-		get_tree().create_timer(0.35).timeout.connect(func ():
-			if is_instance_valid(visual) and visual.has_method("play_recovery"):
-				visual.play_recovery()
-		)
+		get_tree().create_timer(0.35).timeout.connect(_play_recovery_after_delay.bind(weakref(visual)))
+
+
+func _play_recovery_after_delay(visual_ref: WeakRef) -> void:
+	var visual := visual_ref.get_ref() as Node
+	if is_instance_valid(visual) and visual.has_method("play_recovery"):
+		visual.play_recovery()
 
 
 func _on_special_activated(ability_id: String) -> void:

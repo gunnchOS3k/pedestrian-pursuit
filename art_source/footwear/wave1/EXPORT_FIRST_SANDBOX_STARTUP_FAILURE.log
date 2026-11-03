@@ -1,0 +1,6 @@
+ ArchWarn: ARCH_CACHE_LINE_SIZE != Arch_ObtainCacheLineSize()
+ Function: Arch_ValidateAssumptions
+     File: /Users/brecht/dev/build_darwin/deps/build/usd/src/external_usd/pxr/base/arch/assumptions.cpp
+     Line: 155
+Blender 4.0.2 (hash 9be62e85b727 built 2023-12-05 08:05:41)
+Writing: /var/folders/dp/z5frf3m511jcdpdf8v878v8h0000gn/T/blender.crash.txt

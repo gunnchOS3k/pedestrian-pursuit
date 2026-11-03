@@ -1,0 +1,39 @@
+{
+  "id": "cloudsole_striders",
+  "name": "CloudsoleStriders",
+  "family_id": "hover_couture",
+  "movement_archetype": "hover_glide",
+  "design": "Separated cloud bladder pods and an open luminous air gap, white-blue wrap upper and floating side arcs.",
+  "status": "original_art_candidate_exported_not_runtime_assessed",
+  "authoring_script_sha256": "56edb97742168d6f7459492e06cd0ab4deb4331f36393474ba059d86add85471",
+  "source_blend": "art_source/footwear/wave1/cloudsole_striders/CloudsoleStriders.blend",
+  "source_blend_sha256": "c111c78fd065568c97fc5626873ba4122bf6b182c542513d388d84b6825665ce",
+  "asset_path": "res://assets/models/footwear/wave1/CloudsoleStriders.glb",
+  "glb_sha256": "a2bbb451b26bce03554f9e1a3e482ec8cf85dd42e21673f1b68e824160b2e690",
+  "triangles_per_foot": 2046,
+  "source_mesh_objects": 18,
+  "runtime_mesh_objects": 1,
+  "bounds": {
+    "min_blender_m": [
+      -0.08761937916278839,
+      -0.15000000596046448,
+      -0.06000000238418579
+    ],
+    "max_blender_m": [
+      0.0879831463098526,
+      0.14000000059604645,
+      0.11800965666770935
+    ],
+    "size_m": [
+      0.175602525472641,
+      0.2900000065565109,
+      0.17800965905189514
+    ]
+  },
+  "wheel_nodes": [],
+  "animation": "Existing runner mount/gait only; no new rig or animation",
+  "HUMAN": false,
+  "RC2": false,
+  "V1": false,
+  "retained_authoring_script": "art_source/footwear/wave1/author_wave1_first_export.py"
+}

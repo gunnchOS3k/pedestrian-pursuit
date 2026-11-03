@@ -263,10 +263,13 @@ func _attach_tutorial_director() -> void:
 	add_child(director)
 	if director.has_method("begin"):
 		# Show advanced lessons after a short beat so race countdown can start.
-		get_tree().create_timer(0.2).timeout.connect(func ():
-			if is_instance_valid(director) and director.has_method("begin"):
-				director.begin(false)
-		)
+		get_tree().create_timer(0.2).timeout.connect(_begin_tutorial_after_delay.bind(weakref(director)))
+
+
+func _begin_tutorial_after_delay(reference: WeakRef) -> void:
+	var director := reference.get_ref() as Node
+	if director != null and director.has_method("begin"):
+		director.begin(false)
 
 
 var _ghost_recorder: Node
@@ -556,10 +559,15 @@ func _on_racer_boost(_multiplier: float, _duration: float, _source: String, visu
 	## Signal arity: boost_activated(multiplier, duration, source) + bind(visual).
 	if visual != null and visual.has_method("set_boosting"):
 		visual.set_boosting(true)
-		get_tree().create_timer(0.35).timeout.connect(func ():
-			if is_instance_valid(visual):
-				visual.set_boosting(false)
-		)
+		# Object-bound callback disconnects when this race ends. WeakRef never captures
+		# a freed visual while moving between championship courses.
+		get_tree().create_timer(0.35).timeout.connect(_clear_boost_pose_after_delay.bind(weakref(visual)))
+
+
+func _clear_boost_pose_after_delay(reference: WeakRef) -> void:
+	var visual := reference.get_ref() as Node
+	if visual != null and visual.has_method("set_boosting"):
+		visual.set_boosting(false)
 
 
 func _play_start_line_personalities(racers: Array) -> void:

@@ -1,0 +1,63 @@
+{
+  "date": "2026-11-03",
+  "authoring_timestamp_utc": "2026-11-03T15:54:58.184052+00:00",
+  "base_head": "f5e8b663d96958d863d92d5fe41622c4c1520d78",
+  "source_path": "scripts/art/GarmentAtelier.gd",
+  "source_sha256": "18a55a76686785fff18e2265fe2d7ee59610129dad965d57175d8de9e4af5c0f",
+  "original_source_sha256": "b80e25bb50761c745f9e56dd9abdaf1c0196afd06cd26e26712e34ca8a7dc72b",
+  "negative_runtime_images": [
+    {
+      "id": "metro_pulse_outer",
+      "path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/outputs/cross-game-art-20261102/pedestrian/wardrobe-final/after_metro_pulse_outer_back.png",
+      "sha256": "7dfc10f0477f11e66a99a8e8c2a900dca4fd647f5a12f8d1cfd24e6bfffad177",
+      "assessment": "Broad cyan inner-top breakthrough; prior negative candidate evidence, not accepted corrected art"
+    },
+    {
+      "id": "harbor_linen_outer",
+      "path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/outputs/cross-game-art-20261102/pedestrian/wardrobe-final/after_harbor_linen_outer_back.png",
+      "sha256": "bf5a7837aabd88b321e3a10ee7ac27d2308b0b30cad2d6b4a11e02d45b8a8b71",
+      "assessment": "Broad cyan inner-top breakthrough; prior negative candidate evidence, not accepted corrected art"
+    },
+    {
+      "id": "neon_track_outer",
+      "path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/outputs/cross-game-art-20261102/pedestrian/wardrobe-final/after_neon_track_outer_back.png",
+      "sha256": "310d409b81aa758fd5f8b465837bf159b9fc5e86b8fbebc2ecee1a878e3fb9f1",
+      "assessment": "Broad cyan inner-top breakthrough; prior negative candidate evidence, not accepted corrected art"
+    },
+    {
+      "id": "midnight_outer",
+      "path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/outputs/cross-game-art-20261102/pedestrian/wardrobe-final/after_midnight_outer_back.png",
+      "sha256": "a9f7fd02dbec4b51de4047cef630337c1d0505bb7c889a4deeef605659eb9911",
+      "assessment": "Broad cyan inner-top breakthrough; prior negative candidate evidence, not accepted corrected art"
+    },
+    {
+      "id": "orbit_outer",
+      "path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/outputs/cross-game-art-20261102/pedestrian/wardrobe-final/after_orbit_outer_back.png",
+      "sha256": "d72e7103b24996512881152e7cf5b0b556e0678dbdc9dee913b3c1872ea27373",
+      "assessment": "Broad cyan inner-top breakthrough; prior negative candidate evidence, not accepted corrected art"
+    },
+    {
+      "id": "archive_cardigan",
+      "path": "/Users/gunnchos/Downloads/gunnchos-7gc-research-product-spine/outputs/cross-game-art-20261102/pedestrian/wardrobe-final/after_archive_cardigan_back.png",
+      "sha256": "26731617ac180fcff0aae9c3ad47fdb9c22a0c788a85c4d46e9ad79bf0779380",
+      "assessment": "Broad cyan inner-top breakthrough; prior negative candidate evidence, not accepted corrected art"
+    }
+  ],
+  "change": "Measure actual torso/body overlay and existing WardrobeRoot CapsuleMesh inner clothing in torso-local space; use1cmheight slices and conservative existing-bob/lean clearance to fit denser authored panels. Front trims/pockets/zip share corrected contour. Keep open-front neck hem vent and shoulder-parent sleeves.",
+  "geometry_source": "Existing live mesh vertex arrays; original mesh is never hidden, removed, deformed or reparented. Bags, scarves, identity props and particles are excluded from fit measurement.",
+  "measurement_scope": "Actual attached CapsuleMesh underlayers at attachment time; non-capsule/reordered/future top recipes require additional runtime assessment.",
+  "vertical_clearance_m_per_height_scale": 0.05,
+  "radial_clearance_formula": "0.014*width_scale+0.014*height_scale",
+  "chord_allowance_factor": 1.018,
+  "status": "source correction candidate_UNPARSED_UNEXECUTED; six fresh actual-runtime visual captures and separate review required",
+  "limitations": [
+    "No cloth simulation or elbow deformation",
+    "Existing neck opening deliberately exposes inner layer above the coat edge",
+    "Six existing outerwear designs only; no58garment or allbodyarchetype acceptance claim",
+    "Source correction not yet parsed or rendered; root owns next heavy execution slot",
+    "Very large boost/victory torso bends and arbitrary customslotorder remain unverified"
+  ],
+  "HUMAN": false,
+  "RC2": false,
+  "V1": false
+}

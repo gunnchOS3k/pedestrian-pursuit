@@ -1,0 +1,44 @@
+{
+  "id": "slipstream_inlines",
+  "name": "SlipstreamInlines",
+  "family_id": "roller_revolution",
+  "movement_archetype": "roller_inline",
+  "design": "Four single-file urethane wheels, long open fork, aerodynamic cyan boot, double buckle and vented ankle cuff.",
+  "status": "original_art_candidate_exported_not_runtime_assessed",
+  "authoring_script_sha256": "15e2a5d9d4cf5e3ae77784ca170efdd15a2a5cc82d00e7ccce4d27efc6b08301",
+  "authoring_script_path": "art_source/footwear/wave1/author_wave1.py",
+  "source_blend": "art_source/footwear/wave1/slipstream_inlines/SlipstreamInlines.blend",
+  "source_blend_sha256": "1aab5d14c9ff0d0367461361927d787fd76b56f4c3d51b3eab2abfb6980081cb",
+  "asset_path": "res://assets/models/footwear/wave1/SlipstreamInlines.glb",
+  "glb_sha256": "218b46e045790f0098dae17f74a8d3c24f9018c4022eef69f3d7e5cef8eb0a62",
+  "triangles_per_foot": 5324,
+  "source_mesh_objects": 68,
+  "runtime_mesh_objects": 5,
+  "bounds": {
+    "min_blender_m": [
+      -0.08066656440496445,
+      -0.15349999070167542,
+      -0.05999999865889549
+    ],
+    "max_blender_m": [
+      0.08098186552524567,
+      0.15349999070167542,
+      0.18000000715255737
+    ],
+    "size_m": [
+      0.1616484299302101,
+      0.30699998140335083,
+      0.24000000581145287
+    ]
+  },
+  "wheel_nodes": [
+    "WheelSpin_0",
+    "WheelSpin_1",
+    "WheelSpin_2",
+    "WheelSpin_3"
+  ],
+  "animation": "WheelSpin illustrative one-second linear clip; no runtime speed binding or autoplay promised",
+  "HUMAN": false,
+  "RC2": false,
+  "V1": false
+}

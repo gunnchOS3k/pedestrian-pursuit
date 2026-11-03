@@ -1,0 +1,374 @@
+{
+  "assets": [
+    {
+      "file": "assets/models/footwear/wave1/BeatLinkTapstepOxfords.glb",
+      "bytes": 141420,
+      "sha256": "0c3bb8e2d48a136819d0f3238d9af45e159749d9fb3dfb5ecdcca2ae36e9dda1",
+      "triangles": 3470,
+      "mesh_count": 1,
+      "primitive_count": 8,
+      "materials": [
+        "Warm ivory stitched panel",
+        "Charcoal polished Oxford leather",
+        "Graphite grippy rubber",
+        "Boost cyan conductor",
+        "Heelspin magenta leather",
+        "Berry plum binding",
+        "Brushed structural alloy",
+        "Brushed tap plate"
+      ],
+      "bounds_godot_m": {
+        "min": [
+          -0.08100000023841858,
+          -0.05999999865889549,
+          -0.14499999582767487
+        ],
+        "max": [
+          0.08100000023841858,
+          0.09829458594322205,
+          0.1599999964237213
+        ],
+        "size": [
+          0.16200000047683716,
+          0.15829458460211754,
+          0.3049999922513962
+        ]
+      },
+      "wheel_nodes": [],
+      "animations": [],
+      "external_buffers": [],
+      "classification": "author_structural_QA_only; actual runtime visual assessment pending"
+    },
+    {
+      "file": "assets/models/footwear/wave1/CloudsoleStriders.glb",
+      "bytes": 84804,
+      "sha256": "a2bbb451b26bce03554f9e1a3e482ec8cf85dd42e21673f1b68e824160b2e690",
+      "triangles": 2046,
+      "mesh_count": 1,
+      "primitive_count": 4,
+      "materials": [
+        "Cloud ceramic white blue",
+        "Warm ivory stitched panel",
+        "Boost cyan conductor",
+        "Night track woven lining"
+      ],
+      "bounds_godot_m": {
+        "min": [
+          -0.08761937916278839,
+          -0.06000000238418579,
+          -0.14000000059604645
+        ],
+        "max": [
+          0.0879831425845623,
+          0.11800965294241905,
+          0.15000000596046448
+        ],
+        "size": [
+          0.1756025217473507,
+          0.17800965532660484,
+          0.2900000065565109
+        ]
+      },
+      "wheel_nodes": [],
+      "animations": [],
+      "external_buffers": [],
+      "classification": "author_structural_QA_only; actual runtime visual assessment pending"
+    },
+    {
+      "file": "assets/models/footwear/wave1/HeelspinQuads.glb",
+      "bytes": 217628,
+      "sha256": "1904d6ba6e18a1cc0384c1b24b630b5f478f51d8f2e325db90669a00ef8c492a",
+      "triangles": 5500,
+      "mesh_count": 5,
+      "primitive_count": 17,
+      "materials": [
+        "Heelspin magenta leather",
+        "Warm ivory stitched panel",
+        "Berry plum binding",
+        "Brushed structural alloy",
+        "Graphite grippy rubber"
+      ],
+      "bounds_godot_m": {
+        "min": [
+          -0.08950000188769583,
+          -0.060000010580076375,
+          -0.1340000033378601
+        ],
+        "max": [
+          0.08950000591846194,
+          0.19499999284744263,
+          0.1679999977350235
+        ],
+        "size": [
+          0.17900000780615777,
+          0.255000003427519,
+          0.3020000010728836
+        ]
+      },
+      "wheel_nodes": [
+        "WheelSpin_LFront",
+        "WheelSpin_LRear",
+        "WheelSpin_RFront",
+        "WheelSpin_RRear"
+      ],
+      "animations": [
+        {
+          "name": "WheelSpin",
+          "channels": [
+            {
+              "target": "WheelSpin_LFront",
+              "path": "rotation",
+              "samples": 25,
+              "duration_s": 0.9999999590218067,
+              "distinct_sample_values": 24
+            },
+            {
+              "target": "WheelSpin_LRear",
+              "path": "rotation",
+              "samples": 25,
+              "duration_s": 0.9999999590218067,
+              "distinct_sample_values": 24
+            },
+            {
+              "target": "WheelSpin_RFront",
+              "path": "rotation",
+              "samples": 25,
+              "duration_s": 0.9999999590218067,
+              "distinct_sample_values": 24
+            },
+            {
+              "target": "WheelSpin_RRear",
+              "path": "rotation",
+              "samples": 25,
+              "duration_s": 0.9999999590218067,
+              "distinct_sample_values": 24
+            }
+          ]
+        }
+      ],
+      "external_buffers": [],
+      "classification": "author_structural_QA_only; actual runtime visual assessment pending"
+    },
+    {
+      "file": "assets/models/footwear/wave1/ReedlineCirclers.glb",
+      "bytes": 125608,
+      "sha256": "bb72498c04f0b1ea4013965293af8aa3c1014a0701ce88b4ef0d7e2b4a188a3c",
+      "triangles": 3256,
+      "mesh_count": 1,
+      "primitive_count": 5,
+      "materials": [
+        "Graphite grippy rubber",
+        "Warm ivory stitched panel",
+        "Kinetic orange textile",
+        "Night track woven lining",
+        "Brushed structural alloy"
+      ],
+      "bounds_godot_m": {
+        "min": [
+          -0.083433598279953,
+          -0.05959807708859444,
+          -0.14499999582767487
+        ],
+        "max": [
+          0.083920918405056,
+          0.10999999940395355,
+          0.1649467647075653
+        ],
+        "size": [
+          0.167354516685009,
+          0.169598076492548,
+          0.3099467605352402
+        ]
+      },
+      "wheel_nodes": [],
+      "animations": [],
+      "external_buffers": [],
+      "classification": "author_structural_QA_only; actual runtime visual assessment pending"
+    },
+    {
+      "file": "assets/models/footwear/wave1/SlipstreamInlines.glb",
+      "bytes": 212920,
+      "sha256": "8217f438f5d0904c0e0a9af61c751d5e16328df7ab44eb8f27137151375cdda3",
+      "triangles": 5352,
+      "mesh_count": 5,
+      "primitive_count": 17,
+      "materials": [
+        "Slipstream cyan shell",
+        "Night track woven lining",
+        "Brushed structural alloy",
+        "Warm ivory stitched panel",
+        "Kinetic orange textile",
+        "Amber translucent-look urethane opaque"
+      ],
+      "bounds_godot_m": {
+        "min": [
+          -0.08066656440496445,
+          -0.06000000786247679,
+          -0.153499998152256
+        ],
+        "max": [
+          0.08098186552524567,
+          0.18000000715255737,
+          0.153499998152256
+        ],
+        "size": [
+          0.1616484299302101,
+          0.24000001501503415,
+          0.306999996304512
+        ]
+      },
+      "wheel_nodes": [
+        "WheelSpin_0",
+        "WheelSpin_1",
+        "WheelSpin_2",
+        "WheelSpin_3"
+      ],
+      "animations": [
+        {
+          "name": "WheelSpin",
+          "channels": [
+            {
+              "target": "WheelSpin_0",
+              "path": "rotation",
+              "samples": 25,
+              "duration_s": 0.9999999590218067,
+              "distinct_sample_values": 24
+            },
+            {
+              "target": "WheelSpin_1",
+              "path": "rotation",
+              "samples": 25,
+              "duration_s": 0.9999999590218067,
+              "distinct_sample_values": 24
+            },
+            {
+              "target": "WheelSpin_2",
+              "path": "rotation",
+              "samples": 25,
+              "duration_s": 0.9999999590218067,
+              "distinct_sample_values": 24
+            },
+            {
+              "target": "WheelSpin_3",
+              "path": "rotation",
+              "samples": 25,
+              "duration_s": 0.9999999590218067,
+              "distinct_sample_values": 24
+            }
+          ]
+        }
+      ],
+      "external_buffers": [],
+      "classification": "author_structural_QA_only; actual runtime visual assessment pending"
+    },
+    {
+      "file": "assets/models/footwear/wave1/SnowglobeGaloshes.glb",
+      "bytes": 140188,
+      "sha256": "d37452ae13690f19ddb4cb10d789a9486e9f7768da902b2514b4a0ed9061ed2f",
+      "triangles": 3254,
+      "mesh_count": 1,
+      "primitive_count": 5,
+      "materials": [
+        "Night track woven lining",
+        "Frost galosh glazed rubber",
+        "Insulated snow felt",
+        "Warm ivory stitched panel",
+        "Opaque blue snowglobe glaze"
+      ],
+      "bounds_godot_m": {
+        "min": [
+          -0.08100000023841858,
+          -0.06000000238418579,
+          -0.14400000870227814
+        ],
+        "max": [
+          0.08100000023841858,
+          0.22177435457706451,
+          0.1589999943971634
+        ],
+        "size": [
+          0.16200000047683716,
+          0.2817743569612503,
+          0.30300000309944153
+        ]
+      },
+      "wheel_nodes": [],
+      "animations": [],
+      "external_buffers": [],
+      "classification": "author_structural_QA_only; actual runtime visual assessment pending"
+    },
+    {
+      "file": "assets/models/footwear/wave1/SofaSurfers.glb",
+      "bytes": 64956,
+      "sha256": "a8394d9204c952e29c630f178400e191a588ba31b2cfc7b26de8e0a344183c1a",
+      "triangles": 1466,
+      "mesh_count": 1,
+      "primitive_count": 4,
+      "materials": [
+        "Warm bentwood glide rails",
+        "Cozy blue upholstery",
+        "Cream woven cushion piping",
+        "Night track woven lining"
+      ],
+      "bounds_godot_m": {
+        "min": [
+          -0.09897799789905548,
+          -0.05986425280570984,
+          -0.1420000046491623
+        ],
+        "max": [
+          0.09897799789905548,
+          0.15450000762939453,
+          0.1599999964237213
+        ],
+        "size": [
+          0.19795599579811096,
+          0.21436426043510437,
+          0.3020000010728836
+        ]
+      },
+      "wheel_nodes": [],
+      "animations": [],
+      "external_buffers": [],
+      "classification": "author_structural_QA_only; actual runtime visual assessment pending"
+    },
+    {
+      "file": "assets/models/footwear/wave1/TidefinRunners.glb",
+      "bytes": 56532,
+      "sha256": "5e5eb54caa3940cfcae203d0f43d043ddf4f270da9ac2e84eb68d890a03e82ce",
+      "triangles": 1792,
+      "mesh_count": 1,
+      "primitive_count": 4,
+      "materials": [
+        "Deep sea fin edging",
+        "Tide membrane aqua rubber",
+        "Warm ivory stitched panel",
+        "Kinetic orange textile"
+      ],
+      "bounds_godot_m": {
+        "min": [
+          -0.10026846826076508,
+          -0.05943731963634491,
+          -0.14000000059604645
+        ],
+        "max": [
+          0.10049299895763397,
+          0.10731997340917587,
+          0.164000004529953
+        ],
+        "size": [
+          0.20076146721839905,
+          0.16675729304552078,
+          0.30400000512599945
+        ]
+      },
+      "wheel_nodes": [],
+      "animations": [],
+      "external_buffers": [],
+      "classification": "author_structural_QA_only; actual runtime visual assessment pending"
+    }
+  ],
+  "HUMAN": false,
+  "RC2": false,
+  "V1": false
+}

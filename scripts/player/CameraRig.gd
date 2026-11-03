@@ -12,6 +12,8 @@ extends SpringArm3D
 @export var base_look_ahead: float = 2.2
 @export var max_look_ahead: float = 6.2
 @export var speed_ref: float = 22.0
+## Closer chase framing keeps character/footwear legible; all course ratios/FOV identities remain.
+@export var presentation_distance_scale: float = 0.45
 
 var _target: Node3D
 var _shake_strength: float = 0.0
@@ -22,8 +24,8 @@ var _boosting: bool = false
 
 
 func _ready() -> void:
-	spring_length = base_spring_length
-	_follow_offset = position
+	spring_length = base_spring_length * presentation_distance_scale
+	_follow_offset = Vector3(0.0, 1.8, 0.0)
 	_camera = get_node_or_null("Camera3D") as Camera3D
 	if _camera != null:
 		_camera.fov = base_fov
@@ -32,6 +34,9 @@ func _ready() -> void:
 func set_target(target: Node3D) -> void:
 	_target = target
 	global_position = _target.global_position + _follow_offset
+	# Keep the arm outside the racer body, with its lens behind the running direction.
+	if _target is CollisionObject3D:
+		add_excluded_object(_target.get_rid())
 	if _target != null and _target.has_signal("speed_changed"):
 		if not _target.speed_changed.is_connected(_on_speed_changed):
 			_target.speed_changed.connect(_on_speed_changed)
@@ -270,7 +275,7 @@ func apply_course_identity(identity: String) -> void:
 			max_look_ahead = 7.5
 		_:
 			pass
-	spring_length = base_spring_length
+	spring_length = base_spring_length * presentation_distance_scale
 	look_ahead = base_look_ahead
 	if _camera != null:
 		_camera.fov = base_fov
@@ -313,7 +318,7 @@ func _physics_process(delta: float) -> void:
 	look_ahead = lerpf(base_look_ahead, max_look_ahead, motion_feel)
 	## Slight pull-back under boost so FOV punch reads as speed, not zoom-in.
 	var spring_feel := motion_feel * (0.92 if (_boosting and not reduce_motion) else 0.85)
-	spring_length = lerpf(base_spring_length, max_spring_length, spring_feel)
+	spring_length = lerpf(base_spring_length, max_spring_length, spring_feel) * presentation_distance_scale
 	if _camera != null:
 		var target_fov := lerpf(base_fov, max_fov, clampf(fov_t, 0.0, 1.0))
 		_camera.fov = lerpf(_camera.fov, target_fov, clampf(7.5 * delta, 0.0, 1.0))
@@ -332,4 +337,4 @@ func _physics_process(delta: float) -> void:
 		)
 		_shake_strength = maxf(0.0, _shake_strength - shake_decay * delta)
 
-	look_at(_target.global_position + _target.global_transform.basis.z * -look_ahead, Vector3.UP)
+	look_at(_target.global_position + Vector3.UP * 1.0 + _target.global_transform.basis.z * -look_ahead, Vector3.UP)

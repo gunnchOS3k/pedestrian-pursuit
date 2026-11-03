@@ -1,0 +1,21 @@
+{
+  "upstream_sha": "97b2a032c483191131e9960c7a24737b8f89d0e3",
+  "authored_against_sha": "bb0c3dac66d0d72f751dd1290da72221cff2cb91",
+  "asset_status": "production_candidate",
+  "source_binary_preserved": true,
+  "glb_sha256": "d5961bd64ad01a8fb3df814cc814c7669cb923ae58cfd07b0135de8940f8511e",
+  "blend_sha256": "c79b4dc74a801a3b9a7492aebea3373e211ec9885498e1c496b16093e34aec7f",
+  "integration_scope": [
+    "existing vehicle_id exact match",
+    "two existing animated leg mounts",
+    "no gameplay stats or collision changes"
+  ],
+  "independent_review": "PENDING_ROOT_DISTINCT_REVIEW",
+  "latest_integrated_runtime_assessed": "HEADLESS_IMPORT_AND_VISUAL_COMPONENT_ONLY",
+  "HUMAN": false,
+  "RC2": false,
+  "V1": false,
+  "headless_import_assessed": true,
+  "headless_two_mounts_and_materials_test": "PASS",
+  "aesthetic_review": "PENDING_DISTINCT_ROOT_REVIEW"
+}

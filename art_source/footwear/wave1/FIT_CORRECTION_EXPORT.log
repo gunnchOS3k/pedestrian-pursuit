@@ -1,0 +1,59 @@
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Open ankle cuff with visible lining", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Streamlined inline boot", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Long exposed inline fork", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Long exposed inline fork.001", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Ratchet binding strap", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Orange buckle latch", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Ratchet binding strap.001", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Orange buckle latch.001", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Urethane tire", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Recessed wheel hub", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Circular axle cap", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Recessed wheel hub.001", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Circular axle cap", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Urethane tire.001", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Recessed wheel hub.002", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Circular axle cap", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Recessed wheel hub.003", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Circular axle cap", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Urethane tire.002", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Recessed wheel hub.004", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Circular axle cap", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Recessed wheel hub.005", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Circular axle cap", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Urethane tire.003", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Recessed wheel hub.006", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Circular axle cap", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Recessed wheel hub.007", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+Blender 4.0.2 (hash 9be62e85b727 built 2023-12-05 08:05:41)
+Info: Total files 0 | Changed 0 | Failed 0
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Stitched slim Oxford welt", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Almond toe polished Oxford", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Separate forefoot sole", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+WARN (bke.modifier): source/blender/blenkernel/intern/modifier.cc:461 BKE_modifier_set_error: Object: "Stacked tap heel", Modifier: "Weighted corner normals", Enable 'Auto Smooth' in Object Data Properties
+Info: Total files 0 | Changed 0 | Failed 0
+Info: Saved "SlipstreamInlines.blend"
+00:41:19 | INFO: Draco mesh compression is available, use library at /Applications/Blender 2.app/Contents/Resources/4.0/python/lib/python3.10/site-packages/libextern_draco.dylib
+00:41:19 | INFO: Starting glTF 2.0 export
+00:41:19 | INFO: Extracting primitive: Streamlined inline boot
+00:41:19 | INFO: Primitives created: 5
+00:41:19 | INFO: Extracting primitive: Cylinder.002
+00:41:19 | INFO: Primitives created: 3
+00:41:19 | INFO: Extracting primitive: Cylinder.007
+00:41:19 | INFO: Primitives created: 3
+00:41:19 | INFO: Extracting primitive: Cylinder.012
+00:41:19 | INFO: Primitives created: 3
+00:41:19 | INFO: Extracting primitive: Cylinder.017
+00:41:19 | INFO: Primitives created: 3
+00:41:19 | INFO: Finished glTF 2.0 export in 0.027023792266845703 s
+
+Info: Saved "BeatLinkTapstepOxfords.blend"
+00:41:19 | INFO: Draco mesh compression is available, use library at /Applications/Blender 2.app/Contents/Resources/4.0/python/lib/python3.10/site-packages/libextern_draco.dylib
+00:41:19 | INFO: Starting glTF 2.0 export
+00:41:19 | INFO: Extracting primitive: Stitched slim Oxford welt
+00:41:19 | INFO: Primitives created: 8
+00:41:19 | INFO: Finished glTF 2.0 export in 0.012706995010375977 s
+
+KINETIC_SOLE_WAVE1_EXPORT [{"id": "slipstream_inlines", "name": "SlipstreamInlines", "family_id": "roller_revolution", "movement_archetype": "roller_inline", "design": "Four single-file urethane wheels, long open fork, aerodynamic cyan boot, double buckle and vented ankle cuff.", "status": "original_art_candidate_exported_not_runtime_assessed", "authoring_script_sha256": "8685111554af2184107bea91ee73e740966b52d225b70fcbe11885029f52f49e", "authoring_script_path": "art_source/footwear/wave1/author_wave1.py", "source_blend": "art_source/footwear/wave1/slipstream_inlines/SlipstreamInlines.blend", "source_blend_sha256": "b370f84d136e902e77f7b27c0d23064244a7faef2641cdd6ee4e3ddd08d88186", "asset_path": "res://assets/models/footwear/wave1/SlipstreamInlines.glb", "glb_sha256": "8217f438f5d0904c0e0a9af61c751d5e16328df7ab44eb8f27137151375cdda3", "triangles_per_foot": 5352, "source_mesh_objects": 68, "runtime_mesh_objects": 5, "bounds": {"min_blender_m": [-0.08066656440496445, -0.15349999070167542, -0.05999999865889549], "max_blender_m": [0.08098186552524567, 0.15349999070167542, 0.18000000715255737], "size_m": [0.1616484299302101, 0.30699998140335083, 0.24000000581145287]}, "wheel_nodes": ["WheelSpin_0", "WheelSpin_1", "WheelSpin_2", "WheelSpin_3"], "animation": "WheelSpin illustrative one-second linear clip; no runtime speed binding or autoplay promised", "HUMAN": false, "RC2": false, "V1": false}, {"id": "beatlink_tapstep_oxfords", "name": "BeatLinkTapstepOxfords", "family_id": "gunnchos_crossover", "movement_archetype": "crossover_tap", "design": "Almond-toe two-tone Oxford, closed lacing, wingtip seam and brogue insets, separate metal toe/heel tap plates.", "status": "original_art_candidate_exported_not_runtime_assessed", "authoring_script_sha256": "8685111554af2184107bea91ee73e740966b52d225b70fcbe11885029f52f49e", "authoring_script_path": "art_source/footwear/wave1/author_wave1.py", "source_blend": "art_source/footwear/wave1/beatlink_tapstep_oxfords/BeatLinkTapstepOxfords.blend", "source_blend_sha256": "f0406f23a4144125c7a850443a90777e78ca86f90ca4a3c5eb679ec9f1adb6dd", "asset_path": "res://assets/models/footwear/wave1/BeatLinkTapstepOxfords.glb", "glb_sha256": "0c3bb8e2d48a136819d0f3238d9af45e159749d9fb3dfb5ecdcca2ae36e9dda1", "triangles_per_foot": 3470, "source_mesh_objects": 41, "runtime_mesh_objects": 1, "bounds": {"min_blender_m": [-0.08100000023841858, -0.1599999964237213, -0.05999999865889549], "max_blender_m": [0.08100000023841858, 0.14499999582767487, 0.09829458594322205], "size_m": [0.16200000047683716, 0.3049999922513962, 0.15829458460211754]}, "wheel_nodes": [], "animation": "Existing runner mount/gait only; no new rig or animation", "HUMAN": false, "RC2": false, "V1": false}]
+
+Blender quit

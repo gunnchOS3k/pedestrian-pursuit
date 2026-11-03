@@ -1,0 +1,25 @@
+{
+  "source_versions": {
+    "8685111554af2184107bea91ee73e740966b52d225b70fcbe11885029f52f49e": "author_wave1_pre_contact_fix.py",
+    "56edb97742168d6f7459492e06cd0ab4deb4331f36393474ba059d86add85471": "author_wave1_first_export.py",
+    "15e2a5d9d4cf5e3ae77784ca170efdd15a2a5cc82d00e7ccce4d27efc6b08301": "author_wave1.py"
+  },
+  "first_export_source_ids": [
+    "reedline_circlers",
+    "heelspin_quads",
+    "cloudsole_striders",
+    "tidefin_runners",
+    "snowglobe_galoshes",
+    "sofa_surfers"
+  ],
+  "status": "exported_original_art_candidates; no runtime or independent aesthetic clearance",
+  "contact_repair_ids": [
+    "reedline_circlers",
+    "slipstream_inlines",
+    "heelspin_quads",
+    "tidefin_runners",
+    "snowglobe_galoshes",
+    "beatlink_tapstep_oxfords"
+  ],
+  "contact_repair_status": "six_editable_blends_and_glbs_exported_structural_check_pass_runtime_pending"
+}

@@ -1,0 +1,735 @@
+{
+  "wave": "original_kinetic_sole_wave1_20261102",
+  "source_base_sha": "91514ef61f80d960703362eeb73eedf84f438a89",
+  "blender": "4.0.2",
+  "authoring_script_sha256": "15e2a5d9d4cf5e3ae77784ca170efdd15a2a5cc82d00e7ccce4d27efc6b08301",
+  "provenance": "Original custom geometry/materials, no external assets, logos, fonts or licensed characters",
+  "design_basis": [
+    "data/vehicles/vehicle_registry.json",
+    "data/shoes/<id>.json",
+    "docs/vxp3/VXP3_BRAND_SYSTEM.md",
+    "scripts/player/RacerVisual.gd existing palettes (read-only)"
+  ],
+  "axis_contract": "meters; Blender -Y toe / Z up; glTF/Godot +Z toe / Y up",
+  "reference_hashes": {
+    "reedline_circlers": {
+      "registry_record": {
+        "id": "reedline_circlers",
+        "display_name": "Reedline Circlers",
+        "family_id": "street_legends",
+        "family_name": "Street Legends",
+        "sort_order": 1,
+        "movement_archetype": "street_balanced",
+        "playable": true,
+        "art_status": "native_v1",
+        "signature_runner_id": "dash_reed",
+        "unlock": {
+          "mode": "starter",
+          "note": "Street Legends / early garage starter"
+        },
+        "top_speed_modifier": 1.0,
+        "acceleration_modifier": 1.0,
+        "handling_modifier": 1.0,
+        "drift_modifier": 1.0,
+        "jump_modifier": 1.0,
+        "boost_modifier": 1.0,
+        "stomp_modifier": 1.0,
+        "material_family": "balanced_rubber",
+        "surface_affinities": {
+          "standard": 1.0,
+          "asphalt": 1.0,
+          "packed_dirt": 1.0,
+          "grass": 1.0,
+          "mud": 1.0,
+          "ash": 1.0,
+          "wet": 1.0,
+          "sand": 1.0,
+          "metal": 1.0,
+          "neon": 1.0,
+          "cascade_runoff": 1.0,
+          "bounce": 1.0,
+          "rail": 1.0,
+          "speed_lane": 1.0
+        },
+        "gameplay_distinction": "Archetype street_balanced: distinct handling without separate physics engine.",
+        "collision_contract": "Always grounded race collision; hover/water/phase themes are affinity/VFX only \u2014 checkpoints never skipped.",
+        "description": "Reedline Circlers \u2014 Kinetic Sole vehicle in the Street Legends family."
+      },
+      "shoe_sha256": "dd7bae7b64e7a1540782200882663883b8787b0ca75823572073a0d349d6a404"
+    },
+    "slipstream_inlines": {
+      "registry_record": {
+        "id": "slipstream_inlines",
+        "display_name": "Slipstream Inlines",
+        "family_id": "roller_revolution",
+        "family_name": "Roller Revolution",
+        "sort_order": 9,
+        "movement_archetype": "roller_inline",
+        "playable": true,
+        "art_status": "native_v1",
+        "signature_runner_id": "",
+        "unlock": {
+          "mode": "starter",
+          "note": "Street Legends / early garage starter"
+        },
+        "top_speed_modifier": 1.1,
+        "acceleration_modifier": 1.02,
+        "handling_modifier": 0.92,
+        "drift_modifier": 1.2,
+        "jump_modifier": 0.85,
+        "boost_modifier": 1.05,
+        "stomp_modifier": 0.85,
+        "material_family": "urethane_wheel",
+        "surface_affinities": {
+          "standard": 1.0,
+          "asphalt": 1.16,
+          "packed_dirt": 0.88,
+          "grass": 1.0,
+          "mud": 0.68,
+          "ash": 1.0,
+          "wet": 0.9,
+          "sand": 1.0,
+          "metal": 1.0,
+          "neon": 1.08,
+          "cascade_runoff": 1.0,
+          "bounce": 1.0,
+          "rail": 1.12,
+          "speed_lane": 1.18
+        },
+        "gameplay_distinction": "Long-frame inline \u2014 asphalt top-end with soft-ground caution.",
+        "collision_contract": "Always grounded race collision; hover/water/phase themes are affinity/VFX only \u2014 checkpoints never skipped.",
+        "description": "Slipstream Inlines \u2014 Kinetic Sole vehicle in the Roller Revolution family.",
+        "ai_notes": "Long-frame inline \u2014 asphalt top-end with soft-ground caution."
+      },
+      "shoe_sha256": "8001b8f01a3da5792cad1fb9cc9fb9306a8b511dd2d21a1fe0250c01d22c2012"
+    },
+    "heelspin_quads": {
+      "registry_record": {
+        "id": "heelspin_quads",
+        "display_name": "Heelspin Quads",
+        "family_id": "roller_revolution",
+        "family_name": "Roller Revolution",
+        "sort_order": 10,
+        "movement_archetype": "roller_quad",
+        "playable": true,
+        "art_status": "native_v1",
+        "signature_runner_id": "",
+        "unlock": {
+          "mode": "starter",
+          "note": "Street Legends / early garage starter"
+        },
+        "top_speed_modifier": 0.98,
+        "acceleration_modifier": 1.12,
+        "handling_modifier": 1.08,
+        "drift_modifier": 1.3,
+        "jump_modifier": 0.92,
+        "boost_modifier": 1.02,
+        "stomp_modifier": 0.9,
+        "material_family": "urethane_wheel",
+        "surface_affinities": {
+          "standard": 1.0,
+          "asphalt": 1.12,
+          "packed_dirt": 0.95,
+          "grass": 1.0,
+          "mud": 0.72,
+          "ash": 1.0,
+          "wet": 1.0,
+          "sand": 1.0,
+          "metal": 1.05,
+          "neon": 1.0,
+          "cascade_runoff": 1.0,
+          "bounce": 1.05,
+          "rail": 1.05,
+          "speed_lane": 1.0
+        },
+        "gameplay_distinction": "Heel-spin quads \u2014 snap accel and loud drift, lower top speed.",
+        "collision_contract": "Always grounded race collision; hover/water/phase themes are affinity/VFX only \u2014 checkpoints never skipped.",
+        "description": "Heelspin Quads \u2014 Kinetic Sole vehicle in the Roller Revolution family.",
+        "ai_notes": "Heel-spin quads \u2014 snap accel and loud drift, lower top speed."
+      },
+      "shoe_sha256": "bf4bae81035b3d703d7c3d6e1f3e76c3391fac0dfbc8468c9b1ba2398913070c"
+    },
+    "cloudsole_striders": {
+      "registry_record": {
+        "id": "cloudsole_striders",
+        "display_name": "Cloudsole Striders",
+        "family_id": "hover_couture",
+        "family_name": "Hover Couture / Spaceflight",
+        "sort_order": 16,
+        "movement_archetype": "hover_glide",
+        "playable": true,
+        "art_status": "native_v1",
+        "signature_runner_id": "",
+        "unlock": {
+          "mode": "starter",
+          "note": "Street Legends / early garage starter"
+        },
+        "top_speed_modifier": 1.04,
+        "acceleration_modifier": 0.98,
+        "handling_modifier": 1.08,
+        "drift_modifier": 1.12,
+        "jump_modifier": 1.08,
+        "boost_modifier": 1.02,
+        "stomp_modifier": 0.82,
+        "material_family": "cloud_pad",
+        "surface_affinities": {
+          "standard": 1.06,
+          "asphalt": 1.02,
+          "packed_dirt": 1.0,
+          "grass": 1.0,
+          "mud": 0.88,
+          "ash": 0.92,
+          "wet": 1.08,
+          "sand": 1.0,
+          "metal": 1.0,
+          "neon": 1.0,
+          "cascade_runoff": 1.0,
+          "bounce": 1.16,
+          "rail": 1.04,
+          "speed_lane": 1.0
+        },
+        "gameplay_distinction": "Cloudsole glide \u2014 soft-pad float feel; still grounded checkpoints.",
+        "collision_contract": "Always grounded race collision; hover/space themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through.",
+        "description": "Cloudsole Striders \u2014 Kinetic Sole vehicle in the Hover Couture / Spaceflight family.",
+        "ai_notes": "Cloudsole glide \u2014 soft-pad float feel; still grounded checkpoints."
+      },
+      "shoe_sha256": "09ad590ed2d8850988e12a920d49205e06996596368f82365d2c98ed47a0cd74"
+    },
+    "tidefin_runners": {
+      "registry_record": {
+        "id": "tidefin_runners",
+        "display_name": "Tidefin Runners",
+        "family_id": "elemental_amphibious",
+        "family_name": "Elemental / Amphibious",
+        "sort_order": 23,
+        "movement_archetype": "elemental_wet",
+        "playable": true,
+        "art_status": "native_v1",
+        "signature_runner_id": "",
+        "unlock": {
+          "mode": "cup",
+          "note": "Unlock via cup placement"
+        },
+        "top_speed_modifier": 1.02,
+        "acceleration_modifier": 1.04,
+        "handling_modifier": 1.12,
+        "drift_modifier": 1.18,
+        "jump_modifier": 0.94,
+        "boost_modifier": 1.0,
+        "stomp_modifier": 0.9,
+        "material_family": "tide_fin",
+        "surface_affinities": {
+          "standard": 1.02,
+          "asphalt": 0.98,
+          "packed_dirt": 1.0,
+          "grass": 1.04,
+          "mud": 1.14,
+          "ash": 0.82,
+          "wet": 1.28,
+          "sand": 1.02,
+          "metal": 0.98,
+          "neon": 1.0,
+          "cascade_runoff": 1.24,
+          "bounce": 1.0,
+          "rail": 1.0,
+          "speed_lane": 1.02
+        },
+        "gameplay_distinction": "Tidefin slick-glide \u2014 wet/cascade grip; still grounded checkpoints.",
+        "collision_contract": "Always grounded race collision; water/mud/magma/frost themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through.",
+        "description": "Tidefin Runners \u2014 Kinetic Sole vehicle in the Elemental / Amphibious family.",
+        "ai_notes": "Tidefin slick-glide \u2014 wet/cascade grip; still grounded checkpoints."
+      },
+      "shoe_sha256": "4de42a359d1c41ee114692ca71e6607b4216330b7f0bda23578b5b6a5dd52876"
+    },
+    "snowglobe_galoshes": {
+      "registry_record": {
+        "id": "snowglobe_galoshes",
+        "display_name": "Snowglobe Galoshes",
+        "family_id": "elemental_amphibious",
+        "family_name": "Elemental / Amphibious",
+        "sort_order": 27,
+        "movement_archetype": "elemental_frost",
+        "playable": true,
+        "art_status": "native_v1",
+        "signature_runner_id": "",
+        "unlock": {
+          "mode": "challenge",
+          "note": "Unlock via launch challenge clear"
+        },
+        "top_speed_modifier": 0.94,
+        "acceleration_modifier": 1.06,
+        "handling_modifier": 1.16,
+        "drift_modifier": 1.2,
+        "jump_modifier": 1.04,
+        "boost_modifier": 0.94,
+        "stomp_modifier": 1.0,
+        "material_family": "frost_galosh",
+        "surface_affinities": {
+          "standard": 1.0,
+          "asphalt": 0.96,
+          "packed_dirt": 1.04,
+          "grass": 1.12,
+          "mud": 1.08,
+          "ash": 0.95,
+          "wet": 1.1,
+          "sand": 0.92,
+          "metal": 0.95,
+          "neon": 1.0,
+          "cascade_runoff": 1.08,
+          "bounce": 1.12,
+          "rail": 1.02,
+          "speed_lane": 0.98
+        },
+        "gameplay_distinction": "Snowglobe galosh \u2014 frost grip + bounce; checkpoints stay solid.",
+        "collision_contract": "Always grounded race collision; water/mud/magma/frost themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through.",
+        "description": "Snowglobe Galoshes \u2014 Kinetic Sole vehicle in the Elemental / Amphibious family.",
+        "ai_notes": "Snowglobe galosh \u2014 frost grip + bounce; checkpoints stay solid."
+      },
+      "shoe_sha256": "5f06d5641b3d6b6119b413f59b086469398a01085260d938d13cac6b3012a145"
+    },
+    "beatlink_tapstep_oxfords": {
+      "registry_record": {
+        "id": "beatlink_tapstep_oxfords",
+        "display_name": "BeatLink Tapstep Oxfords",
+        "family_id": "gunnchos_crossover",
+        "family_name": "gunnchOS3k Crossover",
+        "sort_order": 46,
+        "movement_archetype": "crossover_tap",
+        "playable": true,
+        "art_status": "native_v1",
+        "signature_runner_id": "",
+        "unlock": {
+          "mode": "crossover",
+          "note": "Unlock via crossover career flag"
+        },
+        "top_speed_modifier": 1.04,
+        "acceleration_modifier": 1.1,
+        "handling_modifier": 1.08,
+        "drift_modifier": 1.12,
+        "jump_modifier": 1.06,
+        "boost_modifier": 1.06,
+        "stomp_modifier": 0.94,
+        "material_family": "tap_oxford",
+        "surface_affinities": {
+          "standard": 1.05,
+          "asphalt": 1.06,
+          "packed_dirt": 0.98,
+          "grass": 0.96,
+          "mud": 0.88,
+          "ash": 0.95,
+          "wet": 0.95,
+          "sand": 0.95,
+          "metal": 1.08,
+          "neon": 1.12,
+          "cascade_runoff": 0.98,
+          "bounce": 1.05,
+          "rail": 1.06,
+          "speed_lane": 1.08
+        },
+        "gameplay_distinction": "BeatLink Tapstep Oxfords \u2014 on-beat tap tempo; original tribute, grounded.",
+        "collision_contract": "Always grounded race collision; crossover tribute themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through. Original designs only.",
+        "description": "BeatLink Tapstep Oxfords \u2014 Kinetic Sole vehicle in the gunnchOS3k Crossover family (original tribute).",
+        "ai_notes": "BeatLink Tapstep Oxfords \u2014 on-beat tap tempo; original tribute, grounded."
+      },
+      "shoe_sha256": "94816451bd3eb7731d523d36434e84907b6944ebf49eb42efc825ee41990e9eb"
+    },
+    "sofa_surfers": {
+      "registry_record": {
+        "id": "sofa_surfers",
+        "display_name": "Sofa Surfers",
+        "family_id": "beautifully_ridiculous",
+        "family_name": "Beautifully Ridiculous",
+        "sort_order": 33,
+        "movement_archetype": "ridiculous_drift",
+        "playable": true,
+        "art_status": "native_v1",
+        "signature_runner_id": "",
+        "unlock": {
+          "mode": "achievement",
+          "note": "Unlock via achievement"
+        },
+        "top_speed_modifier": 0.94,
+        "acceleration_modifier": 0.9,
+        "handling_modifier": 1.02,
+        "drift_modifier": 1.38,
+        "jump_modifier": 0.82,
+        "boost_modifier": 0.96,
+        "stomp_modifier": 0.92,
+        "material_family": "sofa_cushion",
+        "surface_affinities": {
+          "standard": 1.0,
+          "asphalt": 0.98,
+          "packed_dirt": 1.02,
+          "grass": 1.1,
+          "mud": 1.05,
+          "ash": 0.95,
+          "wet": 1.0,
+          "sand": 1.05,
+          "metal": 0.95,
+          "neon": 0.98,
+          "cascade_runoff": 1.0,
+          "bounce": 1.18,
+          "rail": 0.9,
+          "speed_lane": 0.98
+        },
+        "gameplay_distinction": "Sofa Surfers \u2014 couch-cushion drift slides; never skip checkpoints.",
+        "collision_contract": "Always grounded race collision; joke/prop themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through.",
+        "description": "Sofa Surfers \u2014 Kinetic Sole vehicle in the Beautifully Ridiculous family.",
+        "ai_notes": "Sofa Surfers \u2014 couch-cushion drift slides; never skip checkpoints."
+      },
+      "shoe_sha256": "dc73afe680d7a18c0b960130b6692c119b9ca762095038008b08874f25252989"
+    },
+    "brand_sha256": "eb7bcc314c4a3a64b54f0d1f08243dd2aa5539a95ef2b0d84ef761e16377fe3a",
+    "registry_sha256": "be15d2ceaddc0060a62678cde60c958c4983d0fff0bb0b0ce4f37fc74a803168",
+    "voltstep_preserved": {
+      "glb_sha256": "d5961bd64ad01a8fb3df814cc814c7669cb923ae58cfd07b0135de8940f8511e",
+      "blend_sha256": "c79b4dc74a801a3b9a7492aebea3373e211ec9885498e1c496b16093e34aec7f"
+    }
+  },
+  "assets": [
+    {
+      "id": "reedline_circlers",
+      "name": "ReedlineCirclers",
+      "family_id": "street_legends",
+      "movement_archetype": "street_balanced",
+      "design": "Low street sneaker; circular stitched quarter, layered orange toe, segmented rubber tread and offset lace cage.",
+      "status": "original_art_candidate_exported_not_runtime_assessed",
+      "authoring_script_sha256": "15e2a5d9d4cf5e3ae77784ca170efdd15a2a5cc82d00e7ccce4d27efc6b08301",
+      "authoring_script_path": "art_source/footwear/wave1/author_wave1.py",
+      "source_blend": "art_source/footwear/wave1/reedline_circlers/ReedlineCirclers.blend",
+      "source_blend_sha256": "6cb2885a9e09d3f3df5eb0800d42527fa59fadd1c0617502c54c13f63d672e72",
+      "asset_path": "res://assets/models/footwear/wave1/ReedlineCirclers.glb",
+      "glb_sha256": "58165809956ba54fc33d572b9283514d938b8139e767016079950c325adfa012",
+      "triangles_per_foot": 3228,
+      "source_mesh_objects": 57,
+      "runtime_mesh_objects": 1,
+      "bounds": {
+        "min_blender_m": [
+          -0.083433598279953,
+          -0.1649467647075653,
+          -0.05959807708859444
+        ],
+        "max_blender_m": [
+          0.083920918405056,
+          0.14499999582767487,
+          0.10999999940395355
+        ],
+        "size_m": [
+          0.167354516685009,
+          0.3099467605352402,
+          0.169598076492548
+        ]
+      },
+      "wheel_nodes": [],
+      "animation": "Existing runner mount/gait only; no new rig or animation",
+      "HUMAN": false,
+      "RC2": false,
+      "V1": false
+    },
+    {
+      "id": "slipstream_inlines",
+      "name": "SlipstreamInlines",
+      "family_id": "roller_revolution",
+      "movement_archetype": "roller_inline",
+      "design": "Four single-file urethane wheels, long open fork, aerodynamic cyan boot, double buckle and vented ankle cuff.",
+      "status": "original_art_candidate_exported_not_runtime_assessed",
+      "authoring_script_sha256": "15e2a5d9d4cf5e3ae77784ca170efdd15a2a5cc82d00e7ccce4d27efc6b08301",
+      "authoring_script_path": "art_source/footwear/wave1/author_wave1.py",
+      "source_blend": "art_source/footwear/wave1/slipstream_inlines/SlipstreamInlines.blend",
+      "source_blend_sha256": "1aab5d14c9ff0d0367461361927d787fd76b56f4c3d51b3eab2abfb6980081cb",
+      "asset_path": "res://assets/models/footwear/wave1/SlipstreamInlines.glb",
+      "glb_sha256": "218b46e045790f0098dae17f74a8d3c24f9018c4022eef69f3d7e5cef8eb0a62",
+      "triangles_per_foot": 5324,
+      "source_mesh_objects": 68,
+      "runtime_mesh_objects": 5,
+      "bounds": {
+        "min_blender_m": [
+          -0.08066656440496445,
+          -0.15349999070167542,
+          -0.05999999865889549
+        ],
+        "max_blender_m": [
+          0.08098186552524567,
+          0.15349999070167542,
+          0.18000000715255737
+        ],
+        "size_m": [
+          0.1616484299302101,
+          0.30699998140335083,
+          0.24000000581145287
+        ]
+      },
+      "wheel_nodes": [
+        "WheelSpin_0",
+        "WheelSpin_1",
+        "WheelSpin_2",
+        "WheelSpin_3"
+      ],
+      "animation": "WheelSpin illustrative one-second linear clip; no runtime speed binding or autoplay promised",
+      "HUMAN": false,
+      "RC2": false,
+      "V1": false
+    },
+    {
+      "id": "heelspin_quads",
+      "name": "HeelspinQuads",
+      "family_id": "roller_revolution",
+      "movement_archetype": "roller_quad",
+      "design": "Four wide-set pink wheels, two truck axles, raised magenta boot, scalloped cream panel and toe brake.",
+      "status": "original_art_candidate_exported_not_runtime_assessed",
+      "authoring_script_sha256": "15e2a5d9d4cf5e3ae77784ca170efdd15a2a5cc82d00e7ccce4d27efc6b08301",
+      "authoring_script_path": "art_source/footwear/wave1/author_wave1.py",
+      "source_blend": "art_source/footwear/wave1/heelspin_quads/HeelspinQuads.blend",
+      "source_blend_sha256": "473e6373f7434d8060208ec623752cae32d3b2d81c3a04972eacf783735d2a9b",
+      "asset_path": "res://assets/models/footwear/wave1/HeelspinQuads.glb",
+      "glb_sha256": "d43329124e43c5a00170555256c59c01226091e2da536daac86cb25fd8bd7028",
+      "triangles_per_foot": 5456,
+      "source_mesh_objects": 68,
+      "runtime_mesh_objects": 5,
+      "bounds": {
+        "min_blender_m": [
+          -0.08950000256299973,
+          -0.1679999977350235,
+          -0.06000000238418579
+        ],
+        "max_blender_m": [
+          0.08950000256299973,
+          0.1340000033378601,
+          0.19499999284744263
+        ],
+        "size_m": [
+          0.17900000512599945,
+          0.3020000010728836,
+          0.2549999952316284
+        ]
+      },
+      "wheel_nodes": [
+        "WheelSpin_LFront",
+        "WheelSpin_RFront",
+        "WheelSpin_LRear",
+        "WheelSpin_RRear"
+      ],
+      "animation": "WheelSpin illustrative one-second linear clip; no runtime speed binding or autoplay promised",
+      "HUMAN": false,
+      "RC2": false,
+      "V1": false
+    },
+    {
+      "id": "cloudsole_striders",
+      "name": "CloudsoleStriders",
+      "family_id": "hover_couture",
+      "movement_archetype": "hover_glide",
+      "design": "Separated cloud bladder pods and an open luminous air gap, white-blue wrap upper and floating side arcs.",
+      "status": "original_art_candidate_exported_not_runtime_assessed",
+      "authoring_script_sha256": "56edb97742168d6f7459492e06cd0ab4deb4331f36393474ba059d86add85471",
+      "source_blend": "art_source/footwear/wave1/cloudsole_striders/CloudsoleStriders.blend",
+      "source_blend_sha256": "c111c78fd065568c97fc5626873ba4122bf6b182c542513d388d84b6825665ce",
+      "asset_path": "res://assets/models/footwear/wave1/CloudsoleStriders.glb",
+      "glb_sha256": "a2bbb451b26bce03554f9e1a3e482ec8cf85dd42e21673f1b68e824160b2e690",
+      "triangles_per_foot": 2046,
+      "source_mesh_objects": 18,
+      "runtime_mesh_objects": 1,
+      "bounds": {
+        "min_blender_m": [
+          -0.08761937916278839,
+          -0.15000000596046448,
+          -0.06000000238418579
+        ],
+        "max_blender_m": [
+          0.0879831463098526,
+          0.14000000059604645,
+          0.11800965666770935
+        ],
+        "size_m": [
+          0.175602525472641,
+          0.2900000065565109,
+          0.17800965905189514
+        ]
+      },
+      "wheel_nodes": [],
+      "animation": "Existing runner mount/gait only; no new rig or animation",
+      "HUMAN": false,
+      "RC2": false,
+      "V1": false,
+      "retained_authoring_script": "art_source/footwear/wave1/author_wave1_first_export.py"
+    },
+    {
+      "id": "tidefin_runners",
+      "name": "TidefinRunners",
+      "family_id": "elemental_amphibious",
+      "movement_archetype": "elemental_wet",
+      "design": "Low aquatic membrane runner, flexible scalloped side fins, gill ribs and wave-cut gripping keel.",
+      "status": "original_art_candidate_exported_not_runtime_assessed",
+      "authoring_script_sha256": "15e2a5d9d4cf5e3ae77784ca170efdd15a2a5cc82d00e7ccce4d27efc6b08301",
+      "authoring_script_path": "art_source/footwear/wave1/author_wave1.py",
+      "source_blend": "art_source/footwear/wave1/tidefin_runners/TidefinRunners.blend",
+      "source_blend_sha256": "92d4477b4796db1d8a7d626429729507dabd82cffb7e3e8a94448999c3b57ef5",
+      "asset_path": "res://assets/models/footwear/wave1/TidefinRunners.glb",
+      "glb_sha256": "06e4c18680475929024ee0b31624725de2f58f98b9ad91ac440abc97db73addd",
+      "triangles_per_foot": 1744,
+      "source_mesh_objects": 20,
+      "runtime_mesh_objects": 1,
+      "bounds": {
+        "min_blender_m": [
+          -0.10026846826076508,
+          -0.164000004529953,
+          -0.05943731963634491
+        ],
+        "max_blender_m": [
+          0.10049299895763397,
+          0.14000000059604645,
+          0.10514789074659348
+        ],
+        "size_m": [
+          0.20076146721839905,
+          0.30400000512599945,
+          0.16458521038293839
+        ]
+      },
+      "wheel_nodes": [],
+      "animation": "Existing runner mount/gait only; no new rig or animation",
+      "HUMAN": false,
+      "RC2": false,
+      "V1": false
+    },
+    {
+      "id": "snowglobe_galoshes",
+      "name": "SnowglobeGaloshes",
+      "family_id": "elemental_amphibious",
+      "movement_archetype": "elemental_frost",
+      "design": "Tall ribbed frost-rubber galosh, folded insulated cuff, snowglobe-like heel dome, inset flakes and deep cross tread.",
+      "status": "original_art_candidate_exported_not_runtime_assessed",
+      "authoring_script_sha256": "15e2a5d9d4cf5e3ae77784ca170efdd15a2a5cc82d00e7ccce4d27efc6b08301",
+      "authoring_script_path": "art_source/footwear/wave1/author_wave1.py",
+      "source_blend": "art_source/footwear/wave1/snowglobe_galoshes/SnowglobeGaloshes.blend",
+      "source_blend_sha256": "23f18b558d7feb88667bd7097705204671df13f76cbe892a4bf697963d9615d9",
+      "asset_path": "res://assets/models/footwear/wave1/SnowglobeGaloshes.glb",
+      "glb_sha256": "03b437ac98a9b12ee8a276d95159b6d6fe254296f698d56deaf66b23a0da45f8",
+      "triangles_per_foot": 3222,
+      "source_mesh_objects": 32,
+      "runtime_mesh_objects": 1,
+      "bounds": {
+        "min_blender_m": [
+          -0.08100000023841858,
+          -0.1589999943971634,
+          -0.06000000238418579
+        ],
+        "max_blender_m": [
+          0.08100000023841858,
+          0.14400000870227814,
+          0.22177435457706451
+        ],
+        "size_m": [
+          0.16200000047683716,
+          0.30300000309944153,
+          0.2817743569612503
+        ]
+      },
+      "wheel_nodes": [],
+      "animation": "Existing runner mount/gait only; no new rig or animation",
+      "HUMAN": false,
+      "RC2": false,
+      "V1": false
+    },
+    {
+      "id": "beatlink_tapstep_oxfords",
+      "name": "BeatLinkTapstepOxfords",
+      "family_id": "gunnchos_crossover",
+      "movement_archetype": "crossover_tap",
+      "design": "Almond-toe two-tone Oxford, closed lacing, wingtip seam and brogue insets, separate metal toe/heel tap plates.",
+      "status": "original_art_candidate_exported_not_runtime_assessed",
+      "authoring_script_sha256": "15e2a5d9d4cf5e3ae77784ca170efdd15a2a5cc82d00e7ccce4d27efc6b08301",
+      "authoring_script_path": "art_source/footwear/wave1/author_wave1.py",
+      "source_blend": "art_source/footwear/wave1/beatlink_tapstep_oxfords/BeatLinkTapstepOxfords.blend",
+      "source_blend_sha256": "9b286c4f48a5264489ec730935b202074140818a954abeeaef64ea444c45ae2f",
+      "asset_path": "res://assets/models/footwear/wave1/BeatLinkTapstepOxfords.glb",
+      "glb_sha256": "25086e6fd3a27baa0a99e8053ef3c4c85bcd36dcd53ec5d1016a5b6e93439849",
+      "triangles_per_foot": 3422,
+      "source_mesh_objects": 41,
+      "runtime_mesh_objects": 1,
+      "bounds": {
+        "min_blender_m": [
+          -0.08100000023841858,
+          -0.1599999964237213,
+          -0.05999999865889549
+        ],
+        "max_blender_m": [
+          0.08100000023841858,
+          0.14499999582767487,
+          0.09829458594322205
+        ],
+        "size_m": [
+          0.16200000047683716,
+          0.3049999922513962,
+          0.15829458460211754
+        ]
+      },
+      "wheel_nodes": [],
+      "animation": "Existing runner mount/gait only; no new rig or animation",
+      "HUMAN": false,
+      "RC2": false,
+      "V1": false
+    },
+    {
+      "id": "sofa_surfers",
+      "name": "SofaSurfers",
+      "family_id": "beautifully_ridiculous",
+      "movement_archetype": "ridiculous_drift",
+      "design": "Miniature upholstered sofa slipper: rounded armrests, piped seat, button-tufted back and curved wooden glide rails.",
+      "status": "original_art_candidate_exported_not_runtime_assessed",
+      "authoring_script_sha256": "56edb97742168d6f7459492e06cd0ab4deb4331f36393474ba059d86add85471",
+      "source_blend": "art_source/footwear/wave1/sofa_surfers/SofaSurfers.blend",
+      "source_blend_sha256": "138cea6515b89c9928317bc10033cacdb6fc1a31e1c755f0b4f674cc559855fc",
+      "asset_path": "res://assets/models/footwear/wave1/SofaSurfers.glb",
+      "glb_sha256": "a8394d9204c952e29c630f178400e191a588ba31b2cfc7b26de8e0a344183c1a",
+      "triangles_per_foot": 1466,
+      "source_mesh_objects": 23,
+      "runtime_mesh_objects": 1,
+      "bounds": {
+        "min_blender_m": [
+          -0.09897799789905548,
+          -0.1599999964237213,
+          -0.05986425280570984
+        ],
+        "max_blender_m": [
+          0.09897799789905548,
+          0.1420000046491623,
+          0.15450000762939453
+        ],
+        "size_m": [
+          0.19795599579811096,
+          0.3020000010728836,
+          0.21436426043510437
+        ]
+      },
+      "wheel_nodes": [],
+      "animation": "Existing runner mount/gait only; no new rig or animation",
+      "HUMAN": false,
+      "RC2": false,
+      "V1": false,
+      "retained_authoring_script": "art_source/footwear/wave1/author_wave1_first_export.py"
+    }
+  ],
+  "runtime_assessment": "pending actual RaceScene and garage evaluation by integration owner",
+  "independent_review": "pending distinct reviewer; author measurements are not independent approval",
+  "HUMAN": false,
+  "RC2": false,
+  "V1": false,
+  "source_version_map": {
+    "8685111554af2184107bea91ee73e740966b52d225b70fcbe11885029f52f49e": "author_wave1_pre_contact_fix.py",
+    "56edb97742168d6f7459492e06cd0ab4deb4331f36393474ba059d86add85471": "author_wave1_first_export.py",
+    "15e2a5d9d4cf5e3ae77784ca170efdd15a2a5cc82d00e7ccce4d27efc6b08301": "author_wave1.py"
+  },
+  "construction_repair": {
+    "ids": [
+      "reedline_circlers",
+      "slipstream_inlines",
+      "heelspin_quads",
+      "tidefin_runners",
+      "snowglobe_galoshes",
+      "beatlink_tapstep_oxfords"
+    ],
+    "reason": "Separate visual reviewer found daylight between upper and sole/frame. Six uppers now use seated D cross-sections overlapping existing support by2mm. Cloudsole intentional airgap and Sofa source/GLBs unchanged.",
+    "runtime_status": "pending new native captures"
+  }
+}

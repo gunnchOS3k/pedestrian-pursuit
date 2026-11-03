@@ -1,0 +1,39 @@
+{
+  "id": "sofa_surfers",
+  "name": "SofaSurfers",
+  "family_id": "beautifully_ridiculous",
+  "movement_archetype": "ridiculous_drift",
+  "design": "Miniature upholstered sofa slipper: rounded armrests, piped seat, button-tufted back and curved wooden glide rails.",
+  "status": "original_art_candidate_exported_not_runtime_assessed",
+  "authoring_script_sha256": "56edb97742168d6f7459492e06cd0ab4deb4331f36393474ba059d86add85471",
+  "source_blend": "art_source/footwear/wave1/sofa_surfers/SofaSurfers.blend",
+  "source_blend_sha256": "138cea6515b89c9928317bc10033cacdb6fc1a31e1c755f0b4f674cc559855fc",
+  "asset_path": "res://assets/models/footwear/wave1/SofaSurfers.glb",
+  "glb_sha256": "a8394d9204c952e29c630f178400e191a588ba31b2cfc7b26de8e0a344183c1a",
+  "triangles_per_foot": 1466,
+  "source_mesh_objects": 23,
+  "runtime_mesh_objects": 1,
+  "bounds": {
+    "min_blender_m": [
+      -0.09897799789905548,
+      -0.1599999964237213,
+      -0.05986425280570984
+    ],
+    "max_blender_m": [
+      0.09897799789905548,
+      0.1420000046491623,
+      0.15450000762939453
+    ],
+    "size_m": [
+      0.19795599579811096,
+      0.3020000010728836,
+      0.21436426043510437
+    ]
+  },
+  "wheel_nodes": [],
+  "animation": "Existing runner mount/gait only; no new rig or animation",
+  "HUMAN": false,
+  "RC2": false,
+  "V1": false,
+  "retained_authoring_script": "art_source/footwear/wave1/author_wave1_first_export.py"
+}

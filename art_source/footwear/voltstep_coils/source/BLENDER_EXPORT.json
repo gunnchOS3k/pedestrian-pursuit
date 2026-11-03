@@ -1,0 +1,15 @@
+{
+  "blender": "4.0.2",
+  "triangles_per_foot": 7680,
+  "materials": 7,
+  "mesh_objects_exported": 1,
+  "status": "production_candidate",
+  "source": "original custom ring/panel topology, lacing and helical suspension; no third-party assets",
+  "export": {
+    "format": "GLB",
+    "y_up": true,
+    "modifiers_applied": true,
+    "textures": "none; PBR materials only",
+    "selection_only": true
+  }
+}

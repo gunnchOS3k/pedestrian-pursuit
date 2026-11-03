@@ -1,0 +1,39 @@
+{
+  "id": "reedline_circlers",
+  "name": "ReedlineCirclers",
+  "family_id": "street_legends",
+  "movement_archetype": "street_balanced",
+  "design": "Low street sneaker; circular stitched quarter, layered orange toe, segmented rubber tread and offset lace cage.",
+  "status": "original_art_candidate_exported_not_runtime_assessed",
+  "authoring_script_sha256": "15e2a5d9d4cf5e3ae77784ca170efdd15a2a5cc82d00e7ccce4d27efc6b08301",
+  "authoring_script_path": "art_source/footwear/wave1/author_wave1.py",
+  "source_blend": "art_source/footwear/wave1/reedline_circlers/ReedlineCirclers.blend",
+  "source_blend_sha256": "6cb2885a9e09d3f3df5eb0800d42527fa59fadd1c0617502c54c13f63d672e72",
+  "asset_path": "res://assets/models/footwear/wave1/ReedlineCirclers.glb",
+  "glb_sha256": "58165809956ba54fc33d572b9283514d938b8139e767016079950c325adfa012",
+  "triangles_per_foot": 3228,
+  "source_mesh_objects": 57,
+  "runtime_mesh_objects": 1,
+  "bounds": {
+    "min_blender_m": [
+      -0.083433598279953,
+      -0.1649467647075653,
+      -0.05959807708859444
+    ],
+    "max_blender_m": [
+      0.083920918405056,
+      0.14499999582767487,
+      0.10999999940395355
+    ],
+    "size_m": [
+      0.167354516685009,
+      0.3099467605352402,
+      0.169598076492548
+    ]
+  },
+  "wheel_nodes": [],
+  "animation": "Existing runner mount/gait only; no new rig or animation",
+  "HUMAN": false,
+  "RC2": false,
+  "V1": false
+}

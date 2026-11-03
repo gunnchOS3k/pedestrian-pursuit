@@ -1,0 +1,38 @@
+{
+  "id": "beatlink_tapstep_oxfords",
+  "name": "BeatLinkTapstepOxfords",
+  "family_id": "gunnchos_crossover",
+  "movement_archetype": "crossover_tap",
+  "design": "Almond-toe two-tone Oxford, closed lacing, wingtip seam and brogue insets, separate metal toe/heel tap plates.",
+  "status": "original_art_candidate_exported_not_runtime_assessed",
+  "authoring_script_sha256": "56edb97742168d6f7459492e06cd0ab4deb4331f36393474ba059d86add85471",
+  "source_blend": "art_source/footwear/wave1/beatlink_tapstep_oxfords/BeatLinkTapstepOxfords.blend",
+  "source_blend_sha256": "3800fd9d74f9c1cec1ac8330e4a9fa2b7a70afe95200aa02d33c7dd675f5a423",
+  "asset_path": "res://assets/models/footwear/wave1/BeatLinkTapstepOxfords.glb",
+  "glb_sha256": "c9839485a7c3d9fbf968f12d6391487d74740d1e711abcad4ea53d5aab76abe2",
+  "triangles_per_foot": 3454,
+  "source_mesh_objects": 41,
+  "runtime_mesh_objects": 1,
+  "bounds": {
+    "min_blender_m": [
+      -0.07100000232458115,
+      -0.1599999964237213,
+      -0.05999999865889549
+    ],
+    "max_blender_m": [
+      0.07100000232458115,
+      0.14499999582767487,
+      0.09829458594322205
+    ],
+    "size_m": [
+      0.1420000046491623,
+      0.3049999922513962,
+      0.15829458460211754
+    ]
+  },
+  "wheel_nodes": [],
+  "animation": "Existing runner mount/gait only; no new rig or animation",
+  "HUMAN": false,
+  "RC2": false,
+  "V1": false
+}

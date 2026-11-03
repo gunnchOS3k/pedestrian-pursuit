@@ -1,0 +1,39 @@
+{
+  "id": "tidefin_runners",
+  "name": "TidefinRunners",
+  "family_id": "elemental_amphibious",
+  "movement_archetype": "elemental_wet",
+  "design": "Low aquatic membrane runner, flexible scalloped side fins, gill ribs and wave-cut gripping keel.",
+  "status": "original_art_candidate_exported_not_runtime_assessed",
+  "authoring_script_sha256": "15e2a5d9d4cf5e3ae77784ca170efdd15a2a5cc82d00e7ccce4d27efc6b08301",
+  "authoring_script_path": "art_source/footwear/wave1/author_wave1.py",
+  "source_blend": "art_source/footwear/wave1/tidefin_runners/TidefinRunners.blend",
+  "source_blend_sha256": "92d4477b4796db1d8a7d626429729507dabd82cffb7e3e8a94448999c3b57ef5",
+  "asset_path": "res://assets/models/footwear/wave1/TidefinRunners.glb",
+  "glb_sha256": "06e4c18680475929024ee0b31624725de2f58f98b9ad91ac440abc97db73addd",
+  "triangles_per_foot": 1744,
+  "source_mesh_objects": 20,
+  "runtime_mesh_objects": 1,
+  "bounds": {
+    "min_blender_m": [
+      -0.10026846826076508,
+      -0.164000004529953,
+      -0.05943731963634491
+    ],
+    "max_blender_m": [
+      0.10049299895763397,
+      0.14000000059604645,
+      0.10514789074659348
+    ],
+    "size_m": [
+      0.20076146721839905,
+      0.30400000512599945,
+      0.16458521038293839
+    ]
+  },
+  "wheel_nodes": [],
+  "animation": "Existing runner mount/gait only; no new rig or animation",
+  "HUMAN": false,
+  "RC2": false,
+  "V1": false
+}

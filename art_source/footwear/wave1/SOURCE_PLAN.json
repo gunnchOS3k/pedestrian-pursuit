@@ -1,0 +1,440 @@
+{
+  "registry_count": 50,
+  "source_base_sha": "91514ef61f80d960703362eeb73eedf84f438a89",
+  "status": "editable_authoring_source_ready_no_models_generated",
+  "ids": [
+    "reedline_circlers",
+    "slipstream_inlines",
+    "heelspin_quads",
+    "cloudsole_striders",
+    "tidefin_runners",
+    "snowglobe_galoshes",
+    "beatlink_tapstep_oxfords",
+    "sofa_surfers"
+  ],
+  "designs": {
+    "reedline_circlers": [
+      "ReedlineCirclers",
+      "street_legends",
+      "street_balanced",
+      "Low street sneaker; circular stitched quarter, layered orange toe, segmented rubber tread and offset lace cage."
+    ],
+    "slipstream_inlines": [
+      "SlipstreamInlines",
+      "roller_revolution",
+      "roller_inline",
+      "Four single-file urethane wheels, long open fork, aerodynamic cyan boot, double buckle and vented ankle cuff."
+    ],
+    "heelspin_quads": [
+      "HeelspinQuads",
+      "roller_revolution",
+      "roller_quad",
+      "Four wide-set pink wheels, two truck axles, raised magenta boot, scalloped cream panel and toe brake."
+    ],
+    "cloudsole_striders": [
+      "CloudsoleStriders",
+      "hover_couture",
+      "hover_glide",
+      "Separated cloud bladder pods and an open luminous air gap, white-blue wrap upper and floating side arcs."
+    ],
+    "tidefin_runners": [
+      "TidefinRunners",
+      "elemental_amphibious",
+      "elemental_wet",
+      "Low aquatic membrane runner, flexible scalloped side fins, gill ribs and wave-cut gripping keel."
+    ],
+    "snowglobe_galoshes": [
+      "SnowglobeGaloshes",
+      "elemental_amphibious",
+      "elemental_frost",
+      "Tall ribbed frost-rubber galosh, folded insulated cuff, snowglobe-like heel dome, inset flakes and deep cross tread."
+    ],
+    "beatlink_tapstep_oxfords": [
+      "BeatLinkTapstepOxfords",
+      "gunnchos_crossover",
+      "crossover_tap",
+      "Almond-toe two-tone Oxford, closed lacing, wingtip seam and brogue insets, separate metal toe/heel tap plates."
+    ],
+    "sofa_surfers": [
+      "SofaSurfers",
+      "beautifully_ridiculous",
+      "ridiculous_drift",
+      "Miniature upholstered sofa slipper: rounded armrests, piped seat, button-tufted back and curved wooden glide rails."
+    ]
+  },
+  "reference_hashes": {
+    "reedline_circlers": {
+      "registry_record": {
+        "id": "reedline_circlers",
+        "display_name": "Reedline Circlers",
+        "family_id": "street_legends",
+        "family_name": "Street Legends",
+        "sort_order": 1,
+        "movement_archetype": "street_balanced",
+        "playable": true,
+        "art_status": "native_v1",
+        "signature_runner_id": "dash_reed",
+        "unlock": {
+          "mode": "starter",
+          "note": "Street Legends / early garage starter"
+        },
+        "top_speed_modifier": 1.0,
+        "acceleration_modifier": 1.0,
+        "handling_modifier": 1.0,
+        "drift_modifier": 1.0,
+        "jump_modifier": 1.0,
+        "boost_modifier": 1.0,
+        "stomp_modifier": 1.0,
+        "material_family": "balanced_rubber",
+        "surface_affinities": {
+          "standard": 1.0,
+          "asphalt": 1.0,
+          "packed_dirt": 1.0,
+          "grass": 1.0,
+          "mud": 1.0,
+          "ash": 1.0,
+          "wet": 1.0,
+          "sand": 1.0,
+          "metal": 1.0,
+          "neon": 1.0,
+          "cascade_runoff": 1.0,
+          "bounce": 1.0,
+          "rail": 1.0,
+          "speed_lane": 1.0
+        },
+        "gameplay_distinction": "Archetype street_balanced: distinct handling without separate physics engine.",
+        "collision_contract": "Always grounded race collision; hover/water/phase themes are affinity/VFX only \u2014 checkpoints never skipped.",
+        "description": "Reedline Circlers \u2014 Kinetic Sole vehicle in the Street Legends family."
+      },
+      "shoe_sha256": "dd7bae7b64e7a1540782200882663883b8787b0ca75823572073a0d349d6a404"
+    },
+    "slipstream_inlines": {
+      "registry_record": {
+        "id": "slipstream_inlines",
+        "display_name": "Slipstream Inlines",
+        "family_id": "roller_revolution",
+        "family_name": "Roller Revolution",
+        "sort_order": 9,
+        "movement_archetype": "roller_inline",
+        "playable": true,
+        "art_status": "native_v1",
+        "signature_runner_id": "",
+        "unlock": {
+          "mode": "starter",
+          "note": "Street Legends / early garage starter"
+        },
+        "top_speed_modifier": 1.1,
+        "acceleration_modifier": 1.02,
+        "handling_modifier": 0.92,
+        "drift_modifier": 1.2,
+        "jump_modifier": 0.85,
+        "boost_modifier": 1.05,
+        "stomp_modifier": 0.85,
+        "material_family": "urethane_wheel",
+        "surface_affinities": {
+          "standard": 1.0,
+          "asphalt": 1.16,
+          "packed_dirt": 0.88,
+          "grass": 1.0,
+          "mud": 0.68,
+          "ash": 1.0,
+          "wet": 0.9,
+          "sand": 1.0,
+          "metal": 1.0,
+          "neon": 1.08,
+          "cascade_runoff": 1.0,
+          "bounce": 1.0,
+          "rail": 1.12,
+          "speed_lane": 1.18
+        },
+        "gameplay_distinction": "Long-frame inline \u2014 asphalt top-end with soft-ground caution.",
+        "collision_contract": "Always grounded race collision; hover/water/phase themes are affinity/VFX only \u2014 checkpoints never skipped.",
+        "description": "Slipstream Inlines \u2014 Kinetic Sole vehicle in the Roller Revolution family.",
+        "ai_notes": "Long-frame inline \u2014 asphalt top-end with soft-ground caution."
+      },
+      "shoe_sha256": "8001b8f01a3da5792cad1fb9cc9fb9306a8b511dd2d21a1fe0250c01d22c2012"
+    },
+    "heelspin_quads": {
+      "registry_record": {
+        "id": "heelspin_quads",
+        "display_name": "Heelspin Quads",
+        "family_id": "roller_revolution",
+        "family_name": "Roller Revolution",
+        "sort_order": 10,
+        "movement_archetype": "roller_quad",
+        "playable": true,
+        "art_status": "native_v1",
+        "signature_runner_id": "",
+        "unlock": {
+          "mode": "starter",
+          "note": "Street Legends / early garage starter"
+        },
+        "top_speed_modifier": 0.98,
+        "acceleration_modifier": 1.12,
+        "handling_modifier": 1.08,
+        "drift_modifier": 1.3,
+        "jump_modifier": 0.92,
+        "boost_modifier": 1.02,
+        "stomp_modifier": 0.9,
+        "material_family": "urethane_wheel",
+        "surface_affinities": {
+          "standard": 1.0,
+          "asphalt": 1.12,
+          "packed_dirt": 0.95,
+          "grass": 1.0,
+          "mud": 0.72,
+          "ash": 1.0,
+          "wet": 1.0,
+          "sand": 1.0,
+          "metal": 1.05,
+          "neon": 1.0,
+          "cascade_runoff": 1.0,
+          "bounce": 1.05,
+          "rail": 1.05,
+          "speed_lane": 1.0
+        },
+        "gameplay_distinction": "Heel-spin quads \u2014 snap accel and loud drift, lower top speed.",
+        "collision_contract": "Always grounded race collision; hover/water/phase themes are affinity/VFX only \u2014 checkpoints never skipped.",
+        "description": "Heelspin Quads \u2014 Kinetic Sole vehicle in the Roller Revolution family.",
+        "ai_notes": "Heel-spin quads \u2014 snap accel and loud drift, lower top speed."
+      },
+      "shoe_sha256": "bf4bae81035b3d703d7c3d6e1f3e76c3391fac0dfbc8468c9b1ba2398913070c"
+    },
+    "cloudsole_striders": {
+      "registry_record": {
+        "id": "cloudsole_striders",
+        "display_name": "Cloudsole Striders",
+        "family_id": "hover_couture",
+        "family_name": "Hover Couture / Spaceflight",
+        "sort_order": 16,
+        "movement_archetype": "hover_glide",
+        "playable": true,
+        "art_status": "native_v1",
+        "signature_runner_id": "",
+        "unlock": {
+          "mode": "starter",
+          "note": "Street Legends / early garage starter"
+        },
+        "top_speed_modifier": 1.04,
+        "acceleration_modifier": 0.98,
+        "handling_modifier": 1.08,
+        "drift_modifier": 1.12,
+        "jump_modifier": 1.08,
+        "boost_modifier": 1.02,
+        "stomp_modifier": 0.82,
+        "material_family": "cloud_pad",
+        "surface_affinities": {
+          "standard": 1.06,
+          "asphalt": 1.02,
+          "packed_dirt": 1.0,
+          "grass": 1.0,
+          "mud": 0.88,
+          "ash": 0.92,
+          "wet": 1.08,
+          "sand": 1.0,
+          "metal": 1.0,
+          "neon": 1.0,
+          "cascade_runoff": 1.0,
+          "bounce": 1.16,
+          "rail": 1.04,
+          "speed_lane": 1.0
+        },
+        "gameplay_distinction": "Cloudsole glide \u2014 soft-pad float feel; still grounded checkpoints.",
+        "collision_contract": "Always grounded race collision; hover/space themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through.",
+        "description": "Cloudsole Striders \u2014 Kinetic Sole vehicle in the Hover Couture / Spaceflight family.",
+        "ai_notes": "Cloudsole glide \u2014 soft-pad float feel; still grounded checkpoints."
+      },
+      "shoe_sha256": "09ad590ed2d8850988e12a920d49205e06996596368f82365d2c98ed47a0cd74"
+    },
+    "tidefin_runners": {
+      "registry_record": {
+        "id": "tidefin_runners",
+        "display_name": "Tidefin Runners",
+        "family_id": "elemental_amphibious",
+        "family_name": "Elemental / Amphibious",
+        "sort_order": 23,
+        "movement_archetype": "elemental_wet",
+        "playable": true,
+        "art_status": "native_v1",
+        "signature_runner_id": "",
+        "unlock": {
+          "mode": "cup",
+          "note": "Unlock via cup placement"
+        },
+        "top_speed_modifier": 1.02,
+        "acceleration_modifier": 1.04,
+        "handling_modifier": 1.12,
+        "drift_modifier": 1.18,
+        "jump_modifier": 0.94,
+        "boost_modifier": 1.0,
+        "stomp_modifier": 0.9,
+        "material_family": "tide_fin",
+        "surface_affinities": {
+          "standard": 1.02,
+          "asphalt": 0.98,
+          "packed_dirt": 1.0,
+          "grass": 1.04,
+          "mud": 1.14,
+          "ash": 0.82,
+          "wet": 1.28,
+          "sand": 1.02,
+          "metal": 0.98,
+          "neon": 1.0,
+          "cascade_runoff": 1.24,
+          "bounce": 1.0,
+          "rail": 1.0,
+          "speed_lane": 1.02
+        },
+        "gameplay_distinction": "Tidefin slick-glide \u2014 wet/cascade grip; still grounded checkpoints.",
+        "collision_contract": "Always grounded race collision; water/mud/magma/frost themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through.",
+        "description": "Tidefin Runners \u2014 Kinetic Sole vehicle in the Elemental / Amphibious family.",
+        "ai_notes": "Tidefin slick-glide \u2014 wet/cascade grip; still grounded checkpoints."
+      },
+      "shoe_sha256": "4de42a359d1c41ee114692ca71e6607b4216330b7f0bda23578b5b6a5dd52876"
+    },
+    "snowglobe_galoshes": {
+      "registry_record": {
+        "id": "snowglobe_galoshes",
+        "display_name": "Snowglobe Galoshes",
+        "family_id": "elemental_amphibious",
+        "family_name": "Elemental / Amphibious",
+        "sort_order": 27,
+        "movement_archetype": "elemental_frost",
+        "playable": true,
+        "art_status": "native_v1",
+        "signature_runner_id": "",
+        "unlock": {
+          "mode": "challenge",
+          "note": "Unlock via launch challenge clear"
+        },
+        "top_speed_modifier": 0.94,
+        "acceleration_modifier": 1.06,
+        "handling_modifier": 1.16,
+        "drift_modifier": 1.2,
+        "jump_modifier": 1.04,
+        "boost_modifier": 0.94,
+        "stomp_modifier": 1.0,
+        "material_family": "frost_galosh",
+        "surface_affinities": {
+          "standard": 1.0,
+          "asphalt": 0.96,
+          "packed_dirt": 1.04,
+          "grass": 1.12,
+          "mud": 1.08,
+          "ash": 0.95,
+          "wet": 1.1,
+          "sand": 0.92,
+          "metal": 0.95,
+          "neon": 1.0,
+          "cascade_runoff": 1.08,
+          "bounce": 1.12,
+          "rail": 1.02,
+          "speed_lane": 0.98
+        },
+        "gameplay_distinction": "Snowglobe galosh \u2014 frost grip + bounce; checkpoints stay solid.",
+        "collision_contract": "Always grounded race collision; water/mud/magma/frost themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through.",
+        "description": "Snowglobe Galoshes \u2014 Kinetic Sole vehicle in the Elemental / Amphibious family.",
+        "ai_notes": "Snowglobe galosh \u2014 frost grip + bounce; checkpoints stay solid."
+      },
+      "shoe_sha256": "5f06d5641b3d6b6119b413f59b086469398a01085260d938d13cac6b3012a145"
+    },
+    "beatlink_tapstep_oxfords": {
+      "registry_record": {
+        "id": "beatlink_tapstep_oxfords",
+        "display_name": "BeatLink Tapstep Oxfords",
+        "family_id": "gunnchos_crossover",
+        "family_name": "gunnchOS3k Crossover",
+        "sort_order": 46,
+        "movement_archetype": "crossover_tap",
+        "playable": true,
+        "art_status": "native_v1",
+        "signature_runner_id": "",
+        "unlock": {
+          "mode": "crossover",
+          "note": "Unlock via crossover career flag"
+        },
+        "top_speed_modifier": 1.04,
+        "acceleration_modifier": 1.1,
+        "handling_modifier": 1.08,
+        "drift_modifier": 1.12,
+        "jump_modifier": 1.06,
+        "boost_modifier": 1.06,
+        "stomp_modifier": 0.94,
+        "material_family": "tap_oxford",
+        "surface_affinities": {
+          "standard": 1.05,
+          "asphalt": 1.06,
+          "packed_dirt": 0.98,
+          "grass": 0.96,
+          "mud": 0.88,
+          "ash": 0.95,
+          "wet": 0.95,
+          "sand": 0.95,
+          "metal": 1.08,
+          "neon": 1.12,
+          "cascade_runoff": 0.98,
+          "bounce": 1.05,
+          "rail": 1.06,
+          "speed_lane": 1.08
+        },
+        "gameplay_distinction": "BeatLink Tapstep Oxfords \u2014 on-beat tap tempo; original tribute, grounded.",
+        "collision_contract": "Always grounded race collision; crossover tribute themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through. Original designs only.",
+        "description": "BeatLink Tapstep Oxfords \u2014 Kinetic Sole vehicle in the gunnchOS3k Crossover family (original tribute).",
+        "ai_notes": "BeatLink Tapstep Oxfords \u2014 on-beat tap tempo; original tribute, grounded."
+      },
+      "shoe_sha256": "94816451bd3eb7731d523d36434e84907b6944ebf49eb42efc825ee41990e9eb"
+    },
+    "sofa_surfers": {
+      "registry_record": {
+        "id": "sofa_surfers",
+        "display_name": "Sofa Surfers",
+        "family_id": "beautifully_ridiculous",
+        "family_name": "Beautifully Ridiculous",
+        "sort_order": 33,
+        "movement_archetype": "ridiculous_drift",
+        "playable": true,
+        "art_status": "native_v1",
+        "signature_runner_id": "",
+        "unlock": {
+          "mode": "achievement",
+          "note": "Unlock via achievement"
+        },
+        "top_speed_modifier": 0.94,
+        "acceleration_modifier": 0.9,
+        "handling_modifier": 1.02,
+        "drift_modifier": 1.38,
+        "jump_modifier": 0.82,
+        "boost_modifier": 0.96,
+        "stomp_modifier": 0.92,
+        "material_family": "sofa_cushion",
+        "surface_affinities": {
+          "standard": 1.0,
+          "asphalt": 0.98,
+          "packed_dirt": 1.02,
+          "grass": 1.1,
+          "mud": 1.05,
+          "ash": 0.95,
+          "wet": 1.0,
+          "sand": 1.05,
+          "metal": 0.95,
+          "neon": 0.98,
+          "cascade_runoff": 1.0,
+          "bounce": 1.18,
+          "rail": 0.9,
+          "speed_lane": 0.98
+        },
+        "gameplay_distinction": "Sofa Surfers \u2014 couch-cushion drift slides; never skip checkpoints.",
+        "collision_contract": "Always grounded race collision; joke/prop themes are affinity/VFX only \u2014 checkpoints and colliders are never skipped or phased through.",
+        "description": "Sofa Surfers \u2014 Kinetic Sole vehicle in the Beautifully Ridiculous family.",
+        "ai_notes": "Sofa Surfers \u2014 couch-cushion drift slides; never skip checkpoints."
+      },
+      "shoe_sha256": "dc73afe680d7a18c0b960130b6692c119b9ca762095038008b08874f25252989"
+    },
+    "brand_sha256": "eb7bcc314c4a3a64b54f0d1f08243dd2aa5539a95ef2b0d84ef761e16377fe3a",
+    "registry_sha256": "be15d2ceaddc0060a62678cde60c958c4983d0fff0bb0b0ce4f37fc74a803168",
+    "voltstep_preserved": {
+      "glb_sha256": "d5961bd64ad01a8fb3df814cc814c7669cb923ae58cfd07b0135de8940f8511e",
+      "blend_sha256": "c79b4dc74a801a3b9a7492aebea3373e211ec9885498e1c496b16093e34aec7f"
+    }
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "date": "2026-11-02",
+  "authored_at_utc": "2026-11-03T03:27:42.131396+00:00",
+  "source_base_head": "d1ac11d52472c0573fd7640969499e1e22461551",
+  "source_path": "scripts/art/GarmentAtelier.gd",
+  "source_sha256": "18a55a76686785fff18e2265fe2d7ee59610129dad965d57175d8de9e4af5c0f",
+  "catalog_path": "data/wardrobe/wardrobe_catalog.json",
+  "catalog_sha256": "fd82ef1be3bc71041ec528777015a814d7cad0a795e9ec5872adaf322bf9d79a",
+  "catalog_count": 58,
+  "supported_garments": [
+    {
+      "id": "metro_pulse_outer",
+      "family_id": "metro_pulse",
+      "slot": "outerwear",
+      "display_name": "Metro Pulse Windshell",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "open_windshell",
+      "colors": {
+        "primary": "#FF6A3D",
+        "accent": "#1B2430"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "harbor_linen_outer",
+      "family_id": "harbor_linen",
+      "slot": "outerwear",
+      "display_name": "Harbor Drape Coat",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "open_drape",
+      "colors": {
+        "primary": "#C4B7A4",
+        "accent": "#6B7C6A"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "neon_track_outer",
+      "family_id": "neon_trackside",
+      "slot": "outerwear",
+      "display_name": "Neon Trackside Jacket",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "panel_jacket",
+      "colors": {
+        "primary": "#201030",
+        "accent": "#B8FF3D"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "midnight_outer",
+      "family_id": "midnight_atelier",
+      "slot": "outerwear",
+      "display_name": "Midnight Atelier Coat",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "formal_coat",
+      "colors": {
+        "primary": "#1B2030",
+        "accent": "#C9A86A"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "orbit_outer",
+      "family_id": "orbit_signal",
+      "slot": "outerwear",
+      "display_name": "Orbit Signal Mantle",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "panel_jacket",
+      "colors": {
+        "primary": "#1A3A48",
+        "accent": "#7AF0FF"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    },
+    {
+      "id": "archive_cardigan",
+      "family_id": "archive_loom",
+      "slot": "outerwear",
+      "display_name": "Archive Loom Cardigan",
+      "art_status": "integrated_mesh_v1",
+      "mesh_recipe": "open_drape",
+      "colors": {
+        "primary": "#D7CBB8",
+        "accent": "#6E7F8C"
+      },
+      "cosmetic_only": true,
+      "body_fit": "attach_to_rig_v1"
+    }
+  ],
+  "attachment_reference": "scripts/player/RacerVisual.gd _torso mesh AABB and existing _arm_l/_arm_r shoulder pivots",
+  "attachment_reference_sha256": "feaffb894984024560a229d79e2a0326cf96bc80b36c47137a979cf9ea7dd6f7",
+  "api": "static attach(visual:Node3D,g:Dictionary,hs:float,ws:float)->bool",
+  "status": "source correction candidate_UNPARSED_UNEXECUTED; six fresh actual-runtime visual captures and separate review required",
+  "originality": "Original open-panel/loft, seam, pocket, lapel, cuff and sleeve geometry; no external meshes, textures, fonts, logos or attributed regional costume",
+  "colors": "Exact selected record primary/accent values, plus darker derived facing; no canonical palette edits",
+  "source_checks": {
+    "six_ids_match_existing_records": true,
+    "all_selected_records_are_cosmetic_outerwear": true,
+    "source_contains_no_collision_constructors": true,
+    "godot_parser_run": false,
+    "godot_runtime_run": false,
+    "blender_run": false,
+    "visual_assessment_run": false
+  },
+  "limitations": [
+    "Source-only per heavy-slot ownership",
+    "Actual GDScript parsing and scene import pending",
+    "No skinned cloth or elbow deformation; sleeves follow shoulder pivots",
+    "Long coat/mantle hip/arm clearance requires actual motion inspection",
+    "Six of58garments; no fullwardrobe completeness claim",
+    "No tests or source metadata establish human aesthetic approval"
+  ],
+  "independent_review": "pending distinct reviewer; source author cannot count self-review",
+  "HUMAN": false,
+  "RC2": false,
+  "V1": false,
+  "latest_source_correction": "LAYER_FIT_CORRECTION.json",
+  "initial_source_provenance_preserved": "PROVENANCE_INITIAL_SOURCE.json"
+}

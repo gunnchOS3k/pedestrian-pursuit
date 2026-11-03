@@ -1,0 +1,39 @@
+{
+  "id": "snowglobe_galoshes",
+  "name": "SnowglobeGaloshes",
+  "family_id": "elemental_amphibious",
+  "movement_archetype": "elemental_frost",
+  "design": "Tall ribbed frost-rubber galosh, folded insulated cuff, snowglobe-like heel dome, inset flakes and deep cross tread.",
+  "status": "original_art_candidate_exported_not_runtime_assessed",
+  "authoring_script_sha256": "15e2a5d9d4cf5e3ae77784ca170efdd15a2a5cc82d00e7ccce4d27efc6b08301",
+  "authoring_script_path": "art_source/footwear/wave1/author_wave1.py",
+  "source_blend": "art_source/footwear/wave1/snowglobe_galoshes/SnowglobeGaloshes.blend",
+  "source_blend_sha256": "23f18b558d7feb88667bd7097705204671df13f76cbe892a4bf697963d9615d9",
+  "asset_path": "res://assets/models/footwear/wave1/SnowglobeGaloshes.glb",
+  "glb_sha256": "03b437ac98a9b12ee8a276d95159b6d6fe254296f698d56deaf66b23a0da45f8",
+  "triangles_per_foot": 3222,
+  "source_mesh_objects": 32,
+  "runtime_mesh_objects": 1,
+  "bounds": {
+    "min_blender_m": [
+      -0.08100000023841858,
+      -0.1589999943971634,
+      -0.06000000238418579
+    ],
+    "max_blender_m": [
+      0.08100000023841858,
+      0.14400000870227814,
+      0.22177435457706451
+    ],
+    "size_m": [
+      0.16200000047683716,
+      0.30300000309944153,
+      0.2817743569612503
+    ]
+  },
+  "wheel_nodes": [],
+  "animation": "Existing runner mount/gait only; no new rig or animation",
+  "HUMAN": false,
+  "RC2": false,
+  "V1": false
+}
