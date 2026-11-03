@@ -63,7 +63,7 @@ func set_visual_lod(level: int) -> void:
 
 
 func _ready() -> void:
-	_parent_body = get_parent() as CharacterBody3D
+	_sync_orientation()
 	_hide_legacy_meshes()
 	if profile == null:
 		apply_profile(RunnerProfileScript.by_id(runner_id))
@@ -135,7 +135,7 @@ func _shoe_archetype() -> String:
 
 func set_menu_preview(enabled: bool) -> void:
 	_menu_preview = enabled
-	_parent_body = null if enabled else (get_parent() as CharacterBody3D)
+	_sync_orientation()
 	if enabled:
 		_pose_state = "idle"
 		_pose_timer = 0.0
@@ -184,7 +184,15 @@ func _hide_legacy_meshes() -> void:
 			(node as MeshInstance3D).visible = false
 
 
+func _sync_orientation() -> void:
+	# Canonical art faces +Z; controllers move along body -Z. Rotate only the
+	# presentation root for racers; standalone/menu previews retain source axes.
+	_parent_body = null if _menu_preview else (get_parent() as CharacterBody3D)
+	rotation.y = PI if _parent_body != null else 0.0
+
+
 func _rebuild() -> void:
+	_sync_orientation()
 	for child in get_children():
 		child.free()
 	_torso = null
@@ -412,13 +420,13 @@ func _build_figure() -> void:
 	## Optional wardrobe trail_expression may override tint only (cosmetic); footwear still owns handling.
 	_speed_trail = GPUParticles3D.new()
 	_speed_trail.name = "KineticSoleTrail"
-	_speed_trail.position = Vector3(0.0, 0.2, 0.35)
+	_speed_trail.position = Vector3(0.0, 0.2, -0.35)
 	var trail_profile := _footwear_trail_profile(arch)
 	_speed_trail.amount = int(trail_profile.get("amount", 28))
 	_speed_trail.lifetime = float(trail_profile.get("lifetime", 0.45))
 	_speed_trail.emitting = false
 	var trail_mat := ParticleProcessMaterial.new()
-	trail_mat.direction = Vector3(0.0, 0.2, 1.0)
+	trail_mat.direction = Vector3(0.0, 0.2, -1.0)
 	trail_mat.spread = float(trail_profile.get("spread", 12.0))
 	trail_mat.initial_velocity_min = float(trail_profile.get("vmin", 1.5))
 	trail_mat.initial_velocity_max = float(trail_profile.get("vmax", 4.0))
@@ -448,12 +456,12 @@ func _build_figure() -> void:
 	if visual_lod < 2 and not vehicle_id.is_empty():
 		_sole_contact = GPUParticles3D.new()
 		_sole_contact.name = "KineticSoleContact"
-		_sole_contact.position = Vector3(0.0, 0.05, 0.2)
+		_sole_contact.position = Vector3(0.0, 0.05, -0.2)
 		_sole_contact.amount = 12
 		_sole_contact.lifetime = 0.28
 		_sole_contact.emitting = false
 		var contact_mat := ParticleProcessMaterial.new()
-		contact_mat.direction = Vector3(0.0, 0.6, 0.4)
+		contact_mat.direction = Vector3(0.0, 0.6, -0.4)
 		contact_mat.spread = 28.0
 		contact_mat.initial_velocity_min = 0.6
 		contact_mat.initial_velocity_max = 2.2
@@ -866,7 +874,7 @@ func _attach_garment_mesh(g: Dictionary, hs: float, ws: float) -> void:
 			trail.lifetime = 0.35
 			trail.emitting = true
 			var pm := ParticleProcessMaterial.new()
-			pm.direction = Vector3(0, 0.2, 1)
+			pm.direction = Vector3(0, 0.2, -1)
 			pm.spread = 10.0
 			pm.initial_velocity_min = 0.8
 			pm.initial_velocity_max = 2.2
@@ -2755,7 +2763,7 @@ func _process(delta: float) -> void:
 		swing *= 1.15
 		_apply_boost_style(delta, lean_scale)
 	elif _torso:
-		_torso.rotation.x = lerpf(_torso.rotation.x, -0.04 * lean_scale * (speed / 20.0), delta * 6.0)
+		_torso.rotation.x = lerpf(_torso.rotation.x, 0.04 * lean_scale * (speed / 20.0), delta * 6.0)
 
 	if _leg_l:
 		_leg_l.rotation.x = swing
@@ -2807,35 +2815,35 @@ func _apply_boost_style(delta: float, lean_scale: float) -> void:
 		return
 	match style:
 		"snap_lean":
-			_torso.rotation.x = lerpf(_torso.rotation.x, -0.42 * lean_scale, delta * 14.0)
+			_torso.rotation.x = lerpf(_torso.rotation.x, 0.42 * lean_scale, delta * 14.0)
 			if _arm_l:
 				_arm_l.rotation.z = lerpf(_arm_l.rotation.z, 0.35, delta * 10.0)
 			if _arm_r:
 				_arm_r.rotation.z = lerpf(_arm_r.rotation.z, -0.35, delta * 10.0)
 		"wall_lean":
 			_torso.rotation.z = lerpf(_torso.rotation.z, 0.28 * lean_scale, delta * 10.0)
-			_torso.rotation.x = lerpf(_torso.rotation.x, -0.12, delta * 8.0)
+			_torso.rotation.x = lerpf(_torso.rotation.x, 0.12, delta * 8.0)
 		"float_lean":
-			_torso.rotation.x = lerpf(_torso.rotation.x, -0.1 * lean_scale, delta * 4.0)
+			_torso.rotation.x = lerpf(_torso.rotation.x, 0.1 * lean_scale, delta * 4.0)
 			_torso.position.y = _rest_torso_y + 0.06
 		"shoulder_drive":
-			_torso.rotation.x = lerpf(_torso.rotation.x, -0.22 * lean_scale, delta * 7.0)
+			_torso.rotation.x = lerpf(_torso.rotation.x, 0.22 * lean_scale, delta * 7.0)
 			if _arm_l:
 				_arm_l.rotation.x = lerpf(_arm_l.rotation.x, -1.1, delta * 8.0)
 			if _arm_r:
 				_arm_r.rotation.x = lerpf(_arm_r.rotation.x, -0.3, delta * 8.0)
 		"spin_lean":
 			_torso.rotation.y = sin(_emotion_t * 10.0) * 0.35
-			_torso.rotation.x = lerpf(_torso.rotation.x, -0.2 * lean_scale, delta * 8.0)
+			_torso.rotation.x = lerpf(_torso.rotation.x, 0.2 * lean_scale, delta * 8.0)
 		"banked_lean":
 			_torso.rotation.z = lerpf(_torso.rotation.z, -0.35 * lean_scale, delta * 10.0)
-			_torso.rotation.x = lerpf(_torso.rotation.x, -0.16, delta * 8.0)
+			_torso.rotation.x = lerpf(_torso.rotation.x, 0.16, delta * 8.0)
 		"kinetic_flare":
-			_torso.rotation.x = lerpf(_torso.rotation.x, -0.18 * lean_scale, delta * 9.0)
+			_torso.rotation.x = lerpf(_torso.rotation.x, 0.18 * lean_scale, delta * 9.0)
 			if _accent_fx:
 				_accent_fx.scale = Vector3.ONE * (1.25 + 0.15 * sin(_emotion_t * 12.0))
 		_: # forward_lean / boost
-			_torso.rotation.x = lerpf(_torso.rotation.x, -0.28 * lean_scale, delta * 8.0)
+			_torso.rotation.x = lerpf(_torso.rotation.x, 0.28 * lean_scale, delta * 8.0)
 
 
 func _apply_pose_overlay(delta: float) -> void:
