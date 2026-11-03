@@ -128,7 +128,13 @@ static func is_raceable(track: Dictionary) -> bool:
 static func validate_cup(cup: Dictionary) -> PackedStringArray:
 	var errors := PackedStringArray()
 	for field in [
-		"schema_version", "id", "display_name", "description", "track_ids", "points_by_position"
+		"schema_version",
+		"id",
+		"display_name",
+		"description",
+		"cup_index",
+		"track_ids",
+		"points_by_position",
 	]:
 		if not cup.has(field):
 			errors.append("missing field '%s'" % field)
@@ -136,6 +142,9 @@ static func validate_cup(cup: Dictionary) -> PackedStringArray:
 		return errors
 	if int(cup.get("schema_version", 0)) != 1:
 		errors.append("unsupported schema_version")
+	var cup_index := int(cup.get("cup_index", 0))
+	if cup_index < 1 or cup_index > CHAMPIONSHIP_CUP_TARGET:
+		errors.append("cup_index must be between 1 and %d" % CHAMPIONSHIP_CUP_TARGET)
 	if not _is_safe_identifier(str(cup.get("id", ""))):
 		errors.append("id must use lowercase letters, numbers, and underscores")
 	var track_ids: Array = cup.get("track_ids", [])

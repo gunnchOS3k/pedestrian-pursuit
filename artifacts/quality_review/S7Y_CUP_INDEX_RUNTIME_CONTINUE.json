@@ -1,0 +1,20 @@
+{
+  "schema": "ped.s7y_cup_index_runtime_continue.v1",
+  "prepared_at": "2026-11-03T04:20:00Z",
+  "wave010_untouched": true,
+  "human_false": true,
+  "rc2_false": true,
+  "v1_false": true,
+  "course_false": true,
+  "cup": {
+    "cup_index_runtime_wired": true,
+    "save_resume_cup_index": true,
+    "anchor_cup": "metro_motion_cup",
+    "anchor_cup_index": 3
+  },
+  "local_proofs": {
+    "CupIndexRuntimeWireTest": "PASS"
+  },
+  "base_tip": "ca4c26f",
+  "notes": "S7Y: cup_index from cup JSON binds GameManager + save/resume; not wardrobe; no 8p/Metal/owner play"
+}

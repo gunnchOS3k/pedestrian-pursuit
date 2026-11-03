@@ -24,6 +24,8 @@ var ai_eval_mode: bool = false
 var ai_eval_tier: String = "standard"
 
 var active_cup_id: String = ""
+## Authored championship order (1=Sole … 8=Wonder) from cup JSON; 0 when no cup active.
+var active_cup_index: int = 0
 var cup_track_ids: Array[String] = []
 var cup_round_index: int = 0
 var cup_results: Array[Dictionary] = []
@@ -243,6 +245,15 @@ func start_cup(cup_id: String, track_ids: Array) -> bool:
 	if track_ids.is_empty():
 		push_error("Cannot start an empty cup")
 		return false
+	var cup := _TrackCatalog.load_cup(cup_id)
+	if cup.is_empty():
+		push_error("Cannot start unknown cup '%s'" % cup_id)
+		return false
+	var authored_index := int(cup.get("cup_index", 0))
+	if authored_index < 1 or authored_index > _TrackCatalog.CHAMPIONSHIP_CUP_TARGET:
+		push_error("Cup '%s' missing valid cup_index (1..%d)" % [cup_id, _TrackCatalog.CHAMPIONSHIP_CUP_TARGET])
+		return false
+	active_cup_index = authored_index
 	active_cup_id = cup_id
 	selected_cup_id = cup_id
 	cup_track_ids.clear()
@@ -327,6 +338,7 @@ func clear_cup() -> void:
 	party_link_human_seats = 0
 	party_link_connected_humans = 0
 	active_cup_id = ""
+	active_cup_index = 0
 	cup_track_ids.clear()
 	cup_round_index = 0
 	cup_results.clear()
@@ -379,6 +391,7 @@ func save_cup_progress() -> void:
 	var cfg := ConfigFile.new()
 	var resume_index := _resume_index_for_save()
 	cfg.set_value("cup", "active_cup_id", active_cup_id)
+	cfg.set_value("cup", "cup_index", active_cup_index)
 	cfg.set_value("cup", "round_index", cup_round_index)
 	cfg.set_value("cup", "resume_index", resume_index)
 	# Snapshots, not the live arrays. A later clear must not rewrite this save.
@@ -423,6 +436,7 @@ func load_cup_progress() -> bool:
 	if cfg.load("user://cup_progress.cfg") != OK:
 		return false
 	active_cup_id = str(cfg.get_value("cup", "active_cup_id", ""))
+	active_cup_index = int(cfg.get_value("cup", "cup_index", 0))
 	cup_round_index = int(cfg.get_value("cup", "round_index", 0))
 	_assign_saved_results(cfg.get_value("cup", "results", []))
 	_assign_saved_standings(cfg.get_value("cup", "standings", {}))
@@ -431,6 +445,9 @@ func load_cup_progress() -> bool:
 	for tid in tracks:
 		cup_track_ids.append(str(tid))
 	if not active_cup_id.is_empty() and not cup_track_ids.is_empty():
+		if active_cup_index < 1:
+			var cup := _TrackCatalog.load_cup(active_cup_id)
+			active_cup_index = int(cup.get("cup_index", 0))
 		current_race_mode = RaceMode.CUP
 		selected_cup_id = active_cup_id
 		selected_track_id = cup_track_ids[mini(cup_round_index, cup_track_ids.size() - 1)]
@@ -447,6 +464,7 @@ func describe_saved_cup() -> Dictionary:
 		"track_id": "",
 		"completed": false,
 		"cup_id": "",
+		"cup_index": 0,
 		"round_index": 0,
 	}
 	var cfg := ConfigFile.new()
@@ -458,6 +476,10 @@ func describe_saved_cup() -> Dictionary:
 	var tracks: Array = tracks_v if typeof(tracks_v) == TYPE_ARRAY else []
 	var results: Array = results_v if typeof(results_v) == TYPE_ARRAY else []
 	var round_index := int(cfg.get_value("cup", "round_index", 0))
+	var cup_index := int(cfg.get_value("cup", "cup_index", 0))
+	if cup_index < 1 and not active.is_empty():
+		var cup := _TrackCatalog.load_cup(active)
+		cup_index = int(cup.get("cup_index", 0))
 	var completed_flag := bool(cfg.get_value("cup", "completed", false))
 	var next_index := round_index
 	if results.size() > round_index:
@@ -481,6 +503,7 @@ func describe_saved_cup() -> Dictionary:
 		"track_id": track_id,
 		"completed": finished_cup,
 		"cup_id": active,
+		"cup_index": cup_index,
 		"round_index": next_index,
 	}
 
